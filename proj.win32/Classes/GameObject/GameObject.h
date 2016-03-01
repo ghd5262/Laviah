@@ -1,49 +1,46 @@
 #pragma once
 
-#include "..\Common\HSHUtility.h"
+#include "../Common/HSHUtility.h"
 
-struct Telegram;
-
-typedef enum eENTITY_TYPE{
-	eENTITY_TYPE_default = -1,
-};
 
 ///게임 모든 오브젝트의 최상위 클래스
 class CGameObject : public cocos2d::Node
 {
 public:
-	CGameObject(){};
-	CGameObject(int ID)
-		: m_dBoundingRadius(0.0f)
-		, m_nEntityType(eENTITY_TYPE_default)
-		, m_bTag(false)
+	CGameObject(std::string textureName, float bindingRadius)
+		: m_TextureName(textureName)
+		, m_fBoundingRadius(bindingRadius)
+		, m_bAlive(true)
 	{
-		setM_ID(ID);
+		if (!CGameObject::init())
+		{
+			CCLOG("FAILED TO INIT OBJECT");
+			CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+			assert(false);
+		}
+		scheduleUpdate();
 	}
+	virtual ~CGameObject(){}
 
-	virtual ~CGameObject();
+	virtual void Execute(float delta = 0.f) = 0;
 
-public:
-	virtual bool HandleMessage(const Telegram& msg){ return false; }
-
-	static int   getM_NextValidID(){ return m_nNextValidID; }
-	static void  resetNextValidID(){ m_nNextValidID = 0; }
+	//getter & setter
+	bool IsAlive()const { return m_bAlive; }
+	void setAlive(bool alive){ m_bAlive = alive; }
 
 protected:
-	
+	virtual bool init() override;
+	virtual bool initVariable();
+
 	void DrawDebugRect(Point pos1, Point pos2, std::string text = "");
 	void DrawDebugLine(Point pos1, Point pos2, std::string text = "");
 
-protected:
-	///getter & setter
-	CC_SYNTHESIZE(double, m_dBoundingRadius, BRadius);
-	CC_SYNTHESIZE(int, m_nEntityType, EntityType);
-	void setM_ID(int ID);
-	int getM_ID(){ return m_nID; }
+	//getter & setter
+	CC_SYNTHESIZE(float, m_fBoundingRadius, BRadius);
 
 private:
-	static int m_nNextValidID;
-	int m_nID;
-	bool m_bTag;
+	Sprite* m_pTexture;
+	std::string m_TextureName;
+	bool m_bAlive;
 };
 

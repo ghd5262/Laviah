@@ -10,9 +10,5 @@ typedef enum eOBJECT_TAG{
 
 typedef enum eOBJECT_Z_ORDER{
 	eOBJECT_Z_ORDER_none = 0,
-	eOBJECT_Z_ORDER_soccerPitch = 1,
-	eOBJECT_Z_ORDER_soccerTeam = 2,
-	eOBJECT_Z_ORDER_soccerBall = 3,
 
-	eOBJECT_Z_ORDER_popup = 100,
 };

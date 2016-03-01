@@ -1,16 +1,29 @@
 #include "GameObject.h"
 
-int CGameObject::m_nNextValidID = 0;
-
-CGameObject::~CGameObject()
+bool CGameObject::init()
 {
+	if (!CGameObject::initVariable())
+		return false;
+	return true;
 }
 
-void CGameObject::setM_ID(int ID)
+bool CGameObject::initVariable()
 {
-	CCASSERT((ID >= m_nNextValidID), "CGameObject::setM_ID(int ID) : invalid ID, ID should be equal or greater than pre id");
-	m_nID = ID;
-	m_nNextValidID = m_nID + 1;
+	try{
+		srand((unsigned)time(NULL));
+
+		m_pTexture = Sprite::create(m_TextureName);
+		if (m_pTexture != nullptr){
+			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+			addChild(m_pTexture);
+		}
+	}
+	catch (...){
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		assert(false);
+		return false;
+	}
+	return true;
 }
 
 void CGameObject::DrawDebugRect(Point pos1, Point pos2, std::string text/* = "" */)

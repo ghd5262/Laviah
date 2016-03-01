@@ -1,8 +1,9 @@
 #include "GameScene.h"
-#include "../GameObject/SoccerPitch.h"
-#include "../GameObject/SoccerBall.h"
-#include "../GameObject/SoccerTeam.h"
-
+#include "../Task/Task.h"
+#include "../GameObject/Bullet.h"
+#include "../GameObject/Planet.h"
+#include "../GameObject/ObjectManager.h"
+#include "../GameObject/Shooter/Shooter.h"
 USING_NS_CC;
 
 Scene* CGameScene::createScene()
@@ -23,10 +24,12 @@ Scene* CGameScene::createScene()
 
 CGameScene::~CGameScene()
 {
+	removeAllChildrenWithCleanup(true);
 }
 
 bool CGameScene::init()
 {
+	scheduleUpdate();
 	if (!Layer::init())
 	{
 		return false;
@@ -61,23 +64,24 @@ bool CGameScene::initVariable()
 			origin.y + visibleSize.height - label->getContentSize().height));
 		this->addChild(label, 100);
 
-		//* 축구장 */
-		auto soccerPitch = CSoccerPitch::create();
-		this->addChild(soccerPitch, eOBJECT_Z_ORDER_soccerPitch, eOBJECT_TAG_soccerPitch);
+		auto background = Sprite::create("background_2.png");
+		background->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+			origin.y + visibleSize.height * 0.5f));
+		this->addChild(background);
 
-		//* 축구공 */
-		auto soccerBall = CSoccerBall::create(Vec2(soccerPitch->getContentSize().width * 0.5f, soccerPitch->getContentSize().height * 0.5f),
-			30, 20, soccerPitch->getM_VecWalls());
-		soccerBall->setAnchorPoint(Vec2(0.5f, 0.5f));
-		this->addChild(soccerBall, eOBJECT_Z_ORDER_soccerBall, eOBJECT_TAG_soccerBall);
+		auto planet = std::shared_ptr<CPlanet>(::new CPlanet("planet.png", 165, 0.0f, 5.0f), [](CPlanet* planet)
+		{::delete planet; });
+		planet.get()->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+			origin.y + visibleSize.height * 0.25f - label->getContentSize().height));
+		this->addChild(planet.get());
+		CObjectManager::Instance()->setM_Planet(planet);
 
-		//* 플레이어 팀 */
-		auto playerTeam = CSoccerTeam::create(soccerPitch->getM_PlayerPost(), soccerPitch->getM_OtherPost(), soccerPitch, eTEAM_blue);
-		this->addChild(playerTeam, eOBJECT_Z_ORDER_soccerTeam, eOBJECT_TAG_myTeam);
-
-		//* 상대 팀 */
-		auto otherTeam = CSoccerTeam::create(soccerPitch->getM_OtherPost(), soccerPitch->getM_PlayerPost(), soccerPitch, eTEAM_red);
-		this->addChild(otherTeam, eOBJECT_Z_ORDER_soccerTeam, eOBJECT_TAG_otherTeam);
+		CObjectManager::Instance()->setM_BulletList(new CTaskList(800, 3000));
+		CObjectManager::Instance()->setM_ItemList(new CTaskList(800, 10));
+		CObjectManager::Instance()->setM_EnemyList(new CTaskList(800, 20));
+		//RandomShoot();
+		addChild(new CRandomShooter(0.5f, Vec2(CObjectManager::Instance()->getM_Planet()->getPosition().x,
+			CObjectManager::Instance()->getM_Planet()->getPosition().y)));
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -99,4 +103,9 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	exit(0);
 #endif
+}
+
+void CGameScene::update(float delta)
+{
+	CObjectManager::Instance()->Execute(delta);
 }
