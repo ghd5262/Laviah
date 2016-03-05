@@ -1,5 +1,4 @@
 #include "GameScene.h"
-#include "../Task/Task.h"
 #include "../GameObject/Bullet.h"
 #include "../GameObject/Planet.h"
 #include "../GameObject/ObjectManager.h"
@@ -24,7 +23,7 @@ Scene* CGameScene::createScene()
 
 CGameScene::~CGameScene()
 {
-	removeAllChildrenWithCleanup(true);
+	//CObjectManager::Instance()->ExitGame();
 }
 
 bool CGameScene::init()
@@ -69,19 +68,14 @@ bool CGameScene::initVariable()
 			origin.y + visibleSize.height * 0.5f));
 		this->addChild(background);
 
-		auto planet = std::shared_ptr<CPlanet>(::new CPlanet("planet.png", 165, 0.0f, 5.0f), [](CPlanet* planet)
-		{::delete planet; });
-		planet.get()->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-			origin.y + visibleSize.height * 0.25f - label->getContentSize().height));
-		this->addChild(planet.get());
+		auto planet = CPlanet::create("planet.png", 145, 0.0f, 5.0f);
+		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+			origin.y + visibleSize.height * 0.25f));
+		this->addChild(planet);
 		CObjectManager::Instance()->setM_Planet(planet);
-
-		CObjectManager::Instance()->setM_BulletList(new CTaskList(800, 3000));
-		CObjectManager::Instance()->setM_ItemList(new CTaskList(800, 10));
-		CObjectManager::Instance()->setM_EnemyList(new CTaskList(800, 20));
-		//RandomShoot();
-		addChild(new CRandomShooter(0.5f, Vec2(CObjectManager::Instance()->getM_Planet()->getPosition().x,
-			CObjectManager::Instance()->getM_Planet()->getPosition().y)));
+		CObjectManager::Instance()->CreateBulletList(10);
+		CObjectManager::Instance()->CreateEnemyList(10);
+		addChild(CRandomShooter::create(1.0f));
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);

@@ -1,21 +1,30 @@
 #pragma once
-#include "Planet.h"
-class CTaskList;
+#include <vector>
+class CMover;
+class CPlanet;
 class CPlayer;
+class CBullet;
+class CEnemy;
+class CItem;
+
 class CObjectManager
 {
 public:
 	static CObjectManager* Instance();
 
+	void CreateBulletList(size_t count);	// count만큼 Bullet리스트에 add
+	void CreateItemList(size_t count);		// count만큼 Item리스트에 add
+	void CreateEnemyList(size_t count);		// count만큼 Enemy리스트에 add
+	CBullet* BulletNew();					// List에서 bullet포인터 반환 사이즈 적으면 새로 생성
+	CEnemy* EnemyNew();						// List에서 enemy포인터 반환 사이즈 적으면 새로 생성
+	void ObjectDelete(CMover* object);		// Object 초기화 (visible off, alive off)
+	void EnemyDeleteAll();					// Enemy 모두 초기화 (visible off, alive off)
+	void BulletDeleteAll();					// Bullet 모두 초기화 (visible off, alive off)
+	void ExitGame();						// Game종료시 리스트 초기화 및 삭제
+
 	//getter & setter
-	const CTaskList* getM_BulletList(){ return m_BulletList; }
-	const CTaskList* getM_ItemList(){ return m_ItemList; }
-	const CTaskList* getM_EnemyList(){ return m_EnemyList; }
-	const CPlanet* getM_Planet(){ return m_Planet.get(); }
-	void setM_BulletList(CTaskList* tasklist){ m_BulletList = tasklist; }
-	void setM_ItemList(CTaskList* tasklist){ m_ItemList = tasklist; }
-	void setM_EnemyList(CTaskList* tasklist){ m_EnemyList = tasklist; }
-	void setM_Planet(std::shared_ptr<CPlanet> planet){ m_Planet = planet; }
+	const CPlanet* getM_Planet(){ return m_Planet; }
+	void setM_Planet(CPlanet* planet){ m_Planet = planet; }
 	void setM_Player(CPlayer* player){ m_Player = player; }
 
 	void Execute(float delta);
@@ -24,10 +33,10 @@ private:
 	~CObjectManager();
 
 private:
-	CTaskList* m_BulletList;
-	CTaskList* m_ItemList;
-	CTaskList* m_EnemyList;
-	std::shared_ptr<CPlanet> m_Planet;
+	std::vector<CBullet*> m_BulletList;
+	std::vector<CItem*> m_ItemList;
+	std::vector<CEnemy*> m_EnemyList;
+	CPlanet* m_Planet;
 	CPlayer* m_Player;
 };
 

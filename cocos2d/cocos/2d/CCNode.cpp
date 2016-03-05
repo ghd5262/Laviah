@@ -168,11 +168,8 @@ Node * Node::create()
 
 Node::~Node()
 {
-	//if (this->getReferenceCount > 1)
-		return;
-
     CCLOGINFO( "deallocing Node: %p - tag: %i", this, _tag );
-    
+
 #if CC_ENABLE_SCRIPT_BINDING
     if (_updateScriptHandler)
     {

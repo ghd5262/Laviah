@@ -1,29 +1,16 @@
 #include "GameObject.h"
 
-bool CGameObject::init()
+void CGameObject::DrawDebugBinding()
 {
-	if (!CGameObject::initVariable())
-		return false;
-	return true;
-}
+	if (!DEBUG_DRAW)
+		return;
 
-bool CGameObject::initVariable()
-{
-	try{
-		srand((unsigned)time(NULL));
-
-		m_pTexture = Sprite::create(m_TextureName);
-		if (m_pTexture != nullptr){
-			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-			addChild(m_pTexture);
-		}
+	for (int angle = 0; angle <= 360; angle++)
+	{
+		int x = (cos(CC_DEGREES_TO_RADIANS(angle)) * m_fBoundingRadius) + getPosition().x;
+		int y = (sin(CC_DEGREES_TO_RADIANS(angle)) * m_fBoundingRadius) + getPosition().y;
+		DrawDebugLine(getPosition(), Point(x, y));
 	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
-		assert(false);
-		return false;
-	}
-	return true;
 }
 
 void CGameObject::DrawDebugRect(Point pos1, Point pos2, std::string text/* = "" */)
