@@ -23,7 +23,7 @@ Scene* CGameScene::createScene()
 
 CGameScene::~CGameScene()
 {
-	//CObjectManager::Instance()->ExitGame();
+	CObjectManager::Instance()->ExitGame();
 }
 
 bool CGameScene::init()
@@ -72,9 +72,10 @@ bool CGameScene::initVariable()
 		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.25f));
 		this->addChild(planet);
+
 		CObjectManager::Instance()->setM_Planet(planet);
-		CObjectManager::Instance()->CreateBulletList(10);
-		CObjectManager::Instance()->CreateEnemyList(10);
+		CObjectManager::Instance()->CreateBulletList(500, 800);
+		CObjectManager::Instance()->CreateEnemyList(10, 800);
 		addChild(CRandomShooter::create(1.0f));
 	}
 	catch (...){
@@ -101,5 +102,5 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 
 void CGameScene::update(float delta)
 {
-	CObjectManager::Instance()->Execute(delta);
+	//CObjectManager::Instance()->Execute(delta);
 }

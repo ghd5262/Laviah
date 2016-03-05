@@ -7,8 +7,6 @@
 class CGameObject : public cocos2d::Node
 {
 public:
-	CGameObject() 
-		: m_bAlive(false){}
 	CGameObject(float bindingRadius)
 		: m_fBoundingRadius(bindingRadius){}
 	virtual ~CGameObject(){ removeAllChildrenWithCleanup(true); }
