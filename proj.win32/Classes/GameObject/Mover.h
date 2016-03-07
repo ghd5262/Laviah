@@ -4,6 +4,7 @@
 class CMover : public CGameObject
 {
 public:
+	CMover(){}
 	CMover(float boundingRadius);
 	virtual ~CMover() = 0;
 

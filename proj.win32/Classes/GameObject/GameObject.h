@@ -7,6 +7,7 @@
 class CGameObject : public cocos2d::Node
 {
 public:
+	CGameObject() : m_fBoundingRadius(0.0f){}
 	CGameObject(float bindingRadius)
 		: m_fBoundingRadius(bindingRadius){}
 	virtual ~CGameObject(){ removeAllChildrenWithCleanup(true); }
@@ -18,8 +19,6 @@ public:
 	void setAlive(bool alive){ m_bAlive = alive; }
 
 protected:
-	virtual bool init() override { return true; };
-	virtual bool initVariable() { return true; };
 
 	void DrawDebugBinding();
 	void DrawDebugRect(Point pos1, Point pos2, std::string text = "");

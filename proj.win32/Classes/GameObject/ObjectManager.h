@@ -6,7 +6,7 @@ class CPlayer;
 class CBullet;
 class CEnemy;
 class CItem;
-
+class CRandomShooter;
 class CObjectManager
 {
 public:
@@ -15,8 +15,8 @@ public:
 	void CreateBulletList(size_t count, size_t size);	// size만큼의 char형 포인터를 count만큼 Bullet리스트에 add
 	void CreateItemList(size_t count, size_t size);		// size만큼의 char형 포인터를 count만큼 Item리스트에 add
 	void CreateEnemyList(size_t count, size_t size);	// size만큼의 char형 포인터를 count만큼 Enemy리스트에 add
-	CBullet* BulletNew();									// List에서 bullet포인터 반환 사이즈 적으면 새로 생성
-	CEnemy* EnemyNew();									// List에서 enemy포인터 반환 사이즈 적으면 새로 생성
+	CBullet* BulletNew();								// pool이 가지고 있는 메모리가 생성하려는 것보다 적으면 새로 생성
+	CEnemy* EnemyNew();									// pool이 가지고 있는 메모리가 생성하려는 것보다 적으면 새로 생성
 	void ObjectDelete(CMover* object);					// Object 초기화 (visible off, alive off)
 	void EnemyDeleteAll();								// Enemy 모두 초기화 (visible off, alive off)
 	void BulletDeleteAll();								// Bullet 모두 초기화 (visible off, alive off)

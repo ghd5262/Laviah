@@ -8,8 +8,8 @@ public:
 	virtual void Execute(float delta = 0.f) override;
 
 protected:
-	virtual bool init() override;
-	virtual bool initVariable() override;
+	bool init();
+	bool initVariable();
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fRunSpeed, RunSpeed);

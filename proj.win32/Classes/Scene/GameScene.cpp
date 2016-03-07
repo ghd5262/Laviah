@@ -4,7 +4,7 @@
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Shooter/Shooter.h"
 USING_NS_CC;
-
+CGameScene* CGameScene::m_GameScene = nullptr;
 Scene* CGameScene::createScene()
 {
 	// 'scene' is an autorelease object
@@ -12,7 +12,6 @@ Scene* CGameScene::createScene()
 
 	// 'layer' is an autorelease object
 	auto layer = CGameScene::create();
-
 	// add layer as a child to scene
 	scene->setAnchorPoint(Vec2(0, 0));
 	layer->setAnchorPoint(Vec2(0, 0));
@@ -23,7 +22,7 @@ Scene* CGameScene::createScene()
 
 CGameScene::~CGameScene()
 {
-	CObjectManager::Instance()->ExitGame();
+	removeAllChildrenWithCleanup(true);
 }
 
 bool CGameScene::init()
@@ -43,6 +42,8 @@ bool CGameScene::initVariable()
 {
 	try
 	{
+		m_GameScene = this;
+
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 		Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -57,6 +58,31 @@ bool CGameScene::initVariable()
 		auto menu = Menu::create(closeItem, NULL);
 		menu->setPosition(Vec2::ZERO);
 		this->addChild(menu, 100);
+
+		auto leftButton = MenuItemImage::create(
+			"leftButton_1.png",
+			"leftButton_2.png",
+			CC_CALLBACK_1(CGameScene::leftButtonCallback, this));
+		leftButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		leftButton->setPosition(Vec2(origin.x + visibleSize.width * 0.2f,
+			origin.x + visibleSize.height * 0.15f));
+
+		auto lbutton = Menu::create(leftButton, NULL);
+		lbutton->setPosition(Vec2::ANCHOR_MIDDLE);
+		this->addChild(lbutton, 100);
+
+		auto rightButton = MenuItemImage::create(
+			"rightButton_1.png",
+			"rightButton_2.png",
+			CC_CALLBACK_1(CGameScene::rightButtonCallback, this));
+		rightButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		rightButton->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
+			origin.x + visibleSize.height * 0.15f));
+
+		auto rbutton = Menu::create(rightButton, NULL);
+		rbutton->setPosition(Vec2::ANCHOR_MIDDLE);
+		this->addChild(rbutton, 100);
+
 
 		auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
 		label->setPosition(Vec2(origin.x + visibleSize.width / 2,
@@ -74,9 +100,9 @@ bool CGameScene::initVariable()
 		this->addChild(planet);
 
 		CObjectManager::Instance()->setM_Planet(planet);
-		CObjectManager::Instance()->CreateBulletList(500, 800);
+		CObjectManager::Instance()->CreateBulletList(300, 800);
 		CObjectManager::Instance()->CreateEnemyList(10, 800);
-		addChild(CRandomShooter::create(1.0f));
+		RandomShoot();
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -100,7 +126,17 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 #endif
 }
 
+void CGameScene::rightButtonCallback(cocos2d::Ref* pSender)
+{
+	CCLOG("RIGHT BUTTON SELECTED");
+}
+
+void CGameScene::leftButtonCallback(cocos2d::Ref* pSender)
+{
+	CCLOG("LEFT BUTTON SELECTED");
+}
+
 void CGameScene::update(float delta)
 {
-	//CObjectManager::Instance()->Execute(delta);
+	CObjectManager::Instance()->Execute(delta);
 }
