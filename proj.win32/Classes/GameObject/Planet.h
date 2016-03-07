@@ -7,8 +7,8 @@ public:
 	virtual void Execute(float delta = 0.f) override;
 
 protected:
-	bool init();
-	bool initVariable();
+	virtual bool init() override;
+	virtual bool initVariable() override;
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fRotate, Rotate);

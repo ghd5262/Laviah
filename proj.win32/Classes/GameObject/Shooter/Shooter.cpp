@@ -1,14 +1,21 @@
 #pragma once
 #include "Shooter.h"
-#include "../ObjectManager.h"
 #include "../Planet.h"
+#include "../ObjectManager.h"
 #include "../../Scene/GameScene.h"
+#include "../../Task/PoolingManager.h"
 
 //-------------------Random Shooter-------------------
+CRandomShooter::CRandomShooter(float interval) 
+	: CEnemy(interval)
+	, m_fRandomInterval(0.0f)
+	, m_fShotAngle(0.0f)
+	, m_nBulletColor(1){};
+
 CRandomShooter* CRandomShooter::create(float interval)				// Bullet 생성 간격
 {
-	CRandomShooter* pRet = (CRandomShooter*)CObjectManager::Instance()->EnemyNew();
-	if (pRet && pRet->initVariable(interval))
+	CRandomShooter* pRet = (CRandomShooter*)new(std::nothrow)CRandomShooter(interval);
+	if (pRet)
 	{
 		return pRet;
 	}
@@ -20,14 +27,6 @@ CRandomShooter* CRandomShooter::create(float interval)				// Bullet 생성 간격
 	}
 }
 
-// 이곳은 Enemy을 오브젝트 풀에서 꺼낼때마다 호출하는 부분이니 addChild를 무작정해서는 안된다.
-bool CRandomShooter::initVariable(float interval)
-{
-	m_fBoundingRadius = 0.0f;
-	m_fInterval = interval;
-	return true;
-}
-
 void CRandomShooter::Execute(float delta/* = 0.f*/) {
 	m_fTime += delta;
 	if (m_fTime >= m_fRandomInterval){
@@ -35,12 +34,12 @@ void CRandomShooter::Execute(float delta/* = 0.f*/) {
 			m_fRandomInterval = random<float>(0.0f, m_fInterval);
 			m_fShotAngle = random<float>(0.f, 360.f);
 			m_nBulletColor = random<int>(1, 2);
-			CBullet::create(
+			addChild(CBullet::create(
 				MakeString("bullet_%d.png", m_nBulletColor),		//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도
 				250.0f,												//속도
-				CObjectManager::Instance()->getM_Planet());			//타겟
+				CObjectManager::Instance()->getM_Planet()));		//타겟
 
 			m_fTime = 0.f;
 		}
@@ -50,10 +49,10 @@ void CRandomShooter::Execute(float delta/* = 0.f*/) {
 void* CRandomShooter::operator new (size_t size, const std::nothrow_t)
 {
 	// ObjectManager에서 메모리를 할당 받는다.
-	return CObjectManager::Instance()->EnemyNew();
+	return CPoolingManager::Instance()->EnemyNew();
 }
 
 void RandomShoot() {
-	CRandomShooter::create(0.5f);
+	CGameScene::getGameScene()->addChild(CRandomShooter::create(0.5f));
 }
 //----------------------------------------------------

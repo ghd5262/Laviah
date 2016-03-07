@@ -1,21 +1,34 @@
 ﻿#include "Bullet.h"
-#include "ObjectManager.h"
 #include "Planet.h"
+#include "../Task/PoolingManager.h"
+
+CBullet::CBullet(
+	std::string textureName,	    //bullet 이미지
+	float boundingRadius,		    //bullet 충돌 범위
+	float angle,				    //bullet 초기 각도 
+	float speed,				    //bullet 초기 속도
+	CMover* target)		    //bullet 타겟 위치
+	: CMover(boundingRadius)
+	, m_TextureName(textureName)
+	, m_fAngle(angle)
+	, m_fBulletSpeed(speed)
+	, m_Target(target)
+	, m_pTexture(nullptr)
+{
+	setPositionX((cos(CC_DEGREES_TO_RADIANS(angle)) * 700.f) + target->getPosition().x);
+	setPositionY((sin(CC_DEGREES_TO_RADIANS(angle)) * 700.f) + target->getPosition().y);
+	setRotation(-angle);
+}
 
 CBullet* CBullet::create(
-	std::string textureName,	//bullet 이미지
-	float boundingRadius,		//bullet 충돌 범위
-	float angle,				//bullet 초기 각도 
-	float speed,				//bullet 초기 속도
-	const CMover* target)		//bullet 타겟 위치
+	std::string textureName,		//bullet 이미지
+	float boundingRadius,			//bullet 충돌 범위
+	float angle,					//bullet 초기 각도 
+	float speed,					//bullet 초기 속도
+	CMover* target)			//bullet 타겟 위치
 {
-	CBullet* pRet = (CBullet*)CObjectManager::Instance()->BulletNew();
-	if (pRet && pRet->initVariable(
-		textureName
-		, boundingRadius
-		, angle
-		, speed
-		, target))
+	CBullet* pRet = (CBullet*)new(std::nothrow)CBullet(textureName, boundingRadius, angle, speed, target);
+	if (pRet && pRet->init())
 	{
 		return pRet;
 	}
@@ -27,25 +40,17 @@ CBullet* CBullet::create(
 	}
 }
 
+bool CBullet::init()
+{
+	if (!initVariable())
+		return false;
+	return true;
+}
+
 // 이곳은 bullet을 오브젝트 풀에서 꺼낼때마다 호출하는 부분이니 addChild를 무작정해서는 안된다.
-bool CBullet::initVariable(
-	std::string textureName,
-	float boundingRadius,
-	float angle,
-	float speed,
-	const CMover* target)
+bool CBullet::initVariable()
 {
 	try{
-		m_fBoundingRadius = boundingRadius;
-		m_TextureName = textureName;
-		m_fAngle = angle;
-		m_fBulletSpeed = speed;
-		m_Target = target;
-
-		setPositionX((cos(CC_DEGREES_TO_RADIANS(angle)) * 700.f) + target->getPosition().x);
-		setPositionY((sin(CC_DEGREES_TO_RADIANS(angle)) * 700.f) + target->getPosition().y);
-		setRotation(-angle);
-
 		if (m_pTexture == nullptr){
 			m_pTexture = Sprite::create(m_TextureName);
 			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
@@ -65,7 +70,7 @@ bool CBullet::initVariable(
 void* CBullet::operator new(size_t size, const std::nothrow_t)
 {
 	// ObjectManager에서 메모리를 할당 받는다.
-	return CObjectManager::Instance()->BulletNew();
+	return CPoolingManager::Instance()->BulletNew();
 }
 
 void CBullet::Execute(float delta)
@@ -76,9 +81,9 @@ void CBullet::Execute(float delta)
 
 	setPosition(getPosition() + dir);
 
-	if (IsHit(const_cast<CMover*>(m_Target)))
+	if (IsHit(m_Target))
 	{
-		CObjectManager::Instance()->ObjectDelete(this);
+		ReturnToMemoryBlock();
 	}
 	//m_fAngle += m_fAngleRate;
 	//m_fBulletSpeed += m_fSpeedRate​​;

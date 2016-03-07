@@ -3,11 +3,10 @@
 #include "../Common/HSHUtility.h"
 
 
-///게임 모든 오브젝트의 최상위 클래스
+// 게임 모든 오브젝트의 최상위 클래스
 class CGameObject : public cocos2d::Node
 {
 public:
-	CGameObject() : m_fBoundingRadius(0.0f){}
 	CGameObject(float bindingRadius)
 		: m_fBoundingRadius(bindingRadius){}
 	virtual ~CGameObject(){ removeAllChildrenWithCleanup(true); }
@@ -19,8 +18,10 @@ public:
 	void setAlive(bool alive){ m_bAlive = alive; }
 
 protected:
+	virtual bool init() override { return true; }
+	virtual bool initVariable(){ return true; };
 
-	void DrawDebugBinding();
+	void DrawDebugBinding();												// DEBUG용 BindingRound를 그려준다. 
 	void DrawDebugRect(Point pos1, Point pos2, std::string text = "");
 	void DrawDebugLine(Point pos1, Point pos2, std::string text = "");
 

@@ -1,45 +1,45 @@
 #pragma once
 #include <vector>
-class CMover;
+
+//------------------------------ObjectManager 클래스설명----------------------------------
+//
+// CMover를 상속받는 모든 클래스를 Execute및 Remove하는 함수이다.
+// 현재 주의해야 할 사항은 Remove함수가 RemoveAllChildren을 호출하는 구조이다.
+// 이유는 모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으므로 
+// 종료시 PoolingManager에서 메모리를 해제하기 때문에 
+// 그전에 addChild된 메모리들을 해제해 주어야 하기 때문이다.
+//
+//----------------------------------------------------------------------------------------
+
+class CEnemy;
+class CBullet;
 class CPlanet;
 class CPlayer;
-class CBullet;
-class CEnemy;
-class CItem;
-class CRandomShooter;
+
 class CObjectManager
 {
 public:
 	static CObjectManager* Instance();
-
-	void CreateBulletList(size_t count, size_t size);	// size만큼의 char형 포인터를 count만큼 Bullet리스트에 add
-	void CreateItemList(size_t count, size_t size);		// size만큼의 char형 포인터를 count만큼 Item리스트에 add
-	void CreateEnemyList(size_t count, size_t size);	// size만큼의 char형 포인터를 count만큼 Enemy리스트에 add
-	CBullet* BulletNew();								// pool이 가지고 있는 메모리가 생성하려는 것보다 적으면 새로 생성
-	CEnemy* EnemyNew();									// pool이 가지고 있는 메모리가 생성하려는 것보다 적으면 새로 생성
-	void ObjectDelete(CMover* object);					// Object 초기화 (visible off, alive off)
-	void EnemyDeleteAll();								// Enemy 모두 초기화 (visible off, alive off)
-	void BulletDeleteAll();								// Bullet 모두 초기화 (visible off, alive off)
-	void ExitGame();									// Game종료시 리스트 초기화 및 삭제
-
+	void AddBullet(void* bullet);		// Bullet과 Enemy를 따로 관리하는 이유는 Bullet이 생성되는 루틴이 Enemy에 있어서 
+	void AddEnemy(void* enemy);			// 하나의 리스트에서 실행하면 해당 리스트가 순회되는 도중에 Enemy의 Execute를 실행함으로써 
+	void RemoveAllObject();				// 순회 중에 리스트에 변형을 가져올 수 있기때문이다. (poolMng에 objectManager의 리스트에 추가하는 루틴이 존재한다.)
+	void RemoveAllBullet();
+	void RemoveAllEnemy();				// RemoveAllChildren함수 호출 이유는 구현부에~
+	void Execute(float delta);
+	
 	//getter & setter
-	const CPlanet* getM_Planet(){ return m_Planet; }
+	CPlanet* getM_Planet(){ return m_Planet; }
+	CPlayer* getM_Player(){ return m_Player; }
 	void setM_Planet(CPlanet* planet){ m_Planet = planet; }
 	void setM_Player(CPlayer* player){ m_Player = player; }
-
-	void Execute(float delta);
 private:
 	CObjectManager();
 	~CObjectManager();
 
 private:
 	std::vector<CBullet*> m_BulletList;
-	std::vector<char*> m_ItemList;
 	std::vector<CEnemy*> m_EnemyList;
 	CPlanet* m_Planet;
 	CPlayer* m_Player;
-	int m_BulletSize;
-	int m_ItemSize;
-	int m_EnemySize;
 };
 

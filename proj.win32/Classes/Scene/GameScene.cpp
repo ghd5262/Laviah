@@ -1,8 +1,10 @@
 #include "GameScene.h"
+#include "../Task/PoolingManager.h"
 #include "../GameObject/Bullet.h"
 #include "../GameObject/Planet.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Shooter/Shooter.h"
+
 USING_NS_CC;
 CGameScene* CGameScene::m_GameScene = nullptr;
 Scene* CGameScene::createScene()
@@ -22,6 +24,7 @@ Scene* CGameScene::createScene()
 
 CGameScene::~CGameScene()
 {
+	CObjectManager::Instance()->RemoveAllObject();
 	removeAllChildrenWithCleanup(true);
 }
 
@@ -100,8 +103,8 @@ bool CGameScene::initVariable()
 		this->addChild(planet);
 
 		CObjectManager::Instance()->setM_Planet(planet);
-		CObjectManager::Instance()->CreateBulletList(300, 800);
-		CObjectManager::Instance()->CreateEnemyList(10, 800);
+		CPoolingManager::Instance()->CreateBulletList(3, 800);
+		CPoolingManager::Instance()->CreateEnemyList(1, 800);
 		RandomShoot();
 	}
 	catch (...){

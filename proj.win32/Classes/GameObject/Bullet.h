@@ -12,27 +12,30 @@ public:
 		float boundingRadius,		//bullet 충돌 범위
 		float angle,				//bullet 초기 각도 
 		float speed,				//bullet 초기 속도
-		const CMover* target);		//bullet 타겟
+		CMover* target);			//bullet 타겟
 
 	virtual void Execute(float delta = 0.f) override;
-	void* operator new (size_t size, const std::nothrow_t);
-	CBullet() : m_pTexture(nullptr){}
-	virtual ~CBullet(){};
+	
 
 protected:
+	virtual bool init() override;
+	virtual bool initVariable() override;
+
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fAngle, Angle);
 	CC_SYNTHESIZE(float, m_fBulletSpeed, BulletSpeed);
 
 private:
-	bool initVariable(std::string textureName,
+	void* operator new (size_t size, const std::nothrow_t);
+	CBullet(std::string textureName,
 		float boundingRadius,
 		float angle,
 		float speed,
-		const CMover* target);
+		CMover* target);
+	virtual ~CBullet(){};
 
 private:
 	std::string m_TextureName;
 	Sprite* m_pTexture;
-	const CMover* m_Target;
+	CMover* m_Target;
 };
