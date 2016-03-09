@@ -25,20 +25,35 @@ void CObjectManager::AddEnemy(void* enemy)
 	m_EnemyList.emplace_back(static_cast<CEnemy*>(enemy));
 }
 
-void CObjectManager::RemoveAllBullet()			
-{												// bullet->removeAllChildren();	의 이유
-	for (auto bullet : m_BulletList)			// 모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으므로
-	{											// 종료시 PoolingManager에서 메모리를 해제하기 때문에 
-		bullet->removeAllChildren();			// 그전에 addChild된 메모리들을 해제해 주어야 하기 때문이다.
+
+/* bullet->removeAllChildren();	의 이유 :
+모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으
+게임 종료 시 해당 메모리는 PoolingManager에서 해제한다.
+때문에 그전에 addChild된 메모리들을 해제해 주어야 하기 때문이다. */
+void CObjectManager::RemoveAllBullet()
+{											
+	for (auto bullet : m_BulletList)
+	{
+		if (bullet->HasChild())
+			bullet->removeAllChildren();
+		else
+		{
+			CCLOG("EHE");
+		}
 	}
 }
 
+/* enemy->removeAllChildren();	의 이유 :
+모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으
+게임 종료 시 해당 메모리는 PoolingManager에서 해제한다.
+때문에 그전에 addChild된 메모리들을 해제해 주어야 하기 때문이다. */
 void CObjectManager::RemoveAllEnemy()
 {
-	for (auto enemy : m_EnemyList)			    // bullet->removeAllChildren();	의 이유
-	{										    // 모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으므로
-		enemy->removeAllChildren();			    // 종료시 PoolingManager에서 메모리를 해제하기 때문에 
-	}										    // 그전에 addChild된 메모리들을 해제해 주어야 하기 때문이다.
+	for (auto enemy : m_EnemyList)
+	{						
+		if (enemy->HasChild())
+			enemy->removeAllChildren(); 
+	}
 }
 
 void CObjectManager::RemoveAllObject()

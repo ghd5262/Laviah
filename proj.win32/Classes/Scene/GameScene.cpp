@@ -6,6 +6,7 @@
 #include "../GameObject/Shooter/Shooter.h"
 
 USING_NS_CC;
+using namespace Shooter;
 CGameScene* CGameScene::m_GameScene = nullptr;
 Scene* CGameScene::createScene()
 {
@@ -103,9 +104,11 @@ bool CGameScene::initVariable()
 		this->addChild(planet);
 
 		CObjectManager::Instance()->setM_Planet(planet);
-		CPoolingManager::Instance()->CreateBulletList(3, 800);
-		CPoolingManager::Instance()->CreateEnemyList(1, 800);
-		RandomShoot();
+		CPoolingManager::Instance()->CreateBulletList(500, 800);
+		CPoolingManager::Instance()->CreateEnemyList(5, 800);
+		RandomShoot(250.0f, 0.5f, 3);
+		DoubleScrewShoot(250.0f, 0.5f, 11, LEFT);
+		ScrewShoot(250.0f, 0.1f, 1, RIGHT);
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);

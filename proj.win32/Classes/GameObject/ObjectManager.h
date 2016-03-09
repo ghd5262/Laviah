@@ -20,11 +20,14 @@ class CObjectManager
 {
 public:
 	static CObjectManager* Instance();
-	void AddBullet(void* bullet);		// Bullet과 Enemy를 따로 관리하는 이유는 Bullet이 생성되는 루틴이 Enemy에 있어서 
-	void AddEnemy(void* enemy);			// 하나의 리스트에서 실행하면 해당 리스트가 순회되는 도중에 Enemy의 Execute를 실행함으로써 
-	void RemoveAllObject();				// 순회 중에 리스트에 변형을 가져올 수 있기때문이다. (poolMng에 objectManager의 리스트에 추가하는 루틴이 존재한다.)
-	void RemoveAllBullet();
-	void RemoveAllEnemy();				// RemoveAllChildren함수 호출 이유는 구현부에~
+
+	/* AddBullet(), AddEnemy() => Bullet과 Enemy를 따로 관리하는 이유는
+	첫째로 Bullet이 생성되는 루틴이 Enemy에 있다.
+	때문에 하나의 리스트에서 둘 다 관리하면 리스트 순회 중 Bullet이 리스트에 추가될 수 있다.
+	즉, 리스트를 사용하고 있는 중에 원하지 않는 변형을 가지고 올 수 있다 .*/
+	void AddBullet(void* bullet);											
+	void AddEnemy(void* enemy);			
+	void RemoveAllObject();				// 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllEnemy() 호출함
 	void Execute(float delta);
 	
 	//getter & setter
@@ -32,7 +35,10 @@ public:
 	CPlayer* getM_Player(){ return m_Player; }
 	void setM_Planet(CPlanet* planet){ m_Planet = planet; }
 	void setM_Player(CPlayer* player){ m_Player = player; }
+
 private:
+	void RemoveAllBullet();				// RemoveAllChildren함수 호출! 이유는 구현부에~
+	void RemoveAllEnemy();				// RemoveAllChildren함수 호출! 이유는 구현부에~
 	CObjectManager();
 	~CObjectManager();
 

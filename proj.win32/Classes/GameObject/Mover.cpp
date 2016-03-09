@@ -5,25 +5,18 @@ CMover::CMover(float boundingRadius)
 	: CGameObject(boundingRadius)
 {
 	this->setVisible(true);
-	this->setAlive(true);
+	this->m_bAlive = true;
+	this->m_bHasChild = true; // false를 만들어 주는 부분은 없다. 종료시 RemoveChild의 플래그로 쓰기 때문
 }
 
 CMover::~CMover()
 {
 }
 
-bool CMover::IsHit(CMover* mover) {
+bool CMover::IsHit(CGameObject* object) {
 	float
-		dx = mover->getPosition().x - getPosition().x,
-		dy = mover->getPosition().y - getPosition().y,
-		hit = mover->m_fBoundingRadius + m_fBoundingRadius;
-	return (dx * dx < hit * hit) && (dy * dy < hit * hit);
-}
-
-void CMover::ReturnToMemoryBlock()
-{
-	this->removeFromParentAndCleanup(false);
-	this->setVisible(false);
-	this->setAlive(false);
-	CPoolingManager::Instance()->ObjectDelete(this);
+		dx = object->getPosition().x - getPosition().x,
+		dy = object->getPosition().y - getPosition().y,
+		hit = object->getBRadius() + m_fBoundingRadius;
+	return dx * dx + dy * dy < hit * hit;
 }

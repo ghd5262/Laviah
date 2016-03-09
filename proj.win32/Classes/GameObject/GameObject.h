@@ -13,10 +13,6 @@ public:
 
 	virtual void Execute(float delta = 0.f){}
 
-	//getter & setter
-	bool IsAlive()const { return m_bAlive; }
-	void setAlive(bool alive){ m_bAlive = alive; }
-
 protected:
 	virtual bool init() override { return true; }
 	virtual bool initVariable(){ return true; };
@@ -27,8 +23,5 @@ protected:
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fBoundingRadius, BRadius);
-
-private:
-	bool m_bAlive;
 };
 

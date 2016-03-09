@@ -25,7 +25,7 @@ CPlanet* CPlanet::create(
 }
 
 CPlanet::CPlanet(std::string textureName, float boundingRadius, float rotate, float rotateSpeed)
-	: CMover(boundingRadius)
+	: CGameObject(boundingRadius)
 	, m_TextureName(textureName)
 	, m_fRotate(rotate)
 	, m_fRotateSpeed(rotateSpeed)

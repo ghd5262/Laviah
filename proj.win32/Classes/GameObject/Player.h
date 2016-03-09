@@ -1,7 +1,7 @@
 #pragma once
-#include "Mover.h"
+#include "GameObject.h"
 
-class CPlayer : public CMover {
+class CPlayer : public CGameObject {
 
 public:
 	static CPlayer* create(float boundingRadius, float runSpeed, float scale);

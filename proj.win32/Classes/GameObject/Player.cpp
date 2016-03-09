@@ -23,7 +23,7 @@ CPlayer* CPlayer::create(
 }
 
 CPlayer::CPlayer(float boundingRadius, float runSpeed, float scale)
-	: CMover(boundingRadius)
+	: CGameObject(boundingRadius)
 	, m_fRunSpeed(runSpeed)
 	, m_fScale(scale)
 {

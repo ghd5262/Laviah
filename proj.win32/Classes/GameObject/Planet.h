@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "Mover.h"
+#include "GameObject.h"
 
-class CPlanet : public CMover {
+class CPlanet : public CGameObject {
 public:
 	static CPlanet* create(std::string textureName, float boundingRadius, float rotate, float rotateSpeed);
 	virtual void Execute(float delta = 0.f) override;

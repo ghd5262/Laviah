@@ -12,10 +12,10 @@ public:
 		float boundingRadius,		//bullet 충돌 범위
 		float angle,				//bullet 초기 각도 
 		float speed,				//bullet 초기 속도
-		CMover* target);			//bullet 타겟
+		CGameObject* target);		//bullet 타겟
 
 	virtual void Execute(float delta = 0.f) override;
-	
+	virtual void ReturnToMemoryBlock() override;
 
 protected:
 	virtual bool init() override;
@@ -31,11 +31,11 @@ private:
 		float boundingRadius,
 		float angle,
 		float speed,
-		CMover* target);
+		CGameObject* target);
 	virtual ~CBullet(){};
 
 private:
 	std::string m_TextureName;
 	Sprite* m_pTexture;
-	CMover* m_Target;
+	CGameObject* m_Target;
 };

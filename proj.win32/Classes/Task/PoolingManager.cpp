@@ -1,20 +1,6 @@
 #include "PoolingManager.h"
 #include "../GameObject/ObjectManager.h"
-//-------------------------MEMORY BLOCK-------------------------
 
-CMemoryBlock::CMemoryBlock(char* buffer, bool isAlive)
-	: m_Buffer(buffer)
-	, m_IsAlive(isAlive)
-{}
-
-CMemoryBlock::~CMemoryBlock()
-{
-	delete m_Buffer;
-}
-
-//-------------------------MEMORY BLOCK-------------------------
-
-//------------------------Pooling Manager-----------------------
 CPoolingManager::CPoolingManager()
 {
 }
@@ -25,12 +11,19 @@ CPoolingManager::~CPoolingManager()
 	{
 		delete enemy;
 	}
+
+	for (auto bullet : m_BulletList)
+	{
+		delete bullet;
+	}
+	m_EnemyList.clear();
+	m_BulletList.clear();
 }
 
-CMemoryBlock* CPoolingManager::NewMemoryBlock(size_t size) const
+CPoolingManager::MEMORYBLOCK CPoolingManager::NewMemoryBlock(size_t size) const
 {
-	CMemoryBlock* block = new CMemoryBlock(new char[m_BulletSize], false);
-	memset(block->m_Buffer, 0, size);
+	MEMORYBLOCK block = new char[size + 1]; // memory alive를 위한 1바이트 추가 생성
+	memset(block, 0, size + 1);				// memory 초기화 및 memory alive = false
 	return block;
 }
 
@@ -45,9 +38,9 @@ void CPoolingManager::CreateBulletList(size_t count, size_t size)
 	m_BulletSize = size;
 	while (count--)
 	{
-		CMemoryBlock* memBlock = NewMemoryBlock(m_BulletSize);
+		MEMORYBLOCK memBlock = NewMemoryBlock(m_BulletSize);
 		m_BulletList.emplace_back(memBlock);
-		CObjectManager::Instance()->AddBullet(memBlock->m_Buffer);
+		CObjectManager::Instance()->AddBullet(memBlock);
 	}
 }
 
@@ -61,9 +54,9 @@ void CPoolingManager::CreateEnemyList(size_t count, size_t size)
 	m_EnemySize = size;
 	while (count--)
 	{
-		CMemoryBlock* memBlock = NewMemoryBlock(m_EnemySize);
+		MEMORYBLOCK memBlock = NewMemoryBlock(m_EnemySize);
 		m_EnemyList.emplace_back(memBlock);
-		CObjectManager::Instance()->AddEnemy(memBlock->m_Buffer);
+		CObjectManager::Instance()->AddEnemy(memBlock);
 	}
 }
 
@@ -71,58 +64,60 @@ void* CPoolingManager::BulletNew()
 {
 	for (auto bullet : m_BulletList)
 	{
-		if (!bullet->m_IsAlive) {
-			bullet->m_IsAlive = true;
-			return bullet->m_Buffer;
+		if (false == bullet[m_BulletSize]) {	// 메모리가 Free상태면
+			bullet[m_BulletSize] = true;		// 메모리를 사용 상태로 전환 후 반환
+			return bullet;
 		}
 	}
 	//CCASSERT(false, "BULLET LIST OVERFLOWED");
-	CMemoryBlock* memBlock = NewMemoryBlock(m_BulletSize);
+	MEMORYBLOCK memBlock = NewMemoryBlock(m_BulletSize);
 	m_BulletList.emplace_back(memBlock);
-	CObjectManager::Instance()->AddBullet(memBlock->m_Buffer);
-	memBlock->m_IsAlive = true;
+	CObjectManager::Instance()->AddBullet(memBlock);
+	memBlock[m_BulletSize] = true;	// 메모리를 사용 중 상태로 전환
 
-	return memBlock->m_Buffer;
+	return memBlock;
 }
 
 void* CPoolingManager::EnemyNew()
 {
 	for (auto enemy : m_EnemyList)
 	{
-		if (!enemy->m_IsAlive) {
-			enemy->m_IsAlive = true;
-			return enemy->m_Buffer;
+		if (false == enemy[m_EnemySize]) {
+			enemy[m_EnemySize] = true;
+			return enemy;
 		}
 	}
 	CCASSERT(false, "ENEMY LIST OVERFLOWED");
-	CMemoryBlock* memBlock = NewMemoryBlock(m_EnemySize);
+	MEMORYBLOCK memBlock = NewMemoryBlock(m_EnemySize);
 	m_EnemyList.emplace_back(memBlock);
-	CObjectManager::Instance()->AddEnemy(memBlock->m_Buffer);
-	memBlock->m_IsAlive = true;
+	CObjectManager::Instance()->AddEnemy(memBlock);
+	memBlock[m_BulletSize] = true;	// 메모리를 사용 중 상태로 전환
 
-	return memBlock->m_Buffer;
+	return memBlock;
 }
 
-void CPoolingManager::ObjectDelete(void* object)
+void CPoolingManager::Bullet_ReturnToFreeMemory(void* bullet)
 {
-	std::for_each(m_BulletList.begin(), m_BulletList.end(), [&](CMemoryBlock* temp){if (temp->m_Buffer == object)temp->m_IsAlive = false; });
-	//static_cast<CMemoryBlock*>(object)->m_IsAlive = false;//
+	static_cast<char*>(bullet)[m_BulletSize] = false;			// 메모리를 Free 상태로 전환
 }
 
-void CPoolingManager::EnemyDeleteAll()
+void CPoolingManager::Enemy_ReturnToFreeMemory(void* enemy)
 {
-	for (auto enemy : m_EnemyList)
-	{
-		enemy->m_IsAlive = false;
-	}
+	static_cast<char*>(enemy)[m_EnemySize] = false;				// 메모리를 Free 상태로 전환
 }
 
-void CPoolingManager::BulletDeleteAll()
+void CPoolingManager::Bullet_ReturnToFreeMemoryAll()
 {
 	for (auto bullet : m_BulletList)
 	{
-		bullet->m_IsAlive = false;
+		bullet[m_BulletSize] = false;
 	}
 }
 
-//------------------------Pooling Manager-----------------------
+void CPoolingManager::Enemy_ReturnToFreeMemoryAll()
+{
+	for (auto enemy : m_EnemyList)
+	{
+		enemy[m_EnemySize] = false;
+	}
+}
