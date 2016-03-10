@@ -8,8 +8,8 @@ public:
 protected:
 	void* operator new (size_t size, const std::nothrow_t);
 	
-	CEnemy(float interval) : CMover(0.0f), m_fShotSpeed(250.0f), m_fShotAngle(0.0f), m_fInterval(interval), m_fTime(0.0f){}
-	virtual ~CEnemy(){};
+	CEnemy(float interval, float shotSpeed) : CMover(0.0f), m_fShotSpeed(shotSpeed), m_fShotAngle(0.0f), m_fInterval(interval), m_fTime(0.0f){}
+	virtual ~CEnemy() = 0;
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fShotSpeed, ShotSpeed);

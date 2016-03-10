@@ -2,9 +2,8 @@
 #include "GameObject.h"
 
 class CPlayer : public CGameObject {
-
 public:
-	static CPlayer* create(float boundingRadius, float runSpeed, float scale);
+	static CPlayer* create(std::string textureName, float boundingRadius, float rotate, float rotateSpeed);
 	virtual void Execute(float delta = 0.f) override;
 
 protected:
@@ -12,10 +11,14 @@ protected:
 	virtual bool initVariable() override;
 
 	//getter & setter
-	CC_SYNTHESIZE(float, m_fRunSpeed, RunSpeed);
-	CC_SYNTHESIZE(float, m_fScale, Scale);
+	CC_SYNTHESIZE(float, m_fRotate, Rotate);
+	CC_SYNTHESIZE(float, m_fRotateSpeed, RotateSpeed);
 
 private:
-	CPlayer(float boundingRadius, float runSpeed, float scale);
-	virtual ~CPlayer();
+	CPlayer(std::string textureName, float boundingRadius, float rotate, float rotateSpeed);
+	virtual ~CPlayer(){}
+
+private:
+	std::string m_TextureName;
+	Sprite* m_pTexture;
 };

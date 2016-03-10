@@ -1,7 +1,5 @@
 #pragma once
 #include "../Enemy.h"
-#include "../Bullet.h"
-
 
 namespace Shooter{
 	enum SHOOTER_OPTION{
@@ -103,5 +101,50 @@ namespace Shooter{
 	};
 
 	void BarrierShoot(float speed = 250.0f, float interval = 0.1f, int waySize = 10);
+	//------------------------------------------------------------------
+
+
+	//--------------------------RandomMissile Shooter--------------------------
+	/* RandomShooter : 360도 사방에서 랜덤으로 미사일을 쏘는 패턴 미사일은 빠르다*/
+	class CRandomMissileShooter : public CEnemy {
+	public:
+		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
+		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
+		static CRandomMissileShooter* create(float speed, float interval, int maxBulletCount);						// interval = Bullet 생성 간격
+		virtual void Execute(float delta) override;
+
+	private:
+		CRandomMissileShooter(float speed, float interval, int maxBulletCount);
+		virtual ~CRandomMissileShooter(){}
+
+	private:
+		float m_fRandomInterval;
+		int m_nMax;			// 한번에 쏘는 총알의 수 max값
+		int m_nBulletCount;	// 한번에 쏘는 총알의 수
+	};
+
+	void RandomMissileShoot(float speed = 600.0f, float interval = 0.1f, int maxBulletCount = 1);
+	//------------------------------------------------------------------
+
+
+	//--------------------------AimingMissile Shooter--------------------------
+	/* AimingMissileShooter : 캐릭터를 조준하고 미사일을 쏘는 패턴*/
+	class CAimingMissileShooter : public CEnemy {
+	public:
+		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
+		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
+		static CAimingMissileShooter* create(float speed, float interval, int maxBulletCount);						// interval = Bullet 생성 간격
+		virtual void Execute(float delta) override;
+
+	private:
+		CAimingMissileShooter(float speed, float interval, int maxBulletCount);
+		virtual ~CAimingMissileShooter(){}
+
+	private:
+		int m_nMax;			// 한번에 쏘는 총알의 수 max값
+		int m_nBulletCount;	// 한번에 쏘는 총알의 수
+	};
+
+	void AimingMissileShoot(float speed = 600.0f, float interval = 0.1f, int maxBulletCount = 1);
 	//------------------------------------------------------------------
 }

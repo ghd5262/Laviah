@@ -2,6 +2,7 @@
 #include "../Task/PoolingManager.h"
 #include "../GameObject/Bullet.h"
 #include "../GameObject/Planet.h"
+#include "../GameObject/Player.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Shooter/Shooter.h"
 
@@ -98,17 +99,25 @@ bool CGameScene::initVariable()
 			origin.y + visibleSize.height * 0.5f));
 		this->addChild(background);
 
-		auto planet = CPlanet::create("planet.png", 145, 0.0f, 5.0f);
+		auto planet = CPlanet::create("planet.png", 190.f, 0.0f, 5.0f);
 		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.25f));
-		this->addChild(planet);
+		this->addChild(planet, 100);
 
+		auto player = CPlayer::create("player.png", 6.f, 0.0f, 5.0f);
+		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+			origin.y + visibleSize.height * 0.42f));
+		this->addChild(player, 100);
+
+		CObjectManager::Instance()->setM_Player(player);
 		CObjectManager::Instance()->setM_Planet(planet);
-		CPoolingManager::Instance()->CreateBulletList(500, 800);
+		CPoolingManager::Instance()->CreateBulletList(30, 800);
 		CPoolingManager::Instance()->CreateEnemyList(5, 800);
 		RandomShoot(250.0f, 0.5f, 3);
-		DoubleScrewShoot(250.0f, 0.5f, 11, LEFT);
-		ScrewShoot(250.0f, 0.1f, 1, RIGHT);
+		RandomMissileShoot(600.f, 10.0f, 2);
+		AimingMissileShoot(800.f, 15.0f, 2);
+		//DoubleScrewShoot(250.0f, 0.1f, 1, LEFT);
+		//ScrewShoot(250.0f, 0.1f, 1, RIGHT);
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);

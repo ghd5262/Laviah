@@ -1,14 +1,16 @@
 #include "Player.h"
 
 CPlayer* CPlayer::create(
+	std::string textureName,
 	float boundingRadius,
-	float runSpeed,
-	float scale)
+	float rotate,
+	float rotateSpeed)
 {
 	CPlayer *pRet = new(std::nothrow) CPlayer(
-		boundingRadius
-		, runSpeed
-		, scale);
+		textureName
+		, boundingRadius
+		, rotate
+		, rotateSpeed);
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -22,19 +24,17 @@ CPlayer* CPlayer::create(
 	}
 }
 
-CPlayer::CPlayer(float boundingRadius, float runSpeed, float scale)
+CPlayer::CPlayer(std::string textureName, float boundingRadius, float rotate, float rotateSpeed)
 	: CGameObject(boundingRadius)
-	, m_fRunSpeed(runSpeed)
-	, m_fScale(scale)
-{
-}
-
-CPlayer::~CPlayer()
+	, m_TextureName(textureName)
+	, m_fRotate(rotate)
+	, m_fRotateSpeed(rotateSpeed)
 {
 }
 
 bool CPlayer::init()
 {
+	//this->DrawDebugBinding();
 	if (!initVariable())
 		return false;
 	return true;
@@ -43,6 +43,11 @@ bool CPlayer::init()
 bool CPlayer::initVariable()
 {
 	try{
+		m_pTexture = Sprite::create(m_TextureName);
+		if (m_pTexture != nullptr){
+			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+			addChild(m_pTexture);
+		}
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -54,5 +59,6 @@ bool CPlayer::initVariable()
 
 void CPlayer::Execute(float delta)
 {
-	//플레이어 런! 런!
+	// 행성회전
+	//CCLOG("행성회전\n");
 }

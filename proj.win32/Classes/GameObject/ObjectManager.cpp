@@ -2,6 +2,7 @@
 #include "Mover.h"
 #include "Planet.h"
 #include "Player.h"
+#include "Bullet.h"
 #include "Shooter/Shooter.h"
 #include "../Scene/GameScene.h"
 
@@ -36,10 +37,6 @@ void CObjectManager::RemoveAllBullet()
 	{
 		if (bullet->HasChild())
 			bullet->removeAllChildren();
-		else
-		{
-			CCLOG("EHE");
-		}
 	}
 }
 

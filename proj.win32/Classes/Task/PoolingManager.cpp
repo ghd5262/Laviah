@@ -98,12 +98,14 @@ void* CPoolingManager::EnemyNew()
 
 void CPoolingManager::Bullet_ReturnToFreeMemory(void* bullet)
 {
-	static_cast<char*>(bullet)[m_BulletSize] = false;			// 메모리를 Free 상태로 전환
+	//static_cast<char*>(bullet)[m_BulletSize] = false;			// 메모리를 Free 상태로 전환
+	memset(bullet, 0, m_BulletSize + 1);				// memory 초기화 및 memory alive = false
 }
 
 void CPoolingManager::Enemy_ReturnToFreeMemory(void* enemy)
 {
-	static_cast<char*>(enemy)[m_EnemySize] = false;				// 메모리를 Free 상태로 전환
+	//static_cast<char*>(enemy)[m_EnemySize] = false;				// 메모리를 Free 상태로 전환
+	memset(enemy, 0, m_EnemySize + 1);				// memory 초기화 및 memory alive = false
 }
 
 void CPoolingManager::Bullet_ReturnToFreeMemoryAll()

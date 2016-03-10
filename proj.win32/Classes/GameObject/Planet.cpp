@@ -34,7 +34,7 @@ CPlanet::CPlanet(std::string textureName, float boundingRadius, float rotate, fl
 
 bool CPlanet::init()
 {
-	this->DrawDebugBinding();
+	//this->DrawDebugBinding();
 	if (!initVariable())
 		return false;
 	return true;

@@ -1,7 +1,9 @@
 #pragma once
 #include "Shooter.h"
 #include "../Planet.h"
+#include "../Player.h"
 #include "../ObjectManager.h"
+#include "../Bullet/Bullets.h"
 #include "../../Scene/GameScene.h"
 #include "../../Task/PoolingManager.h"
 
@@ -9,7 +11,7 @@ using namespace Shooter;
 
 //-------------------Random Shooter-------------------
 CRandomShooter::CRandomShooter(float speed, float interval, int maxBulletCount)
-	: CEnemy(interval)
+	: CEnemy(interval, speed)
 	, m_fRandomInterval(0.0f)
 	, m_nBulletColor(1)
 	, m_nMax(maxBulletCount)
@@ -38,8 +40,8 @@ void CRandomShooter::Execute(float delta) {
 			m_fShotAngle = random<float>(0.f, 360.f);
 			m_nBulletColor = random<int>(1, 2);
 			m_nBulletCount = random<int>(1, m_nMax);
-			addChild(CBullet::create(
-				MakeString("bullet_%d.png", m_nBulletColor),		//이미지 이름
+			CGameScene::getGameScene()->addChild(CNormalBullet::create(
+				"bullet_1.png",										//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도
 				m_fShotSpeed,										//속도
@@ -58,7 +60,7 @@ void Shooter::RandomShoot(float speed/* = 250*/, float interval/* = 0.1f*/, int 
 
 //-------------------Screw Shooter--------------------
 CScrewShooter::CScrewShooter(float speed, float interval, int bulletCount, SHOOTER_OPTION direction)
-	: CEnemy(interval)
+	: CEnemy(interval, speed)
 	, m_Direction(direction)
 	, m_nBulletColor(random<int>(1, 2))
 	, m_nBulletCount(bulletCount){
@@ -91,8 +93,8 @@ void CScrewShooter::Execute(float delta) {
 				m_fShotAngle -= 9;
 			else
 				m_fShotAngle += 9;
-			addChild(CBullet::create(
-				MakeString("bullet_%d.png", m_nBulletColor),		//이미지 이름
+			CGameScene::getGameScene()->addChild(CNormalBullet::create(
+				"bullet_1.png",										//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도
 				m_fShotSpeed,										//속도
@@ -111,7 +113,7 @@ void Shooter::ScrewShoot(float speed/* = 250*/, float interval/* = 0.1f*/, int b
 
 //-------------------DoubleScrew Shooter--------------------
 CDoubleScrewShooter::CDoubleScrewShooter(float speed, float interval, int bulletCount, SHOOTER_OPTION direction)
-	: CEnemy(interval)
+	: CEnemy(interval, speed)
 	, m_Direction(direction)
 	, m_nBulletColor(random<int>(1, 2))
 	, m_nBulletCount(bulletCount){
@@ -144,15 +146,15 @@ void CDoubleScrewShooter::Execute(float delta) {
 				m_fShotAngle -= 9;
 			else
 				m_fShotAngle += 9;
-			addChild(CBullet::create(
-				MakeString("bullet_%d.png", m_nBulletColor),		//이미지 이름
+			CGameScene::getGameScene()->addChild(CNormalBullet::create(
+				"bullet_1.png",										//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도
 				m_fShotSpeed,										//속도
 				CObjectManager::Instance()->getM_Planet()));		//타겟
 
-			addChild(CBullet::create(
-				MakeString("bullet_%d.png", 3 - m_nBulletColor),	//이미지 이름
+			CGameScene::getGameScene()->addChild(CNormalBullet::create(
+				"bullet_1.png",										//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle + 180,									//초기 각도
 				m_fShotSpeed,										//속도
@@ -171,7 +173,7 @@ void Shooter::DoubleScrewShoot(float speed/* = 250*/, float interval/* = 0.1f*/,
 
 //-------------------Barrier Shooter--------------------
 CBarrierShooter::CBarrierShooter(float speed, float interval, int waySize)
-	: CEnemy(interval)
+	: CEnemy(interval, speed)
 	, m_nWaySize(waySize)
 	, m_nBulletColor(random<int>(1, 2)){};
 
@@ -197,7 +199,7 @@ void CBarrierShooter::Execute(float delta) {
 			m_fShotAngle -= 9;
 		else
 			m_fShotAngle += 9;*/
-		addChild(CBullet::create(
+		CGameScene::getGameScene()->addChild(CNormalBullet::create(
 			MakeString("bullet_%d.png", m_nBulletColor),		//이미지 이름
 			5.f,												//충돌 범위
 			m_fShotAngle,										//초기 각도
@@ -210,5 +212,119 @@ void CBarrierShooter::Execute(float delta) {
 
 void Shooter::BarrierShoot(float speed/* = 250*/, float interval/* = 0.1f*/, int waySize/* = 10*/) {
 	CGameScene::getGameScene()->addChild(CBarrierShooter::create(speed, interval, waySize));
+}
+//----------------------------------------------------
+
+
+
+//-------------------RandomMissile Shooter-------------------
+CRandomMissileShooter::CRandomMissileShooter(float speed, float interval, int maxBulletCount)
+	: CEnemy(interval, speed)
+	, m_fRandomInterval(0.0f)
+	, m_nMax(maxBulletCount)
+	, m_nBulletCount(m_nMax){};
+
+CRandomMissileShooter* CRandomMissileShooter::create(float speed, float interval, int maxBulletCount)				// Bullet 생성 간격
+{
+	CRandomMissileShooter* pRet = (CRandomMissileShooter*)new(std::nothrow)CRandomMissileShooter(speed, interval, maxBulletCount);
+	if (pRet)
+	{
+		return pRet;
+	}
+	else
+	{
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
+}
+
+void CRandomMissileShooter::Execute(float delta) {
+	m_fTime += delta;
+	if (m_fTime >= m_fRandomInterval){
+		for (int count = 0; count < m_nBulletCount; count++){
+			m_fRandomInterval = random<float>(0.0f, m_fInterval);
+			m_fShotAngle = random<float>(0.f, 360.f);
+			m_nBulletCount = random<int>(1, m_nMax);
+			auto missile = CNormalMissile::create(
+				"missile_1.png",									//이미지 이름
+				5.f,												//충돌 범위
+				m_fShotAngle,										//초기 각도
+				m_fShotSpeed,										//속도
+				CObjectManager::Instance()->getM_Planet());			//타겟
+			CGameScene::getGameScene()->addChild(missile);
+
+
+			CGameScene::getGameScene()->addChild(CTargetMark::create(
+				"missile_target_1.png",								//이미지 이름
+				0.f,												//충돌 범위
+				m_fShotAngle,										//초기 각도
+				0.f,												//속도
+				CObjectManager::Instance()->getM_Planet(),			//타겟
+				missile));											//소유자
+
+			m_fTime = 0.f;
+		}
+	}
+}
+
+void Shooter::RandomMissileShoot(float speed/* = 600*/, float interval/* = 0.1f*/, int maxBulletCount /* = 1*/) {
+	CGameScene::getGameScene()->addChild(CRandomMissileShooter::create(speed, interval, maxBulletCount));
+}
+//----------------------------------------------------
+
+
+
+//-------------------AimingMissile Shooter-------------------
+CAimingMissileShooter::CAimingMissileShooter(float speed, float interval, int maxBulletCount)
+	: CEnemy(interval, speed)
+	, m_fRandomInterval(0.0f)
+	, m_nMax(maxBulletCount)
+	, m_nBulletCount(m_nMax){};
+
+CAimingMissileShooter* CAimingMissileShooter::create(float speed, float interval, int maxBulletCount)				// Bullet 생성 간격
+{
+	CAimingMissileShooter* pRet = (CAimingMissileShooter*)new(std::nothrow)CAimingMissileShooter(speed, interval, maxBulletCount);
+	if (pRet)
+	{
+		return pRet;
+	}
+	else
+	{
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
+}
+
+void CAimingMissileShooter::Execute(float delta) {
+	m_fTime += delta;
+	if (m_fTime >= m_fInterval){
+		for (int count = 0; count < m_nBulletCount; count++){
+			m_fShotAngle = random<float>(60.f, 120.f);
+			auto missile = CNormalMissile::create(
+				"missile_2.png",									//이미지 이름
+				5.f,												//충돌 범위
+				m_fShotAngle,										//초기 각도
+				m_fShotSpeed,										//속도
+				CObjectManager::Instance()->getM_Player());			//타겟
+			CGameScene::getGameScene()->addChild(missile);
+
+
+			CGameScene::getGameScene()->addChild(CTargetMark::create(
+				"missile_target_2.png",								//이미지 이름
+				0.f,												//충돌 범위
+				90.f,												//초기 각도
+				0.f,												//속도
+				CObjectManager::Instance()->getM_Player(),			//타겟
+				missile));											//소유자
+
+			m_fTime = 0.f;
+		}
+	}
+}
+
+void Shooter::AimingMissileShoot(float speed/* = 600*/, float interval/* = 0.1f*/, int maxBulletCount /* = 1*/) {
+	CGameScene::getGameScene()->addChild(CAimingMissileShooter::create(speed, interval, maxBulletCount));
 }
 //----------------------------------------------------

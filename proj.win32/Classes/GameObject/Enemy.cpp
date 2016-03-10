@@ -1,5 +1,8 @@
 ﻿#include "Enemy.h"
 #include "../Task/PoolingManager.h"
+
+CEnemy::~CEnemy(){}
+
 void CEnemy::ReturnToMemoryBlock()
 {
 	/*removeFromParent 의 이유 :
@@ -8,6 +11,7 @@ void CEnemy::ReturnToMemoryBlock()
 	때문에 메모리 블럭으로 되돌릴때에는 부모관계를 제거하여야한다.
 	또 ReferenceCount를 1 낮춰야 하는 이유도 있다.*/
 	this->removeFromParent();
+	this->removeAllChildren();
 	this->setVisible(false);
 	this->setAlive(false);
 	CPoolingManager::Instance()->Enemy_ReturnToFreeMemory(this);
