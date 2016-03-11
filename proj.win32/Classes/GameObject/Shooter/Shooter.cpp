@@ -220,7 +220,6 @@ void Shooter::BarrierShoot(float speed/* = 250*/, float interval/* = 0.1f*/, int
 //-------------------RandomMissile Shooter-------------------
 CRandomMissileShooter::CRandomMissileShooter(float speed, float interval, int maxBulletCount)
 	: CEnemy(interval, speed)
-	, m_fRandomInterval(0.0f)
 	, m_nMax(maxBulletCount)
 	, m_nBulletCount(m_nMax){};
 
@@ -241,9 +240,8 @@ CRandomMissileShooter* CRandomMissileShooter::create(float speed, float interval
 
 void CRandomMissileShooter::Execute(float delta) {
 	m_fTime += delta;
-	if (m_fTime >= m_fRandomInterval){
+	if (m_fTime >= m_fInterval){
 		for (int count = 0; count < m_nBulletCount; count++){
-			m_fRandomInterval = random<float>(0.0f, m_fInterval);
 			m_fShotAngle = random<float>(0.f, 360.f);
 			m_nBulletCount = random<int>(1, m_nMax);
 			auto missile = CNormalMissile::create(
@@ -276,15 +274,13 @@ void Shooter::RandomMissileShoot(float speed/* = 600*/, float interval/* = 0.1f*
 
 
 //-------------------AimingMissile Shooter-------------------
-CAimingMissileShooter::CAimingMissileShooter(float speed, float interval, int maxBulletCount)
+CAimingMissileShooter::CAimingMissileShooter(float speed, float interval)
 	: CEnemy(interval, speed)
-	, m_fRandomInterval(0.0f)
-	, m_nMax(maxBulletCount)
-	, m_nBulletCount(m_nMax){};
+{};
 
-CAimingMissileShooter* CAimingMissileShooter::create(float speed, float interval, int maxBulletCount)				// Bullet 생성 간격
+CAimingMissileShooter* CAimingMissileShooter::create(float speed, float interval)				// Bullet 생성 간격
 {
-	CAimingMissileShooter* pRet = (CAimingMissileShooter*)new(std::nothrow)CAimingMissileShooter(speed, interval, maxBulletCount);
+	CAimingMissileShooter* pRet = (CAimingMissileShooter*)new(std::nothrow)CAimingMissileShooter(speed, interval);
 	if (pRet)
 	{
 		return pRet;
@@ -300,31 +296,30 @@ CAimingMissileShooter* CAimingMissileShooter::create(float speed, float interval
 void CAimingMissileShooter::Execute(float delta) {
 	m_fTime += delta;
 	if (m_fTime >= m_fInterval){
-		for (int count = 0; count < m_nBulletCount; count++){
-			m_fShotAngle = random<float>(60.f, 120.f);
-			auto missile = CNormalMissile::create(
-				"missile_2.png",									//이미지 이름
-				5.f,												//충돌 범위
-				m_fShotAngle,										//초기 각도
-				m_fShotSpeed,										//속도
-				CObjectManager::Instance()->getM_Player());			//타겟
-			CGameScene::getGameScene()->addChild(missile);
+		m_fShotAngle = random<float>(60.f, 120.f);
+		auto missile = CNormalMissile::create(
+			"missile_2.png",									//이미지 이름
+			5.f,												//충돌 범위
+			m_fShotAngle,										//초기 각도
+			m_fShotSpeed,										//속도
+			CObjectManager::Instance()->getM_Player(),			//타겟
+			true);												//조준미사일인지 여부 true = CrushShake 호출
+		CGameScene::getGameScene()->addChild(missile);
 
 
-			CGameScene::getGameScene()->addChild(CTargetMark::create(
-				"missile_target_2.png",								//이미지 이름
-				0.f,												//충돌 범위
-				90.f,												//초기 각도
-				0.f,												//속도
-				CObjectManager::Instance()->getM_Player(),			//타겟
-				missile));											//소유자
+		CGameScene::getGameScene()->addChild(CTargetMark::create(
+			"missile_target_2.png",								//이미지 이름
+			0.f,												//충돌 범위
+			90.f,												//초기 각도
+			0.f,												//속도
+			CObjectManager::Instance()->getM_Player(),			//타겟
+			missile));											//소유자
 
-			m_fTime = 0.f;
-		}
+		m_fTime = 0.f;
 	}
 }
 
-void Shooter::AimingMissileShoot(float speed/* = 600*/, float interval/* = 0.1f*/, int maxBulletCount /* = 1*/) {
-	CGameScene::getGameScene()->addChild(CAimingMissileShooter::create(speed, interval, maxBulletCount));
+void Shooter::AimingMissileShoot(float speed/* = 600*/, float interval/* = 0.1f*/) {
+	CGameScene::getGameScene()->addChild(CAimingMissileShooter::create(speed, interval));
 }
 //----------------------------------------------------

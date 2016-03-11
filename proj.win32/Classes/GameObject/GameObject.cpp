@@ -25,7 +25,7 @@ void CGameObject::DrawDebugRect(Point pos1, Point pos2, std::string text/* = "" 
 	auto label = Label::createWithTTF(text, "fonts/Marker Felt.ttf", 15);
 	Point temp = Point((pos2.x - pos1.x) * 0.5f, (pos2.y - pos1.y) * 0.5f);
 	label->setPosition(Vec2((pos1.x + temp.x), (pos1.y + temp.y)));
-	label->setColor(Color3B(255, 0, 0));
+	label->setColor(Color3B(0, 0, 255));
 	this->addChild(label, 100);
 }
 
@@ -41,6 +41,6 @@ void CGameObject::DrawDebugLine(Point pos1, Point pos2, std::string text/* = "" 
 	auto label = Label::createWithTTF(text, "fonts/Marker Felt.ttf", 15);
 	Point temp = Point((pos2.x - pos1.x) * 0.5f, (pos2.y - pos1.y) * 0.5f);
 	label->setPosition(Vec2((pos1.x + temp.x), (pos1.y + temp.y)));
-	label->setColor(Color3B(255, 0, 0));
+	label->setColor(Color3B(0, 0, 255));
 	this->addChild(label, 100);
 }

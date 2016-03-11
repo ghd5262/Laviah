@@ -104,20 +104,27 @@ bool CGameScene::initVariable()
 			origin.y + visibleSize.height * 0.25f));
 		this->addChild(planet, 100);
 
+		planet->setOriginPos(planet->getPosition());
+
 		auto player = CPlayer::create("player.png", 6.f, 0.0f, 5.0f);
 		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.42f));
 		this->addChild(player, 100);
 
+		player->setOriginPos(player->getPosition());
+
 		CObjectManager::Instance()->setM_Player(player);
 		CObjectManager::Instance()->setM_Planet(planet);
 		CPoolingManager::Instance()->CreateBulletList(30, 800);
 		CPoolingManager::Instance()->CreateEnemyList(5, 800);
-		RandomShoot(250.0f, 0.5f, 3);
+		RandomShoot(250.0f, 0.5f, 30);
 		RandomMissileShoot(600.f, 10.0f, 2);
-		AimingMissileShoot(800.f, 15.0f, 2);
+		AimingMissileShoot(1200.0f, 15.0f);
 		//DoubleScrewShoot(250.0f, 0.1f, 1, LEFT);
 		//ScrewShoot(250.0f, 0.1f, 1, RIGHT);
+
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(
+			"sounds/bgm_1.mp3", true);
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -155,3 +162,4 @@ void CGameScene::update(float delta)
 {
 	CObjectManager::Instance()->Execute(delta);
 }
+

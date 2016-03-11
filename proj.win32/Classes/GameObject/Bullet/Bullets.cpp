@@ -84,7 +84,7 @@ CTargetMark::CTargetMark(
 	: CBullet(textureName, boundingRadius, angle, speed, target)
 	, m_OwnerBullet(owner)
 {
-	m_ScreenRect = Rect(0, 0, 780, 1280);
+	m_ScreenRect = Rect(0, 0, 720, 1280);
 	setPositionX((cos(CC_DEGREES_TO_RADIANS(angle)) * (target->getBRadius() + 20)) + target->getPosition().x);
 	setPositionY((sin(CC_DEGREES_TO_RADIANS(angle)) * (target->getBRadius() + 20)) + target->getPosition().y);
 	setRotation(-angle);
@@ -122,6 +122,9 @@ bool CTargetMark::init()
 bool CTargetMark::initVariable()
 {
 	try{
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(
+			"sounds/missile_warning_1.wav");
+
 		m_pTexture = Sprite::create(m_TextureName);
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		addChild(m_pTexture);
@@ -153,8 +156,10 @@ CNormalMissile::CNormalMissile(
 	float boundingRadius,		    //bullet 충돌 범위
 	float angle,				    //bullet 초기 각도 
 	float speed,				    //bullet 초기 속도
-	CGameObject* target)		    //bullet 타겟 위치
+	CGameObject* target,		    //bullet 타겟 위치
+	bool isAiming/* = false*/)		//조준미사일인지 여부 true = CrushShake 호출					
 	: CBullet(textureName, boundingRadius, angle, speed, target)
+	, m_bIsAimingMissile(isAiming)
 {
 	setPositionX((cos(CC_DEGREES_TO_RADIANS(angle)) * 2500.f) + target->getPosition().x);
 	setPositionY((sin(CC_DEGREES_TO_RADIANS(angle)) * 2500.f) + target->getPosition().y);
@@ -166,9 +171,10 @@ CNormalMissile* CNormalMissile::create(
 	float boundingRadius,			//bullet 충돌 범위
 	float angle,					//bullet 초기 각도 
 	float speed,					//bullet 초기 속도
-	CGameObject* target)			//bullet 타겟 위치
+	CGameObject* target,			//bullet 타겟 위치
+	bool isAiming/* = false*/)		//조준미사일인지 여부 true = CrushShake 호출	
 {
-	CNormalMissile* pRet = (CNormalMissile*)new(std::nothrow)CNormalMissile(textureName, boundingRadius, angle, speed, target);
+	CNormalMissile* pRet = (CNormalMissile*)new(std::nothrow)CNormalMissile(textureName, boundingRadius, angle, speed, target, isAiming);
 	if (pRet && pRet->init())
 	{
 		return pRet;
@@ -214,6 +220,16 @@ void CNormalMissile::Execute(float delta)
 
 	if (IsHit(m_Target))
 	{
+		if (true == m_bIsAimingMissile){
+			CObjectManager::Instance()->getM_Planet()->CrushShake();
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(
+				"sounds/explosion_2.wav");
+		}
+		else {
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(
+				"sounds/explosion_1.wav");
+		}
+
 		ReturnToMemoryBlock();
 	}
 }

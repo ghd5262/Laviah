@@ -72,8 +72,8 @@ public:
 		float boundingRadius,		//bullet 충돌 범위
 		float angle,				//bullet 초기 각도 
 		float speed,				//bullet 초기 속도
-		CGameObject* target);		//bullet 타겟
-
+		CGameObject* target,		//bullet 타겟
+		bool isAiming = false);		//조준미사일인지 여부 true = CrushShake 호출
 	virtual void Execute(float delta = 0.f) override;
 
 protected:
@@ -85,6 +85,10 @@ private:
 		float boundingRadius,
 		float angle,
 		float speed,
-		CGameObject* target);
+		CGameObject* target,
+		bool isAiming = false);				
 	virtual ~CNormalMissile(){};
+
+private:
+	bool m_bIsAimingMissile;		// 조준미사일인지 여부 true = CrushShake 호출
 };

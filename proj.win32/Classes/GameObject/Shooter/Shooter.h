@@ -118,7 +118,6 @@ namespace Shooter{
 		virtual ~CRandomMissileShooter(){}
 
 	private:
-		float m_fRandomInterval;
 		int m_nMax;			// 한번에 쏘는 총알의 수 max값
 		int m_nBulletCount;	// 한번에 쏘는 총알의 수
 	};
@@ -133,18 +132,14 @@ namespace Shooter{
 	public:
 		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
 		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-		static CAimingMissileShooter* create(float speed, float interval, int maxBulletCount);						// interval = Bullet 생성 간격
+		static CAimingMissileShooter* create(float speed, float interval);						// interval = Bullet 생성 간격
 		virtual void Execute(float delta) override;
 
 	private:
-		CAimingMissileShooter(float speed, float interval, int maxBulletCount);
+		CAimingMissileShooter(float speed, float interval);
 		virtual ~CAimingMissileShooter(){}
-
-	private:
-		int m_nMax;			// 한번에 쏘는 총알의 수 max값
-		int m_nBulletCount;	// 한번에 쏘는 총알의 수
 	};
 
-	void AimingMissileShoot(float speed = 600.0f, float interval = 0.1f, int maxBulletCount = 1);
+	void AimingMissileShoot(float speed = 600.0f, float interval = 0.1f);
 	//------------------------------------------------------------------
 }

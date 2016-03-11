@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <memory>
 #include <time.h>
+#include "SimpleAudioEngine.h"  
 
 using namespace HSHDefine;
 using namespace cocos2d;
