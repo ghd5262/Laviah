@@ -2,7 +2,7 @@
 
 #include "cocos2d.h"
 
-
+class CUIManager;
 class CGameScene : public cocos2d::Layer
 {
 public:
@@ -25,4 +25,5 @@ private:
 
 private:
 	static CGameScene* m_GameScene;
+	CUIManager* m_GameSceneUIMananger;
 };

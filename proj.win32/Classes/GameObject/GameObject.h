@@ -14,8 +14,9 @@ public:
 	virtual void Execute(float delta = 0.f){}
 
 protected:
+	CGameObject() : m_fBoundingRadius(0.0f){}
 	virtual bool init() override { return true; }
-	virtual bool initVariable(){ return true; };
+	virtual bool initVariable(){ return true; }
 
 	void DrawDebugBinding();												// DEBUG용 BindingRound를 그려준다. 
 	void DrawDebugRect(Point pos1, Point pos2, std::string text = "");

@@ -7,6 +7,11 @@ CPoolingManager::CPoolingManager()
 
 CPoolingManager::~CPoolingManager()
 {
+	DeleteAllMemory();
+}
+
+void CPoolingManager::DeleteAllMemory()
+{
 	for (auto enemy : m_EnemyList)
 	{
 		delete enemy;
@@ -38,8 +43,8 @@ void CPoolingManager::CreateBulletList(size_t count, size_t size)
 	m_BulletSize = size;
 	while (count--)
 	{
-		MEMORYBLOCK memBlock = NewMemoryBlock(m_BulletSize);
-		m_BulletList.emplace_back(memBlock);
+		MEMORYBLOCK memBlock = NewMemoryBlock(m_BulletSize);	// 하나의 크기가 size만큼의 메모리 블럭을
+		m_BulletList.emplace_back(memBlock);					// count만큼 생성한다.
 		CObjectManager::Instance()->AddBullet(memBlock);
 	}
 }
@@ -54,8 +59,8 @@ void CPoolingManager::CreateEnemyList(size_t count, size_t size)
 	m_EnemySize = size;
 	while (count--)
 	{
-		MEMORYBLOCK memBlock = NewMemoryBlock(m_EnemySize);
-		m_EnemyList.emplace_back(memBlock);
+		MEMORYBLOCK memBlock = NewMemoryBlock(m_EnemySize);		// 하나의 크기가 size만큼의 메모리 블럭을 
+		m_EnemyList.emplace_back(memBlock);						// count만큼 생성한다.
 		CObjectManager::Instance()->AddEnemy(memBlock);
 	}
 }
@@ -98,13 +103,11 @@ void* CPoolingManager::EnemyNew()
 
 void CPoolingManager::Bullet_ReturnToFreeMemory(void* bullet)
 {
-	//static_cast<char*>(bullet)[m_BulletSize] = false;			// 메모리를 Free 상태로 전환
-	memset(bullet, 0, m_BulletSize + 1);				// memory 초기화 및 memory alive = false
+	memset(bullet, 0, m_BulletSize + 1);			// memory 초기화 및 memory alive = false
 }
 
 void CPoolingManager::Enemy_ReturnToFreeMemory(void* enemy)
 {
-	//static_cast<char*>(enemy)[m_EnemySize] = false;				// 메모리를 Free 상태로 전환
 	memset(enemy, 0, m_EnemySize + 1);				// memory 초기화 및 memory alive = false
 }
 
@@ -112,7 +115,7 @@ void CPoolingManager::Bullet_ReturnToFreeMemoryAll()
 {
 	for (auto bullet : m_BulletList)
 	{
-		bullet[m_BulletSize] = false;
+		memset(bullet, 0, m_BulletSize + 1);
 	}
 }
 
@@ -120,6 +123,6 @@ void CPoolingManager::Enemy_ReturnToFreeMemoryAll()
 {
 	for (auto enemy : m_EnemyList)
 	{
-		enemy[m_EnemySize] = false;
+		memset(enemy, 0, m_EnemySize + 1);
 	}
 }

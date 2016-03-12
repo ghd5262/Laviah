@@ -122,8 +122,7 @@ bool CTargetMark::init()
 bool CTargetMark::initVariable()
 {
 	try{
-		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(
-			"sounds/missile_warning_1.wav");
+		AudioEngine::play2d("sounds/missile_warning_1.mp3", false, 0.7f);
 
 		m_pTexture = Sprite::create(m_TextureName);
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
@@ -222,12 +221,10 @@ void CNormalMissile::Execute(float delta)
 	{
 		if (true == m_bIsAimingMissile){
 			CObjectManager::Instance()->getM_Planet()->CrushShake();
-			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(
-				"sounds/explosion_2.wav");
+			AudioEngine::play2d("sounds/explosion_2.mp3", false);
 		}
 		else {
-			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(
-				"sounds/explosion_1.wav");
+			AudioEngine::play2d("sounds/explosion_1.mp3", false);
 		}
 
 		ReturnToMemoryBlock();
