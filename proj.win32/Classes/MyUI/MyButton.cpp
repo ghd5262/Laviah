@@ -103,13 +103,12 @@ bool CMyButton::initVariable()
 {
 	try{
 		auto listener = EventListenerTouchOneByOne::create();
-		listener->setSwallowTouches(false);
+		listener->setSwallowTouches(true);
 
 		listener->onTouchBegan = CC_CALLBACK_2(CMyButton::onTouchBegan, this);
 		listener->onTouchEnded = CC_CALLBACK_2(CMyButton::onTouchEnded, this);
 
 		_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
 
 		if (m_NormalTextureName != "")
 			m_pNormalTexture = Sprite::create(m_NormalTextureName);
@@ -117,7 +116,6 @@ bool CMyButton::initVariable()
 			m_pNormalTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 			addChild(m_pNormalTexture);
 		}
-
 
 		if (m_LabelString != "")
 			m_pLabel = cocos2d::Label::createWithTTF(m_LabelString, "fonts/Marker Felt.ttf", m_FontSize);
@@ -141,19 +139,29 @@ void CMyButton::AddState(eMYBUTTON_STATE state,			// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È
 	m_FuncList[state] = func;
 }
 
+bool CMyButton::touchHits(Touch  *touch)
+{
+	const Rect area(0, 0, m_pNormalTexture->getContentSize().width, 
+		m_pNormalTexture->getContentSize().height);
+	// ÁÂÇ¥ º¯È¯
+	return area.containsPoint(m_pNormalTexture->convertToNodeSpace(touch->getLocation()));
+}
+
 bool CMyButton::onTouchBegan(Touch  *touch, Event  *event)
 {
 	CC_UNUSED_PARAM(event);
 	if (m_pNormalTexture){
-		m_IsSelect = true;
-
-		if (m_FuncList[BEGIN] != nullptr){					// BEGIN »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
-			m_FuncList[BEGIN]();
-		}
-		if (m_SelectedTextureName != ""){					// ¼±ÅÃ ½Ã ÀÌ¹ÌÁö°¡ ÀÖ´Ù¸é ÀÌ¹ÌÁö ±³Ã¼
-			m_pNormalTexture->setTexture(m_SelectedTextureName);
-		} else {											// ±³Ã¼µÉ ÀÌ¹ÌÁö°¡ ¾ø´Ù¸é Å©±â¸¦ Å°¿ò
-			m_pNormalTexture->setScale(1.1f);
+		m_IsSelect = touchHits(touch);
+		if (m_IsSelect){
+			if (m_FuncList[BEGIN] != nullptr){					// BEGIN »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+				m_FuncList[BEGIN]();
+			}
+			if (m_SelectedTextureName != ""){					// ¼±ÅÃ ½Ã ÀÌ¹ÌÁö°¡ ÀÖ´Ù¸é ÀÌ¹ÌÁö ±³Ã¼
+				m_pNormalTexture->setTexture(m_SelectedTextureName);
+			}
+			else {												// ±³Ã¼µÉ ÀÌ¹ÌÁö°¡ ¾ø´Ù¸é Å©±â¸¦ Å°¿ò
+				m_pNormalTexture->setScale(1.1f);
+			}
 		}
 	}
 	return m_IsSelect;
@@ -163,13 +171,14 @@ void CMyButton::onTouchEnded(Touch  *touch, Event  *event)
 {
 	CC_UNUSED_PARAM(event);
 	if (m_pNormalTexture){
-		
-		if (m_IsSelect && m_FuncList[END] != nullptr){		// END »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+		m_IsSelect = touchHits(touch);
+		if (m_IsSelect && m_FuncList[END] != nullptr){			// END »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
 			m_FuncList[END]();
 		}
-		if (m_SelectedTextureName != ""){					// ÀÌ¹ÌÁö°¡ ¹Ù²î¾ú¾ú´Ù¸é ´Ù½Ã ¿ø·¡´ë·Î ¹Ù²Þ
+		if (m_SelectedTextureName != ""){						// ÀÌ¹ÌÁö°¡ ¹Ù²î¾ú¾ú´Ù¸é ´Ù½Ã ¿ø·¡´ë·Î ¹Ù²Þ
 			m_pNormalTexture->setTexture(m_NormalTextureName);
-		}else{												// ¹Ù²ðÀÌ¹ÌÁö°¡ ¾ø´Ù¸é Å©±â¸¦ ¿ø·¡´ë·Î ¹Ù²Þ
+		}
+		else{													// ¹Ù²ðÀÌ¹ÌÁö°¡ ¾ø´Ù¸é Å©±â¸¦ ¿ø·¡´ë·Î ¹Ù²Þ
 			m_pNormalTexture->setScale(1.0f);
 		}
 		m_IsSelect = false;

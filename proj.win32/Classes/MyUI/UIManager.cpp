@@ -35,8 +35,8 @@ CGameObject* CUIManager::FindUIWithName(std::string name)
 
 void CUIManager::Execute(float delta)
 {
-	std::for_each(m_UIList.begin(), m_UIList.end(), [](std::pair<std::string, CGameObject*> ui)
+	std::for_each(m_UIList.begin(), m_UIList.end(), [=](std::pair<std::string, CGameObject*> ui)
 	{
-		ui.second->Execute();
+		ui.second->Execute(delta);
 	});
 }

@@ -19,11 +19,12 @@ protected:
 
 private:
 	bool initVariable();
+	void InitGameSceneUI();
 	void menuCloseCallback(cocos2d::Ref* pSender);
 	void rightButtonCallback(cocos2d::Ref* pSender);
 	void leftButtonCallback(cocos2d::Ref* pSender);
 
 private:
 	static CGameScene* m_GameScene;
-	CUIManager* m_GameSceneUIMananger;
+	CUIManager* m_GameSceneUIManager;
 };

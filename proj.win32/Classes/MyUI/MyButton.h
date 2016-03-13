@@ -42,6 +42,7 @@ protected:
 	virtual bool initVariable() override;
 
 private:
+	bool touchHits(Touch  *touch);
 	bool onTouchBegan(Touch  *touch, Event  *event);
 	void onTouchEnded(Touch  *touch, Event  *event);
 

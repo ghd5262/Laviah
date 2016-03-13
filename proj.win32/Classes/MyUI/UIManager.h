@@ -8,8 +8,6 @@
 * Scene별로 UIManager를 생성해서 사용하고 Scene이 전환될때 UI도 함께 삭제된다.
 * AddUIWithName함수는 addChild를 하지 않는다.
 * 리스트에만 등록하기 때문에 addChild는 해당Scene에서 해줘야한다.
-* 포인터를 가지고 있는 곳에서 아무런 생각없이 남용하는 것을 막는차원에서
-* 일부러 포인터로 찾는 함수는 만들지 않았다. 
 ------------------------------------------------------------------------*/
 
 class CUIManager : public CGameObject

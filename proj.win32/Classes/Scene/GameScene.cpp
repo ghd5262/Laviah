@@ -7,6 +7,7 @@
 #include "../GameObject/Shooter/Shooter.h"
 #include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
+#include "../MyUI/HealthBar.h"
 
 USING_NS_CC;
 using namespace Shooter;
@@ -50,61 +51,11 @@ bool CGameScene::initVariable()
 	try
 	{
 		m_GameScene = this;
-		m_GameSceneUIMananger = CUIManager::create();
-		this->addChild(m_GameSceneUIMananger);
-
+		
+		InitGameSceneUI();
+		
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 		Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-		auto closeItem = MenuItemImage::create(
-			"CloseNormal.png",
-			"CloseSelected.png",
-			CC_CALLBACK_1(CGameScene::menuCloseCallback, this));
-
-		closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width / 2,
-			origin.y + closeItem->getContentSize().height / 2));
-
-		auto menu = Menu::create(closeItem, NULL);
-		menu->setPosition(Vec2::ZERO);
-		this->addChild(menu, 100);
-
-		auto leftButton = CMyButton::createWithTexture(
-			"leftButton_1.png",
-			"leftButton_2.png",
-			EXECUTE,
-			[](){
-			CCLOG("EXECUTE LBUTTON");
-		});
-		leftButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		leftButton->setPosition(Vec2(origin.x + visibleSize.width * 0.25f,
-			origin.x + visibleSize.height * 0.5f));
-
-		this->addChild(leftButton, 101);
-		if (!m_GameSceneUIMananger->AddUIWithName(leftButton, "LButton"))
-			CCASSERT(false, "LBUTTON IS CAN NOT INIT");
-
-
-		auto rightButton = CMyButton::createWithTexture(
-			"RightButton_1.png",
-			"RightButton_2.png",
-			EXECUTE,
-			[](){
-			CCLOG("EXECUTE RBUTTON");
-		});
-
-		rightButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		rightButton->setPosition(Vec2(origin.x + visibleSize.width * 0.75f,
-			origin.x + visibleSize.height * 0.5f));
-
-		this->addChild(rightButton, 101);
-		if (!m_GameSceneUIMananger->AddUIWithName(rightButton, "RButton"))
-			CCASSERT(false, "RBUTTON IS CAN NOT INIT");
-
-
-		auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-		label->setPosition(Vec2(origin.x + visibleSize.width / 2,
-			origin.y + visibleSize.height - label->getContentSize().height));
-		this->addChild(label, 100);
 
 		auto background = Sprite::create("background_2.png");
 		background->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
@@ -145,6 +96,84 @@ bool CGameScene::initVariable()
 	return true;
 }
 
+void CGameScene::InitGameSceneUI()
+{
+	m_GameSceneUIManager = CUIManager::create();
+	this->addChild(m_GameSceneUIManager);
+
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	auto closeItem = MenuItemImage::create(
+		"CloseNormal.png",
+		"CloseSelected.png",
+		CC_CALLBACK_1(CGameScene::menuCloseCallback, this));
+
+	closeItem->setPosition(Vec2(
+		origin.x + visibleSize.width - closeItem->getContentSize().width / 2,
+		origin.y + closeItem->getContentSize().height / 2));
+
+	auto menu = Menu::create(closeItem, NULL);
+	menu->setPosition(Vec2::ZERO);
+	this->addChild(menu, 100);
+
+	auto leftButton = CMyButton::createWithTexture(
+		"leftButton_1.png",
+		"leftButton_2.png",
+		EXECUTE,
+		[](){
+		CCLOG("EXECUTE LBUTTON");
+	});
+	leftButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	leftButton->setPosition(Vec2(origin.x + visibleSize.width * 0.25f,
+		origin.x + visibleSize.height * 0.5f));
+
+	this->addChild(leftButton, 101);
+	if (!m_GameSceneUIManager->AddUIWithName(leftButton, "LButton"))
+		CCASSERT(false, "LBUTTON CAN NOT INIT");
+
+	auto rightButton = CMyButton::createWithTexture(
+		"RightButton_1.png",
+		"RightButton_2.png",
+		EXECUTE,
+		[](){
+		CCLOG("EXECUTE RBUTTON");
+	});
+
+	rightButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	rightButton->setPosition(Vec2(origin.x + visibleSize.width * 0.75f,
+		origin.x + visibleSize.height * 0.5f));
+
+	this->addChild(rightButton, 101);
+	if (!m_GameSceneUIManager->AddUIWithName(rightButton, "RButton"))
+		CCASSERT(false, "RBUTTON CAN NOT INIT");
+
+	auto healthBar = CHealthBar::create(30);
+
+	healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	healthBar->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		origin.x + visibleSize.height * 0.95f));
+	this->addChild(healthBar, 100);
+	if (!m_GameSceneUIManager->AddUIWithName(healthBar, "HealthBar"))
+		CCASSERT(false, "HealthBar CAN NOT INIT");
+
+
+	leftButton->AddState(BEGIN,
+		[&](){
+		static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->Hit(5.0f);
+	});
+
+	rightButton->AddState(BEGIN,
+		[&](){
+		static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->AddLife(5.0f);
+	});
+
+	auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
+	label->setPosition(Vec2(origin.x + visibleSize.width / 2,
+		origin.y + visibleSize.height - label->getContentSize().height));
+	this->addChild(label, 100);
+}
+
 void CGameScene::menuCloseCallback(Ref* pSender)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
@@ -172,5 +201,5 @@ void CGameScene::leftButtonCallback(cocos2d::Ref* pSender)
 void CGameScene::update(float delta)
 {
 	CObjectManager::Instance()->Execute(delta);
-	m_GameSceneUIMananger->Execute(delta);
+	m_GameSceneUIManager->Execute(delta);
 }
