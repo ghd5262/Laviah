@@ -92,3 +92,35 @@ private:
 private:
 	bool m_bIsAimingMissile;		// 조준미사일인지 여부 true = CrushShake 호출
 };
+
+class CBonusTimeUI;
+enum eLETTER;
+class CBonusLetter : public CBullet {
+public:
+	/*create를 호출하면 CObjectManager에서 메모리를 받는다.
+	받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다.*/
+	static CBonusLetter* create(
+		std::string textureName,	//bullet 이미지
+		float boundingRadius,		//bullet 충돌 범위
+		float angle,				//bullet 초기 각도 
+		float speed,				//bullet 초기 속도
+		CGameObject* target);		//bullet 타겟
+
+	virtual void Execute(float delta = 0.f) override;
+
+protected:
+	virtual bool init() override;
+	virtual bool initVariable() override;
+
+private:
+	CBonusLetter(std::string textureName,
+		float boundingRadius,
+		float angle,
+		float speed,
+		CGameObject* target);
+	virtual ~CBonusLetter(){};
+
+	CBonusTimeUI* m_GameSceneUIManager;
+	Vec2 m_TargetPos;
+	eLETTER m_LetterNum;
+};

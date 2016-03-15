@@ -8,6 +8,7 @@
 #include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/HealthBar.h"
+#include "../MyUI/BonusTimeUI.h"
 
 USING_NS_CC;
 using namespace Shooter;
@@ -78,7 +79,7 @@ bool CGameScene::initVariable()
 
 		CObjectManager::Instance()->setM_Player(player);
 		CObjectManager::Instance()->setM_Planet(planet);
-		CPoolingManager::Instance()->CreateBulletList(30, 800);
+		CPoolingManager::Instance()->CreateBulletList(300, 800);
 		CPoolingManager::Instance()->CreateEnemyList(5, 800);
 		RandomShoot(250.0f, 0.5f, 30);
 		RandomMissileShoot(600.f, 10.0f, 2);
@@ -160,13 +161,21 @@ void CGameScene::InitGameSceneUI()
 
 	leftButton->AddState(BEGIN,
 		[&](){
-		static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->Hit(5.0f);
+		//static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->Hit(5.0f);
 	});
 
 	rightButton->AddState(BEGIN,
 		[&](){
-		static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->AddLife(5.0f);
+		//static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->AddLife(5.0f);
 	});
+
+	auto bonusTime = CBonusTimeUI::create();
+	bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+	bonusTime->setPosition(Vec2(origin.x + visibleSize.width * 0.09f,
+		origin.x + visibleSize.height * 0.9f));
+	this->addChild(bonusTime, 100);
+	if (!m_GameSceneUIManager->AddUIWithName(bonusTime, "BonusTime"))
+		CCASSERT(false, "BonusTime CAN NOT INIT");
 
 	auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
 	label->setPosition(Vec2(origin.x + visibleSize.width / 2,

@@ -28,7 +28,7 @@ void CObjectManager::AddEnemy(void* enemy)
 
 
 /* bullet->removeAllChildren();	의 이유 :
-모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으
+모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으며
 게임 종료 시 해당 메모리는 PoolingManager에서 해제한다.
 때문에 그전에 addChild된 메모리들을 해제해 주어야 하기 때문이다. */
 void CObjectManager::RemoveAllBullet()
@@ -41,7 +41,7 @@ void CObjectManager::RemoveAllBullet()
 }
 
 /* enemy->removeAllChildren();	의 이유 :
-모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으
+모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으며
 게임 종료 시 해당 메모리는 PoolingManager에서 해제한다.
 때문에 그전에 addChild된 메모리들을 해제해 주어야 하기 때문이다. */
 void CObjectManager::RemoveAllEnemy()

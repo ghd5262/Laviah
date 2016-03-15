@@ -14,6 +14,7 @@ public:
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
+	const CUIManager* getGameSceneUIManager() const { return m_GameSceneUIManager; }
 protected:
 	virtual bool init() override;
 

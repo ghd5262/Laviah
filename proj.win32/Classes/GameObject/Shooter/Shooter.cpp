@@ -40,7 +40,7 @@ void CRandomShooter::Execute(float delta) {
 			m_fShotAngle = random<float>(0.f, 360.f);
 			m_nBulletColor = random<int>(1, 2);
 			m_nBulletCount = random<int>(1, m_nMax);
-			CGameScene::getGameScene()->addChild(CNormalBullet::create(
+			CGameScene::getGameScene()->addChild(CBonusLetter::create(
 				"bullet_1.png",										//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도

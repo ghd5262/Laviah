@@ -41,6 +41,7 @@ CPoolingManager* CPoolingManager::Instance()
 void CPoolingManager::CreateBulletList(size_t count, size_t size)
 {
 	m_BulletSize = size;
+	m_BulletList.reserve(m_BulletSize);
 	while (count--)
 	{
 		MEMORYBLOCK memBlock = NewMemoryBlock(m_BulletSize);	// 하나의 크기가 size만큼의 메모리 블럭을
@@ -57,6 +58,7 @@ void CPoolingManager::CreateItemList(size_t count, size_t size)
 void CPoolingManager::CreateEnemyList(size_t count, size_t size)
 {
 	m_EnemySize = size;
+	m_EnemyList.reserve(m_EnemySize);
 	while (count--)
 	{
 		MEMORYBLOCK memBlock = NewMemoryBlock(m_EnemySize);		// 하나의 크기가 size만큼의 메모리 블럭을 
@@ -74,7 +76,7 @@ void* CPoolingManager::BulletNew()
 			return bullet;
 		}
 	}
-	//CCASSERT(false, "BULLET LIST OVERFLOWED");
+	CCLOG("BULLET LIST OVERFLOWED");
 	MEMORYBLOCK memBlock = NewMemoryBlock(m_BulletSize);
 	m_BulletList.emplace_back(memBlock);
 	CObjectManager::Instance()->AddBullet(memBlock);
@@ -92,7 +94,7 @@ void* CPoolingManager::EnemyNew()
 			return enemy;
 		}
 	}
-	CCASSERT(false, "ENEMY LIST OVERFLOWED");
+	CCLOG("ENEMY LIST OVERFLOWED");
 	MEMORYBLOCK memBlock = NewMemoryBlock(m_EnemySize);
 	m_EnemyList.emplace_back(memBlock);
 	CObjectManager::Instance()->AddEnemy(memBlock);

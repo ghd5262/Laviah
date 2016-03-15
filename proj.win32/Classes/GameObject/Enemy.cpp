@@ -19,6 +19,6 @@ void CEnemy::ReturnToMemoryBlock()
 
 void* CEnemy::operator new (size_t size, const std::nothrow_t)
 {
-	// ObjectManager에서 메모리를 할당 받는다.
+	// PoolingManager에서 메모리를 할당 받는다.
 	return CPoolingManager::Instance()->EnemyNew();
 }

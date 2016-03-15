@@ -9,8 +9,7 @@ class CGameObject : public cocos2d::Node
 public:
 	CGameObject(float bindingRadius)
 		: m_fBoundingRadius(bindingRadius){}
-	virtual ~CGameObject(){ removeAllChildrenWithCleanup(true); }
-
+	virtual ~CGameObject(){}
 	virtual void Execute(float delta = 0.f){}
 
 protected:

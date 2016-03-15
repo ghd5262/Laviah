@@ -25,7 +25,7 @@ bool CUIManager::AddUIWithName(CGameObject* ui, std::string name)
 	return addSuccess;
 }
 
-CGameObject* CUIManager::FindUIWithName(std::string name)
+CGameObject* CUIManager::FindUIWithName(std::string name) const
 {
 	auto ui = m_UIList.find(name)->second;
 	if(ui == nullptr)

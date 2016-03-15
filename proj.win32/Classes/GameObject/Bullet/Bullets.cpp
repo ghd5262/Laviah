@@ -1,7 +1,9 @@
 ﻿#include "Bullets.h"
 #include "../ObjectManager.h"
 #include "../Planet.h"
-
+#include "../../Scene/GameScene.h"
+#include "../../MyUI/BonusTimeUI.h"
+#include "../../MyUI/UIManager.h"
 CNormalBullet::CNormalBullet(
 	std::string textureName,	    //bullet 이미지
 	float boundingRadius,		    //bullet 충돌 범위
@@ -42,7 +44,6 @@ bool CNormalBullet::init()
 	return true;
 }
 
-// 이곳은 bullet을 오브젝트 풀에서 꺼낼때마다 호출하는 부분이니 addChild를 무작정해서는 안된다.
 bool CNormalBullet::initVariable()
 {
 	try{
@@ -118,7 +119,6 @@ bool CTargetMark::init()
 	return true;
 }
 
-// 이곳은 bullet을 오브젝트 풀에서 꺼낼때마다 호출하는 부분이니 addChild를 무작정해서는 안된다.
 bool CTargetMark::initVariable()
 {
 	try{
@@ -193,7 +193,6 @@ bool CNormalMissile::init()
 	return true;
 }
 
-// 이곳은 bullet을 오브젝트 풀에서 꺼낼때마다 호출하는 부분이니 addChild를 무작정해서는 안된다.
 bool CNormalMissile::initVariable()
 {
 	try{
@@ -228,5 +227,106 @@ void CNormalMissile::Execute(float delta)
 		}
 
 		ReturnToMemoryBlock();
+	}
+}
+
+
+
+
+CBonusLetter::CBonusLetter(
+	std::string textureName,	    //bullet 이미지
+	float boundingRadius,		    //bullet 충돌 범위
+	float angle,				    //bullet 초기 각도 
+	float speed,				    //bullet 초기 속도
+	CGameObject* target)		    //bullet 타겟 위치
+	: CBullet(textureName, boundingRadius, angle, speed, target)
+	, m_GameSceneUIManager(nullptr)
+{
+	setPositionX((cos(CC_DEGREES_TO_RADIANS(angle)) * 1000.f) + target->getPosition().x);
+	setPositionY((sin(CC_DEGREES_TO_RADIANS(angle)) * 1000.f) + target->getPosition().y);
+	setRotation(-angle);
+}
+
+CBonusLetter* CBonusLetter::create(
+	std::string textureName,		//bullet 이미지
+	float boundingRadius,			//bullet 충돌 범위
+	float angle,					//bullet 초기 각도 
+	float speed,					//bullet 초기 속도
+	CGameObject* target)			//bullet 타겟 위치
+{
+	CBonusLetter* pRet = (CBonusLetter*)new(std::nothrow)CBonusLetter(textureName, boundingRadius, angle, speed, target);
+	if (pRet && pRet->init())
+	{
+		return pRet;
+	}
+	else
+	{
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
+}
+
+bool CBonusLetter::init()
+{
+	if (!initVariable())
+		return false;
+	return true;
+}
+
+bool CBonusLetter::initVariable()
+{
+	try{
+		m_GameSceneUIManager = static_cast<CBonusTimeUI*>
+			(CGameScene::getGameScene()->getGameSceneUIManager()->FindUIWithName("BonusTime"));
+		m_TargetPos = m_GameSceneUIManager->NonCollectedLetterWorldPos();
+		m_LetterNum = m_GameSceneUIManager->NonCollectedLetterNum();
+
+
+		m_pTexture = Sprite::create(m_TextureName);
+		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+		addChild(m_pTexture);
+	}
+	catch (...){
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		assert(false);
+		return false;
+	}
+	return true;
+}
+
+void CBonusLetter::Execute(float delta)
+{
+	Vec2 dir = m_Target->getPosition() - getPosition();
+	dir.normalize();
+	dir *= (m_fBulletSpeed * delta);
+
+	setPosition(getPosition() + dir);
+
+	if (IsHit(m_Target))
+	{
+		this->setAlive(false);
+
+		ccBezierConfig bezier2;
+		bezier2.controlPoint_1 = Vec2(100, 100);
+		bezier2.controlPoint_2 = Vec2(80, 800);
+		bezier2.endPosition = Vec2(m_TargetPos);
+
+		auto bezierTo1 = BezierTo::create(1.0f, bezier2);
+
+		auto action = Sequence::create(
+			bezierTo1,
+			ScaleBy::create(0.5f, 4),
+			CallFunc::create([&](){
+			m_GameSceneUIManager->CollectLetter(m_LetterNum);
+			this->scheduleOnce([=](float dt){
+				this->ReturnToMemoryBlock();
+			}, 1.0f, "Sequence");
+		}), nullptr);
+		this->runAction(action);
+
+
+		auto textureAction = FadeOut::create(2.0f);
+		m_pTexture->runAction(textureAction);
 	}
 }

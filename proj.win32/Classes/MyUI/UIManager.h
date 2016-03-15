@@ -17,7 +17,7 @@ public:
 	virtual void Execute(float delta = 0.f);
 
 	bool AddUIWithName(CGameObject* ui, std::string name);
-	CGameObject* FindUIWithName(std::string name);
+	CGameObject* FindUIWithName(std::string name) const ;
 
 private:
 	CUIManager(){};
