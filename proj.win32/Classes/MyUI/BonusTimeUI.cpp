@@ -85,7 +85,7 @@ bool CBonusTimeUI::initVariable()
 				MakeString("grayLetter_%d.png", letterNum),
 				MakeString("bonusLetter_%d.png", letterNum),
 				static_cast<eLETTER>(letterNum),
-				Vec2(static_cast<float>(letterNum)* 35.f, 0.f));
+				Vec2(static_cast<float>(letterNum)* 38.f, 0.f));
 
 			this->addChild(m_LetterList[letterNum]);
 		}

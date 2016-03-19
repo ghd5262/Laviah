@@ -100,6 +100,7 @@ void CScrewShooter::Execute(float delta) {
 				m_fShotSpeed,										//¼Óµµ
 				CObjectManager::Instance()->getM_Planet()));		//Å¸°Ù
 
+			m_fShotAngle = static_cast<int>(m_fShotAngle) % 360;
 			m_fTime = 0.f;
 		}
 	}

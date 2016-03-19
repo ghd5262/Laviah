@@ -307,17 +307,18 @@ void CBonusLetter::Execute(float delta)
 	{
 		this->setAlive(false);
 
-		ccBezierConfig bezier2;
-		bezier2.controlPoint_1 = Vec2(100, 100);
-		bezier2.controlPoint_2 = Vec2(80, 800);
-		bezier2.endPosition = Vec2(m_TargetPos);
+		ccBezierConfig bezier;
+		bezier.controlPoint_1 = Vec2(100, 100);
+		bezier.controlPoint_2 = Vec2(80, 800);
+		bezier.endPosition = Vec2(m_TargetPos);
 
-		auto bezierTo1 = BezierTo::create(1.0f, bezier2);
-
+		auto bezierTo1 = BezierTo::create(1.0f, bezier);
+		this->setZOrder(101);
 		auto action = Sequence::create(
 			bezierTo1,
 			ScaleBy::create(0.5f, 4),
 			CallFunc::create([&](){
+			
 			m_GameSceneUIManager->CollectLetter(m_LetterNum);
 			this->scheduleOnce([=](float dt){
 				this->ReturnToMemoryBlock();

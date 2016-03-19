@@ -5,13 +5,13 @@
 CPlanet* CPlanet::create(
 	std::string textureName,
 	float boundingRadius,
-	float rotate,
+	float angle,
 	float rotateSpeed)
 {
 	CPlanet *pRet = new(std::nothrow) CPlanet(
 		 textureName
 		, boundingRadius
-		, rotate
+		, angle
 		, rotateSpeed);
 	if (pRet && pRet->init())
 	{
@@ -26,10 +26,10 @@ CPlanet* CPlanet::create(
 	}
 }
 
-CPlanet::CPlanet(std::string textureName, float boundingRadius, float rotate, float rotateSpeed)
+CPlanet::CPlanet(std::string textureName, float boundingRadius, float angle, float rotateSpeed)
 	: CGameObject(boundingRadius)
 	, m_TextureName(textureName)
-	, m_fRotate(rotate)
+	, m_fAngle(angle)
 	, m_fRotateSpeed(rotateSpeed)
 	, m_fElapsed(0.0f)
 {
@@ -37,7 +37,7 @@ CPlanet::CPlanet(std::string textureName, float boundingRadius, float rotate, fl
 
 bool CPlanet::init()
 {
-	//this->DrawDebugBinding();
+	//this->DrawDebugBinding();   //for debug
 	if (!initVariable())
 		return false;
 	return true;
@@ -114,4 +114,21 @@ void CPlanet::Execute(float delta)
 {
 	// 행성회전
 	//CCLOG("행성회전\n");
+}
+
+
+// callback 행성이 오른쪽으로 회전
+void CPlanet::RotationRight()
+{
+	m_fAngle = this->getRotation() + m_fRotateSpeed;
+	m_fAngle = static_cast<int>(m_fAngle) % 360;
+	this->setRotation(m_fAngle);
+}
+
+// callback 행성이 왼쪽으로 회전
+void CPlanet::RotationLeft()
+{
+	m_fAngle = this->getRotation() - m_fRotateSpeed;
+	m_fAngle = static_cast<int>(m_fAngle) % 360;
+	this->setRotation(m_fAngle);
 }

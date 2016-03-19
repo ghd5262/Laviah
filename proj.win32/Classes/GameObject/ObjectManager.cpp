@@ -76,5 +76,5 @@ void CObjectManager::Execute(float delta)
 	}
 
 	//m_Planet->Execute();
-	//m_Player->Execute();
+	m_Player->Execute(delta);
 }

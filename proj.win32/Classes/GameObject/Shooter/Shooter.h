@@ -105,7 +105,7 @@ namespace Shooter{
 
 
 	//--------------------------RandomMissile Shooter--------------------------
-	/* RandomShooter : 360도 사방에서 랜덤으로 미사일을 쏘는 패턴 미사일은 빠르다*/
+	/* RandomShooter : 360도 사방에서 랜덤으로 미사일을 쏘는 패턴, 미사일은 빠르다*/
 	class CRandomMissileShooter : public CEnemy {
 	public:
 		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.

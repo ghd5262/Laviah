@@ -7,7 +7,7 @@
 #include "../GameObject/Shooter/Shooter.h"
 #include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
-#include "../MyUI/HealthBar.h"
+#include "../MyUI/HealthBarUI.h"
 #include "../MyUI/BonusTimeUI.h"
 
 USING_NS_CC;
@@ -30,7 +30,7 @@ Scene* CGameScene::createScene()
 
 CGameScene::~CGameScene()
 {
-	CObjectManager::Instance()->RemoveAllObject();
+//	CObjectManager::Instance()->RemoveAllObject();
 	removeAllChildrenWithCleanup(true);
 }
 
@@ -53,8 +53,6 @@ bool CGameScene::initVariable()
 	{
 		m_GameScene = this;
 		
-		InitGameSceneUI();
-		
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 		Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -63,31 +61,33 @@ bool CGameScene::initVariable()
 			origin.y + visibleSize.height * 0.5f));
 		this->addChild(background);
 
-		auto planet = CPlanet::create("planet.png", 190.f, 0.0f, 5.0f);
-		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		m_Planet = CPlanet::create("planet.png", 170, 0.0f, 5.0f);
+		m_Planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.25f));
-		this->addChild(planet, 100);
+		this->addChild(m_Planet, 100);
 
-		planet->setOriginPos(planet->getPosition());
+		m_Planet->setOriginPos(m_Planet->getPosition());
 
-		auto player = CPlayer::create("player.png", 6.f, 0.0f, 5.0f);
-		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-			origin.y + visibleSize.height * 0.42f));
-		this->addChild(player, 100);
+		m_Player = CPlayer::create("player.png", 6.f, 0.0f, 5.0f, 100.f);
+		m_Player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+			origin.y + visibleSize.height * 0.4f));
+		this->addChild(m_Player, 100);
 
-		player->setOriginPos(player->getPosition());
+		m_Player->setOriginPos(m_Player->getPosition());
 
-		CObjectManager::Instance()->setM_Player(player);
-		CObjectManager::Instance()->setM_Planet(planet);
+		CObjectManager::Instance()->setM_Player(m_Player);
+		CObjectManager::Instance()->setM_Planet(m_Planet);
 		CPoolingManager::Instance()->CreateBulletList(300, 800);
 		CPoolingManager::Instance()->CreateEnemyList(5, 800);
-		RandomShoot(250.0f, 0.5f, 30);
+		//RandomShoot(250.0f, 0.5f, 30);
 		RandomMissileShoot(600.f, 10.0f, 2);
 		AimingMissileShoot(1200.0f, 15.0f);
 		//DoubleScrewShoot(250.0f, 0.1f, 1, LEFT);
-		//ScrewShoot(250.0f, 0.1f, 1, RIGHT);
+		ScrewShoot(250.0f, 0.1f, 1, RIGHT);
 
 		AudioEngine::play2d("sounds/bgm_1.mp3", true);
+
+		InitGameSceneUI();
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -122,9 +122,11 @@ void CGameScene::InitGameSceneUI()
 		"leftButton_1.png",
 		"leftButton_2.png",
 		EXECUTE,
-		[](){
-		CCLOG("EXECUTE LBUTTON");
-	});
+		std::bind(&CPlanet::RotationRight, m_Planet));// callback 등록
+
+	leftButton->AddState(EXECUTE,
+		std::bind(&CPlayer::RotationLeft, m_Player));// callback 등록
+
 	leftButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	leftButton->setPosition(Vec2(origin.x + visibleSize.width * 0.25f,
 		origin.x + visibleSize.height * 0.5f));
@@ -137,9 +139,10 @@ void CGameScene::InitGameSceneUI()
 		"RightButton_1.png",
 		"RightButton_2.png",
 		EXECUTE,
-		[](){
-		CCLOG("EXECUTE RBUTTON");
-	});
+		std::bind(&CPlanet::RotationLeft, m_Planet));// callback 등록
+
+	rightButton->AddState(EXECUTE,
+		std::bind(&CPlayer::RotationRight, m_Player));// callback 등록
 
 	rightButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	rightButton->setPosition(Vec2(origin.x + visibleSize.width * 0.75f,
@@ -149,7 +152,9 @@ void CGameScene::InitGameSceneUI()
 	if (!m_GameSceneUIManager->AddUIWithName(rightButton, "RButton"))
 		CCASSERT(false, "RBUTTON CAN NOT INIT");
 
-	auto healthBar = CHealthBar::create(30);
+	// player의 HealthCalFunc callback 등록
+	auto healthBar = CHealthBarUI::create(
+		std::bind(&CPlayer::HealthCalculatorInNormal, m_Player, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
 
 	healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	healthBar->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
@@ -159,15 +164,15 @@ void CGameScene::InitGameSceneUI()
 		CCASSERT(false, "HealthBar CAN NOT INIT");
 
 
-	leftButton->AddState(BEGIN,
+	/*leftButton->AddState(BEGIN,
 		[&](){
-		//static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->Hit(5.0f);
+		static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->Hit(5.0f);
 	});
 
 	rightButton->AddState(BEGIN,
 		[&](){
-		//static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->AddLife(5.0f);
-	});
+		static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->AddLife(5.0f);
+	});*/
 
 	auto bonusTime = CBonusTimeUI::create();
 	bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -195,16 +200,6 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	exit(0);
 #endif
-}
-
-void CGameScene::rightButtonCallback(cocos2d::Ref* pSender)
-{
-	CCLOG("RIGHT BUTTON SELECTED");
-}
-
-void CGameScene::leftButtonCallback(cocos2d::Ref* pSender)
-{
-	CCLOG("LEFT BUTTON SELECTED");
 }
 
 void CGameScene::update(float delta)

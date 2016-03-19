@@ -14,12 +14,14 @@ void CPoolingManager::DeleteAllMemory()
 {
 	for (auto enemy : m_EnemyList)
 	{
-		delete enemy;
+		delete[] enemy;
+		enemy = nullptr;
 	}
 
 	for (auto bullet : m_BulletList)
 	{
-		delete bullet;
+		delete[] bullet;
+		bullet = nullptr;
 	}
 	m_EnemyList.clear();
 	m_BulletList.clear();
