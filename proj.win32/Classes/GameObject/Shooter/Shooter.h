@@ -2,9 +2,9 @@
 #include "../Enemy.h"
 
 namespace Shooter{
-	enum SHOOTER_OPTION{
-		RIGHT = 0,
-		LEFT = 1
+	enum eSHOOTER_OPTION{
+		eSHOOTER_OPTION_right = 0,
+		eSHOOTER_OPTION_left = 1
 	};
 
 
@@ -39,20 +39,20 @@ namespace Shooter{
 	public:
 		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
 		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-		static CScrewShooter* create(float speed, float interval, int bulletCount, SHOOTER_OPTION direction);				// direction = Bullet 방향 : false = 시계방향
+		static CScrewShooter* create(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction);				// direction = Bullet 방향 : false = 시계방향
 		virtual void Execute(float delta) override;
 
 	private:
-		CScrewShooter(float speed, float interval, int bulletCount, SHOOTER_OPTION direction);
+		CScrewShooter(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction);
 		virtual ~CScrewShooter(){}
 
 	private:
 		int m_nBulletColor;
 		int m_nBulletCount;	// 한번에 쏘는 총알의 수
-		SHOOTER_OPTION m_Direction;
+		eSHOOTER_OPTION m_Direction;
 	};
 
-	void ScrewShoot(float speed = 250.0f, float interval = 0.1f, int bulletCount = 1, SHOOTER_OPTION direction = RIGHT);
+	void ScrewShoot(float speed = 250.0f, float interval = 0.1f, int bulletCount = 1, eSHOOTER_OPTION direction = eSHOOTER_OPTION_right);
 	//------------------------------------------------------------------
 
 
@@ -63,20 +63,20 @@ namespace Shooter{
 	public:
 		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
 		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-		static CDoubleScrewShooter* create(float speed, float interval, int bulletCount, SHOOTER_OPTION direction);				// direction = Bullet 방향 : false = 시계방향
+		static CDoubleScrewShooter* create(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction);				// direction = Bullet 방향 : false = 시계방향
 		virtual void Execute(float delta) override;
 
 	private:
-		CDoubleScrewShooter(float speed, float interval, int bulletCount, SHOOTER_OPTION direction);
+		CDoubleScrewShooter(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction);
 		virtual ~CDoubleScrewShooter(){}
 
 	private:
 		int m_nBulletColor;
 		int m_nBulletCount;	// 한번에 쏘는 총알의 수
-		SHOOTER_OPTION m_Direction;
+		eSHOOTER_OPTION m_Direction;
 	};
 
-	void DoubleScrewShoot(float speed = 250.0f, float interval = 0.1f, int bulletCount = 1, SHOOTER_OPTION direction = RIGHT);
+	void DoubleScrewShoot(float speed = 250.0f, float interval = 0.1f, int bulletCount = 1, eSHOOTER_OPTION direction = eSHOOTER_OPTION_right);
 	//------------------------------------------------------------------
 
 
@@ -141,5 +141,11 @@ namespace Shooter{
 	};
 
 	void AimingMissileShoot(float speed = 600.0f, float interval = 0.1f);
+	//------------------------------------------------------------------
+
+
+	//--------------------------BonusLetter Shooter--------------------------
+	/* BonusLetterShooter : 보너스타임을 할 수 있는 문자를 쏘는 슈터*/
+	void BonusLetterShoot(float speed = 100.0f, float interval = 0.1f, int maxBulletCount = 1);
 	//------------------------------------------------------------------
 }

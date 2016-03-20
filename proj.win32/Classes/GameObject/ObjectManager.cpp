@@ -27,29 +27,25 @@ void CObjectManager::AddEnemy(void* enemy)
 }
 
 
-/* bullet->removeAllChildren();	의 이유 :
-모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으며
-게임 종료 시 해당 메모리는 PoolingManager에서 해제한다.
-때문에 그전에 addChild된 메모리들을 해제해 주어야 하기 때문이다. */
+/* bullet->Delete() :
+게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해*/
 void CObjectManager::RemoveAllBullet()
 {											
 	for (auto bullet : m_BulletList)
 	{
-		if (bullet->HasChild())
-			bullet->removeAllChildren();
+		if (bullet->HasPointer()) 
+			bullet->Delete();
 	}
 }
 
-/* enemy->removeAllChildren();	의 이유 :
-모든 CMover객채 및 파생 객채는 Pooling된 메모리를 참조하고 있으며
-게임 종료 시 해당 메모리는 PoolingManager에서 해제한다.
-때문에 그전에 addChild된 메모리들을 해제해 주어야 하기 때문이다. */
+/* enemy->Delete() :
+게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해*/
 void CObjectManager::RemoveAllEnemy()
 {
 	for (auto enemy : m_EnemyList)
 	{						
-		if (enemy->HasChild())
-			enemy->removeAllChildren(); 
+		if (enemy->HasPointer())
+			enemy->Delete();
 	}
 }
 
@@ -77,4 +73,14 @@ void CObjectManager::Execute(float delta)
 
 	//m_Planet->Execute();
 	m_Player->Execute(delta);
+}
+
+void CObjectManager::RotationAllObject(float speed)
+{
+	for (auto bullet : m_BulletList)
+	{
+		if (bullet->IsAlive()) {
+			bullet->Rotation(speed);
+		}
+	}
 }

@@ -3,15 +3,15 @@
 #include "../GameObject/GameObject.h"
 
 enum eLETTER{
-	B = 0,
-	O = 1,
-	N = 2,
-	U = 3,
-	S = 4,
-	T = 5,
-	I = 6,
-	M = 7,
-	E = 8,
+	eLETTER_B = 0,
+	eLETTER_O = 1,
+	eLETTER_N = 2,
+	eLETTER_U = 3,
+	eLETTER_S = 4,
+	eLETTER_T = 5,
+	eLETTER_I = 6,
+	eLETTER_M = 7,
+	eLETTER_E = 8,
 
 	eLETTER_MAX
 };

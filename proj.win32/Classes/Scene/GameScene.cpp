@@ -30,7 +30,7 @@ Scene* CGameScene::createScene()
 
 CGameScene::~CGameScene()
 {
-//	CObjectManager::Instance()->RemoveAllObject();
+	CObjectManager::Instance()->RemoveAllObject();
 	removeAllChildrenWithCleanup(true);
 }
 
@@ -61,7 +61,7 @@ bool CGameScene::initVariable()
 			origin.y + visibleSize.height * 0.5f));
 		this->addChild(background);
 
-		m_Planet = CPlanet::create("planet.png", 170, 0.0f, 5.0f);
+		m_Planet = CPlanet::create("planet.png", 170, 0.0f, 2.0f);
 		m_Planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.25f));
 		this->addChild(m_Planet, 100);
@@ -75,19 +75,21 @@ bool CGameScene::initVariable()
 
 		m_Player->setOriginPos(m_Player->getPosition());
 
+		InitGameSceneUI();
+
 		CObjectManager::Instance()->setM_Player(m_Player);
 		CObjectManager::Instance()->setM_Planet(m_Planet);
 		CPoolingManager::Instance()->CreateBulletList(300, 800);
 		CPoolingManager::Instance()->CreateEnemyList(5, 800);
-		//RandomShoot(250.0f, 0.5f, 30);
+		RandomShoot(250.0f, 0.5f, 1);
 		RandomMissileShoot(600.f, 10.0f, 2);
 		AimingMissileShoot(1200.0f, 15.0f);
 		//DoubleScrewShoot(250.0f, 0.1f, 1, LEFT);
-		ScrewShoot(250.0f, 0.1f, 1, RIGHT);
+		//ScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_right);
 
 		AudioEngine::play2d("sounds/bgm_1.mp3", true);
 
-		InitGameSceneUI();
+		
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);

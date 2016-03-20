@@ -6,7 +6,8 @@
 #include "../Bullet/Bullets.h"
 #include "../../Scene/GameScene.h"
 #include "../../Task/PoolingManager.h"
-
+#include "../../MyUI/UIManager.h"
+#include "../../MyUI/BonusTimeUI.h"
 using namespace Shooter;
 
 //-------------------Random Shooter-------------------
@@ -40,7 +41,7 @@ void CRandomShooter::Execute(float delta) {
 			m_fShotAngle = random<float>(0.f, 360.f);
 			m_nBulletColor = random<int>(1, 2);
 			m_nBulletCount = random<int>(1, m_nMax);
-			CGameScene::getGameScene()->addChild(CBonusLetter::create(
+			CGameScene::getGameScene()->addChild(CNormalBullet::create(
 				"bullet_1.png",										//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도
@@ -59,18 +60,18 @@ void Shooter::RandomShoot(float speed/* = 250*/, float interval/* = 0.1f*/, int 
 
 
 //-------------------Screw Shooter--------------------
-CScrewShooter::CScrewShooter(float speed, float interval, int bulletCount, SHOOTER_OPTION direction)
+CScrewShooter::CScrewShooter(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction)
 	: CEnemy(interval, speed)
 	, m_Direction(direction)
 	, m_nBulletColor(random<int>(1, 2))
 	, m_nBulletCount(bulletCount){
-	if (direction == RIGHT)
+	if (direction == eSHOOTER_OPTION_right)
 		m_fShotAngle = 120.0f;
 	else
 		m_fShotAngle = 60.0f;
 };
 
-CScrewShooter* CScrewShooter::create(float speed, float interval, int bulletCount, SHOOTER_OPTION direction)
+CScrewShooter* CScrewShooter::create(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction)
 {
 	CScrewShooter* pRet = (CScrewShooter*)new(std::nothrow)CScrewShooter(speed, interval, bulletCount, direction);
 	if (pRet)
@@ -89,7 +90,7 @@ void CScrewShooter::Execute(float delta) {
 	m_fTime += delta;
 	if (m_fTime >= m_fInterval){
 		for (int count = 0; count < m_nBulletCount; count++){
-			if (m_Direction == RIGHT)
+			if (m_Direction == eSHOOTER_OPTION_right)
 				m_fShotAngle -= 9;
 			else
 				m_fShotAngle += 9;
@@ -106,25 +107,25 @@ void CScrewShooter::Execute(float delta) {
 	}
 }
 
-void Shooter::ScrewShoot(float speed/* = 250*/, float interval/* = 0.1f*/, int bulletCount/* = 1*/, SHOOTER_OPTION direction /*= RIGHT*/) {
+void Shooter::ScrewShoot(float speed/* = 250*/, float interval/* = 0.1f*/, int bulletCount/* = 1*/, eSHOOTER_OPTION direction /*= eSHOOTER_OPTION_right*/) {
 	CGameScene::getGameScene()->addChild(CScrewShooter::create(speed, interval, bulletCount, direction));
 }
 //----------------------------------------------------
 
 
 //-------------------DoubleScrew Shooter--------------------
-CDoubleScrewShooter::CDoubleScrewShooter(float speed, float interval, int bulletCount, SHOOTER_OPTION direction)
+CDoubleScrewShooter::CDoubleScrewShooter(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction)
 	: CEnemy(interval, speed)
 	, m_Direction(direction)
 	, m_nBulletColor(random<int>(1, 2))
 	, m_nBulletCount(bulletCount){
-	if (direction == RIGHT)
+	if (direction == eSHOOTER_OPTION_right)
 		m_fShotAngle = 120.0f;
 	else 
 		m_fShotAngle = 60.0f;
 };
 
-CDoubleScrewShooter* CDoubleScrewShooter::create(float speed, float interval, int bulletCount, SHOOTER_OPTION direction)
+CDoubleScrewShooter* CDoubleScrewShooter::create(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction)
 {
 	CDoubleScrewShooter* pRet = (CDoubleScrewShooter*)new(std::nothrow)CDoubleScrewShooter(speed, interval, bulletCount, direction);
 	if (pRet)
@@ -143,7 +144,7 @@ void CDoubleScrewShooter::Execute(float delta) {
 	m_fTime += delta;
 	if (m_fTime >= m_fInterval){
 		for (int count = 0; count < m_nBulletCount; count++){
-			if (m_Direction == RIGHT)
+			if (m_Direction == eSHOOTER_OPTION_right)
 				m_fShotAngle -= 9;
 			else
 				m_fShotAngle += 9;
@@ -166,7 +167,7 @@ void CDoubleScrewShooter::Execute(float delta) {
 	}
 }
 
-void Shooter::DoubleScrewShoot(float speed/* = 250*/, float interval/* = 0.1f*/, int bulletCount/* = 1*/, SHOOTER_OPTION direction /*= RIGHT*/) {
+void Shooter::DoubleScrewShoot(float speed/* = 250*/, float interval/* = 0.1f*/, int bulletCount/* = 1*/, eSHOOTER_OPTION direction /*= eSHOOTER_OPTION_right*/) {
 	CGameScene::getGameScene()->addChild(CDoubleScrewShooter::create(speed, interval, bulletCount, direction));
 }
 //----------------------------------------------------
@@ -196,7 +197,7 @@ CBarrierShooter* CBarrierShooter::create(float speed, float interval, int waySiz
 void CBarrierShooter::Execute(float delta) {
 	m_fTime += delta;
 	if (m_fTime >= m_fInterval){
-		/*if (m_Direction == RIGHT)
+		/*if (m_Direction == eSHOOTER_OPTION_right)
 			m_fShotAngle -= 9;
 		else
 			m_fShotAngle += 9;*/
@@ -297,13 +298,14 @@ CAimingMissileShooter* CAimingMissileShooter::create(float speed, float interval
 void CAimingMissileShooter::Execute(float delta) {
 	m_fTime += delta;
 	if (m_fTime >= m_fInterval){
+		BonusLetterShoot();
 		m_fShotAngle = random<float>(60.f, 120.f);
 		auto missile = CNormalMissile::create(
 			"missile_2.png",									//이미지 이름
 			5.f,												//충돌 범위
-			m_fShotAngle,										//초기 각도
+			90.f,												//초기 각도
 			m_fShotSpeed,										//속도
-			CObjectManager::Instance()->getM_Player(),			//타겟
+			CObjectManager::Instance()->getM_Planet(),			//타겟
 			true);												//조준미사일인지 여부 true = CrushShake 호출
 		CGameScene::getGameScene()->addChild(missile);
 
@@ -313,14 +315,31 @@ void CAimingMissileShooter::Execute(float delta) {
 			0.f,												//충돌 범위
 			90.f,												//초기 각도
 			0.f,												//속도
-			CObjectManager::Instance()->getM_Player(),			//타겟
-			missile));											//소유자
-
+			CObjectManager::Instance()->getM_Planet(),			//타겟
+			missile,											//소유자
+			true));
 		m_fTime = 0.f;
 	}
 }
 
 void Shooter::AimingMissileShoot(float speed/* = 600*/, float interval/* = 0.1f*/) {
 	CGameScene::getGameScene()->addChild(CAimingMissileShooter::create(speed, interval));
+}
+//----------------------------------------------------
+
+
+//-------------------BonusLetter Shooter-------------------
+void Shooter::BonusLetterShoot(float speed/* = 100*/, float interval/* = 0.1f*/, int maxBulletCount /* = 1*/) {
+	CBonusTimeUI* gameSceneUIManager = static_cast<CBonusTimeUI*>(CGameScene::getGameScene()->getGameSceneUIManager()->FindUIWithName("BonusTime"));
+	Vec2 targetPos = gameSceneUIManager->NonCollectedLetterWorldPos(); // 다음 알파벳의 월드 포지션
+	int letterNum = static_cast<int>(gameSceneUIManager->NonCollectedLetterNum()); // 다음 알파벳의 넘버
+	
+	float shotAngle = random<float>(0.f, 360.f);
+	CGameScene::getGameScene()->addChild(CBonusLetter::create(
+		MakeString("bonusLetter_%d.png", letterNum),	//이미지 이름
+		20.f,															//충돌 범위
+		shotAngle,														//초기 각도
+		speed,															//속도
+		CObjectManager::Instance()->getM_Planet()));					//타겟
 }
 //----------------------------------------------------

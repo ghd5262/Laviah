@@ -66,13 +66,9 @@ float CPlanet::noise(int x, int y) {
 	return (1.0 - ((n * ((n * n * 15731) + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
 }
 
-void CPlanet::CrushShake() {
+void CPlanet::CrushShake(float interval, float duration, float speed, float magnitude) {
 
 	//experiment more with these four values to get a rough or smooth effect!
-	float interval = 0.01f;
-	float duration = 0.5f;
-	float speed = 0.1f;
-	float magnitude = 5.0f;
 	m_fElapsed = 0.0f;
 	
 	this->schedule([=](float dt) {
@@ -112,8 +108,6 @@ void CPlanet::CrushShake() {
 
 void CPlanet::Execute(float delta)
 {
-	// 행성회전
-	//CCLOG("행성회전\n");
 }
 
 
@@ -123,6 +117,7 @@ void CPlanet::RotationRight()
 	m_fAngle = this->getRotation() + m_fRotateSpeed;
 	m_fAngle = static_cast<int>(m_fAngle) % 360;
 	this->setRotation(m_fAngle);
+	CObjectManager::Instance()->RotationAllObject(-m_fRotateSpeed);
 }
 
 // callback 행성이 왼쪽으로 회전
@@ -131,4 +126,5 @@ void CPlanet::RotationLeft()
 	m_fAngle = this->getRotation() - m_fRotateSpeed;
 	m_fAngle = static_cast<int>(m_fAngle) % 360;
 	this->setRotation(m_fAngle);
+	CObjectManager::Instance()->RotationAllObject(m_fRotateSpeed);
 }

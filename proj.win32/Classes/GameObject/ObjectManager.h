@@ -29,7 +29,8 @@ public:
 	void AddEnemy(void* enemy);			
 	void RemoveAllObject();				// 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllEnemy() 호출함
 	void Execute(float delta);
-	
+	void RotationAllObject(float angle);
+
 	//getter & setter
 	CPlanet* getM_Planet(){ return m_Planet; }
 	CPlayer* getM_Player(){ return m_Player; }

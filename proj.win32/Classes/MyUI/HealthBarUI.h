@@ -4,6 +4,7 @@
 * stratege pattern
 * 같은 캐릭터라도 다른 체력계산함수를 사용할 수 있도록 구현
 * 때문에 캐릭터에서 virtual 함수로 구현하지 않고 stratege pattern을 이용
+* 차후에 다른캐릭터로 이어달리기 등의 기능을 구현할때 용이함
 * (자세한 것은 player클래스 참조)
 * Lambda혹은 함수포인터, 함수객체를 인자로 받는다.
 * CHealthBarUI는 철저히 UI만 표현한다.

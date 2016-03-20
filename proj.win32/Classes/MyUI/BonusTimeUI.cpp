@@ -128,7 +128,7 @@ eLETTER CBonusTimeUI::NonCollectedLetterNum() const
 		if (!m_LetterList[letterNum]->getIsCollected())
 			return static_cast<eLETTER>(letterNum);
 	}
-	return static_cast<eLETTER>(letterNum);
+	return static_cast<eLETTER>(eLETTER_B);
 }
 
 Vec2 CBonusTimeUI::NonCollectedLetterWorldPos() const

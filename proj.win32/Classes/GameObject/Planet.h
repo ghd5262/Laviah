@@ -5,7 +5,7 @@ class CPlanet : public CGameObject {
 public:
 	static CPlanet* create(std::string textureName, float boundingRadius, float angle, float rotateSpeed);
 	
-	void CrushShake();
+	void CrushShake(float interval, float duration, float speed, float magnitude);
 	virtual void Execute(float delta = 0.f) override;
 
 	//callback
