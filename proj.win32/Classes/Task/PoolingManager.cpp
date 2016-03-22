@@ -107,19 +107,23 @@ void* CPoolingManager::EnemyNew()
 
 void CPoolingManager::Bullet_ReturnToFreeMemory(void* bullet)
 {
-	memset(bullet, 0, m_BulletSize + 1);			// memory 초기화 및 memory alive = false
+	static_cast<char*>(bullet)[m_BulletSize] = false;
+
+	//memset(bullet, 0, m_BulletSize + 1);			// memory 초기화 및 memory alive = false
 }
 
 void CPoolingManager::Enemy_ReturnToFreeMemory(void* enemy)
 {
-	memset(enemy, 0, m_EnemySize + 1);				// memory 초기화 및 memory alive = false
+	static_cast<char*>(enemy)[m_EnemySize] = false;
+	//memset(enemy, 0, m_EnemySize + 1);				// memory 초기화 및 memory alive = false
 }
 
 void CPoolingManager::Bullet_ReturnToFreeMemoryAll()
 {
 	for (auto bullet : m_BulletList)
 	{
-		memset(bullet, 0, m_BulletSize + 1);
+		bullet[m_BulletSize] = false;
+		//memset(bullet, 0, m_BulletSize + 1);
 	}
 }
 
@@ -127,6 +131,7 @@ void CPoolingManager::Enemy_ReturnToFreeMemoryAll()
 {
 	for (auto enemy : m_EnemyList)
 	{
-		memset(enemy, 0, m_EnemySize + 1);
+		enemy[m_EnemySize] = false;
+		//memset(enemy, 0, m_EnemySize + 1);
 	}
 }

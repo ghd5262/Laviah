@@ -110,21 +110,10 @@ void CPlanet::Execute(float delta)
 {
 }
 
-
-// callback 행성이 오른쪽으로 회전
-void CPlanet::RotationRight()
+// Dir -1 == Left, 1 == Right
+void CPlanet::Rotation(int dir)
 {
-	m_fAngle = this->getRotation() + m_fRotateSpeed;
+	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed);
 	m_fAngle = static_cast<int>(m_fAngle) % 360;
 	this->setRotation(m_fAngle);
-	CObjectManager::Instance()->RotationAllObject(-m_fRotateSpeed);
-}
-
-// callback 행성이 왼쪽으로 회전
-void CPlanet::RotationLeft()
-{
-	m_fAngle = this->getRotation() - m_fRotateSpeed;
-	m_fAngle = static_cast<int>(m_fAngle) % 360;
-	this->setRotation(m_fAngle);
-	CObjectManager::Instance()->RotationAllObject(m_fRotateSpeed);
 }

@@ -61,24 +61,22 @@ bool CGameScene::initVariable()
 			origin.y + visibleSize.height * 0.5f));
 		this->addChild(background);
 
-		m_Planet = CPlanet::create("planet.png", 170, 0.0f, 2.0f);
-		m_Planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		auto planet = CPlanet::create("planet.png", 170, 0.0f, 2.0f);
+		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.25f));
-		this->addChild(m_Planet, 100);
+		this->addChild(planet, 100);
 
-		m_Planet->setOriginPos(m_Planet->getPosition());
+		planet->setOriginPos(planet->getPosition());
 
-		m_Player = CPlayer::create("player.png", 6.f, 0.0f, 5.0f, 100.f);
-		m_Player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		auto player = CPlayer::create("player.png", 6.f, 0.0f, 5.0f, 100.f);
+		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.4f));
-		this->addChild(m_Player, 100);
+		this->addChild(player, 100);
 
-		m_Player->setOriginPos(m_Player->getPosition());
+		player->setOriginPos(player->getPosition());
 
-		InitGameSceneUI();
-
-		CObjectManager::Instance()->setM_Player(m_Player);
-		CObjectManager::Instance()->setM_Planet(m_Planet);
+		CObjectManager::Instance()->setM_Player(player);
+		CObjectManager::Instance()->setM_Planet(planet);
 		CPoolingManager::Instance()->CreateBulletList(300, 800);
 		CPoolingManager::Instance()->CreateEnemyList(5, 800);
 		RandomShoot(250.0f, 0.5f, 1);
@@ -87,9 +85,9 @@ bool CGameScene::initVariable()
 		//DoubleScrewShoot(250.0f, 0.1f, 1, LEFT);
 		//ScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_right);
 
-		AudioEngine::play2d("sounds/bgm_1.mp3", true);
+		InitGameSceneUI();
 
-		
+		AudioEngine::play2d("sounds/bgm_1.mp3", true);
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -101,9 +99,6 @@ bool CGameScene::initVariable()
 
 void CGameScene::InitGameSceneUI()
 {
-	m_GameSceneUIManager = CUIManager::create();
-	this->addChild(m_GameSceneUIManager);
-
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -120,68 +115,53 @@ void CGameScene::InitGameSceneUI()
 	menu->setPosition(Vec2::ZERO);
 	this->addChild(menu, 100);
 
+	// RotationObjectLeft callback 등록
 	auto leftButton = CMyButton::createWithTexture(
 		"leftButton_1.png",
 		"leftButton_2.png",
 		EXECUTE,
-		std::bind(&CPlanet::RotationRight, m_Planet));// callback 등록
-
-	leftButton->AddState(EXECUTE,
-		std::bind(&CPlayer::RotationLeft, m_Player));// callback 등록
+		std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -1));
 
 	leftButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	leftButton->setPosition(Vec2(origin.x + visibleSize.width * 0.25f,
 		origin.x + visibleSize.height * 0.5f));
 
 	this->addChild(leftButton, 101);
-	if (!m_GameSceneUIManager->AddUIWithName(leftButton, "LButton"))
+	if (!CUIManager::Instance()->AddUIWithName(leftButton, "LButton"))
 		CCASSERT(false, "LBUTTON CAN NOT INIT");
 
+	// RotationObjectRight callback 등록
 	auto rightButton = CMyButton::createWithTexture(
 		"RightButton_1.png",
 		"RightButton_2.png",
 		EXECUTE,
-		std::bind(&CPlanet::RotationLeft, m_Planet));// callback 등록
-
-	rightButton->AddState(EXECUTE,
-		std::bind(&CPlayer::RotationRight, m_Player));// callback 등록
+		std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), 1));
 
 	rightButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	rightButton->setPosition(Vec2(origin.x + visibleSize.width * 0.75f,
 		origin.x + visibleSize.height * 0.5f));
 
 	this->addChild(rightButton, 101);
-	if (!m_GameSceneUIManager->AddUIWithName(rightButton, "RButton"))
+	if (!CUIManager::Instance()->AddUIWithName(rightButton, "RButton"))
 		CCASSERT(false, "RBUTTON CAN NOT INIT");
 
 	// player의 HealthCalFunc callback 등록
 	auto healthBar = CHealthBarUI::create(
-		std::bind(&CPlayer::HealthCalculatorInNormal, m_Player, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
+		std::bind(&CPlayer::HealthCalculatorInNormal, CObjectManager::Instance()->getM_Player(), std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
 
 	healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	healthBar->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		origin.x + visibleSize.height * 0.95f));
 	this->addChild(healthBar, 100);
-	if (!m_GameSceneUIManager->AddUIWithName(healthBar, "HealthBar"))
+	if (!CUIManager::Instance()->AddUIWithName(healthBar, "HealthBar"))
 		CCASSERT(false, "HealthBar CAN NOT INIT");
-
-
-	/*leftButton->AddState(BEGIN,
-		[&](){
-		static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->Hit(5.0f);
-	});
-
-	rightButton->AddState(BEGIN,
-		[&](){
-		static_cast<CHealthBar*>(m_GameSceneUIManager->FindUIWithName("HealthBar"))->AddLife(5.0f);
-	});*/
 
 	auto bonusTime = CBonusTimeUI::create();
 	bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 	bonusTime->setPosition(Vec2(origin.x + visibleSize.width * 0.09f,
 		origin.x + visibleSize.height * 0.9f));
 	this->addChild(bonusTime, 100);
-	if (!m_GameSceneUIManager->AddUIWithName(bonusTime, "BonusTime"))
+	if (!CUIManager::Instance()->AddUIWithName(bonusTime, "BonusTime"))
 		CCASSERT(false, "BonusTime CAN NOT INIT");
 
 	auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
@@ -206,6 +186,6 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 
 void CGameScene::update(float delta)
 {
+	CUIManager::Instance()->Execute(delta);
 	CObjectManager::Instance()->Execute(delta);
-	m_GameSceneUIManager->Execute(delta);
 }

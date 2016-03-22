@@ -3,10 +3,25 @@
 #include "Planet.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Bullet/PlayItem.h"
 #include "Shooter/Shooter.h"
 #include "../Scene/GameScene.h"
+#include "../AI/States/ObjectStates.h"
+#include "../AI/States/BulletStates.h"
 
-CObjectManager::CObjectManager(){}
+CObjectManager::CObjectManager(){
+	m_pStateMachine = std::shared_ptr<CStateMachine<CObjectManager>>
+		(new CStateMachine<CObjectManager>(this), [](CStateMachine<CObjectManager>* fsm)
+	{
+		delete fsm;
+	});
+	if (m_pStateMachine != nullptr)
+	{
+		m_pStateMachine->setCurState(CNormalState::Instance());
+		m_pStateMachine->setPreState(CNormalState::Instance());
+		m_pStateMachine->ChangeState(CNormalState::Instance());
+	}
+}
 
 CObjectManager::~CObjectManager(){}
 
@@ -75,12 +90,23 @@ void CObjectManager::Execute(float delta)
 	m_Player->Execute(delta);
 }
 
-void CObjectManager::RotationAllObject(float speed)
+void CObjectManager::RotationObject(int dir)
 {
 	for (auto bullet : m_BulletList)
 	{
 		if (bullet->IsAlive()) {
-			bullet->Rotation(speed);
+			bullet->Rotation(dir);
 		}
 	}
+	m_Planet->Rotation(-dir);
+	m_Player->Rotation(dir);
+}
+
+void CObjectManager::PlayerGetItem(eITEM_FLAG itemType)
+{
+	m_CurrentItems |= itemType;
+
+	CGameScene::getGameScene()->scheduleOnce([this, itemType](float dt){
+		this->FinishItemTimer(itemType);
+	}, 10.0f, MakeString("Item_%d_Timer", static_cast<int>(itemType)));
 }

@@ -33,6 +33,7 @@ CPlayer::CPlayer(std::string textureName, float boundingRadius, float angle, flo
 	, m_fRotateSpeed(rotateSpeed)
 	, m_fMaxLife(maxLife)
 	, m_fLife(maxLife)
+	, m_fMagnetLimitRadius(200.f)
 {
 }
 
@@ -65,14 +66,14 @@ void CPlayer::Execute(float delta)
 {
 }
 
-void CPlayer::GotSomeHealth(float getHealth)
+void CPlayer::GotSomeHealth(float health)
 {
-	if (m_fMaxLife >= (m_fLife + getHealth))
+	if (m_fMaxLife >= (m_fLife + health))
 	{
 		m_fLife = m_fMaxLife;
 	}
 	else{
-		m_fLife += getHealth;
+		m_fLife += health;
 	}
 }
 
@@ -87,18 +88,10 @@ void CPlayer::LostSomeHealth(float loseHealth)
 	}
 }
 
-// callback 캐릭터 오른쪽으로 굴러감
-void CPlayer::RotationRight()
+// Dir -1 == Left, 1 == Right
+void CPlayer::Rotation(int dir)
 {
-	m_fAngle = this->getRotation() + m_fRotateSpeed;
-	m_fAngle = static_cast<int>(m_fAngle) % 360;
-	this->setRotation(m_fAngle);
-}
-
-// callback 캐릭터 왼쪽으로 굴러감
-void CPlayer::RotationLeft()
-{
-	m_fAngle = this->getRotation() - m_fRotateSpeed;
+	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed);
 	m_fAngle = static_cast<int>(m_fAngle) % 360;
 	this->setRotation(m_fAngle);
 }

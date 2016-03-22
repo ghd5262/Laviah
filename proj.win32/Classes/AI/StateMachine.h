@@ -7,11 +7,16 @@ class CStateMachine
 public:
 	void Execute() const;
 	void ChangeState(CState<T>* pNewState);
-	
+	void setStateToPreState();
+
 	///getter & setter
-	const CState<T>* getM_curState() const;
-	const CState<T>* getM_preState() const;
-	const CState<T>* getM_globalState() const;
+	void setCurState(CState<T>* newState){ m_pCurrentState = newState; }
+	void setPreState(CState<T>* newState){ m_pPreviousState = newState; }
+	void setGlobalState(CState<T>* newState){ m_pGlobalState = newState; }
+
+	const CState<T>* getCurState() const;
+	const CState<T>* getPreState() const;
+	const CState<T>* getGlobalState() const;
 
 	CStateMachine(T* Owner) : m_pOwner(nullptr),
 		m_pCurrentState(nullptr),
@@ -28,10 +33,20 @@ private:
 };
 
 template <class T>
+void CStateMachine<T>::setStateToPreState()
+{
+	if (m_pCurrentState != nullptr)
+		m_pCurrentState->Exit(m_pOwner);
+	m_pCurrentState = m_pPreviousState;
+	m_pCurrentState->Enter(m_pOwner);
+}
+
+template <class T>
 void CStateMachine<T>::ChangeState(CState<T>* pNewState)
 {
 	if (m_pCurrentState != nullptr)
 		m_pCurrentState->Exit(m_pOwner);
+	m_pPreviousState = m_pCurrentState;
 	m_pCurrentState = pNewState;
 	m_pCurrentState->Enter(m_pOwner);
 }
@@ -46,19 +61,19 @@ void CStateMachine<T>::Execute() const
 }
 
 template <class T>
-const CState<T>* CStateMachine<T>::getM_curState() const
+const CState<T>* CStateMachine<T>::getCurState() const
 {
 	return m_pCurrentState;
 }
 
 template <class T>
-const CState<T>* CStateMachine<T>::getM_preState() const
+const CState<T>* CStateMachine<T>::getPreState() const
 {
 	return m_pPreviousState;
 }
 
 template <class T>
-const CState<T>* CStateMachine<T>::getM_globalState() const
+const CState<T>* CStateMachine<T>::getGlobalState() const
 {
 	return m_pGlobalState;
 }

@@ -1,20 +1,10 @@
 #include "UIManager.h"
+#include "../GameObject/GameObject.h"
 
-
-CUIManager* CUIManager::create()
+CUIManager* CUIManager::Instance()
 {
-	CUIManager *pRet = new(std::nothrow) CUIManager();
-	if (pRet && pRet->init())
-	{
-		pRet->autorelease();
-		return pRet;
-	}
-	else
-	{
-		delete pRet;
-		pRet = NULL;
-		return NULL;
-	}
+	static CUIManager instance;
+	return &instance;
 }
 
 bool CUIManager::AddUIWithName(CGameObject* ui, std::string name)

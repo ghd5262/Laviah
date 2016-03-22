@@ -16,7 +16,6 @@ public:
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
-	const CUIManager* getGameSceneUIManager() const { return m_GameSceneUIManager; }
 protected:
 	virtual bool init() override;
 
@@ -27,7 +26,4 @@ private:
 
 private:
 	static CGameScene* m_GameScene;
-	CUIManager* m_GameSceneUIManager;
-	CPlanet* m_Planet;
-	CPlayer* m_Player;
 };

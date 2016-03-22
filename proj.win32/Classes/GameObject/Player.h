@@ -10,12 +10,11 @@ class CPlayer : public CGameObject {
 public:
 	static CPlayer* create(std::string textureName, float boundingRadius, float angle, float rotateSpeed, float maxLife);
 	virtual void Execute(float delta = 0.f) override;
-	void GotSomeHealth(float getHealth);
+	void GotSomeHealth(float health);
 	void LostSomeHealth(float loseHealth);
-
+	void Rotation(int dir);
+	
 	//callback
-	void RotationRight();
-	void RotationLeft();
 	float HealthCalculatorInNormal(float delta);	// 평소에 적용되는 생명력 계산함수
 	float HealthCalculatorInBonusTime(float delta); // 보너스 타임에 적용되는 생명력 계산함수
 	
@@ -33,6 +32,7 @@ protected:
 	CC_SYNTHESIZE(float, m_fLife, Life);
 	CC_SYNTHESIZE(float, m_fMaxLife, MaxLife);
 	CC_SYNTHESIZE(float, m_fLevel, Level);
+	CC_SYNTHESIZE(float, m_fMagnetLimitRadius, MagnetLimitRadius);
 
 private:
 	CPlayer(std::string textureName, float boundingRadius, float rotate, float rotateSpeed, float maxLife);

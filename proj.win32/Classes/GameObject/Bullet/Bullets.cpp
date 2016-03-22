@@ -1,5 +1,6 @@
 ﻿#include "Bullets.h"
 #include "../ObjectManager.h"
+#include "../Player.h"
 #include "../Planet.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/BonusTimeUI.h"
@@ -81,9 +82,11 @@ CTargetMark::CTargetMark(
 	float angle,				    //bullet 초기 각도 
 	float speed,				    //bullet 초기 속도
 	CGameObject* target,		    //bullet 타겟 위치
-	CBullet* owner)					//소유 bullet
+	CBullet* owner,					//소유 bullet
+	bool isAiming)					//조준 미사일 여부
 	: CBullet(textureName, boundingRadius, angle, speed, target)
 	, m_OwnerBullet(owner)
+	, m_bIsAimingMissile(isAiming)
 {
 	m_ScreenRect = Rect(0, 0, 720, 1280);
 	setPositionX((cos(CC_DEGREES_TO_RADIANS(angle)) * (target->getBRadius() + 20)) + target->getPosition().x);
@@ -97,9 +100,10 @@ CTargetMark* CTargetMark::create(
 	float angle,					//bullet 초기 각도 
 	float speed,					//bullet 초기 속도
 	CGameObject* target,			//bullet 타겟 위치
-	CBullet* owner)					//소유 bullet
+	CBullet* owner,					//소유 bullet
+	bool isAiming)					//조준 미사일 여부
 {
-	CTargetMark* pRet = (CTargetMark*)new(std::nothrow)CTargetMark(textureName, boundingRadius, angle, speed, target, owner);
+	CTargetMark* pRet = (CTargetMark*)new(std::nothrow)CTargetMark(textureName, boundingRadius, angle, speed, target, owner, isAiming);
 	if (pRet && pRet->init())
 	{
 		return pRet;
@@ -136,6 +140,19 @@ bool CTargetMark::initVariable()
 	return true;
 }
 
+void CTargetMark::Rotation(float speed)
+{
+	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
+	if (true == m_bIsAimingMissile){
+		if (!m_ScreenRect.containsPoint(m_OwnerBullet->getPosition()))
+		{
+			return;
+		}
+	}
+
+	CBullet::Rotation(speed);
+}
+
 void CTargetMark::Execute(float delta)
 {
 	if (!m_OwnerBullet->IsAlive())		// 이것 이외의 OwnerBullet을 사용하는 곳이 있으면 안된다.. 사실상 이 코드도 이미 메모리 블럭으로 되돌아간 bullet의 Alive이다.
@@ -150,6 +167,7 @@ void CTargetMark::Execute(float delta)
 
 
 
+
 CNormalMissile::CNormalMissile(
 	std::string textureName,	    //bullet 이미지
 	float boundingRadius,		    //bullet 충돌 범위
@@ -160,6 +178,7 @@ CNormalMissile::CNormalMissile(
 	: CBullet(textureName, boundingRadius, angle, speed, target)
 	, m_bIsAimingMissile(isAiming)
 {
+	m_ScreenRect = Rect(0, 0, 720, 1280);
 	setPositionX((cos(CC_DEGREES_TO_RADIANS(angle)) * 2500.f) + target->getPosition().x);
 	setPositionY((sin(CC_DEGREES_TO_RADIANS(angle)) * 2500.f) + target->getPosition().y);
 	setRotation(-angle);
@@ -208,8 +227,23 @@ bool CNormalMissile::initVariable()
 	return true;
 }
 
+
+void CNormalMissile::Rotation(float speed)
+{
+	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
+	if (true == m_bIsAimingMissile){
+		if (!m_ScreenRect.containsPoint(getPosition()))
+		{
+			return;
+		}
+	}
+
+	CBullet::Rotation(speed);
+}
+
 void CNormalMissile::Execute(float delta)
 {
+	//m_FSM->Execute();
 	Vec2 dir = m_Target->getPosition() - getPosition();
 	dir.normalize();
 	dir *= (m_fBulletSpeed * delta);
@@ -219,10 +253,13 @@ void CNormalMissile::Execute(float delta)
 	if (IsHit(m_Target))
 	{
 		if (true == m_bIsAimingMissile){
-			CObjectManager::Instance()->getM_Planet()->CrushShake();
+			CObjectManager::Instance()->getM_Planet()->CrushShake(
+				0.01f, 0.5f, 0.1f, 5.0f);
 			AudioEngine::play2d("sounds/explosion_2.mp3", false);
 		}
 		else {
+			CObjectManager::Instance()->getM_Planet()->CrushShake(
+				0.01f, 0.3f, 0.1f, 3.0f);
 			AudioEngine::play2d("sounds/explosion_1.mp3", false);
 		}
 
@@ -241,10 +278,11 @@ CBonusLetter::CBonusLetter(
 	CGameObject* target)		    //bullet 타겟 위치
 	: CBullet(textureName, boundingRadius, angle, speed, target)
 	, m_GameSceneUIManager(nullptr)
+	, m_bPlayerGet(false)
 {
 	setPositionX((cos(CC_DEGREES_TO_RADIANS(angle)) * 1000.f) + target->getPosition().x);
 	setPositionY((sin(CC_DEGREES_TO_RADIANS(angle)) * 1000.f) + target->getPosition().y);
-	setRotation(-angle);
+	setRotation(-angle + 90);
 }
 
 CBonusLetter* CBonusLetter::create(
@@ -281,7 +319,7 @@ bool CBonusLetter::initVariable()
 			(CGameScene::getGameScene()->getGameSceneUIManager()->FindUIWithName("BonusTime"));
 		m_TargetPos = m_GameSceneUIManager->NonCollectedLetterWorldPos();
 		m_LetterNum = m_GameSceneUIManager->NonCollectedLetterNum();
-
+		m_Player = CObjectManager::Instance()->getM_Player();
 
 		m_pTexture = Sprite::create(m_TextureName);
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
@@ -295,6 +333,16 @@ bool CBonusLetter::initVariable()
 	return true;
 }
 
+void CBonusLetter::Rotation(float speed)
+{
+	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
+	if (true == m_bPlayerGet){
+		return;
+	}
+
+	CBullet::Rotation(speed);
+}
+
 void CBonusLetter::Execute(float delta)
 {
 	Vec2 dir = m_Target->getPosition() - getPosition();
@@ -303,8 +351,10 @@ void CBonusLetter::Execute(float delta)
 
 	setPosition(getPosition() + dir);
 
-	if (IsHit(m_Target))
+	if (IsHit(m_Player))
 	{
+		AudioEngine::play2d("sounds/Star_2.mp3", false);
+		m_bPlayerGet = true;
 		this->setAlive(false);
 
 		ccBezierConfig bezier;
@@ -318,7 +368,7 @@ void CBonusLetter::Execute(float delta)
 			bezierTo1,
 			ScaleBy::create(0.5f, 4),
 			CallFunc::create([&](){
-			
+
 			m_GameSceneUIManager->CollectLetter(m_LetterNum);
 			this->scheduleOnce([=](float dt){
 				this->ReturnToMemoryBlock();
@@ -329,5 +379,9 @@ void CBonusLetter::Execute(float delta)
 
 		auto textureAction = FadeOut::create(2.0f);
 		m_pTexture->runAction(textureAction);
+	}
+	else if (IsHit(m_Target))
+	{
+		ReturnToMemoryBlock();
 	}
 }

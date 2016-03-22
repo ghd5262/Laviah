@@ -8,9 +8,7 @@ public:
 	void CrushShake(float interval, float duration, float speed, float magnitude);
 	virtual void Execute(float delta = 0.f) override;
 
-	//callback
-	void RotationRight();
-	void RotationLeft();
+	void Rotation(int dir);
 
 	//getter & setter
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }

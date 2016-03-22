@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include "../Common/HSHUtility.h"
+
 
 /*------------------------------ObjectManager 클래스설명----------------------------------
 *
@@ -15,6 +17,7 @@ class CEnemy;
 class CBullet;
 class CPlanet;
 class CPlayer;
+enum eITEM_FLAG;
 
 class CObjectManager
 {
@@ -29,7 +32,17 @@ public:
 	void AddEnemy(void* enemy);			
 	void RemoveAllObject();				// 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllEnemy() 호출함
 	void Execute(float delta);
-	void RotationAllObject(float angle);
+
+	void PlayerGetItem(eITEM_FLAG itemType);
+
+	//현재 적용되는 아이템이 맞는지 검사
+	int getCurrentItem(){ return m_CurrentItems; }
+
+	//아이템 타이머 종료
+	void FinishItemTimer(eITEM_FLAG itemType){ m_CurrentItems ^= itemType; }
+
+	//callback
+	void RotationObject(int dir);
 
 	//getter & setter
 	CPlanet* getM_Planet(){ return m_Planet; }
@@ -48,5 +61,8 @@ private:
 	std::vector<CEnemy*> m_EnemyList;
 	CPlanet* m_Planet;
 	CPlayer* m_Player;
+
+	// 현재 플레이어가 획득하여 적용되고 있는 아이템
+	int m_CurrentItems;
 };
 

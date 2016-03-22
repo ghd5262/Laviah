@@ -45,8 +45,7 @@ void CRandomShooter::Execute(float delta) {
 				"bullet_1.png",										//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도
-				m_fShotSpeed,										//속도
-				CObjectManager::Instance()->getM_Planet()));		//타겟
+				m_fShotSpeed));										//속도
 
 			m_fTime = 0.f;
 		}
@@ -98,8 +97,7 @@ void CScrewShooter::Execute(float delta) {
 				"bullet_1.png",										//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도
-				m_fShotSpeed,										//속도
-				CObjectManager::Instance()->getM_Planet()));		//타겟
+				m_fShotSpeed));										//속도
 
 			m_fShotAngle = static_cast<int>(m_fShotAngle) % 360;
 			m_fTime = 0.f;
@@ -152,15 +150,13 @@ void CDoubleScrewShooter::Execute(float delta) {
 				"bullet_1.png",										//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도
-				m_fShotSpeed,										//속도
-				CObjectManager::Instance()->getM_Planet()));		//타겟
+				m_fShotSpeed));										//속도
 
 			CGameScene::getGameScene()->addChild(CNormalBullet::create(
 				"bullet_1.png",										//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle + 180,									//초기 각도
-				m_fShotSpeed,										//속도
-				CObjectManager::Instance()->getM_Planet()));		//타겟
+				m_fShotSpeed));										//속도
 
 			m_fTime = 0.f;
 		}
@@ -205,8 +201,7 @@ void CBarrierShooter::Execute(float delta) {
 			MakeString("bullet_%d.png", m_nBulletColor),		//이미지 이름
 			5.f,												//충돌 범위
 			m_fShotAngle,										//초기 각도
-			m_fShotSpeed,										//속도
-			CObjectManager::Instance()->getM_Planet()));		//타겟
+			m_fShotSpeed));										//속도
 
 		m_fTime = 0.f;
 	}
@@ -250,8 +245,7 @@ void CRandomMissileShooter::Execute(float delta) {
 				"missile_1.png",									//이미지 이름
 				5.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도
-				m_fShotSpeed,										//속도
-				CObjectManager::Instance()->getM_Planet());			//타겟
+				m_fShotSpeed);										//속도
 			CGameScene::getGameScene()->addChild(missile);
 
 
@@ -260,7 +254,6 @@ void CRandomMissileShooter::Execute(float delta) {
 				0.f,												//충돌 범위
 				m_fShotAngle,										//초기 각도
 				0.f,												//속도
-				CObjectManager::Instance()->getM_Planet(),			//타겟
 				missile));											//소유자
 
 			m_fTime = 0.f;
@@ -299,13 +292,13 @@ void CAimingMissileShooter::Execute(float delta) {
 	m_fTime += delta;
 	if (m_fTime >= m_fInterval){
 		BonusLetterShoot();
+		PlayItemShoot();
 		m_fShotAngle = random<float>(60.f, 120.f);
 		auto missile = CNormalMissile::create(
 			"missile_2.png",									//이미지 이름
 			5.f,												//충돌 범위
 			90.f,												//초기 각도
 			m_fShotSpeed,										//속도
-			CObjectManager::Instance()->getM_Planet(),			//타겟
 			true);												//조준미사일인지 여부 true = CrushShake 호출
 		CGameScene::getGameScene()->addChild(missile);
 
@@ -315,7 +308,6 @@ void CAimingMissileShooter::Execute(float delta) {
 			0.f,												//충돌 범위
 			90.f,												//초기 각도
 			0.f,												//속도
-			CObjectManager::Instance()->getM_Planet(),			//타겟
 			missile,											//소유자
 			true));
 		m_fTime = 0.f;
@@ -330,16 +322,39 @@ void Shooter::AimingMissileShoot(float speed/* = 600*/, float interval/* = 0.1f*
 
 //-------------------BonusLetter Shooter-------------------
 void Shooter::BonusLetterShoot(float speed/* = 100*/, float interval/* = 0.1f*/, int maxBulletCount /* = 1*/) {
-	CBonusTimeUI* gameSceneUIManager = static_cast<CBonusTimeUI*>(CGameScene::getGameScene()->getGameSceneUIManager()->FindUIWithName("BonusTime"));
+	CBonusTimeUI* gameSceneUIManager = static_cast<CBonusTimeUI*>(CUIManager::Instance()->FindUIWithName("BonusTime"));
 	Vec2 targetPos = gameSceneUIManager->NonCollectedLetterWorldPos(); // 다음 알파벳의 월드 포지션
 	int letterNum = static_cast<int>(gameSceneUIManager->NonCollectedLetterNum()); // 다음 알파벳의 넘버
 	
 	float shotAngle = random<float>(0.f, 360.f);
 	CGameScene::getGameScene()->addChild(CBonusLetter::create(
-		MakeString("bonusLetter_%d.png", letterNum),	//이미지 이름
+		MakeString("bonusLetter_%d.png", letterNum),					//이미지 이름
+		20.f,															//충돌 범위
+		shotAngle,														//초기 각도
+		speed));														//속도
+}
+//----------------------------------------------------
+
+
+//-------------------BonusLetter Shooter-------------------
+void Shooter::PlayItemShoot(float speed/* = 100*/, float interval/* = 0.1f*/, int maxBulletCount /* = 1*/) {
+
+	float shotAngle = random<float>(0.f, 360.f);
+	int itemNum = random<int>(0, static_cast<int>(eITEM_TYPE_MAX - 1));
+
+	CGameScene::getGameScene()->addChild(CPlayItem::create(
+		MakeString("playItem_%d.png", itemNum),							//이미지 이름
 		20.f,															//충돌 범위
 		shotAngle,														//초기 각도
 		speed,															//속도
-		CObjectManager::Instance()->getM_Planet()));					//타겟
+		itemNum,														//item type
+		true));															//fly Item 여부
+	CGameScene::getGameScene()->addChild(CPlayItem::create(
+		MakeString("playItem_%d.png", itemNum),							//이미지 이름
+		20.f,															//충돌 범위
+		shotAngle,														//초기 각도
+		speed,															//속도
+		itemNum,														//item type
+		false));														//fly Item 여부
 }
 //----------------------------------------------------
