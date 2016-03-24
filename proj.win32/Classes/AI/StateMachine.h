@@ -5,7 +5,7 @@ template <class T>
 class CStateMachine
 {
 public:
-	void Execute() const;
+	void Execute(float delta) const;
 	void ChangeState(CState<T>* pNewState);
 	void setStateToPreState();
 
@@ -52,12 +52,12 @@ void CStateMachine<T>::ChangeState(CState<T>* pNewState)
 }
 
 template <class T>
-void CStateMachine<T>::Execute() const
+void CStateMachine<T>::Execute(float delta) const
 {
 	if (m_pGlobalState != nullptr)
-		m_pGlobalState->Execute(m_pOwner);
+		m_pGlobalState->Execute(m_pOwner, delta);
 	if (m_pCurrentState != nullptr)
-		m_pCurrentState->Execute(m_pOwner);
+		m_pCurrentState->Execute(m_pOwner, delta);
 }
 
 template <class T>

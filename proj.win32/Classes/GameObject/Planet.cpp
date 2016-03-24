@@ -1,6 +1,6 @@
 #include "Planet.h"
-#include "ObjectManager.h"
 #include "Player.h"
+#include "ObjectManager.h"
 
 CPlanet* CPlanet::create(
 	std::string textureName,

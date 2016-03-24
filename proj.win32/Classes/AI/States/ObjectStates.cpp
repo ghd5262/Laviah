@@ -10,7 +10,7 @@ CNormalState* CNormalState::Instance(){
 }
 
 void CNormalState::Enter(CObjectManager* objectMng){
-	//objectMng->AddEnemy("RandomShoot", )
+	//objectMng->AddShooter("RandomShoot", )
 }
 
 void CNormalState::Execute(CObjectManager* objectMng, float delta){

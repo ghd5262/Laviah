@@ -1,5 +1,8 @@
 #include "BonusLetter.h"
-#include "PlayItem.h"
+#include "../ObjectManager.h"
+#include "../Planet.h"
+#include "../Player.h"
+#include "../ItemManager.h"
 #include "../../MyUI/BonusTimeUI.h"
 #include "../../MyUI/UIManager.h"
 
@@ -48,7 +51,7 @@ bool CBonusLetter::init()
 bool CBonusLetter::initVariable()
 {
 	try{
-		setItemEffect(eITEM_TYPE_magnet);
+		setItemEffect(eITEM_FLAG_magnet);
 
 		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * 1000.f) + m_pPlanet->getPosition().x);
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * 1000.f) + m_pPlanet->getPosition().y);

@@ -1,17 +1,17 @@
 #include "GameScene.h"
 #include "../Task/PoolingManager.h"
-#include "../GameObject/Bullet.h"
 #include "../GameObject/Planet.h"
 #include "../GameObject/Player.h"
 #include "../GameObject/ObjectManager.h"
-#include "../GameObject/Shooter/Shooter.h"
+#include "../GameObject/Shooter/ShooterHeaders.h"
+#include "../GameObject/Bullet/Bullet.h"
 #include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/HealthBarUI.h"
 #include "../MyUI/BonusTimeUI.h"
 
 USING_NS_CC;
-using namespace Shooter;
+
 CGameScene* CGameScene::m_GameScene = nullptr;
 Scene* CGameScene::createScene()
 {
@@ -77,13 +77,13 @@ bool CGameScene::initVariable()
 
 		CObjectManager::Instance()->setM_Player(player);
 		CObjectManager::Instance()->setM_Planet(planet);
-		CPoolingManager::Instance()->CreateBulletList(300, 800);
-		CPoolingManager::Instance()->CreateEnemyList(5, 800);
-		RandomShoot(250.0f, 0.5f, 1);
+		CPoolingManager::Instance()->CreateBulletList(500, 800);
+		CPoolingManager::Instance()->CreateShooterList(5, 800);
+		RandomShoot(250.0f, 0.5f, 300);
 		RandomMissileShoot(600.f, 10.0f, 2);
 		AimingMissileShoot(1200.0f, 15.0f);
-		//DoubleScrewShoot(250.0f, 0.1f, 1, LEFT);
-		//ScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_right);
+		DoubleScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_left);
+		ScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_right);
 
 		InitGameSceneUI();
 

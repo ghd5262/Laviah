@@ -1,21 +1,18 @@
 ﻿#pragma once
 
-#include "Mover.h"
-#include "SteeringBehaviors.h"
-#include "ObjectManager.h"
-#include "Planet.h"
-#include "Player.h"
-#include "../Common/HSHUtility.h"
-#include "../AI/StateMachine.h"
+#include "../Mover.h"
+#include "../../Common/HSHUtility.h"
+#include "../../AI/StateMachine.h"
 
-enum eITEM_TYPE;
+class CPlayer;
+class CPlanet;
+enum eITEM_FLAG;
 class CBullet : public CMover {
 public:
 	virtual void ReturnToMemoryBlock() override;
 	virtual void Rotation(int dir);
 
-	CSteeringBehaviors* getSteeringBehavior(){ return m_SteeringBehavior.get(); }
-	CStateMachine<CBullet>* getFSM(){ return m_FSM.get(); }
+	CStateMachine<CBullet>* getFSM(){ return m_FSM; }
 
 	virtual void CollisionWithPlayer(){}
 	virtual void CollisionWithPlanet(){}
@@ -41,9 +38,8 @@ protected:
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fAngle, Angle);
 	CC_SYNTHESIZE(float, m_fBulletSpeed, BulletSpeed);
-	CC_SYNTHESIZE(float, m_fMaxForce, MaxForce);
 	CC_SYNTHESIZE(float, m_fRotationSpeed, RotationSpeed);
-	CC_SYNTHESIZE(Vec2, m_VelocityVec, VelocityVec);
+	CC_SYNTHESIZE(Vec2, m_TargetVec, TargetVec);
 	CC_SYNTHESIZE(Vec2, m_RotationVec, RotationVec);
 	CC_SYNTHESIZE(CPlayer*, m_pPlayer, Player);
 	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
@@ -51,13 +47,15 @@ protected:
 	// 목표지점으로 이동 후 커지면서 FadeOut 
 	// 이펙트가 끝나면 오브젝트가 삭제됨
 	void BezierWithScale(Vec2 targetPos, Vec2 controlPoint_1, Vec2 controlPoint_2, float time, float scale);
+	
+	// 조종행동 - 찾기
+	void Seek(float delta);
 
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
 
 protected:
-	std::shared_ptr<CSteeringBehaviors> m_SteeringBehavior;
-	std::shared_ptr<CStateMachine<CBullet>> m_FSM;
+	CStateMachine<CBullet>* m_FSM;
 	std::string m_TextureName;
 	Sprite* m_pTexture;
 

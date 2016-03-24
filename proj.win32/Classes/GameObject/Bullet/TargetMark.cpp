@@ -1,4 +1,7 @@
 #include "TargetMark.h"
+#include "../ObjectManager.h"
+#include "../Planet.h"
+#include "../Player.h"
 
 CTargetMark::CTargetMark(
 	std::string textureName,	    //bullet ÀÌ¹ÌÁö

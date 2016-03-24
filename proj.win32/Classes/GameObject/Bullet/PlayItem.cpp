@@ -1,4 +1,8 @@
 #include "PlayItem.h"
+#include "../ObjectManager.h"
+#include "../Planet.h"
+#include "../Player.h"
+#include "../ItemManager.h"
 #include "../../AI/States/ObjectStates.h"
 
 CPlayItem::CPlayItem(
@@ -13,7 +17,7 @@ CPlayItem::CPlayItem(
 	boundingRadius,
 	angle,
 	speed)
-	, m_ItemType(static_cast<eITEM_FLAG>(1 << itemType))	// eITEM_TYPE에서 eITEM_FLAG 로 변환
+	, m_ItemType(static_cast<eITEM_FLAG>(0x0004))	// eITEM_TYPE에서 eITEM_FLAG 로 변환
 	, m_bIsFlyItem(isFly)
 	, m_bPlayerGet(false)
 {}
@@ -70,8 +74,8 @@ bool CPlayItem::initVariable()
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		addChild(m_pTexture);
 
-		m_Player = CObjectManager::Instance()->getM_Player();
-		m_TargetPos = m_Player->getPosition();
+		//m_Player = CObjectManager::Instance()->getM_Player();
+		m_TargetPos = m_pPlayer->getPosition();
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -116,5 +120,5 @@ void CPlayItem::CollisionWithPlayer()
 		0.5f,
 		2.0f);
 	
-	CObjectManager::Instance()->PlayerGetItem(m_ItemType);
+	CItemManager::Instance()->StartItemTimer(m_ItemType);
 }

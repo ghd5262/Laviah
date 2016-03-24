@@ -1,5 +1,5 @@
 #pragma once
-#include "../Bullet.h"
+#include "Bullet.h"
 
 class CGameObject;
 class CBonusTimeUI;

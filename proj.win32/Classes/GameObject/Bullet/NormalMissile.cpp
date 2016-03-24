@@ -1,5 +1,8 @@
 #include "NormalMissile.h"
-#include "PlayItem.h"
+#include "../ObjectManager.h"
+#include "../Planet.h"
+#include "../Player.h"
+#include "../ItemManager.h"
 
 CNormalMissile::CNormalMissile(
 	std::string textureName,	    //bullet ¿ÃπÃ¡ˆ

@@ -12,10 +12,10 @@ CPoolingManager::~CPoolingManager()
 
 void CPoolingManager::DeleteAllMemory()
 {
-	for (auto enemy : m_EnemyList)
+	for (auto shooter : m_ShooterList)
 	{
-		delete[] enemy;
-		enemy = nullptr;
+		delete[] shooter;
+		shooter = nullptr;
 	}
 
 	for (auto bullet : m_BulletList)
@@ -23,7 +23,7 @@ void CPoolingManager::DeleteAllMemory()
 		delete[] bullet;
 		bullet = nullptr;
 	}
-	m_EnemyList.clear();
+	m_ShooterList.clear();
 	m_BulletList.clear();
 }
 
@@ -52,20 +52,15 @@ void CPoolingManager::CreateBulletList(size_t count, size_t size)
 	}
 }
 
-void CPoolingManager::CreateItemList(size_t count, size_t size)
+void CPoolingManager::CreateShooterList(size_t count, size_t size)
 {
-
-}
-
-void CPoolingManager::CreateEnemyList(size_t count, size_t size)
-{
-	m_EnemySize = size;
-	m_EnemyList.reserve(m_EnemySize);
+	m_ShooterSize = size;
+	m_ShooterList.reserve(m_ShooterSize);
 	while (count--)
 	{
-		MEMORYBLOCK memBlock = NewMemoryBlock(m_EnemySize);		// 하나의 크기가 size만큼의 메모리 블럭을 
-		m_EnemyList.emplace_back(memBlock);						// count만큼 생성한다.
-		CObjectManager::Instance()->AddEnemy(memBlock);
+		MEMORYBLOCK memBlock = NewMemoryBlock(m_ShooterSize);		// 하나의 크기가 size만큼의 메모리 블럭을 
+		m_ShooterList.emplace_back(memBlock);						// count만큼 생성한다.
+		CObjectManager::Instance()->AddShooter(memBlock);
 	}
 }
 
@@ -87,19 +82,19 @@ void* CPoolingManager::BulletNew()
 	return memBlock;
 }
 
-void* CPoolingManager::EnemyNew()
+void* CPoolingManager::ShooterNew()
 {
-	for (auto enemy : m_EnemyList)
+	for (auto shooter : m_ShooterList)
 	{
-		if (false == enemy[m_EnemySize]) {
-			enemy[m_EnemySize] = true;
-			return enemy;
+		if (false == shooter[m_ShooterSize]) {
+			shooter[m_ShooterSize] = true;
+			return shooter;
 		}
 	}
-	CCLOG("ENEMY LIST OVERFLOWED");
-	MEMORYBLOCK memBlock = NewMemoryBlock(m_EnemySize);
-	m_EnemyList.emplace_back(memBlock);
-	CObjectManager::Instance()->AddEnemy(memBlock);
+	CCLOG("SHOOTER LIST OVERFLOWED");
+	MEMORYBLOCK memBlock = NewMemoryBlock(m_ShooterSize);
+	m_ShooterList.emplace_back(memBlock);
+	CObjectManager::Instance()->AddShooter(memBlock);
 	memBlock[m_BulletSize] = true;	// 메모리를 사용 중 상태로 전환
 
 	return memBlock;
@@ -112,10 +107,10 @@ void CPoolingManager::Bullet_ReturnToFreeMemory(void* bullet)
 	//memset(bullet, 0, m_BulletSize + 1);			// memory 초기화 및 memory alive = false
 }
 
-void CPoolingManager::Enemy_ReturnToFreeMemory(void* enemy)
+void CPoolingManager::Shooter_ReturnToFreeMemory(void* shooter)
 {
-	static_cast<char*>(enemy)[m_EnemySize] = false;
-	//memset(enemy, 0, m_EnemySize + 1);				// memory 초기화 및 memory alive = false
+	static_cast<char*>(shooter)[m_ShooterSize] = false;
+	//memset(shooter, 0, m_ShooterSize + 1);				// memory 초기화 및 memory alive = false
 }
 
 void CPoolingManager::Bullet_ReturnToFreeMemoryAll()
@@ -127,11 +122,11 @@ void CPoolingManager::Bullet_ReturnToFreeMemoryAll()
 	}
 }
 
-void CPoolingManager::Enemy_ReturnToFreeMemoryAll()
+void CPoolingManager::Shooter_ReturnToFreeMemoryAll()
 {
-	for (auto enemy : m_EnemyList)
+	for (auto shooter : m_ShooterList)
 	{
-		enemy[m_EnemySize] = false;
-		//memset(enemy, 0, m_EnemySize + 1);
+		shooter[m_ShooterSize] = false;
+		//memset(shooter, 0, m_ShooterSize + 1);
 	}
 }

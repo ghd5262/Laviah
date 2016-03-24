@@ -12,6 +12,7 @@ public:
 	virtual void Execute(float delta = 0.f) override;
 	void GotSomeHealth(float health);
 	void LostSomeHealth(float loseHealth);
+	void GiantMode();
 	void Rotation(int dir);
 	
 	//callback

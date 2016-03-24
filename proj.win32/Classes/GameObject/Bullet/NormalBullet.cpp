@@ -1,5 +1,8 @@
 #include "NormalBullet.h"
-#include "PlayItem.h"
+#include "../ObjectManager.h"
+#include "../Planet.h"
+#include "../Player.h"
+#include "../ItemManager.h"
 
 CNormalBullet::CNormalBullet(
 	std::string textureName,	    //bullet ¿ÃπÃ¡ˆ

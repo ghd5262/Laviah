@@ -1,155 +1,43 @@
 #pragma once
-#include "../Enemy.h"
+#include "../Mover.h"
 
-namespace Shooter{
-	enum eSHOOTER_OPTION{
-		eSHOOTER_OPTION_right = 0,
-		eSHOOTER_OPTION_left = 1
-	};
+enum eSHOOTER_OPTION{
+	eSHOOTER_OPTION_right = 0,
+	eSHOOTER_OPTION_left = 1
+};
 
+class CShooter : public CMover {
+public:
+	virtual void ReturnToMemoryBlock() override;
+	
+protected:
+	// PoolingManager에서 메모리를 할당 받는다.
+	void* operator new (size_t size, const std::nothrow_t);
 
-	//--------------------------Random Shooter--------------------------
-	/* RandomShooter : 360도 사방에서 랜덤으로 총알을 쏘는 패턴*/
-	class CRandomShooter : public CEnemy {
-	public:
-		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
-		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-		static CRandomShooter* create(float speed, float interval, int maxBulletCount);						// interval = Bullet 생성 간격
-		virtual void Execute(float delta) override;
+	// 실제 메모리 해제는 memorypooling에서 담당하지만 
+	// 소멸자를 호출하여 Node계열이 아닌 메모리들을 삭제하기 위함
+	void operator delete(void* ptr){};
 
-	private:
-		CRandomShooter(float speed, float interval, int maxBulletCount);
-		virtual ~CRandomShooter(){}
+	CShooter(float interval, float shotSpeed, int bulletCountAtOneShoot)
+		: CMover(0.0f)
+		, m_fShotSpeed(shotSpeed)
+		, m_fShotAngle(0.0f)
+		, m_fTime(0.0f)
+		, m_fInterval(interval)
+		, m_fIntervalRandom(0.0f)
+		, m_nBulletCountAtOneShoot(bulletCountAtOneShoot)
+		, m_nBulletCountAtOnceRandom(0){}
+	virtual ~CShooter();
 
-	private:
-		float m_fRandomInterval;
-		int m_nBulletColor;
-		int m_nMax;			// 한번에 쏘는 총알의 수 max값
-		int m_nBulletCount;	// 한번에 쏘는 총알의 수
-	};
+	//getter & setter
+	CC_SYNTHESIZE(float, m_fShotSpeed, ShotSpeed);//총알의 속도
+	CC_SYNTHESIZE(float, m_fShotAngle, ShotAngle);//총알을 쏘는 각도
+	CC_SYNTHESIZE(float, m_fTime, Time);//시간
+	CC_SYNTHESIZE(float, m_fInterval, Interval);//총알을 쏘는 간격 max값
+	CC_SYNTHESIZE(float, m_fIntervalRandom, IntervalRandom);//총알을 쏘는 간격 0.1 ~ Max 사이 값
+	CC_SYNTHESIZE(int, m_nBulletCountAtOneShoot, BulletCountAtOneShoot);// 한번에 쏘는 총알의 수 max값
+	CC_SYNTHESIZE(int, m_nBulletCountAtOnceRandom, BulletCountAtOnceRandom);// 한번에 쏘는 총알의 수 1 ~ Max 사이 값
 
-	void RandomShoot(float speed = 250.0f, float interval = 0.1f, int maxBulletCount = 1);
-	//------------------------------------------------------------------
-
-
-	//--------------------------Screw Shooter--------------------------
-	/* ScrewShooter : 시계방향, 반시계방향으로 돌면서 쏘는 패턴*/
-	class CScrewShooter : public CEnemy {
-
-	public:
-		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
-		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-		static CScrewShooter* create(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction);				// direction = Bullet 방향 : false = 시계방향
-		virtual void Execute(float delta) override;
-
-	private:
-		CScrewShooter(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction);
-		virtual ~CScrewShooter(){}
-
-	private:
-		int m_nBulletColor;
-		int m_nBulletCount;	// 한번에 쏘는 총알의 수
-		eSHOOTER_OPTION m_Direction;
-	};
-
-	void ScrewShoot(float speed = 250.0f, float interval = 0.1f, int bulletCount = 1, eSHOOTER_OPTION direction = eSHOOTER_OPTION_right);
-	//------------------------------------------------------------------
-
-
-	//--------------------------DoubleScrew Shooter--------------------------
-	/* DoubleScrewShooter : 더블로 시계방향, 반시계방향으로 돌면서 쏘는 패턴*/
-	class CDoubleScrewShooter : public CEnemy {
-
-	public:
-		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
-		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-		static CDoubleScrewShooter* create(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction);				// direction = Bullet 방향 : false = 시계방향
-		virtual void Execute(float delta) override;
-
-	private:
-		CDoubleScrewShooter(float speed, float interval, int bulletCount, eSHOOTER_OPTION direction);
-		virtual ~CDoubleScrewShooter(){}
-
-	private:
-		int m_nBulletColor;
-		int m_nBulletCount;	// 한번에 쏘는 총알의 수
-		eSHOOTER_OPTION m_Direction;
-	};
-
-	void DoubleScrewShoot(float speed = 250.0f, float interval = 0.1f, int bulletCount = 1, eSHOOTER_OPTION direction = eSHOOTER_OPTION_right);
-	//------------------------------------------------------------------
-
-
-	//--------------------------Barrier Shooter--------------------------
-	/* BarrierShooter : 탄막사이에 길이 있는 패턴*/
-	class CBarrierShooter : public CEnemy {
-
-	public:
-		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
-		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-		static CBarrierShooter* create(float speed, float interval, int waySize);				// waySize = 길의 크기
-		virtual void Execute(float delta) override;
-
-	private:
-		CBarrierShooter(float speed, float interval, int waySize);
-		virtual ~CBarrierShooter(){}
-
-	private:
-		int m_nBulletColor;
-		int m_nWaySize;			// 탄막사이에 존재하는 길의 크기 1당 총알 한개크기
-		char* m_BarrierSize;	// 탄막의 크기
-	};
-
-	void BarrierShoot(float speed = 250.0f, float interval = 0.1f, int waySize = 10);
-	//------------------------------------------------------------------
-
-
-	//--------------------------RandomMissile Shooter--------------------------
-	/* RandomShooter : 360도 사방에서 랜덤으로 미사일을 쏘는 패턴, 미사일은 빠르다*/
-	class CRandomMissileShooter : public CEnemy {
-	public:
-		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
-		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-		static CRandomMissileShooter* create(float speed, float interval, int maxBulletCount);						// interval = Bullet 생성 간격
-		virtual void Execute(float delta) override;
-
-	private:
-		CRandomMissileShooter(float speed, float interval, int maxBulletCount);
-		virtual ~CRandomMissileShooter(){}
-
-	private:
-		int m_nMax;			// 한번에 쏘는 총알의 수 max값
-		int m_nBulletCount;	// 한번에 쏘는 총알의 수
-	};
-
-	void RandomMissileShoot(float speed = 600.0f, float interval = 0.1f, int maxBulletCount = 1);
-	//------------------------------------------------------------------
-
-
-	//--------------------------AimingMissile Shooter--------------------------
-	/* AimingMissileShooter : 캐릭터를 조준하고 미사일을 쏘는 패턴*/
-	class CAimingMissileShooter : public CEnemy {
-	public:
-		/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
-		받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-		static CAimingMissileShooter* create(float speed, float interval);						// interval = Bullet 생성 간격
-		virtual void Execute(float delta) override;
-
-	private:
-		CAimingMissileShooter(float speed, float interval);
-		virtual ~CAimingMissileShooter(){}
-	};
-
-	void AimingMissileShoot(float speed = 600.0f, float interval = 0.1f);
-	//------------------------------------------------------------------
-
-
-	//--------------------------BonusLetter Shooter--------------------------
-	/* BonusLetterShooter : 보너스타임을 할 수 있는 문자를 쏘는 슈터*/
-	void BonusLetterShoot(float speed = 100.0f, float interval = 0.1f, int maxBulletCount = 1);
-	//------------------------------------------------------------------
-
-	/* BonusLetterShooter : 보너스타임을 할 수 있는 문자를 쏘는 슈터*/
-	void PlayItemShoot(float speed = 100.0f, float interval = 0.1f, int maxBulletCount = 1);
-	//------------------------------------------------------------------
-}
+		
+			
+};

@@ -1,5 +1,5 @@
 #include "SteeringBehaviors.h"
-#include "Bullet.h"
+#include "Bullet/Bullet.h"
 #include <WinDef.h>
 
 CSteeringBehaviors::CSteeringBehaviors(CBullet* bullet)
@@ -13,20 +13,21 @@ Vec2 CSteeringBehaviors::CalculateBehaviorVector()
 {
 	// 현재의 조종힘을 기반으로 계산하여 벡터값을 반환해줌
 	m_steeringVec = Vec2(0, 0);
-	m_steeringVec = sumForces();
-	if (m_steeringVec.length() > m_pOwner->getMaxForce())
-		m_steeringVec.normalize();
+	//m_steeringVec = sumForces();
+	//if (m_steeringVec.length() > m_pOwner->getMaxForce())
+	//	m_steeringVec.normalize();
 	return m_steeringVec;
 }
 
 Vec2 CSteeringBehaviors::seek(Vec2 target)
 {
 	// 조종행동 찾기
-	Vec2 velocity = target - m_pOwner->getPosition();
+	/*Vec2 velocity = target - m_pOwner->getPosition();
 	Vec2 desiredVelocity = velocity.getNormalized()
 		* m_pOwner->getBulletSpeed();
 
-	return (desiredVelocity - m_pOwner->getVelocityVec());
+	return (desiredVelocity - m_pOwner->getVelocityVec());*/
+	return Vec2(0, 0);
 }
 
 Vec2 CSteeringBehaviors::arrive(Vec2 target, eDECELERATION deceleration)
@@ -54,7 +55,7 @@ Vec2 CSteeringBehaviors::arrive(Vec2 target, eDECELERATION deceleration)
 		//of calculating its length: dist. 
 		Vec2 DesiredVelocity = toTarget * speed / dist;
 
-		return (DesiredVelocity - m_pOwner->getVelocityVec());
+		//return (DesiredVelocity - m_pOwner->getVelocityVec());
 	}
 
 	return Vec2(0, 0);
@@ -71,14 +72,14 @@ bool CSteeringBehaviors::accumulateForce(Vec2 &steeringForce, Vec2 forceToAdd)
 {
 	// 조종힘 계산 함수
 	double magnitudeSoFar = steeringForce.length();
-	double magnitudeRemaining = m_pOwner->getMaxForce() - magnitudeSoFar; // 남은힘
+	//double magnitudeRemaining = m_pOwner->getMaxForce() - magnitudeSoFar; // 남은힘
 
-	if (magnitudeRemaining <= 0.0f) return false;
+	//if (magnitudeRemaining <= 0.0f) return false;
 
 	double magnitudeToAdd = forceToAdd.length();
 
-	if (magnitudeToAdd > magnitudeRemaining)
-		magnitudeToAdd = magnitudeRemaining;
+	//if (magnitudeToAdd > magnitudeRemaining)
+	//	magnitudeToAdd = magnitudeRemaining;
 
 	steeringForce += (forceToAdd.getNormalized() * magnitudeToAdd);
 

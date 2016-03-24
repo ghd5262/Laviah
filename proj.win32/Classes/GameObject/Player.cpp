@@ -96,6 +96,11 @@ void CPlayer::Rotation(int dir)
 	this->setRotation(m_fAngle);
 }
 
+void CPlayer::GiantMode()
+{
+
+}
+
 // callback 평소에 적용되는 생명력 계산함수
 float CPlayer::HealthCalculatorInNormal(float delta)
 {

@@ -1,7 +1,11 @@
 ﻿#include "Bullet.h"
-#include "Bullet/PlayItem.h"
-#include "../Task/PoolingManager.h"
-#include "../AI/States/BulletStates.h"
+#include "../ItemManager.h"
+#include "../../Task/PoolingManager.h"
+#include "../../GameObject/ObjectManager.h"
+#include "../../GameObject/Planet.h"
+#include "../../GameObject/Player.h"
+#include "../../AI/States/BulletStates.h"
+
 CBullet::CBullet(
 	std::string textureName,	    //bullet 이미지
 	float boundingRadius,		    //bullet 충돌 범위
@@ -13,23 +17,14 @@ CBullet::CBullet(
 	, m_fBulletSpeed(speed)
 	, m_pTexture(nullptr)
 	, m_fRotationSpeed(2.0f)
-	, m_fMaxForce(1.0f)
-	, m_EffectItemType(eITEM_FLAG_none)
+	, m_EffectItemTypes(eITEM_FLAG_none)
 	, m_pPlayer(CObjectManager::Instance()->getM_Player())
 	, m_pPlanet(CObjectManager::Instance()->getM_Planet())
+	, m_TargetVec(CObjectManager::Instance()->getM_Planet()->getPosition())
 {
-	if (m_SteeringBehavior == nullptr){
-		m_SteeringBehavior = std::shared_ptr<CSteeringBehaviors>(new CSteeringBehaviors(this), [](CSteeringBehaviors* steeringbehavior)
-		{
-			delete steeringbehavior;
-		});
-	}
-
+	// bullet이 초기화 될때마다 매번 생성하지 않는다.
 	if (m_FSM == nullptr){
-		m_FSM = std::shared_ptr<CStateMachine<CBullet>>(new CStateMachine<CBullet>(this), [](CStateMachine<CBullet>* fsm)
-		{
-			delete fsm;
-		});
+		m_FSM = new CStateMachine<CBullet>(this);
 	}
 	if (m_FSM != nullptr){
 		m_FSM->ChangeState(CBulletNormal::Instance());
@@ -37,7 +32,8 @@ CBullet::CBullet(
 }
 
 CBullet::~CBullet(){
-
+	if (m_FSM != nullptr)
+		delete m_FSM;
 }
 
 void* CBullet::operator new(size_t size, const std::nothrow_t)
@@ -66,6 +62,7 @@ void CBullet::Rotation(int dir)
 	Vec2 beforeRotation = getPosition() - m_pPlanet->getPosition();
 	float length = beforeRotation.length();
 
+	// 회전행렬
 	m_RotationVec = Vec2((float)((beforeRotation.x * cos(radian)) - (beforeRotation.y * sin(radian))),
 		(float)((beforeRotation.x * sin(radian)) + (beforeRotation.y * cos(radian))));
 	m_RotationVec.normalize();
@@ -96,4 +93,12 @@ void CBullet::BezierWithScale(Vec2 targetPos, Vec2 controlPoint_1, Vec2 controlP
 	this->runAction(action);
 	auto textureAction = FadeOut::create(2.0f);
 	m_pTexture->runAction(textureAction);
+}
+
+void CBullet::Seek(float delta)
+{
+	Vec2 dir = m_TargetVec - getPosition();
+	dir.normalize();
+	dir *= (m_fBulletSpeed * delta);
+	setPosition(getPosition() + dir);
 }
