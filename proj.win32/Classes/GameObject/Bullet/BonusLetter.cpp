@@ -98,9 +98,8 @@ void CBonusLetter::CollisionWithPlanet()
 void CBonusLetter::CollisionWithPlayer()
 {
 	AudioEngine::play2d("sounds/Star_2.mp3", false);
-	setAlive(false);
 	m_bPlayerGet = true;
 	m_pUIManager->CollectLetter(m_LetterNum);
 
-	BezierWithScale(m_TargetPos, Vec2(100, 100), Vec2(80, 800), 1.0f, 4.0f);
+	R_BezierWithScale(m_TargetPos, Vec2(100, 100), Vec2(80, 800), 1.0f, 4.0f);
 }

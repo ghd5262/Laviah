@@ -18,6 +18,8 @@ public:
 	virtual void Rotation(int dir) override;
 	virtual void CollisionWithPlayer();
 	virtual void CollisionWithPlanet();
+	virtual void ChangeToCoin();
+	virtual void ChangeToStar();
 
 protected:
 	virtual bool init() override;

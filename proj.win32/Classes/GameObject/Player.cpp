@@ -1,14 +1,17 @@
 #include "Player.h"
+#include "../AI/States/PlayerStates.h"
 
 CPlayer* CPlayer::create(
-	std::string textureName,
+	std::string normalTextureName,
+	std::string giantTextureName,
 	float boundingRadius,
 	float angle,
 	float rotateSpeed, 
 	float maxLife)
 {
 	CPlayer *pRet = new(std::nothrow) CPlayer(
-		textureName
+		normalTextureName
+		, giantTextureName
 		, boundingRadius
 		, angle
 		, rotateSpeed
@@ -26,9 +29,17 @@ CPlayer* CPlayer::create(
 	}
 }
 
-CPlayer::CPlayer(std::string textureName, float boundingRadius, float angle, float rotateSpeed, float maxLife)
+CPlayer::CPlayer(
+	std::string normalTextureName,
+	std::string giantTextureName,
+	float boundingRadius,
+	float angle,
+	float rotateSpeed,
+	float maxLife)
+
 	: CGameObject(boundingRadius)
-	, m_TextureName(textureName)
+	, m_NormalTextureName(normalTextureName)
+	, m_GiantTextureName(giantTextureName)
 	, m_fAngle(angle)
 	, m_fRotateSpeed(rotateSpeed)
 	, m_fMaxLife(maxLife)
@@ -48,9 +59,15 @@ bool CPlayer::init()
 bool CPlayer::initVariable()
 {
 	try{
-		m_pTexture = Sprite::create(m_TextureName);
+		m_FSM = new CStateMachine<CPlayer>(this);
+		if (m_FSM != nullptr){
+			m_FSM->ChangeState(CPlayerNormal::Instance());
+		}
+
+		m_pTexture = Sprite::create(m_NormalTextureName);
 		if (m_pTexture != nullptr){
 			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+			m_pTexture->setScale(0.5f);
 			addChild(m_pTexture);
 		}
 	}
@@ -64,6 +81,7 @@ bool CPlayer::initVariable()
 
 void CPlayer::Execute(float delta)
 {
+	m_FSM->Execute(delta);
 }
 
 void CPlayer::GotSomeHealth(float health)
@@ -98,7 +116,24 @@ void CPlayer::Rotation(int dir)
 
 void CPlayer::GiantMode()
 {
+	auto action = Sequence::create(
+		ScaleTo::create(0.5f, 3.0f),
+		CallFunc::create([&](){
+		this->m_pTexture->setTexture(m_GiantTextureName);
+		this->setBRadius(60.f);
+	}), nullptr);
+	this->runAction(action);
+}
 
+void CPlayer::NormalMode()
+{
+	auto action = Sequence::create(
+		ScaleTo::create(0.5f, 1.0f),
+		CallFunc::create([&](){
+		this->m_pTexture->setTexture(m_NormalTextureName);
+		this->setBRadius(6.f);
+	}), nullptr);
+	this->runAction(action);
 }
 
 // callback 평소에 적용되는 생명력 계산함수

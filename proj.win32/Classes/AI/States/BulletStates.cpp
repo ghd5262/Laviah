@@ -1,7 +1,6 @@
 #include "BulletStates.h"
 #include "../../GameObject/Planet.h"
 #include "../../GameObject/Player.h"
-#include "../../GameObject/SteeringBehaviors.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/Bullet/Bullet.h"
@@ -26,15 +25,17 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 
 	bullet->setPosition(bullet->getPosition() + bullet->getVelocityVec());*/
 
-	bullet->Seek(delta);
+	if (true == bullet->getIsFlyItem())
+		bullet->Seek(delta);
+
+	if (bullet->IsHit(bullet->getPlayer()))
+	{
+		bullet->CollisionWithPlayer();
+	}
 
 	if (bullet->IsHit(bullet->getPlanet()))
 	{
 		bullet->CollisionWithPlanet();
-	}
-	else if (bullet->IsHit(bullet->getPlayer()))
-	{
-		bullet->CollisionWithPlayer();
 	}
 
 	switch (bullet->getItemEffect() & CItemManager::Instance()->getCurrentItem())
@@ -49,11 +50,11 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 	}break;
 	case eITEM_FLAG_coin:
 	{
-
+		bullet->ChangeToCoin();
 	}break;
 	case eITEM_FLAG_star:
 	{
-
+		bullet->ChangeToStar();
 	}break;
 	case eITEM_FLAG_giant:
 	{
@@ -120,8 +121,8 @@ void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 	bullet->setVelocityVec(SteeringForce * (bullet->getBulletSpeed() * delta));
 
 	bullet->setPosition(bullet->getPosition() + bullet->getVelocityVec());*/
-	
-	bullet->Seek(delta);
+	if (true == bullet->getIsFlyItem())
+		bullet->Seek(delta);
 
 	if (bullet->IsHit(bullet->getPlayer()))
 	{

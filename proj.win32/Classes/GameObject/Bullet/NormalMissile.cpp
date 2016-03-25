@@ -117,5 +117,17 @@ void CNormalMissile::CollisionWithPlayer()
 		AudioEngine::play2d("sounds/explosion_1.mp3", false);
 	}
 
+	R_BezierWithRotation(Vec2(920, 1580), Vec2(350, 900), Vec2(450, 1200), 0.5f);
+
+	//ReturnToMemoryBlock();
+}
+
+void CNormalMissile::ChangeToCoin()
+{
+	ReturnToMemoryBlock();
+}
+
+void CNormalMissile::ChangeToStar()
+{
 	ReturnToMemoryBlock();
 }

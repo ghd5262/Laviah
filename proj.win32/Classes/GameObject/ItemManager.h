@@ -24,13 +24,31 @@ enum eITEM_FLAG{
 	eITEM_FLAG_bonustime = 0x0040,	//== eITEM_TYPE_bonustime = 6,
 };
 
+enum eCOIN_TYPE{
+	eCOIN_TYPE_bronze = 0,
+	eCOIN_TYPE_silver = 1,
+	eCOIN_TYPE_gold = 2,
+	eCOIN_TYPE_bigSilver = 3,
+	eCOIN_TYPE_bigGold = 4,
+
+	eCOIN_TYPE_MAX
+};
+
+enum eSTAR_TYPE{
+	eSTAR_TYPE_bronze = 0,
+	eSTAR_TYPE_silver = 1,
+	eSTAR_TYPE_gold = 2,
+	eSTAR_TYPE_bigSilver = 3,
+	eSTAR_TYPE_bigGold = 4,
+
+	eSTAR_TYPE_MAX
+};
+
 class CItemManager
 {
 public:
 	static CItemManager* Instance();
 	void Execute(float delta);
-
-	
 
 	//현재 돌아가는 타이머 반환(플래그 형식)
 	int getCurrentItem(){ return m_CurrentItems; }
@@ -41,12 +59,16 @@ public:
 	//아이템 타이머 종료
 	void FinishItemTimer(eITEM_FLAG itemType){ m_CurrentItems ^= itemType; }
 
+	float getValueOfCoin(eCOIN_TYPE type) { return m_ValueOfCoin[type]; }
+	float getValueOfStar(eSTAR_TYPE type) { return m_ValueOfStar[type]; }
 private:
-	CItemManager(){};
+	CItemManager();
 	~CItemManager(){};
 
 private:
 	// 현재 플레이어가 획득하여 적용되고 있는 아이템
 	int m_CurrentItems;
+	float m_ValueOfCoin[eCOIN_TYPE_MAX];
+	float m_ValueOfStar[eSTAR_TYPE_MAX];
 };
 

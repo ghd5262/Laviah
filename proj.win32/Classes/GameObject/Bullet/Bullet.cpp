@@ -10,7 +10,8 @@ CBullet::CBullet(
 	std::string textureName,	    //bullet 이미지
 	float boundingRadius,		    //bullet 충돌 범위
 	float angle,				    //bullet 초기 각도 
-	float speed)				    //bullet 초기 속도
+	float speed,				    //bullet 초기 속도
+	bool isFly/* = true*/)			//Fly Bullet 인지여부
 	: CMover(boundingRadius)
 	, m_TextureName(textureName)
 	, m_fAngle(angle)
@@ -18,6 +19,7 @@ CBullet::CBullet(
 	, m_pTexture(nullptr)
 	, m_fRotationSpeed(2.0f)
 	, m_EffectItemTypes(eITEM_FLAG_none)
+	, m_bIsFlyItem(isFly)
 	, m_pPlayer(CObjectManager::Instance()->getM_Player())
 	, m_pPlanet(CObjectManager::Instance()->getM_Planet())
 	, m_TargetVec(CObjectManager::Instance()->getM_Planet()->getPosition())
@@ -72,8 +74,9 @@ void CBullet::Rotation(int dir)
 	setRotation(getRotation() - (dir * m_fRotationSpeed));
 }
 
-void CBullet::BezierWithScale(Vec2 targetPos, Vec2 controlPoint_1, Vec2 controlPoint_2, float time, float scale)
+void CBullet::R_BezierWithScale(Vec2 targetPos, Vec2 controlPoint_1, Vec2 controlPoint_2, float time, float scale)
 {
+	setAlive(false);
 	ccBezierConfig bezier;
 	bezier.controlPoint_1 = Vec2(controlPoint_1);
 	bezier.controlPoint_2 = Vec2(controlPoint_2);
@@ -88,10 +91,48 @@ void CBullet::BezierWithScale(Vec2 targetPos, Vec2 controlPoint_1, Vec2 controlP
 
 		this->scheduleOnce([=](float dt){
 			this->ReturnToMemoryBlock();
-		}, 1.0f, "Sequence");
+		}, 1.0f, "BezierWithScale");
 	}), nullptr);
 	this->runAction(action);
 	auto textureAction = FadeOut::create(2.0f);
+	m_pTexture->runAction(textureAction);
+}
+
+void CBullet::R_BezierWithRotation(Vec2 targetPos, Vec2 controlPoint_1, Vec2 controlPoint_2, float time)
+{
+	setAlive(false);
+	ccBezierConfig bezier;
+	bezier.controlPoint_1 = Vec2(controlPoint_1);
+	bezier.controlPoint_2 = Vec2(controlPoint_2);
+	bezier.endPosition = Vec2(targetPos);
+
+	auto bezierTo1 = BezierTo::create(time, bezier);
+	auto action = Sequence::create(
+		bezierTo1,
+		CallFunc::create([&](){
+
+		this->scheduleOnce([=](float dt){
+			this->ReturnToMemoryBlock();
+		}, 1.0f, "BezierWithRotation");
+	}), nullptr);
+	this->runAction(action);
+	auto textureAction = RotateBy::create(0.5f, 720.f);
+	m_pTexture->runAction(textureAction);
+}
+
+void CBullet::R_ScaleWithFadeOut(float scale, float scaleTime, float fadeOutTime)
+{
+	setAlive(false);
+	auto action = Sequence::create(
+		ScaleBy::create(scaleTime, scale),
+		CallFunc::create([&](){
+
+		this->scheduleOnce([=](float dt){
+			this->ReturnToMemoryBlock();
+		}, 1.0f, "BezierWithScale");
+	}), nullptr);
+	this->runAction(action);
+	auto textureAction = FadeOut::create(fadeOutTime);
 	m_pTexture->runAction(textureAction);
 }
 

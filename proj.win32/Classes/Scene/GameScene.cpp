@@ -68,7 +68,7 @@ bool CGameScene::initVariable()
 
 		planet->setOriginPos(planet->getPosition());
 
-		auto player = CPlayer::create("player.png", 6.f, 0.0f, 5.0f, 100.f);
+		auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 5.0f, 100.f);
 		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.4f));
 		this->addChild(player, 100);
@@ -77,7 +77,7 @@ bool CGameScene::initVariable()
 
 		CObjectManager::Instance()->setM_Player(player);
 		CObjectManager::Instance()->setM_Planet(planet);
-		CPoolingManager::Instance()->CreateBulletList(500, 800);
+		CPoolingManager::Instance()->CreateBulletList(1000, 800);
 		CPoolingManager::Instance()->CreateShooterList(5, 800);
 		RandomShoot(250.0f, 0.5f, 300);
 		RandomMissileShoot(600.f, 10.0f, 2);

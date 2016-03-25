@@ -1,6 +1,22 @@
 #include "ItemManager.h"
 #include "../Scene/GameScene.h"
 
+CItemManager::CItemManager()
+{
+	// ±âº» °ª
+	m_ValueOfCoin[eCOIN_TYPE_bronze]	= 10.f;
+	m_ValueOfCoin[eCOIN_TYPE_silver]	= 20.f;
+	m_ValueOfCoin[eCOIN_TYPE_gold]		= 30.f;
+	m_ValueOfCoin[eCOIN_TYPE_bigSilver] = 50.f;
+	m_ValueOfCoin[eCOIN_TYPE_bigGold]	= 100.f;
+
+	m_ValueOfStar[eSTAR_TYPE_bronze]	= 10.f;
+	m_ValueOfStar[eSTAR_TYPE_silver]	= 20.f;
+	m_ValueOfStar[eSTAR_TYPE_gold]		= 30.f;
+	m_ValueOfStar[eSTAR_TYPE_bigSilver] = 50.f;
+	m_ValueOfStar[eSTAR_TYPE_bigGold]	= 100.f;
+}
+
 CItemManager* CItemManager::Instance()
 {
 	static CItemManager instance;

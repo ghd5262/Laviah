@@ -24,9 +24,9 @@ protected:
 		, m_fShotAngle(0.0f)
 		, m_fTime(0.0f)
 		, m_fInterval(interval)
-		, m_fIntervalRandom(0.0f)
+		, m_fIntervalRandom(1.0f)
 		, m_nBulletCountAtOneShoot(bulletCountAtOneShoot)
-		, m_nBulletCountAtOnceRandom(0){}
+		, m_nBulletCountAtOnceRandom(1){}
 	virtual ~CShooter();
 
 	//getter & setter

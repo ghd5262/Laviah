@@ -1,7 +1,6 @@
 #pragma once
 #include "Bullet.h"
 
-class CPlayer;
 class CPlayItem : public CBullet
 {
 public:
@@ -14,8 +13,8 @@ public:
 		float speed,				//item 초기 속도
 		int itemType,				//item 타입
 		bool isFly);				//fly item 인지 ground item 인지
+
 	virtual void Execute(float delta = 0.f) override;
-	virtual void Rotation(int dir) override;
 	virtual void CollisionWithPlayer();
 	virtual void CollisionWithPlanet();
 
@@ -37,7 +36,6 @@ private:
 private:
 	Vec2 m_TargetPos;		//player가 먹으면 플레이어 위치로 날아감
 	eITEM_FLAG m_ItemType;
-	bool m_bIsFlyItem;		//fly item 인지 ground item 인지
 	bool m_bPlayerGet;
 };
 

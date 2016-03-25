@@ -12,13 +12,14 @@ CPlayItem::CPlayItem(
 	float speed,				    //item 초기 속도
 	int itemType,					//item 타입
 	bool isFly)						//fly item 인지 ground item 인지
+
 	: CBullet(
 	textureName,
 	boundingRadius,
 	angle,
-	speed)
-	, m_ItemType(static_cast<eITEM_FLAG>(0x0004))	// eITEM_TYPE에서 eITEM_FLAG 로 변환
-	, m_bIsFlyItem(isFly)
+	speed,
+	isFly)
+	, m_ItemType(static_cast<eITEM_FLAG>(1 << itemType))	// eITEM_TYPE에서 eITEM_FLAG 로 변환
 	, m_bPlayerGet(false)
 {}
 
@@ -73,9 +74,6 @@ bool CPlayItem::initVariable()
 		m_pTexture = Sprite::create(m_TextureName);
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		addChild(m_pTexture);
-
-		//m_Player = CObjectManager::Instance()->getM_Player();
-		m_TargetPos = m_pPlayer->getPosition();
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -83,16 +81,6 @@ bool CPlayItem::initVariable()
 		return false;
 	}
 	return true;
-}
-
-void CPlayItem::Rotation(int dir)
-{
-	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
-	if (true == m_bPlayerGet){
-		return;
-	}
-
-	CBullet::Rotation(dir);
 }
 
 void CPlayItem::Execute(float delta)
@@ -111,14 +99,8 @@ void CPlayItem::CollisionWithPlanet()
 void CPlayItem::CollisionWithPlayer()
 {
 	AudioEngine::play2d("sounds/Star_2.mp3", false);
-	setAlive(false);
 	m_bPlayerGet = true;
-	BezierWithScale(
-		m_TargetPos,
-		Vec2(m_TargetPos.x - 20, m_TargetPos.y + 25),
-		Vec2(m_TargetPos.x + 20, m_TargetPos.y + 25),
-		0.5f,
-		2.0f);
+	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	
 	CItemManager::Instance()->StartItemTimer(m_ItemType);
 }
