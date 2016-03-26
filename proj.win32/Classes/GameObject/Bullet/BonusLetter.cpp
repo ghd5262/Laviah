@@ -15,8 +15,7 @@ CBonusLetter::CBonusLetter(
 	boundingRadius, 
 	angle, 
 	speed)
-	, m_pUIManager(nullptr)
-	, m_bPlayerGet(false)
+	, m_pUIBonusTime(nullptr)
 {}
 
 CBonusLetter* CBonusLetter::create(
@@ -57,9 +56,9 @@ bool CBonusLetter::initVariable()
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * 1000.f) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle + 90);
 
-		m_pUIManager = static_cast<CBonusTimeUI*>(CUIManager::Instance()->FindUIWithName("BonusTime"));
-		m_TargetPos = m_pUIManager->NonCollectedLetterWorldPos();
-		m_LetterNum = m_pUIManager->NonCollectedLetterNum();
+		m_pUIBonusTime = static_cast<CBonusTimeUI*>(CUIManager::Instance()->FindUIWithName("BonusTime"));
+		m_TargetPos = m_pUIBonusTime->NonCollectedLetterWorldPos();
+		m_LetterNum = m_pUIBonusTime->NonCollectedLetterNum();
 
 		m_Player = CObjectManager::Instance()->getM_Player();
 
@@ -75,16 +74,6 @@ bool CBonusLetter::initVariable()
 	return true;
 }
 
-void CBonusLetter::Rotation(int dir)
-{
-	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
-	if (true == m_bPlayerGet){
-		return;
-	}
-
-	CBullet::Rotation(dir);
-}
-
 void CBonusLetter::Execute(float delta)
 {
 	getFSM()->Execute(delta);
@@ -98,8 +87,7 @@ void CBonusLetter::CollisionWithPlanet()
 void CBonusLetter::CollisionWithPlayer()
 {
 	AudioEngine::play2d("sounds/Star_2.mp3", false);
-	m_bPlayerGet = true;
-	m_pUIManager->CollectLetter(m_LetterNum);
+	m_pUIBonusTime->CollectLetter(m_LetterNum);
 
 	R_BezierWithScale(m_TargetPos, Vec2(100, 100), Vec2(80, 800), 1.0f, 4.0f);
 }

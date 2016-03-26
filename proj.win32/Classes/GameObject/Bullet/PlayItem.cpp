@@ -19,8 +19,7 @@ CPlayItem::CPlayItem(
 	angle,
 	speed,
 	isFly)
-	, m_ItemType(static_cast<eITEM_FLAG>(1 << itemType))	// eITEM_TYPE에서 eITEM_FLAG 로 변환
-	, m_bPlayerGet(false)
+	, m_ItemType(static_cast<eITEM_TYPE>(itemType))	// eITEM_TYPE에서 eITEM_FLAG 로 변환
 {}
 
 CPlayItem* CPlayItem::create(
@@ -90,7 +89,7 @@ void CPlayItem::Execute(float delta)
 
 void CPlayItem::CollisionWithPlanet()
 {
-	if (true == m_bIsFlyItem && IsHit(m_pPlanet))
+	if (true == m_bIsFlyItem)
 	{
 		ReturnToMemoryBlock();
 	}
@@ -99,8 +98,6 @@ void CPlayItem::CollisionWithPlanet()
 void CPlayItem::CollisionWithPlayer()
 {
 	AudioEngine::play2d("sounds/Star_2.mp3", false);
-	m_bPlayerGet = true;
 	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
-	
 	CItemManager::Instance()->StartItemTimer(m_ItemType);
 }

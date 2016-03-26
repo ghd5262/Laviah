@@ -9,6 +9,7 @@
 #include "../MyUI/MyButton.h"
 #include "../MyUI/HealthBarUI.h"
 #include "../MyUI/BonusTimeUI.h"
+#include "../MyUI/ScoreUI.h"
 
 USING_NS_CC;
 
@@ -102,19 +103,6 @@ void CGameScene::InitGameSceneUI()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto closeItem = MenuItemImage::create(
-		"CloseNormal.png",
-		"CloseSelected.png",
-		CC_CALLBACK_1(CGameScene::menuCloseCallback, this));
-
-	closeItem->setPosition(Vec2(
-		origin.x + visibleSize.width - closeItem->getContentSize().width / 2,
-		origin.y + closeItem->getContentSize().height / 2));
-
-	auto menu = Menu::create(closeItem, NULL);
-	menu->setPosition(Vec2::ZERO);
-	this->addChild(menu, 100);
-
 	// RotationObjectLeft callback µî·Ï
 	auto leftButton = CMyButton::createWithTexture(
 		"leftButton_1.png",
@@ -158,16 +146,30 @@ void CGameScene::InitGameSceneUI()
 
 	auto bonusTime = CBonusTimeUI::create();
 	bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-	bonusTime->setPosition(Vec2(origin.x + visibleSize.width * 0.09f,
-		origin.x + visibleSize.height * 0.9f));
+	bonusTime->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
+		origin.x + visibleSize.height * 0.915f));
 	this->addChild(bonusTime, 100);
 	if (!CUIManager::Instance()->AddUIWithName(bonusTime, "BonusTime"))
 		CCASSERT(false, "BonusTime CAN NOT INIT");
 
-	auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-	label->setPosition(Vec2(origin.x + visibleSize.width / 2,
-		origin.y + visibleSize.height - label->getContentSize().height));
-	this->addChild(label, 100);
+	auto starScoreUI = CScoreUI::create("fonts/Number.ttf", 25, "star_2.png");
+	starScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	starScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
+	starScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.94f,
+		origin.x + visibleSize.height * 0.98f));
+	this->addChild(starScoreUI, 100);
+	if (!CUIManager::Instance()->AddUIWithName(starScoreUI, "StarScoreUI"))
+		CCASSERT(false, "StarScoreUI CAN NOT INIT");
+
+
+	auto coinScoreUI = CScoreUI::create("fonts/Number.ttf", 25, "coin_2.png");
+	coinScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	coinScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+	coinScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.1f,
+		origin.x + visibleSize.height * 0.98f));
+	this->addChild(coinScoreUI, 100);
+	if (!CUIManager::Instance()->AddUIWithName(coinScoreUI, "CoinScoreUI"))
+		CCASSERT(false, "CoinScoreUI CAN NOT INIT");
 }
 
 void CGameScene::menuCloseCallback(Ref* pSender)

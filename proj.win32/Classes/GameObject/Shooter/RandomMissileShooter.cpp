@@ -47,12 +47,12 @@ void CRandomMissileShooter::Execute(float delta)
 				m_fShotSpeed);										//속도
 			CGameScene::getGameScene()->addChild(missile);
 
-			CGameScene::getGameScene()->addChild(CTargetMark::create(
-				"missile_target_1.png",								//이미지 이름
-				0.f,												//충돌 범위
-				m_fShotAngle,										//초기 각도
-				0.f,												//속도
-				missile));											//소유자
+			//CGameScene::getGameScene()->addChild(CTargetMark::create(
+			//	"missile_target_1.png",								//이미지 이름
+			//	0.f,												//충돌 범위
+			//	m_fShotAngle,										//초기 각도
+			//	0.f,												//속도
+			//	missile));											//소유자
 
 			m_fTime = 0.f;
 		}

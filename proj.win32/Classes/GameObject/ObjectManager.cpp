@@ -1,6 +1,7 @@
 #include "ObjectManager.h"
 #include "Planet.h"
 #include "Player.h"
+#include "ItemManager.h"
 #include "Bullet/Bullet.h"
 #include "Shooter/Shooter.h"
 
@@ -51,6 +52,7 @@ void CObjectManager::RemoveAllObject()
 
 void CObjectManager::Execute(float delta)
 {
+	CItemManager::Instance()->Execute(delta);
 	for (auto bullet : m_BulletList)
 	{
 		if (bullet->IsAlive()) {

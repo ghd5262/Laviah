@@ -16,7 +16,6 @@ public:
 		float speed);				//bullet 초기 속도
 
 	virtual void Execute(float delta = 0.f) override;
-	virtual void Rotation(int dir) override;
 	virtual void CollisionWithPlayer();
 	virtual void CollisionWithPlanet();
 
@@ -32,9 +31,8 @@ private:
 		float speed);
 	virtual ~CBonusLetter(){};
 
-	CBonusTimeUI* m_pUIManager;
+	CBonusTimeUI* m_pUIBonusTime;
 	CPlayer* m_Player;
 	Vec2 m_TargetPos;
 	eLETTER m_LetterNum;
-	bool m_bPlayerGet;
 };

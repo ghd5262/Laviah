@@ -48,7 +48,7 @@ protected:
 	CC_SYNTHESIZE(CPlayer*, m_pPlayer, Player);
 	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
 	CC_SYNTHESIZE(bool, m_bIsFlyItem, IsFlyItem);		//fly coin 인지 ground coin 인지)
-
+	CC_SYNTHESIZE(bool, m_bIsPlayerGet, IsPlayerGet);		//player 가 획득한지에 대한 여부
 
 	/* "R_"로 시작하는 함수는 이펙트가 끝나면 ReturnToMemoryBlock 호출됨*/
 	// 목표지점으로 이동 후 커지면서 FadeOut 

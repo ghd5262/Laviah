@@ -54,7 +54,7 @@ public:
 	int getCurrentItem(){ return m_CurrentItems; }
 
 	//유저가 아이템을 획득했을때 호출됨
-	void StartItemTimer(eITEM_FLAG itemType);
+	void StartItemTimer(eITEM_TYPE itemType);
 
 	//아이템 타이머 종료
 	void FinishItemTimer(eITEM_FLAG itemType){ m_CurrentItems ^= itemType; }
@@ -70,5 +70,7 @@ private:
 	int m_CurrentItems;
 	float m_ValueOfCoin[eCOIN_TYPE_MAX];
 	float m_ValueOfStar[eSTAR_TYPE_MAX];
+	float m_ItemTimers[eITEM_TYPE_MAX];
+	float m_ItemTimersLimit[eITEM_TYPE_MAX];
 };
 

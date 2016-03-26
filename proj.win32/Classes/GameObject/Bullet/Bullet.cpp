@@ -23,6 +23,7 @@ CBullet::CBullet(
 	, m_pPlayer(CObjectManager::Instance()->getM_Player())
 	, m_pPlanet(CObjectManager::Instance()->getM_Planet())
 	, m_TargetVec(CObjectManager::Instance()->getM_Planet()->getPosition())
+	, m_bIsPlayerGet(false)
 {
 	// bullet이 초기화 될때마다 매번 생성하지 않는다.
 	if (m_FSM == nullptr){

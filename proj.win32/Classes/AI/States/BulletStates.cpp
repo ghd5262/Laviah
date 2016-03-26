@@ -56,10 +56,6 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 	{
 		bullet->ChangeToStar();
 	}break;
-	case eITEM_FLAG_giant:
-	{
-
-	}break;
 
 	default:
 	{
@@ -121,7 +117,7 @@ void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 	bullet->setVelocityVec(SteeringForce * (bullet->getBulletSpeed() * delta));
 
 	bullet->setPosition(bullet->getPosition() + bullet->getVelocityVec());*/
-	if (true == bullet->getIsFlyItem())
+	if (true == bullet->getIsFlyItem() || bullet->getIsPlayerGet())
 		bullet->Seek(delta);
 
 	if (bullet->IsHit(bullet->getPlayer()))
@@ -130,6 +126,7 @@ void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 	}
 	else if (bullet->IsHit(bullet->getPlayer()->getPosition(), bullet->getPlayer()->getMagnetLimitRadius()))
 	{
+		bullet->setIsPlayerGet(true);
 		bullet->setTargetVec(bullet->getPlayer()->getPosition());
 		bullet->setBulletSpeed(bullet->getBulletSpeed() + 50);
 	}

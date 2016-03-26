@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "ItemManager.h"
 #include "../AI/States/PlayerStates.h"
 
 CPlayer* CPlayer::create(
@@ -45,6 +46,7 @@ CPlayer::CPlayer(
 	, m_fMaxLife(maxLife)
 	, m_fLife(maxLife)
 	, m_fMagnetLimitRadius(200.f)
+	, m_EffectItemTypes(eITEM_FLAG_none)
 {
 }
 
@@ -59,6 +61,8 @@ bool CPlayer::init()
 bool CPlayer::initVariable()
 {
 	try{
+		setItemEffect(eITEM_FLAG_giant);
+
 		m_FSM = new CStateMachine<CPlayer>(this);
 		if (m_FSM != nullptr){
 			m_FSM->ChangeState(CPlayerNormal::Instance());
@@ -119,8 +123,9 @@ void CPlayer::GiantMode()
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, 3.0f),
 		CallFunc::create([&](){
-		this->m_pTexture->setTexture(m_GiantTextureName);
-		this->setBRadius(60.f);
+		this->m_pTexture->setTexture(m_GiantTextureName); 
+		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.3f));
+		this->setBRadius(80.f);
 	}), nullptr);
 	this->runAction(action);
 }
@@ -131,6 +136,7 @@ void CPlayer::NormalMode()
 		ScaleTo::create(0.5f, 1.0f),
 		CallFunc::create([&](){
 		this->m_pTexture->setTexture(m_NormalTextureName);
+		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.3f));
 		this->setBRadius(6.f);
 	}), nullptr);
 	this->runAction(action);

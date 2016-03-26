@@ -1,8 +1,12 @@
 #include "NormalMissile.h"
+#include "PlayCoin.h"
+#include "PlayStar.h"
+#include "TargetMark.h"
 #include "../ObjectManager.h"
 #include "../Planet.h"
 #include "../Player.h"
 #include "../ItemManager.h"
+#include "../../Scene/GameScene.h"
 
 CNormalMissile::CNormalMissile(
 	std::string textureName,	    //bullet 이미지
@@ -60,6 +64,14 @@ bool CNormalMissile::initVariable()
 		m_pTexture = Sprite::create(m_TextureName);
 		m_pTexture->setAnchorPoint(Vec2(0.2f, 0.5f));
 		addChild(m_pTexture);
+	
+		CGameScene::getGameScene()->addChild(CTargetMark::create(
+			MakeString("missile_target_%d.png", m_bIsAimingMissile + 1),//이미지 이름
+			0.f,												//충돌 범위
+			m_fAngle,											//초기 각도
+			0.f,												//속도
+			this,												//소유자
+			m_bIsAimingMissile));
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -106,28 +118,61 @@ void CNormalMissile::CollisionWithPlanet()
 
 void CNormalMissile::CollisionWithPlayer()
 {
-	if (true == m_bIsAimingMissile){
-		CObjectManager::Instance()->getM_Planet()->CrushShake(
-			0.01f, 0.5f, 0.1f, 5.0f);
+	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
 		AudioEngine::play2d("sounds/explosion_2.mp3", false);
+		R_BezierWithRotation(Vec2(920, 1580), Vec2(350, 900), Vec2(450, 1200), 0.5f);
 	}
-	else {
-		CObjectManager::Instance()->getM_Planet()->CrushShake(
-			0.01f, 0.3f, 0.1f, 3.0f);
-		AudioEngine::play2d("sounds/explosion_1.mp3", false);
+	else{
+		if (true == m_bIsAimingMissile){
+			CObjectManager::Instance()->getM_Planet()->CrushShake(
+				0.01f, 0.5f, 0.1f, 5.0f);
+			AudioEngine::play2d("sounds/explosion_2.mp3", false);
+		}
+		else {
+			CObjectManager::Instance()->getM_Planet()->CrushShake(
+				0.01f, 0.3f, 0.1f, 3.0f);
+			AudioEngine::play2d("sounds/explosion_1.mp3", false);
+		}
+		ReturnToMemoryBlock();
 	}
-
-	R_BezierWithRotation(Vec2(920, 1580), Vec2(350, 900), Vec2(450, 1200), 0.5f);
-
-	//ReturnToMemoryBlock();
 }
 
 void CNormalMissile::ChangeToCoin()
 {
+	eCOIN_TYPE coinType;
+	if (true == m_bIsAimingMissile){
+		coinType = eCOIN_TYPE_bigGold;
+	}
+	else{
+		coinType = eCOIN_TYPE_bigSilver;
+	}
+	CPlayCoin* coin = CPlayCoin::create(getPosition(), coinType, 50.f, m_fAngle, m_fBulletSpeed, true);
+	CGameScene::getGameScene()->addChild(coin);
+	CGameScene::getGameScene()->addChild(CTargetMark::create(
+		MakeString("missile_target_%d.png", 1 + (coinType - eCOIN_TYPE_bigSilver)),	//이미지 이름
+		0.f,												//충돌 범위
+		m_fAngle,											//초기 각도
+		0.f,												//속도
+		coin));												//소유자
 	ReturnToMemoryBlock();
 }
 
 void CNormalMissile::ChangeToStar()
 {
+	eSTAR_TYPE starType;
+	if (true == m_bIsAimingMissile){
+		starType = eSTAR_TYPE_bigGold;
+	}
+	else{
+		starType = eSTAR_TYPE_bigSilver;
+	}
+	CPlayStar* star = CPlayStar::create(getPosition(), starType, 50.f, m_fAngle, m_fBulletSpeed, true);
+	CGameScene::getGameScene()->addChild(star);
+	CGameScene::getGameScene()->addChild(CTargetMark::create(
+		MakeString("missile_target_%d.png", 1 + (starType - eSTAR_TYPE_bigSilver)),	//이미지 이름
+		0.f,												//충돌 범위
+		m_fAngle,											//초기 각도
+		0.f,												//속도
+		star));												//소유자
 	ReturnToMemoryBlock();
 }

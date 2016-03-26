@@ -41,13 +41,13 @@ void CAimingMissileShooter::Execute(float delta) {
 			true);												//조준미사일인지 여부 true = CrushShake 호출
 		CGameScene::getGameScene()->addChild(missile);
 
-		CGameScene::getGameScene()->addChild(CTargetMark::create(
-			"missile_target_2.png",								//이미지 이름
-			0.f,												//충돌 범위
-			90.f,												//초기 각도
-			0.f,												//속도
-			missile,											//소유자
-			true));
+		//CGameScene::getGameScene()->addChild(CTargetMark::create(
+		//	"missile_target_2.png",								//이미지 이름
+		//	0.f,												//충돌 범위
+		//	90.f,												//초기 각도
+		//	0.f,												//속도
+		//	missile,											//소유자
+		//	true));
 
 		m_fTime = 0.f;
 	}

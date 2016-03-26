@@ -81,7 +81,12 @@ void CNormalBullet::CollisionWithPlanet()
 
 void CNormalBullet::CollisionWithPlayer()
 {
-	ReturnToMemoryBlock();
+	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
+		R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
+	}
+	else{
+		ReturnToMemoryBlock();
+	}
 }
 
 void CNormalBullet::ChangeToCoin()

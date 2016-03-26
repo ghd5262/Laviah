@@ -1,8 +1,8 @@
 #include "ScoreUI.h"
 
-CScoreUI* CScoreUI::create()
+CScoreUI* CScoreUI::create(std::string fontName, size_t fontSize, std::string valueImgName/* = "" */)
 {
-	CScoreUI *pRet = new(std::nothrow) CScoreUI();
+	CScoreUI *pRet = new(std::nothrow) CScoreUI(fontName, fontSize, valueImgName);
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -26,8 +26,20 @@ bool CScoreUI::init()
 bool CScoreUI::initVariable()
 {
 	try{
-		
-		
+		m_ValueString[0] = '0';
+		m_ValueLabel = Label::create("0", m_FontName, m_FontSize);
+		if (nullptr != m_ValueLabel)
+			addChild(m_ValueLabel);
+
+		if (m_ValueImgName != "")
+		{
+			m_ValueImg = Sprite::create(m_ValueImgName);
+			if (m_ValueImg != nullptr)
+			{
+				m_ValueImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+				addChild(m_ValueImg);
+			}
+		}
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -35,6 +47,36 @@ bool CScoreUI::initVariable()
 		return false;
 	}
 	return true;
+}
+
+void CScoreUI::insertComma(const char* valueStr, char* resultStr)
+{
+	int len;
+	len = strlen(valueStr);
+
+	while ((*resultStr++ = *valueStr++)) {
+		if (--len && (len % 3) == 0)
+			*resultStr++ = ',';
+	}
+
+	*resultStr = '\0';
+}
+
+void CScoreUI::SetLabelAnchor(Vec2 point)
+{
+	m_ValueLabel->setAnchorPoint(point);
+	if (m_ValueImg != nullptr)
+		m_ValueImg->setPosition(Vec2((m_ValueLabel->getContentSize().width * -m_ValueLabel->getAnchorPoint().x) - 20, this->getContentSize().height * 0.5f));
+
+}
+
+void CScoreUI::UpdateValue(int number)
+{
+	m_Value += number;
+	insertComma(MakeString("%u", m_Value).c_str(), m_ValueString);
+	m_ValueLabel->setString(m_ValueString);
+	if (m_ValueImg != nullptr)
+		m_ValueImg->setPosition(Vec2((m_ValueLabel->getContentSize().width * -m_ValueLabel->getAnchorPoint().x) - 20, this->getContentSize().height * 0.5f));
 }
 
 void CScoreUI::Execute(float delta)

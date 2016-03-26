@@ -1,6 +1,7 @@
 #pragma once
 #include "Bullet.h"
 
+enum eITEM_TYPE;
 class CPlayItem : public CBullet
 {
 public:
@@ -35,7 +36,6 @@ private:
 
 private:
 	Vec2 m_TargetPos;		//player가 먹으면 플레이어 위치로 날아감
-	eITEM_FLAG m_ItemType;
-	bool m_bPlayerGet;
+	eITEM_TYPE m_ItemType;
 };
 

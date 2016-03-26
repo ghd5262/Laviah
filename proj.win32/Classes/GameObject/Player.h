@@ -7,6 +7,7 @@
 * 변경요소 마다 다르게 적용시키고 싶어서 콜백함수로 구현함
 *-----------------------------------------------------------------*/
 
+enum eITEM_FLAG;
 class CPlayer : public CGameObject {
 public:
 	static CPlayer* create(
@@ -25,6 +26,15 @@ public:
 	void NormalMode();
 	void Rotation(int dir);
 	
+	//인자로 전달된 아이템의 영향을 받는다
+	void setItemEffect(int item){ m_EffectItemTypes |= item; }
+
+	//인자로 전달된 아이템의 영향을 받는 bullet인지 검사한다.
+	bool isEffectWithItem(eITEM_FLAG itemType){ return on(itemType); }
+
+	//현재 bullet이 영향을 받는 모든 플래그를 반환함
+	int getItemEffect(){ return m_EffectItemTypes; }
+
 	//callback
 	float HealthCalculatorInNormal(float delta);	// 평소에 적용되는 생명력 계산함수
 	float HealthCalculatorInBonusTime(float delta); // 보너스 타임에 적용되는 생명력 계산함수
@@ -47,6 +57,8 @@ protected:
 	CC_SYNTHESIZE(float, m_fMagnetLimitRadius, MagnetLimitRadius);
 
 private:
+	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
+
 	CPlayer(
 		std::string normalTextureName,
 		std::string giantTextureName,
@@ -62,4 +74,8 @@ private:
 	std::string m_NormalTextureName;
 	std::string m_GiantTextureName;
 	Sprite* m_pTexture;
+
+	// 영향을 받는 아이템 타입 
+	// ex) m_EffectItemType == eITEM_TYPE_magnet 이면 자석아이템에게 영향력을 받는다.
+	int m_EffectItemTypes;
 };

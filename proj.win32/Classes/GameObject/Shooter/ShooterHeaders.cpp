@@ -41,7 +41,7 @@ void PlayItemShoot(
 {
 
 	float shotAngle = random<float>(0.f, 360.f);
-	int itemNum = random<int>(0, static_cast<int>(eITEM_TYPE_MAX - 1));
+	int itemNum = random<int>(2, static_cast<int>(4));
 
 	CGameScene::getGameScene()->addChild(CPlayItem::create(
 		MakeString("playItem_%d.png", itemNum),							//이미지 이름
