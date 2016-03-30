@@ -18,7 +18,7 @@ CBullet::CBullet(
 	, m_fBulletSpeed(speed)
 	, m_pTexture(nullptr)
 	, m_fRotationSpeed(2.0f)
-	, m_EffectItemTypes(eITEM_FLAG_none)
+	, m_nReceivingEffectItemTypes(eITEM_FLAG_none)
 	, m_bIsFlyItem(isFly)
 	, m_pPlayer(CObjectManager::Instance()->getM_Player())
 	, m_pPlanet(CObjectManager::Instance()->getM_Planet())

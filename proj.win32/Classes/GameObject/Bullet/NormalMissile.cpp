@@ -13,7 +13,7 @@ CNormalMissile::CNormalMissile(
 	float boundingRadius,		    //bullet 충돌 범위
 	float angle,				    //bullet 초기 각도 
 	float speed,				    //bullet 초기 속도
-	bool isAiming/* = false*/)		//조준미사일인지 여부 true = CrushShake 호출					
+	bool isAiming/* = false*/)		//조준미사일인지 여부				
 	: CBullet(textureName,
 	boundingRadius,
 	angle,
@@ -26,7 +26,7 @@ CNormalMissile* CNormalMissile::create(
 	float boundingRadius,			//bullet 충돌 범위
 	float angle,					//bullet 초기 각도 
 	float speed,					//bullet 초기 속도
-	bool isAiming/* = false*/)		//조준미사일인지 여부 true = CrushShake 호출	
+	bool isAiming/* = false*/)		//조준미사일인지 여부
 {
 	CNormalMissile* pRet = 
 		(CNormalMissile*)new(std::nothrow)CNormalMissile(
@@ -71,7 +71,7 @@ bool CNormalMissile::initVariable()
 			m_fAngle,											//초기 각도
 			0.f,												//속도
 			this,												//소유자
-			m_bIsAimingMissile));
+			m_bIsAimingMissile), 100);
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -146,14 +146,14 @@ void CNormalMissile::ChangeToCoin()
 	else{
 		coinType = eCOIN_TYPE_bigSilver;
 	}
-	CPlayCoin* coin = CPlayCoin::create(getPosition(), coinType, 50.f, m_fAngle, m_fBulletSpeed, true);
-	CGameScene::getGameScene()->addChild(coin);
-	CGameScene::getGameScene()->addChild(CTargetMark::create(
-		MakeString("missile_target_%d.png", 1 + (coinType - eCOIN_TYPE_bigSilver)),	//이미지 이름
-		0.f,												//충돌 범위
-		m_fAngle,											//초기 각도
-		0.f,												//속도
-		coin));												//소유자
+	//CPlayCoin* coin = CPlayCoin::create(coinType, 50.f, m_fAngle, m_fBulletSpeed, true, getPosition());
+	//CGameScene::getGameScene()->addChild(coin);
+	//CGameScene::getGameScene()->addChild(CTargetMark::create(
+	//	MakeString("missile_target_%d.png", 1 + (coinType - eCOIN_TYPE_bigSilver)),	//이미지 이름
+	//	0.f,												//충돌 범위
+	//	m_fAngle,											//초기 각도
+	//	0.f,												//속도
+	//	coin), 100);												//소유자
 	ReturnToMemoryBlock();
 }
 
@@ -166,13 +166,13 @@ void CNormalMissile::ChangeToStar()
 	else{
 		starType = eSTAR_TYPE_bigSilver;
 	}
-	CPlayStar* star = CPlayStar::create(getPosition(), starType, 50.f, m_fAngle, m_fBulletSpeed, true);
-	CGameScene::getGameScene()->addChild(star);
-	CGameScene::getGameScene()->addChild(CTargetMark::create(
-		MakeString("missile_target_%d.png", 1 + (starType - eSTAR_TYPE_bigSilver)),	//이미지 이름
-		0.f,												//충돌 범위
-		m_fAngle,											//초기 각도
-		0.f,												//속도
-		star));												//소유자
+	//CPlayStar* star = CPlayStar::create(starType, 50.f, m_fAngle, m_fBulletSpeed, true, getPosition());
+	//CGameScene::getGameScene()->addChild(star);
+	//CGameScene::getGameScene()->addChild(CTargetMark::create(
+	//	MakeString("missile_target_%d.png", 1 + (starType - eSTAR_TYPE_bigSilver)),	//이미지 이름
+	//	0.f,												//충돌 범위
+	//	m_fAngle,											//초기 각도
+	//	0.f,												//속도
+	//	star), 100);										//소유자
 	ReturnToMemoryBlock();
 }

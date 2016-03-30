@@ -91,12 +91,12 @@ void CNormalBullet::CollisionWithPlayer()
 
 void CNormalBullet::ChangeToCoin()
 {
-	CGameScene::getGameScene()->addChild(CPlayCoin::create(getPosition(), eCOIN_TYPE_bronze, 25.f, m_fAngle, m_fBulletSpeed, true));
+	//CGameScene::getGameScene()->addChild(CPlayCoin::create(eCOIN_TYPE_bronze, 25.f, m_fAngle, m_fBulletSpeed, true, getPosition()));
 	ReturnToMemoryBlock();
 }
 
 void CNormalBullet::ChangeToStar()
 {
-	CGameScene::getGameScene()->addChild(CPlayStar::create(getPosition(), eSTAR_TYPE_bronze, 25.f, m_fAngle, m_fBulletSpeed, true));
+	//CGameScene::getGameScene()->addChild(CPlayStar::create(eSTAR_TYPE_bronze, 25.f, m_fAngle, m_fBulletSpeed, true, getPosition()));
 	ReturnToMemoryBlock();
 }

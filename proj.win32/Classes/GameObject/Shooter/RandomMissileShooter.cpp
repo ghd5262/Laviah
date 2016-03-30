@@ -2,21 +2,15 @@
 #include "RandomMissileShooter.h"
 #include "../Bullet/BulletHeaders.h"
 #include "../../Scene/GameScene.h"
+#include "../../GameObject/Stage/StageManager.h"
 
-CRandomMissileShooter::CRandomMissileShooter(
-	float speed, 
-	float interval,
-	int bulletCountAtOneShoot)
+CRandomMissileShooter::CRandomMissileShooter(sSHOOTER_PARAM param)
+	: CShooter(param){};
 
-	: CShooter(interval, speed, bulletCountAtOneShoot){};
-
-CRandomMissileShooter* CRandomMissileShooter::create(
-	float speed, 
-	float interval,		// Bullet 생성 간격
-	int bulletCountAtOneShoot)
+CRandomMissileShooter* CRandomMissileShooter::create(sSHOOTER_PARAM param)
 {
 	CRandomMissileShooter* pRet = (CRandomMissileShooter*)new(std::nothrow)
-		CRandomMissileShooter(speed, interval, bulletCountAtOneShoot);
+		CRandomMissileShooter(param);
 	if (pRet)
 	{
 		return pRet;
@@ -33,36 +27,21 @@ void CRandomMissileShooter::Execute(float delta)
 {
 	m_fTime += delta;
 
-	if (m_fTime >= m_fInterval)
+	if (m_fTime >= m_ShooterParam._fInterval)
 	{
 		for (int count = 0; count < m_nBulletCountAtOnceRandom; count++)
 		{
-			m_fShotAngle = random<float>(0.f, 360.f);
-			m_nBulletCountAtOnceRandom = random<int>(1, m_nBulletCountAtOneShoot);
+			m_ShooterParam._fAngle = random<float>(0.f, 360.f);
+			m_nBulletCountAtOnceRandom = random<int>(1, m_ShooterParam._nBulletCountAtOneShoot);
 
 			auto missile = CNormalMissile::create(
-				"missile_1.png",									//이미지 이름
-				5.f,												//충돌 범위
-				m_fShotAngle,										//초기 각도
-				m_fShotSpeed);										//속도
+				"missile_1.png",				//이미지 이름
+				5.f,							//충돌 범위
+				m_ShooterParam._fAngle,			//초기 각도
+				m_ShooterParam._fSpeed);		//속도
 			CGameScene::getGameScene()->addChild(missile);
-
-			//CGameScene::getGameScene()->addChild(CTargetMark::create(
-			//	"missile_target_1.png",								//이미지 이름
-			//	0.f,												//충돌 범위
-			//	m_fShotAngle,										//초기 각도
-			//	0.f,												//속도
-			//	missile));											//소유자
 
 			m_fTime = 0.f;
 		}
 	}
-}
-
-void RandomMissileShoot(
-	float speed/* = 600*/, 
-	float interval/* = 0.1f*/, 
-	int bulletCountAtOneShoot /* = 1*/)
-{
-	CGameScene::getGameScene()->addChild(CRandomMissileShooter::create(speed, interval, bulletCountAtOneShoot));
 }

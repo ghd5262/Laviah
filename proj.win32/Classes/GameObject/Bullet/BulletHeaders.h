@@ -6,3 +6,6 @@
 #include "TargetMark.h"
 #include "PlayItem.h"
 #include "Bullet.h"
+#include "PlayCoin.h"
+#include "PlayItem.h"
+#include "PlayStar.h"

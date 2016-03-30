@@ -7,14 +7,12 @@ class CRandomMissileShooter : public CShooter {
 public:
 	/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
 	받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-	static CRandomMissileShooter* create(float speed, float interval, int bulletCountAtOneShoot);
+	static CRandomMissileShooter* create(sSHOOTER_PARAM param);
 
 	virtual void Execute(float delta) override;
 
 private:
 	// interval = Bullet 생성 간격
-	CRandomMissileShooter(float speed, float interval, int bulletCountAtOneShoot);
+	CRandomMissileShooter(sSHOOTER_PARAM param);
 	virtual ~CRandomMissileShooter(){}
 };
-
-void RandomMissileShoot(float speed = 600.0f, float interval = 0.1f, int bulletCountAtOneShoot = 1);

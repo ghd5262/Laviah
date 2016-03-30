@@ -19,12 +19,6 @@ void CBulletNormal::Enter(CBullet* bullet)
 
 void CBulletNormal::Execute(CBullet* bullet, float delta)
 {
-	/*Vec2 SteeringForce = bullet->getSteeringBehavior()->CalculateBehaviorVector();
-	SteeringForce.normalize();
-	bullet->setVelocityVec(SteeringForce * (bullet->getBulletSpeed() * delta));
-
-	bullet->setPosition(bullet->getPosition() + bullet->getVelocityVec());*/
-
 	if (true == bullet->getIsFlyItem())
 		bullet->Seek(delta);
 
@@ -110,13 +104,6 @@ void CBulletMagnetItem::Enter(CBullet* bullet)
 
 void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 {
-	//CCLOG("Magnet Item %f", delta);
-
-	/*Vec2 SteeringForce = bullet->getSteeringBehavior()->CalculateBehaviorVector();
-	SteeringForce.normalize();
-	bullet->setVelocityVec(SteeringForce * (bullet->getBulletSpeed() * delta));
-
-	bullet->setPosition(bullet->getPosition() + bullet->getVelocityVec());*/
 	if (true == bullet->getIsFlyItem() || bullet->getIsPlayerGet())
 		bullet->Seek(delta);
 

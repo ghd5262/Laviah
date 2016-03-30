@@ -4,6 +4,7 @@
 #include "ItemManager.h"
 #include "Bullet/Bullet.h"
 #include "Shooter/Shooter.h"
+#include "Stage/StageManager.h"
 
 CObjectManager* CObjectManager::Instance()
 {
@@ -53,6 +54,7 @@ void CObjectManager::RemoveAllObject()
 void CObjectManager::Execute(float delta)
 {
 	CItemManager::Instance()->Execute(delta);
+	CStageManager::Instance()->Execute(delta);
 	for (auto bullet : m_BulletList)
 	{
 		if (bullet->IsAlive()) {

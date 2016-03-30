@@ -60,9 +60,31 @@ bool CTargetMark::initVariable()
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
 
-		m_pTexture = Sprite::create(m_TextureName);
-		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+		/*m_pTexture = Sprite::create(m_TextureName);
+		m_pTexture->setAnchorPoint(Vec2(0.1f, 0.5f));
 		addChild(m_pTexture);
+*/
+		auto texture = Director::getInstance()->getTextureCache()->addImage(m_TextureName);
+		const int FrameCount_MAX = 3;
+		SpriteFrame* frame[FrameCount_MAX];
+		Vector<SpriteFrame*> animFrames(FrameCount_MAX);
+
+		for (int frameCount = 0; frameCount < FrameCount_MAX; frameCount++)
+		{
+			frame[frameCount] = SpriteFrame::createWithTexture(texture,
+				Rect(texture->getContentSize().width * 0, 
+				(texture->getContentSize().height / FrameCount_MAX) * frameCount,
+				texture->getContentSize().width,
+				(texture->getContentSize().height / FrameCount_MAX)));
+			animFrames.pushBack(frame[frameCount]);
+		}
+		auto sprite = Sprite::createWithSpriteFrame(frame[0]);
+		sprite->setAnchorPoint(Vec2(0.04f, 0.5f));
+		addChild(sprite);
+
+		auto animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
+		auto animate = Animate::create(animation);
+		sprite->runAction(RepeatForever::create(animate));
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);

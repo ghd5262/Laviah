@@ -8,10 +8,7 @@
 #include "../../MyUI/BonusTimeUI.h"
 
 //-------------------BonusLetter Shooter-------------------
-void BonusLetterShoot(
-	float speed/* = 100*/, 
-	float interval/* = 0.1f*/, 
-	int maxBulletCount /* = 1*/)
+void BonusLetterShoot(sSHOOTER_PARAM param)
 {
 	// BonusTimeUI 포인터 획득
 	CBonusTimeUI* gameSceneUIManager 
@@ -28,34 +25,23 @@ void BonusLetterShoot(
 		MakeString("bonusLetter_%d.png", letterNum),					//이미지 이름
 		20.f,															//충돌 범위
 		shotAngle,														//초기 각도
-		speed));														//속도
+		param._fSpeed));												//속도
 }
 //----------------------------------------------------
 
 
 //-------------------BonusLetter Shooter-------------------
-void PlayItemShoot(
-	float speed/* = 100*/,
-	float interval/* = 0.1f*/,
-	int maxBulletCount /* = 1*/)
+void PlayItemShoot(sSHOOTER_PARAM param)
 {
-
 	float shotAngle = random<float>(0.f, 360.f);
-	int itemNum = random<int>(2, static_cast<int>(4));
+	int itemNum = param._ShooterType - eSHOOTER_TYPE_item_0;
 
 	CGameScene::getGameScene()->addChild(CPlayItem::create(
 		MakeString("playItem_%d.png", itemNum),							//이미지 이름
 		20.f,															//충돌 범위
 		shotAngle,														//초기 각도
-		speed,															//속도
+		param._fSpeed,													//속도
 		itemNum,														//item type
-		true));															//fly Item 여부
-	CGameScene::getGameScene()->addChild(CPlayItem::create(
-		MakeString("playItem_%d.png", itemNum),							//이미지 이름
-		20.f,															//충돌 범위
-		shotAngle,														//초기 각도
-		speed,															//속도
-		itemNum,														//item type
-		false));														//fly Item 여부
+		param._isFly));													//fly Item 여부
 }
 //----------------------------------------------------

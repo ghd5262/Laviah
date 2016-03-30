@@ -3,7 +3,6 @@
 #include "../Planet.h"
 #include "../Player.h"
 #include "../ItemManager.h"
-#include "../../AI/States/ObjectStates.h"
 
 CPlayItem::CPlayItem(
 	std::string textureName,	    //item ÀÌ¹ÌÁö
@@ -57,18 +56,13 @@ bool CPlayItem::initVariable()
 {
 	try{
 		setItemEffect(eITEM_FLAG_magnet);
-
-		if (m_bIsFlyItem){
-			setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * 1000.f) + m_pPlanet->getPosition().x);
-			setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * 1000.f) + m_pPlanet->getPosition().y);
-			setRotation(-m_fAngle);
-		}
-		else
-		{
-			setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().x);
-			setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().y);
-			setRotation(-m_fAngle);
-		}
+		float distance = 1000.f;
+		if (!m_bIsFlyItem)
+			distance = m_pPlanet->getBRadius() + 20;
+		
+		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * distance) + m_pPlanet->getPosition().x);
+		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * distance) + m_pPlanet->getPosition().y);
+		setRotation(-m_fAngle);
 
 		m_pTexture = Sprite::create(m_TextureName);
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));

@@ -78,14 +78,14 @@ bool CGameScene::initVariable()
 
 		CObjectManager::Instance()->setM_Player(player);
 		CObjectManager::Instance()->setM_Planet(planet);
-		CPoolingManager::Instance()->CreateBulletList(1000, 800);
+		CPoolingManager::Instance()->CreateBulletList(1500, 800);
 		CPoolingManager::Instance()->CreateShooterList(5, 800);
-		RandomShoot(250.0f, 0.5f, 300);
-		RandomMissileShoot(600.f, 10.0f, 2);
-		AimingMissileShoot(1200.0f, 15.0f);
-		DoubleScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_left);
-		ScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_right);
-
+		//RandomShoot(250.0f, 0.5f, 300);
+		//RandomMissileShoot(600.f, 10.0f, 2);
+		//AimingMissileShoot(1200.0f, 15.0f);
+		//DoubleScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_left);
+		//ScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_right);
+		this->addChild(CPatternShooter::create(sSHOOTER_PARAM(eSHOOTER_TYPE_bonusTime_4, 0, 0, 250, 90.0f, 10.0f)));
 		InitGameSceneUI();
 
 		AudioEngine::play2d("sounds/bgm_1.mp3", true);
@@ -170,6 +170,8 @@ void CGameScene::InitGameSceneUI()
 	this->addChild(coinScoreUI, 100);
 	if (!CUIManager::Instance()->AddUIWithName(coinScoreUI, "CoinScoreUI"))
 		CCASSERT(false, "CoinScoreUI CAN NOT INIT");
+
+
 }
 
 void CGameScene::menuCloseCallback(Ref* pSender)

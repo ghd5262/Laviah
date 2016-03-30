@@ -14,7 +14,7 @@ enum eITEM_TYPE{
 	eITEM_TYPE_MAX
 };
 
-enum eITEM_FLAG{
+enum eITEM_FLAG{					//변환식 : 1 << eITEM_TYPE == eITEM_FLAG
 	eITEM_FLAG_none = 0x0000,		//eITEM_TYPE에서 eITEM_FLAG으로 변환하면 아래와 같다.
 	eITEM_FLAG_shield = 0x0002,		//== eITEM_TYPE_shield = 1,
 	eITEM_FLAG_magnet = 0x0004,		//== eITEM_TYPE_magnet = 2,
@@ -25,21 +25,23 @@ enum eITEM_FLAG{
 };
 
 enum eCOIN_TYPE{
-	eCOIN_TYPE_bronze = 0,
-	eCOIN_TYPE_silver = 1,
-	eCOIN_TYPE_gold = 2,
-	eCOIN_TYPE_bigSilver = 3,
-	eCOIN_TYPE_bigGold = 4,
+	eCOIN_TYPE_none = 0,
+	eCOIN_TYPE_bronze = 1,
+	eCOIN_TYPE_silver = 2,
+	eCOIN_TYPE_gold = 3,
+	eCOIN_TYPE_bigSilver = 4,
+	eCOIN_TYPE_bigGold = 5,
 
 	eCOIN_TYPE_MAX
 };
 
 enum eSTAR_TYPE{
-	eSTAR_TYPE_bronze = 0,
-	eSTAR_TYPE_silver = 1,
-	eSTAR_TYPE_gold = 2,
-	eSTAR_TYPE_bigSilver = 3,
-	eSTAR_TYPE_bigGold = 4,
+	eSTAR_TYPE_none = 0,
+	eSTAR_TYPE_bronze = 1,
+	eSTAR_TYPE_silver = 2,
+	eSTAR_TYPE_gold = 3,
+	eSTAR_TYPE_bigSilver = 4,
+	eSTAR_TYPE_bigGold = 5,
 
 	eSTAR_TYPE_MAX
 };
