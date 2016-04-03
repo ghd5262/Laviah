@@ -15,4 +15,8 @@ private:
 	// direction = Bullet 방향
 	CScrewShooter(sSHOOTER_PARAM param);
 	virtual ~CScrewShooter(){}
+
+private:
+	// bullet하나당의 간격
+	float m_fHeightInterval;
 };

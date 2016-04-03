@@ -17,5 +17,5 @@ using namespace cocos2d;
 using namespace cocos2d::experimental;
 using namespace cocos2d::ui;
 static const int kMaxLogLen = 5 * 1024;
-std::string MakeString(const char* str, ...);
+std::string MakeString(const char* str, ...); 
 #endif //__HSHUTILITY_H__

@@ -1,5 +1,5 @@
 #include "BonusTimeUI.h"
-
+#include "../GameObject/ItemManager.h"
 CLetter* CLetter::create(
 	std::string normalTextureName,
 	std::string bonusTextureName,
@@ -118,6 +118,11 @@ void CBonusTimeUI::CollectLetter(eLETTER letter)
 {
 	if (letter < eLETTER_MAX)
 		m_LetterList[letter]->setIsCollected(true);
+
+	// 마지막 letter을 수집했을때 
+	if (letter == eLETTER_MAX - 1){
+		CItemManager::Instance()->StartItemTimer(eITEM_TYPE_bonustime);
+	}
 }
 
 eLETTER CBonusTimeUI::NonCollectedLetterNum() const

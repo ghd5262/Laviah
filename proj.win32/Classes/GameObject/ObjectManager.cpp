@@ -24,7 +24,7 @@ void CObjectManager::AddShooter(void* shooter)
 
 
 /* bullet->Delete() :
-게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해*/
+ * 게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해 */
 void CObjectManager::RemoveAllBullet()
 {											
 	for (auto bullet : m_BulletList)
@@ -35,7 +35,7 @@ void CObjectManager::RemoveAllBullet()
 }
 
 /* shooter->Delete() :
-게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해*/
+ * 게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해*/
 void CObjectManager::RemoveAllShooter()
 {
 	for (auto shooter : m_ShooterList)

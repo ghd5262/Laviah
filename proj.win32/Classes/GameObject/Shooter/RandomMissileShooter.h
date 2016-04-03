@@ -1,7 +1,7 @@
 #pragma once
 #include "Shooter.h"
 
-/* RandomShooter : 360도 사방에서 랜덤으로 미사일을 쏘는 패턴, 미사일은 빠르다*/
+/* RandomShooter : 360도 사방에서 랜덤으로 미사일을 쏘는 패턴, 미사일은 빠르다 */
 class CRandomMissileShooter : public CShooter {
 
 public:
@@ -10,6 +10,7 @@ public:
 	static CRandomMissileShooter* create(sSHOOTER_PARAM param);
 
 	virtual void Execute(float delta) override;
+	virtual void ShootOnce() override;
 
 private:
 	// interval = Bullet 생성 간격

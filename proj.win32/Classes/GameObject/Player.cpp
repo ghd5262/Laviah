@@ -147,7 +147,7 @@ float CPlayer::HealthCalculatorInNormal(float delta)
 {
 	// 5.0f == 가장 레벨이 낮을때 한 번에 빠지는 생명력의 양
 	// 이후에 펫 효과나 버프 등과 함께 계산해야한다.
-	LostSomeHealth(5.0f * delta);
+	LostSomeHealth(1.0f * delta);
 	return (m_fLife / m_fMaxLife) * 100;
 }
 
@@ -157,6 +157,6 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 	// 5.0f == 가장 레벨이 낮을때 한 번에 빠지는 생명력의 양
 	// 이후에 펫 효과나 버프 등과 함께 계산해야한다.
 	// 보너스 타임이기 때문에 더느리게 줄어든다.
-	LostSomeHealth(2.5f);
+	LostSomeHealth(0.5f);
 	return (m_fLife / m_fMaxLife) * 100;
 }

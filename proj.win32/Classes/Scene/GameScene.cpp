@@ -10,6 +10,8 @@
 #include "../MyUI/HealthBarUI.h"
 #include "../MyUI/BonusTimeUI.h"
 #include "../MyUI/ScoreUI.h"
+#include "../DataManager/BulletPatternDataManager.h"
+#include "../DataManager/ShooterDataManager.h"
 
 USING_NS_CC;
 
@@ -53,7 +55,8 @@ bool CGameScene::initVariable()
 	try
 	{
 		m_GameScene = this;
-		
+		CBulletPatternDataManager::Instance();
+
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 		Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -71,7 +74,7 @@ bool CGameScene::initVariable()
 
 		auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 5.0f, 100.f);
 		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-			origin.y + visibleSize.height * 0.4f));
+			planet->getPosition().y + (planet->getBRadius() + 20.f)));
 		this->addChild(player, 100);
 
 		player->setOriginPos(player->getPosition());
@@ -80,12 +83,39 @@ bool CGameScene::initVariable()
 		CObjectManager::Instance()->setM_Planet(planet);
 		CPoolingManager::Instance()->CreateBulletList(1500, 800);
 		CPoolingManager::Instance()->CreateShooterList(5, 800);
-		//RandomShoot(250.0f, 0.5f, 300);
+
+
+
+		auto randomShooter = CShooterListDataManager::Instance()->getShooterInfo("random_Shooter");
+		randomShooter->setShooterParam(sSHOOTER_PARAM("random_Shooter", "", 0.f, 0.f, 250.f, 0.f, 0.5f, 3));
+		randomShooter->setAlive(true);
+
+		auto randomMissileShooter = CShooterListDataManager::Instance()->getShooterInfo("randomMissile_Shooter");
+		randomMissileShooter->setShooterParam(sSHOOTER_PARAM("randomMissile_Shooter", "", 0.f, 0.f, 600.f, 0.f, 10.f, 1));
+		randomMissileShooter->setAlive(true);
+
+		auto aimingMissileShooter = CShooterListDataManager::Instance()->getShooterInfo("aimingMissile_Shooter");
+		aimingMissileShooter->setShooterParam(sSHOOTER_PARAM("aimingMissile_Shooter", "", 0.f, 0.f, 1200.f, 0.f, 15.f, 1));
+		aimingMissileShooter->setAlive(true);
+
+		/*auto screwShooter = CShooterListDataManager::Instance()->getShooterInfo("screw_Shooter");
+		screwShooter->setShooterParam(sSHOOTER_PARAM("screw_Shooter", "", 0.f, 10.f, 300.f, 0.f, 25.f, 1));
+		screwShooter->setAlive(true);*/
+
+		auto letterShooter = CShooterListDataManager::Instance()->getShooterInfo("bonusLetter_Shooter");
+		letterShooter->setShooterParam(sSHOOTER_PARAM("bonusLetter_Shooter", "", 0.f, 0.f, 100.f, 0.f, 30.f));
+		letterShooter->setAlive(true);
+
+
+		auto screwShooter = CShooterListDataManager::Instance()->getShooterInfo("pattern_Shooter");
+		screwShooter->setShooterParam(sSHOOTER_PARAM("pattern_Shooter", "leftScrew1_Pattern", 0.f, 0.f, 300.f, 0.f, 30.f));
+		screwShooter->setAlive(true);
+		//this->addChild(CRandomShooter::create(sSHOOTER_PARAM("", "normalShooter", 0, 0, 250.0f, 90, 0.5f, 300)));
 		//RandomMissileShoot(600.f, 10.0f, 2);
-		//AimingMissileShoot(1200.0f, 15.0f);
+		//this->addChild(CAimingMissileShooter::create(sSHOOTER_PARAM(eSHOOTER_TYPE_aimingMissile, "aimingShooter", 0.f, 0.f, 1200.0f, 90, 15.0f)));
 		//DoubleScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_left);
 		//ScrewShoot(250.0f, 0.1f, 1, eSHOOTER_OPTION_right);
-		this->addChild(CPatternShooter::create(sSHOOTER_PARAM(eSHOOTER_TYPE_bonusTime_4, 0, 0, 250, 90.0f, 10.0f)));
+		//this->addChild(CPatternShooter::create(sSHOOTER_PARAM(eSHOOTER_TYPE_bonusTime_4, 0, 0, 250, 90.0f, 10.0f)));
 		InitGameSceneUI();
 
 		AudioEngine::play2d("sounds/bgm_1.mp3", true);

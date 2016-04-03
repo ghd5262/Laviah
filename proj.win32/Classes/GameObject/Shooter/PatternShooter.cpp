@@ -1,13 +1,11 @@
 #pragma once
 #include "PatternShooter.h"
 #include "../Bullet/BulletHeaders.h"
-#include "../Stage/StageManager.h"
+#include "../../DataManager/BulletPatternDataManager.h"
 #include "../../Scene/GameScene.h"
 
 CPatternShooter::CPatternShooter(sSHOOTER_PARAM param)
 	: CShooter(param)
-	, m_ShapeHeight(0)
-	, m_ShapeAngle(0.f)
 {}
 
 CPatternShooter* CPatternShooter::create(sSHOOTER_PARAM param)				// Bullet 积己 埃拜
@@ -26,29 +24,38 @@ CPatternShooter* CPatternShooter::create(sSHOOTER_PARAM param)				// Bullet 积己
 	}
 }
 
+void CPatternShooter::ShootWithPosition(std::string patternName, float angle, float distance)
+{
+	sPATTERN_SHOOTER_PARAM pattern = CBulletPatternDataManager::Instance()->getPatternInfo(patternName);
+
+	for (int i = 0; i < pattern._height; i++) {
+
+		for (int j = 0; j < pattern._width; j++){
+			int p = *(pattern._pattern + (pattern._width * i) + j);
+			if (p > 0) {
+				CGameScene::getGameScene()->addChild(CPlayCoin::create(
+					static_cast<eCOIN_TYPE>(p),
+					10.f,
+					distance + ((pattern._height - i) * pattern._heightDistance),
+					(j * -pattern._widthAngleDistance) + angle + 20.f,
+					m_ShooterParam._fSpeed,
+					true));
+			}
+		}
+	}
+}
+
+void CPatternShooter::ShootOnce()
+{
+	ShootWithPosition(m_ShooterParam._PatternName, m_ShooterParam._fAngle, 1200.f);
+}
+
 void CPatternShooter::Execute(float delta) {
 
 	m_fTime += delta;
 	if (m_fTime >= m_ShooterParam._fInterval)
 	{
-		sPATTERN_SHOOTER_PARAM shape = CStageManager::Instance()->getPatternInfo(m_ShooterParam._ShooterType);
-
-		for (int i = 0; i < shape._height; i++) {
-
-			for (int j = 0; j < shape._width; j++){
-				int p = *(shape._pattern + (shape._width * i) + j);
-				if (p > 0) {
-					CGameScene::getGameScene()->addChild(CPlayStar::create(
-						static_cast<eSTAR_TYPE>(p),
-						10.f,
-						1200.f + ((shape._height - i) * 50.f),
-						(j * -3.0f) + m_ShapeAngle,
-						250.0f,
-						true));
-				}
-			}
-		}
+		ShootOnce();
 		m_fTime = 0.f;
-		m_ShapeAngle = random<float>(0.0f, 180.f);
 	}
 }

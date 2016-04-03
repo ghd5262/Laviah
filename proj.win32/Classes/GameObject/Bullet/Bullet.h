@@ -41,6 +41,7 @@ protected:
 	CC_SYNTHESIZE(float, m_fAngle, Angle);
 	CC_SYNTHESIZE(float, m_fBulletSpeed, BulletSpeed);
 	CC_SYNTHESIZE(float, m_fRotationSpeed, RotationSpeed);
+	CC_SYNTHESIZE(float, m_fTime, Time);
 	CC_SYNTHESIZE(Vec2, m_TargetVec, TargetVec);
 	CC_SYNTHESIZE(Vec2, m_RotationVec, RotationVec);
 	CC_SYNTHESIZE(CPlayer*, m_pPlayer, Player);
@@ -50,6 +51,7 @@ protected:
 	CC_SYNTHESIZE(std::string, m_TextureName, TextureName);
 	CC_SYNTHESIZE(bool, m_bIsFlyItem, IsFlyItem);
 	CC_SYNTHESIZE(bool, m_bIsPlayerGet, IsPlayerGet);
+
 
 	/* "R_"로 시작하는 함수는 이펙트가 끝나면 ReturnToMemoryBlock 호출됨*/
 

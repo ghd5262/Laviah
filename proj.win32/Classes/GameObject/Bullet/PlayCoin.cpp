@@ -64,15 +64,9 @@ bool CPlayCoin::initVariable()
 	try{
 		setItemEffect(eITEM_FLAG_magnet);
 
-		if (! m_bIsFlyItem)//{
+		if (!m_bIsFlyItem)
 			m_fDistance = m_pPlanet->getBRadius() + 20;
 
-			/*if (m_CreatePos != Vec2(0.f, 0.f)){
-				setPosition(m_CreatePos);
-				setRotation(-m_fAngle);
-			}
-		}*/
-	
 		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * m_fDistance) + m_pPlanet->getPosition().x);
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * m_fDistance) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);

@@ -9,6 +9,7 @@ public:
 	static CAimingMissileShooter* create(sSHOOTER_PARAM param);
 
 	virtual void Execute(float delta) override;
+	virtual void ShootOnce() override;
 
 private:
 	// interval = Bullet 생성 간격

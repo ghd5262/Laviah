@@ -4,32 +4,37 @@
 #include "../Player.h"
 
 CTargetMark::CTargetMark(
-	std::string textureName,	    //bullet 이미지
-	float boundingRadius,		    //bullet 충돌 범위
-	float angle,				    //bullet 초기 각도 
-	float speed,				    //bullet 초기 속도
-	CBullet* owner,					//소유 bullet
-	bool isAiming)					//조준 미사일 여부
+	std::string textureName,		//TargetMark 이미지
+	float angle,					//TargetMark 초기 각도 
+	Vec2 missilePos,				//Missile 현재 좌표
+	float missileSpeed,				//Missile 속력
+	bool isAiming,					//조준미사일인지 여부
+	CBullet* owner/* = nullptr*/)	//owner missile (nullptr 일 때에는 도착시간으로 삭제한다.)
 	: CBullet(
 	textureName, 
-	boundingRadius,
+	0.0f,
 	angle, 
-	speed)
-	, m_OwnerBullet(owner)
+	0.0f)
 	, m_bIsAimingMissile(isAiming)
-{}
+	, m_fArriveTime(1.0f)
+	, m_OwnerBullet(owner)
+	
+{
+	float distance = m_pPlanet->getPosition().distance(missilePos);
+	m_fArriveTime = (distance / missileSpeed);
+}
 
 CTargetMark* CTargetMark::create(
-	std::string textureName,		//bullet 이미지
-	float boundingRadius,			//bullet 충돌 범위
-	float angle,					//bullet 초기 각도 
-	float speed,					//bullet 초기 속도
-	CBullet* owner,					//소유 bullet
-	bool isAiming)					//조준 미사일 여부
+	std::string textureName,		//TargetMark 이미지
+	float angle,					//TargetMark 초기 각도 
+	Vec2 missilePos,				//Missile 현재 좌표
+	float missileSpeed,				//Missile 속력
+	bool isAiming,					//조준미사일인지 여부
+	CBullet* owner)					//owner missile
 {
 	CTargetMark* pRet = 
 		(CTargetMark*)new(std::nothrow)CTargetMark(
-		textureName, boundingRadius, angle, speed, owner, isAiming);
+		textureName, angle, missilePos, missileSpeed, isAiming, owner);
 
 	if (pRet && pRet->init())
 	{
@@ -60,10 +65,6 @@ bool CTargetMark::initVariable()
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
 
-		/*m_pTexture = Sprite::create(m_TextureName);
-		m_pTexture->setAnchorPoint(Vec2(0.1f, 0.5f));
-		addChild(m_pTexture);
-*/
 		auto texture = Director::getInstance()->getTextureCache()->addImage(m_TextureName);
 		const int FrameCount_MAX = 3;
 		SpriteFrame* frame[FrameCount_MAX];
@@ -109,12 +110,15 @@ void CTargetMark::Rotation(int dir)
 
 void CTargetMark::Execute(float delta)
 {
-	if (!m_OwnerBullet->IsAlive())		// 이것 이외의 OwnerBullet을 사용하는 곳이 있으면 안된다.. 사실상 이 코드도 이미 메모리 블럭으로 되돌아간 bullet의 Alive이다.
-		ReturnToMemoryBlock();			// OwnerBullet은 항상 Target보다 먼저 메모리 블럭으로 되돌아가기 때문이다.
-	else{
-		if (!m_ScreenRect.containsPoint(m_OwnerBullet->getPosition()))
-			this->setVisible(true);
-		else
-			this->setVisible(false);
+	// m_OwnerBullet != nullptr 일 경우는 coin 이나 star로 변경되었을 때 이다.
+	if (m_OwnerBullet != nullptr){			
+		if (!m_OwnerBullet->IsAlive())		// 이것 이외의 OwnerBullet을 사용하는 곳이 있으면 안된다.. 사실상 이 코드도 이미 메모리 블럭으로 되돌아간 bullet의 Alive이다.
+			ReturnToMemoryBlock();			// OwnerBullet은 항상 Target보다 먼저 메모리 블럭으로 되돌아가기 때문이다.
+	}
+	else // coin 이나 star로 변경되었을 때에는 시간으로 삭제한다.
+	{
+		m_fTime += delta;
+		if (m_fTime > m_fArriveTime)
+			ReturnToMemoryBlock();
 	}
 }

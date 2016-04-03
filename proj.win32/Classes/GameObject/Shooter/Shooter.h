@@ -38,7 +38,8 @@ enum eSHOOTER_TYPE{
 };
 
 struct sSHOOTER_PARAM{
-	eSHOOTER_TYPE _ShooterType;
+	std::string _ShooterName;
+	std::string _PatternName;
 	float _fStartTime;
 	float _fEndTime;
 	float _fSpeed;
@@ -49,7 +50,8 @@ struct sSHOOTER_PARAM{
 	bool  _isFly;
 
 	sSHOOTER_PARAM(
-		eSHOOTER_TYPE shooterType,
+		std::string shooterName,
+		std::string patternName,
 		float startTime,
 		float endTime,
 		float speed,
@@ -58,7 +60,8 @@ struct sSHOOTER_PARAM{
 		int bulletCountAtOneShoot = 1,
 		int dir = 1,
 		bool isFly = 1)
-		: _ShooterType(shooterType)
+		: _ShooterName(shooterName)
+		, _PatternName(patternName)
 		, _fStartTime(startTime)
 		, _fEndTime(endTime)
 		, _fSpeed(speed)
@@ -72,7 +75,11 @@ struct sSHOOTER_PARAM{
 class CShooter : public CMover {
 public:
 	virtual void ReturnToMemoryBlock() override;
-	
+	virtual void ShootOnce(){
+		CCLOG("WARNNING! This Shooter Dosen't have Shoot Once Option. Shooter Name: %s", m_ShooterParam._ShooterName.c_str());
+	};
+	void ShootWithCount(int count);
+
 protected:
 	// PoolingManager에서 메모리를 할당 받는다.
 	void* operator new (size_t size, const std::nothrow_t);

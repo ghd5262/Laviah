@@ -1,8 +1,10 @@
 #include "StageStates.h"
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/Stage/StageManager.h"
-
-
+#include "../../DataManager/ShooterDataManager.h"
+#include "../../DataManager/BulletPatternDataManager.h"
+#include "../../MyUI/UIManager.h"
+#include "../../MyUI/BonusTimeUI.h"
 //------------------------------------------------------------------------
 
 CNormalStageState* CNormalStageState::Instance(){
@@ -38,8 +40,11 @@ CBonusTimeStageState* CBonusTimeStageState::Instance(){
 }
 
 void CBonusTimeStageState::Enter(CStageManager* stageMng){
-	// bonus 패턴중 하나 실행
+	CShooter* patternShooter = CShooterListDataManager::Instance()->getShooterInfo("pattern_Shooter");
 	
+	std::string patternName = MakeString("bonusTime%d_Pattern", 1);
+	patternShooter->setShooterParam(sSHOOTER_PARAM("pattern_Shooter", patternName, 0.f, 0.f, 500.f, 90.f, 0.f));
+	patternShooter->ShootOnce();
 }
 
 void CBonusTimeStageState::Execute(CStageManager* stageMng, float delta){
@@ -51,6 +56,10 @@ void CBonusTimeStageState::Execute(CStageManager* stageMng, float delta){
 
 void CBonusTimeStageState::Exit(CStageManager* stageMng){
 
+	// BonusTimeUI 포인터 획득
+	CBonusTimeUI* bonusTimeUI
+		= static_cast<CBonusTimeUI*>(CUIManager::Instance()->FindUIWithName("BonusTime"));
+	bonusTimeUI->BonusTimeIsFinish();
 }
 
 

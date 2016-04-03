@@ -91,7 +91,8 @@ void CNormalBullet::CollisionWithPlayer()
 
 void CNormalBullet::ChangeToCoin()
 {
-	//CGameScene::getGameScene()->addChild(CPlayCoin::create(eCOIN_TYPE_bronze, 25.f, m_fAngle, m_fBulletSpeed, true, getPosition()));
+	float distance = m_TargetVec.distance(getPosition());
+	CGameScene::getGameScene()->addChild(CPlayCoin::create(eCOIN_TYPE_bronze, 25.f, distance, -getRotation(), m_fBulletSpeed, true, getPosition()));
 	ReturnToMemoryBlock();
 }
 
