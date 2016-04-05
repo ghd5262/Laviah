@@ -7,38 +7,28 @@
 #include "../../MyUI/UIManager.h"
 
 CPlayCoin::CPlayCoin(
-	eCOIN_TYPE coinType,			//coin 타입 (브론즈, 실버, 골드 등)
-	float boundingRadius,		    //coin 충돌 범위
-	float distance,					//coin 초기 거리
+	sBULLET_PARAM bulletParam,
 	float angle,				    //coin 초기 각도 
 	float speed,				    //coin 초기 속도
-	bool isFly,						//fly coin 인지 ground coin 인지
 	Vec2 createPosition /*= Vec2(0, 0)*/)
 	
 	: CBullet(
-	"",
-	boundingRadius,
+	bulletParam,
 	angle,
-	speed,
-	isFly)
-	, m_CoinType(coinType)
+	speed)
 	, m_CreatePos(createPosition)
 	, m_pUIScore(nullptr)
-	, m_fDistance(distance)
 {}
 
 CPlayCoin* CPlayCoin::create(
-	eCOIN_TYPE coinType,			//coin 타입 (브론즈, 실버, 골드 등)
-	float boundingRadius,			//coin 충돌 범위
-	float distance,					//coin 초기 거리
+	sBULLET_PARAM bulletParam,
 	float angle,					//coin 초기 각도 
 	float speed,					//coin 초기 속도
-	bool isFly,						//fly coin 인지 ground coin 인지
 	Vec2 createPosition)
 {
 	CPlayCoin* pRet =
 		(CPlayCoin*)new(std::nothrow)CPlayCoin(
-		coinType, boundingRadius, distance, angle, speed, isFly, createPosition);
+		bulletParam, angle, speed, createPosition);
 
 	if (pRet && pRet->init())
 	{
@@ -64,21 +54,21 @@ bool CPlayCoin::initVariable()
 	try{
 		setItemEffect(eITEM_FLAG_magnet);
 
-		if (!m_bIsFlyItem)
-			m_fDistance = m_pPlanet->getBRadius() + 20;
+		if (!m_BulletParam._isFly)
+			m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
 
-		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * m_fDistance) + m_pPlanet->getPosition().x);
-		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * m_fDistance) + m_pPlanet->getPosition().y);
+		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
+		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
 		
 
 		m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("CoinScoreUI"));
 
-		m_pTexture = Sprite::create(MakeString("coin_%d.png", m_CoinType));
+		m_pTexture = Sprite::create(MakeString("coin_%d.png", m_BulletParam._coinType));
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		addChild(m_pTexture);
 
-		m_fCoinValue = CItemManager::Instance()->getValueOfCoin(m_CoinType);
+		m_fCoinValue = CItemManager::Instance()->getValueOfCoin(m_BulletParam._coinType);
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
@@ -95,7 +85,7 @@ void CPlayCoin::Execute(float delta)
 
 void CPlayCoin::CollisionWithPlanet()
 {
-	if (true == m_bIsFlyItem)
+	if (true == m_BulletParam._isFly)
 	{
 		ReturnToMemoryBlock();
 	}

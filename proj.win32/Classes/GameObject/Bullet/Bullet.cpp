@@ -7,23 +7,21 @@
 #include "../../AI/States/BulletStates.h"
 
 CBullet::CBullet(
-	std::string textureName,	    //bullet 이미지
-	float boundingRadius,		    //bullet 충돌 범위
+	sBULLET_PARAM bulletParam,
 	float angle,				    //bullet 초기 각도 
-	float speed,				    //bullet 초기 속도
-	bool isFly/* = true*/)			//Fly Bullet 인지여부
-	: CMover(boundingRadius)
-	, m_TextureName(textureName)
+	float speed)				    //bullet 초기 속도
+	: CMover(bulletParam._fBouningRadius)
+	, m_BulletParam(bulletParam)
 	, m_fAngle(angle)
 	, m_fBulletSpeed(speed)
 	, m_pTexture(nullptr)
 	, m_fRotationSpeed(2.0f)
 	, m_nReceivingEffectItemTypes(eITEM_FLAG_none)
-	, m_bIsFlyItem(isFly)
 	, m_pPlayer(CObjectManager::Instance()->getM_Player())
 	, m_pPlanet(CObjectManager::Instance()->getM_Planet())
 	, m_TargetVec(CObjectManager::Instance()->getM_Planet()->getPosition())
 	, m_bIsPlayerGet(false)
+	, m_fTime(0.f)
 {
 	// bullet이 초기화 될때마다 매번 생성하지 않는다.
 	if (m_FSM == nullptr){

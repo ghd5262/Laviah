@@ -111,6 +111,7 @@ void CBonusTimeUI::BonusTimeIsFinish()
 	for (int letterNum = 0; letterNum < eLETTER_MAX; letterNum++)
 	{
 		m_LetterList[letterNum]->setIsCollected(false);
+		m_LetterList[letterNum]->setPositionY(0.f);
 	}
 }
 

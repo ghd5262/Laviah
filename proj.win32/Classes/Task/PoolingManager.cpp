@@ -128,15 +128,15 @@ void* CPoolingManager::ShooterNew()
 /* Bullet을 메모리블럭으로 전환 ( free 상태 ) */
 void CPoolingManager::Bullet_ReturnToFreeMemory(void* bullet)
 {
-	static_cast<char*>(bullet)[m_BulletSize] = false;
-	//memset(bullet, 0, m_BulletSize + 1);
+	//static_cast<char*>(bullet)[m_BulletSize] = false;
+	memset(bullet, 0, m_BulletSize + 1);
 }
 
 /* shooter를 메모리블럭으로 전환 ( free 상태 ) */
 void CPoolingManager::Shooter_ReturnToFreeMemory(void* shooter)
 {
-	static_cast<char*>(shooter)[m_ShooterSize] = false;
-	//memset(shooter, 0, m_ShooterSize + 1);
+	//static_cast<char*>(shooter)[m_ShooterSize] = false;
+	memset(shooter, 0, m_ShooterSize + 1);
 }
 
 void CPoolingManager::Bullet_ReturnToFreeMemoryAll()

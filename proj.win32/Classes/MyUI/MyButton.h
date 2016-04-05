@@ -2,7 +2,7 @@
 #include "../GameObject/GameObject.h"
 #include <vector>
 /*--------------------------CMyButton--------------------------
-* stratege pattern
+* strategy pattern
 * texture 혹은 label로 초기화하여 사용하는 Button
 * Lambda혹은 함수포인터, 함수객체를 인자로 받는다.
 * 눌렀을때 체크

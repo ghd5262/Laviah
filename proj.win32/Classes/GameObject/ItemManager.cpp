@@ -18,6 +18,8 @@ CItemManager::CItemManager()
 
 	memset(m_ItemTimers, 0, sizeof(m_ItemTimers));
 	memset(m_ItemTimersLimit, 0, sizeof(m_ItemTimersLimit));
+
+	m_CurrentItems = 0;
 }
 
 CItemManager* CItemManager::Instance()

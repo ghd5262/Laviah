@@ -12,6 +12,7 @@
 #include "../MyUI/ScoreUI.h"
 #include "../DataManager/BulletPatternDataManager.h"
 #include "../DataManager/ShooterDataManager.h"
+#include "../DataManager/BulletDataManager.h"
 
 USING_NS_CC;
 
@@ -56,6 +57,7 @@ bool CGameScene::initVariable()
 	{
 		m_GameScene = this;
 		CBulletPatternDataManager::Instance();
+		CBulletDataManager::Instance();
 
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 		Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -86,30 +88,54 @@ bool CGameScene::initVariable()
 
 
 
-		auto randomShooter = CShooterListDataManager::Instance()->getShooterInfo("random_Shooter");
-		randomShooter->setShooterParam(sSHOOTER_PARAM("random_Shooter", "", 0.f, 0.f, 250.f, 0.f, 0.5f, 3));
+	/*	auto randomShooter = CShooterListDataManager::Instance()->getShooterInfo("random_Shooter");
+		randomShooter->setShooterParam(sSHOOTER_PARAM("", 0.f, 0.f, 250.f, 0.f, 0.5f, 3));
 		randomShooter->setAlive(true);
 
 		auto randomMissileShooter = CShooterListDataManager::Instance()->getShooterInfo("randomMissile_Shooter");
-		randomMissileShooter->setShooterParam(sSHOOTER_PARAM("randomMissile_Shooter", "", 0.f, 0.f, 600.f, 0.f, 10.f, 1));
+		randomMissileShooter->setShooterParam(sSHOOTER_PARAM("", 0.f, 0.f, 600.f, 0.f, 10.f, 1));
 		randomMissileShooter->setAlive(true);
 
 		auto aimingMissileShooter = CShooterListDataManager::Instance()->getShooterInfo("aimingMissile_Shooter");
-		aimingMissileShooter->setShooterParam(sSHOOTER_PARAM("aimingMissile_Shooter", "", 0.f, 0.f, 1200.f, 0.f, 15.f, 1));
-		aimingMissileShooter->setAlive(true);
+		aimingMissileShooter->setShooterParam(sSHOOTER_PARAM("", 0.f, 0.f, 1200.f, 0.f, 15.f, 1));
+		aimingMissileShooter->setAlive(true);*/
 
 		/*auto screwShooter = CShooterListDataManager::Instance()->getShooterInfo("screw_Shooter");
 		screwShooter->setShooterParam(sSHOOTER_PARAM("screw_Shooter", "", 0.f, 10.f, 300.f, 0.f, 25.f, 1));
 		screwShooter->setAlive(true);*/
 
-		auto letterShooter = CShooterListDataManager::Instance()->getShooterInfo("bonusLetter_Shooter");
-		letterShooter->setShooterParam(sSHOOTER_PARAM("bonusLetter_Shooter", "", 0.f, 0.f, 100.f, 0.f, 30.f));
-		letterShooter->setAlive(true);
+		//auto letterShooter = CShooterListDataManager::Instance()->getShooterInfo("bonusLetter_Shooter");
+		//letterShooter->setShooterParam(sSHOOTER_PARAM("", 0.f, 0.f, 100.f, 0.f, 30.f));
+		//letterShooter->setAlive(true);
 
 
-		auto screwShooter = CShooterListDataManager::Instance()->getShooterInfo("pattern_Shooter");
-		screwShooter->setShooterParam(sSHOOTER_PARAM("pattern_Shooter", "leftScrew1_Pattern", 0.f, 0.f, 300.f, 0.f, 30.f));
-		screwShooter->setAlive(true);
+		//auto screwShooter = CPatternShooter::create(sSHOOTER_PARAM("leftScrewRocket1_Pattern", 0.f, 0.f, 900.f, -30.f, 30.f));//CShooterListDataManager::Instance()->getShooterInfo("pattern_Shooter");
+		//addChild(screwShooter);
+		//screwShooter->setShooterParam();
+		//screwShooter->setAlive(true);
+
+		auto screwShooter1 = CPatternShooter::create(sSHOOTER_PARAM("rightScrewRocket1_Pattern", 0.f, 0.f, 900.f, -30.f, 40.f));//CShooterListDataManager::Instance()->getShooterInfo("pattern_Shooter");
+		addChild(screwShooter1);
+
+		auto randomShooter = CRandomShooter::create(sSHOOTER_PARAM("leftScrewRocket1_Pattern", 0.f, 0.f, 250.f, -30.f, 0.5f));
+		addChild(randomShooter);
+
+
+		auto randomShooter1 = CPatternShooter::create(sSHOOTER_PARAM("rightScrew1_Pattern", 0.f, 0.f, 250.f, -30.f, 20.5f));
+		addChild(randomShooter1);
+
+		auto randomShooter2 = CPatternShooter::create(sSHOOTER_PARAM("temp0", 0.f, 0.f, 150.f, -30.f, 15.5f));
+		addChild(randomShooter2);
+		auto randomShooter3 = CPatternShooter::create(sSHOOTER_PARAM("temp1", 0.f, 0.f, 1200.f, 70.f, 15.5f));
+		addChild(randomShooter3);
+		auto randomShooter4 = CPatternShooter::create(sSHOOTER_PARAM("temp2", 0.f, 0.f, 900.f, -30.f, 10.5f, 2));
+		addChild(randomShooter4);
+		auto randomShooter5 = CPatternShooter::create(sSHOOTER_PARAM("temp3", 0.f, 0.f, 900.f, 70.f, 12.8f, 2));
+		addChild(randomShooter5);
+
+		//randomShooter->setShooterParam();
+		//randomShooter->setAlive(true);
+
 		//this->addChild(CRandomShooter::create(sSHOOTER_PARAM("", "normalShooter", 0, 0, 250.0f, 90, 0.5f, 300)));
 		//RandomMissileShoot(600.f, 10.0f, 2);
 		//this->addChild(CAimingMissileShooter::create(sSHOOTER_PARAM(eSHOOTER_TYPE_aimingMissile, "aimingShooter", 0.f, 0.f, 1200.0f, 90, 15.0f)));

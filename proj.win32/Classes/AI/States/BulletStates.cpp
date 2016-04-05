@@ -19,20 +19,48 @@ void CBulletNormal::Enter(CBullet* bullet)
 
 void CBulletNormal::Execute(CBullet* bullet, float delta)
 {
-	if (true == bullet->getIsFlyItem())
+	if (true == bullet->getBulletParam()._isFly)
 		bullet->Seek(delta);
 
 	if (bullet->IsHit(bullet->getPlayer()))
 	{
 		bullet->CollisionWithPlayer();
+		return;
 	}
 
 	if (bullet->IsHit(bullet->getPlanet()))
 	{
 		bullet->CollisionWithPlanet();
+		return;
 	}
 
-	switch (bullet->getItemEffect() & CItemManager::Instance()->getCurrentItem())
+	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
+		(eITEM_FLAG_shield & CItemManager::Instance()->getCurrentItem())))
+	{
+
+	}
+	
+	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
+		(eITEM_FLAG_magnet & CItemManager::Instance()->getCurrentItem())))
+	{
+		bullet->getFSM()->ChangeState(CBulletMagnetItem::Instance());
+	}
+
+	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
+		(eITEM_FLAG_coin & CItemManager::Instance()->getCurrentItem())))
+	{
+		bullet->ChangeToCoin();
+		return;
+	}
+	
+	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
+		(eITEM_FLAG_star & CItemManager::Instance()->getCurrentItem())))
+	{
+		bullet->ChangeToStar();
+		return;
+	}
+
+	/*switch (bullet->getItemEffect() & CItemManager::Instance()->getCurrentItem())
 	{
 	case eITEM_FLAG_shield:
 	{
@@ -40,22 +68,22 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 	}break;
 	case eITEM_FLAG_magnet:
 	{
-		bullet->getFSM()->ChangeState(CBulletMagnetItem::Instance());
+		
 	}break;
 	case eITEM_FLAG_coin:
 	{
-		bullet->ChangeToCoin();
+		
 	}break;
 	case eITEM_FLAG_star:
 	{
-		bullet->ChangeToStar();
+		
 	}break;
 
 	default:
 	{
 
 	}
-	}
+	}*/
 }
 
 void CBulletNormal::Exit(CBullet* bullet)
@@ -104,12 +132,13 @@ void CBulletMagnetItem::Enter(CBullet* bullet)
 
 void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 {
-	if (true == bullet->getIsFlyItem() || bullet->getIsPlayerGet())
+	if (true == bullet->getBulletParam()._isFly || bullet->getIsPlayerGet())
 		bullet->Seek(delta);
 
 	if (bullet->IsHit(bullet->getPlayer()))
 	{
 		bullet->CollisionWithPlayer();
+		return;
 	}
 	else if (bullet->IsHit(bullet->getPlayer()->getPosition(), bullet->getPlayer()->getMagnetLimitRadius()))
 	{
@@ -120,6 +149,7 @@ void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 	else if (bullet->IsHit(bullet->getPlanet()))
 	{
 		bullet->CollisionWithPlanet();
+		return;
 	}
 	if (!(CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_magnet))
 	{

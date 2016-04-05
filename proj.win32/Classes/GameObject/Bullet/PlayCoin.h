@@ -9,12 +9,9 @@ public:
 	/*create를 호출하면 CObjectManager에서 메모리를 받는다.
 	받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다.*/
 	static CPlayCoin* create(
-		eCOIN_TYPE coinType,		//coin 타입 (브론즈, 실버, 골드 등)
-		float boundingRadius,		//coin 충돌 범위
-		float distance,				//coin 초기 거리
+		sBULLET_PARAM bulletParam,
 		float angle,				//coin 초기 각도 
 		float speed,				//coin 초기 속도
-		bool isFly,					//fly coin 인지 ground coin 인지
 		Vec2 createPosition = Vec2(0.0f, 0.0f));
 
 	virtual void Execute(float delta = 0.f) override;
@@ -27,12 +24,9 @@ protected:
 
 private:
 	CPlayCoin(
-		eCOIN_TYPE coinType,
-		float boundingRadius,
-		float distance,				
+		sBULLET_PARAM bulletParam,
 		float angle,
 		float speed,
-		bool isFly,
 		Vec2 createPosition );
 
 	virtual ~CPlayCoin(){};
@@ -40,8 +34,6 @@ private:
 private:
 	CScoreUI* m_pUIScore;
 	Vec2 m_CreatePos;
-	eCOIN_TYPE m_CoinType;	//coin 타입
 	float m_fCoinValue;
-	float m_fDistance;
 };
 

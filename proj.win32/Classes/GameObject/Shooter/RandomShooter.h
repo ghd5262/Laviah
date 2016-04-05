@@ -10,6 +10,10 @@ public:
 	static CRandomShooter* create(sSHOOTER_PARAM param);
 
 	virtual void Execute(float delta) override;
+	virtual void ShootOnce() override;
+
+	// 초기 각도와 거리를 받아서 Shoot
+	void ShootWithPosition(sSHOOTER_PARAM param, float angle, float distance = 0.0f) override;
 
 private:
 	// interval = Bullet 생성 간격

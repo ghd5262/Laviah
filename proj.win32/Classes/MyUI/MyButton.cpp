@@ -134,18 +134,15 @@ void CMyButton::AddState(eMYBUTTON_STATE state,			// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È
 	case BEGIN:
 	{
 		m_BeginFuncList.emplace_back(func);
-		break;
-	}
+	}break;
 	case EXECUTE:
 	{
 		m_ExecuteFuncList.emplace_back(func);
-		break;
-	}
+	}break;
 	case END:
 	{
 		m_EndFuncList.emplace_back(func);
-		break;
-	}
+	}break;
 	default:
 	{
 		CCASSERT(false, "WRONG BUTTON STATE. PLEASE CHECK THE STATE.");

@@ -3,9 +3,88 @@
 #include "../../Common/HSHUtility.h"
 #include "../../AI/StateMachine.h"
 
+enum eITEM_TYPE{
+	eITEM_TYPE_none = 0,
+	eITEM_TYPE_health = 1,
+	eITEM_TYPE_shield = 2,
+	eITEM_TYPE_magnet = 3,
+	eITEM_TYPE_coin = 4,
+	eITEM_TYPE_star = 5,
+	eITEM_TYPE_giant = 6,
+	eITEM_TYPE_bonustime = 7,
+
+	eITEM_TYPE_MAX
+};
+
+enum eITEM_FLAG{					//변환식 : 1 << eITEM_TYPE == eITEM_FLAG
+	eITEM_FLAG_none = 0x0000,		//eITEM_TYPE에서 eITEM_FLAG으로 변환하면 아래와 같다.
+	eITEM_FLAG_shield = 0x0004,		//== eITEM_TYPE_shield = 2,
+	eITEM_FLAG_magnet = 0x0008,		//== eITEM_TYPE_magnet = 3,
+	eITEM_FLAG_coin = 0x00010,		//== eITEM_TYPE_coin = 4,
+	eITEM_FLAG_star = 0x00020,		//== eITEM_TYPE_star = 5,
+	eITEM_FLAG_giant = 0x0040,		//== eITEM_TYPE_giant = 6,
+	eITEM_FLAG_bonustime = 0x0080,	//== eITEM_TYPE_bonustime = 7,
+};
+
+enum eCOIN_TYPE{
+	eCOIN_TYPE_none = 0,
+	eCOIN_TYPE_bronze = 1,
+	eCOIN_TYPE_silver = 2,
+	eCOIN_TYPE_gold = 3,
+	eCOIN_TYPE_bigSilver = 4,
+	eCOIN_TYPE_bigGold = 5,
+
+	eCOIN_TYPE_MAX
+};
+
+enum eSTAR_TYPE{
+	eSTAR_TYPE_none = 0,
+	eSTAR_TYPE_bronze = 1,
+	eSTAR_TYPE_silver = 2,
+	eSTAR_TYPE_gold = 3,
+	eSTAR_TYPE_bigSilver = 4,
+	eSTAR_TYPE_bigGold = 5,
+
+	eSTAR_TYPE_MAX
+};
+
+struct sBULLET_PARAM{
+	std::string _TextureName;
+	float _fBouningRadius;
+	float _fDistance;
+	float _fPower;
+	bool  _isFly;
+	bool  _isAimingMissile;
+	eCOIN_TYPE _coinType;
+	eSTAR_TYPE _starType;
+	eITEM_TYPE _itemType;
+	char _symbol;
+
+	sBULLET_PARAM(
+		std::string textureName,
+		float boundingRadius,
+		float distance,
+		float power,
+		bool isFly = 1,
+		bool isAimingMissile = 0,
+		eCOIN_TYPE coinType = eCOIN_TYPE_none,
+		eSTAR_TYPE starType = eSTAR_TYPE_none,
+		eITEM_TYPE itemType = eITEM_TYPE_none)
+		: _TextureName(textureName)
+		, _fBouningRadius(boundingRadius)
+		, _fDistance(distance)
+		, _fPower(power)
+		, _isFly(isFly)
+		, _isAimingMissile(isAimingMissile)
+		, _coinType(coinType)
+		, _starType(starType)
+		, _itemType(itemType){}
+	sBULLET_PARAM(){}
+};
+
+
 class CPlayer;
 class CPlanet;
-enum eITEM_FLAG;
 class CBullet : public CMover {
 public:
 	virtual void ReturnToMemoryBlock() override;
@@ -19,7 +98,11 @@ public:
 	void setItemEffect(int item){ m_nReceivingEffectItemTypes  |= item; }
 
 	//인자로 전달된 아이템의 영향을 받는 bullet인지 검사한다.
-	bool isEffectWithItem(eITEM_FLAG itemType){ return on(itemType); }
+	bool isEffectWithItem(eITEM_FLAG itemType){
+		if (itemType == eITEM_FLAG_none)
+			return false;
+		return on(itemType); 
+	}
 
 	//현재 bullet이 영향을 받는 모든 플래그를 반환함
 	int getItemEffect(){ return m_nReceivingEffectItemTypes; }
@@ -29,11 +112,9 @@ protected:
 	void operator delete(void* ptr){};
 
 	CBullet(
-		std::string textureName,
-		float boundingRadius,
+		sBULLET_PARAM bulletParam,
 		float angle,
-		float speed, 
-		bool isFly = true);
+		float speed);
 	virtual ~CBullet();
 
 	//getter & setter
@@ -48,9 +129,9 @@ protected:
 	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
 	CC_SYNTHESIZE(CStateMachine<CBullet>*, m_FSM, FSM);
 	CC_SYNTHESIZE(Sprite*, m_pTexture, BulletTexture);
-	CC_SYNTHESIZE(std::string, m_TextureName, TextureName);
-	CC_SYNTHESIZE(bool, m_bIsFlyItem, IsFlyItem);
 	CC_SYNTHESIZE(bool, m_bIsPlayerGet, IsPlayerGet);
+
+	CC_SYNTHESIZE(sBULLET_PARAM, m_BulletParam, BulletParam);
 
 
 	/* "R_"로 시작하는 함수는 이펙트가 끝나면 ReturnToMemoryBlock 호출됨*/

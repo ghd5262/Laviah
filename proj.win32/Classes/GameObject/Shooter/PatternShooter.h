@@ -9,7 +9,7 @@ struct sPATTERN_SHOOTER_PARAM
 	int _width;
 	float _widthAngleDistance;
 	float _heightDistance;
-	int _pattern[60 * 60]; // 패턴의 최대 크기 60 * 60
+	char _pattern[60 * 60]; // 패턴의 최대 크기 60 * 60
 };
 
 /* RandomShooter : 360도 사방에서 랜덤으로 총알을 쏘는 패턴*/
@@ -25,7 +25,7 @@ public:
 
 	// 초기 각도와 거리를 받아서 Shoot
 	// 코인 아이템 사용 시 미사일의 코인 변환에 사용할 수 있음 (참고 normalMissile)
-	void ShootWithPosition(std::string patternName, float angle, float distance);
+	void ShootWithPosition(sSHOOTER_PARAM param, float angle, float distance = 0.0f) override;
 
 private:
 	// interval = Bullet 생성 간격

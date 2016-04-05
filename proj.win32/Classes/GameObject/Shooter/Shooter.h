@@ -1,44 +1,43 @@
 #pragma once
 #include "../Mover.h"
 
-enum eSHOOTER_OPTION{
-	eSHOOTER_OPTION_right = 0,
-	eSHOOTER_OPTION_left = 1
-};
+//enum eSHOOTER_OPTION{
+//	eSHOOTER_OPTION_right = 0,
+//	eSHOOTER_OPTION_left = 1
+//};
 
-enum eSHOOTER_TYPE{
-
-	// 보너스 타임 패턴 0 ~ 99
-	eSHOOTER_TYPE_bonusTime_0 = 0,
-	eSHOOTER_TYPE_bonusTime_1 = 1,
-	eSHOOTER_TYPE_bonusTime_2 = 2,
-	eSHOOTER_TYPE_bonusTime_3 = 3,
-	eSHOOTER_TYPE_bonusTime_4 = 4,
-	eSHOOTER_TYPE_bonusTime_5 = 5,
-	eSHOOTER_TYPE_bonusTime_6 = 6,
-
-	// 일반 bullet 패턴 100 ~ 499
-	eSHOOTER_TYPE_normalBullet  = 100,
-	eSHOOTER_TYPE_screwBullet = 101,
-	eSHOOTER_TYPE_doubleScrewBullet = 102,
-	eSHOOTER_TYPE_normalMissile = 103,
-	eSHOOTER_TYPE_aimingMissile = 104,
-
-	// item 패턴 500 ~ 999
-	eSHOOTER_TYPE_item_0 = 500,
-	eSHOOTER_TYPE_item_1 = 501,
-	eSHOOTER_TYPE_item_2 = 502,
-	eSHOOTER_TYPE_item_3 = 503,
-	eSHOOTER_TYPE_item_4 = 504,
-	eSHOOTER_TYPE_item_5 = 505,
-	eSHOOTER_TYPE_item_6 = 506,
-
-	// 기타 1000 ~
-	eSHOOTER_TYPE_letter = 1000
-};
+//enum eSHOOTER_TYPE{
+//
+//	// 보너스 타임 패턴 0 ~ 99
+//	eSHOOTER_TYPE_bonusTime_0 = 0,
+//	eSHOOTER_TYPE_bonusTime_1 = 1,
+//	eSHOOTER_TYPE_bonusTime_2 = 2,
+//	eSHOOTER_TYPE_bonusTime_3 = 3,
+//	eSHOOTER_TYPE_bonusTime_4 = 4,
+//	eSHOOTER_TYPE_bonusTime_5 = 5,
+//	eSHOOTER_TYPE_bonusTime_6 = 6,
+//
+//	// 일반 bullet 패턴 100 ~ 499
+//	eSHOOTER_TYPE_normalBullet  = 100,
+//	eSHOOTER_TYPE_screwBullet = 101,
+//	eSHOOTER_TYPE_doubleScrewBullet = 102,
+//	eSHOOTER_TYPE_normalMissile = 103,
+//	eSHOOTER_TYPE_aimingMissile = 104,
+//
+//	// item 패턴 500 ~ 999
+//	eSHOOTER_TYPE_item_0 = 500,
+//	eSHOOTER_TYPE_item_1 = 501,
+//	eSHOOTER_TYPE_item_2 = 502,
+//	eSHOOTER_TYPE_item_3 = 503,
+//	eSHOOTER_TYPE_item_4 = 504,
+//	eSHOOTER_TYPE_item_5 = 505,
+//	eSHOOTER_TYPE_item_6 = 506,
+//
+//	// 기타 1000 ~
+//	eSHOOTER_TYPE_letter = 1000
+//};
 
 struct sSHOOTER_PARAM{
-	std::string _ShooterName;
 	std::string _PatternName;
 	float _fStartTime;
 	float _fEndTime;
@@ -47,10 +46,10 @@ struct sSHOOTER_PARAM{
 	float _fInterval;
 	int   _nDir;
 	int   _nBulletCountAtOneShoot;
+	char  _randomShootSymbol;
 	bool  _isFly;
 
 	sSHOOTER_PARAM(
-		std::string shooterName,
 		std::string patternName,
 		float startTime,
 		float endTime,
@@ -60,8 +59,7 @@ struct sSHOOTER_PARAM{
 		int bulletCountAtOneShoot = 1,
 		int dir = 1,
 		bool isFly = 1)
-		: _ShooterName(shooterName)
-		, _PatternName(patternName)
+		: _PatternName(patternName)
 		, _fStartTime(startTime)
 		, _fEndTime(endTime)
 		, _fSpeed(speed)
@@ -69,16 +67,17 @@ struct sSHOOTER_PARAM{
 		, _fInterval(interval)
 		, _nDir(dir)
 		, _nBulletCountAtOneShoot(bulletCountAtOneShoot)
-		, _isFly(isFly){}
+		, _isFly(isFly)
+		, _randomShootSymbol('1'){}
 };
 
 class CShooter : public CMover {
 public:
 	virtual void ReturnToMemoryBlock() override;
 	virtual void ShootOnce(){
-		CCLOG("WARNNING! This Shooter Dosen't have Shoot Once Option. Shooter Name: %s", m_ShooterParam._ShooterName.c_str());
+		//CCLOG("WARNNING! This Shooter Dosen't have Shoot Once Option. Shooter Name: %s", m_ShooterParam.P.c_str());
 	};
-	void ShootWithCount(int count);
+	virtual void ShootWithPosition(sSHOOTER_PARAM param, float angle, float distance = 0.0f){}
 
 protected:
 	// PoolingManager에서 메모리를 할당 받는다.

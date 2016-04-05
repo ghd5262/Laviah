@@ -7,26 +7,24 @@
 #include "../../MyUI/UIManager.h"
 
 CBonusLetter::CBonusLetter(
-	std::string textureName,	    //bullet 이미지
-	float boundingRadius,		    //bullet 충돌 범위
+	sBULLET_PARAM bulletParam,
 	float angle,				    //bullet 초기 각도 
 	float speed)				    //bullet 초기 속도
-	: CBullet(textureName,
-	boundingRadius, 
+	: CBullet(
+	bulletParam,
 	angle, 
 	speed)
 	, m_pUIBonusTime(nullptr)
 {}
 
 CBonusLetter* CBonusLetter::create(
-	std::string textureName,		//bullet 이미지
-	float boundingRadius,			//bullet 충돌 범위
+	sBULLET_PARAM bulletParam,
 	float angle,					//bullet 초기 각도 
 	float speed)					//bullet 초기 속도
 {
 	CBonusLetter* pRet = 
 		(CBonusLetter*)new(std::nothrow)CBonusLetter(
-		textureName, boundingRadius, angle, speed);
+		bulletParam, angle, speed);
 
 	if (pRet && pRet->init())
 	{
@@ -52,8 +50,11 @@ bool CBonusLetter::initVariable()
 	try{
 		setItemEffect(eITEM_FLAG_magnet);
 
-		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * 1000.f) + m_pPlanet->getPosition().x);
-		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * 1000.f) + m_pPlanet->getPosition().y);
+		if (!m_BulletParam._isFly)
+			m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
+
+		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
+		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle + 90);
 
 		m_pUIBonusTime = static_cast<CBonusTimeUI*>(CUIManager::Instance()->FindUIWithName("BonusTime"));
@@ -62,7 +63,7 @@ bool CBonusLetter::initVariable()
 
 		m_Player = CObjectManager::Instance()->getM_Player();
 
-		m_pTexture = Sprite::create(m_TextureName);
+		m_pTexture = Sprite::create(MakeString("bonusLetter_%d.png", static_cast<int>(m_LetterNum)));
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		addChild(m_pTexture);
 	}

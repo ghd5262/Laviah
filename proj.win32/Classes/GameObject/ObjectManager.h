@@ -42,6 +42,7 @@ public:
 	void setM_Player(CPlayer* player){ m_Player = player; }
 
 private:
+	void Auto_ReturnToMemoryBlock()		// Alive가 false인 오브젝트를 모두 메모리 블럭으로 되돌린다.
 	void RemoveAllBullet();				// Delete함수 호출! 이유는 구현부에~
 	void RemoveAllShooter();			// Delete함수 호출! 이유는 구현부에~
 	CObjectManager(){};

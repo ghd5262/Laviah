@@ -136,7 +136,7 @@ void CPlayer::NormalMode()
 		ScaleTo::create(0.5f, 1.0f),
 		CallFunc::create([&](){
 		this->m_pTexture->setTexture(m_NormalTextureName);
-		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.3f));
+		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBRadius(6.f);
 	}), nullptr);
 	this->runAction(action);

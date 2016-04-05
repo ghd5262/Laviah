@@ -4,37 +4,35 @@
 #include "../Player.h"
 
 CTargetMark::CTargetMark(
-	std::string textureName,		//TargetMark 이미지
+	sBULLET_PARAM bulletParam,
 	float angle,					//TargetMark 초기 각도 
 	Vec2 missilePos,				//Missile 현재 좌표
 	float missileSpeed,				//Missile 속력
-	bool isAiming,					//조준미사일인지 여부
+	bool isMissileChangedToCoin/* = true*/,
 	CBullet* owner/* = nullptr*/)	//owner missile (nullptr 일 때에는 도착시간으로 삭제한다.)
 	: CBullet(
-	textureName, 
-	0.0f,
+	bulletParam,
 	angle, 
 	0.0f)
-	, m_bIsAimingMissile(isAiming)
 	, m_fArriveTime(1.0f)
 	, m_OwnerBullet(owner)
-	
+	, m_bIsMissileChangedToCoin(isMissileChangedToCoin)
 {
 	float distance = m_pPlanet->getPosition().distance(missilePos);
 	m_fArriveTime = (distance / missileSpeed);
 }
 
 CTargetMark* CTargetMark::create(
-	std::string textureName,		//TargetMark 이미지
+	sBULLET_PARAM bulletParam,
 	float angle,					//TargetMark 초기 각도 
 	Vec2 missilePos,				//Missile 현재 좌표
 	float missileSpeed,				//Missile 속력
-	bool isAiming,					//조준미사일인지 여부
+	bool isMissileChangedToCoin,
 	CBullet* owner)					//owner missile
 {
 	CTargetMark* pRet = 
 		(CTargetMark*)new(std::nothrow)CTargetMark(
-		textureName, angle, missilePos, missileSpeed, isAiming, owner);
+		bulletParam, angle, missilePos, missileSpeed, isMissileChangedToCoin, owner);
 
 	if (pRet && pRet->init())
 	{
@@ -60,12 +58,12 @@ bool CTargetMark::initVariable()
 	try{
 		AudioEngine::play2d("sounds/missile_warning_1.mp3", false, 0.7f);
 
-		m_ScreenRect = Rect(0, 0, 720, 1280);
+		m_ScreenRect = Rect(-560, 0, 1280, 1280);
 		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().x);
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
 
-		auto texture = Director::getInstance()->getTextureCache()->addImage(m_TextureName);
+		auto texture = Director::getInstance()->getTextureCache()->addImage(m_BulletParam._TextureName);
 		const int FrameCount_MAX = 3;
 		SpriteFrame* frame[FrameCount_MAX];
 		Vector<SpriteFrame*> animFrames(FrameCount_MAX);
@@ -98,8 +96,8 @@ bool CTargetMark::initVariable()
 void CTargetMark::Rotation(int dir)
 {
 	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
-	if (true == m_bIsAimingMissile){
-		if (!m_ScreenRect.containsPoint(m_OwnerBullet->getPosition()))
+	if (true == m_BulletParam._isAimingMissile && !m_bIsMissileChangedToCoin){
+		if (m_OwnerBullet->IsAlive() && !m_ScreenRect.containsPoint(m_OwnerBullet->getPosition()))
 		{
 			return;
 		}
@@ -110,8 +108,8 @@ void CTargetMark::Rotation(int dir)
 
 void CTargetMark::Execute(float delta)
 {
-	// m_OwnerBullet != nullptr 일 경우는 coin 이나 star로 변경되었을 때 이다.
-	if (m_OwnerBullet != nullptr){			
+	// coin 이나 star로 변경되었을 때는 m_OwnerBullet == nullptr이다.
+	if ( true != m_bIsMissileChangedToCoin){
 		if (!m_OwnerBullet->IsAlive())		// 이것 이외의 OwnerBullet을 사용하는 곳이 있으면 안된다.. 사실상 이 코드도 이미 메모리 블럭으로 되돌아간 bullet의 Alive이다.
 			ReturnToMemoryBlock();			// OwnerBullet은 항상 Target보다 먼저 메모리 블럭으로 되돌아가기 때문이다.
 	}

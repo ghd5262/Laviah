@@ -43,7 +43,7 @@ void CBonusTimeStageState::Enter(CStageManager* stageMng){
 	CShooter* patternShooter = CShooterListDataManager::Instance()->getShooterInfo("pattern_Shooter");
 	
 	std::string patternName = MakeString("bonusTime%d_Pattern", 1);
-	patternShooter->setShooterParam(sSHOOTER_PARAM("pattern_Shooter", patternName, 0.f, 0.f, 500.f, 90.f, 0.f));
+	patternShooter->setShooterParam(sSHOOTER_PARAM(patternName, 0.f, 0.f, 500.f, 90.f, 0.f));
 	patternShooter->ShootOnce();
 }
 
