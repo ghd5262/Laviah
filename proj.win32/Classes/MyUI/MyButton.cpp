@@ -119,7 +119,7 @@ bool CMyButton::initVariable()
 		}
 	}
 	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		assert(false);
 		return false;
 	}

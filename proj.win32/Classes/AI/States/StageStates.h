@@ -1,21 +1,21 @@
 #pragma once
 #include "State.h"
-#include "../../GameObject/Stage/StageManager.h"
+#include "../../GameObject/ObjectManager.h"
 
-class CStageManager;
+class CObjectManager;
 //------------------------------------------------------------------------
-class CNormalStageState : public CState<CStageManager>
+class CNormalStageState : public CState<CObjectManager>
 {
 public:
 
 	//this is a singleton
 	static CNormalStageState* Instance();
 
-	void Enter(CStageManager* stageMng) override;
+	void Enter(CObjectManager* objectMng) override;
 
-	void Execute(CStageManager* stageMng, float delta) override;
+	void Execute(CObjectManager* objectMng, float delta) override;
 
-	void Exit(CStageManager* stageMng) override;
+	void Exit(CObjectManager* objectMng) override;
 
 private:
 	CNormalStageState(){}
@@ -23,18 +23,18 @@ private:
 };
 
 //------------------------------------------------------------------------
-class CBonusTimeStageState : public CState<CStageManager>
+class CBonusTimeStageState : public CState<CObjectManager>
 {
 public:
 
 	//this is a singleton
 	static CBonusTimeStageState* Instance();
 
-	void Enter(CStageManager* stageMng) override;
+	void Enter(CObjectManager* objectMng) override;
 
-	void Execute(CStageManager* stageMng, float delta) override;
+	void Execute(CObjectManager* objectMng, float delta) override;
 
-	void Exit(CStageManager* stageMng) override;
+	void Exit(CObjectManager* objectMng) override;
 
 private:
 	CBonusTimeStageState(){}
@@ -42,18 +42,18 @@ private:
 };
 
 //------------------------------------------------------------------------
-class CCrazyStageState : public CState<CStageManager>
+class CCrazyStageState : public CState<CObjectManager>
 {
 public:
 
 	//this is a singleton
 	static CCrazyStageState* Instance();
 
-	void Enter(CStageManager* stageMng) override;
+	void Enter(CObjectManager* objectMng) override;
 
-	void Execute(CStageManager* stageMng, float delta) override;
+	void Execute(CObjectManager* objectMng, float delta) override;
 
-	void Exit(CStageManager* stageMng) override;
+	void Exit(CObjectManager* objectMng) override;
 
 private:
 	CCrazyStageState(){}

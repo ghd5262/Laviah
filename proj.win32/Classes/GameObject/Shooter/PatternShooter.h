@@ -18,17 +18,13 @@ class CPatternShooter : public CShooter {
 public:
 	/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.
 	받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다. */
-	static CPatternShooter* create(sSHOOTER_PARAM param);
+	static CPatternShooter* create(sSHOOTER_PARAM param, float distance = -1.f);
 
 	virtual void Execute(float delta) override;
 	virtual void ShootOnce() override;
 
-	// 초기 각도와 거리를 받아서 Shoot
-	// 코인 아이템 사용 시 미사일의 코인 변환에 사용할 수 있음 (참고 normalMissile)
-	void ShootWithPosition(sSHOOTER_PARAM param, float angle, float distance = 0.0f) override;
-
 private:
 	// interval = Bullet 생성 간격
-	CPatternShooter(sSHOOTER_PARAM param);
+	CPatternShooter(sSHOOTER_PARAM param, float distance);
 	virtual ~CPatternShooter(){}
 };

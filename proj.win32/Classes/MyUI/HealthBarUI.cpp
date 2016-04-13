@@ -29,7 +29,7 @@ bool CHealthBarUI::initVariable()
 	try{
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 
-		m_HealthBarImg = Sprite::create("HealthBar.png");
+		m_HealthBarImg = Sprite::create("healthBar.png");
 		if (m_HealthBarImg != nullptr){
 			m_HealthBar = ProgressTimer::create(m_HealthBarImg);
 			
@@ -44,7 +44,7 @@ bool CHealthBarUI::initVariable()
 			}
 		}
 	
-		m_HealthBarBG = Sprite::create("HealthBarBG.png");
+		m_HealthBarBG = Sprite::create("healthBarBG.png");
 		if (m_HealthBarBG != nullptr)
 		{
 			m_HealthBarBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -52,7 +52,7 @@ bool CHealthBarUI::initVariable()
 		}
 	}
 	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		assert(false);
 		return false;
 	}

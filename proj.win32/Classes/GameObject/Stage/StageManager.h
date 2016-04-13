@@ -21,7 +21,7 @@ private:
 
 private:
 	CStateMachine<CStageManager>* m_FSM;
-	std::vector<sSHOOTER_PARAM> m_StageParamList;
+	//std::vector<sSHOOTER_PARAM> m_StageParamList;
 	float m_fTime;
 };
 

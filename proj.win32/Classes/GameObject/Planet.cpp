@@ -53,7 +53,7 @@ bool CPlanet::initVariable()
 		}
 	}
 	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		assert(false);
 		return false;
 	}
@@ -90,17 +90,17 @@ void CPlanet::CrushShake(float interval, float duration, float speed, float magn
 		x *= magnitude * damper;
 		y *= magnitude * damper;
 		setPosition(m_OriginPos.x + x, m_OriginPos.y + y);
-		CObjectManager::Instance()->getM_Player()->setPosition(
-			CObjectManager::Instance()->getM_Player()->getOriginPos().x + x, 
-			CObjectManager::Instance()->getM_Player()->getOriginPos().y + y);
+		CObjectManager::Instance()->getPlayer()->setPosition(
+			CObjectManager::Instance()->getPlayer()->getOriginPos().x + x, 
+			CObjectManager::Instance()->getPlayer()->getOriginPos().y + y);
 		if (m_fElapsed >= duration)
 		{
 			m_fElapsed = 0;
 			this->unschedule("Shake");
 
 			setPosition(m_OriginPos);
-			CObjectManager::Instance()->getM_Player()->setPosition(
-				CObjectManager::Instance()->getM_Player()->getOriginPos() );
+			CObjectManager::Instance()->getPlayer()->setPosition(
+				CObjectManager::Instance()->getPlayer()->getOriginPos() );
 		}
 
 	}, interval, CC_REPEAT_FOREVER, 0.f, "Shake");
@@ -111,9 +111,9 @@ void CPlanet::Execute(float delta)
 }
 
 // Dir -1 == Left, 1 == Right
-void CPlanet::Rotation(int dir)
+void CPlanet::Rotation(float dir, float delta)
 {
-	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed);
+	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed * delta);
 	m_fAngle = static_cast<int>(m_fAngle) % 360;
 	this->setRotation(m_fAngle);
 }

@@ -15,7 +15,7 @@ public:
 		bool isMissileChangedToCoin = true,
 		CBullet* owner = nullptr);	//owner missile (nullptr 일 때에는 도착시간으로 삭제한다.)
 	virtual void Execute(float delta = 0.f) override;
-	virtual void Rotation(int dir) override;
+	virtual void Rotation(float dir, float delta) override;
 
 protected:
 	virtual bool init() override;
@@ -37,4 +37,7 @@ private:
 	float m_fArriveTime;			// 미사일 도착시간 =  target
 	Rect m_ScreenRect;
 	bool m_bIsMissileChangedToCoin;
+	
+	//파티클
+	ParticleSystemQuad* m_pParticle;
 };

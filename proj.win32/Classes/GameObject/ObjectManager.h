@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
 #include "../Common/HSHUtility.h"
-
+#include "../AI/StateMachine.h"
+#include "../GameObject/Shooter/ShooterHeaders.h"
 
 /*------------------------------ObjectManager 클래스설명----------------------------------
 *
@@ -32,26 +33,30 @@ public:
 	void RemoveAllObject();				// 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllShooter() 호출함
 	void Execute(float delta);
 
+
+	void ShooterPause();
+    void ShooterResume();
+
 	//callback
-	void RotationObject(int dir);
+	void RotationObject(float dir);
 
 	//getter & setter
-	CPlanet* getM_Planet(){ return m_Planet; }
-	CPlayer* getM_Player(){ return m_Player; }
-	void setM_Planet(CPlanet* planet){ m_Planet = planet; }
-	void setM_Player(CPlayer* player){ m_Player = player; }
-
+	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
+	CC_SYNTHESIZE(CPlayer*, m_Player, Player);
+	CC_SYNTHESIZE(CStateMachine<CObjectManager>*, m_FSM, FSM);
+	CC_SYNTHESIZE(float, m_fStageTime, StageTime);
+	CC_SYNTHESIZE(float, m_fDelta, Delta);
 private:
-	void Auto_ReturnToMemoryBlock()		// Alive가 false인 오브젝트를 모두 메모리 블럭으로 되돌린다.
+	void CreateShooterByTimer();
+	void Auto_ReturnToMemoryBlock();	// Alive가 false인 오브젝트를 모두 메모리 블럭으로 되돌린다.
 	void RemoveAllBullet();				// Delete함수 호출! 이유는 구현부에~
 	void RemoveAllShooter();			// Delete함수 호출! 이유는 구현부에~
-	CObjectManager(){};
+	CObjectManager();
 	~CObjectManager(){};
 
 private:
 	std::vector<CBullet*> m_BulletList;
 	std::vector<CShooter*> m_ShooterList;
-	CPlanet* m_Planet;
-	CPlayer* m_Player;
+	const std::vector<sSHOOTER_PARAM>* m_StageList;
+	int m_CurrentShooterIdx;
 };
-

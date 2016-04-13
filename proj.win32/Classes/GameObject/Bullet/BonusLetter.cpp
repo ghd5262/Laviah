@@ -50,9 +50,14 @@ bool CBonusLetter::initVariable()
 	try{
 		setItemEffect(eITEM_FLAG_magnet);
 
-		if (!m_BulletParam._isFly)
+		if (!m_BulletParam._isFly){
 			m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
 
+			this->scheduleOnce([this](float delta)
+			{
+				this->R_FadeOutWithCount(5, 3.f);
+			}, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
+		}
 		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle + 90);
@@ -61,14 +66,14 @@ bool CBonusLetter::initVariable()
 		m_TargetPos = m_pUIBonusTime->NonCollectedLetterWorldPos();
 		m_LetterNum = m_pUIBonusTime->NonCollectedLetterNum();
 
-		m_Player = CObjectManager::Instance()->getM_Player();
+		m_Player = CObjectManager::Instance()->getPlayer();
 
 		m_pTexture = Sprite::create(MakeString("bonusLetter_%d.png", static_cast<int>(m_LetterNum)));
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		addChild(m_pTexture);
 	}
 	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		assert(false);
 		return false;
 	}
@@ -82,12 +87,15 @@ void CBonusLetter::Execute(float delta)
 
 void CBonusLetter::CollisionWithPlanet()
 {
-	ReturnToMemoryBlock();
+	if (true == m_BulletParam._isFly)
+	{
+		ReturnToMemoryBlock();
+	}
 }
 
 void CBonusLetter::CollisionWithPlayer()
 {
-	AudioEngine::play2d("sounds/Star_2.mp3", false);
+	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	m_pUIBonusTime->CollectLetter(m_LetterNum);
 
 	R_BezierWithScale(m_TargetPos, Vec2(100, 100), Vec2(80, 800), 1.0f, 4.0f);

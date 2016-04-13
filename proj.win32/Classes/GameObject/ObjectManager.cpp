@@ -4,7 +4,20 @@
 #include "ItemManager.h"
 #include "Bullet/Bullet.h"
 #include "Shooter/Shooter.h"
-#include "Stage/StageManager.h"
+#include "../AI/States/StageStates.h"
+#include "../DataManager/StageDataManager.h"
+#include "../Scene/GameScene.h"
+CObjectManager::CObjectManager()
+	: m_fStageTime(0.f)
+{
+	m_FSM = new CStateMachine<CObjectManager>(this);
+
+	if (m_FSM != nullptr){
+		m_FSM->ChangeState(CNormalStageState::Instance());
+	}
+
+	m_StageList = CStageDataManager::Instance()->getStageList();
+}
 
 CObjectManager* CObjectManager::Instance()
 {
@@ -45,16 +58,53 @@ void CObjectManager::RemoveAllShooter()
 	}
 }
 
+void CObjectManager::Auto_ReturnToMemoryBlock()
+{
+
+}
+
 void CObjectManager::RemoveAllObject()
 {
 	RemoveAllBullet();
 	RemoveAllShooter();
 }
 
+void CObjectManager::CreateShooterByTimer()
+{
+	if (m_CurrentShooterIdx < m_StageList->size() && m_StageList->at(m_CurrentShooterIdx)._fStartTime < m_fStageTime)
+	{
+		if (m_StageList->at(m_CurrentShooterIdx)._ShooterName == "RandomShooter")
+		{
+			CGameScene::getGameScene()->addChild(
+				CRandomShooter::create(m_StageList->at(m_CurrentShooterIdx)));
+		}
+		else if (m_StageList->at(m_CurrentShooterIdx)._ShooterName == "PatternShooter")
+		{
+			CGameScene::getGameScene()->addChild(
+				CPatternShooter::create(m_StageList->at(m_CurrentShooterIdx)));
+		}
+        else if (m_StageList->at(m_CurrentShooterIdx)._ShooterName == "all pause")
+        {
+            ShooterPause();
+        }
+        else if (m_StageList->at(m_CurrentShooterIdx)._ShooterName == "all resume")
+        {
+            ShooterResume();
+        }
+        
+		CCLOG("StageSize : %d Index : %d Shooter : %s Pattern : %s",static_cast<int>(m_StageList->size()), m_CurrentShooterIdx, m_StageList->at(m_CurrentShooterIdx)._ShooterName.c_str(), m_StageList->at(m_CurrentShooterIdx)._PatternName.c_str());
+
+		m_CurrentShooterIdx++;
+	}
+}
+
 void CObjectManager::Execute(float delta)
 {
+	m_fDelta = delta;
+	m_fStageTime += delta;
+	CreateShooterByTimer();
+	m_FSM->Execute(delta);
 	CItemManager::Instance()->Execute(delta);
-	CStageManager::Instance()->Execute(delta);
 	for (auto bullet : m_BulletList)
 	{
 		if (bullet->IsAlive()) {
@@ -73,14 +123,34 @@ void CObjectManager::Execute(float delta)
 	m_Player->Execute(delta);
 }
 
-void CObjectManager::RotationObject(int dir)
+void CObjectManager::RotationObject(float dir)
 {
 	for (auto bullet : m_BulletList)
 	{
 		if (bullet->IsAlive()) {
-			bullet->Rotation(dir);
+			bullet->Rotation(dir, m_fDelta);
 		}
 	}
-	m_Planet->Rotation(-dir);
-	m_Player->Rotation(dir);
+	m_Planet->Rotation(-dir, m_fDelta);
+	m_Player->Rotation(dir, m_fDelta);
+}
+
+void CObjectManager::ShooterPause()
+{
+    for (auto shooter : m_ShooterList)
+    {
+        if (shooter->IsAlive()) {
+            shooter->setAlive(false);
+        }
+    }
+}
+
+void CObjectManager::ShooterResume()
+{
+    for (auto shooter : m_ShooterList)
+    {
+        if (shooter->IsAlive()) {
+            shooter->setAlive(true);
+        }
+    }
 }

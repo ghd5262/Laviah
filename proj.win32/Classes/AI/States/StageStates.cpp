@@ -1,7 +1,7 @@
 #include "StageStates.h"
 #include "../../GameObject/ItemManager.h"
-#include "../../GameObject/Stage/StageManager.h"
-#include "../../DataManager/ShooterDataManager.h"
+#include "../../GameObject/ObjectManager.h"
+#include "../../DataManager/StageDataManager.h"
 #include "../../DataManager/BulletPatternDataManager.h"
 #include "../../MyUI/UIManager.h"
 #include "../../MyUI/BonusTimeUI.h"
@@ -13,20 +13,22 @@ CNormalStageState* CNormalStageState::Instance(){
 	return &instance;
 }
 
-void CNormalStageState::Enter(CStageManager* stageMng){
+void CNormalStageState::Enter(CObjectManager* objectMng){
 
+	// All Shooter Resume
+	objectMng->ShooterResume();
 }
 
-void CNormalStageState::Execute(CStageManager* stageMng, float delta){
-	// 시간에 맞춰 shooter동작 
+void CNormalStageState::Execute(CObjectManager* objectMng, float delta){
 
+	// 보너스타임을 다모았다면 보너스타임 상태로 변경
 	if (eITEM_FLAG_bonustime & CItemManager::Instance()->getCurrentItem())
 	{
-		stageMng->getFSM()->ChangeState(CBonusTimeStageState::Instance());
+		objectMng->getFSM()->ChangeState(CBonusTimeStageState::Instance());
 	}
 }
 
-void CNormalStageState::Exit(CStageManager* stageMng){
+void CNormalStageState::Exit(CObjectManager* objectMng){
 
 }
 
@@ -39,22 +41,33 @@ CBonusTimeStageState* CBonusTimeStageState::Instance(){
 	return &instance;
 }
 
-void CBonusTimeStageState::Enter(CStageManager* stageMng){
-	CShooter* patternShooter = CShooterListDataManager::Instance()->getShooterInfo("pattern_Shooter");
-	
-	std::string patternName = MakeString("bonusTime%d_Pattern", 1);
-	patternShooter->setShooterParam(sSHOOTER_PARAM(patternName, 0.f, 0.f, 500.f, 90.f, 0.f));
-	patternShooter->ShootOnce();
+void CBonusTimeStageState::Enter(CObjectManager* objectMng){
+
+	// All Shooter Pause
+	objectMng->ShooterPause();
+
+	auto screwShooter = CPatternShooter::create(
+		sSHOOTER_PARAM(
+		MakeString("bonusTime%d_Pattern", 1)
+		, 0.f
+		, 0.f
+		, 200.f
+		, 90.f
+		, 0.f
+		, 1
+		, 1
+		, true
+		, true));
 }
 
-void CBonusTimeStageState::Execute(CStageManager* stageMng, float delta){
+void CBonusTimeStageState::Execute(CObjectManager* objectMng, float delta){
 	if (!(eITEM_FLAG_bonustime & CItemManager::Instance()->getCurrentItem()))
 	{
-		stageMng->getFSM()->ChangeState(CNormalStageState::Instance());
+		objectMng->getFSM()->ChangeState(CNormalStageState::Instance());
 	}
 }
 
-void CBonusTimeStageState::Exit(CStageManager* stageMng){
+void CBonusTimeStageState::Exit(CObjectManager* objectMng){
 
 	// BonusTimeUI 포인터 획득
 	CBonusTimeUI* bonusTimeUI
@@ -71,14 +84,14 @@ CCrazyStageState* CCrazyStageState::Instance(){
 	return &instance;
 }
 
-void CCrazyStageState::Enter(CStageManager* stageMng){
+void CCrazyStageState::Enter(CObjectManager* objectMng){
 
 }
 
-void CCrazyStageState::Execute(CStageManager* stageMng, float delta){
+void CCrazyStageState::Execute(CObjectManager* objectMng, float delta){
 
 }
 
-void CCrazyStageState::Exit(CStageManager* stageMng){
+void CCrazyStageState::Exit(CObjectManager* objectMng){
 
 }

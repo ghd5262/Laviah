@@ -13,11 +13,11 @@ public:
 		float speed);				//bullet 초기 속도
 
 	virtual void Execute(float delta = 0.f) override;
-	virtual void Rotation(int dir) override;
+	virtual void Rotation(float dir, float delta) override;
 	virtual void CollisionWithPlayer();
 	virtual void CollisionWithPlanet();
-	virtual void ChangeToCoin();
-	virtual void ChangeToStar();
+	virtual void CollisionWithBarrier();
+	virtual void ChangeToCoinOrStar();
 
 protected:
 	virtual bool init() override;
@@ -34,4 +34,10 @@ private:
 
 private:
 	Rect m_ScreenRect;
+
+	//불꽃 파티클
+	ParticleSystemQuad* m_pParticleFlame;
+
+	//충돌 파티클
+	ParticleSystemQuad* m_pParticleCrash;
 };

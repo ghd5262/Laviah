@@ -2,6 +2,7 @@
 #include "../ObjectManager.h"
 #include "../Planet.h"
 #include "../Player.h"
+#include "../../Particle/Particles.h"
 
 CTargetMark::CTargetMark(
 	sBULLET_PARAM bulletParam,
@@ -17,6 +18,7 @@ CTargetMark::CTargetMark(
 	, m_fArriveTime(1.0f)
 	, m_OwnerBullet(owner)
 	, m_bIsMissileChangedToCoin(isMissileChangedToCoin)
+	, m_pParticle(nullptr)
 {
 	float distance = m_pPlanet->getPosition().distance(missilePos);
 	m_fArriveTime = (distance / missileSpeed);
@@ -56,44 +58,65 @@ bool CTargetMark::init()
 bool CTargetMark::initVariable()
 {
 	try{
-		AudioEngine::play2d("sounds/missile_warning_1.mp3", false, 0.7f);
+		CAudioManager::Instance()->PlayEffectSound("sounds/missile_warning_1.mp3", false, 0.7f);
 
-		m_ScreenRect = Rect(-560, 0, 1280, 1280);
+		m_ScreenRect = Rect(-1280, 0, 3840, 1280);
 		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().x);
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
 
 		auto texture = Director::getInstance()->getTextureCache()->addImage(m_BulletParam._TextureName);
-		const int FrameCount_MAX = 3;
-		SpriteFrame* frame[FrameCount_MAX];
-		Vector<SpriteFrame*> animFrames(FrameCount_MAX);
+		
+		
 
-		for (int frameCount = 0; frameCount < FrameCount_MAX; frameCount++)
-		{
-			frame[frameCount] = SpriteFrame::createWithTexture(texture,
-				Rect(texture->getContentSize().width * 0, 
-				(texture->getContentSize().height / FrameCount_MAX) * frameCount,
-				texture->getContentSize().width,
-				(texture->getContentSize().height / FrameCount_MAX)));
-			animFrames.pushBack(frame[frameCount]);
+		if (m_bIsMissileChangedToCoin){
+
+			m_pParticle = CParticle_Line::create(MakeString("particle_star%d.png", m_BulletParam._isAimingMissile + 1));
+			if (m_pParticle != nullptr){
+				m_pParticle->retain();
+				m_pParticle->setAnchorPoint(Vec2::ZERO);
+				m_pParticle->setPosition(Vec2(texture->getContentSize().width * 0.25f, 0));
+				this->addChild(m_pParticle, 10);
+			}
 		}
-		auto sprite = Sprite::createWithSpriteFrame(frame[0]);
-		sprite->setAnchorPoint(Vec2(0.04f, 0.5f));
-		addChild(sprite);
+		else
+		{
+			/* 몇 프레임 뒤에 생성
+			 * m_bIsMissileChangedToCoin = true일 때는 
+			 * 일반 미사일이 생성된 후 별로 변경되는 거라
+			 * targetmark를 변경이 완료된후에 생성하기 위해서 */
+			this->scheduleOnce([=](float delta){
+				const int FrameCount_MAX = 3;
+				SpriteFrame* frame[FrameCount_MAX];
+				Vector<SpriteFrame*> animFrames(FrameCount_MAX);
+				for (int frameCount = 0; frameCount < FrameCount_MAX; frameCount++)
+				{
+					frame[frameCount] = SpriteFrame::createWithTexture(texture,
+						Rect(texture->getContentSize().width * 0,
+						(texture->getContentSize().height / FrameCount_MAX) * frameCount,
+						texture->getContentSize().width,
+						(texture->getContentSize().height / FrameCount_MAX)));
+					animFrames.pushBack(frame[frameCount]);
+				}
+				auto sprite = Sprite::createWithSpriteFrame(frame[0]);
+				sprite->setAnchorPoint(Vec2(0.04f, 0.5f));
+				addChild(sprite);
 
-		auto animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
-		auto animate = Animate::create(animation);
-		sprite->runAction(RepeatForever::create(animate));
+				auto animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
+				auto animate = Animate::create(animation);
+				sprite->runAction(RepeatForever::create(animate));
+			}, 0.05f, "targetMarkInit");
+		}
 	}
 	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		assert(false);
 		return false;
 	}
 	return true;
 }
 
-void CTargetMark::Rotation(int dir)
+void CTargetMark::Rotation(float dir, float delta)
 {
 	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
 	if (true == m_BulletParam._isAimingMissile && !m_bIsMissileChangedToCoin){
@@ -103,7 +126,7 @@ void CTargetMark::Rotation(int dir)
 		}
 	}
 
-	CBullet::Rotation(dir);
+	CBullet::Rotation(dir, delta);
 }
 
 void CTargetMark::Execute(float delta)

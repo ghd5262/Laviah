@@ -4,6 +4,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/Bullet/Bullet.h"
+#include "../../GameObject/ItemBarrier.h"
 
 CBulletNormal* CBulletNormal::Instance()
 {
@@ -28,18 +29,21 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 		return;
 	}
 
-	if (bullet->IsHit(bullet->getPlanet()))
+	if (bullet->IsHit(bullet->getPlanet())) 
 	{
 		bullet->CollisionWithPlanet();
 		return;
 	}
-
-	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
-		(eITEM_FLAG_shield & CItemManager::Instance()->getCurrentItem())))
-	{
-
-	}
 	
+	if (bullet->isEffectWithItem(eITEM_FLAG_shield) && 
+		bullet->getPlayer()->getItemBarrier()->getBarrierAlive() && 
+		bullet->IsHit(bullet->getPlayer()->getPosition(),
+		bullet->getPlayer()->getItemBarrier()->getBRadius()))
+	{
+		bullet->CollisionWithBarrier();
+		return;
+	}
+
 	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
 		(eITEM_FLAG_magnet & CItemManager::Instance()->getCurrentItem())))
 	{
@@ -49,41 +53,16 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
 		(eITEM_FLAG_coin & CItemManager::Instance()->getCurrentItem())))
 	{
-		bullet->ChangeToCoin();
+		bullet->ChangeToCoinOrStar();
 		return;
 	}
 	
 	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
 		(eITEM_FLAG_star & CItemManager::Instance()->getCurrentItem())))
 	{
-		bullet->ChangeToStar();
+		bullet->ChangeToCoinOrStar();
 		return;
 	}
-
-	/*switch (bullet->getItemEffect() & CItemManager::Instance()->getCurrentItem())
-	{
-	case eITEM_FLAG_shield:
-	{
-		
-	}break;
-	case eITEM_FLAG_magnet:
-	{
-		
-	}break;
-	case eITEM_FLAG_coin:
-	{
-		
-	}break;
-	case eITEM_FLAG_star:
-	{
-		
-	}break;
-
-	default:
-	{
-
-	}
-	}*/
 }
 
 void CBulletNormal::Exit(CBullet* bullet)

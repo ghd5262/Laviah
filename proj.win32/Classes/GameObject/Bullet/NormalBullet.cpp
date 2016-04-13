@@ -59,7 +59,7 @@ bool CNormalBullet::initVariable()
 		addChild(m_pTexture);
 	}
 	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		assert(false);
 		return false;
 	}
@@ -82,27 +82,44 @@ void CNormalBullet::CollisionWithPlayer()
 		R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	}
 	else{
+		m_pPlayer->StackedRL(0.1f, 10, 10, 5);
+		m_pPlayer->LostSomeHealth(m_BulletParam._fPower);
+		CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
 		ReturnToMemoryBlock();
 	}
 }
 
-void CNormalBullet::ChangeToCoin()
+void CNormalBullet::CollisionWithBarrier()
 {
-	float distance = m_TargetVec.distance(getPosition());
-	CGameScene::getGameScene()->addChild(CPlayCoin::create(
-		sBULLET_PARAM(
-		MakeString("coin_%d.png", static_cast<int>(m_BulletParam._symbol - '0')),
-		25.f, distance, 0.f, true, false,
-		static_cast<eCOIN_TYPE>(m_BulletParam._symbol - '0')),
-		-getRotation(), 
-		m_fBulletSpeed, 
-		getPosition()));
-
-	ReturnToMemoryBlock();
+	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 }
 
-void CNormalBullet::ChangeToStar()
+void CNormalBullet::ChangeToCoinOrStar()
 {
-	//CGameScene::getGameScene()->addChild(CPlayStar::create(eSTAR_TYPE_bronze, 25.f, m_fAngle, m_fBulletSpeed, true, getPosition()));
+	float distance = m_TargetVec.distance(getPosition());
+
+	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star){
+		float distance = m_TargetVec.distance(getPosition());
+		CGameScene::getGameScene()->addChild(CPlayStar::create(
+			sBULLET_PARAM(
+			MakeString("star_%d.png", static_cast<int>(m_BulletParam._symbol - '0')),
+			25.f, distance, 0.f, true, false,
+			eCOIN_TYPE_none,
+			static_cast<eSTAR_TYPE>(m_BulletParam._symbol - '0')),
+			-getRotation(),
+			m_fBulletSpeed,
+			getPosition()));
+	}
+	else{
+		CGameScene::getGameScene()->addChild(CPlayCoin::create(
+			sBULLET_PARAM(
+			MakeString("coin_%d.png", static_cast<int>(m_BulletParam._symbol - '0')),
+			25.f, distance, 0.f, true, false,
+			static_cast<eCOIN_TYPE>(m_BulletParam._symbol - '0')),
+			-getRotation(),
+			m_fBulletSpeed,
+			getPosition()));
+	}
+
 	ReturnToMemoryBlock();
 }

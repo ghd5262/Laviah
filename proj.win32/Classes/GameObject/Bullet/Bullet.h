@@ -88,11 +88,11 @@ class CPlanet;
 class CBullet : public CMover {
 public:
 	virtual void ReturnToMemoryBlock() override;
-	virtual void Rotation(int dir);
+	virtual void Rotation(float dir, float delta);
 	virtual void CollisionWithPlayer(){}
 	virtual void CollisionWithPlanet(){}
-	virtual void ChangeToCoin(){}
-	virtual void ChangeToStar(){}
+	virtual void CollisionWithBarrier(){}
+	virtual void ChangeToCoinOrStar(){}
 
 	//인자로 전달된 아이템의 영향을 받는다
 	void setItemEffect(int item){ m_nReceivingEffectItemTypes  |= item; }
@@ -159,6 +159,15 @@ protected:
 		float scaleTime, 
 		float fadeOutTime);
 
+
+	// 현재지점에서 removeTime 후 FadeOut count만큼 반복 후 삭제
+	void R_FadeOutWithCount(
+		int intervalCount,
+		float removeTime);
+
+
+	// 좌우로 흔들림
+	void StackedRL(float duration, float stackSize, int stackCount);
 
 	// 조종행동 - 찾기
 	void Seek(float delta);

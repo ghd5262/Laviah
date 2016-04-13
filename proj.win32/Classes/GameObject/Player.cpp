@@ -1,6 +1,11 @@
 #include "Player.h"
 #include "ItemManager.h"
+#include "ItemBarrier.h"
 #include "../AI/States/PlayerStates.h"
+#include "../Particle/Particles.h"
+#include "../Scene/GameScene.h"
+#include "../MyUI/ScoreUI.h"
+#include "../MyUI/UIManager.h"
 
 CPlayer* CPlayer::create(
 	std::string normalTextureName,
@@ -47,6 +52,10 @@ CPlayer::CPlayer(
 	, m_fLife(maxLife)
 	, m_fMagnetLimitRadius(200.f)
 	, m_EffectItemTypes(eITEM_FLAG_none)
+	, m_pParticle(nullptr)
+	, m_isRoatating(false)
+    , m_pUIRunScore(nullptr)
+    , m_pItemBarrier(nullptr)
 {
 }
 
@@ -63,20 +72,41 @@ bool CPlayer::initVariable()
 	try{
 		setItemEffect(eITEM_FLAG_giant);
 
-		m_FSM = new CStateMachine<CPlayer>(this);
-		if (m_FSM != nullptr){
-			m_FSM->ChangeState(CPlayerNormal::Instance());
+        m_FSM = std::shared_ptr<CStateMachine<CPlayer>>(
+            new CStateMachine<CPlayer>(this), [](CStateMachine<CPlayer>* fsm)
+            {
+                delete fsm;
+            });
+        
+		if (m_FSM.get() != nullptr){
+            m_FSM.get()->ChangeState(CPlayerNormal::Instance());
 		}
-
+        
+        m_pItemBarrier = CItemBarrier::create("barrier2.png", 800.f);
+        if(m_pItemBarrier != nullptr){
+            m_pItemBarrier->setPosition(Vec2(0, 0));
+            m_pItemBarrier->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            addChild(m_pItemBarrier);
+        }
+        
 		m_pTexture = Sprite::create(m_NormalTextureName);
 		if (m_pTexture != nullptr){
 			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 			m_pTexture->setScale(0.5f);
 			addChild(m_pTexture);
 		}
+
+		m_pParticle = CParticle_Flame::create(m_NormalTextureName);
+		if (m_pParticle != nullptr){
+			m_pParticle->retain();
+			m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			CGameScene::getGameScene()->addChild(m_pParticle, 10);
+		}
+        
+        
 	}
 	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		assert(false);
 		return false;
 	}
@@ -86,16 +116,23 @@ bool CPlayer::initVariable()
 void CPlayer::Execute(float delta)
 {
 	m_FSM->Execute(delta);
+    m_pItemBarrier->Execute(delta);
+	if (!m_isRoatating)
+	{
+		m_pParticle->setAngle(90);
+		m_pParticle->setGravity(Vec2(0, -270));
+	}
+	m_isRoatating = false;
 }
 
 void CPlayer::GotSomeHealth(float health)
 {
-	if (m_fMaxLife >= (m_fLife + health))
+	if (m_fMaxLife > (m_fLife + health))
 	{
-		m_fLife = m_fMaxLife;
+		m_fLife += health;
 	}
 	else{
-		m_fLife += health;
+		m_fLife = m_fMaxLife;
 	}
 }
 
@@ -111,11 +148,20 @@ void CPlayer::LostSomeHealth(float loseHealth)
 }
 
 // Dir -1 == Left, 1 == Right
-void CPlayer::Rotation(int dir)
+void CPlayer::Rotation(float dir, float delta)
 {
-	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed);
+	m_isRoatating = true;
+	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed * delta);
 	m_fAngle = static_cast<int>(m_fAngle) % 360;
+	m_pParticle->setStartSpin(m_fAngle);
+	m_pParticle->setEndSpin(m_fAngle);
+	m_pParticle->setAngle(dir == 1 ? 180 : 0);
+	m_pParticle->setGravity(Vec2(-90 * dir, 0));
 	this->setRotation(m_fAngle);
+    
+    if(m_pUIRunScore == nullptr)
+        m_pUIRunScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("RunScoreUI"));
+    m_pUIRunScore->UpdateValue(1);
 }
 
 void CPlayer::GiantMode()
@@ -126,6 +172,8 @@ void CPlayer::GiantMode()
 		this->m_pTexture->setTexture(m_GiantTextureName); 
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.3f));
 		this->setBRadius(80.f);
+		m_pParticle->setStartSize(80.f);
+		m_pParticle->setEndSize(40.f);
 	}), nullptr);
 	this->runAction(action);
 }
@@ -138,6 +186,8 @@ void CPlayer::NormalMode()
 		this->m_pTexture->setTexture(m_NormalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBRadius(6.f);
+		m_pParticle->setStartSize(30.f);
+		m_pParticle->setEndSize(4.f);
 	}), nullptr);
 	this->runAction(action);
 }
@@ -159,4 +209,21 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 	// 보너스 타임이기 때문에 더느리게 줄어든다.
 	LostSomeHealth(0.5f);
 	return (m_fLife / m_fMaxLife) * 100;
+}
+
+void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount)
+{
+	m_pTexture->runAction(
+		Repeat::create(
+		Sequence::create(
+		MoveBy::create(duration / stackCount, Vec2(stackSizeLR, -stackSizeTB)),
+		MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB)),
+		nullptr), stackCount));
+
+}
+
+void CPlayer::GotBarrierItem()
+{
+    CCLOG("Player GotBerrierItem");
+    m_pItemBarrier->GotBarrierItem();
 }

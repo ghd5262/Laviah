@@ -1,20 +1,7 @@
 #pragma once
 
 #include "../GameObject/GameObject.h"
-
-enum eLETTER{
-	eLETTER_B = 0,
-	eLETTER_O = 1,
-	eLETTER_N = 2,
-	eLETTER_U = 3,
-	eLETTER_S = 4,
-	eLETTER_T = 5,
-	eLETTER_I = 6,
-	eLETTER_M = 7,
-	eLETTER_E = 8,
-
-	eLETTER_MAX
-};
+#include "../GameObject/Bullet/BulletHeaders.h"
 
 class CLetter : public CGameObject
 {

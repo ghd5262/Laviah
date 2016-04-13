@@ -7,8 +7,10 @@
 #include "../Player.h"
 #include "../ItemManager.h"
 #include "../Shooter/PatternShooter.h"
+#include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
-#include "../../DataManager/ShooterDataManager.h"
+#include "../../DataManager/StageDataManager.h"
+
 
 CNormalMissile::CNormalMissile(
 	sBULLET_PARAM bulletParam,
@@ -19,6 +21,8 @@ CNormalMissile::CNormalMissile(
 	angle,
 	speed)
 	, m_bIsTargetMarkCreate(false)
+	, m_pParticleCrash(nullptr)
+	, m_pParticleFlame(nullptr)
 {}
 
 CNormalMissile* CNormalMissile::create(
@@ -55,7 +59,7 @@ bool CNormalMissile::initVariable()
 	try{
 		setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
 
-		m_ScreenRect = Rect(-560, 0, 1280, 1280);
+		m_ScreenRect = Rect(-1280, 0, 3840, 1280);
 		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
@@ -70,6 +74,23 @@ bool CNormalMissile::initVariable()
 
 		float distance = getPosition().distance(temp);
 		float tempTime = (distance / m_fBulletSpeed);
+
+
+		// 불꽃 파티클
+		m_pParticleFlame = CParticle_Flame::create("missileFlame.png");
+		if (m_pParticleFlame != nullptr){
+			m_pParticleFlame->retain();
+			m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_pParticleFlame->setAngle(-90);
+			m_pParticleFlame->setGravity(Vec2(90, 0));
+			m_pParticleFlame->setPosition(Vec2(m_pTexture->getContentSize().width * 1.1f, m_pTexture->getContentSize().height * 0.5f));
+			m_pParticleFlame->setStartSpin(-90);
+			m_pParticleFlame->setStartSpin(270);
+			m_pParticleFlame->setLife(0.1f);
+			m_pParticleFlame->setLifeVar(0.15f);
+
+			m_pTexture->addChild(m_pParticleFlame);
+		}
 
 
 		this->scheduleOnce([&](float delta){
@@ -90,7 +111,7 @@ bool CNormalMissile::initVariable()
 		}, tempTime, MakeString("createTargetMark_%d", distance * 100));
 	}
 	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		assert(false);
 		return false;
 	}
@@ -98,7 +119,7 @@ bool CNormalMissile::initVariable()
 }
 
 
-void CNormalMissile::Rotation(int dir)
+void CNormalMissile::Rotation(float dir, float delta)
 {
 	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
 	if (true == m_BulletParam._isAimingMissile){
@@ -108,7 +129,7 @@ void CNormalMissile::Rotation(int dir)
 		}
 	}
 
-	CBullet::Rotation(dir);
+	CBullet::Rotation(dir, delta);
 }
 
 void CNormalMissile::Execute(float delta)
@@ -120,61 +141,109 @@ void CNormalMissile::CollisionWithPlanet()
 {
 	
 	if (true == m_BulletParam._isAimingMissile){
-		CObjectManager::Instance()->getM_Planet()->CrushShake(
+		// 행성 흔들기
+		CObjectManager::Instance()->getPlanet()->CrushShake(
 			0.01f, 0.5f, 0.1f, 5.0f);
-		AudioEngine::play2d("sounds/explosion_2.mp3", false);
 	}
 	else {
-		CObjectManager::Instance()->getM_Planet()->CrushShake(
+		// 행성 흔들기
+		CObjectManager::Instance()->getPlanet()->CrushShake(
 			0.01f, 0.3f, 0.1f, 3.0f);
-		AudioEngine::play2d("sounds/explosion_1.mp3", false);
 	}
+
+	m_pParticleCrash = CParticle_Explosion::create(MakeString("explosion_%d.png", m_BulletParam._isAimingMissile + 1));
+	if (m_pParticleCrash != nullptr){
+		m_pParticleCrash->retain();
+		m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_pParticleCrash->setAngle(-getRotation());
+		m_pParticleCrash->setPosition(getPosition());
+		m_pParticleCrash->setGravity(m_RotationVec);
+		CGameScene::getGameScene()->addChild(m_pParticleCrash, 100);
+	}
+
+	CAudioManager::Instance()->PlayEffectSound(MakeString("sounds/explosion_%d.mp3", m_BulletParam._isAimingMissile + 1), false);
+
 	ReturnToMemoryBlock();
 }
 
 void CNormalMissile::CollisionWithPlayer()
 {
 	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
-		AudioEngine::play2d("sounds/explosion_2.mp3", false);
+		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_2.mp3", false);
 		R_BezierWithRotation(Vec2(920, 1580), Vec2(350, 900), Vec2(450, 1200), 0.5f);
 	}
 	else{
+		m_pPlayer->StackedRL(0.1f, 10, 10, 5);
+		CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
+		m_pPlayer->LostSomeHealth(m_BulletParam._fPower);
 		if (true == m_BulletParam._isAimingMissile){
-			CObjectManager::Instance()->getM_Planet()->CrushShake(
+			CObjectManager::Instance()->getPlanet()->CrushShake(
 				0.01f, 0.5f, 0.1f, 5.0f);
-			AudioEngine::play2d("sounds/explosion_2.mp3", false);
 		}
 		else {
-			CObjectManager::Instance()->getM_Planet()->CrushShake(
+			CObjectManager::Instance()->getPlanet()->CrushShake(
 				0.01f, 0.2f, 0.1f, 3.0f);
-			AudioEngine::play2d("sounds/explosion_1.mp3", false);
 		}
+
+		m_pParticleCrash = CParticle_Explosion::create(MakeString("explosion_%d.png", m_BulletParam._isAimingMissile + 1));
+		if (m_pParticleCrash != nullptr){
+			m_pParticleCrash->retain();
+			m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_pParticleCrash->setAngle(-getRotation());
+			m_pParticleCrash->setPosition(getPosition());
+			m_pParticleCrash->setGravity(m_RotationVec);
+			CGameScene::getGameScene()->addChild(m_pParticleCrash, 100);
+		}
+
+		CAudioManager::Instance()->PlayEffectSound(MakeString("sounds/explosion_%d.mp3", m_BulletParam._isAimingMissile + 1), false);
+
 		ReturnToMemoryBlock();
 	}
 }
 
-void CNormalMissile::ChangeToCoin()
+void CNormalMissile::CollisionWithBarrier()
+{
+	m_pParticleCrash = CParticle_Explosion::create(MakeString("explosion_%d.png", m_BulletParam._isAimingMissile + 1));
+	if (m_pParticleCrash != nullptr){
+		m_pParticleCrash->retain();
+		m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_pParticleCrash->setAngle(-getRotation());
+		m_pParticleCrash->setPosition(getPosition());
+		m_pParticleCrash->setGravity(m_RotationVec);
+		CGameScene::getGameScene()->addChild(m_pParticleCrash, 100);
+	}
+	ReturnToMemoryBlock();
+}
+
+void CNormalMissile::ChangeToCoinOrStar()
 {
 	if (!m_bIsTargetMarkCreate)
 		return;
 
+	setAlive(false);
+
 	std::string patternName;
 	if (false == m_BulletParam._isAimingMissile){
-		patternName = MakeString("Rocket%d_Pattern", 17);
+		patternName = MakeString("rocket%d_Pattern", 13);
 	}
 	else{
-		patternName = MakeString("Rocket%d_Pattern", 18);
+		patternName = MakeString("rocket%d_Pattern", 14);
 	}
 	float distance = m_TargetVec.distance(getPosition());
-	float CoinSpeed = 600.f;
-	auto screwShooter = CShooterListDataManager::Instance()->getShooterInfo("pattern_Shooter");
-	screwShooter->ShootWithPosition(sSHOOTER_PARAM(
+	float speed = 600.f;
+
+	auto screwShooter = CPatternShooter::create(
+		sSHOOTER_PARAM(
 		patternName
 		, 0.f
 		, 0.f
-		, CoinSpeed
+		, speed
+		, -getRotation()
 		, 0.f
-		, 0.f), -getRotation(), distance);
+		, 1
+		, 1
+		, true
+		, true), distance);
 
 	CGameScene::getGameScene()->addChild(CTargetMark::create(
 		sBULLET_PARAM(
@@ -186,52 +255,12 @@ void CNormalMissile::ChangeToCoin()
 		false),		// AimingMissile 인지
 		-getRotation(),										//초기 각도
 		this->getPosition(),
-		CoinSpeed
+		speed
 	), 100);
 
-	ReturnToMemoryBlock();
-}
 
-void CNormalMissile::ChangeToStar()
-{
-	if (!m_bIsTargetMarkCreate)
-		return;
-
-	eSTAR_TYPE starType;
-	if (true == m_BulletParam._isAimingMissile){
-		starType = eSTAR_TYPE_bigGold;
-	}
-	else{
-		starType = eSTAR_TYPE_bigSilver;
-	}
-	float distance = m_TargetVec.distance(getPosition());
-	this->setBulletSpeed(250.f);
-
-	//auto CPatternShooter = CPatternShooter::create(
-	//	sSHOOTER_PARAM(
-	//	eSHOOTER_TYPE_screwBullet
-	//	, starType
-	//	, 0.f
-	//	, 0.f
-	//	, 500.f
-	//	, 0.f
-	//	, 200.f));
-
-	//CGameScene::getGameScene()->addChild(CPatternShooter);
-	//CPatternShooter->ShootWithPosition(-getRotation(), distance);
-
-	CGameScene::getGameScene()->addChild(CTargetMark::create(
-		sBULLET_PARAM(
-		MakeString("missile_target_%d.png", m_BulletParam._isAimingMissile + 1),//이미지 이름
-		0.f,
-		0.f,
-		0.f,
-		false,
-		m_BulletParam._isAimingMissile),
-		-getRotation(),										//초기 각도
-		this->getPosition(),
-		400.f
-		), 100);
-
-	ReturnToMemoryBlock();
+	// 이부분 일단 작업하고 다음 리펙토링 때 autoReturnMemoryPool에 넣어야한다.
+	this->scheduleOnce([this](float delta){
+		ReturnToMemoryBlock();
+	}, 0.f, "ReturnToMemoryBlock");
 }

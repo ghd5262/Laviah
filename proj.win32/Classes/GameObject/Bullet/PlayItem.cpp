@@ -47,9 +47,14 @@ bool CPlayItem::initVariable()
 {
 	try{
 		setItemEffect(eITEM_FLAG_magnet);
-		if (!m_BulletParam._isFly)
+		if (!m_BulletParam._isFly){
 			m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
-		
+
+			this->scheduleOnce([this](float delta)
+			{
+				this->R_FadeOutWithCount(5, 3.f);
+			}, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
+		}
 		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
@@ -59,7 +64,7 @@ bool CPlayItem::initVariable()
 		addChild(m_pTexture);
 	}
 	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTIONW__, __LINE__);
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		assert(false);
 		return false;
 	}
@@ -81,7 +86,15 @@ void CPlayItem::CollisionWithPlanet()
 
 void CPlayItem::CollisionWithPlayer()
 {
-	AudioEngine::play2d("sounds/Star_2.mp3", false);
+	if (m_BulletParam._itemType == eITEM_TYPE_health)
+	{
+		m_pPlayer->GotSomeHealth(20);
+	}
+	if (m_BulletParam._itemType == eITEM_TYPE_shield)
+	{
+        m_pPlayer->GotBarrierItem();
+	}
+	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	CItemManager::Instance()->StartItemTimer(m_BulletParam._itemType);
 }

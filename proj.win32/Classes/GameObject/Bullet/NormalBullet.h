@@ -15,8 +15,8 @@ public:
 	virtual void Execute(float delta = 0.f) override;
 	virtual void CollisionWithPlayer();
 	virtual void CollisionWithPlanet();
-	virtual void ChangeToCoin();
-	virtual void ChangeToStar();
+	virtual void CollisionWithBarrier();
+	virtual void ChangeToCoinOrStar();
 
 protected:
 	virtual bool init() override;

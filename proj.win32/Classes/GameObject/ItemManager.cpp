@@ -31,7 +31,7 @@ CItemManager* CItemManager::Instance()
 void CItemManager::StartItemTimer(eITEM_TYPE itemType)
 {
 	m_CurrentItems |= (1 << itemType);
-	m_ItemTimersLimit[itemType] += 5.f;
+	m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + 8.f;
 	//CGameScene::getGameScene()->scheduleOnce([this, itemType](float dt){
 	//	this->FinishItemTimer(itemType);
 	//}, 20.0f, MakeString("Item_%d_Timer", static_cast<int>(itemType)));
@@ -51,3 +51,6 @@ void CItemManager::Execute(float delta)
 		}
 	}
 }
+
+
+

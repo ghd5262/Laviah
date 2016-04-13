@@ -1,6 +1,7 @@
 #include "PlayerStates.h"
 #include "../../GameObject/Player.h"
 #include "../../GameObject/ItemManager.h"
+
 CPlayerNormal* CPlayerNormal::Instance()
 {
 	static CPlayerNormal instance;

@@ -8,7 +8,7 @@ public:
 	void CrushShake(float interval, float duration, float speed, float magnitude);
 	virtual void Execute(float delta = 0.f) override;
 
-	void Rotation(int dir);
+	void Rotation(float dir, float delta);
 
 	//getter & setter
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
@@ -23,7 +23,7 @@ protected:
 	CC_SYNTHESIZE(float, m_fRotateSpeed, RotateSpeed);
 
 private:
-	float CPlanet::noise(int x, int y);
+	float noise(int x, int y);
 	CPlanet(std::string textureName, float boundingRadius, float rotate, float rotateSpeed);
 	virtual ~CPlanet(){}
 
