@@ -1,7 +1,6 @@
 #pragma once
 #include "Bullet.h"
 
-class CScoreUI;
 enum eCOIN_TYPE;
 class CPlayCoin : public CBullet
 {
@@ -32,7 +31,6 @@ private:
 	virtual ~CPlayCoin(){};
 
 private:
-	CScoreUI* m_pUIScore;
 	Vec2 m_CreatePos;
 	float m_fCoinValue;
 };

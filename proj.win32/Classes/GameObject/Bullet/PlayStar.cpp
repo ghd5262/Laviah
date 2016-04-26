@@ -17,7 +17,6 @@ CPlayStar::CPlayStar(
 	angle,
 	speed)
 	, m_CreatePos(createPosition)
-	, m_pUIScore(nullptr)
 {}
 
 CPlayStar* CPlayStar::create(

@@ -82,7 +82,7 @@ struct sBULLET_PARAM{
 	sBULLET_PARAM(){}
 };
 
-
+class CScoreUI;
 class CPlayer;
 class CPlanet;
 class CBullet : public CMover {
@@ -130,7 +130,6 @@ protected:
 	CC_SYNTHESIZE(CStateMachine<CBullet>*, m_FSM, FSM);
 	CC_SYNTHESIZE(Sprite*, m_pTexture, BulletTexture);
 	CC_SYNTHESIZE(bool, m_bIsPlayerGet, IsPlayerGet);
-
 	CC_SYNTHESIZE(sBULLET_PARAM, m_BulletParam, BulletParam);
 
 
@@ -172,6 +171,12 @@ protected:
 	// 조종행동 - 찾기
 	void Seek(float delta);
 
+	// 점수bullet 생성 및 점수 반영
+	void createScoreCurrentPos(int score);
+
 private:
 	bool on(eITEM_FLAG itemType){ return (m_nReceivingEffectItemTypes & itemType) == itemType; }
+
+protected:
+	CScoreUI* m_pUIScore;
 };

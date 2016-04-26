@@ -66,7 +66,9 @@ void CScoreUI::SetLabelAnchor(Vec2 point)
 {
 	m_ValueLabel->setAnchorPoint(point);
 	if (m_ValueImg != nullptr)
-		m_ValueImg->setPosition(Vec2((m_ValueLabel->getContentSize().width * -m_ValueLabel->getAnchorPoint().x) - 20, this->getContentSize().height * 0.5f));
+		m_ValueImg->setPosition(
+		Vec2((m_ValueLabel->getContentSize().width * -m_ValueLabel->getAnchorPoint().x) - (m_ValueImg->getContentSize().width * 0.7f), 
+		m_ValueLabel->getContentSize().height * 0.05f));
 
 }
 
@@ -76,7 +78,9 @@ void CScoreUI::UpdateValue(int number)
 	insertComma(MakeString("%u", m_Value).c_str(), m_ValueString);
 	m_ValueLabel->setString(m_ValueString);
 	if (m_ValueImg != nullptr)
-		m_ValueImg->setPosition(Vec2((m_ValueLabel->getContentSize().width * -m_ValueLabel->getAnchorPoint().x) - 20, this->getContentSize().height * 0.5f));
+		m_ValueImg->setPosition(
+		Vec2((m_ValueLabel->getContentSize().width * -m_ValueLabel->getAnchorPoint().x) - (m_ValueImg->getContentSize().width * 0.7f), 
+		m_ValueLabel->getContentSize().height * 0.05f));
 }
 
 void CScoreUI::Execute(float delta)

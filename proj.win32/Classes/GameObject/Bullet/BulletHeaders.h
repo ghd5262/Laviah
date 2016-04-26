@@ -9,3 +9,4 @@
 #include "PlayCoin.h"
 #include "PlayItem.h"
 #include "PlayStar.h"
+#include "ScoreBullet.h"

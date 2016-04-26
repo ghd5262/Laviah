@@ -155,7 +155,7 @@ void CGameScene::InitGameSceneUI()
 
 	healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	healthBar->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-		origin.x + visibleSize.height * 0.95f));
+		origin.x + visibleSize.height * 0.945f));
 	this->addChild(healthBar, 102);
 	if (!CUIManager::Instance()->AddUIWithName(healthBar, "HealthBar"))
 		CCASSERT(false, "HealthBar CAN NOT INIT");
@@ -163,12 +163,12 @@ void CGameScene::InitGameSceneUI()
 	auto bonusTime = CBonusTimeUI::create();
 	bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 	bonusTime->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
-		origin.x + visibleSize.height * 0.915f));
+		origin.x + visibleSize.height * 0.905f));
 	this->addChild(bonusTime, 102);
 	if (!CUIManager::Instance()->AddUIWithName(bonusTime, "BonusTime"))
 		CCASSERT(false, "BonusTime CAN NOT INIT");
 
-	auto starScoreUI = CScoreUI::create("fonts/Number.ttf", 25, "star_2.png");
+	auto starScoreUI = CScoreUI::create("fonts/Number.ttf", 25, "score.png");
 	starScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	starScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
 	starScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.94f,
@@ -187,11 +187,11 @@ void CGameScene::InitGameSceneUI()
 	if (!CUIManager::Instance()->AddUIWithName(coinScoreUI, "CoinScoreUI"))
 		CCASSERT(false, "CoinScoreUI CAN NOT INIT");
     
-    auto runScoreUI = CScoreUI::create("fonts/Number.ttf", 25, "coin_2.png");
+    auto runScoreUI = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
     runScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     runScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
     runScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.94f,
-        origin.x + visibleSize.height * 0.915f));
+        origin.x + visibleSize.height * 0.905f));
     this->addChild(runScoreUI, 102);
     if (!CUIManager::Instance()->AddUIWithName(runScoreUI, "RunScoreUI"))
         CCASSERT(false, "RunScoreUI CAN NOT INIT");

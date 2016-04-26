@@ -29,7 +29,7 @@ bool CHealthBarUI::initVariable()
 	try{
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 
-		m_HealthBarImg = Sprite::create("healthBar.png");
+		m_HealthBarImg = Sprite::create("healthBar2.png");
 		if (m_HealthBarImg != nullptr){
 			m_HealthBar = ProgressTimer::create(m_HealthBarImg);
 			
@@ -44,7 +44,7 @@ bool CHealthBarUI::initVariable()
 			}
 		}
 	
-		m_HealthBarBG = Sprite::create("healthBarBG.png");
+		m_HealthBarBG = Sprite::create("healthBarBG2.png");
 		if (m_HealthBarBG != nullptr)
 		{
 			m_HealthBarBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

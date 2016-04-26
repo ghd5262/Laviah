@@ -2,11 +2,14 @@
 #include "PlayCoin.h"
 #include "PlayStar.h"
 #include "TargetMark.h"
+#include "ScoreBullet.h"
 #include "../ObjectManager.h"
 #include "../Planet.h"
 #include "../Player.h"
 #include "../ItemManager.h"
 #include "../Shooter/PatternShooter.h"
+#include "../../MyUI/ScoreUI.h"
+#include "../../MyUI/UIManager.h"
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/StageDataManager.h"
@@ -109,6 +112,8 @@ bool CNormalMissile::initVariable()
 			m_bIsTargetMarkCreate = true;
 
 		}, tempTime, MakeString("createTargetMark_%d", distance * 100));
+
+		m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
@@ -169,6 +174,7 @@ void CNormalMissile::CollisionWithPlanet()
 void CNormalMissile::CollisionWithPlayer()
 {
 	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
+		createScoreCurrentPos(50);
 		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_2.mp3", false);
 		R_BezierWithRotation(Vec2(920, 1580), Vec2(350, 900), Vec2(450, 1200), 0.5f);
 	}
@@ -204,6 +210,7 @@ void CNormalMissile::CollisionWithPlayer()
 void CNormalMissile::CollisionWithBarrier()
 {
 	m_pParticleCrash = CParticle_Explosion::create(MakeString("explosion_%d.png", m_BulletParam._isAimingMissile + 1));
+	createScoreCurrentPos(50);
 	if (m_pParticleCrash != nullptr){
 		m_pParticleCrash->retain();
 		m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

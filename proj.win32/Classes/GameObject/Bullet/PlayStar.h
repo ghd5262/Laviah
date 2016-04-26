@@ -31,7 +31,6 @@ private:
 	virtual ~CPlayStar(){};
 
 private:
-	CScoreUI* m_pUIScore;
 	Vec2 m_CreatePos;
 	float m_fStarValue;
 };

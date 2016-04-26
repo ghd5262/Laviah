@@ -5,6 +5,9 @@
 #include "../../GameObject/Planet.h"
 #include "../../GameObject/Player.h"
 #include "../../AI/States/BulletStates.h"
+#include "../../MyUI/ScoreUI.h"
+#include "../../MyUI/UIManager.h"
+#include "../../Scene/GameScene.h"
 
 CBullet::CBullet(
 	sBULLET_PARAM bulletParam,
@@ -22,6 +25,7 @@ CBullet::CBullet(
 	, m_TargetVec(CObjectManager::Instance()->getPlanet()->getPosition())
 	, m_bIsPlayerGet(false)
 	, m_fTime(0.f)
+	, m_pUIScore(nullptr)
 {
 	// bullet이 초기화 될때마다 매번 생성하지 않는다.
 	if (m_FSM == nullptr){
@@ -213,4 +217,16 @@ void CBullet::Seek(float delta)
     
     // 현재 좌표에 적용
     setPosition(getPosition() + dir);
+}
+
+
+void CBullet::createScoreCurrentPos(int score)
+{
+	if (m_pUIScore != nullptr){
+		m_pUIScore->UpdateValue(score);
+		auto scoreBullet = CScoreBullet::create(score);
+		scoreBullet->setPosition(getPosition());
+		scoreBullet->setAnchorPoint(Vec2::ZERO);
+		CGameScene::getGameScene()->addChild(scoreBullet);
+	}
 }

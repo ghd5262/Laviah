@@ -1,11 +1,14 @@
 #include "NormalBullet.h"
 #include "PlayCoin.h"
 #include "PlayStar.h"
+#include "ScoreBullet.h"
 #include "../ObjectManager.h"
 #include "../Planet.h"
 #include "../Player.h"
 #include "../ItemManager.h"
 #include "../../Scene/GameScene.h"
+#include "../../MyUI/ScoreUI.h"
+#include "../../MyUI/UIManager.h"
 
 CNormalBullet::CNormalBullet(
 	sBULLET_PARAM bulletParam,
@@ -57,6 +60,8 @@ bool CNormalBullet::initVariable()
 		m_pTexture = Sprite::create(m_BulletParam._TextureName);
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		addChild(m_pTexture);
+
+		m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
@@ -79,6 +84,7 @@ void CNormalBullet::CollisionWithPlanet()
 void CNormalBullet::CollisionWithPlayer()
 {
 	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
+		createScoreCurrentPos(30);
 		R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	}
 	else{
@@ -91,6 +97,7 @@ void CNormalBullet::CollisionWithPlayer()
 
 void CNormalBullet::CollisionWithBarrier()
 {
+	createScoreCurrentPos(30);
 	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 }
 

@@ -17,7 +17,6 @@ CPlayCoin::CPlayCoin(
 	angle,
 	speed)
 	, m_CreatePos(createPosition)
-	, m_pUIScore(nullptr)
 {}
 
 CPlayCoin* CPlayCoin::create(
