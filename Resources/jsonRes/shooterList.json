@@ -1,0 +1,11 @@
+{
+	"shooterName" : [
+		"random_Shooter",
+		"randomMissile_Shooter",
+		"aimingMissile_Shooter",
+		"screw_Shooter",
+		"doubleScrew_Shooter",
+		"pattern_Shooter",
+		"bonusLetter_Shooter"
+	]
+}

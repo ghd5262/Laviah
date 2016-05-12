@@ -1,0 +1,78 @@
+{
+	"patterns": [{
+		"name": "My",
+		"widthAngleDistance": 1.0,
+		"heightDistance": 30.0,
+		"pattern": [
+			"              UU        U   UU     U              ",
+			"              UUUU     UU    UU   U               ",
+			"              UU UU   U U     UU U                ",
+			"              UU  UU U  U      UU                 ",
+			"              UU   UU   U      UU                 ",
+			"              UU   UU   U      UU                 "
+
+		]
+	}, {
+		"name": "Name",
+		"widthAngleDistance": 1.0,
+		"heightDistance": 30.0,
+		"pattern": [
+			" VVVV     V      VVVV      VV        V   VVVVVVVV ",
+			" VVVVV    V     VV   V     VVVV     VV   VV       ",
+			" VV  VV   V    VV     V    VV VV   V V   VVVVVVVV ",
+			" VV   VV  V   VVVVVVVVVV   VV  VV V  V   VV       ",
+			" VV    VV V   VV       V   VV   VV   V   VV       ",
+			" VV     VVV   VV       V   VV   VV   V   VVVVVVVV "
+		]
+	}, {
+		"name": "Is",
+		"widthAngleDistance": 1.0,
+		"heightDistance": 30.0,
+		"pattern": [
+			"                 UU    UUUUU                      ",
+			"                 UU   UU    U                     ",
+			"                 UU     U                         ",
+			"                 UU       U                       ",
+			"                 UU   UU    U                     ",
+			"                 UU    UUUUU                      "
+		]
+	}, {
+		"name": "Hong",
+		"widthAngleDistance": 1.0,
+		"heightDistance": 30.0,
+		"pattern": [
+			" VV      V     VVVV     VVVV     V     VVVV    ",
+			" VV      V   VV     V   VVVVV    V   VV     V  ",
+			" VVVVVVVVV   VV     V   VV  VV   V   VV        ",
+			" VV      V   VV     V   VV   VV  V   VV   VVVV ",
+			" VV      V   VV     V   VV    VV V   VV     VV ",
+			" VV      V     VVVV     VV     VVV     VVVV  V "
+		]
+	}, {
+		"name": "Ready",
+		"widthAngleDistance": 1.0,
+		"heightDistance": 30.0,
+		"pattern": [
+
+			" VVVVVV    UUUUUUUU      VVVV      UUUUU     VV     V ",
+			" VV    V   UU           VV   V     UU    U    VV   V  ",
+			" VVVVVV    UUUUUUUU    VV     V    UU     U    VV V   ",
+			" VV  V     UU         VVVVVVVVVV   UU     U     VV    ",
+			" VV   V    UU         VV       V   UU    U      VV    ",
+			" VV    V   UUUUUUUU   VV       V   UUUUU        VV    "
+		]
+	}, {
+		"name": "Go",
+		"widthAngleDistance": 1.0,
+		"heightDistance": 30.0,
+		"pattern": [
+
+			"                 VVVV        VVVV       VV            ",
+			"               VV     V    VV     V     VV            ",
+			"               VV          VV     V     VV            ",
+			"               VV   VVVV   VV     V     VV            ",
+			"               VV     VV   VV     V                   ",
+			"                 VVVV  V     VVVV       VV            "
+		]
+	}]
+}
