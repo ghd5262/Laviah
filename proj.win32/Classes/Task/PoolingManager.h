@@ -66,7 +66,7 @@ private:
 	std::vector<MEMORYBLOCK> m_ShooterList;
 
 	/* 메모리 블럭 하나 당 크기 */
-	int m_BulletSize;
-	int m_ShooterSize;
+	size_t m_BulletSize;
+	size_t m_ShooterSize;
 };
 

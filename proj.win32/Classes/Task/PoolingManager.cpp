@@ -47,7 +47,11 @@ CPoolingManager* CPoolingManager::Instance()
 
 void CPoolingManager::CreateBulletList(size_t count, size_t size)
 {
+#if(defined(__x86_64__))
+	m_BulletSize = size * 2;
+#else
 	m_BulletSize = size;
+#endif
 	m_BulletList.reserve(m_BulletSize);
 	while (count--)
 	{
@@ -62,7 +66,11 @@ void CPoolingManager::CreateBulletList(size_t count, size_t size)
 
 void CPoolingManager::CreateShooterList(size_t count, size_t size)
 {
+#if(defined(__x86_64__))
+	m_ShooterSize = size * 2;
+#else
 	m_ShooterSize = size;
+#endif
 	m_ShooterList.reserve(m_ShooterSize);
 	while (count--)
 	{
