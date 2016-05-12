@@ -33,9 +33,12 @@ public:
 	void RemoveAllObject();				// 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllShooter() 호출함
 	void Execute(float delta);
 
-
+	//현재 실행중인 shooter들의 alive를 false로 하여 정지시킨다.
 	void ShooterPause();
     void ShooterResume();
+
+	//모든 오브젝트를 Execute한다.
+	void ExecuteAllObject(float delta);
 
 	//callback
 	void RotationObject(float dir);
@@ -46,6 +49,9 @@ public:
 	CC_SYNTHESIZE(CStateMachine<CObjectManager>*, m_FSM, FSM);
 	CC_SYNTHESIZE(float, m_fStageTime, StageTime);
 	CC_SYNTHESIZE(float, m_fDelta, Delta);
+	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
+	CC_SYNTHESIZE(bool, m_IsAbleRotation, IsAbleRotation);
+
 private:
 	void CreateShooterByTimer();
 	void Auto_ReturnToMemoryBlock();	// Alive가 false인 오브젝트를 모두 메모리 블럭으로 되돌린다.

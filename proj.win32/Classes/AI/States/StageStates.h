@@ -59,3 +59,25 @@ private:
 	CCrazyStageState(){}
 	virtual ~CCrazyStageState(){}
 };
+
+//------------------------------------------------------------------------
+class CGameCountDownState : public CState<CObjectManager>
+{
+public:
+
+	//this is a singleton
+	static CGameCountDownState* Instance();
+
+	void Enter(CObjectManager* objectMng) override;
+
+	void Execute(CObjectManager* objectMng, float delta) override;
+
+	void Exit(CObjectManager* objectMng) override;
+
+private:
+	CGameCountDownState() : m_fTime(0.f){}
+	virtual ~CGameCountDownState(){}
+
+private:
+	float m_fTime;
+};

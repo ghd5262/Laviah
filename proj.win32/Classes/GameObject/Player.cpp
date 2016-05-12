@@ -1,7 +1,9 @@
 #include "Player.h"
 #include "ItemManager.h"
 #include "ItemBarrier.h"
+#include "ObjectManager.h"
 #include "../AI/States/PlayerStates.h"
+#include "../AI/States/StageStates.h"
 #include "../Particle/Particles.h"
 #include "../Scene/GameScene.h"
 #include "../MyUI/ScoreUI.h"
@@ -53,9 +55,12 @@ CPlayer::CPlayer(
 	, m_fMagnetLimitRadius(200.f)
 	, m_EffectItemTypes(eITEM_FLAG_none)
 	, m_pParticle(nullptr)
+	, m_pParticleDead(nullptr)
+	, m_pParticleAlive(nullptr)
 	, m_isRoatating(false)
-    , m_pUIRunScore(nullptr)
-    , m_pItemBarrier(nullptr)
+	, m_pUIRunScore(nullptr)
+	, m_pItemBarrier(nullptr)
+	, m_isPlayerDead(true)
 {
 }
 
@@ -94,13 +99,17 @@ bool CPlayer::initVariable()
 			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 			m_pTexture->setScale(0.5f);
 			addChild(m_pTexture);
+			m_pTexture->setVisible(false);
 		}
 
 		m_pParticle = CParticle_Flame::create(m_NormalTextureName);
 		if (m_pParticle != nullptr){
 			m_pParticle->retain();
 			m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_pParticle->setAngle(90);
+			m_pParticle->setGravity(Vec2(0, -270));
 			CGameScene::getGameScene()->addChild(m_pParticle, 10);
+			m_pParticle->setVisible(false);
 		}
         
         
@@ -115,6 +124,8 @@ bool CPlayer::initVariable()
 
 void CPlayer::Execute(float delta)
 {
+	if (m_isPlayerDead == true)
+		return;
 	m_FSM->Execute(delta);
     m_pItemBarrier->Execute(delta);
 	if (!m_isRoatating)
@@ -125,8 +136,44 @@ void CPlayer::Execute(float delta)
 	m_isRoatating = false;
 }
 
+
+void CPlayer::PlayerAlive(){
+
+	m_pParticleAlive = CParticle_Explosion_2::create("whiteSquare.png");
+	if (m_pParticleAlive != nullptr){
+		m_pParticleAlive->retain();
+		m_pParticleAlive->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_pParticleAlive->setPosition(getPosition());
+		m_pParticleAlive->setStartRadius(160);
+		m_pParticleAlive->setEndRadius(0);
+		m_pParticleAlive->setDuration(0.5f);
+		CGameScene::getGameScene()->addChild(m_pParticleAlive, 100);
+	}
+
+	this->scheduleOnce([this](float delta){
+		m_isPlayerDead = false;
+		m_pParticle->setVisible(true);
+		m_pTexture->setVisible(true);
+	}, 1.5f, "PlayerAlive");
+
+}
+
+void CPlayer::PlayerDead(){
+	m_pParticleDead = CParticle_Explosion_2::create("whiteSquare.png");
+	if (m_pParticleDead != nullptr){
+		m_pParticleDead->retain();
+		m_pParticleDead->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_pParticleDead->setPosition(getPosition());
+		CGameScene::getGameScene()->addChild(m_pParticleDead, 100);
+	}
+	m_pParticle->setVisible(false);
+	m_pTexture->setVisible(false);
+}
+
 void CPlayer::GotSomeHealth(float health)
 {
+	if (m_isPlayerDead == true)
+		return;
 	if (m_fMaxLife > (m_fLife + health))
 	{
 		m_fLife += health;
@@ -138,11 +185,14 @@ void CPlayer::GotSomeHealth(float health)
 
 void CPlayer::LostSomeHealth(float loseHealth)
 {
+	if (m_isPlayerDead == true)
+		return;
 	if (0.f < (m_fLife - loseHealth))
 	{
 		m_fLife -= loseHealth;
 	}
 	else{
+		CGameScene::getGameScene()->GameEnd();
 		m_fLife = 0.f;
 	}
 }
@@ -158,7 +208,6 @@ void CPlayer::Rotation(float dir, float delta)
 	m_pParticle->setAngle(dir == 1 ? 180 : 0);
 	m_pParticle->setGravity(Vec2(-90 * dir, 0));
 	this->setRotation(m_fAngle);
-    
     if(m_pUIRunScore == nullptr)
         m_pUIRunScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("RunScoreUI"));
     m_pUIRunScore->UpdateValue(1);
@@ -197,7 +246,7 @@ float CPlayer::HealthCalculatorInNormal(float delta)
 {
 	// 5.0f == 가장 레벨이 낮을때 한 번에 빠지는 생명력의 양
 	// 이후에 펫 효과나 버프 등과 함께 계산해야한다.
-	LostSomeHealth(1.0f * delta);
+	//LostSomeHealth(1.0f * delta);
 	return (m_fLife / m_fMaxLife) * 100;
 }
 
@@ -207,7 +256,7 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 	// 5.0f == 가장 레벨이 낮을때 한 번에 빠지는 생명력의 양
 	// 이후에 펫 효과나 버프 등과 함께 계산해야한다.
 	// 보너스 타임이기 때문에 더느리게 줄어든다.
-	LostSomeHealth(0.5f);
+	//LostSomeHealth(0.5f);
 	return (m_fLife / m_fMaxLife) * 100;
 }
 

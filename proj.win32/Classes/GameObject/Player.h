@@ -46,6 +46,12 @@ public:
 	// 좌우로 흔들림
 	void StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount);
 
+	// 게임 시작할 때
+	void PlayerAlive();
+
+	// 게임 끝났을 때
+	void PlayerDead();
+
 	//getter & setter
 	CStateMachine<CPlayer>* getFSM(){ return m_FSM.get(); }
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
@@ -64,7 +70,7 @@ protected:
 	CC_SYNTHESIZE(float, m_fLevel, Level);
 	CC_SYNTHESIZE(float, m_fMagnetLimitRadius, MagnetLimitRadius);
 	CC_SYNTHESIZE(CItemBarrier*, m_pItemBarrier, ItemBarrier);
-
+	CC_SYNTHESIZE(bool, m_isPlayerDead, IsDead);
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
 
@@ -84,9 +90,10 @@ private:
 	std::string m_GiantTextureName;
 	Sprite* m_pTexture;
 	ParticleSystemQuad* m_pParticle;
+	ParticleSystemQuad* m_pParticleDead;
+	ParticleSystemQuad* m_pParticleAlive;
 	bool m_isRoatating;
     CScoreUI* m_pUIRunScore;
-    
     
 	// 영향을 받는 아이템 타입 
 	// ex) m_EffectItemType == eITEM_TYPE_magnet 이면 자석아이템에게 영향력을 받는다.

@@ -9,11 +9,13 @@
 #include "../Scene/GameScene.h"
 CObjectManager::CObjectManager()
 	: m_fStageTime(0.f)
+	, m_IsGamePause(false)
+	, m_IsAbleRotation(false)
 {
 	m_FSM = new CStateMachine<CObjectManager>(this);
 
 	if (m_FSM != nullptr){
-		m_FSM->ChangeState(CNormalStageState::Instance());
+		m_FSM->ChangeState(CGameCountDownState::Instance());
 	}
 
 	m_StageList = CStageDataManager::Instance()->getStageList();
@@ -98,12 +100,15 @@ void CObjectManager::CreateShooterByTimer()
 	}
 }
 
-void CObjectManager::Execute(float delta)
+void CObjectManager::ExecuteAllObject(float delta)
 {
+	if (m_IsGamePause)
+		return;
+
+	m_IsAbleRotation = true;
 	m_fDelta = delta;
 	m_fStageTime += delta;
 	CreateShooterByTimer();
-	m_FSM->Execute(delta);
 	CItemManager::Instance()->Execute(delta);
 	for (auto bullet : m_BulletList)
 	{
@@ -111,7 +116,7 @@ void CObjectManager::Execute(float delta)
 			bullet->Execute(delta);
 		}
 	}
-	
+
 	for (auto shooter : m_ShooterList)
 	{
 		if (shooter->IsAlive()) {
@@ -123,8 +128,16 @@ void CObjectManager::Execute(float delta)
 	m_Player->Execute(delta);
 }
 
+void CObjectManager::Execute(float delta)
+{
+	m_FSM->Execute(delta);
+}
+
 void CObjectManager::RotationObject(float dir)
 {
+	if (!m_IsAbleRotation)
+		return;
+
 	for (auto bullet : m_BulletList)
 	{
 		if (bullet->IsAlive()) {
@@ -137,20 +150,21 @@ void CObjectManager::RotationObject(float dir)
 
 void CObjectManager::ShooterPause()
 {
-    for (auto shooter : m_ShooterList)
-    {
-        if (shooter->IsAlive()) {
-            shooter->setAlive(false);
-        }
-    }
+	for (auto shooter : m_ShooterList)
+	{
+		if (shooter->IsAlive()) {
+			shooter->setAlive(false);
+		}
+	}
 }
 
 void CObjectManager::ShooterResume()
 {
-    for (auto shooter : m_ShooterList)
-    {
-        if (shooter->IsAlive()) {
-            shooter->setAlive(true);
-        }
-    }
+	for (auto shooter : m_ShooterList)
+	{
+		if (shooter->IsAlive()) {
+			shooter->setAlive(true);
+		}
+	}
 }
+

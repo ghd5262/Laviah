@@ -14,6 +14,8 @@ void CPlayerNormal::Enter(CPlayer* player)
 
 void CPlayerNormal::Execute(CPlayer* player, float delta)
 {
+	if (player->getIsDead() == true)
+		return;
 	switch (player->getItemEffect() & CItemManager::Instance()->getCurrentItem())
 	{
 	case eITEM_FLAG_giant:

@@ -1,10 +1,12 @@
 #include "StageStates.h"
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/ObjectManager.h"
+#include "../../GameObject/Player.h"
 #include "../../DataManager/StageDataManager.h"
 #include "../../DataManager/BulletPatternDataManager.h"
 #include "../../MyUI/UIManager.h"
 #include "../../MyUI/BonusTimeUI.h"
+#include "../../Scene/GameScene.h"
 //------------------------------------------------------------------------
 
 CNormalStageState* CNormalStageState::Instance(){
@@ -14,12 +16,11 @@ CNormalStageState* CNormalStageState::Instance(){
 }
 
 void CNormalStageState::Enter(CObjectManager* objectMng){
-
-	// All Shooter Resume
-	objectMng->ShooterResume();
 }
 
 void CNormalStageState::Execute(CObjectManager* objectMng, float delta){
+
+	objectMng->ExecuteAllObject(delta);
 
 	// 보너스타임을 다모았다면 보너스타임 상태로 변경
 	if (eITEM_FLAG_bonustime & CItemManager::Instance()->getCurrentItem())
@@ -93,5 +94,30 @@ void CCrazyStageState::Execute(CObjectManager* objectMng, float delta){
 }
 
 void CCrazyStageState::Exit(CObjectManager* objectMng){
+
+}
+
+
+//------------------------------------------------------------------------
+
+CGameCountDownState* CGameCountDownState::Instance(){
+	static CGameCountDownState instance;
+
+	return &instance;
+}
+
+void CGameCountDownState::Enter(CObjectManager* objectMng){
+	m_fTime = 0.f;
+}
+
+void CGameCountDownState::Execute(CObjectManager* objectMng, float delta){
+
+	m_fTime += delta;
+
+	if (m_fTime > 3.f)
+		objectMng->getFSM()->ChangeState(CNormalStageState::Instance());
+}
+
+void CGameCountDownState::Exit(CObjectManager* objectMng){
 
 }
