@@ -10,9 +10,13 @@
 #include "../MyUI/HealthBarUI.h"
 #include "../MyUI/BonusTimeUI.h"
 #include "../MyUI/ScoreUI.h"
+#include "../MyUI/Popup.h"
+#include "../MyUI/Popup/PausePopup.h"
+#include "../MyUI/Popup/ResultPopup.h"
 #include "../DataManager/BulletPatternDataManager.h"
 #include "../DataManager/StageDataManager.h"
 #include "../DataManager/BulletDataManager.h"
+#include "../AI/States/StageStates.h"
 
 USING_NS_CC;
 
@@ -75,7 +79,7 @@ bool CGameScene::initVariable()
 
 		planet->setOriginPos(planet->getPosition());
 
-		auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 400.0f, 100.f);
+		auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 400.0f, 50.f);
 		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			planet->getPosition().y + (planet->getBRadius() + 20.f)));
 		this->addChild(player, 100);
@@ -89,6 +93,7 @@ bool CGameScene::initVariable()
 		CPoolingManager::Instance()->CreateShooterList(10, 800);
 
 		InitGameSceneUI();
+		GameStart();
 
 		CAudioManager::Instance()->PlayEffectSound("sounds/bgm_1.mp3", true);
 	}
@@ -196,6 +201,26 @@ void CGameScene::InitGameSceneUI()
     if (!CUIManager::Instance()->AddUIWithName(runScoreUI, "RunScoreUI"))
         CCASSERT(false, "RunScoreUI CAN NOT INIT");
 
+	auto CreateOneBtnPopup = CMyButton::createWithString("defaultBtn_1.png",
+		"Default_1",
+		25,
+		Color3B::BLACK,
+		END,
+		[this, origin, visibleSize]()
+	{
+		GamePause();
+		auto popup = CPopup::createWithSpecificFormat(CResultPopup::create(), POPUPEFFECT_none);
+		popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+			origin.x + visibleSize.height * 0.5f));
+		popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		this->addChild(popup, 102);
+	}, EFFECT_SIZEDOWN);
+
+	CreateOneBtnPopup->setPosition(Vec2(origin.x + visibleSize.width * 0.94f,
+		origin.x + visibleSize.height * 0.8f));
+	CreateOneBtnPopup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	this->addChild(CreateOneBtnPopup, 102);
+
 }
 
 void CGameScene::menuCloseCallback(Ref* pSender)
@@ -204,8 +229,61 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
 	return;
 #endif
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	Director::getInstance()->end();
+	
+
+	/*utils::captureScreen([this](bool succed, std::string name)
+	{
+
+		auto sp = Sprite::create(name);
+		addChild(sp, 102);
+		Size s = Director::getInstance()->getWinSize();
+		sp->setPosition(s.width / 2, s.height / 2);
+
+		auto fileUtiles = FileUtils::getInstance();
+		auto fragmentFullPath = fileUtiles->fullPathForFilename("shader/example_Blur.fsh");
+		auto fragSource = fileUtiles->getStringFromFile(fragmentFullPath);
+		auto glprogram = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, fragSource.c_str());
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8 || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+		_fragSource = fragSource;
+#endif
+		auto _glprogramstate = GLProgramState::getOrCreateWithGLProgram(glprogram);
+		_glprogramstate->setUniformVec2("resolution", sp->getContentSize());
+		_glprogramstate->setUniformFloat("blurRadius", 10.f);
+		_glprogramstate->setUniformFloat("sampleNum", 5.f);
+		_glprogramstate->retain();
+		sp->setGLProgramState(_glprogramstate);
+	}, "screenShot.png");
+*/
+	
+	GamePause();
+
+	auto btnYes = CMyButton::createWithString("defaultBtn_1.png",
+		"Yes",
+		25,
+		Color3B::WHITE,
+		END,
+		[this](){
+		Director::getInstance()->end();
+	}, EFFECT_ALPHA);
+
+	auto btnNo = CMyButton::createWithString("defaultBtn_2.png",
+		"Yes",
+		25,
+		Color3B::WHITE,
+		END,
+		[this](){
+		Director::getInstance()->end();
+	}, EFFECT_ALPHA);
+
+	auto popup = CPopup::createWithTwoButton("Are you sure you want to exit StarStarStar?"
+		, btnNo, btnYes, 25, Color3B::BLACK);
+	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		origin.x + visibleSize.height * 0.5f));
+	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	this->addChild(popup, 102);
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	exit(0);
@@ -216,4 +294,28 @@ void CGameScene::update(float delta)
 {
 	CUIManager::Instance()->Execute(delta);
 	CObjectManager::Instance()->Execute(delta);
+}
+
+void CGameScene::GameStart()
+{
+	CObjectManager::Instance()->getPlayer()->PlayerAlive();
+	CObjectManager::Instance()->getFSM()->ChangeState(CGameCountDownState::Instance());
+}
+
+void CGameScene::GamePause()
+{
+	CObjectManager::Instance()->setIsGamePause(true);
+	CObjectManager::Instance()->setIsAbleRotation(false);
+}
+
+void CGameScene::GameResume()
+{
+	CObjectManager::Instance()->setIsGamePause(false);
+	CObjectManager::Instance()->getFSM()->ChangeState(CGameCountDownState::Instance());
+}
+
+void CGameScene::GameEnd()
+{
+	CObjectManager::Instance()->getPlayer()->PlayerDead();
+	GamePause();
 }

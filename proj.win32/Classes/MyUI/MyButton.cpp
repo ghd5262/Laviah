@@ -1,49 +1,94 @@
 #include "MyButton.h"
 
+CMyButton::CMyButton(
+	std::string textureName,					// ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
+	eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
+	const std::function<void(void)> &func,		// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
+	int effect)									// ¹öÆ° ÀÌÆåÆ®
+	: m_NormalTextureName(textureName)
+	, m_SelectedTextureName("")
+	, m_LabelString("")
+	, m_FontSize(0)
+	, m_IsSelect(false)
+	, m_pNormalTexture(nullptr)
+	, m_pLabel(nullptr)
+	, m_ButtonEffect(effect)
+	, m_FontColor(Color3B::WHITE)
+{
+	AddState(state, func);
+}
 
 CMyButton::CMyButton(
-	std::string normalTextureName,						// ¼±ÅÃ Àü ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-	std::string selectedTextureName,					// ¼±ÅÃ Áß ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-	eMYBUTTON_STATE state,								// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-	const std::function<void(void)> &func)				// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
-	: m_NormalTextureName(normalTextureName)
+	std::string normalTextureName,				// ¼±ÅÃ Àü ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
+	std::string selectedTextureName,			// ¼±ÅÃ Áß ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
+	eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
+	const std::function<void(void)> &func)		// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
+	: m_NormalTextureName(normalTextureName)		
 	, m_SelectedTextureName(selectedTextureName)
 	, m_LabelString("")
 	, m_FontSize(0)
 	, m_IsSelect(false)
 	, m_pNormalTexture(nullptr)
 	, m_pLabel(nullptr)
+	, m_ButtonEffect(EFFECT_TEXTURE)
+	, m_FontColor(Color3B::WHITE)
 {
 	AddState(state, func);
 }
 
 CMyButton::CMyButton(
-	std::string normalTextureName,						// ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-	std::string labelString,							// ¹öÆ°ÀÇ label ³»¿ë
-	int fontSize,										// ÆùÆ® »çÀÌÁî
-	eMYBUTTON_STATE state,								// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-	const std::function<void(void)> &func)				// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
-	: m_NormalTextureName("")
+	std::string normalTextureName,				// ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
+	std::string labelString,					// ¹öÆ°ÀÇ label ³»¿ë
+	int fontSize,								// ÆùÆ® »çÀÌÁî
+	Color3B fontColor,							// ÆùÆ® »ö»ó
+	eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
+	const std::function<void(void)> &func,		// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
+	int effect)									// ¹öÆ° ÀÌÆåÆ®
+	: m_NormalTextureName(normalTextureName)
 	, m_SelectedTextureName("")
 	, m_LabelString(labelString)
 	, m_FontSize(fontSize)
 	, m_IsSelect(false)
 	, m_pNormalTexture(nullptr)
 	, m_pLabel(nullptr)
+	, m_ButtonEffect(effect)
+	, m_FontColor(fontColor)
 {
 	AddState(state, func);
 }
 
-CMyButton* CMyButton::createWithTexture(
-	std::string normalTextureName,						// ¼±ÅÃ Àü ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-	std::string selectedTextureName,					// ¼±ÅÃ Áß ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-	eMYBUTTON_STATE state,								// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-	const std::function<void(void)> &func)				// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
+CMyButton* CMyButton::create(
+	std::string textureName,
+	eMYBUTTON_STATE state,
+	const std::function<void(void)> &func,
+	int effect/* = NONE*/)
 {
-	CMyButton *pRet = new(std::nothrow) CMyButton(
-		normalTextureName, 
-		selectedTextureName, 
-		state, 
+	CMyButton *pRet = new(std::nothrow) CMyButton(textureName,
+		state,
+		func,
+		effect);
+	if (pRet && pRet->init())
+	{
+		pRet->autorelease();
+		return pRet;
+	}
+	else
+	{
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
+}
+
+CMyButton* CMyButton::createWithTexture(
+	std::string normalTextureName,
+	std::string selectedTextureName,
+	eMYBUTTON_STATE state,
+	const std::function<void(void)> &func)
+{
+	CMyButton *pRet = new(std::nothrow) CMyButton(normalTextureName,
+		selectedTextureName,
+		state,
 		func);
 	if (pRet && pRet->init())
 	{
@@ -59,18 +104,21 @@ CMyButton* CMyButton::createWithTexture(
 }
 
 CMyButton* CMyButton::createWithString(
-	std::string normalTextureName,						// ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-	std::string labelString,							// ¹öÆ°ÀÇ label ³»¿ë
-	int fontSize,										// ÆùÆ® »çÀÌÁî
-	eMYBUTTON_STATE state,								// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-	const std::function<void(void)> &func)				// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
+	std::string normalTextureName,			
+	std::string labelString,				
+	int fontSize,							
+	Color3B fontColor,						
+	eMYBUTTON_STATE state,					
+	const std::function<void(void)> &func,	
+	int effect/* = NONE*/)					
 {
-	CMyButton *pRet = new(std::nothrow) CMyButton(
-		normalTextureName,
+	CMyButton *pRet = new(std::nothrow) CMyButton(normalTextureName,
 		labelString,
-		fontSize, 
-		state, 
-		func);
+		fontSize,
+		fontColor,
+		state,
+		func,
+		effect);
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -115,19 +163,21 @@ bool CMyButton::initVariable()
 			m_pLabel = cocos2d::Label::createWithTTF(m_LabelString, "fonts/Marker Felt.ttf", m_FontSize);
 		if (m_pLabel != nullptr){
 			m_pLabel->setAnchorPoint(Vec2(0.5f, 0.5f));
+			m_pLabel->setColor(m_FontColor);
 			addChild(m_pLabel);
 		}
 	}
 	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
+		throw StringUtils::format("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		return false;
 	}
 	return true;
 }
 
-void CMyButton::AddState(eMYBUTTON_STATE state,			// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-	const std::function<void(void)> &func)				// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
+/* »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
+ * ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void) */
+void CMyButton::AddState(eMYBUTTON_STATE state,
+	const std::function<void(void)> &func)
 {
 	switch (state)
 	{
@@ -145,65 +195,139 @@ void CMyButton::AddState(eMYBUTTON_STATE state,			// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È
 	}break;
 	default:
 	{
-		CCASSERT(false, "WRONG BUTTON STATE. PLEASE CHECK THE STATE.");
+		throw "WRONG BUTTON STATE. PLEASE CHECK THE STATE.";
 	}
 	}
 }
 
+
+/* ¹öÆ° ´­¸± ¶§ Effect ½ÇÇà*/
+void CMyButton::btnEffectStart()
+{
+	if (m_pNormalTexture == nullptr)
+		CCASSERT(false, "WRONG ACCESS PLEASE CHECK THE BTN TEXTURE");
+
+	if (onEffect(EFFECT_ALPHA))
+	{
+		m_pNormalTexture->setOpacity(80.f);
+		if (m_pLabel != nullptr)
+			m_pLabel->setOpacity(80.f);
+	}
+
+	if (onEffect(EFFECT_SIZEUP))
+	{
+		m_pNormalTexture->setScale(1.1f);
+		if (m_pLabel != nullptr)
+			m_pLabel->setScale(1.1f);
+	}
+
+	if (onEffect(EFFECT_SIZEDOWN))
+	{
+		m_pNormalTexture->setScale(0.9f);
+		if (m_pLabel != nullptr)
+			m_pLabel->setScale(0.9f);
+	}
+
+	if (onEffect(EFFECT_GRAY))
+	{
+		m_pNormalTexture->setColor(Color3B::GRAY);
+		if (m_pLabel != nullptr)
+			m_pLabel->setColor(Color3B::GRAY);
+	}
+
+	if (onEffect(EFFECT_TEXTURE))
+	{
+		if (m_SelectedTextureName != ""){
+			m_pNormalTexture->setTexture(m_SelectedTextureName);
+		}
+	}
+}
+
+
+/* ¹öÆ° ¶³¾îÁú ¶§ Effect ½ÇÇà */
+void CMyButton::btnEffectEnd()
+{
+	if (m_pNormalTexture == nullptr)
+		CCASSERT(false, "WRONG ACCESS PLEASE CHECK THE BTN TEXTURE");
+
+	// ¿ø »óÅÂ·Î º¹±¸
+	m_pNormalTexture->setOpacity(255.f);
+	m_pNormalTexture->setColor(Color3B::WHITE);
+	m_pNormalTexture->setScale(1.f);
+
+	if (m_pLabel != nullptr){
+		m_pLabel->setOpacity(255.f);
+		m_pLabel->setColor(m_FontColor);
+		m_pLabel->setScale(1.f);
+	}
+
+	if (m_SelectedTextureName != ""){
+		m_pNormalTexture->setTexture(m_NormalTextureName);
+	}
+}
+
+
+/* ÅÍÄ¡µÈ ÁÂÇ¥¸¦ ¹öÆ°ÀÇ ÁÂÇ¥·Î º¯È¯ ÇÑ ÈÄ¿¡ ¹öÆ°ÀÌ ÅÍÄ¡µÇ¾ú´ÂÁö °Ë»ç */
 bool CMyButton::touchHits(Touch  *touch)
 {
-	const Rect area(0, 0, m_pNormalTexture->getContentSize().width, 
+	const Rect area(0, 0, m_pNormalTexture->getContentSize().width,
 		m_pNormalTexture->getContentSize().height);
-	// ÁÂÇ¥ º¯È¯
+
+	// world to nodespace ÁÂÇ¥ º¯È¯
 	return area.containsPoint(m_pNormalTexture->convertToNodeSpace(touch->getLocation()));
 }
 
+/* ¹öÆ°ÀÌ ´­·ÈÀ» ¶§ BEGIN */
 bool CMyButton::onTouchBegan(Touch  *touch, Event  *event)
 {
 	CC_UNUSED_PARAM(event);
 	if (m_pNormalTexture){
+
+		// ÁÂÇ¥ º¯È¯ ÈÄ ÅÍÄ¡ Ã¼Å©
 		m_IsSelect = touchHits(touch);
+
+		// ¹öÆ°ÀÇ ÁÂÇ¥¿¡¼­ ÁøÂ¥·Î ÅÍÄ¡µÇ¾úÀ» °æ¿ì
 		if (m_IsSelect){
-			std::for_each(m_BeginFuncList.begin(), m_BeginFuncList.end(), // BEGIN »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+
+			// BEGIN »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+			std::for_each(m_BeginFuncList.begin(), m_BeginFuncList.end(),
 				[](const std::function<void(void)> &func){
 				func();
 			});
-			
-			if (m_SelectedTextureName != ""){					// ¼±ÅÃ ½Ã ÀÌ¹ÌÁö°¡ ÀÖ´Ù¸é ÀÌ¹ÌÁö ±³Ã¼
-				m_pNormalTexture->setTexture(m_SelectedTextureName);
-			}
-			else {												// ±³Ã¼µÉ ÀÌ¹ÌÁö°¡ ¾ø´Ù¸é Å©±â¸¦ Å°¿ò
-				m_pNormalTexture->setScale(1.1f);
-			}
+
+			btnEffectStart();
 		}
 	}
 	return m_IsSelect;
 }
 
+/* ¹öÆ°¿¡¼­ ¶³¾îÁ³À» ¶§ END */
 void CMyButton::onTouchEnded(Touch  *touch, Event  *event)
 {
 	CC_UNUSED_PARAM(event);
 	if (m_pNormalTexture){
-		m_IsSelect = touchHits(touch);
-		std::for_each(m_EndFuncList.begin(), m_EndFuncList.end(), // END »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+
+		// END »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+		std::for_each(m_EndFuncList.begin(), m_EndFuncList.end(),
 			[](const std::function<void(void)> &func){
 			func();
 		});
-		if (m_SelectedTextureName != ""){						// ÀÌ¹ÌÁö°¡ ¹Ù²î¾ú¾ú´Ù¸é ´Ù½Ã ¿ø·¡´ë·Î ¹Ù²Ş
-			m_pNormalTexture->setTexture(m_NormalTextureName);
-		}
-		else{													// ¹Ù²ğÀÌ¹ÌÁö°¡ ¾ø´Ù¸é Å©±â¸¦ ¿ø·¡´ë·Î ¹Ù²Ş
-			m_pNormalTexture->setScale(1.0f);
-		}
+
+		btnEffectEnd();
+
+		// ¹öÆ° ´­¸² Á¾·á
 		m_IsSelect = false;
 	}
 }
 
+/* ¹öÆ°ÀÌ ´­¸®°í ÀÖ´Â ÁßÀÏ¶§ EXECUTE */
 void CMyButton::Execute(float delta)
 {
+	// ¹öÆ° ´­¸² »óÅÂÀÌ¸ç, EXECUTE »óÅÂÀÏ ¶§ ½ÇÇàµÇ¾î¾ß ÇÒ ÇÔ¼ö°¡ 1°³ ÀÌ»óÀÏ ¶§
 	if (m_IsSelect && m_ExecuteFuncList.size())
 	{
-		std::for_each(m_ExecuteFuncList.begin(), m_ExecuteFuncList.end(), // EXECUTE »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+		// EXECUTE »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+		std::for_each(m_ExecuteFuncList.begin(), m_ExecuteFuncList.end(),
 			[](const std::function<void(void)> &func){
 			func();
 		});

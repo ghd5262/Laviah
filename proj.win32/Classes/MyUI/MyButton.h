@@ -18,11 +18,28 @@ enum eMYBUTTON_STATE{
 	MYBUTTON_STATE_COUNT
 };
 
+enum eMYBUTTON_EFFECT_FLAG{
+	EFFECT_NONE = 0x0000,
+	EFFECT_ALPHA = 0x0001,
+	EFFECT_SIZEUP = 0x0002,
+	EFFECT_SIZEDOWN = 0x0004,
+	EFFECT_GRAY = 0x0008,
+	EFFECT_TEXTURE = 0x0010
+};
+
 class CMyButton : public CGameObject
 {
 public:
+	/* 기본 버튼 생성 */
+	static CMyButton* create(
+		std::string textureName,					// 버튼의 텍스쳐 이름
+		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
+		const std::function<void(void)> &func,		// 람다 전달
+		int effect = EFFECT_NONE);					// 버튼 이펙트
+
+
 	/* 텍스쳐와 함께 버튼 생성
-	* normalImg와 selectedImg를 인자로 전달*/
+	 * normalImg와 selectedImg를 인자로 전달*/
 	static CMyButton* createWithTexture(
 		std::string normalTextureName,				// 선택 전 버튼의 텍스쳐 이름
 		std::string selectedTextureName,			// 선택 중 버튼의 텍스쳐 이름
@@ -35,9 +52,10 @@ public:
 		std::string normalTextureName,				// 버튼의 텍스쳐 이름
 		std::string labelString,					// 버튼의 label 내용
 		int fontSize,								// 폰트 사이즈
+		Color3B fontColor,							// 폰트 색상
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func);		// 람다 전달
-
+		const std::function<void(void)> &func,		// 람다 전달
+		int effect = EFFECT_NONE);					// 버튼 이펙트
 
 	/* 버튼에 펑션을 추가 */
 	void AddState(eMYBUTTON_STATE state,			// 상태 (해당 상태일 때 함수 호출됨)
@@ -46,6 +64,8 @@ public:
 	/* 버튼이 가지는 Execute callback함수 호출 */
 	virtual void Execute(float delta = 0.f);
 
+	// getter & setter
+	CC_SYNTHESIZE(Label*, m_pLabel, BtnLabel);
 protected:
 	virtual bool init() override;
 	virtual bool initVariable() override;
@@ -61,6 +81,20 @@ private:
 	/* 버튼이 가지는 End callback함수 호출 */
 	void onTouchEnded(Touch  *touch, Event  *event);
 
+	/* 버튼 눌릴 때 Effect 실행*/
+	void btnEffectStart();
+
+	/* 버튼 떨어질 때 Effect 실행 */
+	void btnEffectEnd();
+
+	bool onEffect(eMYBUTTON_EFFECT_FLAG effect){ return (m_ButtonEffect & effect) == effect; }
+
+	CMyButton(
+		std::string textureName,					// 버튼의 텍스쳐 이름
+		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
+		const std::function<void(void)> &func,		// 람다 전달
+		int effect);								// 버튼 이펙트
+
 	CMyButton(
 		std::string normalTextureName,				// 선택 전 버튼의 텍스쳐 이름
 		std::string selectedTextureName,			// 선택 중 버튼의 텍스쳐 이름
@@ -71,9 +105,11 @@ private:
 		std::string normalTextureName,				// 버튼의 텍스쳐 이름
 		std::string labelString,					// 버튼의 label 내용
 		int fontSize,								// 폰트 사이즈
+		Color3B fontColor,							// 폰트 색상
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func);		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
-
+		const std::function<void(void)> &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
+		int effect);								// 버튼 이펙트
+		
 	virtual ~CMyButton(){};
 
 private:
@@ -86,8 +122,9 @@ private:
 	std::string m_SelectedTextureName;
 	std::string m_LabelString;
 	Sprite* m_pNormalTexture;
-	Label* m_pLabel;
+	Color3B m_FontColor;
 	int m_FontSize;
+	int m_ButtonEffect;
 	bool m_IsSelect;	//선택되었는지 (선택중이라도 true)
 };
 
