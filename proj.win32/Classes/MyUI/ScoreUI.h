@@ -10,6 +10,9 @@ public:
 	void UpdateValue(int number);
 	void SetLabelAnchor(Vec2 point);
 
+	//getter & setter
+	CC_SYNTHESIZE(unsigned int, m_Value, ScoreValue);
+
 protected:
 	virtual bool init() override;
 	virtual bool initVariable() override;
@@ -31,7 +34,6 @@ private:
 	Label* m_ValueLabel;	
 	Sprite* m_ValueImg;// 숫자 오른쪽에 보여줄 이미지 없다면 보여주지 않는다.
 	size_t m_FontSize;
-	unsigned int m_Value;
 	char m_ValueString[30];
 };
 
