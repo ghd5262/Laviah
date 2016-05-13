@@ -2,6 +2,8 @@
 #include "HSHUtility.h"
 
 CAudioManager::CAudioManager()
+	: m_BGMID(0)
+	, m_EffectSoundVolume(1.f)
 {
 }
 
@@ -30,7 +32,8 @@ void CAudioManager::PlayEffectSound(
 	if (audio->_nCount < 10)
 	{
 		audio->_nCount++;
-		int id = AudioEngine::play2d(filePath, loop, volume, profile);  
+		volume = m_EffectSoundVolume != 1.f ? m_EffectSoundVolume : volume;
+		int id = AudioEngine::play2d(filePath, loop, volume, profile);
 		AudioEngine::setFinishCallback(id, [this](int id, const std::string& path)
 		{
 			sAUDIO_INFO* temp;
@@ -40,6 +43,19 @@ void CAudioManager::PlayEffectSound(
 	}
 }
 
+void CAudioManager::PlayBGM(
+	const std::string& filePath,
+	bool loop/* = false*/,
+	float volume/* = 1.0f*/,
+	const AudioProfile *profile/* = nullptr*/)
+{
+	m_BGMID = AudioEngine::play2d(filePath, loop, volume, profile);
+}
+
+void CAudioManager::setBGMVolume(float volume)
+{
+	AudioEngine::setVolume(m_BGMID, volume);
+}
 
 void CAudioManager::EmptyCurrentPlayingList()
 {

@@ -1,6 +1,6 @@
 #include "PausePopup.h"
 #include "../MyButton.h"
-
+#include "../../Scene/GameScene.h"
 CPausePopup* CPausePopup::create()
 {
 	CPausePopup *pRet = new(std::nothrow) CPausePopup();
@@ -74,35 +74,38 @@ bool CPausePopup::initVariable()
 
 		m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
 			auto winSize = Director::getInstance()->getWinSize();
-			m_btnHome->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * 0.15f,
-				m_BG->getContentSize().height * 0.85f)));
 
-			m_btnReset->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * 0.15f,
-				m_BG->getContentSize().height * 0.7f)));
+			m_Popup->scheduleOnce([this](float delta){
+				m_btnHome->runAction(EaseExponentialOut::create(MoveTo::create(1.0f, Vec2(m_BG->getContentSize().width * 0.15f,
+					m_BG->getContentSize().height * 0.85f))));
 
-			m_btnPlay->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * 0.15f,
-				m_BG->getContentSize().height * 0.55f)));
+				m_btnReset->runAction(EaseExponentialOut::create(MoveTo::create(1.0f, Vec2(m_BG->getContentSize().width * 0.15f,
+					m_BG->getContentSize().height * 0.7f))));
 
-			m_BG->runAction(MoveTo::create(0.5f, Vec2(0, winSize.height * 0.36f)));
+				m_btnPlay->runAction(EaseExponentialOut::create(MoveTo::create(1.0f, Vec2(m_BG->getContentSize().width * 0.15f,
+					m_BG->getContentSize().height * 0.55f))));
+			}, 0.1f, "PausePopupOpen");
+	
+			m_BG->runAction(EaseExponentialOut::create(MoveTo::create(0.5f, Vec2(0, winSize.height * 0.36f))));
 		});
 
 		m_Popup->setPopupCloseEffectFunc([this, visibleSize, origin](CPopup* pausePopup){
 
-			m_btnHome->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * -1.1f,
-				m_BG->getContentSize().height * 0.85f)));
+			m_btnHome->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(m_BG->getContentSize().width * -1.1f,
+				m_BG->getContentSize().height * 0.85f))));
 
-			m_btnReset->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * -1.1f,
-				m_BG->getContentSize().height * 0.7f)));
+			m_btnReset->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(m_BG->getContentSize().width * -1.1f,
+				m_BG->getContentSize().height * 0.7f))));
 
-			m_btnPlay->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * -1.1f,
-				m_BG->getContentSize().height * 0.55f)));
+			m_btnPlay->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(m_BG->getContentSize().width * -1.1f,
+				m_BG->getContentSize().height * 0.55f))));
 
 			m_Popup->scheduleOnce([this, visibleSize, origin](float delta){
-				m_BG->runAction(Sequence::create(MoveTo::create(0.5f, Vec2(0, origin.x + visibleSize.height * 0.75f)),
+				m_BG->runAction(Sequence::create(EaseSineIn::create(MoveTo::create(0.3f, Vec2(0, origin.x + visibleSize.height * 0.75f))),
 					CallFunc::create([this](){
 					CSpecificPopupBase::PopupRelease();
 				}), nullptr));
-			}, 0.2f, "PausePopupClose");
+			}, 0.1f, "PausePopupClose");
 		});
 	}
 	catch (...){
@@ -114,7 +117,7 @@ bool CPausePopup::initVariable()
 
 void CPausePopup::Play(){
 	CCLOG("format popup Play");
-
+	CGameScene::getGameScene()->GameResume();
 	CSpecificPopupBase::PopupClose();
 }
 

@@ -146,7 +146,7 @@ bool CPopup::init()
 bool CPopup::initVariable()
 {
 	try{
-		auto emptyBtnBG = CMyButton::create("empty1280.png", BEGIN, [](){});
+		auto emptyBtnBG = CMyButton::create("empty1280_a.png", BEGIN, [](){});
 		emptyBtnBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		emptyBtnBG->setPosition(Vec2::ZERO);
 		this->addChild(emptyBtnBG);

@@ -2,6 +2,7 @@
 #include "../MyButton.h"
 #include "../ScoreUI.h"
 #include "../UIManager.h"
+#include "../../Scene/GameScene.h"
 
 CResultPopup* CResultPopup::create()
 {
@@ -34,13 +35,25 @@ bool CResultPopup::initVariable()
 
 		//auto moveDistance = Sprite::create("")
 
+		/* result label*/
+		auto resultLabel = Label::create("Result", "fonts/malgunbd.ttf", 50);
+		if (resultLabel != nullptr)
+		{
+			resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			resultLabel->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.8f));
+			
+			m_BG->addChild(resultLabel);
+			resultLabel->setOpacity(0);
+		}
+
 		/* 이동거리 */
 		auto moveDistanceBG = Sprite::create("resultPopup_1.png");
 		if (moveDistanceBG != nullptr){
 			moveDistanceBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			moveDistanceBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * -0.1f));
+			moveDistanceBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.5f));
 			m_BG->addChild(moveDistanceBG);
-
+			moveDistanceBG->setOpacity(0);
+			moveDistanceBG->setCascadeOpacityEnabled(true);
 			auto moveDistanceIcon = Sprite::create("runIcon.png");
 			if (moveDistanceIcon != nullptr)
 			{
@@ -73,9 +86,10 @@ bool CResultPopup::initVariable()
 		auto starScoreBG = Sprite::create("resultPopup_2.png");
 		if (starScoreBG != nullptr){
 			starScoreBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			starScoreBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * -0.2f));
+			starScoreBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.4f));
 			m_BG->addChild(starScoreBG);
-
+			starScoreBG->setOpacity(0);
+			starScoreBG->setCascadeOpacityEnabled(true);
 			auto starScoreIcon = Sprite::create("starIcon.png");
 			if (starScoreIcon != nullptr)
 			{
@@ -107,9 +121,10 @@ bool CResultPopup::initVariable()
 		auto coinScoreBG = Sprite::create("resultPopup_1.png");
 		if (coinScoreBG != nullptr){
 			coinScoreBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			coinScoreBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * -0.3f));
+			coinScoreBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.3f));
 			m_BG->addChild(coinScoreBG);
-
+			coinScoreBG->setOpacity(0);
+			coinScoreBG->setCascadeOpacityEnabled(true);
 			auto coinScoreIcon = Sprite::create("coinIcon.png");
 			if (coinScoreIcon != nullptr)
 			{
@@ -137,84 +152,94 @@ bool CResultPopup::initVariable()
 			}
 		}
 
-			m_btnHome = CMyButton::create("homeButton.png",
+		m_btnHome = CMyButton::create("homeIcon.png",
 			END,
 			std::bind(&CResultPopup::GoHome, this),
 			EFFECT_ALPHA);
 
 		if (m_btnHome != nullptr)
 		{
-			m_btnHome->setPosition(Vec2(m_BG->getContentSize().width * -1.1f,
-				m_BG->getContentSize().height * 0.85f));
+			m_btnHome->setPosition(Vec2(m_BG->getContentSize().width * 0.08f,
+				m_BG->getContentSize().height * 0.05f));
 			m_btnHome->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_BG->addChild(m_btnHome);
+			m_btnHome->setCascadeOpacityEnabled(true);
+			m_btnHome->setOpacity(0);
 		}
 
-		m_btnReset = CMyButton::create("restartButton.png",
+		m_btnReset = CMyButton::create("resetIcon.png",
 			END,
 			std::bind(&CResultPopup::Reset, this),
 			EFFECT_ALPHA);
 
 		if (m_btnReset != nullptr)
 		{
-			m_btnReset->setPosition(Vec2(m_BG->getContentSize().width * -1.1f,
-				m_BG->getContentSize().height * 0.7f));
+			m_btnReset->setPosition(Vec2(m_BG->getContentSize().width * 0.92f,
+				m_BG->getContentSize().height * 0.05f));
 			m_btnReset->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_BG->addChild(m_btnReset);
-		}
-
-		m_btnPlay = CMyButton::create("playButton.png",
-			END,
-			std::bind(&CResultPopup::Play, this),
-			EFFECT_ALPHA);
-
-		if (m_btnPlay != nullptr)
-		{
-			m_btnPlay->setPosition(Vec2(m_BG->getContentSize().width * -1.1f,
-				m_BG->getContentSize().height * 0.55f));
-			m_btnPlay->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_BG->addChild(m_btnPlay);
+			m_btnReset->setCascadeOpacityEnabled(true);
+			m_btnReset->setOpacity(0);
 		}
 
 		m_Popup->setPopupOpenEffectFunc([=](CPopup* pausePopup){
 			auto winSize = Director::getInstance()->getWinSize();
 
-			moveDistanceBG->runAction(EaseExponentialOut::create(MoveTo::create(0.5f, Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.7f))));
-			starScoreBG->runAction(EaseExponentialOut::create(MoveTo::create(0.5f, Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.65f))));
-			coinScoreBG->runAction(EaseExponentialOut::create(MoveTo::create(0.5f, Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.6f))));
+			moveDistanceBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.7f))), 
+				FadeIn::create(1.f)));
+			starScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.65f))),
+				FadeIn::create(1.f)));
+			coinScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.6f))),
+				FadeIn::create(1.f)));
 
+			resultLabel->runAction(FadeIn::create(0.5f));
 
-			m_btnHome->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * 0.15f,
-				m_BG->getContentSize().height * 0.85f)));
+			m_btnHome->runAction(FadeIn::create(0.5f));
 
-			m_btnReset->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * 0.15f,
-				m_BG->getContentSize().height * 0.7f)));
-
-			m_btnPlay->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * 0.15f,
-				m_BG->getContentSize().height * 0.55f)));
-
-			//pausePopup->runAction(MoveTo::create(0.5f, Vec2(winSize.width * 0.5f, winSize.height * 0.86f)));
+			m_btnReset->runAction(FadeIn::create(0.5f));
 		});
 
 		m_Popup->setPopupCloseEffectFunc([=](CPopup* pausePopup){
+			moveDistanceBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f, 
+				m_BG->getContentSize().height * 0.5f))),
+				FadeTo::create(0.2f, 0)));
+			starScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.4f))),
+				FadeTo::create(0.2f, 0)));
+			coinScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.3f))),
+				FadeTo::create(0.2f, 0)));
 
-			moveDistanceBG->runAction(EaseSineIn::create(MoveTo::create(0.25f, Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * -0.1f))));
-			starScoreBG->runAction(EaseSineIn::create(MoveTo::create(0.25f, Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * -0.2f))));
-			coinScoreBG->runAction(EaseSineIn::create(MoveTo::create(0.25f, Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * -0.3f))));
+			resultLabel->runAction(FadeTo::create(0.5f, 0));
 
+			m_btnHome->runAction(FadeTo::create(0.5f, 0));
 
-			m_btnHome->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * -1.1f,
-				m_BG->getContentSize().height * 0.85f)));
-
-			m_btnReset->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * -1.1f,
-				m_BG->getContentSize().height * 0.7f)));
-
-			m_btnPlay->runAction(MoveTo::create(0.8f, Vec2(m_BG->getContentSize().width * -1.1f,
-				m_BG->getContentSize().height * 0.55f)));
+			m_btnReset->runAction(FadeTo::create(0.5f, 0));
 
 			m_Popup->scheduleOnce([this](float delta){
 				CSpecificPopupBase::PopupRelease();
-			}, 0.7f, "PausePopupClose");
+			}, 0.35f, "PausePopupClose");
 		});
 	}
 	catch (...){
@@ -224,17 +249,14 @@ bool CResultPopup::initVariable()
 	return true;
 }
 
-void CResultPopup::Play(){
-	CCLOG("format popup Play");
-
-	CSpecificPopupBase::PopupClose();
-}
-
 void CResultPopup::Reset(){
 	CCLOG("format popup Replay");
+	CGameScene::getGameScene()->GameStart();
+	CSpecificPopupBase::PopupClose();
 }
 
 void CResultPopup::GoHome(){
 	CCLOG("format popup GoHome");
+	CGameScene::getGameScene()->GameStart();
 	CSpecificPopupBase::PopupClose();
 }

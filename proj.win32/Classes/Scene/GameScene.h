@@ -29,10 +29,14 @@ protected:
 	virtual bool init() override;
 
 private:
+	void countDownLabel();
 	bool initVariable();
 	void InitGameSceneUI();
 	void menuCloseCallback(cocos2d::Ref* pSender);
 
 private:
 	static CGameScene* m_GameScene;
+	CMyButton* m_PauseBtn;
+	cocos2d::Label* m_CountDownLabel;
+	int m_Count;
 };

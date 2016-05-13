@@ -10,14 +10,12 @@ public:
 protected:
 	virtual bool initVariable() override;
 
-private:
-	void Play();
+private: 
 	void Reset();
 	void GoHome();
 
 	CResultPopup()
 		: m_btnHome(nullptr)
-		, m_btnPlay(nullptr)
 		, m_btnReset(nullptr)
 		, m_BG(nullptr){};
 	virtual ~CResultPopup(){};
@@ -25,6 +23,5 @@ private:
 private:
 	CMyButton* m_btnHome;
 	CMyButton* m_btnReset;
-	CMyButton* m_btnPlay;
 	Sprite* m_BG;
 };

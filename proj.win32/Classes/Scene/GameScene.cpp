@@ -95,7 +95,7 @@ bool CGameScene::initVariable()
 		InitGameSceneUI();
 		GameStart();
 
-		CAudioManager::Instance()->PlayEffectSound("sounds/bgm_1.mp3", true);
+		CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
@@ -208,7 +208,7 @@ void CGameScene::InitGameSceneUI()
 		END,
 		[this, origin, visibleSize]()
 	{
-		GamePause();
+		GameEnd();
 		auto popup = CPopup::createWithSpecificFormat(CResultPopup::create(), POPUPEFFECT_none);
 		popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.x + visibleSize.height * 0.5f));
@@ -221,6 +221,32 @@ void CGameScene::InitGameSceneUI()
 	CreateOneBtnPopup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	this->addChild(CreateOneBtnPopup, 102);
 
+	m_PauseBtn = nullptr;
+	m_PauseBtn = CMyButton::create("pauseIcon.png",
+		END,
+		[this, origin, visibleSize]()
+	{
+		GamePause();
+		auto popup = CPopup::createWithSpecificFormat(CPausePopup::create(), POPUPEFFECT_none);
+		popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+			origin.x + visibleSize.height * 0.5f));
+		popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		this->addChild(popup, 102);
+	}, EFFECT_SIZEDOWN);
+
+	m_PauseBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
+		origin.x + visibleSize.height * 0.05f));
+	m_PauseBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	m_PauseBtn->setCascadeOpacityEnabled(true);
+	this->addChild(m_PauseBtn, 102);
+
+	m_CountDownLabel = nullptr;
+	m_CountDownLabel = Label::create("3", "fonts/malgunbd.ttf", 40);
+	m_CountDownLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	m_CountDownLabel->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		origin.x + visibleSize.height * 0.5f));
+	this->addChild(m_CountDownLabel, 102);
+	m_CountDownLabel->setVisible(false);
 }
 
 void CGameScene::menuCloseCallback(Ref* pSender)
@@ -298,24 +324,52 @@ void CGameScene::update(float delta)
 
 void CGameScene::GameStart()
 {
+	countDownLabel();
+	m_PauseBtn->runAction(FadeIn::create(0.5f));
 	CObjectManager::Instance()->getPlayer()->PlayerAlive();
 	CObjectManager::Instance()->getFSM()->ChangeState(CGameCountDownState::Instance());
 }
 
 void CGameScene::GamePause()
 {
+	//오디오 소리 작게
+	CAudioManager::Instance()->setBGMVolume(0.1f);
+	CAudioManager::Instance()->setEffectSoundVolume(0.1f);
 	CObjectManager::Instance()->setIsGamePause(true);
 	CObjectManager::Instance()->setIsAbleRotation(false);
 }
 
 void CGameScene::GameResume()
 {
+	countDownLabel();
+	//오디오 소리 크게
+	CAudioManager::Instance()->setBGMVolume(1.f);
+	CAudioManager::Instance()->setEffectSoundVolume(1.f);
 	CObjectManager::Instance()->setIsGamePause(false);
 	CObjectManager::Instance()->getFSM()->ChangeState(CGameCountDownState::Instance());
 }
 
 void CGameScene::GameEnd()
 {
+	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
 	CObjectManager::Instance()->getPlayer()->PlayerDead();
 	GamePause();
+}
+
+void CGameScene::countDownLabel()
+{
+	m_Count = 3;
+	m_CountDownLabel->setVisible(true);
+	this->schedule([this](float delta)
+	{
+		m_Count -= 1;
+		if (m_Count > 0)
+			m_CountDownLabel->setString(StringUtils::format("%d", m_Count));
+		else if (m_Count == 0)
+			m_CountDownLabel->setString("Go");
+		else{
+			m_CountDownLabel->setVisible(false);
+			m_CountDownLabel->setString("3");
+		}
+	}, 0.7f, 4, 0.f, "countDown");
 }
