@@ -23,6 +23,9 @@ public:
 	void EmptyCurrentPlayingList();
 	void setBGMVolume(float volume);
 
+	// √ ±‚»≠
+	void Clear();
+
 	//getter & setter
 	CC_SYNTHESIZE(float, m_EffectSoundVolume, EffectSoundVolume);
 

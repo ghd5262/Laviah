@@ -15,6 +15,8 @@ public:
 
 	virtual void update(float delta) override;
 
+	void resetGameScene();
+	void backToMenuScene();
 	void EnableTouch();
 	void AbleTouch();
 	void GameStart();
@@ -24,6 +26,7 @@ public:
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
+	static cocos2d::NodeGrid* getGridWorld(){ return m_GridWorld; }
 
 protected:
 	virtual bool init() override;
@@ -36,7 +39,12 @@ private:
 
 private:
 	static CGameScene* m_GameScene;
+	static cocos2d::NodeGrid* m_GridWorld;
+
 	CMyButton* m_PauseBtn;
 	cocos2d::Label* m_CountDownLabel;
+	
+	bool m_KeyBoardL;
+	bool m_KeyBoardR;
 	int m_Count;
 };

@@ -61,8 +61,9 @@ struct sSHOOTER_PARAM{
 		float interval,
 		int bulletCountAtOneShoot = 1,
 		int dir = 1,
-		bool isFly = 1,
-		bool isOneShoot = false)
+		bool isFly = true,
+		bool isOneShoot = false,
+		bool isAngleRandom = false)
 		: _PatternName(patternName)
 		, _fStartTime(startTime)
 		, _fEndTime(endTime)
@@ -72,8 +73,9 @@ struct sSHOOTER_PARAM{
 		, _nDir(dir)
 		, _nBulletCountAtOneShoot(bulletCountAtOneShoot)
 		, _isFly(isFly)
-		, _randomShootSymbol('1'){}
-
+		, _randomShootSymbol('1')
+		, _isOneShoot(isOneShoot)
+		, _isAngleRandom(isAngleRandom){}
 	sSHOOTER_PARAM(){}
 };
 

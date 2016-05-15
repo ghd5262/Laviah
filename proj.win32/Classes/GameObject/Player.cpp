@@ -108,7 +108,7 @@ bool CPlayer::initVariable()
 			m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_pParticle->setAngle(90);
 			m_pParticle->setGravity(Vec2(0, -270));
-			CGameScene::getGameScene()->addChild(m_pParticle, 10);
+			CGameScene::getGridWorld()->addChild(m_pParticle, 10);
 			m_pParticle->setVisible(false);
 		}
         
@@ -147,7 +147,7 @@ void CPlayer::PlayerAlive(){
 		m_pParticleAlive->setStartRadius(160);
 		m_pParticleAlive->setEndRadius(0);
 		m_pParticleAlive->setDuration(0.5f);
-		CGameScene::getGameScene()->addChild(m_pParticleAlive, 100);
+		CGameScene::getGridWorld()->addChild(m_pParticleAlive, 100);
 	}
 
 	this->scheduleOnce([this](float delta){
@@ -164,7 +164,7 @@ void CPlayer::PlayerDead(){
 		m_pParticleDead->retain();
 		m_pParticleDead->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_pParticleDead->setPosition(getPosition());
-		CGameScene::getGameScene()->addChild(m_pParticleDead, 100);
+		CGameScene::getGridWorld()->addChild(m_pParticleDead, 100);
 	}
 	m_pParticle->setVisible(false);
 	m_pTexture->setVisible(false);

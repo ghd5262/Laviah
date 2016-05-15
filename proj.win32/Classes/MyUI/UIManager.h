@@ -18,8 +18,11 @@ public:
 	bool AddUIWithName(CGameObject* ui, std::string name);
 	CGameObject* FindUIWithName(std::string name) const ;
 
+	// √ ±‚»≠
+	void Clear();
+
 private:
-	CUIManager(){};
+	CUIManager(){ Clear(); };
 	virtual ~CUIManager(){};
 
 private:

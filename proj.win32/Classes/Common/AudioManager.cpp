@@ -18,6 +18,13 @@ CAudioManager* CAudioManager::Instance()
 	return &instance;
 }
 
+void CAudioManager::Clear()
+{
+	AudioEngine::stopAll();
+	m_BGMID = 0;
+	m_EffectSoundVolume = 1.f;
+	m_CurrentPlayingList.clear();
+}
 
 void CAudioManager::PlayEffectSound(
 	const std::string& filePath,

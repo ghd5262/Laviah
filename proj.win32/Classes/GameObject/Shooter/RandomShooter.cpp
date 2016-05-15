@@ -43,42 +43,42 @@ void CRandomShooter::ShootOnce()
 
 	if (p >= '1' && p <= '3') //일반 bullet
 	{
-		CGameScene::getGameScene()->addChild(CNormalBullet::create(
+		CGameScene::getGridWorld()->addChild(CNormalBullet::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));
 	}
 	else if (p >= '4' && p <= '5')//미사일과 조준미사일
 	{
-		CGameScene::getGameScene()->addChild(CNormalMissile::create(
+		CGameScene::getGridWorld()->addChild(CNormalMissile::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed), 101);
 	}
 	else if (p >= 'A' && p <= 'G')//아이템
 	{
-		CGameScene::getGameScene()->addChild(CPlayItem::create(
+		CGameScene::getGridWorld()->addChild(CPlayItem::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));
 	}
 	else if (p >= 'P' && p <= 'T')//코인
 	{
-		CGameScene::getGameScene()->addChild(CPlayCoin::create(
+		CGameScene::getGridWorld()->addChild(CPlayCoin::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));
 	}
 	else if (p >= 'U' && p <= 'Y')//별
 	{
-		CGameScene::getGameScene()->addChild(CPlayStar::create(
+		CGameScene::getGridWorld()->addChild(CPlayStar::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));
 	}
 	else if (p == 'Z')//보너스 아이템
 	{
-		CGameScene::getGameScene()->addChild(CBonusLetter::create(
+		CGameScene::getGridWorld()->addChild(CBonusLetter::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));
@@ -88,7 +88,7 @@ void CRandomShooter::ShootOnce()
 		bulletParam._itemType = static_cast<eITEM_TYPE>(random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2));
         bulletParam._TextureName = MakeString("playItem_%d.png", bulletParam._itemType -1);
 		bulletParam._isFly = random<int>(0, 1);
-		CGameScene::getGameScene()->addChild(CPlayItem::create(
+		CGameScene::getGridWorld()->addChild(CPlayItem::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));

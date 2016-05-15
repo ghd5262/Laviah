@@ -97,7 +97,7 @@ bool CNormalMissile::initVariable()
 
 
 		this->scheduleOnce([&](float delta){
-			CGameScene::getGameScene()->addChild(CTargetMark::create(
+			CGameScene::getGridWorld()->addChild(CTargetMark::create(
 				sBULLET_PARAM(
 				MakeString("missile_target_%d.png", m_BulletParam._isAimingMissile + 1),//이미지 이름
 				0.f, 0.f, 0.f,
@@ -163,7 +163,7 @@ void CNormalMissile::CollisionWithPlanet()
 		m_pParticleCrash->setAngle(-getRotation());
 		m_pParticleCrash->setPosition(getPosition());
 		m_pParticleCrash->setGravity(m_RotationVec);
-		CGameScene::getGameScene()->addChild(m_pParticleCrash, 100);
+		CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
 	}
 
 	CAudioManager::Instance()->PlayEffectSound(MakeString("sounds/explosion_%d.mp3", m_BulletParam._isAimingMissile + 1), false);
@@ -198,7 +198,7 @@ void CNormalMissile::CollisionWithPlayer()
 			m_pParticleCrash->setAngle(-getRotation());
 			m_pParticleCrash->setPosition(getPosition());
 			m_pParticleCrash->setGravity(m_RotationVec);
-			CGameScene::getGameScene()->addChild(m_pParticleCrash, 100);
+			CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
 		}
 
 		CAudioManager::Instance()->PlayEffectSound(MakeString("sounds/explosion_%d.mp3", m_BulletParam._isAimingMissile + 1), false);
@@ -217,7 +217,7 @@ void CNormalMissile::CollisionWithBarrier()
 		m_pParticleCrash->setAngle(-getRotation());
 		m_pParticleCrash->setPosition(getPosition());
 		m_pParticleCrash->setGravity(m_RotationVec);
-		CGameScene::getGameScene()->addChild(m_pParticleCrash, 100);
+		CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
 	}
 	ReturnToMemoryBlock();
 }
@@ -252,7 +252,7 @@ void CNormalMissile::ChangeToCoinOrStar()
 		, true
 		, true), distance);
 
-	CGameScene::getGameScene()->addChild(CTargetMark::create(
+	CGameScene::getGridWorld()->addChild(CTargetMark::create(
 		sBULLET_PARAM(
 		MakeString("missile_target_%d.png", m_BulletParam._isAimingMissile + 1),//이미지 이름
 		0.f,

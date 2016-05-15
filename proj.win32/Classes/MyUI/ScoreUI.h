@@ -11,6 +11,7 @@ public:
 	void SetLabelAnchor(Vec2 point);
 
 	//getter & setter
+	const char* getValueString() const { return m_ValueString; }
 	CC_SYNTHESIZE(unsigned int, m_Value, ScoreValue);
 
 protected:

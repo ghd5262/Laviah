@@ -7,6 +7,11 @@ CUIManager* CUIManager::Instance()
 	return &instance;
 }
 
+void CUIManager::Clear()
+{
+	m_UIList.clear();
+}
+
 bool CUIManager::AddUIWithName(CGameObject* ui, std::string name)
 {
 	bool addSuccess = m_UIList.emplace(std::pair<std::string, CGameObject*>(name, ui)).second;

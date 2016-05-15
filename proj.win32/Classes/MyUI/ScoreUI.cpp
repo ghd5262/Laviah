@@ -26,6 +26,7 @@ bool CScoreUI::init()
 bool CScoreUI::initVariable()
 {
 	try{
+		memset(m_ValueString, 0, sizeof(m_ValueString));
 		m_ValueString[0] = '0';
 		m_ValueLabel = Label::create("0", m_FontName, m_FontSize);
 		if (nullptr != m_ValueLabel)

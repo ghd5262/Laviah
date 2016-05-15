@@ -9,7 +9,7 @@
 #include "../Scene/GameScene.h"
 CObjectManager::CObjectManager()
 	: m_fStageTime(0.f)
-	, m_IsGamePause(false)
+	, m_IsGamePause(true)
 	, m_IsAbleRotation(false)
 {
 	m_FSM = new CStateMachine<CObjectManager>(this);
@@ -25,6 +25,16 @@ CObjectManager* CObjectManager::Instance()
 {
 	static CObjectManager instance;
 	return &instance;
+}
+
+void CObjectManager::Clear()
+{
+	m_BulletList.clear();
+	m_ShooterList.clear();
+	m_CurrentShooterIdx = 0;
+	m_fStageTime = 0.f;
+	m_IsGamePause = true;
+	m_IsAbleRotation = false;
 }
 
 void CObjectManager::AddBullet(void* bullet)
@@ -69,6 +79,8 @@ void CObjectManager::RemoveAllObject()
 {
 	RemoveAllBullet();
 	RemoveAllShooter();
+	m_BulletList.clear();
+	m_ShooterList.clear();
 }
 
 void CObjectManager::CreateShooterByTimer()

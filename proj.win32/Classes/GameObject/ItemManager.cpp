@@ -16,16 +16,21 @@ CItemManager::CItemManager()
 	m_ValueOfStar[eSTAR_TYPE_bigSilver] = 50.f;
 	m_ValueOfStar[eSTAR_TYPE_bigGold]	= 100.f;
 
-	memset(m_ItemTimers, 0, sizeof(m_ItemTimers));
-	memset(m_ItemTimersLimit, 0, sizeof(m_ItemTimersLimit));
-
-	m_CurrentItems = 0;
+	Clear();
 }
 
 CItemManager* CItemManager::Instance()
 {
 	static CItemManager instance;
 	return &instance;
+}
+
+void CItemManager::Clear()
+{
+	memset(m_ItemTimers, 0, sizeof(m_ItemTimers));
+	memset(m_ItemTimersLimit, 0, sizeof(m_ItemTimersLimit));
+
+	m_CurrentItems = 0;
 }
 
 void CItemManager::StartItemTimer(eITEM_TYPE itemType)

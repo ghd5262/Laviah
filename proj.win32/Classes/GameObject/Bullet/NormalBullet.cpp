@@ -107,7 +107,7 @@ void CNormalBullet::ChangeToCoinOrStar()
 
 	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star){
 		float distance = m_TargetVec.distance(getPosition());
-		CGameScene::getGameScene()->addChild(CPlayStar::create(
+		CGameScene::getGridWorld()->addChild(CPlayStar::create(
 			sBULLET_PARAM(
 			MakeString("star_%d.png", static_cast<int>(m_BulletParam._symbol - '0')),
 			25.f, distance, 0.f, true, false,
@@ -118,7 +118,7 @@ void CNormalBullet::ChangeToCoinOrStar()
 			getPosition()));
 	}
 	else{
-		CGameScene::getGameScene()->addChild(CPlayCoin::create(
+		CGameScene::getGridWorld()->addChild(CPlayCoin::create(
 			sBULLET_PARAM(
 			MakeString("coin_%d.png", static_cast<int>(m_BulletParam._symbol - '0')),
 			25.f, distance, 0.f, true, false,

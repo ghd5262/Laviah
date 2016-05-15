@@ -42,6 +42,9 @@ public:
 
 	//callback
 	void RotationObject(float dir);
+	
+	// √ ±‚»≠
+	void Clear();
 
 	//getter & setter
 	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);

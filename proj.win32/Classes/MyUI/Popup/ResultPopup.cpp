@@ -4,6 +4,9 @@
 #include "../UIManager.h"
 #include "../../Scene/GameScene.h"
 
+const Color3B g_labelColor1(0, 0, 14);
+const Color3B g_labelColor2(255, 255, 255 - 14);
+
 CResultPopup* CResultPopup::create()
 {
 	CResultPopup *pRet = new(std::nothrow) CResultPopup();
@@ -26,14 +29,9 @@ bool CResultPopup::initVariable()
 		m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_BG->setPosition(Vec2::ZERO);
 		m_Popup->addChild(m_BG);
-
-		//        auto noticeLabel = Label::createWithTTF("format popup", "fonts/Marker Felt.ttf", 25);
-		//        noticeLabel->setColor(Color3B::BLACK);
-		//        noticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		//        noticeLabel->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.5f));
-		//        m_BG->addChild(noticeLabel);
-
-		//auto moveDistance = Sprite::create("")
+		
+		// 총 점수 = 달린 총거리 + 별 + 코인 + (보너스타임횟수 * 10000) + (외계주민 * 10000) + (도전과제 * 10000)
+		auto totalScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("TotalScore"));
 
 		/* result label*/
 		auto resultLabel = Label::create("Result", "fonts/malgunbd.ttf", 50);
@@ -41,13 +39,13 @@ bool CResultPopup::initVariable()
 		{
 			resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			resultLabel->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.8f));
-			
+			resultLabel->setColor(g_labelColor2);
 			m_BG->addChild(resultLabel);
 			resultLabel->setOpacity(0);
 		}
 
 		/* 이동거리 */
-		auto moveDistanceBG = Sprite::create("resultPopup_1.png");
+		auto moveDistanceBG = Sprite::create("resultPopup_2.png");
 		if (moveDistanceBG != nullptr){
 			moveDistanceBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			moveDistanceBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.5f));
@@ -60,21 +58,22 @@ bool CResultPopup::initVariable()
 				moveDistanceIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				moveDistanceIcon->setPosition(Vec2(moveDistanceBG->getContentSize().width * 0.1f, moveDistanceBG->getContentSize().height * 0.5f));
 				moveDistanceBG->addChild(moveDistanceIcon);
+				moveDistanceIcon->setColor(g_labelColor1);
 			}
 
 			auto moveDistanceLabel = Label::create("Run", "fonts/malgunbd.ttf", 30);
 			if (moveDistanceLabel != nullptr){
-				moveDistanceLabel->setColor(Color3B(0, 0, 14));
+				moveDistanceLabel->setColor(g_labelColor1);
 				moveDistanceLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 				moveDistanceLabel->setPosition(Vec2(moveDistanceBG->getContentSize().width * 0.15f, moveDistanceBG->getContentSize().height * 0.5f));
 				moveDistanceBG->addChild(moveDistanceLabel);
 			}
 
 			auto runScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("RunScoreUI"));
-
-			auto moveDistanceValueLabel = Label::create(StringUtils::format("%d m", runScore->getScoreValue()), "fonts/malgunbd.ttf", 30);
+			totalScore->UpdateValue(runScore->getScoreValue());
+			auto moveDistanceValueLabel = Label::create(runScore->getValueString(), "fonts/malgunbd.ttf", 30);
 			if (moveDistanceValueLabel != nullptr){
-				moveDistanceValueLabel->setColor(Color3B(0, 0, 14));
+				moveDistanceValueLabel->setColor(g_labelColor1);
 				moveDistanceValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 				moveDistanceValueLabel->setPosition(Vec2(moveDistanceBG->getContentSize().width * 0.9f, moveDistanceBG->getContentSize().height * 0.5f));
 				moveDistanceBG->addChild(moveDistanceValueLabel);
@@ -96,21 +95,22 @@ bool CResultPopup::initVariable()
 				starScoreIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				starScoreIcon->setPosition(Vec2(starScoreBG->getContentSize().width * 0.1f, starScoreBG->getContentSize().height * 0.5f));
 				starScoreBG->addChild(starScoreIcon);
+				starScoreIcon->setColor(g_labelColor1);
 			}
 
 			auto starScoreLabel = Label::create("Star", "fonts/malgunbd.ttf", 30);
 			if (starScoreLabel != nullptr){
-				starScoreLabel->setColor(Color3B(0, 0, 14));
+				starScoreLabel->setColor(g_labelColor1);
 				starScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 				starScoreLabel->setPosition(Vec2(starScoreBG->getContentSize().width * 0.15f, starScoreBG->getContentSize().height * 0.5f));
 				starScoreBG->addChild(starScoreLabel);
 			}
 
 			auto starScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-
-			auto starScoreValueLabel = Label::create(StringUtils::format("%d", starScore->getScoreValue()), "fonts/malgunbd.ttf", 30);
+			totalScore->UpdateValue(starScore->getScoreValue());
+			auto starScoreValueLabel = Label::create(starScore->getValueString(), "fonts/malgunbd.ttf", 30);
 			if (starScoreValueLabel != nullptr){
-				starScoreValueLabel->setColor(Color3B(0, 0, 14));
+				starScoreValueLabel->setColor(g_labelColor1);
 				starScoreValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 				starScoreValueLabel->setPosition(Vec2(starScoreBG->getContentSize().width * 0.9f, starScoreBG->getContentSize().height * 0.5f));
 				starScoreBG->addChild(starScoreValueLabel);
@@ -118,7 +118,7 @@ bool CResultPopup::initVariable()
 		}
 
 		/* 코인 점수 */
-		auto coinScoreBG = Sprite::create("resultPopup_1.png");
+		auto coinScoreBG = Sprite::create("resultPopup_2.png");
 		if (coinScoreBG != nullptr){
 			coinScoreBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			coinScoreBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.3f));
@@ -131,24 +131,186 @@ bool CResultPopup::initVariable()
 				coinScoreIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				coinScoreIcon->setPosition(Vec2(coinScoreBG->getContentSize().width * 0.1f, coinScoreBG->getContentSize().height * 0.5f));
 				coinScoreBG->addChild(coinScoreIcon);
+				coinScoreIcon->setColor(g_labelColor1);
 			}
 
 			auto coinScoreLabel = Label::create("Coin", "fonts/malgunbd.ttf", 30);
 			if (coinScoreLabel != nullptr){
-				coinScoreLabel->setColor(Color3B(0, 0, 14));
+				coinScoreLabel->setColor(g_labelColor1);
 				coinScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 				coinScoreLabel->setPosition(Vec2(coinScoreBG->getContentSize().width * 0.15f, coinScoreBG->getContentSize().height * 0.5f));
 				coinScoreBG->addChild(coinScoreLabel);
 			}
 
 			auto coinScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("CoinScoreUI"));
-
-			auto coinScoreValueLabel = Label::create(StringUtils::format("%d", coinScore->getScoreValue()), "fonts/malgunbd.ttf", 30);
+			totalScore->UpdateValue(coinScore->getScoreValue());
+			auto coinScoreValueLabel = Label::create(coinScore->getValueString(), "fonts/malgunbd.ttf", 30);
 			if (coinScoreValueLabel != nullptr){
-				coinScoreValueLabel->setColor(Color3B(0, 0, 14));
+				coinScoreValueLabel->setColor(g_labelColor1);
 				coinScoreValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 				coinScoreValueLabel->setPosition(Vec2(coinScoreBG->getContentSize().width * 0.9f, coinScoreBG->getContentSize().height * 0.5f));
 				coinScoreBG->addChild(coinScoreValueLabel);
+			}
+		}
+
+		/* 보너스 타임 횟수 */
+		auto bonusTimeBG = Sprite::create("resultPopup_2.png");
+		if (bonusTimeBG != nullptr){
+			bonusTimeBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			bonusTimeBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.2f));
+			m_BG->addChild(bonusTimeBG);
+			bonusTimeBG->setOpacity(0);
+			bonusTimeBG->setCascadeOpacityEnabled(true);
+			auto bonusTimeIcon = Sprite::create("bonustimeIcon.png");
+			if (bonusTimeIcon != nullptr)
+			{
+				bonusTimeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+				bonusTimeIcon->setPosition(Vec2(bonusTimeBG->getContentSize().width * 0.1f, bonusTimeBG->getContentSize().height * 0.5f));
+				bonusTimeBG->addChild(bonusTimeIcon);
+				bonusTimeIcon->setColor(g_labelColor1);
+			}
+
+			auto bonusTimeLabel = Label::create("BonusTime", "fonts/malgunbd.ttf", 30);
+			if (bonusTimeLabel != nullptr){
+				bonusTimeLabel->setColor(g_labelColor1);
+				bonusTimeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+				bonusTimeLabel->setPosition(Vec2(bonusTimeBG->getContentSize().width * 0.15f, bonusTimeBG->getContentSize().height * 0.5f));
+				bonusTimeBG->addChild(bonusTimeLabel);
+			}
+
+			auto bonusTimeCount = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("BonusTimeCount"));
+			totalScore->UpdateValue(bonusTimeCount->getScoreValue() * 10000);
+			auto bonusTimeValueLabel = Label::create(StringUtils::format("%d", bonusTimeCount->getScoreValue()), "fonts/malgunbd.ttf", 30);
+			if (bonusTimeValueLabel != nullptr){
+				bonusTimeValueLabel->setColor(g_labelColor1);
+				bonusTimeValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+				bonusTimeValueLabel->setPosition(Vec2(bonusTimeBG->getContentSize().width * 0.9f, bonusTimeBG->getContentSize().height * 0.5f));
+				bonusTimeBG->addChild(bonusTimeValueLabel);
+			}
+			auto multipleScoreLabel = Label::create(StringUtils::format("%d x ", 10000), "fonts/malgunbd.ttf", 15);
+			if (multipleScoreLabel != nullptr){
+				multipleScoreLabel->setColor(g_labelColor1);
+				multipleScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+				multipleScoreLabel->setPosition(
+					Vec2(bonusTimeValueLabel->getPosition().x - bonusTimeValueLabel->getContentSize().width,
+					bonusTimeBG->getContentSize().height * 0.4f));
+				bonusTimeBG->addChild(multipleScoreLabel);
+			}
+		}
+
+		/* 외계 주민 획득 횟수 */
+		auto alienBG = Sprite::create("resultPopup_2.png");
+		if (alienBG != nullptr){
+			alienBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			alienBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.1f));
+			m_BG->addChild(alienBG);
+			alienBG->setOpacity(0);
+			alienBG->setCascadeOpacityEnabled(true);
+			auto alienIcon = Sprite::create("alienIcon.png");
+			if (alienIcon != nullptr)
+			{
+				alienIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+				alienIcon->setPosition(Vec2(alienBG->getContentSize().width * 0.1f, alienBG->getContentSize().height * 0.5f));
+				alienBG->addChild(alienIcon);
+				alienIcon->setColor(g_labelColor1);
+			}
+
+			auto alienLabel = Label::create("AlienGet", "fonts/malgunbd.ttf", 30);
+			if (alienLabel != nullptr){
+				alienLabel->setColor(g_labelColor1);
+				alienLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+				alienLabel->setPosition(Vec2(alienBG->getContentSize().width * 0.15f, alienBG->getContentSize().height * 0.5f));
+				alienBG->addChild(alienLabel);
+			}
+
+			auto alienGetCount = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("AlienGetCount"));
+			totalScore->UpdateValue(alienGetCount->getScoreValue() * 10000);
+			auto alienValueLabel = Label::create(StringUtils::format("%d", alienGetCount->getScoreValue()), "fonts/malgunbd.ttf", 30);
+			if (alienValueLabel != nullptr){
+				alienValueLabel->setColor(g_labelColor1);
+				alienValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+				alienValueLabel->setPosition(Vec2(alienBG->getContentSize().width * 0.9f, alienBG->getContentSize().height * 0.5f));
+				alienBG->addChild(alienValueLabel);
+			}
+			auto multipleScoreLabel = Label::create(StringUtils::format("%d x ", 10000), "fonts/malgunbd.ttf", 15);
+			if (multipleScoreLabel != nullptr){
+				multipleScoreLabel->setColor(g_labelColor1);
+				multipleScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+				multipleScoreLabel->setPosition(
+					Vec2(alienValueLabel->getPosition().x - alienValueLabel->getContentSize().width,
+					alienBG->getContentSize().height * 0.4f));
+				alienBG->addChild(multipleScoreLabel);
+			}
+		}
+
+		/* 도전과제 클리어 갯수 */
+		auto challengeBG = Sprite::create("resultPopup_2.png");
+		if (challengeBG != nullptr){
+			challengeBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			challengeBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.0f));
+			m_BG->addChild(challengeBG);
+			challengeBG->setOpacity(0);
+			challengeBG->setCascadeOpacityEnabled(true);
+			auto challengeIcon = Sprite::create("challengeIcon.png");
+			if (challengeIcon != nullptr)
+			{
+				challengeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+				challengeIcon->setPosition(Vec2(challengeBG->getContentSize().width * 0.1f, challengeBG->getContentSize().height * 0.5f));
+				challengeBG->addChild(challengeIcon);
+				challengeIcon->setColor(g_labelColor1);
+			}
+
+			auto challengeLabel = Label::create("ChallengeClear", "fonts/malgunbd.ttf", 30);
+			if (challengeLabel != nullptr){
+				challengeLabel->setColor(g_labelColor1);
+				challengeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+				challengeLabel->setPosition(Vec2(challengeBG->getContentSize().width * 0.15f, challengeBG->getContentSize().height * 0.5f));
+				challengeBG->addChild(challengeLabel);
+			}
+
+			auto challengeClearCount = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("ChallengeClearCount"));
+			totalScore->UpdateValue(challengeClearCount->getScoreValue() * 10000);
+			auto challengeValueLabel = Label::create(StringUtils::format("%d", challengeClearCount->getScoreValue()), "fonts/malgunbd.ttf", 30);
+			if (challengeValueLabel != nullptr){
+				challengeValueLabel->setColor(g_labelColor1);
+				challengeValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+				challengeValueLabel->setPosition(Vec2(challengeBG->getContentSize().width * 0.9f, challengeBG->getContentSize().height * 0.5f));
+				challengeBG->addChild(challengeValueLabel);
+			}
+			auto multipleScoreLabel = Label::create(StringUtils::format("%d x ", 10000), "fonts/malgunbd.ttf", 15);
+			if (multipleScoreLabel != nullptr){
+				multipleScoreLabel->setColor(g_labelColor1);
+				multipleScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+				multipleScoreLabel->setPosition(
+					Vec2(challengeValueLabel->getPosition().x - challengeValueLabel->getContentSize().width,
+					challengeBG->getContentSize().height * 0.4f));
+				challengeBG->addChild(multipleScoreLabel);
+			}
+		}
+
+		/* 총 점수 */
+		auto totalScoreBG = Sprite::create("resultPopup_1.png");
+		if (totalScoreBG != nullptr){
+			totalScoreBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			totalScoreBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * -0.1f));
+			m_BG->addChild(totalScoreBG);
+			totalScoreBG->setOpacity(0);
+			totalScoreBG->setCascadeOpacityEnabled(true);
+		
+			auto totalScoreLabel = Label::create("Total Score", "fonts/malgunbd.ttf", 40);
+			if (totalScoreLabel != nullptr){
+				totalScoreLabel->setColor(g_labelColor2);
+				totalScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+				totalScoreLabel->setPosition(Vec2(totalScoreBG->getContentSize().width * 0.08f, totalScoreBG->getContentSize().height * 0.5f));
+				totalScoreBG->addChild(totalScoreLabel);
+			}
+
+			auto totalScoreValueLabel = Label::create(totalScore->getValueString(), "fonts/malgunbd.ttf", 40);
+			if (totalScoreValueLabel != nullptr){
+				totalScoreValueLabel->setColor(g_labelColor2);
+				totalScoreValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+				totalScoreValueLabel->setPosition(Vec2(totalScoreBG->getContentSize().width * 0.9f, totalScoreBG->getContentSize().height * 0.5f));
+				totalScoreBG->addChild(totalScoreValueLabel);
 			}
 		}
 
@@ -203,7 +365,30 @@ bool CResultPopup::initVariable()
 				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
 				m_BG->getContentSize().height * 0.6f))),
 				FadeIn::create(1.f)));
-
+			bonusTimeBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.55f))),
+				FadeIn::create(1.f)));
+			alienBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.5f))),
+				FadeIn::create(1.f)));
+			challengeBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.45f))),
+				FadeIn::create(1.f)));
+			totalScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.4f))),
+				FadeIn::create(1.f)));
 			resultLabel->runAction(FadeIn::create(0.5f));
 
 			m_btnHome->runAction(FadeIn::create(0.5f));
@@ -230,7 +415,30 @@ bool CResultPopup::initVariable()
 				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
 				m_BG->getContentSize().height * 0.3f))),
 				FadeTo::create(0.2f, 0)));
-
+			bonusTimeBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.2f))),
+				FadeTo::create(0.2f, 0)));
+			alienBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.1f))),
+				FadeTo::create(0.2f, 0)));
+			challengeBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.0f))),
+				FadeTo::create(0.2f, 0)));
+			totalScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * -0.1f))),
+				FadeTo::create(0.2f, 0)));
 			resultLabel->runAction(FadeTo::create(0.5f, 0));
 
 			m_btnHome->runAction(FadeTo::create(0.5f, 0));
@@ -251,12 +459,11 @@ bool CResultPopup::initVariable()
 
 void CResultPopup::Reset(){
 	CCLOG("format popup Replay");
-	CGameScene::getGameScene()->GameStart();
-	CSpecificPopupBase::PopupClose();
+	CGameScene::getGameScene()->resetGameScene();
 }
 
 void CResultPopup::GoHome(){
 	CCLOG("format popup GoHome");
-	CGameScene::getGameScene()->GameStart();
+	CGameScene::getGameScene()->backToMenuScene();
 	CSpecificPopupBase::PopupClose();
 }

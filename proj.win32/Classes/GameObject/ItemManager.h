@@ -17,6 +17,9 @@ public:
 	//아이템 타이머 종료
 	void FinishItemTimer(eITEM_FLAG itemType){ m_CurrentItems ^= itemType; }
 
+	// 초기화
+	void Clear();
+
 	float getValueOfCoin(eCOIN_TYPE type) { return m_ValueOfCoin[type]; }
 	float getValueOfStar(eSTAR_TYPE type) { return m_ValueOfStar[type]; }
 private:
