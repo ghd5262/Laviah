@@ -166,6 +166,7 @@ void CPlayer::PlayerDead(){
 		m_pParticleDead->setPosition(getPosition());
 		CGameScene::getGridWorld()->addChild(m_pParticleDead, 100);
 	}
+    m_isPlayerDead = true;
 	m_pParticle->setVisible(false);
 	m_pTexture->setVisible(false);
 }
