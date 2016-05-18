@@ -361,6 +361,9 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 		END,
 		[this](){
 		Director::getInstance()->end();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+            exit(0);
+#endif
 	}, EFFECT_ALPHA);
 
 	auto btnNo = CMyButton::createWithString("defaultBtn_2.png",
@@ -370,6 +373,9 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 		END,
 		[this](){
 		Director::getInstance()->end();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+            exit(0);
+#endif
 	}, EFFECT_ALPHA);
 
 	auto popup = CPopup::createWithTwoButton("Are you sure you want to exit StarStarStar?"
@@ -378,10 +384,6 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 		origin.x + visibleSize.height * 0.5f));
 	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	this->addChild(popup, 102);
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	exit(0);
-#endif
 }
 
 void CGameScene::update(float delta)

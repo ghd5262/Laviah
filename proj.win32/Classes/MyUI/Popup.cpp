@@ -215,16 +215,16 @@ bool CPopup::initVariable()
 
 			if (m_Btn1 != nullptr)
 			{
-				m_Btn1->setPosition(Vec2(defaultBG->getContentSize().width * 0.35f, defaultBG->getContentSize().height * 0.2f));
+				m_Btn1->setPosition(Vec2(defaultBG->getContentSize().width * 0.25f, defaultBG->getContentSize().height * 0.2f));
 				m_Btn1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				m_Btn1->AddState(END, std::bind(&CPopup::PopupClose, this));
+				defaultBG->addChild(m_Btn1);
 				m_Btn1->AddState(END, std::bind(&CPopup::PopupClose, this));
 				m_Btn1->AddState(END, std::bind(&CPopup::PopupRelease, this));
 			}
 			if (m_Btn2 != nullptr)
 			{
-				m_Btn2->setPosition(Vec2(defaultBG->getContentSize().width * 0.65f, defaultBG->getContentSize().height * 0.2f));
-				m_Btn2->AddState(END, std::bind(&CPopup::PopupClose, this));
+				m_Btn2->setPosition(Vec2(defaultBG->getContentSize().width * 0.75f, defaultBG->getContentSize().height * 0.2f));
+                m_Btn2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				defaultBG->addChild(m_Btn2);
 				m_Btn2->AddState(END, std::bind(&CPopup::PopupClose, this));
 				m_Btn2->AddState(END, std::bind(&CPopup::PopupRelease, this));

@@ -67,11 +67,6 @@ void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
     CAudioManager::Instance()->AllResume();
     
-    //GameResume
-    if(CGameScene::getGameScene() != nullptr)
-        CGameScene::getGameScene()->GameResume();
-    
-    
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }
