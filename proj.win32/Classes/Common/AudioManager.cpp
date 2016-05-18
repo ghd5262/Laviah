@@ -34,7 +34,7 @@ void CAudioManager::PlayEffectSound(
 {
 	sAUDIO_INFO* audio = nullptr;
 
-	// Àç»ýÇÏ·Á´Â ¿Àµð¿À°¡ ¸®½ºÆ®¿¡ ÀÖ´Ù¸é ¹ÝÈ¯ ¾ø´Ù¸é Ãß°¡ ÈÄ ¹ÝÈ¯
+	// Â¿ÃÂªËÂ«Å“âˆ‘Â¡Â¥Â¬ Ã¸Â¿Âµï£¿Ã¸Â¿âˆžÂ° âˆÃ†Î©âˆ«âˆ†Ã†Ã¸Â° Â¿Ã·Â¥Å¸âˆÃˆ Ï€â€ºÂ»Ã˜ Ã¦Â¯Â¥Å¸âˆÃˆ âˆšï¬‚âˆžÂ° Â»Æ’ Ï€â€ºÂ»Ã˜
 	audio = FindAudioIndex(filePath);
 	if (audio->_nCount < 10)
 	{
@@ -80,7 +80,7 @@ CAudioManager::sAUDIO_INFO* CAudioManager::FindAudioIndex(std::string name)
 {
 	if (m_CurrentPlayingList.find(name) == m_CurrentPlayingList.end())
 	{
-		// ¾ÆÀÌµð +1
+		// ì•„ì´ë”” +1
 		CCLOG("CREATE NEW AUDIO %s", name.c_str());
 		sAUDIO_INFO* newAudio = new sAUDIO_INFO(name, 0);
 		m_CurrentPlayingList.emplace(std::pair<std::string, sAUDIO_INFO*>(name, newAudio));
@@ -88,4 +88,14 @@ CAudioManager::sAUDIO_INFO* CAudioManager::FindAudioIndex(std::string name)
 	}
 
 	return m_CurrentPlayingList.find(name)->second;
+}
+
+void CAudioManager::AllPause()
+{
+    AudioEngine::pauseAll();
+}
+
+void CAudioManager::AllResume()
+{
+    AudioEngine::resumeAll();
 }

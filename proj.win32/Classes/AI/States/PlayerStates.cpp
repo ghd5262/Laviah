@@ -1,6 +1,7 @@
 #include "PlayerStates.h"
 #include "../../GameObject/Player.h"
 #include "../../GameObject/ItemManager.h"
+#include "../../GameObject/ObjectManager.h"
 
 CPlayerNormal* CPlayerNormal::Instance()
 {
@@ -46,6 +47,11 @@ CPlayerGiant* CPlayerGiant::Instance()
 
 void CPlayerGiant::Enter(CPlayer* player)
 {
+    Director::getInstance()->getScheduler()->schedule([](float delta){
+        CObjectManager::Instance()->RotateAccelerationUpdate(0.1f);
+    }, Director::getInstance(), 0.1f, 10, 0.f, false, "AccelerationUP");
+    
+    // change player to GiantMode
 	player->GiantMode();
 }
 
@@ -59,5 +65,10 @@ void CPlayerGiant::Execute(CPlayer* player, float delta)
 
 void CPlayerGiant::Exit(CPlayer* player)
 {
+    Director::getInstance()->getScheduler()->schedule([](float delta){
+        CObjectManager::Instance()->RotateAccelerationUpdate(-0.1f);
+    }, Director::getInstance(), 0.1f, 10, 0.f, false, "AccelerationDOWN");
+    
+    // change player to NormalMode
 	player->NormalMode();
 }

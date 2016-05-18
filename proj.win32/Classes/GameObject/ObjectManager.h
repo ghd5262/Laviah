@@ -4,11 +4,11 @@
 #include "../AI/StateMachine.h"
 #include "../GameObject/Shooter/ShooterHeaders.h"
 
-/*------------------------------ObjectManager Å¬·¡½º¼³¸í----------------------------------
+/*------------------------------ObjectManager í´ë˜ìŠ¤ì„¤ëª…----------------------------------
 *
-* CMover¸¦ »ó¼Ó¹Ş´Â ¸ğµç Å¬·¡½º¸¦ Execute¹× RemoveÇÏ´Â ÇÔ¼öÀÌ´Ù.
-* ÇöÀç ÁÖÀÇÇØ¾ß ÇÒ »çÇ×Àº RemoveÇÔ¼ö°¡ DeleteÇÔ¼ö¸¦ È£ÃâÇÏ´Â ±¸Á¶ÀÌ´Ù.
-* ÀÌÀ¯´Â Delete¿¡¼­ removeFromParent()¿Í operator delete¸¦ È£ÃâÇÏ¿© ¼Ò¸êÀÚ¸¦ È£ÃâÇÏ±â À§ÇÔ
+* CMoverë¥¼ ìƒì†ë°›ëŠ” ëª¨ë“  í´ë˜ìŠ¤ë¥¼ Executeë° Removeí•˜ëŠ” í•¨ìˆ˜ì´ë‹¤.
+* í˜„ì¬ ì£¼ì˜í•´ì•¼ í•  ì‚¬í•­ì€ Removeí•¨ìˆ˜ê°€ Deleteí•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ëŠ” êµ¬ì¡°ì´ë‹¤.
+* ì´ìœ ëŠ” Deleteì—ì„œ removeFromParent()ì™€ operator deleteë¥¼ í˜¸ì¶œí•˜ì—¬ ì†Œë©¸ìë¥¼ í˜¸ì¶œí•˜ê¸° ìœ„í•¨
 *
 *----------------------------------------------------------------------------------------*/
 
@@ -19,31 +19,33 @@ class CPlayer;
 
 class CObjectManager
 {
+    const float ROTATE_ACCEL_MAX = 1.f;
 public:
 	static CObjectManager* Instance();
 
-	/* AddBullet(), AddShooter() => Bullet°ú Shooter¸¦ µû·Î °ü¸®ÇÏ´Â ÀÌÀ¯´Â
-	Ã¹Â°·Î BulletÀÌ »ı¼ºµÇ´Â ·çÆ¾ÀÌ Shooter¿¡ ÀÖ´Ù.
-	¶§¹®¿¡ ÇÏ³ªÀÇ ¸®½ºÆ®¿¡¼­ µÑ ´Ù °ü¸®ÇÏ¸é ¸®½ºÆ® ¼øÈ¸ Áß BulletÀÌ ¸®½ºÆ®¿¡ Ãß°¡µÉ ¼ö ÀÖ´Ù.
-	Áï, ¸®½ºÆ®¸¦ »ç¿ëÇÏ°í ÀÖ´Â Áß¿¡ ¿øÇÏÁö ¾Ê´Â º¯ÇüÀ» °¡Áö°í ¿Ã ¼ö ÀÖ´Ù.
+	/* AddBullet(), AddShooter() => Bulletê³¼ Shooterë¥¼ ë”°ë¡œ ê´€ë¦¬í•˜ëŠ” ì´ìœ ëŠ”
+	ì²«ì§¸ë¡œ Bulletì´ ìƒì„±ë˜ëŠ” ë£¨í‹´ì´ Shooterì— ìˆë‹¤.
+	ë•Œë¬¸ì— í•˜ë‚˜ì˜ ë¦¬ìŠ¤íŠ¸ì—ì„œ ë‘˜ ë‹¤ ê´€ë¦¬í•˜ë©´ ë¦¬ìŠ¤íŠ¸ ìˆœíšŒ ì¤‘ Bulletì´ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€ë  ìˆ˜ ìˆë‹¤.
+	ì¦‰, ë¦¬ìŠ¤íŠ¸ë¥¼ ì‚¬ìš©í•˜ê³  ìˆëŠ” ì¤‘ì— ì›í•˜ì§€ ì•ŠëŠ” ë³€í˜•ì„ ê°€ì§€ê³  ì˜¬ ìˆ˜ ìˆë‹¤.
 	
-	¶ÇÇÑ Bullet¿¡´Â Á¸ÀçÇÏÁö¸¸ Shooter¿¡´Â Á¸ÀçÇÏÁö ¾Ê´Â ÇÔ¼öµéÀÌ ÀÖ´Ù.*/
+	ë˜í•œ Bulletì—ëŠ” ì¡´ì¬í•˜ì§€ë§Œ Shooterì—ëŠ” ì¡´ì¬í•˜ì§€ ì•ŠëŠ” í•¨ìˆ˜ë“¤ì´ ìˆë‹¤.*/
 	void AddBullet(void* bullet);											
 	void AddShooter(void* shooter);			
-	void RemoveAllObject();				// °ÔÀÓ Á¾·á ½ÃÁ¡¿¡ È£ÃâµÈ´Ù. RemoveAllBullet(), RemoveAllShooter() È£ÃâÇÔ
+	void RemoveAllObject();				// ê²Œì„ ì¢…ë£Œ ì‹œì ì— í˜¸ì¶œëœë‹¤. RemoveAllBullet(), RemoveAllShooter() í˜¸ì¶œí•¨
 	void Execute(float delta);
 
-	//ÇöÀç ½ÇÇàÁßÀÎ shooterµéÀÇ alive¸¦ false·Î ÇÏ¿© Á¤Áö½ÃÅ²´Ù.
+	//í˜„ì¬ ì‹¤í–‰ì¤‘ì¸ shooterë“¤ì˜ aliveë¥¼ falseë¡œ í•˜ì—¬ ì •ì§€ì‹œí‚¨ë‹¤.
 	void ShooterPause();
     void ShooterResume();
 
-	//¸ğµç ¿ÀºêÁ§Æ®¸¦ ExecuteÇÑ´Ù.
+	//ëª¨ë“  ì˜¤ë¸Œì íŠ¸ë¥¼ Executeí•œë‹¤.
 	void ExecuteAllObject(float delta);
 
 	//callback
 	void RotationObject(float dir);
+    void RotateAccelerationUpdate(float value);
 	
-	// ÃÊ±âÈ­
+	// ì´ˆê¸°í™”
 	void Clear();
 
 	//getter & setter
@@ -57,9 +59,9 @@ public:
 
 private:
 	void CreateShooterByTimer();
-	void Auto_ReturnToMemoryBlock();	// Alive°¡ falseÀÎ ¿ÀºêÁ§Æ®¸¦ ¸ğµÎ ¸Ş¸ğ¸® ºí·°À¸·Î µÇµ¹¸°´Ù.
-	void RemoveAllBullet();				// DeleteÇÔ¼ö È£Ãâ! ÀÌÀ¯´Â ±¸ÇöºÎ¿¡~
-	void RemoveAllShooter();			// DeleteÇÔ¼ö È£Ãâ! ÀÌÀ¯´Â ±¸ÇöºÎ¿¡~
+	void Auto_ReturnToMemoryBlock();	// Aliveê°€ falseì¸ ì˜¤ë¸Œì íŠ¸ë¥¼ ëª¨ë‘ ë©”ëª¨ë¦¬ ë¸”ëŸ­ìœ¼ë¡œ ë˜ëŒë¦°ë‹¤.
+	void RemoveAllBullet();				// Deleteí•¨ìˆ˜ í˜¸ì¶œ! ì´ìœ ëŠ” êµ¬í˜„ë¶€ì—~
+	void RemoveAllShooter();			// Deleteí•¨ìˆ˜ í˜¸ì¶œ! ì´ìœ ëŠ” êµ¬í˜„ë¶€ì—~
 	CObjectManager();
 	~CObjectManager(){};
 
@@ -68,4 +70,5 @@ private:
 	std::vector<CShooter*> m_ShooterList;
 	const std::vector<sSHOOTER_PARAM>* m_StageList;
 	int m_CurrentShooterIdx;
+    float m_fRotateAcceleration;
 };

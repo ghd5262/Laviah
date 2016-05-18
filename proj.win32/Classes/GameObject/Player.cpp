@@ -76,7 +76,7 @@ bool CPlayer::initVariable()
 {
 	try{
 		setItemEffect(eITEM_FLAG_giant);
-
+        setCascadeOpacityEnabled(true);
         m_FSM = std::shared_ptr<CStateMachine<CPlayer>>(
             new CStateMachine<CPlayer>(this), [](CStateMachine<CPlayer>* fsm)
             {
@@ -262,13 +262,13 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 
 void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount)
 {
-	m_pTexture->runAction(
-		Repeat::create(
-		Sequence::create(
+	this->runAction(
+        Sequence::create(
+        Repeat::create(
+        Sequence::create(
 		MoveBy::create(duration / stackCount, Vec2(stackSizeLR, -stackSizeTB)),
-		MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB)),
-		nullptr), stackCount));
-
+		MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB)), nullptr), stackCount),
+        CallFunc::create([this](){this->setPosition(m_OriginPos);}), nullptr));
 }
 
 void CPlayer::GotBarrierItem()

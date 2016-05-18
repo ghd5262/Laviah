@@ -22,15 +22,17 @@ public:
 	void PlayBGM(const std::string& filePath, bool loop = false, float volume = 1.0f, const AudioProfile *profile = nullptr);
 	void EmptyCurrentPlayingList();
 	void setBGMVolume(float volume);
-
-	// ÃÊ±âÈ­
+    void AllPause();
+    void AllResume();
+    
+	// âˆšÂ Â±â€šÂ»â‰ 
 	void Clear();
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_EffectSoundVolume, EffectSoundVolume);
 
 private:
-	// Àç»ıÇÏ·Á´Â ¿Àµğ¿À°¡ ¸®½ºÆ®¿¡ ÀÖ´Ù¸é ¹İÈ¯ ¾ø´Ù¸é Ãß°¡ ÈÄ ¹İÈ¯
+	// ì¬ìƒí•˜ë ¤ëŠ” ì˜¤ë””ì˜¤ê°€ ë¦¬ìŠ¤íŠ¸ì— ìˆë‹¤ë©´ ë°˜í™˜ ì—†ë‹¤ë©´ ì¶”ê°€ í›„ ë°˜í™˜
 	sAUDIO_INFO* FindAudioIndex(std::string name);
 
 	CAudioManager();

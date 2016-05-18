@@ -34,6 +34,8 @@ CBullet::CBullet(
 	if (m_FSM != nullptr){
 		m_FSM->ChangeState(CBulletNormal::Instance());
 	}
+    
+    setCascadeOpacityEnabled(true);
 }
 
 CBullet::~CBullet(){
@@ -111,8 +113,8 @@ void CBullet::R_BezierWithScale(Vec2 targetPos, Vec2 controlPoint_1, Vec2 contro
     // 베지어 액션 및 다른 액션 순서대로 실행
     auto bezierTo1 = BezierTo::create(time, bezier);
     this->setZOrder(101);
-    auto action = Sequence::create(bezierTo1, ScaleBy::create(0.5f, scale),
-                                   
+    auto action = Sequence::create(bezierTo1,
+        Spawn::create(ScaleBy::create(0.5f, scale), FadeTo::create(2.0f, 1), NULL),
         // 두 액션이 끝난후 스케줄을 걸어 오브젝트 삭제
         CallFunc::create([&](){
         this->scheduleOnce([=](float dt){
@@ -123,8 +125,8 @@ void CBullet::R_BezierWithScale(Vec2 targetPos, Vec2 controlPoint_1, Vec2 contro
     this->runAction(action);
     
     // texture 페이드 아웃
-    auto textureAction = FadeOut::create(2.0f);
-    m_pTexture->runAction(textureAction);
+//    auto textureAction = FadeOut::create(2.0f);
+//    m_pTexture->runAction(textureAction);
 }
 
 
@@ -144,7 +146,7 @@ void CBullet::R_BezierWithRotation(Vec2 targetPos, Vec2 controlPoint_1, Vec2 con
 
 	auto bezierTo1 = BezierTo::create(time, bezier);
 	auto action = Sequence::create(
-		bezierTo1,
+        Spawn::create(RotateBy::create(0.5f, 720.f), bezierTo1, NULL),
 		CallFunc::create([&](){
 
 		this->scheduleOnce([=](float dt){
@@ -152,8 +154,8 @@ void CBullet::R_BezierWithRotation(Vec2 targetPos, Vec2 controlPoint_1, Vec2 con
 		}, 1.0f, "BezierWithRotation");
 	}), nullptr);
 	this->runAction(action);
-	auto textureAction = RotateBy::create(0.5f, 720.f);
-	m_pTexture->runAction(textureAction);
+//	auto textureAction = RotateBy::create(0.5f, 720.f);
+//	m_pTexture->runAction(textureAction);
 }
 
 
@@ -164,10 +166,10 @@ void CBullet::R_ScaleWithFadeOut(float scale, float scaleTime, float fadeOutTime
 
 	// 이전의 Action들을 cancel
 	this->stopAllActions();
-	this->m_pTexture->stopAllActions();
+//	this->m_pTexture->stopAllActions(); 
 
 	auto action = Sequence::create(
-		ScaleBy::create(scaleTime, scale),
+        Spawn::create(FadeTo::create(fadeOutTime, 1), ScaleBy::create(scaleTime, scale), NULL),
 		CallFunc::create([&](){
 
 		this->scheduleOnce([=](float dt){
@@ -175,8 +177,8 @@ void CBullet::R_ScaleWithFadeOut(float scale, float scaleTime, float fadeOutTime
 		}, 1.0f, MakeString("ScaleWithFadeOut_%d", random<int>(1, 100)));
 	}), nullptr);
 	this->runAction(action);
-	auto textureAction = FadeOut::create(fadeOutTime);
-	m_pTexture->runAction(textureAction);
+//	auto textureAction = FadeOut::create(fadeOutTime);
+//	this->runAction(textureAction);
 }
 
 
@@ -186,16 +188,16 @@ void CBullet::R_FadeOutWithCount(int intervalCount, float removeTime)
 		this->ReturnToMemoryBlock();
 	}, removeTime + 0.1f, MakeString("FadeOutWithCount_%d", random<int>(1, 100)));
 
-	auto textureAction1 = FadeOut::create((removeTime / intervalCount) - 0.1f);
-	auto textureAction2 = FadeIn::create(0.1f);
+	auto textureAction1 = FadeTo::create((removeTime / intervalCount) - 0.1f, 1);
+	auto textureAction2 = FadeTo::create(0.1f, 255);
 	auto repeatAction = Repeat::create(Sequence::create(textureAction2, textureAction1, nullptr), intervalCount);
-	m_pTexture->runAction(repeatAction);
+	this->runAction(repeatAction);
 }
 
 
 void CBullet::StackedRL(float duration, float stackSize, int stackCount)
 {
-	m_pTexture->runAction(
+	this->runAction(
 		Repeat::create(
 		Sequence::create(
 		MoveBy::create(duration / stackCount, Vec2(stackSize, 0)),

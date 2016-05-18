@@ -11,6 +11,7 @@ CObjectManager::CObjectManager()
 	: m_fStageTime(0.f)
 	, m_IsGamePause(true)
 	, m_IsAbleRotation(false)
+    , m_fRotateAcceleration(0.f)
 {
 	m_FSM = new CStateMachine<CObjectManager>(this);
 
@@ -32,6 +33,7 @@ void CObjectManager::Clear()
 	m_BulletList.clear();
 	m_ShooterList.clear();
 	m_CurrentShooterIdx = 0;
+    m_fRotateAcceleration = 0.f;
 	m_fStageTime = 0.f;
 	m_IsGamePause = true;
 	m_IsAbleRotation = false;
@@ -49,7 +51,7 @@ void CObjectManager::AddShooter(void* shooter)
 
 
 /* bullet->Delete() :
- * ∞‘¿” ¡æ∑·Ω√ ∞°¡ˆ∞Ì ¿÷¥¬ Non_Node∞Ëø≠¿« ∆˜¿Œ≈Õ∏¶ «ÿ¡¶«œ±‚¿ß«ÿ */
+ * Í≤åÏûÑ Ï¢ÖÎ£åÏãú Í∞ÄÏßÄÍ≥† ÏûàÎäî Non_NodeÍ≥ÑÏó¥Ïùò Ìè¨Ïù∏ÌÑ∞Î•º Ìï¥Ï†úÌïòÍ∏∞ÏúÑÌï¥ */
 void CObjectManager::RemoveAllBullet()
 {											
 	for (auto bullet : m_BulletList)
@@ -60,7 +62,7 @@ void CObjectManager::RemoveAllBullet()
 }
 
 /* shooter->Delete() :
- * ∞‘¿” ¡æ∑·Ω√ ∞°¡ˆ∞Ì ¿÷¥¬ Non_Node∞Ëø≠¿« ∆˜¿Œ≈Õ∏¶ «ÿ¡¶«œ±‚¿ß«ÿ*/
+ * Í≤åÏûÑ Ï¢ÖÎ£åÏãú Í∞ÄÏßÄÍ≥† ÏûàÎäî Non_NodeÍ≥ÑÏó¥Ïùò Ìè¨Ïù∏ÌÑ∞Î•º Ìï¥Ï†úÌïòÍ∏∞ÏúÑÌï¥*/
 void CObjectManager::RemoveAllShooter()
 {
 	for (auto shooter : m_ShooterList)
@@ -153,7 +155,7 @@ void CObjectManager::RotationObject(float dir)
 	for (auto bullet : m_BulletList)
 	{
 		if (bullet->IsAlive()) {
-			bullet->Rotation(dir, m_fDelta);
+			bullet->Rotation(dir + (dir * m_fRotateAcceleration), m_fDelta);
 		}
 	}
 	m_Planet->Rotation(-dir, m_fDelta);
@@ -180,3 +182,19 @@ void CObjectManager::ShooterResume()
 	}
 }
 
+void CObjectManager::RotateAccelerationUpdate(float value){
+    // valueÍ∞Ä ÏùåÏàò
+    if(value < 0.f)
+    {
+        if(m_fRotateAcceleration + value > 0)
+            m_fRotateAcceleration += value;
+        else
+            m_fRotateAcceleration = 0;
+    }
+    else{
+        if(m_fRotateAcceleration + value < ROTATE_ACCEL_MAX)
+            m_fRotateAcceleration += value;
+        else
+            m_fRotateAcceleration = ROTATE_ACCEL_MAX;
+    }
+}

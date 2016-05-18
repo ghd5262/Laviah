@@ -309,7 +309,7 @@ void CGameScene::InitGameSceneUI()
 	m_GridWorld->addChild(gridTest, 102);
 
 	m_CountDownLabel = nullptr;
-	m_CountDownLabel = Label::create("3", "fonts/malgunbd.ttf", 40);
+	m_CountDownLabel = Label::createWithTTF("3", "fonts/malgunbd.ttf", 40);
 	m_CountDownLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	m_CountDownLabel->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		origin.x + visibleSize.height * 0.65f));

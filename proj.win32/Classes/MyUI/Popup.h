@@ -122,11 +122,12 @@ public:
 	CSpecificPopupBase(){};
 	virtual ~CSpecificPopupBase(){};
 
+    inline void PopupRelease(){ m_Popup->PopupRelease(); }
+    inline void PopupClose(){ m_Popup->PopupClose(); }
+    
 protected:
 	virtual bool initVariable() = 0;
-	inline void PopupRelease(){ m_Popup->PopupRelease(); }
-	inline void PopupClose(){ m_Popup->PopupClose(); }
-
+    
 protected:
 	CPopup* m_Popup;
 };
