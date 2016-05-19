@@ -6,11 +6,11 @@
 
 CTargetMark::CTargetMark(
 	sBULLET_PARAM bulletParam,
-	float angle,					//TargetMark ÃÊ±â °¢µµ 
-	Vec2 missilePos,				//Missile ÇöÀç ÁÂÇ¥
-	float missileSpeed,				//Missile ¼Ó·Â
+	float angle,					//TargetMark ì´ˆê¸° ê°ë„ 
+	Vec2 missilePos,				//Missile í˜„ìž¬ ì¢Œí‘œ
+	float missileSpeed,				//Missile ì†ë ¥
 	bool isMissileChangedToCoin/* = true*/,
-	CBullet* owner/* = nullptr*/)	//owner missile (nullptr ÀÏ ¶§¿¡´Â µµÂø½Ã°£À¸·Î »èÁ¦ÇÑ´Ù.)
+	CBullet* owner/* = nullptr*/)	//owner missile (nullptr ì¼ ë•Œì—ëŠ” ë„ì°©ì‹œê°„ìœ¼ë¡œ ì‚­ì œí•œë‹¤.)
 	: CBullet(
 	bulletParam,
 	angle, 
@@ -26,9 +26,9 @@ CTargetMark::CTargetMark(
 
 CTargetMark* CTargetMark::create(
 	sBULLET_PARAM bulletParam,
-	float angle,					//TargetMark ÃÊ±â °¢µµ 
-	Vec2 missilePos,				//Missile ÇöÀç ÁÂÇ¥
-	float missileSpeed,				//Missile ¼Ó·Â
+	float angle,					//TargetMark ì´ˆê¸° ê°ë„ 
+	Vec2 missilePos,				//Missile í˜„ìž¬ ì¢Œí‘œ
+	float missileSpeed,				//Missile ì†ë ¥
 	bool isMissileChangedToCoin,
 	CBullet* owner)					//owner missile
 {
@@ -58,9 +58,8 @@ bool CTargetMark::init()
 bool CTargetMark::initVariable()
 {
 	try{
-		CAudioManager::Instance()->PlayEffectSound("sounds/missile_warning_1.mp3", false, 0.7f);
-
-		m_ScreenRect = Rect(-1280, 0, 3840, 1280);
+        Size visibleSize = Director::getInstance()->getVisibleSize();
+        m_ScreenRect = Rect(-visibleSize.width, 0, visibleSize.width * 3, visibleSize.height);
 		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().x);
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
@@ -81,10 +80,12 @@ bool CTargetMark::initVariable()
 		}
 		else
 		{
-			/* ¸î ÇÁ·¹ÀÓ µÚ¿¡ »ý¼º
-			 * m_bIsMissileChangedToCoin = trueÀÏ ¶§´Â 
-			 * ÀÏ¹Ý ¹Ì»çÀÏÀÌ »ý¼ºµÈ ÈÄ º°·Î º¯°æµÇ´Â °Å¶ó
-			 * targetmark¸¦ º¯°æÀÌ ¿Ï·áµÈÈÄ¿¡ »ý¼ºÇÏ±â À§ÇØ¼­ */
+            CAudioManager::Instance()->PlayEffectSound("sounds/missile_warning_1.mp3", false, 0.7f);
+            
+			/* âˆÃ“ Â«Â¡âˆ‘Ï€Â¿â€ Âµâ„Ã¸Â° ÂªËÂºâˆ«
+			 * m_bIsMissileChangedToCoin = trueÂ¿Å“ âˆ‚ÃŸÂ¥Â¬ 
+			 * Â¿Å“Ï€â€º Ï€ÃƒÂªÃÂ¿Å“Â¿Ãƒ ÂªËÂºâˆ«ÂµÂ» Â»Æ’ âˆ«âˆžâˆ‘Å’ âˆ«Ã˜âˆžÃŠÂµÂ«Â¥Â¬ âˆžâ‰ˆâˆ‚Ã›
+			 * targetmarkâˆÂ¶ âˆ«Ã˜âˆžÃŠÂ¿Ãƒ Ã¸Å“âˆ‘Â·ÂµÂ»Â»Æ’Ã¸Â° ÂªËÂºâˆ«Â«Å“Â±â€š Â¿ÃŸÂ«Ã¿Âºâ‰  */
 			this->scheduleOnce([=](float delta){
 				const int FrameCount_MAX = 3;
 				SpriteFrame* frame[FrameCount_MAX];
@@ -118,7 +119,7 @@ bool CTargetMark::initVariable()
 
 void CTargetMark::Rotation(float dir, float delta)
 {
-	// aimingMissileÀÏ °æ¿ì È­¸é¾È¿¡ µé¾î¿ÔÀ» ¶§¿¡¸¸ È¸ÀüÇÑ´Ù.
+	// aimingMissileì¼ ê²½ìš° í™”ë©´ì•ˆì— ë“¤ì–´ì™”ì„ ë•Œì—ë§Œ íšŒì „í•œë‹¤.
 	if (true == m_BulletParam._isAimingMissile && !m_bIsMissileChangedToCoin){
 		if (m_OwnerBullet->IsAlive() && !m_ScreenRect.containsPoint(m_OwnerBullet->getPosition()))
 		{
@@ -131,12 +132,12 @@ void CTargetMark::Rotation(float dir, float delta)
 
 void CTargetMark::Execute(float delta)
 {
-	// coin ÀÌ³ª star·Î º¯°æµÇ¾úÀ» ¶§´Â m_OwnerBullet == nullptrÀÌ´Ù.
+	// coin ì´ë‚˜ starë¡œ ë³€ê²½ë˜ì—ˆì„ ë•ŒëŠ” m_OwnerBullet == nullptrì´ë‹¤.
 	if ( true != m_bIsMissileChangedToCoin){
-		if (!m_OwnerBullet->IsAlive())		// ÀÌ°Í ÀÌ¿ÜÀÇ OwnerBulletÀ» »ç¿ëÇÏ´Â °÷ÀÌ ÀÖÀ¸¸é ¾ÈµÈ´Ù.. »ç½Ç»ó ÀÌ ÄÚµåµµ ÀÌ¹Ì ¸Þ¸ð¸® ºí·°À¸·Î µÇµ¹¾Æ°£ bulletÀÇ AliveÀÌ´Ù.
-			ReturnToMemoryBlock();			// OwnerBulletÀº Ç×»ó Targetº¸´Ù ¸ÕÀú ¸Þ¸ð¸® ºí·°À¸·Î µÇµ¹¾Æ°¡±â ¶§¹®ÀÌ´Ù.
+		if (!m_OwnerBullet->IsAlive())		// ì´ê²ƒ ì´ì™¸ì˜ OwnerBulletì„ ì‚¬ìš©í•˜ëŠ” ê³³ì´ ìžˆìœ¼ë©´ ì•ˆëœë‹¤.. ì‚¬ì‹¤ìƒ ì´ ì½”ë“œë„ ì´ë¯¸ ë©”ëª¨ë¦¬ ë¸”ëŸ­ìœ¼ë¡œ ë˜ëŒì•„ê°„ bulletì˜ Aliveì´ë‹¤.
+			ReturnToMemoryBlock();			// OwnerBulletì€ í•­ìƒ Targetë³´ë‹¤ ë¨¼ì € ë©”ëª¨ë¦¬ ë¸”ëŸ­ìœ¼ë¡œ ë˜ëŒì•„ê°€ê¸° ë•Œë¬¸ì´ë‹¤.
 	}
-	else // coin ÀÌ³ª star·Î º¯°æµÇ¾úÀ» ¶§¿¡´Â ½Ã°£À¸·Î »èÁ¦ÇÑ´Ù.
+	else // coin ì´ë‚˜ starë¡œ ë³€ê²½ë˜ì—ˆì„ ë•Œì—ëŠ” ì‹œê°„ìœ¼ë¡œ ì‚­ì œí•œë‹¤.
 	{
 		m_fTime += delta;
 		if (m_fTime > m_fArriveTime)

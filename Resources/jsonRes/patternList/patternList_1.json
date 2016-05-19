@@ -289,7 +289,14 @@
 				"                                       4"
 
 			]
-		}
+		}, {
+			"name": "Number9_Rocket_Pattern",
+			"widthAngleDistance": 8.0,
+			"heightDistance": 175.0,
+			"pattern": [
+				"4    4    4    4    4    4    4    4    4"
 
+			]
+		}
 	]
 }
