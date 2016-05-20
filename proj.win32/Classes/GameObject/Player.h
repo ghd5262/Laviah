@@ -11,6 +11,7 @@
 
 class CScoreUI;
 class CItemBarrier;
+class CMagnetEffect;
 class CPlayer : public CGameObject {
 public:
 	static CPlayer* create(
@@ -26,6 +27,7 @@ public:
 	void GotSomeHealth(float health);
 	void LostSomeHealth(float loseHealth);
     void GotBarrierItem();
+    void GotMagnetItem();
 	void GiantMode();
 	void NormalMode();
 	void Rotation(float dir, float delta);
@@ -56,7 +58,7 @@ public:
 	CStateMachine<CPlayer>* getFSM(){ return m_FSM.get(); }
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
 	cocos2d::Vec2 getOriginPos(){ return m_OriginPos; }
-	void setParticlePos(Vec2 pos){ m_pParticle->setPosition(pos); }
+    void setParticlePos(Vec2 pos);
 
 protected:
 	virtual bool init() override;
@@ -71,6 +73,7 @@ protected:
 	CC_SYNTHESIZE(float, m_fMagnetLimitRadius, MagnetLimitRadius);
 	CC_SYNTHESIZE(CItemBarrier*, m_pItemBarrier, ItemBarrier);
 	CC_SYNTHESIZE(bool, m_isPlayerDead, IsDead);
+    
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
 
@@ -94,6 +97,7 @@ private:
 	ParticleSystemQuad* m_pParticleAlive;
 	bool m_isRoatating;
     CScoreUI* m_pUIRunScore;
+    CMagnetEffect* m_MagnetEffect;
     
 	// 영향을 받는 아이템 타입 
 	// ex) m_EffectItemType == eITEM_TYPE_magnet 이면 자석아이템에게 영향력을 받는다.

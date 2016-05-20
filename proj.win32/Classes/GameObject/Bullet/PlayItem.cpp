@@ -86,14 +86,6 @@ void CPlayItem::CollisionWithPlanet()
 
 void CPlayItem::CollisionWithPlayer()
 {
-	if (m_BulletParam._itemType == eITEM_TYPE_health)
-	{
-		m_pPlayer->GotSomeHealth(20);
-	}
-	if (m_BulletParam._itemType == eITEM_TYPE_shield)
-	{
-        m_pPlayer->GotBarrierItem();
-	}
 	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	CItemManager::Instance()->StartItemTimer(m_BulletParam._itemType);

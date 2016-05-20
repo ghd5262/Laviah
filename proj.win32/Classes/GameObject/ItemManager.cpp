@@ -1,4 +1,6 @@
 #include "ItemManager.h"
+#include "ObjectManager.h"
+#include "Player.h"
 #include "../Scene/GameScene.h"
 
 CItemManager::CItemManager()
@@ -35,6 +37,18 @@ void CItemManager::Clear()
 
 void CItemManager::StartItemTimer(eITEM_TYPE itemType)
 {
+    if (itemType == eITEM_TYPE_health)
+    {
+        CObjectManager::Instance()->getPlayer()->GotSomeHealth(20);
+    }
+    if (itemType == eITEM_TYPE_shield)
+    {
+        CObjectManager::Instance()->getPlayer()->GotBarrierItem();
+    }
+    if (itemType == eITEM_TYPE_magnet)
+    {
+        CObjectManager::Instance()->getPlayer()->GotMagnetItem();
+    }
 	m_CurrentItems |= (1 << itemType);
 	m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + 8.f;
 	//CGameScene::getGameScene()->scheduleOnce([this, itemType](float dt){

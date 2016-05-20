@@ -2,6 +2,7 @@
 #include "ItemManager.h"
 #include "ItemBarrier.h"
 #include "ObjectManager.h"
+#include "MagnetEffect.h"
 #include "../AI/States/PlayerStates.h"
 #include "../AI/States/StageStates.h"
 #include "../Particle/Particles.h"
@@ -61,6 +62,7 @@ CPlayer::CPlayer(
 	, m_pUIRunScore(nullptr)
 	, m_pItemBarrier(nullptr)
 	, m_isPlayerDead(true)
+    , m_MagnetEffect(nullptr)
 {
 }
 
@@ -112,6 +114,12 @@ bool CPlayer::initVariable()
 			m_pParticle->setVisible(false);
 		}
         
+        m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, 8.f);
+        if(m_MagnetEffect != nullptr)
+        {
+            m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            CGameScene::getGridWorld()->addChild(m_MagnetEffect);
+        }
         
 	}
 	catch (...){
@@ -128,6 +136,7 @@ void CPlayer::Execute(float delta)
 		return;
 	m_FSM->Execute(delta);
     m_pItemBarrier->Execute(delta);
+    m_MagnetEffect->Execute(delta);
 	if (!m_isRoatating)
 	{
 		m_pParticle->setAngle(90);
@@ -261,6 +270,11 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 	return (m_fLife / m_fMaxLife) * 100;
 }
 
+void CPlayer::setParticlePos(Vec2 pos){
+    m_pParticle->setPosition(pos);
+    m_MagnetEffect->setPosition(pos);
+}
+
 void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount)
 {
 	this->runAction(
@@ -276,4 +290,9 @@ void CPlayer::GotBarrierItem()
 {
     CCLOG("Player GotBerrierItem");
     m_pItemBarrier->GotBarrierItem();
+}
+
+void CPlayer::GotMagnetItem()
+{
+    m_MagnetEffect->GotMagnetItem();
 }
