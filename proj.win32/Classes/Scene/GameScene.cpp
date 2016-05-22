@@ -16,6 +16,7 @@
 #include "../MyUI/Popup.h"
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
+#include "../MyUI/Popup/VideoPopup.h"
 #include "../DataManager/BulletPatternDataManager.h"
 #include "../DataManager/StageDataManager.h"
 #include "../DataManager/BulletDataManager.h"
@@ -218,23 +219,23 @@ void CGameScene::InitGameSceneUI()
 
 	auto bonusTime = CBonusTimeUI::create();
 	bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-	bonusTime->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
+	bonusTime->setPosition(Vec2(origin.x + visibleSize.width * 0.06f,
 		origin.x + visibleSize.height * 0.905f));
 	m_GridWorld->addChild(bonusTime, 102);
 	if (!CUIManager::Instance()->AddUIWithName(bonusTime, "BonusTime"))
 		CCASSERT(false, "BonusTime CAN NOT INIT");
 
-	auto starScoreUI = CScoreUI::create("fonts/Number.ttf", 25, "score.png");
+	auto starScoreUI = CScoreUI::create("fonts/Number.ttf", 38, "score.png");
 	starScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	starScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-	starScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.94f,
+	starScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.96f,
 		origin.x + visibleSize.height * 0.98f));
 	m_GridWorld->addChild(starScoreUI, 102);
 	if (!CUIManager::Instance()->AddUIWithName(starScoreUI, "StarScoreUI"))
 		CCASSERT(false, "StarScoreUI CAN NOT INIT");
 
 
-	auto coinScoreUI = CScoreUI::create("fonts/Number.ttf", 25, "coin_2.png");
+	auto coinScoreUI = CScoreUI::create("fonts/Number.ttf", 38, "coinIcon_2.png");
 	coinScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	coinScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
 	coinScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.1f,
@@ -243,10 +244,10 @@ void CGameScene::InitGameSceneUI()
 	if (!CUIManager::Instance()->AddUIWithName(coinScoreUI, "CoinScoreUI"))
 		CCASSERT(false, "CoinScoreUI CAN NOT INIT");
     
-    auto runScoreUI = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
+	auto runScoreUI = CScoreUI::create("fonts/Number.ttf", 38, "run.png");
     runScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     runScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-    runScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.94f,
+    runScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.96f,
         origin.x + visibleSize.height * 0.905f));
 	m_GridWorld->addChild(runScoreUI, 102);
     if (!CUIManager::Instance()->AddUIWithName(runScoreUI, "RunScoreUI"))
@@ -356,7 +357,7 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 
 	auto btnYes = CMyButton::createWithString("defaultBtn_1.png",
 		"Yes",
-		25,
+		40,
 		Color3B::WHITE,
 		END,
 		[this](){
@@ -368,7 +369,7 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 
 	auto btnNo = CMyButton::createWithString("defaultBtn_2.png",
 		"Yes",
-		25,
+		40,
 		Color3B::WHITE,
 		END,
 		[this](){
@@ -442,7 +443,6 @@ void CGameScene::GameEnd()
 	m_GridWorld->addChild(popup, 102);
 
 	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
-	CObjectManager::Instance()->getPlayer()->PlayerDead();
 	GamePause();
 }
 
@@ -480,6 +480,21 @@ void CGameScene::resetGameScene()
 
 	}, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
 
+}
+
+void CGameScene::watchVideo()
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	auto popup = CPopup::createWithSpecificFormat(CVideoPopup::create(), POPUPEFFECT_none);
+	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		origin.x + visibleSize.height * 0.5f));
+	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	m_GridWorld->addChild(popup, 102);
+
+	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
+	GamePause();
 }
 
 void CGameScene::backToMenuScene()

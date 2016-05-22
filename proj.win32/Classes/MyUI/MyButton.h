@@ -64,6 +64,12 @@ public:
 	/* 버튼이 가지는 Execute callback함수 호출 */
 	virtual void Execute(float delta = 0.f);
 
+	virtual const Size& getContentSize() const override { 
+		if (m_pNormalTexture != nullptr) 
+			return m_pNormalTexture->getContentSize();
+		CCASSERT(m_pNormalTexture != nullptr, "Texture is nullptr");
+	}
+
 	// getter & setter
 	CC_SYNTHESIZE(Label*, m_pLabel, BtnLabel);
 protected:

@@ -27,7 +27,7 @@ bool CPausePopup::initVariable()
 		m_BG->setPosition(Vec2(0, origin.x + visibleSize.height * 0.75f));
 		m_Popup->addChild(m_BG);
 
-		auto noticeLabel = Label::createWithTTF("format popup", "fonts/Marker Felt.ttf", 25);
+		auto noticeLabel = Label::createWithTTF("format popup", "fonts/malgunbd.ttf", 25);
 		noticeLabel->setColor(Color3B::BLACK);
 		noticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		noticeLabel->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.5f));
@@ -123,6 +123,7 @@ void CPausePopup::Play(){
 
 void CPausePopup::Reset(){
 	CCLOG("format popup Replay");
+	CGameScene::getGameScene()->resetGameScene();
 }
 
 void CPausePopup::GoHome(){

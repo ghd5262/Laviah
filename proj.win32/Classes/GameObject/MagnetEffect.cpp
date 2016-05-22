@@ -46,7 +46,7 @@ bool CMagnetEffect::initVariable()
             addChild(m_pTexture);
         }
         
-        m_BoundingSizeByPercent = m_OriginBoundingRadius/m_pTexture->getContentSize().width;
+        m_BoundingSizeByPercent = (m_OriginBoundingRadius/m_pTexture->getContentSize().width) * 2;
         m_pTexture->setScale(0);
     }
     catch (...){
@@ -69,6 +69,18 @@ void CMagnetEffect::Execute(float delta)
         
         if(m_IntervalTimer > MAGNET_INTERVAL)
         {
+			m_pParticle = CParticle_Explosion_2::create("fire.png");
+			if (m_pParticle != nullptr){
+				m_pParticle->retain();
+				m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+				m_pParticle->setPosition(Vec2::ZERO);
+				m_pParticle->setStartRadius(m_OriginBoundingRadius);
+				m_pParticle->setEndRadius(0);
+				m_pParticle->setDuration(MAGNET_INTERVAL);
+				m_pParticle->setTotalParticles(10);
+				m_pParticle->setStartSize(10);
+				addChild(m_pParticle, 101);
+			}
             m_pTexture->runAction(Sequence::create(ScaleTo::create(0, m_BoundingSizeByPercent), EaseOut::create( ScaleTo::create(MAGNET_INTERVAL - 0.2f, 0), 0.3f), NULL));
             m_IntervalTimer = 0.f;
         }
@@ -80,20 +92,6 @@ void CMagnetEffect::GotMagnetItem(){
     m_Timer = 0.f;
     m_IntervalTimer = MAGNET_INTERVAL;
     m_bMagnetAlive = true;
-    m_pParticle = CParticle_Explosion_2::create("whiteSquare.png");
-    if (m_pParticle != nullptr){
-        m_pParticle->retain();
-        m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_pParticle->setPosition(getPosition());
-        m_pParticle->setStartRadius(m_OriginBoundingRadius);
-        m_pParticle->setEndRadius(0);
-        m_pParticle->setDuration(m_limitTime);
-        m_pParticle->setTotalParticles(30);
-        m_pParticle->setSpeed(100);
-        m_pParticle->setSpeedVar(100);
-        m_pParticle->setStartSize(10);
-        addChild(m_pParticle, 101);
-    }
 }
 
 

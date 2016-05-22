@@ -25,7 +25,7 @@ public:
     void AllPause();
     void AllResume();
     
-	// √ ±‚»≠
+	// 초기화
 	void Clear();
 
 	//getter & setter

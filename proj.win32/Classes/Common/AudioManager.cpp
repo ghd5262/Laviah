@@ -34,7 +34,7 @@ void CAudioManager::PlayEffectSound(
 {
 	sAUDIO_INFO* audio = nullptr;
 
-	// ¿Áª˝«œ∑¡¥¬ ø¿µø¿∞° ∏ÆΩ∫∆Æø° ¿÷¥Ÿ∏È π›»Ø æ¯¥Ÿ∏È √ﬂ∞° »ƒ π›»Ø
+	// 재생하려는 오디오가 리스트에 있다면 반환 없다면 추가 후 반환
 	audio = FindAudioIndex(filePath);
 	if (audio->_nCount < 10)
 	{

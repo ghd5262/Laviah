@@ -23,6 +23,7 @@ public:
 	void GamePause();
 	void GameResume();
 	void GameEnd();
+	void watchVideo();
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }

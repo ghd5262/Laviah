@@ -146,7 +146,7 @@ bool CPopup::init()
 bool CPopup::initVariable()
 {
 	try{
-		auto emptyBtnBG = CMyButton::create("empty1280_a.png", BEGIN, [](){});
+		auto emptyBtnBG = CMyButton::create("empty1920_a.png", BEGIN, [](){});
 		emptyBtnBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		emptyBtnBG->setPosition(Vec2::ZERO);
 		this->addChild(emptyBtnBG);
@@ -159,7 +159,7 @@ bool CPopup::initVariable()
 			defaultBG->setPosition(Vec2::ZERO);
 			this->addChild(defaultBG);
 
-			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/Marker Felt.ttf", m_FontSize);
+			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/malgunbd.ttf", m_FontSize);
 			m_NoticeLabel->setColor(m_FontColor);
 			m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.5f));
@@ -180,7 +180,7 @@ bool CPopup::initVariable()
 
 			if (m_Btn1 != nullptr)
 			{
-				m_Btn1->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.2f));
+				m_Btn1->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.25f));
 				m_Btn1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				defaultBG->addChild(m_Btn1);
 				m_Btn1->AddState(END, std::bind(&CPopup::PopupClose, this));
@@ -194,7 +194,7 @@ bool CPopup::initVariable()
 			defaultBG->setPosition(Vec2::ZERO);
 			this->addChild(defaultBG);
 
-			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/Marker Felt.ttf", m_FontSize);
+			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/malgunbd.ttf", m_FontSize);
 			m_NoticeLabel->setColor(m_FontColor);
 			m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.5f));
@@ -215,7 +215,7 @@ bool CPopup::initVariable()
 
 			if (m_Btn1 != nullptr)
 			{
-				m_Btn1->setPosition(Vec2(defaultBG->getContentSize().width * 0.25f, defaultBG->getContentSize().height * 0.2f));
+				m_Btn1->setPosition(Vec2(defaultBG->getContentSize().width * 0.25f, defaultBG->getContentSize().height * 0.25f));
 				m_Btn1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				defaultBG->addChild(m_Btn1);
 				m_Btn1->AddState(END, std::bind(&CPopup::PopupClose, this));
@@ -223,7 +223,7 @@ bool CPopup::initVariable()
 			}
 			if (m_Btn2 != nullptr)
 			{
-				m_Btn2->setPosition(Vec2(defaultBG->getContentSize().width * 0.75f, defaultBG->getContentSize().height * 0.2f));
+				m_Btn2->setPosition(Vec2(defaultBG->getContentSize().width * 0.75f, defaultBG->getContentSize().height * 0.25f));
                 m_Btn2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				defaultBG->addChild(m_Btn2);
 				m_Btn2->AddState(END, std::bind(&CPopup::PopupClose, this));

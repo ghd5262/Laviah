@@ -160,7 +160,7 @@ bool CMyButton::initVariable()
 		}
 
 		if (m_LabelString != "")
-			m_pLabel = cocos2d::Label::createWithTTF(m_LabelString, "fonts/Marker Felt.ttf", m_FontSize);
+			m_pLabel = cocos2d::Label::createWithTTF(m_LabelString, "fonts/malgunbd.ttf", m_FontSize);
 		if (m_pLabel != nullptr){
 			m_pLabel->setAnchorPoint(Vec2(0.5f, 0.5f));
 			m_pLabel->setColor(m_FontColor);
@@ -307,12 +307,19 @@ void CMyButton::onTouchEnded(Touch  *touch, Event  *event)
 	CC_UNUSED_PARAM(event);
 	if (m_pNormalTexture){
 
-		// END 상태일때 호출해야할 함수가 있다면 호출
-		std::for_each(m_EndFuncList.begin(), m_EndFuncList.end(),
-			[](const std::function<void(void)> &func){
-			func();
-		});
+		// 좌표 변환 후 터치 체크
+		m_IsSelect = touchHits(touch);
 
+		// 버튼의 좌표에서 진짜로 터치되었을 경우
+		if (m_IsSelect){
+
+			// END 상태일때 호출해야할 함수가 있다면 호출
+			std::for_each(m_EndFuncList.begin(), m_EndFuncList.end(),
+				[](const std::function<void(void)> &func){
+				func();
+			});
+
+		}
 		btnEffectEnd();
 
 		// 버튼 눌림 종료
