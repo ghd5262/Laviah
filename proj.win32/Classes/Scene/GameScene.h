@@ -20,7 +20,7 @@ public:
 	void EnableTouch();
 	void AbleTouch();
 	void GameStart();
-	void GamePause();
+    void OpenGamePausePopup();
 	void GameResume();
 	void GameEnd();
 	void watchVideo();
@@ -35,6 +35,7 @@ protected:
 	virtual bool init() override;
 
 private:
+    void GamePause();
 	bool initVariable();
 	void InitGameSceneUI();
 	void menuCloseCallback(cocos2d::Ref* pSender);

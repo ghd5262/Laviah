@@ -282,12 +282,7 @@ void CGameScene::InitGameSceneUI()
 		END,
 		[this, origin, visibleSize]()
 	{
-		GamePause();
-		auto popup = CPopup::createWithSpecificFormat(CPausePopup::create(), POPUPEFFECT_none);
-		popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-			origin.x + visibleSize.height * 0.5f));
-		popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_GridWorld->addChild(popup, 102);
+		OpenGamePausePopup();
 	}, EFFECT_SIZEDOWN);
 
 	m_PauseBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
@@ -361,26 +356,23 @@ void CGameScene::menuCloseCallback(Ref* pSender)
 		Color3B::WHITE,
 		END,
 		[this](){
-		Director::getInstance()->end();
+            Director::getInstance()->end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
             exit(0);
 #endif
 	}, EFFECT_ALPHA);
 
 	auto btnNo = CMyButton::createWithString("defaultBtn_2.png",
-		"Yes",
+		"No",
 		40,
 		Color3B::WHITE,
 		END,
 		[this](){
-		Director::getInstance()->end();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-            exit(0);
-#endif
+            GameResume();
 	}, EFFECT_ALPHA);
 
 	auto popup = CPopup::createWithTwoButton("Are you sure you want to exit StarStarStar?"
-		, btnNo, btnYes, 25, Color3B::BLACK);
+		, btnNo, btnYes, 40, Color3B::BLACK);
 	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		origin.x + visibleSize.height * 0.5f));
 	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -510,6 +502,25 @@ void CGameScene::watchVideo()
 
 	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
 	GamePause();
+}
+
+void CGameScene::OpenGamePausePopup()
+{
+    // 이미 Pause인 상태면 리턴한다.
+    if(CObjectManager::Instance()->getPlayer()->getIsDead()
+    || CObjectManager::Instance()->getIsGamePause())
+        return;
+    
+    GamePause();
+ 
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    
+    auto popup = CPopup::createWithSpecificFormat(CPausePopup::create(), POPUPEFFECT_none);
+    popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+                            origin.x + visibleSize.height * 0.5f));
+    popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_GridWorld->addChild(popup, 102);
 }
 
 void CGameScene::backToMenuScene()

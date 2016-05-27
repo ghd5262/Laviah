@@ -162,7 +162,7 @@ bool CPopup::initVariable()
 			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/malgunbd.ttf", m_FontSize);
 			m_NoticeLabel->setColor(m_FontColor);
 			m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.5f));
+			m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));
 			defaultBG->addChild(m_NoticeLabel);
 
 			m_DefaultExitBtn = CMyButton::create("defaultExitBtn.png",
@@ -197,7 +197,7 @@ bool CPopup::initVariable()
 			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/malgunbd.ttf", m_FontSize);
 			m_NoticeLabel->setColor(m_FontColor);
 			m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.5f));
+			m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));
 			defaultBG->addChild(m_NoticeLabel);
 
 			m_DefaultExitBtn = CMyButton::create("defaultExitBtn.png",
@@ -215,7 +215,7 @@ bool CPopup::initVariable()
 
 			if (m_Btn1 != nullptr)
 			{
-				m_Btn1->setPosition(Vec2(defaultBG->getContentSize().width * 0.25f, defaultBG->getContentSize().height * 0.25f));
+				m_Btn1->setPosition(Vec2(defaultBG->getContentSize().width * 0.275f, defaultBG->getContentSize().height * 0.25f));
 				m_Btn1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				defaultBG->addChild(m_Btn1);
 				m_Btn1->AddState(END, std::bind(&CPopup::PopupClose, this));
@@ -223,7 +223,7 @@ bool CPopup::initVariable()
 			}
 			if (m_Btn2 != nullptr)
 			{
-				m_Btn2->setPosition(Vec2(defaultBG->getContentSize().width * 0.75f, defaultBG->getContentSize().height * 0.25f));
+				m_Btn2->setPosition(Vec2(defaultBG->getContentSize().width * 0.725f, defaultBG->getContentSize().height * 0.25f));
                 m_Btn2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				defaultBG->addChild(m_Btn2);
 				m_Btn2->AddState(END, std::bind(&CPopup::PopupClose, this));

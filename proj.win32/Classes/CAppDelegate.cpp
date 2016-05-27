@@ -1,10 +1,6 @@
-#include "CAppDelegate.h"
+#include "AppDelegate.h"
 #include "Scene/GameScene.h"
 #include "Common/AudioManager.h"
-#include "MyUI/Popup.h"
-#include "MyUI/Popup/PausePopup.h"
-#include "GameObject/Player.h"
-#include "GameObject/ObjectManager.h"
 
 USING_NS_CC;
 
@@ -39,7 +35,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if (!glview) {
         glview = GLViewImpl::create("My Game");
-        glview->setFrameSize(720, 1280);
+        glview->setFrameSize(1080, 1920);
         director->setOpenGLView(glview);
     }
     director->getOpenGLView()->setDesignResolutionSize(1080, 1920, ResolutionPolicy::SHOW_ALL);
@@ -66,20 +62,7 @@ void AppDelegate::applicationDidEnterBackground() {
     
     //GamePause
     if(CGameScene::getGameScene() != nullptr){
-        if(CObjectManager::Instance()->getPlayer() != nullptr
-           && !CObjectManager::Instance()->getPlayer()->getIsDead()
-           && !CObjectManager::Instance()->getIsGamePause()){
-            
-            Size visibleSize = Director::getInstance()->getVisibleSize();
-            Vec2 origin = Director::getInstance()->getVisibleOrigin();
-            
-            auto popup = CPopup::createWithSpecificFormat(CPausePopup::create(), POPUPEFFECT_none);
-            popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-                                    origin.x + visibleSize.height * 0.5f));
-            popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            CGameScene::getGridWorld()->addChild(popup, 102);
-            CGameScene::getGameScene()->GamePause();
-        }
+        CGameScene::getGameScene()->OpenGamePausePopup();
     }
     
     // if you use SimpleAudioEngine, it must be pause
