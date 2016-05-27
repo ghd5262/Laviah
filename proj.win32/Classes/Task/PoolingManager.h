@@ -4,68 +4,68 @@
 
 /*-----------------------CPoolingManager------------------------
  *
- * °ÔÀÓÀÇ Æ¯¼º»ó ¿©·¯ Á¾·ùÀÇ Shooter¿Í BulletÀ» »ý¼ºÇÏ°í Áö¿ö¾ßÇÏ´Âµ¥
- * ÀÌ°Í¿¡ ´ëÇÑ ¸®½ºÅ©¿Í ¸Þ¸ð¸® ´ÜÆíÈ­¸¦ ÁÙÀÌ±â À§ÇÑ ObjectPool °³³äÀÇ Å¬·¡½ºÀÌ´Ù.
- * µ¿ÀÛ »çÀÌÅ¬Àº ¾Æ·¡¿Í °°´Ù.
+ * ê²Œìž„ì˜ íŠ¹ì„±ìƒ ì—¬ëŸ¬ ì¢…ë¥˜ì˜ Shooterì™€ Bulletì„ ìƒì„±í•˜ê³  ì§€ì›Œì•¼í•˜ëŠ”ë°
+ * ì´ê²ƒì— ëŒ€í•œ ë¦¬ìŠ¤í¬ì™€ ë©”ëª¨ë¦¬ ë‹¨íŽ¸í™”ë¥¼ ì¤„ì´ê¸° ìœ„í•œ ObjectPool ê°œë…ì˜ í´ëž˜ìŠ¤ì´ë‹¤.
+ * ë™ìž‘ ì‚¬ì´í´ì€ ì•„ëž˜ì™€ ê°™ë‹¤.
  *
- * 1. CreateBulletList() - ¿øÇÏ´Â ¸¸Å­ÀÇ ¸Þ¸ð¸® ºí·° »ý¼º ¹× ¸®½ºÆ®¿¡ Ãß°¡
- * 2. BulletNew() - »ý¼ºÇÏ°íÀÚ ÇÏ´Â ¿ÀºêÁ§Æ®·Î ÃÊ±âÈ­(operator new, »ý¼ºÀÚ È£Ãâ)
- * 3. »ç¿ë
- * 4. ReturnToFreeMemory() - ¸Þ¸ð¸® ¹ÝÈ¯
- * 5. »ç¿ëÇÒ ¶§ ¸¶´Ù 2¹øºÎÅÍ ¹Ýº¹
- * 6. °ÔÀÓ Á¾·á½Ã ¸Þ¸ð¸® ÇØÁ¦
+ * 1. CreateBulletList() - ì›í•˜ëŠ” ë§Œí¼ì˜ ë©”ëª¨ë¦¬ ë¸”ëŸ­ ìƒì„± ë° ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
+ * 2. BulletNew() - ìƒì„±í•˜ê³ ìž í•˜ëŠ” ì˜¤ë¸Œì íŠ¸ë¡œ ì´ˆê¸°í™”(operator new, ìƒì„±ìž í˜¸ì¶œ)
+ * 3. ì‚¬ìš©
+ * 4. ReturnToFreeMemory() - ë©”ëª¨ë¦¬ ë°˜í™˜
+ * 5. ì‚¬ìš©í•  ë•Œ ë§ˆë‹¤ 2ë²ˆë¶€í„° ë°˜ë³µ
+ * 6. ê²Œìž„ ì¢…ë£Œì‹œ ë©”ëª¨ë¦¬ í•´ì œ
  *
 ----------------------------------------------------------------*/
 
 class CPoolingManager
 {
 
-	/* ¸Þ¸ð¸® ºí·° Å¸ÀÔ Á¤ÀÇ	*/
+	/* ë©”ëª¨ë¦¬ ë¸”ëŸ­ íƒ€ìž… ì •ì˜	*/
 	typedef char* MEMORYBLOCK;
 
 public:
 	static CPoolingManager* Instance();
 
-	/* size¸¸Å­ÀÇ charÇü Æ÷ÀÎÅÍ¸¦ count¸¸Å­ Bullet¸®½ºÆ®¿¡ add */
+	/* sizeë§Œí¼ì˜ charí˜• í¬ì¸í„°ë¥¼ countë§Œí¼ Bulletë¦¬ìŠ¤íŠ¸ì— add */
 	void CreateBulletList(size_t count, size_t size);
 	void CreateShooterList(size_t count, size_t size);
 
 
-	/* poolÀÌ º¸À¯ÇÑ ¸Þ¸ð¸® ¸®½ºÆ®°¡ »ý¼ºÇÏ·Á´Â °Íº¸´Ù ÀûÀ¸¸é »õ·Î »ý¼º */
+	/* poolì´ ë³´ìœ í•œ ë©”ëª¨ë¦¬ ë¦¬ìŠ¤íŠ¸ê°€ ìƒì„±í•˜ë ¤ëŠ” ê²ƒë³´ë‹¤ ì ìœ¼ë©´ ìƒˆë¡œ ìƒì„± */
 	void* BulletNew();
 	void* ShooterNew();
 
 
-	/* BulletÀ» ¸Þ¸ð¸®ºí·°À¸·Î ÀüÈ¯ (alive off) */
+	/* Bulletì„ ë©”ëª¨ë¦¬ë¸”ëŸ­ìœ¼ë¡œ ì „í™˜ (alive off) */
 	void Bullet_ReturnToFreeMemory(void* bullet);
 	void Shooter_ReturnToFreeMemory(void* shooter);
 
 
-	/* ¸ðµç BulletÀ» ¸Þ¸ð¸® ºí·°À¸·Î ÀüÈ¯ (alive off) */
+	/* ëª¨ë“  Bulletì„ ë©”ëª¨ë¦¬ ë¸”ëŸ­ìœ¼ë¡œ ì „í™˜ (alive off) */
 	void Bullet_ReturnToFreeMemoryAll();
 	void Shooter_ReturnToFreeMemoryAll();
 
 
-	/* ¸ðµç ¸Þ¸ð¸®¸¦ ÇØÁ¦ÇÑ´Ù. (°ÔÀÓÀÌ Á¾·áµÇ°Å³ª SceneÀÌ º¯°æµÉ¶§ È£Ãâ) */
+	/* ëª¨ë“  ë©”ëª¨ë¦¬ë¥¼ í•´ì œí•œë‹¤. (ê²Œìž„ì´ ì¢…ë£Œë˜ê±°ë‚˜ Sceneì´ ë³€ê²½ë ë•Œ í˜¸ì¶œ) */
 	void DeleteAllMemory();
 
 
 private:
-	/* size¸¸Å­ÀÇ ¸Þ¸ð¸® ºí·°À» »ý¼ºÇÑ´Ù. */
+	/* sizeë§Œí¼ì˜ ë©”ëª¨ë¦¬ ë¸”ëŸ­ì„ ìƒì„±í•œë‹¤. */
 	MEMORYBLOCK NewMemoryBlock(size_t size) const;
 
 
 	CPoolingManager();
-	/* ¸Þ¸ð¸® ºí·°À» ¸ðµÎ ÇØÁ¦ÇÑ´Ù. */
+	/* ë©”ëª¨ë¦¬ ë¸”ëŸ­ì„ ëª¨ë‘ í•´ì œí•œë‹¤. */
 	~CPoolingManager();
 
 
 private:
-	/* ¸Þ¸ð¸® ºí·° ¸®½ºÆ® */
+	/* ë©”ëª¨ë¦¬ ë¸”ëŸ­ ë¦¬ìŠ¤íŠ¸ */
 	std::vector<MEMORYBLOCK> m_BulletList;
 	std::vector<MEMORYBLOCK> m_ShooterList;
 
-	/* ¸Þ¸ð¸® ºí·° ÇÏ³ª ´ç Å©±â */
+	/* ë©”ëª¨ë¦¬ ë¸”ëŸ­ í•˜ë‚˜ ë‹¹ í¬ê¸° */
 	size_t m_BulletSize;
 	size_t m_ShooterSize;
 };

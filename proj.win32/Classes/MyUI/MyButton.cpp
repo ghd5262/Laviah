@@ -1,10 +1,10 @@
 #include "MyButton.h"
 
 CMyButton::CMyButton(
-	std::string textureName,					// ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-	eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-	const std::function<void(void)> &func,		// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
-	int effect)									// ¹öÆ° ÀÌÆåÆ®
+	std::string textureName,					// ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+	eMYBUTTON_STATE state,						// ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+	const std::function<void(void)> &func,		// ëŒë‹¤ í˜¹ì€ í•¨ìˆ˜í¬ì¸í„° í˜¹ì€ í•¨ìˆ˜ê°ì²´ ì „ë‹¬(ë§¤ê°œ ë³€ìˆ˜ëŠ” void)
+	int effect)									// ë²„íŠ¼ ì´í™íŠ¸
 	: m_NormalTextureName(textureName)
 	, m_SelectedTextureName("")
 	, m_LabelString("")
@@ -19,10 +19,10 @@ CMyButton::CMyButton(
 }
 
 CMyButton::CMyButton(
-	std::string normalTextureName,				// ¼±ÅÃ Àü ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-	std::string selectedTextureName,			// ¼±ÅÃ Áß ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-	eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-	const std::function<void(void)> &func)		// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
+	std::string normalTextureName,				// ì„ íƒ ì „ ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+	std::string selectedTextureName,			// ì„ íƒ ì¤‘ ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+	eMYBUTTON_STATE state,						// ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+	const std::function<void(void)> &func)		// ëŒë‹¤ í˜¹ì€ í•¨ìˆ˜í¬ì¸í„° í˜¹ì€ í•¨ìˆ˜ê°ì²´ ì „ë‹¬(ë§¤ê°œ ë³€ìˆ˜ëŠ” void)
 	: m_NormalTextureName(normalTextureName)		
 	, m_SelectedTextureName(selectedTextureName)
 	, m_LabelString("")
@@ -37,13 +37,13 @@ CMyButton::CMyButton(
 }
 
 CMyButton::CMyButton(
-	std::string normalTextureName,				// ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-	std::string labelString,					// ¹öÆ°ÀÇ label ³»¿ë
-	int fontSize,								// ÆùÆ® »çÀÌÁî
-	Color3B fontColor,							// ÆùÆ® »ö»ó
-	eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-	const std::function<void(void)> &func,		// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
-	int effect)									// ¹öÆ° ÀÌÆåÆ®
+	std::string normalTextureName,				// ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+	std::string labelString,					// ë²„íŠ¼ì˜ label ë‚´ìš©
+	int fontSize,								// í°íŠ¸ ì‚¬ì´ì¦ˆ
+	Color3B fontColor,							// í°íŠ¸ ìƒ‰ìƒ
+	eMYBUTTON_STATE state,						// ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+	const std::function<void(void)> &func,		// ëŒë‹¤ í˜¹ì€ í•¨ìˆ˜í¬ì¸í„° í˜¹ì€ í•¨ìˆ˜ê°ì²´ ì „ë‹¬(ë§¤ê°œ ë³€ìˆ˜ëŠ” void)
+	int effect)									// ë²„íŠ¼ ì´í™íŠ¸
 	: m_NormalTextureName(normalTextureName)
 	, m_SelectedTextureName("")
 	, m_LabelString(labelString)
@@ -174,8 +174,8 @@ bool CMyButton::initVariable()
 	return true;
 }
 
-/* »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
- * ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void) */
+/* ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+ * ëŒë‹¤ í˜¹ì€ í•¨ìˆ˜í¬ì¸í„° í˜¹ì€ í•¨ìˆ˜ê°ì²´ ì „ë‹¬(ë§¤ê°œ ë³€ìˆ˜ëŠ” void) */
 void CMyButton::AddState(eMYBUTTON_STATE state,
 	const std::function<void(void)> &func)
 {
@@ -201,7 +201,7 @@ void CMyButton::AddState(eMYBUTTON_STATE state,
 }
 
 
-/* ¹öÆ° ´­¸± ¶§ Effect ½ÇÇà*/
+/* ë²„íŠ¼ ëˆŒë¦´ ë•Œ Effect ì‹¤í–‰*/
 void CMyButton::btnEffectStart()
 {
 	if (m_pNormalTexture == nullptr)
@@ -244,13 +244,13 @@ void CMyButton::btnEffectStart()
 }
 
 
-/* ¹öÆ° ¶³¾îÁú ¶§ Effect ½ÇÇà */
+/* ë²„íŠ¼ ë–¨ì–´ì§ˆ ë•Œ Effect ì‹¤í–‰ */
 void CMyButton::btnEffectEnd()
 {
 	if (m_pNormalTexture == nullptr)
 		CCASSERT(false, "WRONG ACCESS PLEASE CHECK THE BTN TEXTURE");
 
-	// ¿ø »óÅÂ·Î º¹±¸
+	// ì› ìƒíƒœë¡œ ë³µêµ¬
 	m_pNormalTexture->setOpacity(255.f);
 	m_pNormalTexture->setColor(Color3B::WHITE);
 	m_pNormalTexture->setScale(1.f);
@@ -267,29 +267,29 @@ void CMyButton::btnEffectEnd()
 }
 
 
-/* ÅÍÄ¡µÈ ÁÂÇ¥¸¦ ¹öÆ°ÀÇ ÁÂÇ¥·Î º¯È¯ ÇÑ ÈÄ¿¡ ¹öÆ°ÀÌ ÅÍÄ¡µÇ¾ú´ÂÁö °Ë»ç */
+/* í„°ì¹˜ëœ ì¢Œí‘œë¥¼ ë²„íŠ¼ì˜ ì¢Œí‘œë¡œ ë³€í™˜ í•œ í›„ì— ë²„íŠ¼ì´ í„°ì¹˜ë˜ì—ˆëŠ”ì§€ ê²€ì‚¬ */
 bool CMyButton::touchHits(Touch  *touch)
 {
 	const Rect area(0, 0, m_pNormalTexture->getContentSize().width,
 		m_pNormalTexture->getContentSize().height);
 
-	// world to nodespace ÁÂÇ¥ º¯È¯
+	// world to nodespace ì¢Œí‘œ ë³€í™˜
 	return area.containsPoint(m_pNormalTexture->convertToNodeSpace(touch->getLocation()));
 }
 
-/* ¹öÆ°ÀÌ ´­·ÈÀ» ¶§ BEGIN */
+/* ë²„íŠ¼ì´ ëˆŒë ¸ì„ ë•Œ BEGIN */
 bool CMyButton::onTouchBegan(Touch  *touch, Event  *event)
 {
 	CC_UNUSED_PARAM(event);
 	if (m_pNormalTexture){
 
-		// ÁÂÇ¥ º¯È¯ ÈÄ ÅÍÄ¡ Ã¼Å©
+		// ì¢Œí‘œ ë³€í™˜ í›„ í„°ì¹˜ ì²´í¬
 		m_IsSelect = touchHits(touch);
 
-		// ¹öÆ°ÀÇ ÁÂÇ¥¿¡¼­ ÁøÂ¥·Î ÅÍÄ¡µÇ¾úÀ» °æ¿ì
+		// ë²„íŠ¼ì˜ ì¢Œí‘œì—ì„œ ì§„ì§œë¡œ í„°ì¹˜ë˜ì—ˆì„ ê²½ìš°
 		if (m_IsSelect){
 
-			// BEGIN »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+			// BEGIN ìƒíƒœì¼ë•Œ í˜¸ì¶œí•´ì•¼í•  í•¨ìˆ˜ê°€ ìˆë‹¤ë©´ í˜¸ì¶œ
 			std::for_each(m_BeginFuncList.begin(), m_BeginFuncList.end(),
 				[](const std::function<void(void)> &func){
 				func();
@@ -301,19 +301,19 @@ bool CMyButton::onTouchBegan(Touch  *touch, Event  *event)
 	return m_IsSelect;
 }
 
-/* ¹öÆ°¿¡¼­ ¶³¾îÁ³À» ¶§ END */
+/* ë²„íŠ¼ì—ì„œ ë–¨ì–´ì¡Œì„ ë•Œ END */
 void CMyButton::onTouchEnded(Touch  *touch, Event  *event)
 {
 	CC_UNUSED_PARAM(event);
 	if (m_pNormalTexture){
 
-		// ÁÂÇ¥ º¯È¯ ÈÄ ÅÍÄ¡ Ã¼Å©
+		// ì¢Œí‘œ ë³€í™˜ í›„ í„°ì¹˜ ì²´í¬
 		m_IsSelect = touchHits(touch);
 
-		// ¹öÆ°ÀÇ ÁÂÇ¥¿¡¼­ ÁøÂ¥·Î ÅÍÄ¡µÇ¾úÀ» °æ¿ì
+		// ë²„íŠ¼ì˜ ì¢Œí‘œì—ì„œ ì§„ì§œë¡œ í„°ì¹˜ë˜ì—ˆì„ ê²½ìš°
 		if (m_IsSelect){
 
-			// END »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+			// END ìƒíƒœì¼ë•Œ í˜¸ì¶œí•´ì•¼í•  í•¨ìˆ˜ê°€ ìˆë‹¤ë©´ í˜¸ì¶œ
 			std::for_each(m_EndFuncList.begin(), m_EndFuncList.end(),
 				[](const std::function<void(void)> &func){
 				func();
@@ -322,18 +322,18 @@ void CMyButton::onTouchEnded(Touch  *touch, Event  *event)
 		}
 		btnEffectEnd();
 
-		// ¹öÆ° ´­¸² Á¾·á
+		// ë²„íŠ¼ ëˆŒë¦¼ ì¢…ë£Œ
 		m_IsSelect = false;
 	}
 }
 
-/* ¹öÆ°ÀÌ ´­¸®°í ÀÖ´Â ÁßÀÏ¶§ EXECUTE */
+/* ë²„íŠ¼ì´ ëˆŒë¦¬ê³  ìˆëŠ” ì¤‘ì¼ë•Œ EXECUTE */
 void CMyButton::Execute(float delta)
 {
-	// ¹öÆ° ´­¸² »óÅÂÀÌ¸ç, EXECUTE »óÅÂÀÏ ¶§ ½ÇÇàµÇ¾î¾ß ÇÒ ÇÔ¼ö°¡ 1°³ ÀÌ»óÀÏ ¶§
+	// ë²„íŠ¼ ëˆŒë¦¼ ìƒíƒœì´ë©°, EXECUTE ìƒíƒœì¼ ë•Œ ì‹¤í–‰ë˜ì–´ì•¼ í•  í•¨ìˆ˜ê°€ 1ê°œ ì´ìƒì¼ ë•Œ
 	if (m_IsSelect && m_ExecuteFuncList.size())
 	{
-		// EXECUTE »óÅÂÀÏ¶§ È£ÃâÇØ¾ßÇÒ ÇÔ¼ö°¡ ÀÖ´Ù¸é È£Ãâ
+		// EXECUTE ìƒíƒœì¼ë•Œ í˜¸ì¶œí•´ì•¼í•  í•¨ìˆ˜ê°€ ìˆë‹¤ë©´ í˜¸ì¶œ
 		std::for_each(m_ExecuteFuncList.begin(), m_ExecuteFuncList.end(),
 			[](const std::function<void(void)> &func){
 			func();

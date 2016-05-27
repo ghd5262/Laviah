@@ -10,18 +10,18 @@ public:
 	bool IsHit(CGameObject* mover);
 	bool IsHit(Vec2 pos, float radius);
 
-	/* ReturnToMemoryBlock() - °¢ÀÚ ÆÄ»ıÅ¬·¡½º´Â ¹İµå½Ã ÀçÁ¤ÀÇ ÇØÁÖ¾î¾ßÇÑ´Ù.
-	 * ¸Ş¸ğ¸® ºí·°À¸·Î µÇµ¹¸®´Â ÇÔ¼ö ÀÌ´Ù. 
-	 * Alive = false, this¸¦ parent·ÎºÎÅÍ Á¦°Å, visible = false¸¦ ¼öÇàÇÑ´Ù. */
+	/* ReturnToMemoryBlock() - ê°ì íŒŒìƒí´ë˜ìŠ¤ëŠ” ë°˜ë“œì‹œ ì¬ì •ì˜ í•´ì£¼ì–´ì•¼í•œë‹¤.
+	 * ë©”ëª¨ë¦¬ ë¸”ëŸ­ìœ¼ë¡œ ë˜ëŒë¦¬ëŠ” í•¨ìˆ˜ ì´ë‹¤. 
+	 * Alive = false, thisë¥¼ parentë¡œë¶€í„° ì œê±°, visible = falseë¥¼ ìˆ˜í–‰í•œë‹¤. */
 	virtual void ReturnToMemoryBlock() = 0;	
 
 
 	/* Delete() 
-	 * this¸¦ ºÎ¸ğ·ÎºÎÅÍ Á¦°ÅÇÑ´Ù.
-	 * ÀÌÀ¯´Â gameScene¿¡¼­ ÇÑ¹ø´õ Á¦°ÅÇÏÁö ¾Êµµ·Ï ÇÏ±â À§ÇÔ
-	 * °¢ ¿ÀºêÁ§Æ®ÀÇ operator delete¸¦ È£ÃâÇÔ 
-	 * ½ÇÁ¦ ¸Ş¸ğ¸® ÇØÁ¦´Â memorypooling¿¡¼­ ´ã´çÇÏÁö¸¸ 
-	 * ¼Ò¸êÀÚ¸¦ È£ÃâÇÏ¿© Node°è¿­ÀÌ ¾Æ´Ñ ¸Ş¸ğ¸®µéÀ» »èÁ¦ÇÏ±â À§ÇÔ */
+	 * thisë¥¼ ë¶€ëª¨ë¡œë¶€í„° ì œê±°í•œë‹¤.
+	 * ì´ìœ ëŠ” gameSceneì—ì„œ í•œë²ˆë” ì œê±°í•˜ì§€ ì•Šë„ë¡ í•˜ê¸° ìœ„í•¨
+	 * ê° ì˜¤ë¸Œì íŠ¸ì˜ operator deleteë¥¼ í˜¸ì¶œí•¨ 
+	 * ì‹¤ì œ ë©”ëª¨ë¦¬ í•´ì œëŠ” memorypoolingì—ì„œ ë‹´ë‹¹í•˜ì§€ë§Œ 
+	 * ì†Œë©¸ìë¥¼ í˜¸ì¶œí•˜ì—¬ Nodeê³„ì—´ì´ ì•„ë‹Œ ë©”ëª¨ë¦¬ë“¤ì„ ì‚­ì œí•˜ê¸° ìœ„í•¨ */
 	void Delete();
 
 
@@ -31,7 +31,7 @@ public:
 	bool HasPointer()const { return m_bHasPointer; }
 
 private:
-	bool m_bAlive;// ¸Ş¸ğ¸® Ç®ÀÇ Alive¿Í µ¿ÀÏ½Ã µÇ¾î¾ß ÇÑ´Ù.
-	bool m_bHasPointer;// ÇÑ¹øÀÌ¶óµµ createµÈÀûÀÌ ÀÖ´Ù¸é true
+	bool m_bAlive;// ë©”ëª¨ë¦¬ í’€ì˜ Aliveì™€ ë™ì¼ì‹œ ë˜ì–´ì•¼ í•œë‹¤.
+	bool m_bHasPointer;// í•œë²ˆì´ë¼ë„ createëœì ì´ ìˆë‹¤ë©´ true
 };
 

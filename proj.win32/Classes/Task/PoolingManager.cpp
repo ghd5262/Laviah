@@ -10,7 +10,7 @@ CPoolingManager::~CPoolingManager()
 	DeleteAllMemory();
 }
 
-/* ¸ğµç ¸Ş¸ğ¸®¸¦ ÇØÁ¦ÇÑ´Ù. (°ÔÀÓÀÌ Á¾·áµÇ°Å³ª SceneÀÌ º¯°æµÉ¶§ È£Ãâ) */
+/* ëª¨ë“  ë©”ëª¨ë¦¬ë¥¼ í•´ì œí•œë‹¤. (ê²Œì„ì´ ì¢…ë£Œë˜ê±°ë‚˜ Sceneì´ ë³€ê²½ë ë•Œ í˜¸ì¶œ) */
 void CPoolingManager::DeleteAllMemory()
 {
 	for (auto shooter : m_ShooterList)
@@ -28,13 +28,13 @@ void CPoolingManager::DeleteAllMemory()
 	m_BulletList.clear();
 }
 
-/* size¸¸Å­ÀÇ ¸Ş¸ğ¸® ºí·°À» »ı¼ºÇÑ´Ù. */
+/* sizeë§Œí¼ì˜ ë©”ëª¨ë¦¬ ë¸”ëŸ­ì„ ìƒì„±í•œë‹¤. */
 CPoolingManager::MEMORYBLOCK CPoolingManager::NewMemoryBlock(size_t size) const
 {
-	/* memory alive¸¦ À§ÇÑ 1¹ÙÀÌÆ® Ãß°¡ »ı¼º */
+	/* memory aliveë¥¼ ìœ„í•œ 1ë°”ì´íŠ¸ ì¶”ê°€ ìƒì„± */
 	MEMORYBLOCK block = new char[size + 1];
 
-	/* memory ÃÊ±âÈ­ ¹× memory alive = false */
+	/* memory ì´ˆê¸°í™” ë° memory alive = false */
 	memset(block, 0, size + 1);
 	return block;
 }
@@ -55,11 +55,11 @@ void CPoolingManager::CreateBulletList(size_t count, size_t size)
 	m_BulletList.reserve(m_BulletSize);
 	while (count--)
 	{
-		/* ÇÏ³ªÀÇ Å©±â°¡ size¸¸Å­ÀÇ ¸Ş¸ğ¸® ºí·°À»	count¸¸Å­ »ı¼ºÇÑ´Ù. */
+		/* í•˜ë‚˜ì˜ í¬ê¸°ê°€ sizeë§Œí¼ì˜ ë©”ëª¨ë¦¬ ë¸”ëŸ­ì„	countë§Œí¼ ìƒì„±í•œë‹¤. */
 		MEMORYBLOCK memBlock = NewMemoryBlock(m_BulletSize);
 		m_BulletList.emplace_back(memBlock);
 
-		/* ¿ÀºêÁ§Æ® ¸Å´ÏÀú ¸®½ºÆ®¿¡ Ãß°¡ÇÑ´Ù. */
+		/* ì˜¤ë¸Œì íŠ¸ ë§¤ë‹ˆì € ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€í•œë‹¤. */
 		CObjectManager::Instance()->AddBullet(memBlock);
 	}
 }
@@ -74,11 +74,11 @@ void CPoolingManager::CreateShooterList(size_t count, size_t size)
 	m_ShooterList.reserve(m_ShooterSize);
 	while (count--)
 	{
-		/* ÇÏ³ªÀÇ Å©±â°¡ size¸¸Å­ÀÇ ¸Ş¸ğ¸® ºí·°À» count¸¸Å­ »ı¼ºÇÑ´Ù. */
+		/* í•˜ë‚˜ì˜ í¬ê¸°ê°€ sizeë§Œí¼ì˜ ë©”ëª¨ë¦¬ ë¸”ëŸ­ì„ countë§Œí¼ ìƒì„±í•œë‹¤. */
 		MEMORYBLOCK memBlock = NewMemoryBlock(m_ShooterSize);
 		m_ShooterList.emplace_back(memBlock);
 
-		/* ¿ÀºêÁ§Æ® ¸Å´ÏÀú ¸®½ºÆ®¿¡ Ãß°¡ÇÑ´Ù. */
+		/* ì˜¤ë¸Œì íŠ¸ ë§¤ë‹ˆì € ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€í•œë‹¤. */
 		CObjectManager::Instance()->AddShooter(memBlock);
 	}
 }
@@ -87,22 +87,22 @@ void* CPoolingManager::BulletNew()
 {
 	for (auto bullet : m_BulletList)
 	{
-		/* ¸Ş¸ğ¸®°¡ Free(false)»óÅÂ¸é ¸Ş¸ğ¸®¸¦ »ç¿ë Áß »óÅÂ(true)·Î ÀüÈ¯ ÈÄ ¹İÈ¯ */
+		/* ë©”ëª¨ë¦¬ê°€ Free(false)ìƒíƒœë©´ ë©”ëª¨ë¦¬ë¥¼ ì‚¬ìš© ì¤‘ ìƒíƒœ(true)ë¡œ ì „í™˜ í›„ ë°˜í™˜ */
 		if (false == bullet[m_BulletSize]) {
 			bullet[m_BulletSize] = true;
 			return bullet;
 		}
 	}
 
-	/* ¸ğµç ¸Ş¸ğ¸®°¡ »ç¿ë Áß »óÅÂ¶ó¸é »õ·Ó°Ô ÇÏ³ª »ı¼º */
+	/* ëª¨ë“  ë©”ëª¨ë¦¬ê°€ ì‚¬ìš© ì¤‘ ìƒíƒœë¼ë©´ ìƒˆë¡­ê²Œ í•˜ë‚˜ ìƒì„± */
 	CCLOG("BULLET LIST OVERFLOWED");
 	MEMORYBLOCK memBlock = NewMemoryBlock(m_BulletSize);
 	m_BulletList.emplace_back(memBlock);
 
-	/* ¿ÀºêÁ§Æ® ¸Å´ÏÀú ¸®½ºÆ®¿¡ Ãß°¡ÇÑ´Ù. */
+	/* ì˜¤ë¸Œì íŠ¸ ë§¤ë‹ˆì € ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€í•œë‹¤. */
 	CObjectManager::Instance()->AddBullet(memBlock);
 
-	/* ¸Ş¸ğ¸®¸¦ »ç¿ë Áß »óÅÂ·Î ÀüÈ¯ */
+	/* ë©”ëª¨ë¦¬ë¥¼ ì‚¬ìš© ì¤‘ ìƒíƒœë¡œ ì „í™˜ */
 	memBlock[m_BulletSize] = true;
 
 	return memBlock;
@@ -112,35 +112,35 @@ void* CPoolingManager::ShooterNew()
 {
 	for (auto shooter : m_ShooterList)
 	{
-		/* ¸Ş¸ğ¸®°¡ Free(false)»óÅÂ¸é ¸Ş¸ğ¸®¸¦ »ç¿ë Áß »óÅÂ(true)·Î ÀüÈ¯ ÈÄ ¹İÈ¯ */
+		/* ë©”ëª¨ë¦¬ê°€ Free(false)ìƒíƒœë©´ ë©”ëª¨ë¦¬ë¥¼ ì‚¬ìš© ì¤‘ ìƒíƒœ(true)ë¡œ ì „í™˜ í›„ ë°˜í™˜ */
 		if (false == shooter[m_ShooterSize]) {
 			shooter[m_ShooterSize] = true;
 			return shooter;
 		}
 	}
 
-	/* ¸ğµç ¸Ş¸ğ¸®°¡ »ç¿ë Áß »óÅÂ¶ó¸é »õ·Ó°Ô ÇÏ³ª »ı¼º */
+	/* ëª¨ë“  ë©”ëª¨ë¦¬ê°€ ì‚¬ìš© ì¤‘ ìƒíƒœë¼ë©´ ìƒˆë¡­ê²Œ í•˜ë‚˜ ìƒì„± */
 	CCLOG("SHOOTER LIST OVERFLOWED");
 	MEMORYBLOCK memBlock = NewMemoryBlock(m_ShooterSize);
 	m_ShooterList.emplace_back(memBlock);
 
-	/* ¿ÀºêÁ§Æ® ¸Å´ÏÀú ¸®½ºÆ®¿¡ Ãß°¡ÇÑ´Ù. */
+	/* ì˜¤ë¸Œì íŠ¸ ë§¤ë‹ˆì € ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€í•œë‹¤. */
 	CObjectManager::Instance()->AddShooter(memBlock);
 
-	/* ¸Ş¸ğ¸®¸¦ »ç¿ë Áß »óÅÂ·Î ÀüÈ¯ */
+	/* ë©”ëª¨ë¦¬ë¥¼ ì‚¬ìš© ì¤‘ ìƒíƒœë¡œ ì „í™˜ */
 	memBlock[m_BulletSize] = true;
 
 	return memBlock;
 }
 
-/* BulletÀ» ¸Ş¸ğ¸®ºí·°À¸·Î ÀüÈ¯ ( free »óÅÂ ) */
+/* Bulletì„ ë©”ëª¨ë¦¬ë¸”ëŸ­ìœ¼ë¡œ ì „í™˜ ( free ìƒíƒœ ) */
 void CPoolingManager::Bullet_ReturnToFreeMemory(void* bullet)
 {
 	static_cast<char*>(bullet)[m_BulletSize] = false;
 	//memset(bullet, 0, m_BulletSize + 1);
 }
 
-/* shooter¸¦ ¸Ş¸ğ¸®ºí·°À¸·Î ÀüÈ¯ ( free »óÅÂ ) */
+/* shooterë¥¼ ë©”ëª¨ë¦¬ë¸”ëŸ­ìœ¼ë¡œ ì „í™˜ ( free ìƒíƒœ ) */
 void CPoolingManager::Shooter_ReturnToFreeMemory(void* shooter)
 {
 	static_cast<char*>(shooter)[m_ShooterSize] = false;

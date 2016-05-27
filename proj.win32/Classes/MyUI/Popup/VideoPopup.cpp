@@ -30,6 +30,10 @@ bool CVideoPopup::initVariable()
 		m_BG->setPosition(Vec2::ZERO);
 		m_Popup->addChild(m_BG);
 
+        CGameScene::getGameScene()->CountDown(10, "0", [this](){
+            CGameScene::getGameScene()->GameEnd();
+            CSpecificPopupBase::PopupClose();
+        });
 		
 		/* revive label*/
 		auto reviveLabel = Label::createWithTTF("Revive", "fonts/malgunbd.ttf", 80);
@@ -43,24 +47,24 @@ bool CVideoPopup::initVariable()
 		}
 
 		/* Video */
-		auto watchVideoBG = CMyButton::create(
+		m_btnVideo = CMyButton::create(
 			"resultPopup_1.png",
 			END, 
 			std::bind(&CVideoPopup::Video, this),
 			EFFECT_SIZEDOWN);
 
-		if (watchVideoBG != nullptr){
-			watchVideoBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			watchVideoBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.5f));
-			m_BG->addChild(watchVideoBG);
-			watchVideoBG->setOpacity(0);
-			watchVideoBG->setCascadeOpacityEnabled(true);
+		if (m_btnVideo != nullptr){
+			m_btnVideo->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_btnVideo->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.3f));
+			m_BG->addChild(m_btnVideo);
+			m_btnVideo->setOpacity(0);
+			m_btnVideo->setCascadeOpacityEnabled(true);
 			auto watchVideoIcon = Sprite::create("videoIcon.png");
 			if (watchVideoIcon != nullptr)
 			{
 				watchVideoIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				watchVideoIcon->setPosition(Vec2(- watchVideoBG->getContentSize().width * 0.18f, 0));
-				watchVideoBG->addChild(watchVideoIcon);
+				watchVideoIcon->setPosition(Vec2(- m_btnVideo->getContentSize().width * 0.18f, 0));
+				m_btnVideo->addChild(watchVideoIcon);
 				watchVideoIcon->setColor(g_labelColor1);
 			}
 
@@ -68,31 +72,31 @@ bool CVideoPopup::initVariable()
 			if (watchVideoLabel != nullptr){
 				watchVideoLabel->setColor(g_labelColor1);
 				watchVideoLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-				watchVideoLabel->setPosition(Vec2(- watchVideoBG->getContentSize().width * 0.13f, 0));
-				watchVideoBG->addChild(watchVideoLabel);
+				watchVideoLabel->setPosition(Vec2(- m_btnVideo->getContentSize().width * 0.13f, 0));
+				m_btnVideo->addChild(watchVideoLabel);
 			}
 		}
 
 
 		/* Use Coin */
-		auto useCoinBG = CMyButton::create(
+		m_btnUseCoin = CMyButton::create(
 			"resultPopup_1.png",
 			END,
 			std::bind(&CVideoPopup::UseCoin, this),
 			EFFECT_SIZEDOWN);
 
-		if (useCoinBG != nullptr){
-			useCoinBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			useCoinBG->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.4f));
-			m_BG->addChild(useCoinBG);
-			useCoinBG->setOpacity(0);
-			useCoinBG->setCascadeOpacityEnabled(true);
+		if (m_btnUseCoin != nullptr){
+			m_btnUseCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_btnUseCoin->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.2f));
+			m_BG->addChild(m_btnUseCoin);
+			m_btnUseCoin->setOpacity(0);
+			m_btnUseCoin->setCascadeOpacityEnabled(true);
 			auto useCoinIcon = Sprite::create("coin_5.png");
 			if (useCoinIcon != nullptr)
 			{
 				useCoinIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				useCoinIcon->setPosition(Vec2(- useCoinBG->getContentSize().width * 0.18f, 0));
-				useCoinBG->addChild(useCoinIcon);
+				useCoinIcon->setPosition(Vec2(- m_btnUseCoin->getContentSize().width * 0.18f, 0));
+				m_btnUseCoin->addChild(useCoinIcon);
 				useCoinIcon->setColor(g_labelColor3);
 			}
 
@@ -100,8 +104,8 @@ bool CVideoPopup::initVariable()
 			if (useCoinLabel != nullptr){
 				useCoinLabel->setColor(g_labelColor3);
 				useCoinLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-				useCoinLabel->setPosition(Vec2(- useCoinBG->getContentSize().width * 0.13f, 0));
-				useCoinBG->addChild(useCoinLabel);
+				useCoinLabel->setPosition(Vec2(- m_btnUseCoin->getContentSize().width * 0.13f, 0));
+				m_btnUseCoin->addChild(useCoinLabel);
 			}
 		}
 
@@ -123,17 +127,17 @@ bool CVideoPopup::initVariable()
 		m_Popup->setPopupOpenEffectFunc([=](CPopup* pausePopup){
 			auto winSize = Director::getInstance()->getWinSize();
 
-			watchVideoBG->runAction(
+			m_btnVideo->runAction(
 				Spawn::createWithTwoActions(
 				EaseExponentialOut::create(
 				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
-				m_BG->getContentSize().height * 0.7f))),
+				m_BG->getContentSize().height * 0.6f))),
 				FadeIn::create(1.f)));
-			useCoinBG->runAction(
+			m_btnUseCoin->runAction(
 				Spawn::createWithTwoActions(
 				EaseExponentialOut::create(
 				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
-				m_BG->getContentSize().height * 0.65f))),
+				m_BG->getContentSize().height * 0.55f))),
 				FadeIn::create(1.f)));
 			
 			reviveLabel->runAction(FadeIn::create(0.5f));
@@ -142,17 +146,17 @@ bool CVideoPopup::initVariable()
 		});
 
 		m_Popup->setPopupCloseEffectFunc([=](CPopup* pausePopup){
-			watchVideoBG->runAction(
+			m_btnVideo->runAction(
 				Spawn::createWithTwoActions(
 				EaseSineIn::create(
 				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
-				m_BG->getContentSize().height * 0.5f))),
+				m_BG->getContentSize().height * 0.3f))),
 				FadeTo::create(0.2f, 0)));
-			useCoinBG->runAction(
+			m_btnUseCoin->runAction(
 				Spawn::createWithTwoActions(
 				EaseSineIn::create(
 				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
-				m_BG->getContentSize().height * 0.4f))),
+				m_BG->getContentSize().height * 0.2f))),
 				FadeTo::create(0.2f, 0)));
 			
 			reviveLabel->runAction(FadeTo::create(0.5f, 0));
@@ -173,6 +177,7 @@ bool CVideoPopup::initVariable()
 
 void CVideoPopup::End(){
 	CCLOG("format popup End");
+    CGameScene::getGameScene()->CountDownCancel();
 	CGameScene::getGameScene()->GameEnd();
 	CSpecificPopupBase::PopupClose();
 }

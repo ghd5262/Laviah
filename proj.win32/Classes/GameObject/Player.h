@@ -3,10 +3,10 @@
 #include "Bullet/Bullet.h"
 #include "../AI/StateMachine.h"
 
-/* ----------------HealthCalculatorInNormal¿¡ ´ëÇØ¼­----------------
-* PlayerÅ¬·¡½º¿¡ virtual·Î °è»ê ÇÔ¼ö¸¦ ±¸ÇöÇÒ±î ÇßÁö¸¸
-* ÀÌÈÄ ¶È°°Àº Ä³¸¯ÅÍ¶óµµ »óÈ², ¹öÇÁ, Æ¯¼º µî 
-* º¯°æ¿ä¼Ò ¸¶´Ù ´Ù¸£°Ô Àû¿ë½ÃÅ°°í ½Í¾î¼­ Äİ¹éÇÔ¼ö·Î ±¸ÇöÇÔ
+/* ----------------HealthCalculatorInNormalì— ëŒ€í•´ì„œ----------------
+* Playerí´ë˜ìŠ¤ì— virtualë¡œ ê³„ì‚° í•¨ìˆ˜ë¥¼ êµ¬í˜„í• ê¹Œ í–ˆì§€ë§Œ
+* ì´í›„ ë˜‘ê°™ì€ ìºë¦­í„°ë¼ë„ ìƒí™©, ë²„í”„, íŠ¹ì„± ë“± 
+* ë³€ê²½ìš”ì†Œ ë§ˆë‹¤ ë‹¤ë¥´ê²Œ ì ìš©ì‹œí‚¤ê³  ì‹¶ì–´ì„œ ì½œë°±í•¨ìˆ˜ë¡œ êµ¬í˜„í•¨
 *-----------------------------------------------------------------*/
 
 class CScoreUI;
@@ -32,26 +32,26 @@ public:
 	void NormalMode();
 	void Rotation(float dir, float delta);
 	
-	//ÀÎÀÚ·Î Àü´ŞµÈ ¾ÆÀÌÅÛÀÇ ¿µÇâÀ» ¹Ş´Â´Ù
+	//ì¸ìë¡œ ì „ë‹¬ëœ ì•„ì´í…œì˜ ì˜í–¥ì„ ë°›ëŠ”ë‹¤
 	void setItemEffect(int item){ m_EffectItemTypes |= item; }
 
-	//ÀÎÀÚ·Î Àü´ŞµÈ ¾ÆÀÌÅÛÀÇ ¿µÇâÀ» ¹Ş´Â bulletÀÎÁö °Ë»çÇÑ´Ù.
+	//ì¸ìë¡œ ì „ë‹¬ëœ ì•„ì´í…œì˜ ì˜í–¥ì„ ë°›ëŠ” bulletì¸ì§€ ê²€ì‚¬í•œë‹¤.
 	bool isEffectWithItem(eITEM_FLAG itemType){ return on(itemType); }
 
-	//ÇöÀç bulletÀÌ ¿µÇâÀ» ¹Ş´Â ¸ğµç ÇÃ·¡±×¸¦ ¹İÈ¯ÇÔ
+	//í˜„ì¬ bulletì´ ì˜í–¥ì„ ë°›ëŠ” ëª¨ë“  í”Œë˜ê·¸ë¥¼ ë°˜í™˜í•¨
 	int getItemEffect(){ return m_EffectItemTypes; }
 
 	//callback
-	float HealthCalculatorInNormal(float delta);	// Æò¼Ò¿¡ Àû¿ëµÇ´Â »ı¸í·Â °è»êÇÔ¼ö
-	float HealthCalculatorInBonusTime(float delta); // º¸³Ê½º Å¸ÀÓ¿¡ Àû¿ëµÇ´Â »ı¸í·Â °è»êÇÔ¼ö
+	float HealthCalculatorInNormal(float delta);	// í‰ì†Œì— ì ìš©ë˜ëŠ” ìƒëª…ë ¥ ê³„ì‚°í•¨ìˆ˜
+	float HealthCalculatorInBonusTime(float delta); // ë³´ë„ˆìŠ¤ íƒ€ì„ì— ì ìš©ë˜ëŠ” ìƒëª…ë ¥ ê³„ì‚°í•¨ìˆ˜
 	
-	// ÁÂ¿ì·Î Èçµé¸²
+	// ì¢Œìš°ë¡œ í”ë“¤ë¦¼
 	void StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount);
 
-	// °ÔÀÓ ½ÃÀÛÇÒ ¶§
+	// ê²Œì„ ì‹œì‘í•  ë•Œ
 	void PlayerAlive();
 
-	// °ÔÀÓ ³¡³µÀ» ¶§
+	// ê²Œì„ ëë‚¬ì„ ë•Œ
 	void PlayerDead();
 
 	//getter & setter
@@ -99,7 +99,7 @@ private:
     CScoreUI* m_pUIRunScore;
     CMagnetEffect* m_MagnetEffect;
     
-	// ¿µÇâÀ» ¹Ş´Â ¾ÆÀÌÅÛ Å¸ÀÔ 
-	// ex) m_EffectItemType == eITEM_TYPE_magnet ÀÌ¸é ÀÚ¼®¾ÆÀÌÅÛ¿¡°Ô ¿µÇâ·ÂÀ» ¹Ş´Â´Ù.
+	// ì˜í–¥ì„ ë°›ëŠ” ì•„ì´í…œ íƒ€ì… 
+	// ex) m_EffectItemType == eITEM_TYPE_magnet ì´ë©´ ìì„ì•„ì´í…œì—ê²Œ ì˜í–¥ë ¥ì„ ë°›ëŠ”ë‹¤.
 	int m_EffectItemTypes;
 };

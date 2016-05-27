@@ -24,7 +24,9 @@ public:
 	void GameResume();
 	void GameEnd();
 	void watchVideo();
-
+    void CountDown(int count, std::string finMent = "0", const std::function<void(void)> &func = nullptr);
+    void CountDownCancel();
+    
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
 	static cocos2d::NodeGrid* getGridWorld(){ return m_GridWorld; }
@@ -33,7 +35,6 @@ protected:
 	virtual bool init() override;
 
 private:
-	void countDownLabel();
 	bool initVariable();
 	void InitGameSceneUI();
 	void menuCloseCallback(cocos2d::Ref* pSender);

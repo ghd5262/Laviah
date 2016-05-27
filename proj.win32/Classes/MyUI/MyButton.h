@@ -3,11 +3,11 @@
 #include <vector>
 /*--------------------------CMyButton--------------------------
 * strategy pattern
-* texture È¤Àº label·Î ÃÊ±âÈ­ÇÏ¿© »ç¿ëÇÏ´Â Button
-* LambdaÈ¤Àº ÇÔ¼öÆ÷ÀÎÅÍ, ÇÔ¼ö°´Ã¼¸¦ ÀÎÀÚ·Î ¹Ş´Â´Ù.
-* ´­·¶À»¶§ Ã¼Å©
-* ´©¸£°í ÀÖÀ» ¶§ Ã¼Å©
-* ³¡³µÀ» ¶§ Ã¼Å©
+* texture í˜¹ì€ labelë¡œ ì´ˆê¸°í™”í•˜ì—¬ ì‚¬ìš©í•˜ëŠ” Button
+* Lambdaí˜¹ì€ í•¨ìˆ˜í¬ì¸í„°, í•¨ìˆ˜ê°ì²´ë¥¼ ì¸ìë¡œ ë°›ëŠ”ë‹¤.
+* ëˆŒë €ì„ë•Œ ì²´í¬
+* ëˆ„ë¥´ê³  ìˆì„ ë•Œ ì²´í¬
+* ëë‚¬ì„ ë•Œ ì²´í¬
 --------------------------------------------------------------*/
 
 enum eMYBUTTON_STATE{
@@ -30,38 +30,38 @@ enum eMYBUTTON_EFFECT_FLAG{
 class CMyButton : public CGameObject
 {
 public:
-	/* ±âº» ¹öÆ° »ı¼º */
+	/* ê¸°ë³¸ ë²„íŠ¼ ìƒì„± */
 	static CMyButton* create(
-		std::string textureName,					// ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-		eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-		const std::function<void(void)> &func,		// ¶÷´Ù Àü´Ş
-		int effect = EFFECT_NONE);					// ¹öÆ° ÀÌÆåÆ®
+		std::string textureName,					// ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+		eMYBUTTON_STATE state,						// ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+		const std::function<void(void)> &func,		// ëŒë‹¤ ì „ë‹¬
+		int effect = EFFECT_NONE);					// ë²„íŠ¼ ì´í™íŠ¸
 
 
-	/* ÅØ½ºÃÄ¿Í ÇÔ²² ¹öÆ° »ı¼º
-	 * normalImg¿Í selectedImg¸¦ ÀÎÀÚ·Î Àü´Ş*/
+	/* í…ìŠ¤ì³ì™€ í•¨ê»˜ ë²„íŠ¼ ìƒì„±
+	 * normalImgì™€ selectedImgë¥¼ ì¸ìë¡œ ì „ë‹¬*/
 	static CMyButton* createWithTexture(
-		std::string normalTextureName,				// ¼±ÅÃ Àü ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-		std::string selectedTextureName,			// ¼±ÅÃ Áß ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-		eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-		const std::function<void(void)> &func);		// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
+		std::string normalTextureName,				// ì„ íƒ ì „ ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+		std::string selectedTextureName,			// ì„ íƒ ì¤‘ ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+		eMYBUTTON_STATE state,						// ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+		const std::function<void(void)> &func);		// ëŒë‹¤ í˜¹ì€ í•¨ìˆ˜í¬ì¸í„° í˜¹ì€ í•¨ìˆ˜ê°ì²´ ì „ë‹¬(ë§¤ê°œ ë³€ìˆ˜ëŠ” void)
 
 
-	/* ¹®ÀÚ¿­°ú ÇÔ²² ¹öÆ° »ı¼º */
+	/* ë¬¸ìì—´ê³¼ í•¨ê»˜ ë²„íŠ¼ ìƒì„± */
 	static CMyButton* createWithString(
-		std::string normalTextureName,				// ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-		std::string labelString,					// ¹öÆ°ÀÇ label ³»¿ë
-		int fontSize,								// ÆùÆ® »çÀÌÁî
-		Color3B fontColor,							// ÆùÆ® »ö»ó
-		eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-		const std::function<void(void)> &func,		// ¶÷´Ù Àü´Ş
-		int effect = EFFECT_NONE);					// ¹öÆ° ÀÌÆåÆ®
+		std::string normalTextureName,				// ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+		std::string labelString,					// ë²„íŠ¼ì˜ label ë‚´ìš©
+		int fontSize,								// í°íŠ¸ ì‚¬ì´ì¦ˆ
+		Color3B fontColor,							// í°íŠ¸ ìƒ‰ìƒ
+		eMYBUTTON_STATE state,						// ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+		const std::function<void(void)> &func,		// ëŒë‹¤ ì „ë‹¬
+		int effect = EFFECT_NONE);					// ë²„íŠ¼ ì´í™íŠ¸
 
-	/* ¹öÆ°¿¡ Æã¼ÇÀ» Ãß°¡ */
-	void AddState(eMYBUTTON_STATE state,			// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-		const std::function<void(void)> &func);		// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
+	/* ë²„íŠ¼ì— í‘ì…˜ì„ ì¶”ê°€ */
+	void AddState(eMYBUTTON_STATE state,			// ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+		const std::function<void(void)> &func);		// ëŒë‹¤ í˜¹ì€ í•¨ìˆ˜í¬ì¸í„° í˜¹ì€ í•¨ìˆ˜ê°ì²´ ì „ë‹¬(ë§¤ê°œ ë³€ìˆ˜ëŠ” void)
 
-	/* ¹öÆ°ÀÌ °¡Áö´Â Execute callbackÇÔ¼ö È£Ãâ */
+	/* ë²„íŠ¼ì´ ê°€ì§€ëŠ” Execute callbackí•¨ìˆ˜ í˜¸ì¶œ */
 	virtual void Execute(float delta = 0.f);
 
 	virtual const Size& getContentSize() const override { 
@@ -77,50 +77,50 @@ protected:
 	virtual bool initVariable() override;
 
 private:
-	/* ÇØ´ç ¹öÆ° ¿µ¿ª¿¡ ÅÍÄ¡µÇ¾ú´ÂÁö °Ë»ç
-	* world to nodespace ÁÂÇ¥ º¯È¯ */
+	/* í•´ë‹¹ ë²„íŠ¼ ì˜ì—­ì— í„°ì¹˜ë˜ì—ˆëŠ”ì§€ ê²€ì‚¬
+	* world to nodespace ì¢Œí‘œ ë³€í™˜ */
 	bool touchHits(Touch  *touch);
 
-	/* ¹öÆ°ÀÌ °¡Áö´Â Begin callbackÇÔ¼ö È£Ãâ */
+	/* ë²„íŠ¼ì´ ê°€ì§€ëŠ” Begin callbackí•¨ìˆ˜ í˜¸ì¶œ */
 	bool onTouchBegan(Touch  *touch, Event  *event);
 
-	/* ¹öÆ°ÀÌ °¡Áö´Â End callbackÇÔ¼ö È£Ãâ */
+	/* ë²„íŠ¼ì´ ê°€ì§€ëŠ” End callbackí•¨ìˆ˜ í˜¸ì¶œ */
 	void onTouchEnded(Touch  *touch, Event  *event);
 
-	/* ¹öÆ° ´­¸± ¶§ Effect ½ÇÇà*/
+	/* ë²„íŠ¼ ëˆŒë¦´ ë•Œ Effect ì‹¤í–‰*/
 	void btnEffectStart();
 
-	/* ¹öÆ° ¶³¾îÁú ¶§ Effect ½ÇÇà */
+	/* ë²„íŠ¼ ë–¨ì–´ì§ˆ ë•Œ Effect ì‹¤í–‰ */
 	void btnEffectEnd();
 
 	bool onEffect(eMYBUTTON_EFFECT_FLAG effect){ return (m_ButtonEffect & effect) == effect; }
 
 	CMyButton(
-		std::string textureName,					// ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-		eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-		const std::function<void(void)> &func,		// ¶÷´Ù Àü´Ş
-		int effect);								// ¹öÆ° ÀÌÆåÆ®
+		std::string textureName,					// ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+		eMYBUTTON_STATE state,						// ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+		const std::function<void(void)> &func,		// ëŒë‹¤ ì „ë‹¬
+		int effect);								// ë²„íŠ¼ ì´í™íŠ¸
 
 	CMyButton(
-		std::string normalTextureName,				// ¼±ÅÃ Àü ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-		std::string selectedTextureName,			// ¼±ÅÃ Áß ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-		eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-		const std::function<void(void)> &func);		// ¶÷´Ù Àü´Ş
+		std::string normalTextureName,				// ì„ íƒ ì „ ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+		std::string selectedTextureName,			// ì„ íƒ ì¤‘ ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+		eMYBUTTON_STATE state,						// ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+		const std::function<void(void)> &func);		// ëŒë‹¤ ì „ë‹¬
 
 	CMyButton(
-		std::string normalTextureName,				// ¹öÆ°ÀÇ ÅØ½ºÃÄ ÀÌ¸§
-		std::string labelString,					// ¹öÆ°ÀÇ label ³»¿ë
-		int fontSize,								// ÆùÆ® »çÀÌÁî
-		Color3B fontColor,							// ÆùÆ® »ö»ó
-		eMYBUTTON_STATE state,						// »óÅÂ (ÇØ´ç »óÅÂÀÏ ¶§ ÇÔ¼ö È£ÃâµÊ)
-		const std::function<void(void)> &func,		// ¶÷´Ù È¤Àº ÇÔ¼öÆ÷ÀÎÅÍ È¤Àº ÇÔ¼ö°´Ã¼ Àü´Ş(¸Å°³ º¯¼ö´Â void)
-		int effect);								// ¹öÆ° ÀÌÆåÆ®
+		std::string normalTextureName,				// ë²„íŠ¼ì˜ í…ìŠ¤ì³ ì´ë¦„
+		std::string labelString,					// ë²„íŠ¼ì˜ label ë‚´ìš©
+		int fontSize,								// í°íŠ¸ ì‚¬ì´ì¦ˆ
+		Color3B fontColor,							// í°íŠ¸ ìƒ‰ìƒ
+		eMYBUTTON_STATE state,						// ìƒíƒœ (í•´ë‹¹ ìƒíƒœì¼ ë•Œ í•¨ìˆ˜ í˜¸ì¶œë¨)
+		const std::function<void(void)> &func,		// ëŒë‹¤ í˜¹ì€ í•¨ìˆ˜í¬ì¸í„° í˜¹ì€ í•¨ìˆ˜ê°ì²´ ì „ë‹¬(ë§¤ê°œ ë³€ìˆ˜ëŠ” void)
+		int effect);								// ë²„íŠ¼ ì´í™íŠ¸
 		
 	virtual ~CMyButton(){};
 
 private:
-	/* lambda, ÇÔ¼ö Æ÷ÀÎÅÍ¸¦ ¸®½ºÆ®·Î ÀúÀå
-	* °¢ »óÅÂÀÏ ¶§ È£ÃâÇÒ ÇÔ¼ö¸¦ ÀúÀåÇÏ´Â ¸®½ºÆ® */
+	/* lambda, í•¨ìˆ˜ í¬ì¸í„°ë¥¼ ë¦¬ìŠ¤íŠ¸ë¡œ ì €ì¥
+	* ê° ìƒíƒœì¼ ë•Œ í˜¸ì¶œí•  í•¨ìˆ˜ë¥¼ ì €ì¥í•˜ëŠ” ë¦¬ìŠ¤íŠ¸ */
 	std::vector<std::function<void(void)>> m_BeginFuncList;
 	std::vector<std::function<void(void)>> m_ExecuteFuncList;
 	std::vector<std::function<void(void)>> m_EndFuncList;
@@ -131,6 +131,6 @@ private:
 	Color3B m_FontColor;
 	int m_FontSize;
 	int m_ButtonEffect;
-	bool m_IsSelect;	//¼±ÅÃµÇ¾ú´ÂÁö (¼±ÅÃÁßÀÌ¶óµµ true)
+	bool m_IsSelect;	//ì„ íƒë˜ì—ˆëŠ”ì§€ (ì„ íƒì¤‘ì´ë¼ë„ true)
 };
 

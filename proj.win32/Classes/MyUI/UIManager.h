@@ -3,9 +3,9 @@
 #include <map>
 
 /*------------------------------ UIManager ------------------------------
-* singleton Å¬·¡½º
-* AddUIWithNameÇÔ¼ö´Â addChild¸¦ ÇÏÁö ¾Ê´Â´Ù.
-* ¸®½ºÆ®¿¡¸¸ µî·ÏÇÏ±â ¶§¹®¿¡ addChild´Â ÇØ´çScene¿¡¼­ ÇØÁà¾ßÇÑ´Ù.
+* singleton í´ë˜ìŠ¤
+* AddUIWithNameí•¨ìˆ˜ëŠ” addChildë¥¼ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+* ë¦¬ìŠ¤íŠ¸ì—ë§Œ ë“±ë¡í•˜ê¸° ë•Œë¬¸ì— addChildëŠ” í•´ë‹¹Sceneì—ì„œ í•´ì¤˜ì•¼í•œë‹¤.
 ------------------------------------------------------------------------*/
 
 class CGameObject;
@@ -18,7 +18,7 @@ public:
 	bool AddUIWithName(CGameObject* ui, std::string name);
 	CGameObject* FindUIWithName(std::string name) const ;
 
-	// ÃÊ±âÈ­
+	// ì´ˆê¸°í™”
 	void Clear();
 
 private:

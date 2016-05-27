@@ -75,9 +75,6 @@ public:
 	void Exit(CObjectManager* objectMng) override;
 
 private:
-	CGameCountDownState() : m_fTime(0.f){}
+	CGameCountDownState(){}
 	virtual ~CGameCountDownState(){}
-
-private:
-	float m_fTime;
 };

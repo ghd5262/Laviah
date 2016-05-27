@@ -2,24 +2,24 @@
 #include "../GameObject/GameObject.h"
 /*--------------------------CHealthBarUI--------------------------
 * strategy pattern
-* °°Àº Ä³¸¯ÅÍ¶óµµ ´Ù¸¥ Ã¼·Â°è»êÇÔ¼ö¸¦ »ç¿ëÇÒ ¼ö ÀÖµµ·Ï ±¸Çö
-* ¶§¹®¿¡ Ä³¸¯ÅÍ¿¡¼­ virtual ÇÔ¼ö·Î ±¸ÇöÇÏÁö ¾Ê°í strategy patternÀ» ÀÌ¿ë
-* Â÷ÈÄ¿¡ ´Ù¸¥Ä³¸¯ÅÍ·Î ÀÌ¾î´Ş¸®±â µîÀÇ ±â´ÉÀ» ±¸ÇöÇÒ¶§ ¿ëÀÌÇÔ
-* (ÀÚ¼¼ÇÑ °ÍÀº playerÅ¬·¡½º ÂüÁ¶)
-* LambdaÈ¤Àº ÇÔ¼öÆ÷ÀÎÅÍ, ÇÔ¼ö°´Ã¼¸¦ ÀÎÀÚ·Î ¹Ş´Â´Ù.
-* CHealthBarUI´Â Ã¶ÀúÈ÷ UI¸¸ Ç¥ÇöÇÑ´Ù.
+* ê°™ì€ ìºë¦­í„°ë¼ë„ ë‹¤ë¥¸ ì²´ë ¥ê³„ì‚°í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•  ìˆ˜ ìˆë„ë¡ êµ¬í˜„
+* ë•Œë¬¸ì— ìºë¦­í„°ì—ì„œ virtual í•¨ìˆ˜ë¡œ êµ¬í˜„í•˜ì§€ ì•Šê³  strategy patternì„ ì´ìš©
+* ì°¨í›„ì— ë‹¤ë¥¸ìºë¦­í„°ë¡œ ì´ì–´ë‹¬ë¦¬ê¸° ë“±ì˜ ê¸°ëŠ¥ì„ êµ¬í˜„í• ë•Œ ìš©ì´í•¨
+* (ìì„¸í•œ ê²ƒì€ playerí´ë˜ìŠ¤ ì°¸ì¡°)
+* Lambdaí˜¹ì€ í•¨ìˆ˜í¬ì¸í„°, í•¨ìˆ˜ê°ì²´ë¥¼ ì¸ìë¡œ ë°›ëŠ”ë‹¤.
+* CHealthBarUIëŠ” ì² ì €íˆ UIë§Œ í‘œí˜„í•œë‹¤.
 --------------------------------------------------------------*/
 
 class CPlayer;
 class CHealthBarUI : public CGameObject
 {
 public: 
-	// Ä³¸¯ÅÍ¸¶´ÙÀÇ Ã¼·Â°è»êÇÔ¼ö Æ÷ÀÎÅÍ Àü´Ş
+	// ìºë¦­í„°ë§ˆë‹¤ì˜ ì²´ë ¥ê³„ì‚°í•¨ìˆ˜ í¬ì¸í„° ì „ë‹¬
 	typedef std::function<float(float delta)> HealthCalculatorFunc;
 
 public:
 	static CHealthBarUI* create(HealthCalculatorFunc healthCalFunc);
-	// ÇÃ·¹ÀÌÁß ¹öÇÁ³ª º¸³Ê½º Å¸ÀÓ¶§ °è»ê ÇÔ¼ö º¯°æ°¡´ÉÀ§ÇØ
+	// í”Œë ˆì´ì¤‘ ë²„í”„ë‚˜ ë³´ë„ˆìŠ¤ íƒ€ì„ë•Œ ê³„ì‚° í•¨ìˆ˜ ë³€ê²½ê°€ëŠ¥ìœ„í•´
 	void ChangeHealthCalFunc(HealthCalculatorFunc healthCalFunc);	
 
 	virtual void Execute(float delta = 0.f);

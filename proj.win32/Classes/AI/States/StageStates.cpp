@@ -107,15 +107,11 @@ CGameCountDownState* CGameCountDownState::Instance(){
 }
 
 void CGameCountDownState::Enter(CObjectManager* objectMng){
-	m_fTime = 0.f;
+
 }
 
 void CGameCountDownState::Execute(CObjectManager* objectMng, float delta){
 
-	m_fTime += delta;
-
-	if (m_fTime > 3.f)
-		objectMng->getFSM()->ChangeState(CNormalStageState::Instance());
 }
 
 void CGameCountDownState::Exit(CObjectManager* objectMng){

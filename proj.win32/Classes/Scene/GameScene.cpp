@@ -176,7 +176,7 @@ void CGameScene::InitGameSceneUI()
 	m_GridWorld->addChild(menu, 103);
 
     
-    // RotationObjectLeft callback µî·Ï
+    // RotationObjectLeft callback ë“±ë¡
 	auto leftButton = CMyButton::createWithTexture(
 		"leftButton_1.png",
 		"leftButton_2.png",
@@ -191,7 +191,7 @@ void CGameScene::InitGameSceneUI()
 	if (!CUIManager::Instance()->AddUIWithName(leftButton, "LButton"))
 		CCASSERT(false, "LBUTTON CAN NOT INIT");
 
-	// RotationObjectRight callback µî·Ï
+	// RotationObjectRight callback ë“±ë¡
 	auto rightButton = CMyButton::createWithTexture(
 		"rightButton_1.png",
 		"rightButton_2.png",
@@ -206,9 +206,9 @@ void CGameScene::InitGameSceneUI()
 	if (!CUIManager::Instance()->AddUIWithName(rightButton, "RButton"))
 		CCASSERT(false, "RBUTTON CAN NOT INIT");
 
-	// playerÀÇ HealthCalFunc callback µî·Ï
+	// playerì˜ HealthCalFunc callback ë“±ë¡ 
 	auto healthBar = CHealthBarUI::create(
-		std::bind(&CPlayer::HealthCalculatorInNormal, CObjectManager::Instance()->getPlayer(), std::placeholders::_1/*= È£ÃâÇÏ´Â °÷ÀÇ ÀÎÀÚ¸¦ »ç¿ëÇÑ´Ù.*/));
+		std::bind(&CPlayer::HealthCalculatorInNormal, CObjectManager::Instance()->getPlayer(), std::placeholders::_1/*= í˜¸ì¶œí•˜ëŠ” ê³³ì˜ ì¸ìë¥¼ ì‚¬ìš©í•œë‹¤.*/));
 
 	healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	healthBar->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
@@ -310,10 +310,10 @@ void CGameScene::InitGameSceneUI()
 	m_GridWorld->addChild(gridTest, 102);
 
 	m_CountDownLabel = nullptr;
-	m_CountDownLabel = Label::createWithTTF("3", "fonts/malgunbd.ttf", 40);
+	m_CountDownLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 50);
 	m_CountDownLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	m_CountDownLabel->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-		origin.x + visibleSize.height * 0.65f));
+		origin.x + visibleSize.height * 0.7f));
 	m_GridWorld->addChild(m_CountDownLabel, 102);
 	m_CountDownLabel->setVisible(false);
 }
@@ -402,7 +402,10 @@ void CGameScene::update(float delta)
 
 void CGameScene::GameStart()
 {
-	countDownLabel();
+    CountDown(3, "GO!", [](){
+        CObjectManager::Instance()->getFSM()->ChangeState(CNormalStageState::Instance());
+    });
+    
 	m_PauseBtn->runAction(FadeIn::create(0.5f));
 	CObjectManager::Instance()->getPlayer()->PlayerAlive();
 	CObjectManager::Instance()->setIsGamePause(false);
@@ -411,7 +414,7 @@ void CGameScene::GameStart()
 
 void CGameScene::GamePause()
 {
-	//¿Àµğ¿À ¼Ò¸® ÀÛ°Ô
+	//ì˜¤ë””ì˜¤ ì†Œë¦¬ ì‘ê²Œ
 	CAudioManager::Instance()->setBGMVolume(0.1f);
 
 	CAudioManager::Instance()->setEffectSoundVolume(0.1f);
@@ -421,14 +424,16 @@ void CGameScene::GamePause()
 
 void CGameScene::GameResume()
 {
-	countDownLabel();
+    CountDown(3, "GO!", [](){
+        CObjectManager::Instance()->getFSM()->ChangeState(CNormalStageState::Instance());
+    });
 
-	//¿Àµğ¿À ¼Ò¸® Å©°Ô
+	//ì˜¤ë””ì˜¤ ì†Œë¦¬ í¬ê²Œ
 	CAudioManager::Instance()->setBGMVolume(1.f);
 
 	CAudioManager::Instance()->setEffectSoundVolume(1.f);
 	CObjectManager::Instance()->setIsGamePause(false);
-	CObjectManager::Instance()->getFSM()->ChangeState(CGameCountDownState::Instance());
+	
 }
 
 void CGameScene::GameEnd()
@@ -446,23 +451,33 @@ void CGameScene::GameEnd()
 	GamePause();
 }
 
-void CGameScene::countDownLabel()
+void CGameScene::CountDownCancel()
 {
-	this->unschedule("countDown");
-	m_Count = 3;
+    this->unschedule("countDown");
+    m_CountDownLabel->setVisible(false);
+}
+
+void CGameScene::CountDown(int count, std::string finMent/* = "0"*/, const std::function<void(void)> &func/* = nullptr*/)
+{
+    CountDownCancel();
+	CObjectManager::Instance()->getFSM()->ChangeState(CGameCountDownState::Instance());
+    m_Count = count;
 	m_CountDownLabel->setVisible(true);
-	this->schedule([this](float delta)
+    m_CountDownLabel->setString(StringUtils::format("%d", m_Count));
+	this->schedule([this, count, finMent, func](float delta)
 	{
+        m_Count -= 1;
 		if (m_Count > 0)
 			m_CountDownLabel->setString(StringUtils::format("%d", m_Count));
-		else if (m_Count == 0)
-			m_CountDownLabel->setString("Go");
+        else if (m_Count == 0){
+			m_CountDownLabel->setString(finMent.c_str());
+        }
 		else{
-			m_CountDownLabel->setVisible(false);
-			m_CountDownLabel->setString("3");
+            m_CountDownLabel->setVisible(false);
+            if(func != nullptr)
+                func();
 		}
-		m_Count -= 1;
-	}, 0.6f, 4, 0.f, "countDown");
+	}, 1.f, count, 0.f, "countDown");
 }
 
 void CGameScene::resetGameScene()
@@ -499,5 +514,5 @@ void CGameScene::watchVideo()
 
 void CGameScene::backToMenuScene()
 {
-	CCLOG("¾î¼­ ¸Ş´º¾ÀÀ» ¸¸µé¾î¶ó");
+	CCLOG("ì–´ì„œ ë©”ë‰´ì”¬ì„ ë§Œë“¤ì–´ë¼   ");
 }
