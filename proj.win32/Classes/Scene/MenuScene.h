@@ -9,10 +9,16 @@ public:
 	static cocos2d::Scene* createScene();
 	virtual ~CMenuScene();
 
+    //getter & setter
+    static CMenuScene* getGameScene(){ return m_MenuScene; }
 
 protected:
 	virtual bool init() override;
 
 private:
 	bool initVariable();
+    void InitMenuSceneUI();
+    
+private:
+    static CMenuScene* m_MenuScene;
 };
