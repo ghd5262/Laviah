@@ -1,4 +1,4 @@
-#include "AppDelegate.h"
+#include "CAppDelegate.h"
 #include "Scene/GameScene.h"
 #include "Common/AudioManager.h"
 
@@ -35,7 +35,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if (!glview) {
         glview = GLViewImpl::create("My Game");
-        glview->setFrameSize(1080, 1920);
+        glview->setFrameSize(360, 640);
         director->setOpenGLView(glview);
     }
     director->getOpenGLView()->setDesignResolutionSize(1080, 1920, ResolutionPolicy::SHOW_ALL);
