@@ -1,7 +1,10 @@
 #include "MenuScene.h"
+#include "GameScene.h"
+#include "EmptyScene.h"
 #include "../GameObject/Planet.h"
 #include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
+#include "../Task/PoolingManager.h"
 
 USING_NS_CC;
 
@@ -54,6 +57,8 @@ bool CMenuScene::initVariable()
                                  origin.y + visibleSize.height * 0.5f));
         this->addChild(planet);
         
+        CPoolingManager::Instance()->CreateMemoryBlockList(1300, 800);
+        
         InitMenuSceneUI();
 	}
 	catch (...){
@@ -66,18 +71,31 @@ bool CMenuScene::initVariable()
 
 void CMenuScene::InitMenuSceneUI()
 {
-    m_PauseBtn = nullptr;
-    m_PauseBtn = CMyButton::create("pauseIcon.png",
-                                   END,
-                                   [this, origin, visibleSize]()
-                                   {
-                                       OpenGamePausePopup();
-                                   }, EFFECT_SIZEDOWN);
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    m_PauseBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
-                                 origin.x + visibleSize.height * 0.05f));
-    m_PauseBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_PauseBtn->setCascadeOpacityEnabled(true);
-    m_GridWorld->addChild(m_PauseBtn, 102);
+    auto gameStartBtn = CMyButton::createWithString("defaultBtn_2.png", "Start", 40, Color3B::WHITE, 
+                                   END, std::bind(&CMenuScene::createGameScene, this), EFFECT_SIZEDOWN);
     
+    gameStartBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
+                                 origin.x + visibleSize.height * 0.1f));
+    gameStartBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    gameStartBtn->setCascadeOpacityEnabled(true);
+    this->addChild(gameStartBtn);
+    
+}
+
+void CMenuScene::createGameScene()
+{
+    Director::getInstance()->getScheduler()->schedule([](float delta){
+        
+        auto tempScene = CEmptyScene::createScene();
+        Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
+        
+        Director::getInstance()->getScheduler()->schedule([](float delta){
+            auto Scene = CGameScene::createScene();
+            Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
+        }, Director::getInstance(), 1.f, 0, 0.f, false, "createGameScene");
+        
+    }, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
 }

@@ -1,42 +1,6 @@
 #pragma once
 #include "../Mover.h"
 
-//enum eSHOOTER_OPTION{
-//	eSHOOTER_OPTION_right = 0,
-//	eSHOOTER_OPTION_left = 1
-//};
-
-//enum eSHOOTER_TYPE{
-//
-//	// º¸³Ê½º Å¸ÀÓ ÆĞÅÏ 0 ~ 99
-//	eSHOOTER_TYPE_bonusTime_0 = 0,
-//	eSHOOTER_TYPE_bonusTime_1 = 1,
-//	eSHOOTER_TYPE_bonusTime_2 = 2,
-//	eSHOOTER_TYPE_bonusTime_3 = 3,
-//	eSHOOTER_TYPE_bonusTime_4 = 4,
-//	eSHOOTER_TYPE_bonusTime_5 = 5,
-//	eSHOOTER_TYPE_bonusTime_6 = 6,
-//
-//	// ÀÏ¹İ bullet ÆĞÅÏ 100 ~ 499
-//	eSHOOTER_TYPE_normalBullet  = 100,
-//	eSHOOTER_TYPE_screwBullet = 101,
-//	eSHOOTER_TYPE_doubleScrewBullet = 102,
-//	eSHOOTER_TYPE_normalMissile = 103,
-//	eSHOOTER_TYPE_aimingMissile = 104,
-//
-//	// item ÆĞÅÏ 500 ~ 999
-//	eSHOOTER_TYPE_item_0 = 500,
-//	eSHOOTER_TYPE_item_1 = 501,
-//	eSHOOTER_TYPE_item_2 = 502,
-//	eSHOOTER_TYPE_item_3 = 503,
-//	eSHOOTER_TYPE_item_4 = 504,
-//	eSHOOTER_TYPE_item_5 = 505,
-//	eSHOOTER_TYPE_item_6 = 506,
-//
-//	// ±âÅ¸ 1000 ~
-//	eSHOOTER_TYPE_letter = 1000
-//};
-
 struct sSHOOTER_PARAM{
 	std::string _ShooterName;
 	std::string _PatternName;
@@ -86,11 +50,11 @@ public:
 protected:
 	virtual void ShootOnce(){};
 
-	// PoolingManager¿¡¼­ ¸Ş¸ğ¸®¸¦ ÇÒ´ç ¹Ş´Â´Ù.
+	// PoolingManagerì—ì„œ ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹ ë°›ëŠ”ë‹¤.
 	void* operator new (size_t size, const std::nothrow_t);
 
-	// ½ÇÁ¦ ¸Ş¸ğ¸® ÇØÁ¦´Â memorypooling¿¡¼­ ´ã´çÇÏÁö¸¸ 
-	// ¼Ò¸êÀÚ¸¦ È£ÃâÇÏ¿© Node°è¿­ÀÌ ¾Æ´Ñ ¸Ş¸ğ¸®µéÀ» »èÁ¦ÇÏ±â À§ÇÔ
+	// ì‹¤ì œ ë©”ëª¨ë¦¬ í•´ì œëŠ” memorypoolingì—ì„œ ë‹´ë‹¹í•˜ì§€ë§Œ 
+	// ì†Œë©¸ìë¥¼ í˜¸ì¶œí•˜ì—¬ Nodeê³„ì—´ì´ ì•„ë‹Œ ë©”ëª¨ë¦¬ë“¤ì„ ì‚­ì œí•˜ê¸° ìœ„í•¨
 	void operator delete(void* ptr){};
 
 	CShooter(sSHOOTER_PARAM param, float distance)
@@ -105,10 +69,10 @@ protected:
 	virtual ~CShooter();
 
 	//getter & setter
-	CC_SYNTHESIZE(float, m_fTime, Time);//»ı¼º ÈÄ ºÎÅÍ ½Ã°£
-	CC_SYNTHESIZE(float, m_fIntervalTimer, IntervalTimer)//Interval¿ë ½Ã°£
-	CC_SYNTHESIZE(float, m_fIntervalRandom, IntervalRandom);//ÃÑ¾ËÀ» ½î´Â °£°İ 0.1 ~ Max »çÀÌ °ª
-	CC_SYNTHESIZE(float, m_fDistance, Distance);// 0 > Distance ÀÌ¸é bulletÀÇ ¿ø·¡ distance°ªÀ» »ç¿ëÇÔ
-	CC_SYNTHESIZE(int, m_nBulletCountAtOnceRandom, BulletCountAtOnceRandom);// ÇÑ¹ø¿¡ ½î´Â ÃÑ¾ËÀÇ ¼ö 1 ~ Max »çÀÌ °ª
+	CC_SYNTHESIZE(float, m_fTime, Time);//ìƒì„± í›„ ë¶€í„° ì‹œê°„
+	CC_SYNTHESIZE(float, m_fIntervalTimer, IntervalTimer)//Intervalìš© ì‹œê°„
+	CC_SYNTHESIZE(float, m_fIntervalRandom, IntervalRandom);//ì´ì•Œì„ ì˜ëŠ” ê°„ê²© 0.1 ~ Max ì‚¬ì´ ê°’
+	CC_SYNTHESIZE(float, m_fDistance, Distance);// 0 > Distance ì´ë©´ bulletì˜ ì›ë˜ distanceê°’ì„ ì‚¬ìš©í•¨
+	CC_SYNTHESIZE(int, m_nBulletCountAtOnceRandom, BulletCountAtOnceRandom);// í•œë²ˆì— ì˜ëŠ” ì´ì•Œì˜ ìˆ˜ 1 ~ Max ì‚¬ì´ ê°’
 	CC_SYNTHESIZE(sSHOOTER_PARAM, m_ShooterParam, ShooterParam);
 };

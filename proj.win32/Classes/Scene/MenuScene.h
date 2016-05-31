@@ -18,6 +18,7 @@ protected:
 private:
 	bool initVariable();
     void InitMenuSceneUI();
+    void createGameScene();
     
 private:
     static CMenuScene* m_MenuScene;
