@@ -9,6 +9,8 @@ public:
 	static cocos2d::Scene* createScene();
 	virtual ~CMenuScene();
 
+    virtual void update(float delta) override;
+    
     //getter & setter
     static CMenuScene* getGameScene(){ return m_MenuScene; }
 

@@ -1,5 +1,6 @@
 #include "PoolingManager.h"
 #include "../GameObject/ObjectManager.h"
+#include "../GameObject/MenuSceneObjectManager.h"
 
 CPoolingManager::CPoolingManager()
 {
@@ -24,8 +25,16 @@ void CPoolingManager::DeleteAllMemory()
 		delete[] bullet;
 		bullet = nullptr;
 	}
-	m_ShooterList.clear();
+    
+    for (auto alien : m_AlienList)
+    {
+        delete[] alien;
+        alien = nullptr;
+    }
+    
+    m_ShooterList.clear();
 	m_BulletList.clear();
+    m_AlienList.clear();
 }
 
 /* size만큼의 메모리 블럭을 생성한다. */
@@ -52,7 +61,7 @@ void CPoolingManager::CreateBulletList(size_t count, size_t size)
 #else
 	m_BulletSize = size;
 #endif
-	m_BulletList.reserve(m_BulletSize);
+	m_BulletList.reserve(count);
 	while (count--)
 	{
 		/* 하나의 크기가 size만큼의 메모리 블럭을	count만큼 생성한다. */
@@ -71,7 +80,7 @@ void CPoolingManager::CreateShooterList(size_t count, size_t size)
 #else
 	m_ShooterSize = size;
 #endif
-	m_ShooterList.reserve(m_ShooterSize);
+	m_ShooterList.reserve(count);
 	while (count--)
 	{
 		/* 하나의 크기가 size만큼의 메모리 블럭을 count만큼 생성한다. */
@@ -81,6 +90,25 @@ void CPoolingManager::CreateShooterList(size_t count, size_t size)
 		/* 오브젝트 매니저 리스트에 추가한다. */
 		CObjectManager::Instance()->AddShooter(memBlock);
 	}
+}
+
+void CPoolingManager::CreateAlienList(size_t count, size_t size)
+{
+#if(defined(__x86_64__))
+    m_AlienSize = size * 2;
+#else
+    m_AlienSize = size;
+#endif
+    m_AlienList.reserve(count);
+    while (count--)
+    {
+        /* 하나의 크기가 size만큼의 메모리 블럭을 count만큼 생성한다. */
+        MEMORYBLOCK memBlock = NewMemoryBlock(m_AlienSize);
+        m_AlienList.emplace_back(memBlock);
+        
+        /* 오브젝트 매니저 리스트에 추가한다. */
+        CMenuSceneObjectManager::Instance()->AddAlien(memBlock);
+    }
 }
 
 void* CPoolingManager::BulletNew()
@@ -128,9 +156,34 @@ void* CPoolingManager::ShooterNew()
 	CObjectManager::Instance()->AddShooter(memBlock);
 
 	/* 메모리를 사용 중 상태로 전환 */
-	memBlock[m_BulletSize] = true;
+	memBlock[m_ShooterSize] = true;
 
 	return memBlock;
+}
+
+void* CPoolingManager::AlienNew()
+{
+    for (auto alien : m_AlienList)
+    {
+        /* 메모리가 Free(false)상태면 메모리를 사용 중 상태(true)로 전환 후 반환 */
+        if (false == alien[m_AlienSize]) {
+            alien[m_AlienSize] = true;
+            return alien;
+        }
+    }
+    
+    /* 모든 메모리가 사용 중 상태라면 새롭게 하나 생성 */
+    CCLOG("ALIEN LIST OVERFLOWED");
+    MEMORYBLOCK memBlock = NewMemoryBlock(m_ShooterSize);
+    m_AlienList.emplace_back(memBlock);
+    
+    /* 오브젝트 매니저 리스트에 추가한다. */
+    CMenuSceneObjectManager::Instance()->AddAlien(memBlock);
+    
+    /* 메모리를 사용 중 상태로 전환 */
+    memBlock[m_AlienSize] = true;
+    
+    return memBlock;
 }
 
 /* Bullet을 메모리블럭으로 전환 ( free 상태 ) */
@@ -145,6 +198,13 @@ void CPoolingManager::Shooter_ReturnToFreeMemory(void* shooter)
 {
 	static_cast<char*>(shooter)[m_ShooterSize] = false;
 	//memset(shooter, 0, m_ShooterSize + 1);
+}
+
+/* shooter를 메모리블럭으로 전환 ( free 상태 ) */
+void CPoolingManager::Alien_ReturnToFreeMemory(void* alien)
+{
+    static_cast<char*>(alien)[m_AlienSize] = false;
+    //memset(shooter, 0, m_ShooterSize + 1);
 }
 
 void CPoolingManager::Bullet_ReturnToFreeMemoryAll()
@@ -163,4 +223,13 @@ void CPoolingManager::Shooter_ReturnToFreeMemoryAll()
 		shooter[m_ShooterSize] = false;
 		//memset(shooter, 0, m_ShooterSize + 1);
 	}
+}
+
+void CPoolingManager::Alien_ReturnToFreeMemoryAll()
+{
+    for (auto alien : m_AlienList)
+    {
+        alien[m_AlienSize] = false;
+        //memset(alien, 0, m_AlienSize + 1);
+    }
 }

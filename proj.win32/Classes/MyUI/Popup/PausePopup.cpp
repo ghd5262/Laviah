@@ -128,5 +128,6 @@ void CPausePopup::Reset(){
 
 void CPausePopup::GoHome(){
 	CCLOG("format popup GoHome");
+    CGameScene::getGameScene()->backToMenuScene();
 	CSpecificPopupBase::PopupClose();
 }

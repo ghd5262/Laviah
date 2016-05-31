@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "EmptyScene.h"
+#include "MenuScene.h"
 #include "SceneTransition.h"
 #include "../Task/PoolingManager.h"
 #include "../GameObject/Planet.h"
@@ -525,5 +526,15 @@ void CGameScene::OpenGamePausePopup()
 
 void CGameScene::backToMenuScene()
 {
-	CCLOG("어서 메뉴씬을 만들어라   ");
+    Director::getInstance()->getScheduler()->schedule([](float delta){
+        
+        auto tempScene = CEmptyScene::createScene();
+        Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
+        
+        Director::getInstance()->getScheduler()->schedule([](float delta){
+            auto Scene = CMenuScene::createScene();
+            Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
+        }, Director::getInstance(), 1.f, 0, 0.f, false, "createMenuScene");
+        
+    }, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
 }

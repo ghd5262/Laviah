@@ -2,9 +2,11 @@
 #include "GameScene.h"
 #include "EmptyScene.h"
 #include "../GameObject/Planet.h"
+#include "../GameObject/Alien.h"
 #include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
 #include "../Task/PoolingManager.h"
+#include "../GameObject/MenuSceneObjectManager.h"
 
 USING_NS_CC;
 
@@ -27,6 +29,9 @@ Scene* CMenuScene::createScene()
 
 CMenuScene::~CMenuScene()
 {
+    CMenuSceneObjectManager::Instance()->RemoveAllObject();
+    removeAllChildrenWithCleanup(true);
+    CPoolingManager::Instance()->DeleteAllMemory();
 }
 
 
@@ -56,8 +61,19 @@ bool CMenuScene::initVariable()
         planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
                                  origin.y + visibleSize.height * 0.5f));
         this->addChild(planet);
+        CMenuSceneObjectManager::Instance()->setPlanet(planet);
         
-        CPoolingManager::Instance()->CreateMemoryBlockList(1300, 800);
+        
+        CPoolingManager::Instance()->CreateAlienList(30, 800);
+        
+        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
         
         InitMenuSceneUI();
 	}
@@ -98,4 +114,9 @@ void CMenuScene::createGameScene()
         }, Director::getInstance(), 1.f, 0, 0.f, false, "createGameScene");
         
     }, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
+}
+
+void CMenuScene::update(float delta)
+{
+    CMenuSceneObjectManager::Instance()->Execute(delta);
 }
