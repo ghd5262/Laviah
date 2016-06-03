@@ -10,7 +10,7 @@ CBulletDataManager::CBulletDataManager()
     Json::Value root;
     Json::Reader reader;
     
-    // patternList.json ÆÄÀÏ ÀĞÀ½
+    // patternList.json íŒŒì¼ ì½ìŒ
     std::string strBulletList = CCFileUtils::sharedFileUtils()->fullPathForFilename("jsonRes/bulletList/bulletList.json");
     ssize_t bufferSize = 0;
     unsigned char* bulletListJson = CCFileUtils::sharedFileUtils()->getFileData(strBulletList.c_str(), "rb", &bufferSize);
@@ -18,7 +18,7 @@ CBulletDataManager::CBulletDataManager()
     size_t pos = bulletListClearData.rfind("}");
     bulletListClearData = bulletListClearData.substr(0, pos + 1);
     
-    // patternList.json logÃâ·Â
+    // patternList.json logì¶œë ¥
     bool parsingSuccessful = reader.parse(bulletListClearData, root);
     if (! parsingSuccessful)
     {
@@ -28,7 +28,7 @@ CBulletDataManager::CBulletDataManager()
     CCLOG("strBulletList JSON : \n %s\n", bulletListClearData.c_str());
     
     
-    // stage´Â ¹è¿­ÀÌ´Ù.
+    // stageëŠ” ë°°ì—´ì´ë‹¤.
     const Json::Value bulletArray = root["bullets"];
     
     for (unsigned int bulletCount = 0; bulletCount < bulletArray.size(); ++bulletCount)

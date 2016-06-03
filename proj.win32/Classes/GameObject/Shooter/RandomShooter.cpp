@@ -8,7 +8,7 @@ CRandomShooter::CRandomShooter(sSHOOTER_PARAM param, float distance)
 	: CShooter(param, distance)
 {}
 
-CRandomShooter* CRandomShooter::create(sSHOOTER_PARAM param, float distance/* = -1.f */)				// Bullet »ı¼º °£°İ
+CRandomShooter* CRandomShooter::create(sSHOOTER_PARAM param, float distance/* = -1.f */)				// Bullet ìƒì„± ê°„ê²©
 {
 	CRandomShooter* pRet = (CRandomShooter*)new(std::nothrow)
 		CRandomShooter(param, distance);
@@ -32,7 +32,7 @@ void CRandomShooter::ShootOnce()
 
 	m_nBulletCountAtOnceRandom = random<int>(1, m_ShooterParam._nBulletCountAtOneShoot);
 
-	// angleÀÌ ¸¶ÀÌ³Ê½º ÀÌ¸é ·£´ıÀ¸·Î »ç¿ëÇÑ´Ù. 
+	// angleì´ ë§ˆì´ë„ˆìŠ¤ ì´ë©´ ëœë¤ìœ¼ë¡œ ì‚¬ìš©í•œë‹¤. 
 	if (m_ShooterParam._isAngleRandom)
 		m_ShooterParam._fAngle = random<float>(0.f, 360.f);
 
@@ -41,49 +41,49 @@ void CRandomShooter::ShootOnce()
 	sBULLET_PARAM bulletParam = CBulletDataManager::Instance()->getBulletInfo(p);
 	bulletParam._isFly = m_ShooterParam._isFly;
 
-	if (p >= '1' && p <= '3') //ÀÏ¹İ bullet
+	if (p >= '1' && p <= '3') //ì¼ë°˜ bullet
 	{
 		CGameScene::getGridWorld()->addChild(CNormalBullet::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));
 	}
-	else if (p >= '4' && p <= '5')//¹Ì»çÀÏ°ú Á¶ÁØ¹Ì»çÀÏ
+	else if (p >= '4' && p <= '5')//ë¯¸ì‚¬ì¼ê³¼ ì¡°ì¤€ë¯¸ì‚¬ì¼
 	{
 		CGameScene::getGridWorld()->addChild(CNormalMissile::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed), 101);
 	}
-	else if (p >= 'A' && p <= 'G')//¾ÆÀÌÅÛ
+	else if (p >= 'A' && p <= 'G')//ì•„ì´í…œ
 	{
 		CGameScene::getGridWorld()->addChild(CPlayItem::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));
 	}
-	else if (p >= 'P' && p <= 'T')//ÄÚÀÎ
+	else if (p >= 'P' && p <= 'T')//ì½”ì¸
 	{
 		CGameScene::getGridWorld()->addChild(CPlayCoin::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));
 	}
-	else if (p >= 'U' && p <= 'Y')//º°
+	else if (p >= 'U' && p <= 'Y')//ë³„
 	{
 		CGameScene::getGridWorld()->addChild(CPlayStar::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));
 	}
-	else if (p == 'Z')//º¸³Ê½º ¾ÆÀÌÅÛ
+	else if (p == 'Z')//ë³´ë„ˆìŠ¤ ì•„ì´í…œ
 	{
 		CGameScene::getGridWorld()->addChild(CBonusLetter::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed));
 	}
-	else if (p == 'z')//·£´ı ¾ÆÀÌÅÛ
+	else if (p == 'z')//ëœë¤ ì•„ì´í…œ
 	{
 		bulletParam._itemType = static_cast<eITEM_TYPE>(random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2));
         bulletParam._TextureName = MakeString("playItem_%d.png", bulletParam._itemType -1);

@@ -154,9 +154,10 @@ bool CPopup::initVariable()
 		switch (m_PopupInfo) {
 		case ONEBTN:
 		{
-			auto defaultBG = Sprite::create("defaultPopupBG.png");
+			auto defaultBG = Sprite::create("empty570_w.png");
 			defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			defaultBG->setPosition(Vec2::ZERO);
+            defaultBG->setOpacity(255 * 0.7f);
 			this->addChild(defaultBG);
 
 			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/malgunbd.ttf", m_FontSize);
@@ -189,11 +190,12 @@ bool CPopup::initVariable()
 		} break;
 		case TWOBTN:
 		{
-			auto defaultBG = Sprite::create("defaultPopupBG.png");
-			defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			defaultBG->setPosition(Vec2::ZERO);
-			this->addChild(defaultBG);
-
+            auto defaultBG = Sprite::create("empty570_w.png");
+            defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            defaultBG->setPosition(Vec2::ZERO);
+            defaultBG->setOpacity(255 * 0.7f);
+            this->addChild(defaultBG);
+            
 			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/malgunbd.ttf", m_FontSize);
 			m_NoticeLabel->setColor(m_FontColor);
 			m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

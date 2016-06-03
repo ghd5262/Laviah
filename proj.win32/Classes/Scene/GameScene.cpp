@@ -18,9 +18,6 @@
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
 #include "../MyUI/Popup/VideoPopup.h"
-#include "../DataManager/BulletPatternDataManager.h"
-#include "../DataManager/StageDataManager.h"
-#include "../DataManager/BulletDataManager.h"
 #include "../AI/States/StageStates.h"
 
 USING_NS_CC;
@@ -70,9 +67,6 @@ bool CGameScene::initVariable()
 		m_GameScene = this;
 		m_KeyBoardL = false;
 		m_KeyBoardR = false;
-		CStageDataManager::Instance();
-		CBulletPatternDataManager::Instance();
-		CBulletDataManager::Instance();
 
 		CObjectManager::Instance()->Clear();
 		CUIManager::Instance()->Clear();

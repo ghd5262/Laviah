@@ -9,22 +9,22 @@ struct sPATTERN_SHOOTER_PARAM
 	int _width;
 	float _widthAngleDistance;
 	float _heightDistance;
-	char _pattern[60 * 60]; // ÆĞÅÏÀÇ ÃÖ´ë Å©±â 60 * 60
+	char _pattern[60 * 60]; // íŒ¨í„´ì˜ ìµœëŒ€ í¬ê¸° 60 * 60
 };
 
-/* RandomShooter : 360µµ »ç¹æ¿¡¼­ ·£´ıÀ¸·Î ÃÑ¾ËÀ» ½î´Â ÆĞÅÏ*/
+/* RandomShooter : 360ë„ ì‚¬ë°©ì—ì„œ ëœë¤ìœ¼ë¡œ ì´ì•Œì„ ì˜ëŠ” íŒ¨í„´*/
 class CPatternShooter : public CShooter {
 
 public:
-	/* create¸¦ È£ÃâÇÏ¸é operator new°¡ È£ÃâµÇ¸é¼­ CObjectManager¿¡¼­ ¸Ş¸ğ¸®¸¦ ¹Ş´Â´Ù.
-	¹ŞÀº ¸Ş¸ğ¸®´Â ¸Ş¸ğ¸®Ç®¿¡ ¹Ì¸® »ı¼ºµÇ¾îÀÖ´ø ¸Ş¸ğ¸®ÀÌ´Ù. */
+	/* createë¥¼ í˜¸ì¶œí•˜ë©´ operator newê°€ í˜¸ì¶œë˜ë©´ì„œ CObjectManagerì—ì„œ ë©”ëª¨ë¦¬ë¥¼ ë°›ëŠ”ë‹¤.
+	ë°›ì€ ë©”ëª¨ë¦¬ëŠ” ë©”ëª¨ë¦¬í’€ì— ë¯¸ë¦¬ ìƒì„±ë˜ì–´ìˆë˜ ë©”ëª¨ë¦¬ì´ë‹¤. */
 	static CPatternShooter* create(sSHOOTER_PARAM param, float distance = -1.f);
 
 	virtual void Execute(float delta) override;
 	virtual void ShootOnce() override;
 
 private:
-	// interval = Bullet »ı¼º °£°İ
+	// interval = Bullet ìƒì„± ê°„ê²©
 	CPatternShooter(sSHOOTER_PARAM param, float distance);
 	virtual ~CPatternShooter(){}
 };

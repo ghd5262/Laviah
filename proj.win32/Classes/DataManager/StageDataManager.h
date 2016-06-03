@@ -6,7 +6,6 @@ class CStageDataManager
 {
 public:
 	static CStageDataManager* Instance();
-	bool AddShooter(std::string shooterName, CShooter* shooter);
 
 	//getter & setter
 	sSHOOTER_PARAM getStageInfoByIndex(int index) const;

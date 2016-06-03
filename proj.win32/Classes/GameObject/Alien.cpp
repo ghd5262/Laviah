@@ -65,7 +65,7 @@ bool CAlien::initVariable()
         setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ 200) + m_pPlanet->getPosition().y);
         setRotation(-90);
         
-        auto texture = Sprite::create("player.png");
+        auto texture = Sprite::create("whiteSquare.png");
         texture->setAnchorPoint(Vec2(0.5f, 0.5f));
         addChild(texture);
     }

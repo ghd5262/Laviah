@@ -7,6 +7,10 @@
 #include "../MyUI/MyButton.h"
 #include "../Task/PoolingManager.h"
 #include "../GameObject/MenuSceneObjectManager.h"
+#include "../DataManager/BulletPatternDataManager.h"
+#include "../DataManager/StageDataManager.h"
+#include "../DataManager/BulletDataManager.h"
+#include "../MyUI/Popup/CharacterSelectPopup.h"
 
 USING_NS_CC;
 
@@ -57,6 +61,10 @@ bool CMenuScene::initVariable()
         Size visibleSize = Director::getInstance()->getVisibleSize();
         Vec2 origin = Director::getInstance()->getVisibleOrigin();
         
+        CStageDataManager::Instance();
+        CBulletPatternDataManager::Instance();
+        CBulletDataManager::Instance();
+        
         auto planet = CPlanet::create("planet.png", 170, 0.0f, 200.0f);
         planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
                                  origin.y + visibleSize.height * 0.5f));
@@ -98,6 +106,23 @@ void CMenuScene::InitMenuSceneUI()
     gameStartBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     gameStartBtn->setCascadeOpacityEnabled(true);
     this->addChild(gameStartBtn);
+    
+    
+    auto characterSelectBtn = CMyButton::createWithString("defaultBtn_2.png", "Select", 40, Color3B::WHITE,
+                                                          END, [this, origin, visibleSize](){
+                                                              auto popup = CPopup::createWithSpecificFormat(CCharacterSelectPopup::create(), POPUPEFFECT_none);
+                                                              popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+                                                                                      origin.x + visibleSize.height * 0.5f));
+                                                              popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                                                              this->addChild(popup);
+                                                          }, EFFECT_SIZEDOWN);
+    
+    characterSelectBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
+                                   origin.x + visibleSize.height * 0.2f));
+    characterSelectBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    characterSelectBtn->setCascadeOpacityEnabled(true);
+    this->addChild(characterSelectBtn);
+    
     
 }
 

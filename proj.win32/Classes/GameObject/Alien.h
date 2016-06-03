@@ -21,6 +21,7 @@ public:
     
     void Walk(float delta);
     
+    void Break(){};
 protected:
     virtual bool init() override;
     virtual bool initVariable() override;
@@ -38,7 +39,9 @@ protected:
     //getter & setter
     CC_SYNTHESIZE(float, m_fWalkingSpeed, WalkingSpeed);
     CC_SYNTHESIZE(float, m_fDistance, Distance);    // 0 > Distance 이면 bullet의 원래 distance값을 사용함
+    CC_SYNTHESIZE(float, m_fActionTime, ActionTime);
     CC_SYNTHESIZE(int, m_Direction, Direction);     // -1 : left     1 : right
+    CC_SYNTHESIZE(int, m_CurrentAction, CurrentAction);
     CC_SYNTHESIZE(Vec2, m_RotationVec, RotationVec);
     CC_SYNTHESIZE(sALIEN_PARAM, m_AlienParam, AlienParam);
     CC_SYNTHESIZE(CStateMachine<CAlien>*, m_FSM, FSM);

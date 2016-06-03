@@ -12,7 +12,7 @@ CBulletPatternDataManager::CBulletPatternDataManager()
     Json::Reader reader;
     
     
-    // stageListIndex.json ÆÄÀÏ ÀĞÀ½
+    // stageListIndex.json íŒŒì¼ ì½ìŒ
     std::string strPatternListIndex = CCFileUtils::sharedFileUtils()->fullPathForFilename("jsonRes/patternList/patternListIndex.json");
     ssize_t bufferSize = 0;
     unsigned char* patternListIndexJson = CCFileUtils::sharedFileUtils()->getFileData(strPatternListIndex.c_str(), "rb", &bufferSize);
@@ -27,7 +27,7 @@ CBulletPatternDataManager::CBulletPatternDataManager()
         CCASSERT(false, MakeString("parser failed : \n %s", patternListIdxClearData.c_str()).c_str());
         return ;
     }
-    // stageListIndex.json logÃâ·Â
+    // stageListIndex.json logì¶œë ¥
     CCLOG("strPatternListIndex JSON : \n %s\n", patternListIdxClearData.c_str());
     
     //array
@@ -37,7 +37,7 @@ CBulletPatternDataManager::CBulletPatternDataManager()
         std::string patternListFileName = patternListArray[patternListCount].asString();
         CCLOG("%s ", patternListFileName.c_str());
         
-        // patternList.json ÆÄÀÏ ÀĞÀ½
+        // patternList.json íŒŒì¼ ì½ìŒ
         std::string strPatternList = CCFileUtils::sharedFileUtils()->fullPathForFilename(MakeString("jsonRes/patternList/%s.json", patternListFileName.c_str()));
         bufferSize = 0;
         unsigned char* patternListJson = CCFileUtils::sharedFileUtils()->getFileData(strPatternList.c_str(), "rb", &bufferSize);
@@ -45,7 +45,7 @@ CBulletPatternDataManager::CBulletPatternDataManager()
         pos = patternListClearData.rfind("}");
         patternListClearData = patternListClearData.substr(0, pos + 1);
         
-        // patternList.json logÃâ·Â
+        // patternList.json logì¶œë ¥
         parsingSuccessful = reader.parse(patternListClearData, patternListArray[patternListCount]);
         if (! parsingSuccessful)
         {
@@ -55,7 +55,7 @@ CBulletPatternDataManager::CBulletPatternDataManager()
         CCLOG("strPatternList JSON : \n %s\n", patternListClearData.c_str());
         
         
-        // stage´Â ¹è¿­ÀÌ´Ù.
+        // stageëŠ” ë°°ì—´ì´ë‹¤.
         const Json::Value patternArray = patternListArray[patternListCount]["patterns"];
         
         for (unsigned int patternCount = 0; patternCount < patternArray.size(); ++patternCount)
@@ -64,31 +64,31 @@ CBulletPatternDataManager::CBulletPatternDataManager()
             
             sPATTERN_SHOOTER_PARAM patternInfo;
             
-            // index ÀúÀå
+            // index ì €ì¥
             patternInfo._index = patternCount;
             
-            // name ÀúÀå
+            // name ì €ì¥
             patternInfo._patternName = valuePattern["name"].asString();
             
-            // widthAngleDistance ÀúÀå = ÆĞÅÏÀÇ width °£°İ
+            // widthAngleDistance ì €ì¥ = íŒ¨í„´ì˜ width ê°„ê²©
             patternInfo._widthAngleDistance = valuePattern["widthAngleDistance"].asDouble();
             
-            // heightDistance ÀúÀå = ÆĞÅÏÀÇ height °£°İ
+            // heightDistance ì €ì¥ = íŒ¨í„´ì˜ height ê°„ê²©
             patternInfo._heightDistance = valuePattern["heightDistance"].asDouble();
             
-            // pattern ÀúÀå
+            // pattern ì €ì¥
             const Json::Value pattern = valuePattern["pattern"];
             
-            // patternÀ» sPATTERN_SHOOTER_PARAMÀÇ intÇü ¹è¿­¿¡ 2Â÷¿ø ÇüÅÂ·Î ³Ö´Â´Ù.
+            // patternì„ sPATTERN_SHOOTER_PARAMì˜ intí˜• ë°°ì—´ì— 2ì°¨ì› í˜•íƒœë¡œ ë„£ëŠ”ë‹¤.
             for (unsigned int patternHeightCount = 0; patternHeightCount < pattern.size(); patternHeightCount++)
             {
                 std::string patternStr = pattern[patternHeightCount].asString();
                 CCLOG("pattern[%d] = %s\n", patternHeightCount, patternStr.c_str());
     
-                // patternÀÇ height ÀúÀå
+                // patternì˜ height ì €ì¥
                 patternInfo._height = pattern.size();
         
-                // patternÀÇ width ÀúÀå
+                // patternì˜ width ì €ì¥
                 patternInfo._width = static_cast<int>(patternStr.length());
     
     
@@ -99,7 +99,7 @@ CBulletPatternDataManager::CBulletPatternDataManager()
                     = patternStr[charCount];
                 }
             }
-            this->AddPattern(patternInfo._patternName, patternInfo);
+            if(this->AddPattern(patternInfo._patternName, patternInfo))
         }
     }
     
@@ -115,7 +115,7 @@ CBulletPatternDataManager::CBulletPatternDataManager()
 //	size_t pos = clearData.rfind("}");
 //	clearData = clearData.substr(0, pos + 1);
 //
-//	// patternListIndex.json logÃâ·Â
+//	// patternListIndex.json logì¶œë ¥
 //	CCLOG("PatternListIndex JSON : \n %s\n", clearData.c_str());
 //	if (patternListIdxDocument.Parse<0>(clearData.c_str()).HasParseError()) {
 //		CCLOG("Err..%s", patternListIdxDocument.Parse<0>(clearData.c_str()).GetParseError());
@@ -123,16 +123,16 @@ CBulletPatternDataManager::CBulletPatternDataManager()
 //        //CCASSERT(false, "Err..%s", patternListDocument.Parse<0>(clearData.c_str()).GetParseError());
 //	}
 //
-//	// patternListIndex´Â ¹è¿­ÀÌ´Ù.
+//	// patternListIndexëŠ” ë°°ì—´ì´ë‹¤.
 //	const rapidjson::Value& patternListIndex = patternListIdxDocument["patternListIndex"];
 //	for (rapidjson::SizeType patternListCount = 0; patternListCount < patternListIndex.Size(); patternListCount++)
 //	{
-//		// ÆÄÀÏ ÀÌ¸§
+//		// íŒŒì¼ ì´ë¦„
 //		std::string patternListFileName = patternListIndex[patternListCount].GetString();
 //
 //		rapidjson::Document patternListDocument;
 //
-//		// patternList.json ÆÄÀÏ ÀĞÀ½
+//		// patternList.json íŒŒì¼ ì½ìŒ
 //		std::string strPatternList = CCFileUtils::sharedFileUtils()->fullPathForFilename(MakeString("jsonRes/patternList/%s.json", patternListFileName.c_str()));
 //		bufferSize = 0;
 //		json = CCFileUtils::sharedFileUtils()->getFileData(strPatternList.c_str(), "rb", &bufferSize);
@@ -140,48 +140,48 @@ CBulletPatternDataManager::CBulletPatternDataManager()
 //		pos = clearData.rfind("}");
 //		clearData = clearData.substr(0, pos + 1);
 //
-//		// patternList.json logÃâ·Â
+//		// patternList.json logì¶œë ¥
 //		CCLOG("PatternList JSON : \n %s\n", clearData.c_str());
 //		if (patternListDocument.Parse<0>(clearData.c_str()).HasParseError()) {
 //			CCLOG("Err..%s", patternListDocument.Parse<0>(clearData.c_str()).GetParseError());
 //			assert(false);//CCASSERT(false, "Err..%s", patternListDocument.Parse<0>(clearData.c_str()).GetParseError());
 //		}
 //
-//		// patterns´Â ¹è¿­ÀÌ´Ù.
+//		// patternsëŠ” ë°°ì—´ì´ë‹¤.
 //		const rapidjson::Value& patternList = patternListDocument["patterns"];
 //
-//		// patternsÀüÃ¼¸¦ size¸¸Å­ ¼øÈ¸ÇÏ¸é¼­ °¢°¢ÀÇ patternÀ» ¸®½ºÆ®¿¡ »ğÀÔ
+//		// patternsì „ì²´ë¥¼ sizeë§Œí¼ ìˆœíšŒí•˜ë©´ì„œ ê°ê°ì˜ patternì„ ë¦¬ìŠ¤íŠ¸ì— ì‚½ì…
 //		for (rapidjson::SizeType patternCount = 0; patternCount < patternList.Size(); patternCount++)
 //		{
 //			rapidjson::Document patternDocument;
 //			const rapidjson::Value& valuePattern = patternList[patternCount];
 //			sPATTERN_SHOOTER_PARAM patternInfo;
 //
-//			// index ÀúÀå
+//			// index ì €ì¥
 //			patternInfo._index = patternCount;
 //
-//			// name ÀúÀå
+//			// name ì €ì¥
 //			patternInfo._patternName = valuePattern["name"].GetString();
 //
-//			// widthAngleDistance ÀúÀå = ÆĞÅÏÀÇ width °£°İ
+//			// widthAngleDistance ì €ì¥ = íŒ¨í„´ì˜ width ê°„ê²©
 //			patternInfo._widthAngleDistance = valuePattern["widthAngleDistance"].GetDouble();
 //
-//			// heightDistance ÀúÀå = ÆĞÅÏÀÇ height °£°İ
+//			// heightDistance ì €ì¥ = íŒ¨í„´ì˜ height ê°„ê²©
 //			patternInfo._heightDistance = valuePattern["heightDistance"].GetDouble();
 //
-//			// pattern ÀúÀå
+//			// pattern ì €ì¥
 //			const rapidjson::Value& pattern = valuePattern["pattern"];
 //
-//			// patternÀ» sPATTERN_SHOOTER_PARAMÀÇ intÇü ¹è¿­¿¡ 2Â÷¿ø ÇüÅÂ·Î ³Ö´Â´Ù.
+//			// patternì„ sPATTERN_SHOOTER_PARAMì˜ intí˜• ë°°ì—´ì— 2ì°¨ì› í˜•íƒœë¡œ ë„£ëŠ”ë‹¤.
 //			for (rapidjson::SizeType patternHeightCount = 0; patternHeightCount < pattern.Size(); patternHeightCount++)
 //			{
 //				std::string patternStr = pattern[patternHeightCount].GetString();
 //				CCLOG("pattern[%d] = %s\n", patternHeightCount, patternStr.c_str());
 //
-//				// patternÀÇ height ÀúÀå
+//				// patternì˜ height ì €ì¥
 //				patternInfo._height = pattern.Size();
 //
-//				// patternÀÇ width ÀúÀå
+//				// patternì˜ width ì €ì¥
 //				patternInfo._width = patternStr.length();
 //
 //
@@ -196,7 +196,7 @@ CBulletPatternDataManager::CBulletPatternDataManager()
 //		}
 //	}
 
-	// È®ÀÎ ·Î±× Ãâ·Â
+	// í™•ì¸ ë¡œê·¸ ì¶œë ¥
 //	std::for_each(m_PatternList.begin(), m_PatternList.end(), [](std::pair<std::string, sPATTERN_SHOOTER_PARAM> pattern)
 //	{
 //		for (int patternHeightCount = 0; patternHeightCount < pattern.second._height; patternHeightCount++)

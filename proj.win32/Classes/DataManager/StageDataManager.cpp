@@ -14,7 +14,7 @@ CStageDataManager::CStageDataManager()
     m_StageList = new std::vector<sSHOOTER_PARAM>();
     
     
-    // stageListIndex.json ÆÄÀÏ ÀĞÀ½
+    // stageListIndex.json íŒŒì¼ ì½ìŒ
     std::string strStageListIndex = CCFileUtils::sharedFileUtils()->fullPathForFilename("jsonRes/stageList/stageListIndex.json");
     ssize_t bufferSize = 0;
     unsigned char* stageListIndexJson = CCFileUtils::sharedFileUtils()->getFileData(strStageListIndex.c_str(), "rb", &bufferSize);
@@ -29,7 +29,7 @@ CStageDataManager::CStageDataManager()
         CCASSERT(false, MakeString("parser failed : \n %s", stageListIdxClearData.c_str()).c_str());
         return ;
     }
-    // stageListIndex.json logÃâ·Â
+    // stageListIndex.json logì¶œë ¥
     CCLOG("strStageListIndex JSON : \n %s\n", stageListIdxClearData.c_str());
     
     int ForLOG = 0;
@@ -42,7 +42,7 @@ CStageDataManager::CStageDataManager()
         std::string stageListFileName = stageListArray[stageListCount].asString();
         CCLOG("%s, ", stageListFileName.c_str());
         
-        // patternList.json ÆÄÀÏ ÀĞÀ½
+        // patternList.json íŒŒì¼ ì½ìŒ
         std::string strStageList = CCFileUtils::sharedFileUtils()->fullPathForFilename(MakeString("jsonRes/stageList/%s.json", stageListFileName.c_str()));
         bufferSize = 0;
         unsigned char* stageListJson = CCFileUtils::sharedFileUtils()->getFileData(strStageList.c_str(), "rb", &bufferSize);
@@ -50,7 +50,7 @@ CStageDataManager::CStageDataManager()
         pos = stageListClearData.rfind("}");
         stageListClearData = stageListClearData.substr(0, pos + 1);
         
-        // patternList.json logÃâ·Â
+        // patternList.json logì¶œë ¥
         parsingSuccessful = reader.parse(stageListClearData, stageListArray[stageListCount]);
         if (! parsingSuccessful)
         {
@@ -60,7 +60,7 @@ CStageDataManager::CStageDataManager()
         CCLOG("strStageList JSON : \n %s\n", stageListClearData.c_str());
         
         
-        // stage´Â ¹è¿­ÀÌ´Ù.
+        // stageëŠ” ë°°ì—´ì´ë‹¤.
         const Json::Value stageArray = stageListArray[stageListCount]["stage"];
         
         for (unsigned int stageCount = 0; stageCount < stageArray.size(); ++stageCount)
@@ -137,16 +137,16 @@ CStageDataManager::CStageDataManager()
 //        assert(false);//CCASSERT(false, "Err..%s", stageListIndexDocument.Parse<0>(clearData.c_str()).GetParseError());
 //    }
 //    
-//    // patternListIndex´Â ¹è¿­ÀÌ´Ù.
+//    // patternListIndexëŠ” ë°°ì—´ì´ë‹¤.
 //    const rapidjson::Value& stageListIndex = stageListIndexDocument["stageListIndex"];
 //    for (rapidjson::SizeType stageListCount = 0; stageListCount < stageListIndex.Size(); stageListCount++)
 //    {
-//        // ÆÄÀÏ ÀÌ¸§
+//        // íŒŒì¼ ì´ë¦„
 //        std::string stageListFileName = stageListIndex[stageListCount].GetString();
 //        
 //        rapidjson::Document stageListDocument;
 //        
-//        // patternList.json ÆÄÀÏ ÀĞÀ½
+//        // patternList.json íŒŒì¼ ì½ìŒ
 //        std::string strStageList = CCFileUtils::sharedFileUtils()->fullPathForFilename(MakeString("json/stageList/%s.json", stageListFileName.c_str()));
 //        bufferSize = 0;
 //        json = CCFileUtils::sharedFileUtils()->getFileData(strStageList.c_str(), "rb", &bufferSize);
@@ -154,7 +154,7 @@ CStageDataManager::CStageDataManager()
 //        pos = clearData.rfind("}");
 //        clearData = clearData.substr(0, pos + 1);
 //        
-//        // patternList.json logÃâ·Â
+//        // patternList.json logì¶œë ¥
 //        CCLOG("strStageList JSON : \n %s\n", clearData.c_str());
 //        if (stageListDocument.Parse<0>(clearData.c_str()).HasParseError()) {
 //            CCLOG("Err..%s", stageListDocument.Parse<0>(clearData.c_str()).GetParseError());
@@ -162,10 +162,10 @@ CStageDataManager::CStageDataManager()
 //        }
 //        
 //        
-//        // stage´Â ¹è¿­ÀÌ´Ù.
+//        // stageëŠ” ë°°ì—´ì´ë‹¤.
 //        const rapidjson::Value& stageList = stageListDocument["stage"];
 //        
-//        // stageÀüÃ¼¸¦ size¸¸Å­ ¼øÈ¸ÇÏ¸é¼­ °¢°¢ÀÇ shooterÀ» ¸®½ºÆ®¿¡ »ğÀÔ
+//        // stageì „ì²´ë¥¼ sizeë§Œí¼ ìˆœíšŒí•˜ë©´ì„œ ê°ê°ì˜ shooterì„ ë¦¬ìŠ¤íŠ¸ì— ì‚½ì…
 //        for (rapidjson::SizeType stageCount = 0; stageCount < stageList.Size(); stageCount++)
 //        {
 //            const rapidjson::Value& valueStage = stageList[stageCount];

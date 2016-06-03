@@ -44,7 +44,7 @@ void CPatternShooter::ShootOnce()
 
 				float initDistance = 0.f;
 
-				// 0º¸´Ù ÀÛÀ¸¸é(default -1) bullet¿¡ ¼³Á¤µÈ distance·Î »ç¿ëÇÑ´Ù.
+				// 0ë³´ë‹¤ ì‘ìœ¼ë©´(default -1) bulletì— ì„¤ì •ëœ distanceë¡œ ì‚¬ìš©í•œë‹¤.
 				if (m_fDistance < 0.0f)
 					initDistance = bulletParam._fDistance;
 				else
@@ -57,49 +57,49 @@ void CPatternShooter::ShootOnce()
 
 				float bulletAngle = (j * -pattern._widthAngleDistance) + m_ShooterParam._fAngle + 18.f;
 
-				if (p >= '1' && p <= '3') //ÀÏ¹İ bullet
+				if (p >= '1' && p <= '3') //ì¼ë°˜ bullet
 				{
 					CGameScene::getGridWorld()->addChild(CNormalBullet::create(
 						bulletParam,
 						bulletAngle,
 						m_ShooterParam._fSpeed));
 				}
-				else if (p >= '4' && p <= '5')//¹Ì»çÀÏ°ú Á¶ÁØ¹Ì»çÀÏ
+				else if (p >= '4' && p <= '5')//ë¯¸ì‚¬ì¼ê³¼ ì¡°ì¤€ë¯¸ì‚¬ì¼
 				{
 					CGameScene::getGridWorld()->addChild(CNormalMissile::create(
 						bulletParam,
 						bulletAngle,
 						m_ShooterParam._fSpeed));
 				}
-				else if (p >= 'A' && p <= 'G')//¾ÆÀÌÅÛ
+				else if (p >= 'A' && p <= 'G')//ì•„ì´í…œ
 				{
 					CGameScene::getGridWorld()->addChild(CPlayItem::create(
 						bulletParam,
 						bulletAngle,
 						m_ShooterParam._fSpeed));
 				}
-				else if (p >= 'P' && p <= 'T')//ÄÚÀÎ
+				else if (p >= 'P' && p <= 'T')//ì½”ì¸
 				{
 					CGameScene::getGridWorld()->addChild(CPlayCoin::create(
 						bulletParam,
 						bulletAngle,
 						m_ShooterParam._fSpeed));
 				}
-				else if (p >= 'U' && p <= 'Y')//º°
+				else if (p >= 'U' && p <= 'Y')//ë³„
 				{
 					CGameScene::getGridWorld()->addChild(CPlayStar::create(
 						bulletParam,
 						bulletAngle,
 						m_ShooterParam._fSpeed));
 				}
-				else if (p == 'Z')//º¸³Ê½º ¾ÆÀÌÅÛ
+				else if (p == 'Z')//ë³´ë„ˆìŠ¤ ì•„ì´í…œ
 				{
 					CGameScene::getGridWorld()->addChild(CBonusLetter::create(
 						bulletParam,
 						bulletAngle,
 						m_ShooterParam._fSpeed));
 				}
-				else if (p == 'z')//·£´ı ¾ÆÀÌÅÛ
+				else if (p == 'z')//ëœë¤ ì•„ì´í…œ
 				{
 					bulletParam._itemType = static_cast<eITEM_TYPE>(random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2));
                     bulletParam._TextureName = MakeString("playItem_%d.png", bulletParam._itemType - 1);

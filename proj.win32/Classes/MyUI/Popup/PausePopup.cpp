@@ -22,12 +22,13 @@ bool CPausePopup::initVariable()
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 		Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-		m_BG = Sprite::create("defaultPopupBG.png");
+		m_BG = Sprite::create("empty570_w.png");
 		m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_BG->setPosition(Vec2(0, origin.x + visibleSize.height * 0.75f));
+        m_BG->setOpacity(255 * 0.8f);
 		m_Popup->addChild(m_BG);
-
-		auto noticeLabel = Label::createWithTTF("format popup", "fonts/malgunbd.ttf", 25);
+        
+        auto noticeLabel = Label::createWithTTF("format popup", "fonts/malgunbd.ttf", 25);
 		noticeLabel->setColor(Color3B::BLACK);
 		noticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		noticeLabel->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.5f));
