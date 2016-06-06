@@ -12,6 +12,7 @@ protected:
     
 private:
     void End();
+	void Select(cocos2d::Ref* dp);
     
     CCharacterSelectPopup()
     : m_btnEnd(nullptr)

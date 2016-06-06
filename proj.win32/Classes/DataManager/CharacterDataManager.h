@@ -25,12 +25,12 @@ public:
     
     //getter & setter
     sCHARACTER_PARAM getCharacterInfoByIndex(int index) const;
-    const std::vector<sCHARACTER_PARAM>* getCharacterList(){ return m_CharacterList; };
+    std::vector<sCHARACTER_PARAM> getCharacterList(){ return m_CharacterList; };
     
 private:
     CCharacterDataManager();
     virtual ~CCharacterDataManager();
     
 private:
-    std::vector<sCHARACTER_PARAM>* m_CharacterList;
+    std::vector<sCHARACTER_PARAM> m_CharacterList;
 };

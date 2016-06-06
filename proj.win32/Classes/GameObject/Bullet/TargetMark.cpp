@@ -74,18 +74,16 @@ bool CTargetMark::initVariable()
 			if (m_pParticle != nullptr){
 				m_pParticle->retain();
 				m_pParticle->setAnchorPoint(Vec2::ZERO);
-				m_pParticle->setPosition(Vec2(texture->getContentSize().width * 0.25f, 0));
+				m_pParticle->setPosition(Vec2(texture->getContentSize().width * 0.32f, 0));
 				this->addChild(m_pParticle, 10);
 			}
 		}
 		else
 		{
-            CAudioManager::Instance()->PlayEffectSound("sounds/missile_warning_1.mp3", false, 0.7f);
-            
-			/* ∏Ó «¡∑π¿” µ⁄ø° ª˝º∫
-			 * m_bIsMissileChangedToCoin = true¿œ ∂ß¥¬ 
-			 * ¿œπ› πÃªÁ¿œ¿Ã ª˝º∫µ» »ƒ ∫∞∑Œ ∫Ø∞Êµ«¥¬ ∞≈∂Û
-			 * targetmark∏¶ ∫Ø∞Ê¿Ã øœ∑·µ»»ƒø° ª˝º∫«œ±‚ ¿ß«ÿº≠ */
+			/* 몇 프레임 뒤에 생성
+			* m_bIsMissileChangedToCoin = true일 때는
+			* 일반 미사일이 생성된 후 별로 변경되는 거라
+			* targetmark를 변경이 완료된후에 생성하기 위해서 */
 			this->scheduleOnce([=](float delta){
 				const int FrameCount_MAX = 3;
 				SpriteFrame* frame[FrameCount_MAX];
@@ -106,6 +104,7 @@ bool CTargetMark::initVariable()
 				auto animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
 				auto animate = Animate::create(animation);
 				sprite->runAction(RepeatForever::create(animate));
+				CAudioManager::Instance()->PlayEffectSound("sounds/missile_warning_1.mp3", false, 0.7f);
 			}, 0.05f, "targetMarkInit");
 		}
 	}

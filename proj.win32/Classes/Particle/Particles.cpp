@@ -388,7 +388,7 @@ bool CParticle_Line::initWithTotalParticles(int numberOfParticles)
 		// emitter position
 		Size winSize = Director::getInstance()->getWinSize();
 		this->setPosition(winSize.width / 2, winSize.height / 2);
-		this->setPosVar(Vec2(350,5));
+		this->setPosVar(Vec2(450,10));
 		this->setPositionType(ParticleSystem::PositionType::GROUPED);
 
 		// angle
@@ -412,8 +412,8 @@ bool CParticle_Line::initWithTotalParticles(int numberOfParticles)
 		_endColor.a = 0.1f;
 
 		// size, in pixels
-		_startSize = 10.f;
-		_endSize = 5.f;
+		_startSize = 20.f;
+		_endSize = 10.f;
 
 		Texture2D* texture = nullptr;
 		texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_strTextureName);

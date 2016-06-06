@@ -4,46 +4,46 @@
 #include "../AI/StateMachine.h"
 
 struct sALIEN_PARAM{
-    sALIEN_PARAM(){}
+	sALIEN_PARAM(){}
 };
 
 class CPlanet;
 
 class CAlien : public CMover {
 public:
-    static CAlien* create(sALIEN_PARAM alienParam,
-                                 float walkingSpeed,
-                                 float speed);
-    
-    virtual void Execute(float delta = 0.f) override;
-    
-    virtual void ReturnToMemoryBlock() override;
-    
-    void Walk(float delta);
-    
-    void Break(){};
+	static CAlien* create(sALIEN_PARAM alienParam,
+		float walkingSpeed,
+		float speed);
+
+	virtual void Execute(float delta = 0.f) override;
+
+	virtual void ReturnToMemoryBlock() override;
+
+	void Walk(float delta);
+
+	void Break(){};
 protected:
-    virtual bool init() override;
-    virtual bool initVariable() override;
-    
-    // PoolingManagerÏóêÏÑú Î©îÎ™®Î¶¨Î•º Ìï†Îãπ Î∞õÎäîÎã§.
-    void* operator new (size_t size, const std::nothrow_t);
-    
-    // Ïã§Ï†ú Î©îÎ™®Î¶¨ Ìï¥Ï†úÎäî memorypoolingÏóêÏÑú Îã¥ÎãπÌïòÏßÄÎßå
-    // ÏÜåÎ©∏ÏûêÎ•º Ìò∏Ï∂úÌïòÏó¨ NodeÍ≥ÑÏó¥Ïù¥ ÏïÑÎãå Î©îÎ™®Î¶¨Îì§ÏùÑ ÏÇ≠Ï†úÌïòÍ∏∞ ÏúÑÌï®
-    void operator delete(void* ptr){};
-    
-    CAlien(sALIEN_PARAM alienParam, float walkingSpeed, float distance);
-    virtual ~CAlien();
-    
-    //getter & setter
-    CC_SYNTHESIZE(float, m_fWalkingSpeed, WalkingSpeed);
-    CC_SYNTHESIZE(float, m_fDistance, Distance);    // 0 > Distance Ïù¥Î©¥ bulletÏùò ÏõêÎûò distanceÍ∞íÏùÑ ÏÇ¨Ïö©Ìï®
-    CC_SYNTHESIZE(float, m_fActionTime, ActionTime);
-    CC_SYNTHESIZE(int, m_Direction, Direction);     // -1 : left     1 : right
-    CC_SYNTHESIZE(int, m_CurrentAction, CurrentAction);
-    CC_SYNTHESIZE(Vec2, m_RotationVec, RotationVec);
-    CC_SYNTHESIZE(sALIEN_PARAM, m_AlienParam, AlienParam);
-    CC_SYNTHESIZE(CStateMachine<CAlien>*, m_FSM, FSM);
-    CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
+	virtual bool init() override;
+	virtual bool initVariable() override;
+
+	// PoolingManagerø°º≠ ∏ﬁ∏∏Æ∏¶ «“¥Á πﬁ¥¬¥Ÿ.
+	void* operator new (size_t size, const std::nothrow_t);
+
+	// Ω«¡¶ ∏ﬁ∏∏Æ «ÿ¡¶¥¬ memorypoolingø°º≠ ¥„¥Á«œ¡ˆ∏∏
+	// º“∏Í¿⁄∏¶ »£√‚«œø© Node∞Ëø≠¿Ã æ∆¥— ∏ﬁ∏∏ÆµÈ¿ª ªË¡¶«œ±‚ ¿ß«‘
+	void operator delete(void* ptr){};
+
+	CAlien(sALIEN_PARAM alienParam, float walkingSpeed, float distance);
+	virtual ~CAlien();
+
+	//getter & setter
+	CC_SYNTHESIZE(float, m_fWalkingSpeed, WalkingSpeed);
+	CC_SYNTHESIZE(float, m_fDistance, Distance);    // 0 > Distance ¿Ã∏È bullet¿« ø¯∑° distance∞™¿ª ªÁøÎ«‘
+	CC_SYNTHESIZE(float, m_fActionTime, ActionTime);
+	CC_SYNTHESIZE(int, m_Direction, Direction);     // -1 : left     1 : right
+	CC_SYNTHESIZE(int, m_CurrentAction, CurrentAction);
+	CC_SYNTHESIZE(Vec2, m_RotationVec, RotationVec);
+	CC_SYNTHESIZE(sALIEN_PARAM, m_AlienParam, AlienParam);
+	CC_SYNTHESIZE(CStateMachine<CAlien>*, m_FSM, FSM);
+	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
 };

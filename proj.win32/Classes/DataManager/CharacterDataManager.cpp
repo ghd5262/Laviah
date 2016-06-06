@@ -1,6 +1,5 @@
 #include "CharacterDataManager.h"
 #include "../Common/HSHUtility.h"
-#include "../Scene/GameScene.h"
 //#include "../../cocos2d/external/json/rapidjson.h"
 //#include "../../cocos2d/external/json/document.h"
 //#include "../../cocos2d/external/json/filestream.h"
@@ -88,11 +87,32 @@ CCharacterDataManager::CCharacterDataManager()
 //    }
 //    
 //    CCLOG("The Loaded Stage Size is %d AND the Last Idx of Stage Is %d", static_cast<int>(m_CharacterList->size()), ForLOG);
+
+
+	for (int i = 0; i < 5; i++)
+	{
+		sCHARACTER_PARAM character;
+
+		character._idx = i;
+		character._openLevel = 10;
+		character._cost = 100;
+		character._health = 10;
+		character._starItemTime = 1.f;
+		character._coinItemTime = 2.f;
+		character._bonusItemTime = 3.f;
+		character._magnetItemTime = 4.f;
+		character._giantItemTime = 5.f;
+		character._textureName = "player.png";
+		character._name = MakeString("character_%d", i);
+		character._skillName = MakeString("skill_%d", i);;
+		character._story = MakeString("story_%d", i);
+
+		m_CharacterList.emplace_back(character);
+	}
 }
 
 CCharacterDataManager::~CCharacterDataManager()
 {
-    delete m_CharacterList;
 }
 
 CCharacterDataManager* CCharacterDataManager::Instance()
@@ -103,5 +123,5 @@ CCharacterDataManager* CCharacterDataManager::Instance()
 
 sCHARACTER_PARAM CCharacterDataManager::getCharacterInfoByIndex(int index) const
 {
-    return m_CharacterList->at(index);
+    return m_CharacterList.at(index);
 }

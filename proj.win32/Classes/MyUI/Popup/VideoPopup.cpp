@@ -2,9 +2,6 @@
 #include "../MyButton.h"
 #include "../../Scene/GameScene.h"
 
-const Color3B g_labelColor1(36, 36, 36);
-const Color3B g_labelColor2(255, 255, 255 - 14);
-const Color3B g_labelColor3(255, 255, 166);
 const int g_coinToRevive = 1500;
 
 CVideoPopup* CVideoPopup::create()

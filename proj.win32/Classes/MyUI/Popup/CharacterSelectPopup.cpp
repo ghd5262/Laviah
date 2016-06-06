@@ -1,4 +1,5 @@
 #include "CharacterSelectPopup.h"
+#include "CharacterSelectPopupDP.h"
 #include "../MyButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/CharacterDataManager.h"
@@ -47,9 +48,10 @@ bool CCharacterSelectPopup::initVariable()
             
             /* 캐릭터리스트 데이터 읽음 */
             auto characterList = CCharacterDataManager::Instance()->getCharacterList();
-            size_t listCount = characterList->size();
+            size_t listCount = characterList.size();
             size_t dpDistance = 10;
-            
+			Size dpSize = Size(540, 750);
+
             characterScroll->setDirection(ScrollView::Direction::HORIZONTAL);
             characterScroll->setBounceEnabled(true);
             characterScroll->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -57,17 +59,16 @@ bool CCharacterSelectPopup::initVariable()
         
             for(int dpIdx = 0 ; dpIdx < listCount ;dpIdx++ )
             {
-                auto characters = Sprite::create("planet.png");
-                characters->setPosition(Vec2((characters->getContentSize().width + dpDistance) * dpIdx
-                                             + (characters->getContentSize().width * 0.5f),
-                                             characterScroll->getContentSize().height * 0.5f));
+				auto characters = CCharacterSelectPopupDP::create(dpIdx, std::bind(&CCharacterSelectPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
+				characters->setPosition(Vec2((dpSize.width + dpDistance) * dpIdx
+					+ (dpSize.width * 0.5f),
+					dpSize.height * 0.5f));
+				characters->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
                 characterScroll->addChild(characters);
             }
             
-            characterScroll->setContentSize(Size(400, m_ScrollBack->getContentSize().height * 0.7f));
-            characterScroll->setInnerContainerSize(Size(400 * listCount, 500));
-            
-            characterScroll->addEventListenerScrollView(<#cocos2d::Ref *target#>, <#SEL_ScrollViewEvent selector#>)
+			characterScroll->setContentSize(Size(m_ScrollBack->getContentSize().width, dpSize.height));
+			characterScroll->setInnerContainerSize(Size((dpSize.width + dpDistance)* listCount, dpSize.height));
             
             m_ScrollBack->addChild(characterScroll);
         }
@@ -122,4 +123,13 @@ bool CCharacterSelectPopup::initVariable()
 void CCharacterSelectPopup::End(){
     CCLOG("format popup End");
     CSpecificPopupBase::PopupClose();
+}
+
+void CCharacterSelectPopup::Select(cocos2d::Ref* dp)
+{
+	auto selectDP = dynamic_cast<CCharacterSelectPopupDP*>(dp);
+	if (selectDP != nullptr)
+	{
+		selectDP->DeSelect();
+	}
 }

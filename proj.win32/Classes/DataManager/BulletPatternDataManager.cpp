@@ -99,7 +99,7 @@ CBulletPatternDataManager::CBulletPatternDataManager()
                     = patternStr[charCount];
                 }
             }
-            if(this->AddPattern(patternInfo._patternName, patternInfo))
+			this->AddPattern(patternInfo._patternName, patternInfo);
         }
     }
     

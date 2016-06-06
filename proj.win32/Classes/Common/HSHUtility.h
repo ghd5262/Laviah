@@ -16,4 +16,9 @@ using namespace cocos2d;
 using namespace cocos2d::ui;
 static const int kMaxLogLen = 5 * 1024;
 std::string MakeString(const char* str, ...); 
+
+const Color3B g_labelColor1(36, 36, 36);
+const Color3B g_labelColor2(255, 255, 255 - 14);
+const Color3B g_labelColor3(255, 255, 166);
+
 #endif //__HSHUTILITY_H__

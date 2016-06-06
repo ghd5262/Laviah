@@ -4,9 +4,6 @@
 #include "../UIManager.h"
 #include "../../Scene/GameScene.h"
 
-const Color3B g_labelColor1(36, 36, 36);
-const Color3B g_labelColor2(255, 255, 255 - 14);
-
 CResultPopup* CResultPopup::create()
 {
 	CResultPopup *pRet = new(std::nothrow) CResultPopup();

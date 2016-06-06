@@ -3,54 +3,55 @@
 
 CMenuSceneObjectManager::CMenuSceneObjectManager()
 {
-    Clear();
+	this->Clear();
 }
 
 CMenuSceneObjectManager* CMenuSceneObjectManager::Instance()
 {
-    static CMenuSceneObjectManager instance;
-    return &instance;
+	static CMenuSceneObjectManager instance;
+	return &instance;
 }
 
 void CMenuSceneObjectManager::Clear()
 {
-    m_AlienList.clear();
-    m_Planet = nullptr;
+	m_AlienList.clear();
+	m_Planet = nullptr;
 }
 
 void CMenuSceneObjectManager::AddAlien(void* alien)
 {
-    m_AlienList.emplace_back(static_cast<CAlien*>(alien));
+	m_AlienList.emplace_back(static_cast<CAlien*>(alien));
 }
 
 /* bullet->Delete() :
- * ê²Œìž„ ì¢…ë£Œì‹œ ê°€ì§€ê³  ìžˆëŠ” Non_Nodeê³„ì—´ì˜ í¬ì¸í„°ë¥¼ í•´ì œí•˜ê¸°ìœ„í•´ */
+* °ÔÀÓ Á¾·á½Ã °¡Áö°í ÀÖ´Â Non_Node°è¿­ÀÇ Æ÷ÀÎÅÍ¸¦ ÇØÁ¦ÇÏ±âÀ§ÇØ */
 void CMenuSceneObjectManager::RemoveAllAlien()
 {
-    for (auto alien : m_AlienList)
-    {
-        if (alien->HasPointer())
-            alien->Delete();
-    }
+	for (auto alien : m_AlienList)
+	{
+		if (alien->HasPointer())
+			alien->Delete();
+	}
 }
 
 void CMenuSceneObjectManager::Auto_ReturnToMemoryBlock()
 {
-    
+
 }
 
 void CMenuSceneObjectManager::RemoveAllObject()
 {
-    RemoveAllAlien();
-    m_AlienList.clear();
+	RemoveAllAlien();
+	m_AlienList.clear();
 }
 
 void CMenuSceneObjectManager::Execute(float delta)
 {
-    for(auto alien : m_AlienList)
-    {
-        if (alien->IsAlive()) {
-            alien->Execute(delta);
-        }
-    }
+	for (auto alien : m_AlienList)
+	{
+		if (alien->IsAlive())
+		{
+			alien->Execute(delta);
+		}
+	}
 }

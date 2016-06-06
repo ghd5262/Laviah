@@ -6,129 +6,129 @@
 
 
 CAlien::CAlien(sALIEN_PARAM alienParam, float walkingSpeed, float distance)
-: CMover(0.0f)
-, m_AlienParam(alienParam)
-, m_fWalkingSpeed(walkingSpeed)
-, m_fDistance(distance)
-, m_Direction(1)
-, m_FSM(nullptr)
-, m_pPlanet(CMenuSceneObjectManager::Instance()->getPlanet())
+	: CMover(0.0f)
+	, m_AlienParam(alienParam)
+	, m_fWalkingSpeed(walkingSpeed)
+	, m_fDistance(distance)
+	, m_Direction(1)
+	, m_FSM(nullptr)
+	, m_pPlanet(CMenuSceneObjectManager::Instance()->getPlanet())
 {
-    // bulletì´ ì´ˆê¸°í™” ë ë•Œë§ˆë‹¤ ë§¤ë²ˆ ìƒì„±í•˜ì§€ ì•ŠëŠ”ë‹¤.
-    if (m_FSM == nullptr){
-        m_FSM = new CStateMachine<CAlien>(this);
-    }
-    if (m_FSM != nullptr){
-        m_FSM->ChangeState(CWanderingState::Instance());
-    }
-    
-    setCascadeOpacityEnabled(true);
+	// bulletÀÌ ÃÊ±âÈ­ µÉ¶§¸¶´Ù ¸Å¹ø »ı¼ºÇÏÁö ¾Ê´Â´Ù.
+	if (m_FSM == nullptr){
+		m_FSM = new CStateMachine<CAlien>(this);
+	}
+	if (m_FSM != nullptr){
+		m_FSM->ChangeState(CWanderingState::Instance());
+	}
+
+	setCascadeOpacityEnabled(true);
 }
 
 CAlien::~CAlien(){
-    if (m_FSM != nullptr)
-        delete m_FSM;
+	if (m_FSM != nullptr)
+		delete m_FSM;
 }
 
 CAlien* CAlien::create(sALIEN_PARAM alienParam,
-               float walkingSpeed,
-               float distance)
+	float walkingSpeed,
+	float distance)
 {
-    CAlien* pRet =
-    (CAlien*)new(std::nothrow)CAlien(alienParam, walkingSpeed, distance);
-    
-    if (pRet && pRet->init())
-    {
-        return pRet;
-    }
-    else
-    {
-        delete pRet;
-        pRet = NULL;
-        return NULL;
-    }
+	CAlien* pRet =
+		(CAlien*)new(std::nothrow)CAlien(alienParam, walkingSpeed, distance);
+
+	if (pRet && pRet->init())
+	{
+		return pRet;
+	}
+	else
+	{
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
 }
 
 
 bool CAlien::init()
 {
-    if (!initVariable())
-        return false;
-    return true;
+	if (!initVariable())
+		return false;
+	return true;
 }
 
 
 bool CAlien::initVariable()
 {
-    try{
-        setPositionX((cos(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ 200) + m_pPlanet->getPosition().x);
-        setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ 200) + m_pPlanet->getPosition().y);
-        setRotation(-90);
-        
-        auto texture = Sprite::create("whiteSquare.png");
-        texture->setAnchorPoint(Vec2(0.5f, 0.5f));
-        addChild(texture);
-    }
-    catch (...){
-        CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-        assert(false);
-        return false;
-    }
-    return true;
+	try{
+		setPositionX((cos(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ 200) + m_pPlanet->getPosition().x);
+		setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ 200) + m_pPlanet->getPosition().y);
+		setRotation(-90);
+
+		auto texture = Sprite::create("whiteSquare.png");
+		texture->setAnchorPoint(Vec2(0.5f, 0.5f));
+		addChild(texture);
+	}
+	catch (...){
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
+		assert(false);
+		return false;
+	}
+	return true;
 }
 
 
-/* íšŒì „í–‰ë ¬ì„ ì´ìš©í•˜ì—¬ ì˜¤ë¸Œì íŠ¸ íšŒì „ ë° ì´ë™ */
+/* È¸ÀüÇà·ÄÀ» ÀÌ¿ëÇÏ¿© ¿ÀºêÁ§Æ® È¸Àü ¹× ÀÌµ¿ */
 void CAlien::Walk(float delta)
 {
-    // íšŒì „ ì†ë„ì™€ ë°©í–¥ì„ ì´ìš©í•˜ì—¬ ê°ë„ë¥¼ êµ¬í•˜ê³  ë¼ë””ì•ˆìœ¼ë¡œ ë³€í™˜
-    float radian = CC_DEGREES_TO_RADIANS(m_Direction * (m_fWalkingSpeed * delta));
-    
-    // í˜„ì¬ì˜ Direction Vectorë¥¼ ì €ì¥í•œë‹¤.
-    Vec2 beforeRotation = getPosition() - m_pPlanet->getPosition();
-    
-    // ê±°ë¦¬ë„ ì €ì¥
-    float length = beforeRotation.length();
-    
-    /* íšŒì „í–‰ë ¬ì„ êµ¬í•¨
-     * rotate x = ((x_ * cos(angle)) - (y_ * sin(angle)))
-     * rotate y = ((x_ * sin(angle)) + (y_ * cos(angle))) */
-    m_RotationVec = Vec2((float)((beforeRotation.x * cos(radian)) - (beforeRotation.y * sin(radian))),
-                         (float)((beforeRotation.x * sin(radian)) + (beforeRotation.y * cos(radian))));
-    
-    // ë…¸ë§ë¼ì´ì¦ˆ
-    m_RotationVec.normalize();
-    m_RotationVec *= length;
-    
-    // ê¸°ì¡´ì˜ ì¢Œí‘œì— ìƒˆë¡œìš´ ì¢Œí‘œë¥¼ ë”í•´ì¤€ë‹¤.
-    setPosition(m_pPlanet->getPosition() + m_RotationVec);
-    
-    // ì˜¤ë¸Œì íŠ¸ ìì²´ë„ íšŒì „
-    setRotation(getRotation() - (m_Direction *( m_fWalkingSpeed * delta)));
+	   // È¸Àü ¼Óµµ¿Í ¹æÇâÀ» ÀÌ¿ëÇÏ¿© °¢µµ¸¦ ±¸ÇÏ°í ¶óµğ¾ÈÀ¸·Î º¯È¯
+	float radian = CC_DEGREES_TO_RADIANS(m_Direction * (m_fWalkingSpeed * delta));
+
+	// ÇöÀçÀÇ Direction Vector¸¦ ÀúÀåÇÑ´Ù.
+	Vec2 beforeRotation = getPosition() - m_pPlanet->getPosition();
+
+	// °Å¸®µµ ÀúÀå
+	float length = beforeRotation.length();
+
+	/* È¸ÀüÇà·ÄÀ» ±¸ÇÔ
+	* rotate x = ((x_ * cos(angle)) - (y_ * sin(angle)))
+	* rotate y = ((x_ * sin(angle)) + (y_ * cos(angle))) */
+	m_RotationVec = Vec2((float)((beforeRotation.x * cos(radian)) - (beforeRotation.y * sin(radian))),
+		(float)((beforeRotation.x * sin(radian)) + (beforeRotation.y * cos(radian))));
+
+	// ³ë¸»¶óÀÌÁî
+	m_RotationVec.normalize();
+	m_RotationVec *= length;
+
+	// ±âÁ¸ÀÇ ÁÂÇ¥¿¡ »õ·Î¿î ÁÂÇ¥¸¦ ´õÇØÁØ´Ù.
+	setPosition(m_pPlanet->getPosition() + m_RotationVec);
+
+	// ¿ÀºêÁ§Æ® ÀÚÃ¼µµ È¸Àü
+	setRotation(getRotation() - (m_Direction *(m_fWalkingSpeed * delta)));
 }
 
 void CAlien::ReturnToMemoryBlock()
 {
-    /*removeFromParent ì˜ ì´ìœ  :
-     ì´ìœ ëŠ” ëª¨ë“  CMoverì˜ íŒŒìƒ ê°ì²´ë“¤ì€ ë©”ëª¨ë¦¬ ë¸”ëŸ­ì—ì„œ ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹ ë°›ëŠ”ë‹¤.
-     ê·¸ë¡œì¸í•´ ì‹¤í–‰ ì¤‘ addChildì‹œ ê°™ì€ ë©”ëª¨ë¦¬ë¥¼ ì—¬ëŸ¬ë²ˆ addChildí•  ìˆ˜ ìˆë‹¤.
-     ë•Œë¬¸ì— ë©”ëª¨ë¦¬ ë¸”ëŸ­ìœ¼ë¡œ ë˜ëŒë¦´ë•Œì—ëŠ” ë¶€ëª¨ê´€ê³„ë¥¼ ì œê±°í•˜ì—¬ì•¼í•œë‹¤.
-     ë˜ ReferenceCountë¥¼ 1 ë‚®ì¶°ì•¼ í•˜ëŠ” ì´ìœ ë„ ìˆë‹¤.*/
-    this->removeFromParent();
-    this->removeAllChildren();
-    this->setVisible(false);
-    this->setAlive(false);
-    CPoolingManager::Instance()->Alien_ReturnToFreeMemory(this);
+	/*removeFromParent ÀÇ ÀÌÀ¯ :
+	ÀÌÀ¯´Â ¸ğµç CMoverÀÇ ÆÄ»ı °´Ã¼µéÀº ¸Ş¸ğ¸® ºí·°¿¡¼­ ¸Ş¸ğ¸®¸¦ ÇÒ´ç ¹Ş´Â´Ù.
+	±×·ÎÀÎÇØ ½ÇÇà Áß addChild½Ã °°Àº ¸Ş¸ğ¸®¸¦ ¿©·¯¹ø addChildÇÒ ¼ö ÀÖ´Ù.
+	¶§¹®¿¡ ¸Ş¸ğ¸® ºí·°À¸·Î µÇµ¹¸±¶§¿¡´Â ºÎ¸ğ°ü°è¸¦ Á¦°ÅÇÏ¿©¾ßÇÑ´Ù.
+	¶Ç ReferenceCount¸¦ 1 ³·Ãç¾ß ÇÏ´Â ÀÌÀ¯µµ ÀÖ´Ù.*/
+	this->removeFromParent();
+	this->removeAllChildren();
+	this->setVisible(false);
+	this->setAlive(false);
+	CPoolingManager::Instance()->Alien_ReturnToFreeMemory(this);
 }
 
 void* CAlien::operator new (size_t size, const std::nothrow_t)
 {
-    // PoolingManagerì—ì„œ ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹ ë°›ëŠ”ë‹¤.
-    return CPoolingManager::Instance()->AlienNew();
+	// PoolingManager¿¡¼­ ¸Ş¸ğ¸®¸¦ ÇÒ´ç ¹Ş´Â´Ù.
+	return CPoolingManager::Instance()->AlienNew();
 }
 
 void CAlien::Execute(float delta)
 {
-    getFSM()->Execute(delta);
+	getFSM()->Execute(delta);
 }
 
