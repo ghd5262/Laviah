@@ -22,7 +22,7 @@ void CNormalStageState::Execute(CObjectManager* objectMng, float delta){
 
 	objectMng->ExecuteAllObject(delta);
 
-	// º¸³Ê½ºÅ¸ÀÓÀ» ´Ù¸ğ¾Ò´Ù¸é º¸³Ê½ºÅ¸ÀÓ »óÅÂ·Î º¯°æ
+	// ë³´ë„ˆìŠ¤íƒ€ì„ì„ ë‹¤ëª¨ì•˜ë‹¤ë©´ ë³´ë„ˆìŠ¤íƒ€ì„ ìƒíƒœë¡œ ë³€ê²½
 	if (eITEM_FLAG_bonustime & CItemManager::Instance()->getCurrentItem())
 	{
 		objectMng->getFSM()->ChangeState(CBonusTimeStageState::Instance());
@@ -44,9 +44,6 @@ CBonusTimeStageState* CBonusTimeStageState::Instance(){
 
 void CBonusTimeStageState::Enter(CObjectManager* objectMng){
 
-	// All Shooter Pause
-	objectMng->ShooterPause();
-
 	auto screwShooter = CPatternShooter::create(
 		sSHOOTER_PARAM(
 		MakeString("bonusTime%d_Pattern", 1)
@@ -62,6 +59,11 @@ void CBonusTimeStageState::Enter(CObjectManager* objectMng){
 }
 
 void CBonusTimeStageState::Execute(CObjectManager* objectMng, float delta){
+    
+    objectMng->ExecuteAllObject(delta);
+    
+    CItemManager::Instance()->StartItemTimer(eITEM_TYPE_star);
+    
 	if (!(eITEM_FLAG_bonustime & CItemManager::Instance()->getCurrentItem()))
 	{
 		objectMng->getFSM()->ChangeState(CNormalStageState::Instance());
@@ -70,7 +72,7 @@ void CBonusTimeStageState::Execute(CObjectManager* objectMng, float delta){
 
 void CBonusTimeStageState::Exit(CObjectManager* objectMng){
 
-	// BonusTimeUI Æ÷ÀÎÅÍ È¹µæ
+	// BonusTimeUI í¬ì¸í„° íšë“
 	CBonusTimeUI* bonusTimeUI
 		= static_cast<CBonusTimeUI*>(CUIManager::Instance()->FindUIWithName("BonusTime"));
 	bonusTimeUI->BonusTimeIsFinish();

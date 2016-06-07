@@ -164,7 +164,12 @@ protected:
 		int intervalCount,
 		float removeTime);
 
-
+    
+    // 현재지점에서 행성의 중앙으로 waitTime만큼 기다렸다가 이동한다.
+    void R_MoveToInsideWithSpeed(
+        float waitTime,
+        float duration);
+    
 	// 좌우로 흔들림
 	void StackedRL(float duration, float stackSize, int stackCount);
 

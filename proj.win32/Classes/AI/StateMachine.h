@@ -2,12 +2,12 @@
 #include "States/State.h"
 
 /*------------------------CStateMachine------------------------
- * Template Å¬·¡½º
- * FSM»ç¿ëÀ» ¿øÇÏ´Â Å¬·¡½º¿¡¼­ Á¤ÀÇÇÏ¿© »ç¿ëÇÒ ¼ö ÀÖ´Ù.
- * »ç¿ëÀÚ´Â States¸¦ °¡Áö°í ÀÖ¾î¾ß ÇÑ´Ù.
- * Global, Current, Previous »óÅÂ¸¦ °¡Áö°í ÀÖ´Ù.
- * GlobalÀº ¾î¶°ÇÑ »óÈ²¿¡¼­µµ °¡Àå ¸ÕÀú ¹İ¿µµÈ´Ù.
- * Previous´Â Á÷ÀüÀÇ »óÅÂ¸¦ º¸°üÇÑ´Ù.
+ * Template í´ë˜ìŠ¤
+ * FSMì‚¬ìš©ì„ ì›í•˜ëŠ” í´ë˜ìŠ¤ì—ì„œ ì •ì˜í•˜ì—¬ ì‚¬ìš©í•  ìˆ˜ ìˆë‹¤.
+ * ì‚¬ìš©ìëŠ” Statesë¥¼ ê°€ì§€ê³  ìˆì–´ì•¼ í•œë‹¤.
+ * Global, Current, Previous ìƒíƒœë¥¼ ê°€ì§€ê³  ìˆë‹¤.
+ * Globalì€ ì–´ë– í•œ ìƒí™©ì—ì„œë„ ê°€ì¥ ë¨¼ì € ë°˜ì˜ëœë‹¤.
+ * PreviousëŠ” ì§ì „ì˜ ìƒíƒœë¥¼ ë³´ê´€í•œë‹¤.
 --------------------------------------------------------------*/
 
 template <class T>
@@ -43,7 +43,7 @@ private:
 	CState<T>*			m_pGlobalState;
 };
 
-/* ÇöÀç »óÅÂ¸¦ ÀÌÀü»óÅÂ·Î µÇµ¹¸°´Ù. */
+/* í˜„ì¬ ìƒíƒœë¥¼ ì´ì „ìƒíƒœë¡œ ë˜ëŒë¦°ë‹¤. */
 template <class T>
 void CStateMachine<T>::setStateToPreState()
 {
@@ -53,7 +53,7 @@ void CStateMachine<T>::setStateToPreState()
 	m_pCurrentState->Enter(m_pOwner);
 }
 
-/* ÇöÀç »óÅÂ¸¦ Àü´Ş¹ŞÀº »óÅÂ·Î º¯°æÇÑ´Ù. */
+/* í˜„ì¬ ìƒíƒœë¥¼ ì „ë‹¬ë°›ì€ ìƒíƒœë¡œ ë³€ê²½í•œë‹¤. */
 template <class T>
 void CStateMachine<T>::ChangeState(CState<T>* pNewState)
 {
@@ -64,7 +64,7 @@ void CStateMachine<T>::ChangeState(CState<T>* pNewState)
 	m_pCurrentState->Enter(m_pOwner);
 }
 
-/* ÇöÀç »óÅÂ¿Í Global»óÅÂ¸¦ Execute */
+/* í˜„ì¬ ìƒíƒœì™€ Globalìƒíƒœë¥¼ Execute */
 template <class T>
 void CStateMachine<T>::Execute(float delta) const
 {
@@ -74,21 +74,21 @@ void CStateMachine<T>::Execute(float delta) const
 		m_pCurrentState->Execute(m_pOwner, delta);
 }
 
-/* ÇöÀç »óÅÂ¸¦ ¹İÈ¯ÇÑ´Ù. */
+/* í˜„ì¬ ìƒíƒœë¥¼ ë°˜í™˜í•œë‹¤. */
 template <class T>
 const CState<T>* CStateMachine<T>::getCurState() const
 {
 	return m_pCurrentState;
 }
 
-/* ÀÌÀü »óÅÂ¸¦ ¹İÈ¯ÇÑ´Ù. */
+/* ì´ì „ ìƒíƒœë¥¼ ë°˜í™˜í•œë‹¤. */
 template <class T>
 const CState<T>* CStateMachine<T>::getPreState() const
 {
 	return m_pPreviousState;
 }
 
-/* Àü¿ª »óÅÂ¸¦ ¹İÈ¯ÇÑ´Ù. */
+/* ì „ì—­ ìƒíƒœë¥¼ ë°˜í™˜í•œë‹¤. */
 template <class T>
 const CState<T>* CStateMachine<T>::getGlobalState() const
 {

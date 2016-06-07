@@ -55,6 +55,13 @@ void CRandomShooter::ShootOnce()
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed), 101);
 	}
+    else if (p == '6')
+    {
+        CGameScene::getGridWorld()->addChild(CStickBullet::create(
+            bulletParam,
+            m_ShooterParam._fAngle,
+            m_ShooterParam._fSpeed));
+    }
 	else if (p >= 'A' && p <= 'G')//아이템
 	{
 		CGameScene::getGridWorld()->addChild(CPlayItem::create(

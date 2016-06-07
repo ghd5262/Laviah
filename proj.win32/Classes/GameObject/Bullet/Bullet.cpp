@@ -195,6 +195,20 @@ void CBullet::R_FadeOutWithCount(int intervalCount, float removeTime)
 }
 
 
+void CBullet::R_MoveToInsideWithSpeed(float waitTime, float duration)
+{
+    this->m_BulletParam._isFly = false;
+    
+    this->scheduleOnce([=](float dt){
+
+        this->runAction(Sequence::create( MoveTo::create(duration, m_TargetVec),
+                                         CallFunc::create([this](){
+            this->ReturnToMemoryBlock();
+        }), nullptr ));
+        
+    }, waitTime, MakeString("FadeOutWithCount_%d", random<int>(1, 100)));
+}
+
 void CBullet::StackedRL(float duration, float stackSize, int stackCount)
 {
 	this->runAction(

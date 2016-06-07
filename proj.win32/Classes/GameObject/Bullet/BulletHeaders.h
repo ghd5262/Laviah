@@ -10,3 +10,4 @@
 #include "PlayItem.h"
 #include "PlayStar.h"
 #include "ScoreBullet.h"
+#include "StickBullet.h"

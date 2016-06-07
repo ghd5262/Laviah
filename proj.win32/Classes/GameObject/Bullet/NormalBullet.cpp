@@ -12,8 +12,8 @@
 
 CNormalBullet::CNormalBullet(
 	sBULLET_PARAM bulletParam,
-	float angle,				    //bullet ÃÊ±â °¢µµ 
-	float speed)				    //bullet ÃÊ±â ¼Óµµ
+	float angle,				    //bullet ì´ˆê¸° ê°ë„ 
+	float speed)				    //bullet ì´ˆê¸° ì†ë„
 	: CBullet(
 	bulletParam,
 	angle, 
@@ -22,8 +22,8 @@ CNormalBullet::CNormalBullet(
 
 CNormalBullet* CNormalBullet::create(
 	sBULLET_PARAM bulletParam,
-	float angle,					//bullet ÃÊ±â °¢µµ 
-	float speed)					//bullet ÃÊ±â ¼Óµµ
+	float angle,					//bullet ì´ˆê¸° ê°ë„ 
+	float speed)					//bullet ì´ˆê¸° ì†ë„
 {
 	CNormalBullet* pRet = 
 		(CNormalBullet*)new(std::nothrow)CNormalBullet(

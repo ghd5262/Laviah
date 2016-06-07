@@ -50,6 +50,16 @@
 		"starType": 0,
 		"itemType": 0
 	}, {
+		"symbol": "6",
+		"textureName": "stick.png",
+		"bindingRadius": 8.0,
+		"power": 5,
+		"distance": 1200.0,
+		"isAimingMissile": false,
+		"coinType": 0,
+		"starType": 0,
+		"itemType": 0
+	}, {
 		"symbol": "A",
 		"textureName": "playItem_0.png",
 		"bindingRadius": 8.0,
