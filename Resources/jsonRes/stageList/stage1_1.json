@@ -89,7 +89,7 @@
 		"Interval": 9,
 		"BulletOneShoot": 1,
 		"Fly": false,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "RandomShooter",
 		"PatternName": "",
@@ -232,7 +232,7 @@
 		"Interval": 9,
 		"BulletOneShoot": 1,
 		"Fly": false,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "RandomShooter",
 		"PatternName": "",

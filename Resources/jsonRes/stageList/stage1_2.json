@@ -76,7 +76,7 @@
 		"Interval": 9,
 		"BulletOneShoot": 1,
 		"Fly": false,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "PatternShooter",
 		"PatternName": "rightScrew1_Pattern",
@@ -258,7 +258,7 @@
 		"Interval": 9,
 		"BulletOneShoot": 1,
 		"Fly": false,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "RandomShooter",
 		"PatternName": "",
@@ -401,7 +401,7 @@
 		"Interval": 9,
 		"BulletOneShoot": 1,
 		"Fly": false,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "all pause",
 		"PatternName": "all pause",

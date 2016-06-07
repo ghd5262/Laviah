@@ -84,14 +84,14 @@ bool CGameScene::initVariable()
 			origin.y + visibleSize.height * 0.5f));
 		m_GridWorld->addChild(background);
 
-		auto planet = CPlanet::create("planet.png", 170, 0.0f, 200.0f);
+		auto planet = CPlanet::create("planet.png", 180, 0.0f, 120.f);
 		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.35f));
 		m_GridWorld->addChild(planet, 100);
 
 		planet->setOriginPos(planet->getPosition());
 
-		auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 400.0f, 1.f);
+		auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 400.0f, 1000.f);
 		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			planet->getPosition().y + (planet->getBRadius() + 10)));
 		m_GridWorld->addChild(player, 100);

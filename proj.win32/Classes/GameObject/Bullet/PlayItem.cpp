@@ -7,7 +7,7 @@
 CPlayItem::CPlayItem(
 	sBULLET_PARAM bulletParam,
 	float angle,				    //item 초기 각도 
-	float speed)				    //item 초기 속도)
+	float speed)				    //item 초기 ?�도)
 	: CBullet(
 	bulletParam,
 	angle,
@@ -17,7 +17,7 @@ CPlayItem::CPlayItem(
 CPlayItem* CPlayItem::create(
 	sBULLET_PARAM bulletParam,
 	float angle,					//item 초기 각도 
-	float speed)					//item 초기 속도
+	float speed)					//item 초기 ?�도
 
 {
 	CPlayItem* pRet = 
@@ -59,13 +59,13 @@ bool CPlayItem::initVariable()
 //				
 //				float time = 1.0f;
 //
-//				// 베지어 곡선 생성
+//				// 베�???곡선 ?�성
 //				ccBezierConfig bezier;
 //				bezier.controlPoint_1 = Vec2(controlPoint_1);
 //				bezier.controlPoint_2 = Vec2(controlPoint_2);
 //				bezier.endPosition = Vec2(targetPos);
 //
-//				// 베지어 액션 및 다른 액션 순서대로 실행
+//				// 베�????�션 �??�른 ?�션 ?�서?��??�행
 //				this->runAction(Sequence::create(BezierTo::create(time, bezier), CallFunc::create([this](){ m_BulletParam._isFly = true; }), nullptr));
 //			}, 0.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
 //

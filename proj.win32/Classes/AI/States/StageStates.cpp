@@ -22,7 +22,7 @@ void CNormalStageState::Execute(CObjectManager* objectMng, float delta){
 
 	objectMng->ExecuteAllObject(delta);
 
-	// ë³´ë„ˆìŠ¤íƒ€ì„ì„ ë‹¤ëª¨ì•˜ë‹¤ë©´ ë³´ë„ˆìŠ¤íƒ€ì„ ìƒíƒœë¡œ ë³€ê²½
+	// º¸³Ê½ºÅ¸ÀÓÀ» ´Ù¸ğ¾Ò´Ù¸é º¸³Ê½ºÅ¸ÀÓ »óÅÂ·Î º¯°æ
 	if (eITEM_FLAG_bonustime & CItemManager::Instance()->getCurrentItem())
 	{
 		objectMng->getFSM()->ChangeState(CBonusTimeStageState::Instance());
@@ -72,7 +72,7 @@ void CBonusTimeStageState::Execute(CObjectManager* objectMng, float delta){
 
 void CBonusTimeStageState::Exit(CObjectManager* objectMng){
 
-	// BonusTimeUI í¬ì¸í„° íšë“
+	// BonusTimeUI Æ÷ÀÎÅÍ È¹µæ
 	CBonusTimeUI* bonusTimeUI
 		= static_cast<CBonusTimeUI*>(CUIManager::Instance()->FindUIWithName("BonusTime"));
 	bonusTimeUI->BonusTimeIsFinish();
