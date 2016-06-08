@@ -84,7 +84,7 @@ bool CGameScene::initVariable()
 			origin.y + visibleSize.height * 0.5f));
 		m_GridWorld->addChild(background);
 
-		auto planet = CPlanet::create("planet.png", 180, 0.0f, 120.f);
+		auto planet = CPlanet::create("planet.png", 180, 0.0f, 100.f);
 		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.35f));
 		m_GridWorld->addChild(planet, 100);

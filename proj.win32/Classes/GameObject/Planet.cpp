@@ -114,6 +114,6 @@ void CPlanet::Execute(float delta)
 void CPlanet::Rotation(float dir, float delta)
 {
 	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed * delta);
-	m_fAngle = static_cast<int>(m_fAngle) % 360;
+//	m_fAngle = static_cast<int>(m_fAngle) % 360;
 	this->setRotation(m_fAngle);
 }

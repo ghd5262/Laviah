@@ -1,4 +1,4 @@
-﻿#include "Bullet.h"
+#include "Bullet.h"
 #include "../ItemManager.h"
 #include "../../Task/PoolingManager.h"
 #include "../../GameObject/ObjectManager.h"
@@ -201,7 +201,7 @@ void CBullet::R_MoveToInsideWithSpeed(float waitTime, float duration)
     
     this->scheduleOnce([=](float dt){
 
-        this->runAction(Sequence::create( MoveTo::create(duration, m_TargetVec),
+        this->runAction(Sequence::create( MoveTo::create(duration, m_pPlanet->getOriginPos()),
                                          CallFunc::create([this](){
             this->ReturnToMemoryBlock();
         }), nullptr ));
