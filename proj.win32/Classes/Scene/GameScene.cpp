@@ -91,7 +91,7 @@ bool CGameScene::initVariable()
 
 		planet->setOriginPos(planet->getPosition());
 
-		auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 400.0f, 1000.f);
+		auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 400.0f, 1.f);
 		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			planet->getPosition().y + (planet->getBRadius() + 10)));
 		m_GridWorld->addChild(player, 100);

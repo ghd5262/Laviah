@@ -71,6 +71,13 @@ void CPatternShooter::ShootOnce()
 						bulletAngle,
 						m_ShooterParam._fSpeed));
 				}
+                else if (p == '6')
+                {
+                    CGameScene::getGridWorld()->addChild(CStickBullet::create(
+                        bulletParam,
+                        bulletAngle,
+                        m_ShooterParam._fSpeed));
+                }
 				else if (p >= 'A' && p <= 'G')//아이템
 				{
 					CGameScene::getGridWorld()->addChild(CPlayItem::create(

@@ -2,19 +2,6 @@
 	"stage": [{
 		"ShooterName": "RandomShooter",
 		"PatternName": "",
-		"Symbol": "6",
-		"StartTime": 0,
-		"EndTime": 300,
-		"BulletSpeed": 500,
-		"AngleRandom": true,
-		"BulletAngle": 0,
-		"Interval": 10,
-		"BulletOneShoot": 2,
-		"Fly": true,
-		"OneShoot": false
-	}, {
-		"ShooterName": "RandomShooter",
-		"PatternName": "",
 		"Symbol": "1",
 		"StartTime": 0,
 		"EndTime": 24,

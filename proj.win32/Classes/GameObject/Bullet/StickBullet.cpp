@@ -17,6 +17,7 @@ CStickBullet::CStickBullet(  sBULLET_PARAM bulletParam,
           bulletParam,
           angle,
           speed)
+, m_HitWithPlanet(false)
 {}
 
 CStickBullet* CStickBullet::create(  sBULLET_PARAM bulletParam,
@@ -62,7 +63,7 @@ bool CStickBullet::initVariable()
         float bulletSpeedAccel = m_fBulletSpeed * 0.25f;
         this->schedule([this, bulletSpeedAccel](float delta){
             m_fBulletSpeed += bulletSpeedAccel;
-        }, 0.1f, 10, 1.0f, "AccelerationUP");
+        }, 0.1f, 15, 0.0f, "AccelerationUP");
     }
     catch (...){
         CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
@@ -79,8 +80,18 @@ void CStickBullet::Execute(float delta)
 
 void CStickBullet::CollisionWithPlanet()
 {
-    if(m_BulletParam._isFly)
-        R_MoveToInsideWithSpeed(3.f, 1.5f);
+    if(m_HitWithPlanet == false)
+    {
+        m_HitWithPlanet = true;
+        m_BulletParam._isFly = false;
+        scheduleOnce([this](float delta){
+            m_fBulletSpeed = 300;
+            m_BulletParam._isFly = true;
+            scheduleOnce([this](float delta){
+                ReturnToMemoryBlock();
+            }, 0.2f, MakeString("StickBulletStayFinish_%d", random<int>(1, 100)));
+        }, 2.f, MakeString("StickBulletStay_%d", random<int>(1, 100)));
+    }
 }
 
 void CStickBullet::CollisionWithPlayer()

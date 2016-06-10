@@ -71,6 +71,7 @@ void CBullet::ReturnToMemoryBlock()
 /* 회전행렬을 이용하여 오브젝트 회전 및 이동 */
 void CBullet::Rotation(float dir, float delta)
 {
+    
     // 회전 속도와 방향을 이용하여 각도를 구하고 라디안으로 변환
     float radian = CC_DEGREES_TO_RADIANS(dir * (m_fRotationSpeed * delta));
     
@@ -201,10 +202,7 @@ void CBullet::R_MoveToInsideWithSpeed(float waitTime, float duration)
     
     this->scheduleOnce([=](float dt){
 
-        this->runAction(Sequence::create( MoveTo::create(duration, m_pPlanet->getOriginPos()),
-                                         CallFunc::create([this](){
-            this->ReturnToMemoryBlock();
-        }), nullptr ));
+        this->m_BulletParam._isFly = true;
         
     }, waitTime, MakeString("FadeOutWithCount_%d", random<int>(1, 100)));
 }

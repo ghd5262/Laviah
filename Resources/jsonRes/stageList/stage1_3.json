@@ -232,7 +232,7 @@
 		"Interval": 40,
 		"BulletOneShoot": 1,
 		"Fly": true,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "PatternShooter",
 		"PatternName": "leftScrewRocket2_Pattern",
@@ -245,7 +245,7 @@
 		"Interval": 90,
 		"BulletOneShoot": 1,
 		"Fly": true,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "PatternShooter",
 		"PatternName": "rightScrew1_Pattern",
@@ -258,7 +258,7 @@
 		"Interval": 90,
 		"BulletOneShoot": 1,
 		"Fly": true,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "RandomShooter",
 		"PatternName": "",
@@ -271,7 +271,7 @@
 		"Interval": 80,
 		"BulletOneShoot": 1,
 		"Fly": true,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "RandomShooter",
 		"PatternName": "",
@@ -284,7 +284,7 @@
 		"Interval": 80,
 		"BulletOneShoot": 1,
 		"Fly": false,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "RandomShooter",
 		"PatternName": "",
@@ -297,7 +297,7 @@
 		"Interval": 80,
 		"BulletOneShoot": 1,
 		"Fly": true,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "PatternShooter",
 		"PatternName": "rightScrewRocket1_Pattern",
@@ -310,7 +310,7 @@
 		"Interval": 40,
 		"BulletOneShoot": 1,
 		"Fly": true,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "RandomShooter",
 		"PatternName": "",
@@ -323,7 +323,7 @@
 		"Interval": 80,
 		"BulletOneShoot": 1,
 		"Fly": false,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "PatternShooter",
 		"PatternName": "rightScrewRocket2_Pattern",
@@ -336,7 +336,7 @@
 		"Interval": 90,
 		"BulletOneShoot": 1,
 		"Fly": true,
-		"OneShoot": true
+		"OneShoot": false
 	}, {
 		"ShooterName": "PatternShooter",
 		"PatternName": "leftScrew1_Pattern",
@@ -347,6 +347,32 @@
 		"AngleRandom": true,
 		"BulletAngle": 0,
 		"Interval": 90,
+		"BulletOneShoot": 1,
+		"Fly": true,
+		"OneShoot": false
+	}, {
+		"ShooterName": "PatternShooter",
+		"PatternName": "rightScrewStick5_Pattern",
+		"Symbol": " ",
+		"StartTime": 172,
+		"EndTime": 172,
+		"BulletSpeed": 400,
+		"AngleRandom": true,
+		"BulletAngle": 0,
+		"Interval": 0,
+		"BulletOneShoot": 1,
+		"Fly": true,
+		"OneShoot": true
+	}, {
+		"ShooterName": "PatternShooter",
+		"PatternName": "leftScrewStick5_Pattern",
+		"Symbol": " ",
+		"StartTime": 189,
+		"EndTime": 189,
+		"BulletSpeed": 400,
+		"AngleRandom": true,
+		"BulletAngle": 0,
+		"Interval": 0,
 		"BulletOneShoot": 1,
 		"Fly": true,
 		"OneShoot": true

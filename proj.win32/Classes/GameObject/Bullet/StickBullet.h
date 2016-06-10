@@ -26,4 +26,7 @@ private:
                   float angle,
                   float speed);
     virtual ~CStickBullet(){};
+    
+private:
+    bool m_HitWithPlanet;
 };
