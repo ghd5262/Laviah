@@ -35,6 +35,7 @@ protected:
 	virtual bool init() override;
 
 private:
+	void clearData();
     void GamePause();
 	bool initVariable();
 	void InitGameSceneUI();

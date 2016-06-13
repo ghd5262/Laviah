@@ -36,8 +36,14 @@ CMenuScene::~CMenuScene()
     CMenuSceneObjectManager::Instance()->RemoveAllObject();
     removeAllChildrenWithCleanup(true);
     CPoolingManager::Instance()->DeleteAllMemory();
+
+	clearData();
 }
 
+void CMenuScene::clearData()
+{
+	m_MenuScene = nullptr;
+}
 
 bool CMenuScene::init()
 {
@@ -56,6 +62,7 @@ bool CMenuScene::initVariable()
 {
 	try
 	{
+		clearData();
 		m_MenuScene = this;
         
         Size visibleSize = Director::getInstance()->getVisibleSize();

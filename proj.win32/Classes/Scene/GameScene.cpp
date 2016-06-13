@@ -46,6 +46,18 @@ CGameScene::~CGameScene()
 	CObjectManager::Instance()->RemoveAllObject();
 	removeAllChildrenWithCleanup(true);
 	CPoolingManager::Instance()->DeleteAllMemory();
+	clearData();
+}
+
+void CGameScene::clearData()
+{
+	m_GameScene = nullptr;
+	m_GridWorld = nullptr;
+	m_PauseBtn = nullptr;
+	m_CountDownLabel = nullptr;
+	m_KeyBoardL = false;
+	m_KeyBoardR = false;
+	m_Count = 0;
 }
 
 bool CGameScene::init()
@@ -65,6 +77,7 @@ bool CGameScene::initVariable()
 {
 	try
 	{
+		clearData();
 		m_GameScene = this;
 		m_KeyBoardL = false;
 		m_KeyBoardR = false;

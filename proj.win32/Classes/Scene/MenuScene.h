@@ -18,6 +18,7 @@ protected:
 	virtual bool init() override;
 
 private:
+	void clearData();
 	bool initVariable();
     void InitMenuSceneUI();
     void createGameScene();
