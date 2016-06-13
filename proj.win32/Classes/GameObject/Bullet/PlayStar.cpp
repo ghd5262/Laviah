@@ -5,6 +5,7 @@
 #include "../ItemManager.h"
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
+#include "../../MyUI/MultipleScore.h"
 
 CPlayStar::CPlayStar(
 	sBULLET_PARAM bulletParam,
@@ -72,6 +73,9 @@ bool CPlayStar::initVariable()
 		addChild(m_pTexture);
 
 		m_fStarValue = CItemManager::Instance()->getValueOfStar(m_BulletParam._starType);
+	
+		m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
+
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
@@ -98,5 +102,5 @@ void CPlayStar::CollisionWithPlayer()
 {
 	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
-	m_pUIScore->UpdateValue(m_fStarValue);
+	m_pMultipleScore->AddScore(m_fStarValue);
 }

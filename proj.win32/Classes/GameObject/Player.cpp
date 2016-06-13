@@ -63,6 +63,7 @@ CPlayer::CPlayer(
 	, m_pItemBarrier(nullptr)
 	, m_isPlayerDead(true)
     , m_MagnetEffect(nullptr)
+	, m_Invincibility(false)
 {
 }
 
@@ -163,6 +164,9 @@ void CPlayer::PlayerAlive(){
 		m_isPlayerDead = false;
 		m_pParticle->setVisible(true);
 		m_pTexture->setVisible(true);
+
+		// 1초간 무적 
+		InvincibilityMode(4.f); //카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
 	}, 1.5f, "PlayerAlive");
 
 }
@@ -195,7 +199,7 @@ void CPlayer::GotSomeHealth(float health)
 
 void CPlayer::LostSomeHealth(float loseHealth)
 {
-	if (m_isPlayerDead == true)
+	if (m_isPlayerDead == true || m_Invincibility == true)
 		return;
 	if (0.f < (m_fLife - loseHealth))
 	{
@@ -219,6 +223,8 @@ void CPlayer::Rotation(float dir, float delta)
 	m_pParticle->setAngle(dir == 1 ? 180 : 0);
 	m_pParticle->setGravity(Vec2(-90 * dir, 0));
 	this->setRotation(m_fAngle);
+
+	// 플레이어가 생성되는 시점에는 m_pUIRunScore가 없다.
     if(m_pUIRunScore == nullptr)
         m_pUIRunScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("RunScoreUI"));
     m_pUIRunScore->UpdateValue(1);
@@ -248,6 +254,9 @@ void CPlayer::NormalMode()
 		this->setBRadius(6.f);
 		m_pParticle->setStartSize(30.f);
 		m_pParticle->setEndSize(4.f);
+
+		//1초간 무적
+		InvincibilityMode(1.f);
 	}), nullptr);
 	this->runAction(action);
 }
@@ -296,4 +305,14 @@ void CPlayer::GotBarrierItem()
 void CPlayer::GotMagnetItem()
 {
     m_MagnetEffect->GotMagnetItem();
+}
+
+void CPlayer::InvincibilityMode(float time)
+{
+	this->m_pTexture->setOpacity(100);
+	m_Invincibility = true;
+	this->scheduleOnce([this](float delta){
+		this->m_pTexture->setOpacity(255);
+		m_Invincibility = false;
+	}, time, "SetPlayerNormalMode");
 }

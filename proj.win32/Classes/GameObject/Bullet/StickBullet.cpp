@@ -9,7 +9,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
-
+#include "../../MyUI/MultipleScore.h"
 CStickBullet::CStickBullet(  sBULLET_PARAM bulletParam,
                              float angle,				    //bullet 초기 각도
                              float speed)				    //bullet 초기 속도
@@ -60,10 +60,12 @@ bool CStickBullet::initVariable()
         addChild(m_pTexture);
         
         m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-        float bulletSpeedAccel = m_fBulletSpeed * 0.25f;
+		m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
+
+		float bulletSpeedAccel = m_fBulletSpeed * 0.15f;
         this->schedule([this, bulletSpeedAccel](float delta){
             m_fBulletSpeed += bulletSpeedAccel;
-        }, 0.1f, 15, 0.0f, "AccelerationUP");
+        }, 0.1f, 10, 0.3f, "AccelerationUP");
     }
     catch (...){
         CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);

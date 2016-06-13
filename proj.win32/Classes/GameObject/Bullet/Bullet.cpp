@@ -8,6 +8,7 @@
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
 #include "../../Scene/GameScene.h"
+#include "../../MyUI/MultipleScore.h"
 
 CBullet::CBullet(
 	sBULLET_PARAM bulletParam,
@@ -26,6 +27,7 @@ CBullet::CBullet(
 	, m_bIsPlayerGet(false)
 	, m_fTime(0.f)
 	, m_pUIScore(nullptr)
+	, m_pMultipleScore(nullptr)
 {
 	// bullet이 초기화 될때마다 매번 생성하지 않는다.
 	if (m_FSM == nullptr){
@@ -34,7 +36,6 @@ CBullet::CBullet(
 	if (m_FSM != nullptr){
 		m_FSM->ChangeState(CBulletNormal::Instance());
 	}
-    
     setCascadeOpacityEnabled(true);
 }
 
@@ -196,17 +197,6 @@ void CBullet::R_FadeOutWithCount(int intervalCount, float removeTime)
 }
 
 
-void CBullet::R_MoveToInsideWithSpeed(float waitTime, float duration)
-{
-    this->m_BulletParam._isFly = false;
-    
-    this->scheduleOnce([=](float dt){
-
-        this->m_BulletParam._isFly = true;
-        
-    }, waitTime, MakeString("FadeOutWithCount_%d", random<int>(1, 100)));
-}
-
 void CBullet::StackedRL(float duration, float stackSize, int stackCount)
 {
 	this->runAction(
@@ -236,8 +226,8 @@ void CBullet::Seek(float delta)
 
 void CBullet::createScoreCurrentPos(int score)
 {
-	if (m_pUIScore != nullptr){
-		m_pUIScore->UpdateValue(score);
+	if (m_pMultipleScore != nullptr){
+		m_pMultipleScore->AddScore(score);
 		auto scoreBullet = CScoreBullet::create(score);
 		scoreBullet->setPosition(getPosition());
 		scoreBullet->setAnchorPoint(Vec2::ZERO);

@@ -6,8 +6,8 @@
 
 CPlayItem::CPlayItem(
 	sBULLET_PARAM bulletParam,
-	float angle,				    //item ì´ˆê¸° ê°ë„ 
-	float speed)				    //item ì´ˆê¸° ?ë„)
+	float angle,				    //item ÃÊ±â °¢µµ 
+	float speed)				    //item ÃÊ±â ¼Óµµ)
 	: CBullet(
 	bulletParam,
 	angle,
@@ -16,8 +16,8 @@ CPlayItem::CPlayItem(
 
 CPlayItem* CPlayItem::create(
 	sBULLET_PARAM bulletParam,
-	float angle,					//item ì´ˆê¸° ê°ë„ 
-	float speed)					//item ì´ˆê¸° ?ë„
+	float angle,					//item ÃÊ±â °¢µµ 
+	float speed)					//item ÃÊ±â ¼Óµµ
 
 {
 	CPlayItem* pRet = 
@@ -59,13 +59,13 @@ bool CPlayItem::initVariable()
 //				
 //				float time = 1.0f;
 //
-//				// ë² ì???ê³¡ì„  ?ì„±
+//				// º£Áö¾î °î¼± »ý¼º
 //				ccBezierConfig bezier;
 //				bezier.controlPoint_1 = Vec2(controlPoint_1);
 //				bezier.controlPoint_2 = Vec2(controlPoint_2);
 //				bezier.endPosition = Vec2(targetPos);
 //
-//				// ë² ì????¡ì…˜ ë°??¤ë¥¸ ?¡ì…˜ ?œì„œ?€ë¡??¤í–‰
+//				// º£Áö¾î ¾×¼Ç ¹× ´Ù¸¥ ¾×¼Ç ¼ø¼­´ë·Î ½ÇÇà
 //				this->runAction(Sequence::create(BezierTo::create(time, bezier), CallFunc::create([this](){ m_BulletParam._isFly = true; }), nullptr));
 //			}, 0.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
 //

@@ -63,7 +63,8 @@ protected:
 		, m_fIntervalTimer(0.0f)
 		, m_fIntervalRandom(0.0f)
 		, m_nBulletCountAtOnceRandom(1)
-		, m_fDistance(distance){
+		, m_fDistance(distance)
+		, m_isShooterPause(false){
 		m_fTime = m_ShooterParam._fStartTime;
 	}
 	virtual ~CShooter();
@@ -75,4 +76,5 @@ protected:
 	CC_SYNTHESIZE(float, m_fDistance, Distance);// 0 > Distance 이면 bullet의 원래 distance값을 사용함
 	CC_SYNTHESIZE(int, m_nBulletCountAtOnceRandom, BulletCountAtOnceRandom);// 한번에 쏘는 총알의 수 1 ~ Max 사이 값
 	CC_SYNTHESIZE(sSHOOTER_PARAM, m_ShooterParam, ShooterParam);
+	CC_SYNTHESIZE(bool, m_isShooterPause, ShooterPause);
 };

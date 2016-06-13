@@ -121,7 +121,8 @@ void CPatternShooter::ShootOnce()
 }
 
 void CPatternShooter::Execute(float delta) {
-
+	if (m_isShooterPause)
+		return;
 	m_fIntervalTimer += delta;
 	m_fTime += delta;
 	if (m_fIntervalTimer >= m_ShooterParam._fInterval)

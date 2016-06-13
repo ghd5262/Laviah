@@ -54,6 +54,9 @@ public:
 	// 게임 끝났을 때
 	void PlayerDead();
 
+	// time 동안무적
+	void InvincibilityMode(float time);
+
 	//getter & setter
 	CStateMachine<CPlayer>* getFSM(){ return m_FSM.get(); }
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
@@ -98,7 +101,8 @@ private:
 	bool m_isRoatating;
     CScoreUI* m_pUIRunScore;
     CMagnetEffect* m_MagnetEffect;
-    
+	bool m_Invincibility;
+
 	// 영향을 받는 아이템 타입 
 	// ex) m_EffectItemType == eITEM_TYPE_magnet 이면 자석아이템에게 영향력을 받는다.
 	int m_EffectItemTypes;

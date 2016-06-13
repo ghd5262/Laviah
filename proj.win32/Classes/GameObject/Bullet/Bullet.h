@@ -85,6 +85,7 @@ struct sBULLET_PARAM{
 class CScoreUI;
 class CPlayer;
 class CPlanet;
+class CMultipleScore;
 class CBullet : public CMover {
 public:
 	virtual void ReturnToMemoryBlock() override;
@@ -118,6 +119,7 @@ protected:
 	virtual ~CBullet();
 
 	//getter & setter
+	//중요 - 멤버변수로 포인터를 넣을때는 꼭 초기화 및 nullptr을 이용하자 (크래시 유발)
 	CC_SYNTHESIZE(int, m_nReceivingEffectItemTypes, ReceivingEffectItemTypes)
 	CC_SYNTHESIZE(float, m_fAngle, Angle);
 	CC_SYNTHESIZE(float, m_fBulletSpeed, BulletSpeed);
@@ -163,12 +165,6 @@ protected:
 	void R_FadeOutWithCount(
 		int intervalCount,
 		float removeTime);
-
-    
-    // 현재지점에서 행성의 중앙으로 waitTime만큼 기다렸다가 이동한다.
-    void R_MoveToInsideWithSpeed(
-        float waitTime,
-        float duration);
     
 	// 좌우로 흔들림
 	void StackedRL(float duration, float stackSize, int stackCount);
@@ -183,5 +179,8 @@ private:
 	bool on(eITEM_FLAG itemType){ return (m_nReceivingEffectItemTypes & itemType) == itemType; }
 
 protected:
+	//중요 - 멤버변수로 포인터를 넣을때는 꼭 초기화 및 nullptr을 이용하자 (크래시 유발)
 	CScoreUI* m_pUIScore;
+
+	CMultipleScore* m_pMultipleScore;
 };

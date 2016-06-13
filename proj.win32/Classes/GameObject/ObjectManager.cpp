@@ -167,7 +167,8 @@ void CObjectManager::ShooterPause()
 	for (auto shooter : m_ShooterList)
 	{
 		if (shooter->IsAlive()) {
-			shooter->setAlive(false);
+			//shooter->setAlive(false);
+			shooter->setShooterPause(true);
 		}
 	}
 }
@@ -177,7 +178,8 @@ void CObjectManager::ShooterResume()
 	for (auto shooter : m_ShooterList)
 	{
 		if (shooter->IsAlive()) {
-			shooter->setAlive(true);
+			//shooter->setAlive(true);
+			shooter->setShooterPause(false);
 		}
 	}
 }

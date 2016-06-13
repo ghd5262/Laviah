@@ -9,7 +9,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
-
+#include "../../MyUI/MultipleScore.h"
 CNormalBullet::CNormalBullet(
 	sBULLET_PARAM bulletParam,
 	float angle,				    //bullet 초기 각도 
@@ -60,6 +60,8 @@ bool CNormalBullet::initVariable()
 		m_pTexture = Sprite::create(m_BulletParam._TextureName);
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		addChild(m_pTexture);
+
+		m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
 
 		m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
 	}

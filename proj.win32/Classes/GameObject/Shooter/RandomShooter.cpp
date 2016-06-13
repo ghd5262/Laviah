@@ -104,6 +104,9 @@ void CRandomShooter::ShootOnce()
 
 void CRandomShooter::Execute(float delta) {
 
+	if (m_isShooterPause)
+		return;
+
 	m_fIntervalTimer += delta;
 	m_fTime += delta;
 	if (m_fIntervalTimer >= m_fIntervalRandom)

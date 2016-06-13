@@ -185,4 +185,7 @@ void CVideoPopup::Video(){
 
 void CVideoPopup::UseCoin(){
 	CCLOG("format popup UseCoin");
+	CGameScene::getGameScene()->CountDownCancel();
+	CGameScene::getGameScene()->GameStart();
+	CSpecificPopupBase::PopupClose();
 }

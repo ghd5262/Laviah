@@ -14,6 +14,7 @@
 #include "../MyUI/HealthBarUI.h"
 #include "../MyUI/BonusTimeUI.h"
 #include "../MyUI/ScoreUI.h"
+#include "../MyUI/MultipleScore.h"
 #include "../MyUI/Popup.h"
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
@@ -101,7 +102,7 @@ bool CGameScene::initVariable()
 
 		CObjectManager::Instance()->setPlayer(player);
 		CObjectManager::Instance()->setPlanet(planet);
-		CPoolingManager::Instance()->CreateBulletList(1300, 800);
+		CPoolingManager::Instance()->CreateBulletList(1000, 900);
 		CPoolingManager::Instance()->CreateShooterList(10, 800);
 
 		EventListenerKeyboard * pListener = EventListenerKeyboard::create();
@@ -229,6 +230,11 @@ void CGameScene::InitGameSceneUI()
 	if (!CUIManager::Instance()->AddUIWithName(starScoreUI, "StarScoreUI"))
 		CCASSERT(false, "StarScoreUI CAN NOT INIT");
 
+	auto multipleScoreUI = CMultipleScore::create();
+	m_GridWorld->addChild(multipleScoreUI); // referenceCount를 위하여 addChild
+	multipleScoreUI->setVisible(false);
+	if (!CUIManager::Instance()->AddUIWithName(multipleScoreUI, "MultipleScoreUI"))
+		CCASSERT(false, "MultipleScoreUI CAN NOT INIT");
 
 	auto coinScoreUI = CScoreUI::create("fonts/Number.ttf", 38, "coinIcon_2.png");
 	coinScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -249,25 +255,25 @@ void CGameScene::InitGameSceneUI()
         CCASSERT(false, "RunScoreUI CAN NOT INIT");
 
 	auto bonusTimeCount = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-	m_GridWorld->addChild(bonusTimeCount, 102);
+	m_GridWorld->addChild(bonusTimeCount, 102);// referenceCount를 위하여 addChild
 	bonusTimeCount->setVisible(false);
 	if (!CUIManager::Instance()->AddUIWithName(bonusTimeCount, "BonusTimeCount"))
 		CCASSERT(false, "BonusTimeCount CAN NOT INIT");
 
 	auto alienGetCount = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-	m_GridWorld->addChild(alienGetCount, 102);
+	m_GridWorld->addChild(alienGetCount, 102);// referenceCount를 위하여 addChild
 	alienGetCount->setVisible(false);
 	if (!CUIManager::Instance()->AddUIWithName(alienGetCount, "AlienGetCount"))
 		CCASSERT(false, "AlienGetCount CAN NOT INIT");
 
 	auto challengeClearCount = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-	m_GridWorld->addChild(challengeClearCount, 102);
+	m_GridWorld->addChild(challengeClearCount, 102);// referenceCount를 위하여 addChild
 	challengeClearCount->setVisible(false);
 	if (!CUIManager::Instance()->AddUIWithName(challengeClearCount, "ChallengeClearCount"))
 		CCASSERT(false, "ChallengeClearCount CAN NOT INIT");
 
 	auto totalScore = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-	m_GridWorld->addChild(totalScore, 102);
+	m_GridWorld->addChild(totalScore, 102);// referenceCount를 위하여 addChild
 	totalScore->setVisible(false);
 	if (!CUIManager::Instance()->AddUIWithName(totalScore, "TotalScore"))
 		CCASSERT(false, "TotalScore CAN NOT INIT");
@@ -392,7 +398,10 @@ void CGameScene::GameStart()
     CountDown(3, "GO!", [](){
         CObjectManager::Instance()->getFSM()->ChangeState(CNormalStageState::Instance());
     });
-    
+ 
+	CAudioManager::Instance()->setBGMVolume(1.f);
+	CAudioManager::Instance()->setEffectSoundVolume(1.f);
+
 	m_PauseBtn->runAction(FadeIn::create(0.5f));
 	CObjectManager::Instance()->getPlayer()->PlayerAlive();
 	CObjectManager::Instance()->setIsGamePause(false);
@@ -520,6 +529,8 @@ void CGameScene::OpenGamePausePopup()
 
 void CGameScene::backToMenuScene()
 {
+	CAudioManager::Instance()->AllPause();
+
     Director::getInstance()->getScheduler()->schedule([](float delta){
         
         auto tempScene = CEmptyScene::createScene();

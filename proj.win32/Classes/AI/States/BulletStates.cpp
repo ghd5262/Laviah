@@ -29,12 +29,6 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 		return;
 	}
 
-	if (bullet->IsHit(bullet->getPlanet())) 
-	{
-		bullet->CollisionWithPlanet();
-		return;
-	}
-	
 	if (bullet->isEffectWithItem(eITEM_FLAG_shield) && 
 		bullet->getPlayer()->getItemBarrier()->getBarrierAlive() && 
 		bullet->IsHit(bullet->getPlayer()->getPosition(),
@@ -61,6 +55,12 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 		(eITEM_FLAG_star & CItemManager::Instance()->getCurrentItem())))
 	{
 		bullet->ChangeToCoinOrStar();
+		return;
+	}
+
+	if (bullet->IsHit(bullet->getPlanet()))
+	{
+		bullet->CollisionWithPlanet();
 		return;
 	}
 }

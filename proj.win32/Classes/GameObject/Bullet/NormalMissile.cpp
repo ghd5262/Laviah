@@ -13,7 +13,7 @@
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/StageDataManager.h"
-
+#include "../../MyUI/MultipleScore.h"
 
 CNormalMissile::CNormalMissile(
 	sBULLET_PARAM bulletParam,
@@ -115,6 +115,8 @@ bool CNormalMissile::initVariable()
 		}, tempTime, MakeString("createTargetMark_%d", distance * 100));
 
 		m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
+		m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
+
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
