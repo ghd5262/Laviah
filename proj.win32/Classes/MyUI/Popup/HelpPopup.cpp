@@ -26,6 +26,8 @@ bool CHelpPopup::initVariable()
         Size visibleSize = Director::getInstance()->getVisibleSize();
         Vec2 origin = Director::getInstance()->getVisibleOrigin();
         
+        size_t helpImgCount = 2;
+        
         m_BG = Sprite::create("empty1920.png");
         if(m_BG != nullptr){
             m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -40,12 +42,12 @@ bool CHelpPopup::initVariable()
         pageview->setContentSize(visibleSize);
         pageview->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f));
         pageview->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < helpImgCount; i++) {
             // Layout 생성
             auto layout = Layout::create();
             layout->setSize(visibleSize);
             // ImageView를 생성하고 Layout에 add함
-            auto imageView = ImageView::create(StringUtils::format("background_%d.png", i + 1));
+            auto imageView = ImageView::create(StringUtils::format("helpImg_%d.png", i + 1));
             imageView->setAnchorPoint(Point::ANCHOR_BOTTOM_LEFT);
             layout->addChild(imageView);
             
