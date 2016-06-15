@@ -165,8 +165,8 @@ void CPlayer::PlayerAlive(){
 		m_pParticle->setVisible(true);
 		m_pTexture->setVisible(true);
 
-		// 1ÃÊ°£ ¹«Àû 
-		InvincibilityMode(4.f); //Ä«¿îÆ® ³¡³ª±â ÀüºÎÅÍ Àû¿ëµÇ±â ¶§¹®¿¡ ½ÇÁ¦·Î´Â 1.5ÃÊÁ¤µµ
+		// 1ì´ˆê°„ ë¬´ì  
+		InvincibilityMode(4.f); //ì¹´ìš´íŠ¸ ëë‚˜ê¸° ì „ë¶€í„° ì ìš©ë˜ê¸° ë•Œë¬¸ì— ì‹¤ì œë¡œëŠ” 1.5ì´ˆì •ë„
 	}, 1.5f, "PlayerAlive");
 
 }
@@ -224,7 +224,7 @@ void CPlayer::Rotation(float dir, float delta)
 	m_pParticle->setGravity(Vec2(-90 * dir, 0));
 	this->setRotation(m_fAngle);
 
-	// ÇÃ·¹ÀÌ¾î°¡ »ý¼ºµÇ´Â ½ÃÁ¡¿¡´Â m_pUIRunScore°¡ ¾ø´Ù.
+	// í”Œë ˆì´ì–´ê°€ ìƒì„±ë˜ëŠ” ì‹œì ì—ëŠ” m_pUIRunScoreê°€ ì—†ë‹¤.
     if(m_pUIRunScore == nullptr)
         m_pUIRunScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("RunScoreUI"));
     m_pUIRunScore->UpdateValue(1);
@@ -255,27 +255,27 @@ void CPlayer::NormalMode()
 		m_pParticle->setStartSize(30.f);
 		m_pParticle->setEndSize(4.f);
 
-		//1ÃÊ°£ ¹«Àû
-		InvincibilityMode(1.f);
+		//1ì´ˆê°„ ë¬´ì 
+		InvincibilityMode(2.f);
 	}), nullptr);
 	this->runAction(action);
 }
 
-// callback Æò¼Ò¿¡ Àû¿ëµÇ´Â »ý¸í·Â °è»êÇÔ¼ö
+// callback í‰ì†Œì— ì ìš©ë˜ëŠ” ìƒëª…ë ¥ ê³„ì‚°í•¨ìˆ˜
 float CPlayer::HealthCalculatorInNormal(float delta)
 {
-	// 5.0f == °¡Àå ·¹º§ÀÌ ³·À»¶§ ÇÑ ¹ø¿¡ ºüÁö´Â »ý¸í·ÂÀÇ ¾ç
-	// ÀÌÈÄ¿¡ Æê È¿°ú³ª ¹öÇÁ µî°ú ÇÔ²² °è»êÇØ¾ßÇÑ´Ù.
+	// 5.0f == ê°€ìž¥ ë ˆë²¨ì´ ë‚®ì„ë•Œ í•œ ë²ˆì— ë¹ ì§€ëŠ” ìƒëª…ë ¥ì˜ ì–‘
+	// ì´í›„ì— íŽ« íš¨ê³¼ë‚˜ ë²„í”„ ë“±ê³¼ í•¨ê»˜ ê³„ì‚°í•´ì•¼í•œë‹¤.
 	//LostSomeHealth(1.0f * delta);
 	return (m_fLife / m_fMaxLife) * 100;
 }
 
-// callback º¸³Ê½º Å¸ÀÓ¿¡ Àû¿ëµÇ´Â »ý¸í·Â °è»êÇÔ¼ö
+// callback ë³´ë„ˆìŠ¤ íƒ€ìž„ì— ì ìš©ë˜ëŠ” ìƒëª…ë ¥ ê³„ì‚°í•¨ìˆ˜
 float CPlayer::HealthCalculatorInBonusTime(float delta)
 {
-	// 5.0f == °¡Àå ·¹º§ÀÌ ³·À»¶§ ÇÑ ¹ø¿¡ ºüÁö´Â »ý¸í·ÂÀÇ ¾ç
-	// ÀÌÈÄ¿¡ Æê È¿°ú³ª ¹öÇÁ µî°ú ÇÔ²² °è»êÇØ¾ßÇÑ´Ù.
-	// º¸³Ê½º Å¸ÀÓÀÌ±â ¶§¹®¿¡ ´õ´À¸®°Ô ÁÙ¾îµç´Ù.
+	// 5.0f == ê°€ìž¥ ë ˆë²¨ì´ ë‚®ì„ë•Œ í•œ ë²ˆì— ë¹ ì§€ëŠ” ìƒëª…ë ¥ì˜ ì–‘
+	// ì´í›„ì— íŽ« íš¨ê³¼ë‚˜ ë²„í”„ ë“±ê³¼ í•¨ê»˜ ê³„ì‚°í•´ì•¼í•œë‹¤.
+	// ë³´ë„ˆìŠ¤ íƒ€ìž„ì´ê¸° ë•Œë¬¸ì— ë”ëŠë¦¬ê²Œ ì¤„ì–´ë“ ë‹¤.
 	//LostSomeHealth(0.5f);
 	return (m_fLife / m_fMaxLife) * 100;
 }

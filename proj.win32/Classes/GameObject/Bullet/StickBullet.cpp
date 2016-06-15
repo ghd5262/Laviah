@@ -100,7 +100,7 @@ void CStickBullet::CollisionWithPlayer()
 {
     if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
         createScoreCurrentPos(30);
-        R_BezierWithRotation(Vec2(920, 1580), Vec2(350, 900), Vec2(450, 1200), 0.5f);
+        R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
     }
     else{
         m_pPlayer->StackedRL(0.1f, 10, 10, 5);

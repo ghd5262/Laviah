@@ -1,5 +1,7 @@
 #pragma once
 #include "../Popup.h"
+#include "ui/UIPageView.h"
+#include "ui/UIImageView.h"
 
 class CMyButton;
 class CPausePopup : public CSpecificPopupBase
@@ -14,17 +16,25 @@ private:
 	void Play();
 	void Reset();
 	void GoHome();
+    void GameExit();
+    void Help();
 
 	CPausePopup()
 		: m_btnHome(nullptr)
 		, m_btnPlay(nullptr)
 		, m_btnReset(nullptr)
-		, m_BG(nullptr){};
+        , m_btnExit(nullptr)
+        , m_btnHelp(nullptr)
+		, m_BG(nullptr)
+        , m_PauseBG(nullptr){};
 	virtual ~CPausePopup(){};
 
 private:
 	CMyButton* m_btnHome;
 	CMyButton* m_btnReset;
 	CMyButton* m_btnPlay;
+    CMyButton* m_btnExit;
+    CMyButton* m_btnHelp;
 	Sprite* m_BG;
+    Sprite* m_PauseBG;
 };

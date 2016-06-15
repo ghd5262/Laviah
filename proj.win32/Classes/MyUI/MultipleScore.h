@@ -10,7 +10,7 @@ class CMultipleScore : public CGameObject
 
 public:
 	static CMultipleScore* create();
-	void AddScore(UINT score);
+	void AddScore(unsigned score);
 	virtual void Execute(float delta = 0.f);
 
 
@@ -29,8 +29,8 @@ private:
 	CScoreUI* m_StarScore;
 	Label* m_MultipleNumberLabel;
 	CPlayer* m_Player;
-	UINT m_MultipleNumber;		//ÇöÀç ½ºÄÚ¾î ¹è¼ö( MULTIPLE_TIME_LIMIT µ¿¾È À¯ÁöµÈ ÈÄ 1·Î º¯°æµÊ )
-	UINT m_SavedScore;			//ÇöÀç±îÁö ÀúÀåµÈ Á¡¼ö( MULTIPLE_TIME_LIMIT µ¿¾È À¯ÁöµÈ ÈÄ 0À¸·Î º¯°æµÊ )
-	bool m_isAbleToMultiple;	//¸¶Áö¸· Á¡¼ö È¹µæ ½Ã°£À¸·Î ºÎÅÍ MULTIPLE_TIME_LIMITµ¿¾È true·Î À¯ÁöµÈ´Ù.
+	unsigned m_MultipleNumber;		//í˜„ì¬ ìŠ¤ì½”ì–´ ë°°ìˆ˜( MULTIPLE_TIME_LIMIT ë™ì•ˆ ìœ ì§€ëœ í›„ 1ë¡œ ë³€ê²½ë¨ )
+	unsigned m_SavedScore;			//í˜„ì¬ê¹Œì§€ ì €ì¥ëœ ì ìˆ˜( MULTIPLE_TIME_LIMIT ë™ì•ˆ ìœ ì§€ëœ í›„ 0ìœ¼ë¡œ ë³€ê²½ë¨ )
+	bool m_isAbleToMultiple;        //ë§ˆì§€ë§‰ ì ìˆ˜ íšë“ ì‹œê°„ìœ¼ë¡œ ë¶€í„° MULTIPLE_TIME_LIMITë™ì•ˆ trueë¡œ ìœ ì§€ëœë‹¤.
 	float m_fTime;
 };

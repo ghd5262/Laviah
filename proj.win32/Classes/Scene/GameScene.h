@@ -23,6 +23,8 @@ public:
     void OpenGamePausePopup();
 	void GameResume();
 	void GameEnd();
+    void GameExit();
+    void GameHelp();
 	void watchVideo();
     void CountDown(int count, std::string finMent = "0", const std::function<void(void)> &func = nullptr);
     void CountDownCancel();
@@ -39,7 +41,6 @@ private:
     void GamePause();
 	bool initVariable();
 	void InitGameSceneUI();
-	void menuCloseCallback(cocos2d::Ref* pSender);
 
 private:
 	static CGameScene* m_GameScene;

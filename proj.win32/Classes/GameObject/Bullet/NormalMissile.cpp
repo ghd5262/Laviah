@@ -17,8 +17,8 @@
 
 CNormalMissile::CNormalMissile(
 	sBULLET_PARAM bulletParam,
-	float angle,				    //bullet ÃÊ±â °¢µµ 
-	float speed)				    //bullet ÃÊ±â ¼Óµµ
+	float angle,				    //bullet ì´ˆê¸° ê°ë„ 
+	float speed)				    //bullet ì´ˆê¸° ì†ë„
 	: CBullet(
 	bulletParam,
 	angle,
@@ -30,8 +30,8 @@ CNormalMissile::CNormalMissile(
 
 CNormalMissile* CNormalMissile::create(
 	sBULLET_PARAM bulletParam,
-	float angle,					//bullet ÃÊ±â °¢µµ 
-	float speed)					//bullet ÃÊ±â ¼Óµµ
+	float angle,					//bullet ì´ˆê¸° ê°ë„ 
+	float speed)					//bullet ì´ˆê¸° ì†ë„
 	
 {
 	CNormalMissile* pRet = 
@@ -80,7 +80,7 @@ bool CNormalMissile::initVariable()
 		float tempTime = (distance / m_fBulletSpeed);
 
 
-		// ºÒ²É ÆÄÆ¼Å¬
+		// ë¶ˆê½ƒ íŒŒí‹°í´
 		m_pParticleFlame = CParticle_Flame::create("missileFlame.png");
 		if (m_pParticleFlame != nullptr){
 			m_pParticleFlame->retain();
@@ -100,14 +100,14 @@ bool CNormalMissile::initVariable()
 		this->scheduleOnce([&](float delta){
 			CGameScene::getGridWorld()->addChild(CTargetMark::create(
 				sBULLET_PARAM(
-				MakeString("missile_target_%d.png", m_BulletParam._isAimingMissile + 1),//ÀÌ¹ÌÁö ÀÌ¸§
+				MakeString("missile_target_%d.png", m_BulletParam._isAimingMissile + 1),//ì´ë¯¸ì§€ ì´ë¦„
 				0.f, 0.f, 0.f,
-				false,									//FlyItem ¿©ºÎ
-				m_BulletParam._isAimingMissile),		//AimingMissile ¿©ºÎ
-				-getRotation(),							//ÃÊ±â °¢µµ
-				this->getPosition(),					//¹Ì»çÀÏ ÁÂÇ¥
-				m_fBulletSpeed,							//¹Ì»çÀÏ ½ºÇÇµå
-				false,									//ÄÚÀÎ¹Ì»çÀÏ¿©ºÎ
+				false,									//FlyItem ì—¬ë¶€
+				m_BulletParam._isAimingMissile),		//AimingMissile ì—¬ë¶€
+				-getRotation(),							//ì´ˆê¸° ê°ë„
+				this->getPosition(),					//ë¯¸ì‚¬ì¼ ì¢Œí‘œ
+				m_fBulletSpeed,							//ë¯¸ì‚¬ì¼ ìŠ¤í”¼ë“œ
+				false,									//ì½”ì¸ë¯¸ì‚¬ì¼ì—¬ë¶€
 				this), 100);
 
 			m_bIsTargetMarkCreate = true;
@@ -129,7 +129,7 @@ bool CNormalMissile::initVariable()
 
 void CNormalMissile::Rotation(float dir, float delta)
 {
-	// aimingMissileÀÏ °æ¿ì È­¸é¾È¿¡ µé¾î¿ÔÀ» ¶§¿¡¸¸ È¸ÀüÇÑ´Ù.
+	// aimingMissileì¼ ê²½ìš° í™”ë©´ì•ˆì— ë“¤ì–´ì™”ì„ ë•Œì—ë§Œ íšŒì „í•œë‹¤.
 	if (true == m_BulletParam._isAimingMissile){
 		if (!m_ScreenRect.containsPoint(getPosition()))
 		{
@@ -149,12 +149,12 @@ void CNormalMissile::CollisionWithPlanet()
 {
 	
 	if (true == m_BulletParam._isAimingMissile){
-		// Çà¼º Èçµé±â
+		// í–‰ì„± í”ë“¤ê¸°
 		CObjectManager::Instance()->getPlanet()->CrushShake(
 			0.01f, 0.5f, 0.1f, 5.0f);
 	}
 	else {
-		// Çà¼º Èçµé±â
+		// í–‰ì„± í”ë“¤ê¸°
 		CObjectManager::Instance()->getPlanet()->CrushShake(
 			0.01f, 0.3f, 0.1f, 3.0f);
 	}
@@ -179,7 +179,7 @@ void CNormalMissile::CollisionWithPlayer()
 	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
 		createScoreCurrentPos(50);
 		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_2.mp3", false);
-		R_BezierWithRotation(Vec2(920, 1580), Vec2(350, 900), Vec2(450, 1200), 0.5f);
+		R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
 	}
 	else{
 		m_pPlayer->StackedRL(0.1f, 10, 10, 5);
@@ -257,19 +257,19 @@ void CNormalMissile::ChangeToCoinOrStar()
 
 	CGameScene::getGridWorld()->addChild(CTargetMark::create(
 		sBULLET_PARAM(
-		MakeString("missile_target_%d.png", m_BulletParam._isAimingMissile + 1),//ÀÌ¹ÌÁö ÀÌ¸§
+		MakeString("missile_target_%d.png", m_BulletParam._isAimingMissile + 1),//ì´ë¯¸ì§€ ì´ë¦„
 		0.f,
 		0.f,
 		0.f,
-		false,		// Fly Item ÀÎÁö
-		false),		// AimingMissile ÀÎÁö
-		-getRotation(),										//ÃÊ±â °¢µµ
+		false,		// Fly Item ì¸ì§€
+		false),		// AimingMissile ì¸ì§€
+		-getRotation(),										//ì´ˆê¸° ê°ë„
 		this->getPosition(),
 		speed
 	), 100);
 
 
-	// ÀÌºÎºÐ ÀÏ´Ü ÀÛ¾÷ÇÏ°í ´ÙÀ½ ¸®ÆåÅä¸µ ¶§ autoReturnMemoryPool¿¡ ³Ö¾î¾ßÇÑ´Ù.
+	// ì´ë¶€ë¶„ ì¼ë‹¨ ìž‘ì—…í•˜ê³  ë‹¤ìŒ ë¦¬íŽ™í† ë§ ë•Œ autoReturnMemoryPoolì— ë„£ì–´ì•¼í•œë‹¤.
 	this->scheduleOnce([this](float delta){
 		ReturnToMemoryBlock();
 	}, 0.f, "ReturnToMemoryBlock");

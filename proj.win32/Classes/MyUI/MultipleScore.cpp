@@ -61,30 +61,30 @@ bool CMultipleScore::initVariable()
 	return true;
 }
 
-void CMultipleScore::AddScore(UINT score)
+void CMultipleScore::AddScore(unsigned score)
 {
-	// Å¸ÀÌ¸Ó ÃÊ±âÈ­
+	// íƒ€ì´ë¨¸ ì´ˆê¸°í™”
 	m_fTime = 0.f;
 
-	// ÇöÀç ½ºÄÚ¾î ¹è¼ö +1
+	// í˜„ìž¬ ìŠ¤ì½”ì–´ ë°°ìˆ˜ +1
 	m_MultipleNumber += 1;
 
-	// ÇöÀç±îÁöÀÇ Á¡¼ö¿¡ ´õÇÑ´Ù.
+	// í˜„ìž¬ê¹Œì§€ì˜ ì ìˆ˜ì— ë”í•œë‹¤.
 	m_SavedScore += score;
 
 	m_isAbleToMultiple = true;
 
 	// UI visible On
 	m_MultipleNumberLabel->setVisible(true);
-	m_MultipleNumberLabel->setString(MakeString("X %d", m_MultipleNumber).c_str()); //1ºÎÅÍ ½ÃÀÛÇØ¼­ -1ÇØÁØ´Ù.
+	m_MultipleNumberLabel->setString(MakeString("X %d", m_MultipleNumber).c_str()); //1ë¶€í„° ì‹œìž‘í•´ì„œ -1í•´ì¤€ë‹¤.
 }
 
 void CMultipleScore::calculateScore()
 {
-	// ÇöÀç Á¡¼ö °è»ê (¹è¼ö * ÀúÀåµÈ Á¡¼ö)
-	UINT calculatedScore = m_MultipleNumber * m_SavedScore;
+	// í˜„ìž¬ ì ìˆ˜ ê³„ì‚° (ë°°ìˆ˜ * ì €ìž¥ëœ ì ìˆ˜)
+	unsigned calculatedScore = m_MultipleNumber * m_SavedScore;
 	
-	// Á¡¼ö ¹Ý¿µ
+	// ì ìˆ˜ ë°˜ì˜
 	m_StarScore->UpdateValue(calculatedScore);
 }
 
@@ -102,10 +102,10 @@ void CMultipleScore::Execute(float delta)
 	{
 		m_fTime += delta;
 
-		// UI ÁÂÇ¥ ¼öÁ¤
+		// UI ì¢Œí‘œ ìˆ˜ì •
 		m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x, m_Player->getOriginPos().y + m_Player->getBRadius() + 50));
 
-		// ¹è¼ö À¯Áö ½Ã°£ÀÌ Áö³ª¸é Á¡¼ö ¹Ý¿µ ÈÄ ¹è¼ö ÃÊ±âÈ­
+		// ë°°ìˆ˜ ìœ ì§€ ì‹œê°„ì´ ì§€ë‚˜ë©´ ì ìˆ˜ ë°˜ì˜ í›„ ë°°ìˆ˜ ì´ˆê¸°í™”
 		if (m_fTime > MULTIPLE_TIME_LIMIT)
 		{
 			calculateScore();

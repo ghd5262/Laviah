@@ -19,6 +19,7 @@
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
 #include "../MyUI/Popup/VideoPopup.h"
+#include "../MyUI/Popup/HelpPopup.h"
 #include "../AI/States/StageStates.h"
 
 USING_NS_CC;
@@ -172,17 +173,17 @@ void CGameScene::InitGameSceneUI()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     
-    auto closeItem = MenuItemImage::create("CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(CGameScene::menuCloseCallback, this));
-    
-    closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
-    
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-	m_GridWorld->addChild(menu, 103);
+//    auto closeItem = MenuItemImage::create("CloseNormal.png",
+//                                           "CloseSelected.png",
+//                                           CC_CALLBACK_1(CGameScene::menuCloseCallback, this));
+//    
+//    closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+//                                origin.y + closeItem->getContentSize().height/2));
+//    
+//    // create menu, it's an autorelease object
+//    auto menu = Menu::create(closeItem, NULL);
+//    menu->setPosition(Vec2::ZERO);
+//	m_GridWorld->addChild(menu, 103);
 
     
     // RotationObjectLeft callback 등록
@@ -305,18 +306,18 @@ void CGameScene::InitGameSceneUI()
 	m_PauseBtn->setCascadeOpacityEnabled(true);
 	m_GridWorld->addChild(m_PauseBtn, 102);
 
-	auto gridTest = CMyButton::create("pauseIcon.png",
-		END,
-		[this]()
-	{
-		m_GridWorld->runAction(CSplitCircle::create(10, 9));
-	}, EFFECT_SIZEDOWN);
-
-	gridTest->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-		origin.x + visibleSize.height * 0.05f));
-	gridTest->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	gridTest->setCascadeOpacityEnabled(true);
-	m_GridWorld->addChild(gridTest, 102);
+//	auto gridTest = CMyButton::create("pauseIcon.png",
+//		END,
+//		[this]()
+//	{
+//		m_GridWorld->runAction(CSplitCircle::create(10, 9));
+//	}, EFFECT_SIZEDOWN);
+//
+//	gridTest->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+//		origin.x + visibleSize.height * 0.05f));
+//	gridTest->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//	gridTest->setCascadeOpacityEnabled(true);
+//	m_GridWorld->addChild(gridTest, 102);
 
 	m_CountDownLabel = nullptr;
 	m_CountDownLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 50);
@@ -327,7 +328,7 @@ void CGameScene::InitGameSceneUI()
 	m_CountDownLabel->setVisible(false);
 }
 
-void CGameScene::menuCloseCallback(Ref* pSender)
+void CGameScene::GameExit()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
@@ -426,6 +427,8 @@ void CGameScene::GamePause()
 	//오디오 소리 작게
 	CAudioManager::Instance()->setBGMVolume(0.1f);
 
+    m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
+    
 	CAudioManager::Instance()->setEffectSoundVolume(0.1f);
 	CObjectManager::Instance()->setIsGamePause(true);
 	CObjectManager::Instance()->setIsAbleRotation(false);
@@ -442,7 +445,8 @@ void CGameScene::GameResume()
 
 	CAudioManager::Instance()->setEffectSoundVolume(1.f);
 	CObjectManager::Instance()->setIsGamePause(false);
-	
+    
+    m_PauseBtn->runAction(FadeIn::create(0.5f));
 }
 
 void CGameScene::GameEnd()
@@ -458,6 +462,18 @@ void CGameScene::GameEnd()
 
 	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
 	GamePause();
+}
+
+void CGameScene::GameHelp()
+{
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    
+    auto popup = CPopup::createWithSpecificFormat(CHelpPopup::create(), POPUPEFFECT_none);
+    popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+                            origin.x + visibleSize.height * 0.5f));
+    popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_GridWorld->addChild(popup, 102);
 }
 
 void CGameScene::CountDownCancel()
