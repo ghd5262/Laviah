@@ -5,20 +5,20 @@ class CMyButton;
 class CHelpPopup : public CSpecificPopupBase
 {
 public:
-    static CHelpPopup* create();
-    
+	static CHelpPopup* create();
+
 protected:
-    virtual bool initVariable() override;
-    
+	virtual bool initVariable() override;
+
 private:
-    void End();
-    
-    CHelpPopup()
-    : m_btnEnd(nullptr)
-    , m_BG(nullptr){};
-    virtual ~CHelpPopup(){};
-    
+	void End();
+
+	CHelpPopup()
+		: m_btnEnd(nullptr)
+		, m_BG(nullptr){};
+	virtual ~CHelpPopup(){};
+
 private:
-    CMyButton* m_btnEnd;
-    Sprite* m_BG;
+	CMyButton* m_btnEnd;
+	Sprite* m_BG;
 };

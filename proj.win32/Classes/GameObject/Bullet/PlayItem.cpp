@@ -1,8 +1,10 @@
 #include "PlayItem.h"
+#include "ItemBubble.h"
 #include "../ObjectManager.h"
 #include "../Planet.h"
 #include "../Player.h"
 #include "../ItemManager.h"
+#include "../../Scene/GameScene.h"
 
 CPlayItem::CPlayItem(
 	sBULLET_PARAM bulletParam,
@@ -108,8 +110,20 @@ bool CPlayItem::initVariable()
         setRotation(-m_fAngle);
         
         m_pTexture = Sprite::create(m_BulletParam._TextureName);
-        m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-        addChild(m_pTexture);
+		if (m_pTexture != nullptr){
+			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+			addChild(m_pTexture);
+		}
+
+		CGameScene::getGridWorld()->addChild(CItemBubble::create(
+			sBULLET_PARAM(
+			"bubble_1.png",							//이미지 이름 
+			0.f, 0.f, 0.f,
+			false,									//FlyItem 여부
+			m_BulletParam._isAimingMissile),		//AimingMissile 여부
+			MakeString("itemBubbleIcon_%d.png", m_BulletParam._itemType).c_str(),
+			-getRotation(),							//초기 각도
+			this), 100);
     }
     catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
