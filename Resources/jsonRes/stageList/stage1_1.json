@@ -390,8 +390,8 @@
 		"Fly": true,
 		"OneShoot": true
 	}, {
-		"ShooterName": "all Resume",
-		"PatternName": "all Resume",
+		"ShooterName": "all resume",
+		"PatternName": "all resume",
 		"Symbol": "",
 		"StartTime": null,
 		"EndTime": null,
