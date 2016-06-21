@@ -22,10 +22,13 @@ CVideoPopup* CVideoPopup::create()
 bool CVideoPopup::initVariable()
 {
 	try{
-		m_BG = Sprite::create("empty1920.png");
-		m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_BG->setPosition(Vec2::ZERO);
-		m_Popup->addChild(m_BG);
+        m_BG = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
+        if(m_BG != nullptr){
+            m_BG->ignoreAnchorPointForPosition(false);
+            m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_BG->setPosition(Vec2::ZERO);
+            m_Popup->addChild(m_BG);
+        }
 
         CGameScene::getGameScene()->CountDown(10, "0", [this](){
             CGameScene::getGameScene()->GameEnd();

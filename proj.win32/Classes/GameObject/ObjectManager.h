@@ -20,7 +20,7 @@ class CPlayer;
 class CObjectManager
 {
     // 회전 가속도 
-    const float ROTATE_ACCEL_MAX = 1.f;
+    const float ROTATE_ACCEL_MAX = 0.5f;
 public:
 	static CObjectManager* Instance();
 

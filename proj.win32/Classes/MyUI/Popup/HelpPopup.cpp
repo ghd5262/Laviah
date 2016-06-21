@@ -28,13 +28,13 @@ bool CHelpPopup::initVariable()
 
 		size_t helpImgCount = 2;
 
-		m_BG = Sprite::create("empty1920.png");
-		if (m_BG != nullptr){
-			m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_BG->setPosition(Vec2(0, visibleSize.height));
-			m_BG->setOpacity(255 * 0.8f);
-			m_Popup->addChild(m_BG);
-		}
+        m_BG = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
+        if(m_BG != nullptr){
+            m_BG->ignoreAnchorPointForPosition(false);
+            m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_BG->setPosition(Vec2(0, visibleSize.height));
+            m_Popup->addChild(m_BG);
+        }
 
 		// PageView »ý¼º
 		auto pageview = PageView::create();

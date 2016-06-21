@@ -1,5 +1,8 @@
 #pragma once
 #include "../Popup.h"
+#include "ui/UIScrollView.h"
+#include "ui/UIImageView.h"
+#include "ui/UIPageView.h"
 
 class CMyButton;
 class CCharacterSelectPopup : public CSpecificPopupBase
@@ -17,11 +20,13 @@ private:
     CCharacterSelectPopup()
     : m_btnEnd(nullptr)
     , m_BG(nullptr)
-    , m_ScrollBack(nullptr){};
+    , m_ScrollBack(nullptr)
+    , m_ScrollView(nullptr){};
     virtual ~CCharacterSelectPopup(){};
     
 private:
     CMyButton* m_btnEnd;
-    Sprite* m_BG;
-    Sprite* m_ScrollBack;
+    LayerColor* m_BG;
+    LayerColor* m_ScrollBack;
+    cocos2d::ui::ScrollView* m_ScrollView;
 };

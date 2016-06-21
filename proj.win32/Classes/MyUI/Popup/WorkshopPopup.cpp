@@ -1,13 +1,15 @@
-#include "CharacterSelectPopup.h"
-#include "CharacterSelectPopupDP.h"
+#include "WorkshopPopup.h"
+#include "WorkshopPopupDP.h"
 #include "../MyButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/CharacterDataManager.h"
+#include "ui/UIScrollView.h"
+#include "ui/UIImageView.h"
+#include "ui/UIPageView.h"
 
-
-CCharacterSelectPopup* CCharacterSelectPopup::create()
+CWorkshopPopup* CWorkshopPopup::create()
 {
-    CCharacterSelectPopup *pRet = new(std::nothrow) CCharacterSelectPopup();
+    CWorkshopPopup *pRet = new(std::nothrow) CWorkshopPopup();
     if (pRet)
     {
         return pRet;
@@ -20,7 +22,7 @@ CCharacterSelectPopup* CCharacterSelectPopup::create()
     }
 }
 
-bool CCharacterSelectPopup::initVariable()
+bool CWorkshopPopup::initVariable()
 {
     try{
         Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -42,50 +44,49 @@ bool CCharacterSelectPopup::initVariable()
             m_Popup->addChild(m_ScrollBack);
         }
         
-        /* select label*/
-        auto selectLabel = Label::createWithTTF("Select", "fonts/malgunbd.ttf", 80);
-        if (selectLabel != nullptr)
+        /* workShop label*/
+        auto workShopLabel = Label::createWithTTF("Workshop", "fonts/malgunbd.ttf", 80);
+        if (workShopLabel != nullptr)
         {
-            selectLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            selectLabel->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.9f));
-            selectLabel->setColor(g_labelColor1);
-            m_ScrollBack->addChild(selectLabel);
-            selectLabel->setOpacity(0);
+            workShopLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            workShopLabel->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.9f));
+            workShopLabel->setColor(g_labelColor1);
+            m_ScrollBack->addChild(workShopLabel);
+            workShopLabel->setOpacity(0);
         }
         
-        m_ScrollView = ScrollView::create();
-        if(m_ScrollView != nullptr){
+        auto itemScroll = ScrollView::create();
+        if(itemScroll != nullptr){
             
             /* 캐릭터리스트 데이터 읽음 */
-            auto characterList = CCharacterDataManager::Instance()->getCharacterList();
-            size_t listCount = characterList.size();
+            auto itemList = CCharacterDataManager::Instance()->getCharacterList();
+            size_t listCount = itemList.size();
             size_t dpDistance = 15;
-			Size dpSize = Size(540, 915);
-
-            m_ScrollView->setDirection(ScrollView::Direction::HORIZONTAL);
-            m_ScrollView->setBounceEnabled(true);
-            m_ScrollView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_ScrollView->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.5f));
-        
+            Size dpSize = Size(1080, 200);
+            
+            itemScroll->setDirection(ScrollView::Direction::VERTICAL);
+            itemScroll->setBounceEnabled(true);
+            itemScroll->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            itemScroll->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.5f));
+            
             for(int dpIdx = 0 ; dpIdx < listCount ;dpIdx++ )
             {
-				auto characters = CCharacterSelectPopupDP::create(dpIdx, std::bind(&CCharacterSelectPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
-				characters->setPosition(Vec2((dpSize.width + dpDistance) * dpIdx
-					+ (dpSize.width * 0.5f),
-					dpSize.height * 0.5f));
-				characters->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-                m_ScrollView->addChild(characters);
+                auto items = CWorkshopPopupDP::create(dpIdx, std::bind(&CWorkshopPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
+                items->setPosition(Vec2(dpSize.width * 0.5f,
+                                             (dpSize.height + dpDistance) * dpIdx + (dpSize.height + dpDistance)));
+                items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+                itemScroll->addChild(items);
             }
             
-			m_ScrollView->setContentSize(Size(m_ScrollBack->getContentSize().width, dpSize.height));
-			m_ScrollView->setInnerContainerSize(Size((dpSize.width + dpDistance)* listCount, dpSize.height));
+            itemScroll->setContentSize(Size(m_ScrollBack->getContentSize().width, (dpSize.height + dpDistance) * 4));
+            itemScroll->setInnerContainerSize(Size(dpSize.width, (dpSize.height + dpDistance) * listCount));
             
-            m_ScrollBack->addChild(m_ScrollView);
+            m_ScrollBack->addChild(itemScroll);
         }
         
         m_btnEnd = CMyButton::create("endIcon.png",
                                      END,
-                                     std::bind(&CCharacterSelectPopup::End, this),
+                                     std::bind(&CWorkshopPopup::End, this),
                                      EFFECT_ALPHA);
         
         if (m_btnEnd != nullptr)
@@ -99,25 +100,25 @@ bool CCharacterSelectPopup::initVariable()
         }
         
         
-        m_Popup->setPopupOpenEffectFunc([this, selectLabel](CPopup* pausePopup){
+        m_Popup->setPopupOpenEffectFunc([this, workShopLabel](CPopup* pausePopup){
             auto winSize = Director::getInstance()->getWinSize();
             
             m_Popup->scheduleOnce([this](float delta){
-            
-            
+                
+                
             }, 0.1f, "CharacterSelectPopupOpen");
-            selectLabel->runAction(FadeIn::create(0.5f));
+            workShopLabel->runAction(FadeIn::create(0.5f));
             m_ScrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(0, winSize.height * 0.12f))));
             m_btnEnd->runAction(FadeIn::create(0.5f));
         });
         
-        m_Popup->setPopupCloseEffectFunc([this, visibleSize, origin, selectLabel](CPopup* pausePopup){
+        m_Popup->setPopupCloseEffectFunc([this, visibleSize, origin, workShopLabel](CPopup* pausePopup){
             
-            selectLabel->runAction(FadeTo::create(0.5f, 0));
+            workShopLabel->runAction(FadeTo::create(0.5f, 0));
             m_btnEnd->runAction(FadeTo::create(0.5f, 0));
             m_Popup->scheduleOnce([this, visibleSize, origin](float delta){
                 m_ScrollBack->runAction(Sequence::create(EaseSineIn::create(MoveTo::create(0.4f, Vec2(0, origin.x + visibleSize.height * 1.5f))),
-                                                 CallFunc::create([this](){
+                                                         CallFunc::create([this](){
                     CSpecificPopupBase::PopupRelease();
                 }), nullptr));
             }, 0.1f, "CharacterSelectPopupClose");
@@ -130,22 +131,16 @@ bool CCharacterSelectPopup::initVariable()
     return true;
 }
 
-void CCharacterSelectPopup::End(){
+void CWorkshopPopup::End(){
     CCLOG("format popup End");
     CSpecificPopupBase::PopupClose();
 }
 
-void CCharacterSelectPopup::Select(cocos2d::Ref* dp)
+void CWorkshopPopup::Select(cocos2d::Ref* dp)
 {
-	auto selectDP = dynamic_cast<CCharacterSelectPopupDP*>(dp);
-	if (selectDP != nullptr)
-	{
-        for(auto child : m_ScrollView->getChildren())
-        {
-            if(child != nullptr && child != selectDP)
-            {
-                dynamic_cast<CCharacterSelectPopupDP*>(child)->DeSelect();
-            }
-        }
-	}
+    auto selectDP = dynamic_cast<CWorkshopPopupDP*>(dp);
+    if (selectDP != nullptr)
+    {
+        selectDP->DeSelect();
+    }
 }

@@ -24,18 +24,19 @@ bool CPausePopup::initVariable()
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 		Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-        m_BG = Sprite::create("empty1920.png");
+        m_BG = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
         if(m_BG != nullptr){
+            m_BG->ignoreAnchorPointForPosition(false);
             m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             m_BG->setPosition(Vec2::ZERO);
             m_Popup->addChild(m_BG);
         }
         
-		m_PauseBG = Sprite::create("empty570_w.png");
+        m_PauseBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
         if(m_PauseBG != nullptr){
+            m_PauseBG->ignoreAnchorPointForPosition(false);
             m_PauseBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             m_PauseBG->setPosition(Vec2(0, origin.x + visibleSize.height * 0.75f));
-            m_PauseBG->setOpacity(255 * 0.8f);
             m_Popup->addChild(m_PauseBG);
         }
         

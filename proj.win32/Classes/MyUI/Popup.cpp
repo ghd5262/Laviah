@@ -147,19 +147,23 @@ bool CPopup::initVariable()
 {
 	try{
 		auto emptyBtnBG = CMyButton::create("empty1920_a.png", BEGIN, [](){});
-		emptyBtnBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		emptyBtnBG->setPosition(Vec2::ZERO);
-		this->addChild(emptyBtnBG);
-
+        if(emptyBtnBG != nullptr){
+            emptyBtnBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            emptyBtnBG->setPosition(Vec2::ZERO);
+            this->addChild(emptyBtnBG);
+        }
+        
 		switch (m_PopupInfo) {
 		case ONEBTN:
 		{
-			auto defaultBG = Sprite::create("empty570_w.png");
-			defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			defaultBG->setPosition(Vec2::ZERO);
-            defaultBG->setOpacity(255 * 0.7f);
-			this->addChild(defaultBG);
-
+            auto defaultBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
+            if(defaultBG != nullptr){
+                defaultBG->ignoreAnchorPointForPosition(false);
+                defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                defaultBG->setPosition(Vec2::ZERO);
+                this->addChild(defaultBG);
+            }
+            
 			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/malgunbd.ttf", m_FontSize);
 			m_NoticeLabel->setColor(m_FontColor);
 			m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -190,11 +194,13 @@ bool CPopup::initVariable()
 		} break;
 		case TWOBTN:
 		{
-            auto defaultBG = Sprite::create("empty570_w.png");
-            defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            defaultBG->setPosition(Vec2::ZERO);
-            defaultBG->setOpacity(255 * 0.7f);
-            this->addChild(defaultBG);
+            auto defaultBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
+            if(defaultBG != nullptr){
+                defaultBG->ignoreAnchorPointForPosition(false);
+                defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                defaultBG->setPosition(Vec2::ZERO);
+                this->addChild(defaultBG);
+            }
             
 			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/malgunbd.ttf", m_FontSize);
 			m_NoticeLabel->setColor(m_FontColor);

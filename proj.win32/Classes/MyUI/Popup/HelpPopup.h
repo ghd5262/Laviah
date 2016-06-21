@@ -20,5 +20,5 @@ private:
 
 private:
 	CMyButton* m_btnEnd;
-	Sprite* m_BG;
+	LayerColor* m_BG;
 };

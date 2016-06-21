@@ -35,6 +35,6 @@ private:
 	CMyButton* m_btnPlay;
     CMyButton* m_btnExit;
     CMyButton* m_btnHelp;
-	Sprite* m_BG;
-    Sprite* m_PauseBG;
+	LayerColor* m_BG;
+    LayerColor* m_PauseBG;
 };

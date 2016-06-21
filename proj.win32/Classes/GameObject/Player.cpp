@@ -246,7 +246,8 @@ void CPlayer::GiantMode()
 
 void CPlayer::NormalMode()
 {
-	m_pParticle->setEndSize(4.f);
+    //1초간 무적
+    InvincibilityMode(2.f);
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, 1.0f),
 		CallFunc::create([&](){
@@ -254,9 +255,7 @@ void CPlayer::NormalMode()
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBRadius(6.f);
 		m_pParticle->setStartSize(30.f);
-
-		//1초간 무적
-		InvincibilityMode(2.f);
+        m_pParticle->setEndSize(4.f);
 	}), nullptr);
 	this->runAction(action);
 }

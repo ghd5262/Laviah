@@ -11,6 +11,8 @@
 #include "../DataManager/StageDataManager.h"
 #include "../DataManager/BulletDataManager.h"
 #include "../MyUI/Popup/CharacterSelectPopup.h"
+#include "../MyUI/Popup/WorkshopPopup.h"
+
 
 USING_NS_CC;
 
@@ -76,6 +78,7 @@ bool CMenuScene::initVariable()
         planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
                                  origin.y + visibleSize.height * 0.5f));
         this->addChild(planet);
+        planet->runAction(RepeatForever::create(RotateBy::create(30, 360)));
         CMenuSceneObjectManager::Instance()->setPlanet(planet);
         
         
@@ -130,7 +133,20 @@ void CMenuScene::InitMenuSceneUI()
     characterSelectBtn->setCascadeOpacityEnabled(true);
     this->addChild(characterSelectBtn);
     
+    auto workShopBtn = CMyButton::createWithString("defaultBtn_2.png", "Workshop", 40, Color3B::WHITE,
+                                                          END, [this, origin, visibleSize](){
+                                                              auto popup = CPopup::createWithSpecificFormat(CWorkshopPopup::create(), POPUPEFFECT_none);
+                                                              popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+                                                                                      origin.x + visibleSize.height * 0.5f));
+                                                              popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                                                              this->addChild(popup);
+                                                          }, EFFECT_SIZEDOWN);
     
+    workShopBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
+                                         origin.x + visibleSize.height * 0.3f));
+    workShopBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    workShopBtn->setCascadeOpacityEnabled(true);
+    this->addChild(workShopBtn);
 }
 
 void CMenuScene::createGameScene()

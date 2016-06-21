@@ -22,11 +22,14 @@ CResultPopup* CResultPopup::create()
 bool CResultPopup::initVariable()
 {
 	try{
-		m_BG = Sprite::create("empty1920.png");
-		m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_BG->setPosition(Vec2::ZERO);
-		m_Popup->addChild(m_BG);
-		
+        m_BG = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
+        if(m_BG != nullptr){
+            m_BG->ignoreAnchorPointForPosition(false);
+            m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_BG->setPosition(Vec2::ZERO);
+            m_Popup->addChild(m_BG);
+        }
+        
 		// 총 점수 = 달린 총거리 + 별 + 코인 + (보너스타임횟수 * 10000) + (외계주민 * 10000) + (도전과제 * 10000)
 		auto totalScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("TotalScore"));
 
