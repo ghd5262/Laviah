@@ -2,6 +2,7 @@
 #include "ObjectManager.h"
 #include "Player.h"
 #include "../Scene/GameScene.h"
+#include "../DataManager/UserDataManager.h"
 
 CItemManager::CItemManager()
 {
@@ -37,23 +38,44 @@ void CItemManager::Clear()
 
 void CItemManager::StartItemTimer(eITEM_TYPE itemType)
 {
-    if (itemType == eITEM_TYPE_health)
-    {
-        CObjectManager::Instance()->getPlayer()->GotSomeHealth(20);
-    }
-    if (itemType == eITEM_TYPE_shield)
-    {
-        CObjectManager::Instance()->getPlayer()->GotBarrierItem();
-    }
-    if (itemType == eITEM_TYPE_magnet)
-    {
-        CObjectManager::Instance()->getPlayer()->GotMagnetItem();
+    switch (itemType) {
+        case eITEM_TYPE_health:
+            CObjectManager::Instance()->getPlayer()->GotSomeHealth(20);
+            break;
+            
+        case eITEM_TYPE_shield:
+            CObjectManager::Instance()->getPlayer()->GotBarrierItem();
+            break;
+            
+        case eITEM_TYPE_magnet:
+            CObjectManager::Instance()->getPlayer()->GotMagnetItem();
+            m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getUserDataMyMagnet();
+            break;
+            
+        case eITEM_TYPE_coin:
+            CObjectManager::Instance()->getPlayer()->GotMagnetItem();
+            m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getUserDataMyCoin();
+            break;
+            
+        case eITEM_TYPE_star:
+            CObjectManager::Instance()->getPlayer()->GotMagnetItem();
+            m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getUserDataMyStar();
+            break;
+            
+        case eITEM_TYPE_giant:
+            CObjectManager::Instance()->getPlayer()->GotMagnetItem();
+            m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getUserDataMyGiant();
+            break;
+            
+        case eITEM_TYPE_bonustime:
+            CObjectManager::Instance()->getPlayer()->GotMagnetItem();
+            m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getUserDataMyBonus();
+            break;
+            
+        default:
+            break;
     }
 	m_CurrentItems |= (1 << itemType);
-	m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + 8.f;
-	//CGameScene::getGameScene()->scheduleOnce([this, itemType](float dt){
-	//	this->FinishItemTimer(itemType);
-	//}, 20.0f, MakeString("Item_%d_Timer", static_cast<int>(itemType)));
 }
 
 void CItemManager::Execute(float delta)

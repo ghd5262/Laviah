@@ -92,8 +92,7 @@ void CNormalBullet::CollisionWithPlayer()
 	else{
 		m_pPlayer->StackedRL(0.1f, 10, 10, 5);
 		m_pPlayer->LostSomeHealth(m_BulletParam._fPower);
-		CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
-		ReturnToMemoryBlock();
+        ReturnToMemoryBlock();
 	}
 }
 

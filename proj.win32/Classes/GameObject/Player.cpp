@@ -9,6 +9,7 @@
 #include "../Scene/GameScene.h"
 #include "../MyUI/ScoreUI.h"
 #include "../MyUI/UIManager.h"
+#include "../DataManager/UserDataManager.h"
 
 CPlayer* CPlayer::create(
 	std::string normalTextureName,
@@ -53,7 +54,7 @@ CPlayer::CPlayer(
 	, m_fRotateSpeed(rotateSpeed)
 	, m_fMaxLife(maxLife)
 	, m_fLife(maxLife)
-	, m_fMagnetLimitRadius(200.f)
+    , m_fMagnetLimitRadius(CUserDataManager::Instance()->getUserDataMyMagnetLimitRadius())
 	, m_EffectItemTypes(eITEM_FLAG_none)
 	, m_pParticle(nullptr)
 	, m_pParticleDead(nullptr)
@@ -115,7 +116,7 @@ bool CPlayer::initVariable()
 			m_pParticle->setVisible(false);
 		}
         
-        m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, 8.f);
+        m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, CUserDataManager::Instance()->getUserDataMyMagnet());
         if(m_MagnetEffect != nullptr)
         {
             m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -201,6 +202,7 @@ void CPlayer::LostSomeHealth(float loseHealth)
 {
 	if (m_isPlayerDead == true || m_Invincibility == true)
 		return;
+    CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
 	if (0.f < (m_fLife - loseHealth))
 	{
 		m_fLife -= loseHealth;

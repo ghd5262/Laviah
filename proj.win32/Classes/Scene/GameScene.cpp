@@ -21,6 +21,7 @@
 #include "../MyUI/Popup/VideoPopup.h"
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../AI/States/StageStates.h"
+#include "../DataManager/UserDataManager.h"
 
 USING_NS_CC;
 
@@ -106,7 +107,7 @@ bool CGameScene::initVariable()
 
 		planet->setOriginPos(planet->getPosition());
 
-		auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 400.0f, 1.f);
+        auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 400.0f, CUserDataManager::Instance()->getUserDataMyHealth());
 		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			planet->getPosition().y + (planet->getBRadius() + 10)));
 		m_GridWorld->addChild(player, 100);
@@ -291,7 +292,13 @@ void CGameScene::InitGameSceneUI()
 	totalScore->setVisible(false);
 	if (!CUIManager::Instance()->AddUIWithName(totalScore, "TotalScore"))
 		CCASSERT(false, "TotalScore CAN NOT INIT");
-
+    
+    auto bestScore = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
+    m_GridWorld->addChild(bestScore, 102);// referenceCount를 위하여 addChild
+    bestScore->setVisible(false);
+    if (!CUIManager::Instance()->AddUIWithName(bestScore, "BestScore"))
+        CCASSERT(false, "BestScore CAN NOT INIT");
+    
 	m_PauseBtn = nullptr;
 	m_PauseBtn = CMyButton::create("pauseIcon.png",
 		END,
