@@ -331,7 +331,7 @@ bool CResultPopup::initVariable()
             m_BG->addChild(bestScoreBG);
             bestScoreBG->setOpacity(0);
             bestScoreBG->setCascadeOpacityEnabled(true);
-            auto bestScoreIcon = Sprite::create("challengeIcon.png");
+            auto bestScoreIcon = Sprite::create("bestScoreIcon.png");
             if (bestScoreIcon != nullptr)
             {
                 bestScoreIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
