@@ -181,12 +181,12 @@ void CUserDataManager::setUserDataMyMagnet(float value)
 
 float CUserDataManager::getUserDataMyMagnetLimitRadius()
 {
-    return m_UserData->_myMagnetItemTime;
+    return m_UserData->_myMagnetItemLimitRadius;
 }
 
 void CUserDataManager::setUserDataMyMagnetLimitRadius(float value)
 {
-    m_UserData->_myMagnetItemTime = value;
+	m_UserData->_myMagnetItemLimitRadius = value;
     UserDefault::getInstance()->setFloatForKey("USER_MY_MAGNET_LIMIT_RADIUS", value);
 }
 

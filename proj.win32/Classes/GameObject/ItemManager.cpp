@@ -13,11 +13,11 @@ CItemManager::CItemManager()
 	m_ValueOfCoin[eCOIN_TYPE_bigSilver] = 50.f;
 	m_ValueOfCoin[eCOIN_TYPE_bigGold]	= 100.f;
 
-	m_ValueOfStar[eSTAR_TYPE_bronze]	= 5.f;
-	m_ValueOfStar[eSTAR_TYPE_silver]	= 10.f;
-	m_ValueOfStar[eSTAR_TYPE_gold]		= 15.f;
-	m_ValueOfStar[eSTAR_TYPE_bigSilver] = 50.f;
-	m_ValueOfStar[eSTAR_TYPE_bigGold]	= 100.f;
+	m_ValueOfStar[eSTAR_TYPE_bronze]	= 3.f;
+	m_ValueOfStar[eSTAR_TYPE_silver]	= 5.f;
+	m_ValueOfStar[eSTAR_TYPE_gold]		= 10.f;
+	m_ValueOfStar[eSTAR_TYPE_bigSilver] = 20.f;
+	m_ValueOfStar[eSTAR_TYPE_bigGold]	= 30.f;
 
 	Clear();
 }
@@ -53,22 +53,18 @@ void CItemManager::StartItemTimer(eITEM_TYPE itemType)
             break;
             
         case eITEM_TYPE_coin:
-            CObjectManager::Instance()->getPlayer()->GotMagnetItem();
             m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getUserDataMyCoin();
             break;
             
         case eITEM_TYPE_star:
-            CObjectManager::Instance()->getPlayer()->GotMagnetItem();
             m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getUserDataMyStar();
             break;
             
         case eITEM_TYPE_giant:
-            CObjectManager::Instance()->getPlayer()->GotMagnetItem();
             m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getUserDataMyGiant();
             break;
             
         case eITEM_TYPE_bonustime:
-            CObjectManager::Instance()->getPlayer()->GotMagnetItem();
             m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getUserDataMyBonus();
             break;
             
