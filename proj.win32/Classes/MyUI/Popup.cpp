@@ -165,10 +165,12 @@ bool CPopup::initVariable()
             }
             
 			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/malgunbd.ttf", m_FontSize);
-			m_NoticeLabel->setColor(m_FontColor);
-			m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));
-			defaultBG->addChild(m_NoticeLabel);
+			if (m_NoticeLabel != nullptr){
+				m_NoticeLabel->setColor(m_FontColor);
+				m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+				m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));
+				defaultBG->addChild(m_NoticeLabel);
+			}
 
 			m_DefaultExitBtn = CMyButton::create("defaultExitBtn.png",
 				END,
@@ -203,10 +205,12 @@ bool CPopup::initVariable()
             }
             
 			m_NoticeLabel = Label::createWithTTF(m_PopupNotice, "fonts/malgunbd.ttf", m_FontSize);
-			m_NoticeLabel->setColor(m_FontColor);
-			m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));
-			defaultBG->addChild(m_NoticeLabel);
+			if (m_NoticeLabel != nullptr){
+				m_NoticeLabel->setColor(m_FontColor);
+				m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+				m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));
+				defaultBG->addChild(m_NoticeLabel);
+			}
 
 			m_DefaultExitBtn = CMyButton::create("defaultExitBtn.png",
 				END,

@@ -1,6 +1,7 @@
 #include "WorkshopPopup.h"
 #include "WorkshopPopupDP.h"
 #include "../MyButton.h"
+#include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/CharacterDataManager.h"
 #include "ui/UIScrollView.h"
@@ -99,29 +100,41 @@ bool CWorkshopPopup::initVariable()
             m_btnEnd->setOpacity(0);
         }
         
-        
+        m_btnUserCoin = CUserCoinButton::create();
+		if (m_btnUserCoin != nullptr)
+		{
+			m_btnUserCoin->setPosition(Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.05f));
+			m_btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_BG->addChild(m_btnUserCoin);
+			m_btnUserCoin->setCascadeOpacityEnabled(true);
+			m_btnUserCoin->setOpacity(0);
+		}
+
         m_Popup->setPopupOpenEffectFunc([this, workShopLabel](CPopup* pausePopup){
             auto winSize = Director::getInstance()->getWinSize();
             
             m_Popup->scheduleOnce([this](float delta){
                 
                 
-            }, 0.1f, "CharacterSelectPopupOpen");
+            }, 0.1f, "WorkshopPopupOpen");
             workShopLabel->runAction(FadeIn::create(0.5f));
             m_ScrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(0, winSize.height * 0.12f))));
             m_btnEnd->runAction(FadeIn::create(0.5f));
+			m_btnUserCoin->runAction(FadeIn::create(0.5f));
         });
         
         m_Popup->setPopupCloseEffectFunc([this, visibleSize, origin, workShopLabel](CPopup* pausePopup){
             
             workShopLabel->runAction(FadeTo::create(0.5f, 0));
             m_btnEnd->runAction(FadeTo::create(0.5f, 0));
+			m_btnUserCoin->runAction(FadeTo::create(0.5f, 0));
             m_Popup->scheduleOnce([this, visibleSize, origin](float delta){
                 m_ScrollBack->runAction(Sequence::create(EaseSineIn::create(MoveTo::create(0.4f, Vec2(0, origin.x + visibleSize.height * 1.5f))),
                                                          CallFunc::create([this](){
                     CSpecificPopupBase::PopupRelease();
                 }), nullptr));
-            }, 0.1f, "CharacterSelectPopupClose");
+            }, 0.1f, "WorkshopPopupClose");
         });
     }
     catch (...){

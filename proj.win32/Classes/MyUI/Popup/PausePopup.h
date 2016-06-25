@@ -4,6 +4,7 @@
 #include "ui/UIImageView.h"
 
 class CMyButton;
+class CUserCoinButton;
 class CPausePopup : public CSpecificPopupBase
 {
 public:
@@ -25,11 +26,13 @@ private:
 		, m_btnReset(nullptr)
         , m_btnExit(nullptr)
         , m_btnHelp(nullptr)
+		, m_btnUserCoin(nullptr)
 		, m_BG(nullptr)
         , m_PauseBG(nullptr){};
 	virtual ~CPausePopup(){};
 
 private:
+	CUserCoinButton* m_btnUserCoin;
 	CMyButton* m_btnHome;
 	CMyButton* m_btnReset;
 	CMyButton* m_btnPlay;

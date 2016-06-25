@@ -2,6 +2,7 @@
 #include "../MyButton.h"
 #include "../ScoreUI.h"
 #include "../UIManager.h"
+#include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
 
@@ -152,6 +153,8 @@ bool CResultPopup::initVariable()
                 coinScoreValueLabel->setPosition(Vec2(coinScoreBG->getContentSize().width * 0.9f, coinScoreBG->getContentSize().height * 0.5f));
                 coinScoreBG->addChild(coinScoreValueLabel);
             }
+
+			CUserDataManager::Instance()->CoinUpdate(coinScore->getScoreValue());
         }
         
         /* bonusTime Count */
@@ -350,7 +353,7 @@ bool CResultPopup::initVariable()
             
             auto bestScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("BestScore"));
             bestScore->UpdateValue(CUserDataManager::Instance()->getUserDataBestTotalScore());
-            auto bestScoreValueLabel = Label::createWithTTF(StringUtils::format("%d", bestScore->getScoreValue()), "fonts/malgunbd.ttf", 50);
+			auto bestScoreValueLabel = Label::createWithTTF(bestScore->getValueString(), "fonts/malgunbd.ttf", 50);
             if (bestScoreValueLabel != nullptr){
                 bestScoreValueLabel->setColor(g_labelColor1);
                 bestScoreValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
@@ -389,122 +392,137 @@ bool CResultPopup::initVariable()
             m_btnReset->setOpacity(0);
         }
         
+		m_btnUserCoin = CUserCoinButton::create();
+		if (m_btnUserCoin != nullptr)
+		{
+			m_btnUserCoin->setPosition(Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.05f));
+			m_btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_BG->addChild(m_btnUserCoin);
+			m_btnUserCoin->setCascadeOpacityEnabled(true);
+			m_btnUserCoin->setOpacity(0);
+		}
+
         m_Popup->setPopupOpenEffectFunc([=](CPopup* pausePopup){
             auto winSize = Director::getInstance()->getWinSize();
-            
-            moveDistanceBG->runAction(
-                                      Spawn::createWithTwoActions(
-                                                                  EaseExponentialOut::create(
-                                                                                             MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                                       m_BG->getContentSize().height * 0.7f))),
-                                                                  FadeIn::create(1.f)));
-            starScoreBG->runAction(
-                                   Spawn::createWithTwoActions(
-                                                               EaseExponentialOut::create(
-                                                                                          MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                                    m_BG->getContentSize().height * 0.65f))),
-                                                               FadeIn::create(1.f)));
-            coinScoreBG->runAction(
-                                   Spawn::createWithTwoActions(
-                                                               EaseExponentialOut::create(
-                                                                                          MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                                    m_BG->getContentSize().height * 0.6f))),
-                                                               FadeIn::create(1.f)));
-            bonusTimeBG->runAction(
-                                   Spawn::createWithTwoActions(
-                                                               EaseExponentialOut::create(
-                                                                                          MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                                    m_BG->getContentSize().height * 0.55f))),
-                                                               FadeIn::create(1.f)));
-            alienBG->runAction(
-                               Spawn::createWithTwoActions(
-                                                           EaseExponentialOut::create(
-                                                                                      MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                                m_BG->getContentSize().height * 0.5f))),
-                                                           FadeIn::create(1.f)));
-            challengeBG->runAction(
-                                   Spawn::createWithTwoActions(
-                                                               EaseExponentialOut::create(
-                                                                                          MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                                    m_BG->getContentSize().height * 0.45f))),
-                                                               FadeIn::create(1.f)));
-            totalScoreBG->runAction(
-                                    Spawn::createWithTwoActions(
-                                                                EaseExponentialOut::create(
-                                                                                           MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                                     m_BG->getContentSize().height * 0.4f))),
-                                                                FadeIn::create(1.f)));
-            bestScoreBG->runAction(
-                                   Spawn::createWithTwoActions(
-                                                               EaseExponentialOut::create(
-                                                                                          MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                                    m_BG->getContentSize().height * 0.35f))),
-                                                               FadeIn::create(1.f)));
-            resultLabel->runAction(FadeIn::create(0.5f));
-            
-            m_btnHome->runAction(FadeIn::create(0.5f));
-            
-            m_btnReset->runAction(FadeIn::create(0.5f));
-        });
-        
-        m_Popup->setPopupCloseEffectFunc([=](CPopup* pausePopup){
-            moveDistanceBG->runAction(
-                                      Spawn::createWithTwoActions(
-                                                                  EaseSineIn::create(
-                                                                                     MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                                m_BG->getContentSize().height * 0.5f))),
-                                                                  FadeTo::create(0.2f, 0)));
-            starScoreBG->runAction(
-                                   Spawn::createWithTwoActions(
-                                                               EaseSineIn::create(
-                                                                                  MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                             m_BG->getContentSize().height * 0.4f))),
-                                                               FadeTo::create(0.2f, 0)));
-            coinScoreBG->runAction(
-                                   Spawn::createWithTwoActions(
-                                                               EaseSineIn::create(
-                                                                                  MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                             m_BG->getContentSize().height * 0.3f))),
-                                                               FadeTo::create(0.2f, 0)));
-            bonusTimeBG->runAction(
-                                   Spawn::createWithTwoActions(
-                                                               EaseSineIn::create(
-                                                                                  MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                             m_BG->getContentSize().height * 0.2f))),
-                                                               FadeTo::create(0.2f, 0)));
-            alienBG->runAction(
-                               Spawn::createWithTwoActions(
-                                                           EaseSineIn::create(
-                                                                              MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                         m_BG->getContentSize().height * 0.1f))),
-                                                           FadeTo::create(0.2f, 0)));
-            challengeBG->runAction(
-                                   Spawn::createWithTwoActions(
-                                                               EaseSineIn::create(
-                                                                                  MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                             m_BG->getContentSize().height * 0.0f))),
-                                                               FadeTo::create(0.2f, 0)));
-            totalScoreBG->runAction(
-                                    Spawn::createWithTwoActions(
-                                                                EaseSineIn::create(
-                                                                                   MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                              m_BG->getContentSize().height * -0.1f))),
-                                                                FadeTo::create(0.2f, 0)));
-            bestScoreBG->runAction(
-                                   Spawn::createWithTwoActions(
-                                                               EaseSineIn::create(
-                                                                                  MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
-                                                                                                             m_BG->getContentSize().height * -0.2f))),
-                                                               FadeTo::create(0.2f, 0)));
-            resultLabel->runAction(FadeTo::create(0.5f, 0));
-            
-            m_btnHome->runAction(FadeTo::create(0.5f, 0));
-            
-            m_btnReset->runAction(FadeTo::create(0.5f, 0));
-            
-            m_Popup->scheduleOnce([this](float delta){
-                CSpecificPopupBase::PopupRelease();
-            }, 0.35f, "PausePopupClose");
+
+			moveDistanceBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.7f))),
+				FadeIn::create(1.f)));
+			starScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.65f))),
+				FadeIn::create(1.f)));
+			coinScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.6f))),
+				FadeIn::create(1.f)));
+			bonusTimeBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.55f))),
+				FadeIn::create(1.f)));
+			alienBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.5f))),
+				FadeIn::create(1.f)));
+			challengeBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.45f))),
+				FadeIn::create(1.f)));
+			totalScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.4f))),
+				FadeIn::create(1.f)));
+			bestScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseExponentialOut::create(
+				MoveTo::create(1.3f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.35f))),
+				FadeIn::create(1.f)));
+			resultLabel->runAction(FadeIn::create(0.5f));
+
+			m_btnHome->runAction(FadeIn::create(0.5f));
+
+			m_btnReset->runAction(FadeIn::create(0.5f));
+
+			m_btnUserCoin->runAction(FadeIn::create(0.5f));
+		});
+
+		m_Popup->setPopupCloseEffectFunc([=](CPopup* pausePopup){
+			moveDistanceBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.5f))),
+				FadeTo::create(0.2f, 0)));
+			starScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.4f))),
+				FadeTo::create(0.2f, 0)));
+			coinScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.3f))),
+				FadeTo::create(0.2f, 0)));
+			bonusTimeBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.2f))),
+				FadeTo::create(0.2f, 0)));
+			alienBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.1f))),
+				FadeTo::create(0.2f, 0)));
+			challengeBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.0f))),
+				FadeTo::create(0.2f, 0)));
+			totalScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * -0.1f))),
+				FadeTo::create(0.2f, 0)));
+			bestScoreBG->runAction(
+				Spawn::createWithTwoActions(
+				EaseSineIn::create(
+				MoveTo::create(0.35f, Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * -0.2f))),
+				FadeTo::create(0.2f, 0)));
+			resultLabel->runAction(FadeTo::create(0.5f, 0));
+
+			m_btnHome->runAction(FadeTo::create(0.5f, 0));
+
+			m_btnReset->runAction(FadeTo::create(0.5f, 0));
+
+			m_btnUserCoin->runAction(FadeTo::create(0.5f, 0));
+
+			m_Popup->scheduleOnce([this](float delta){
+				CSpecificPopupBase::PopupRelease();
+			}, 0.35f, "PausePopupClose");
         });
     }
     catch (...){

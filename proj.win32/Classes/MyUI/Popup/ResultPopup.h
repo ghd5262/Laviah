@@ -2,6 +2,7 @@
 #include "../Popup.h"
 
 class CMyButton;
+class CUserCoinButton;
 class CResultPopup : public CSpecificPopupBase
 {
 public:
@@ -17,11 +18,13 @@ private:
 	CResultPopup()
 		: m_btnHome(nullptr)
 		, m_btnReset(nullptr)
+		, m_btnUserCoin(nullptr)
 		, m_BG(nullptr){};
 	virtual ~CResultPopup(){};
 
 private:
 	CMyButton* m_btnHome;
 	CMyButton* m_btnReset;
+	CUserCoinButton* m_btnUserCoin;
 	LayerColor* m_BG;
 };

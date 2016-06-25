@@ -1,6 +1,8 @@
 #include "UserDataManager.h"
-
-
+#include "../Scene/GameScene.h"
+#include "../MyUI/MyButton.h"
+#include "../MyUI/Popup.h"
+#include "../MyUI/Popup/EarnCoinPopup.h"
 
 CUserDataManager::CUserDataManager()
 {
@@ -10,7 +12,7 @@ CUserDataManager::CUserDataManager()
                                              });
     
     m_UserData->_level          = UserDefault::getInstance()->getIntegerForKey(         "USER_LEVEL",                   0);
-    m_UserData->_gold           = UserDefault::getInstance()->getIntegerForKey(         "USER_GOLD",                    0);
+    m_UserData->_coin           = UserDefault::getInstance()->getIntegerForKey(         "USER_COIN",                    0);
     m_UserData->_bestTotalScore = UserDefault::getInstance()->getIntegerForKey(         "USER_BEST_TOTAL_SCORE",        0);
     m_UserData->_bestCombo      = UserDefault::getInstance()->getIntegerForKey(         "USER_BEST_COMBO",              0);
     m_UserData->_currentCharacter = UserDefault::getInstance()->getIntegerForKey(       "USER_CUR_CHARACTER",           0);
@@ -47,15 +49,46 @@ void CUserDataManager::setUserDataLevel(unsigned value)
     UserDefault::getInstance()->setIntegerForKey("USER_LEVEL", value);
 }
 
-unsigned CUserDataManager::getUserDataGold()
+bool CUserDataManager::CoinUpdate(int value)
 {
-    return m_UserData->_gold;
+	bool result = false;
+	if (value > 0)
+	{
+		result = true;
+		setUserDataCoin(getUserDataCoin() + value);
+	}
+	else
+	{
+		result = false;
+		if ((value * -1) > getUserDataCoin())
+		{
+			Size visibleSize = Director::getInstance()->getVisibleSize();
+			Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+			auto popup = CPopup::createWithSpecificFormat(CEarnCoinPopup::create(), POPUPEFFECT_none);
+			popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+				origin.x + visibleSize.height * 0.5f));
+			popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			Director::getInstance()->getRunningScene()->addChild(popup, 102);
+		}
+		else
+		{
+			result = true;
+			setUserDataCoin(getUserDataCoin() + value);
+		}
+	}
+	return result;
 }
 
-void CUserDataManager::setUserDataGold(unsigned value)
+unsigned CUserDataManager::getUserDataCoin()
 {
-    m_UserData->_gold = value;
-    UserDefault::getInstance()->setIntegerForKey("USER_GOLD", value);
+    return m_UserData->_coin;
+}
+
+void CUserDataManager::setUserDataCoin(unsigned value)
+{
+    m_UserData->_coin = value;
+    UserDefault::getInstance()->setIntegerForKey("USER_COIN", value);
 }
 
 unsigned CUserDataManager::getUserDataBestTotalScore()

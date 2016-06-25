@@ -1,5 +1,6 @@
 #include "PausePopup.h"
 #include "../MyButton.h"
+#include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 
 
@@ -116,6 +117,17 @@ bool CPausePopup::initVariable()
             m_btnHelp->setOpacity(0);
         }
         
+		m_btnUserCoin = CUserCoinButton::create();
+		if (m_btnUserCoin != nullptr)
+		{
+			m_btnUserCoin->setPosition(Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.05f));
+			m_btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_BG->addChild(m_btnUserCoin);
+			m_btnUserCoin->setCascadeOpacityEnabled(true);
+			m_btnUserCoin->setOpacity(0);
+		}
+
         m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
 			auto winSize = Director::getInstance()->getWinSize();
 
@@ -133,6 +145,7 @@ bool CPausePopup::initVariable()
 			m_PauseBG->runAction(EaseExponentialOut::create(MoveTo::create(0.5f, Vec2(0, winSize.height * 0.36f))));
             m_btnExit->runAction(FadeIn::create(0.5f));
             m_btnHelp->runAction(FadeIn::create(0.5f));
+			m_btnUserCoin->runAction(FadeIn::create(0.5f));
         });
 
 		m_Popup->setPopupCloseEffectFunc([this, visibleSize, origin](CPopup* pausePopup){
@@ -148,6 +161,7 @@ bool CPausePopup::initVariable()
 
             m_btnExit->runAction(FadeTo::create(0.5f, 0));
             m_btnHelp->runAction(FadeTo::create(0.5f, 0));
+			m_btnUserCoin->runAction(FadeTo::create(0.5f, 0));
             
 			m_Popup->scheduleOnce([this, visibleSize, origin](float delta){
 				m_PauseBG->runAction(Sequence::create(EaseSineIn::create(MoveTo::create(0.3f, Vec2(0, origin.x + visibleSize.height * 0.75f))),

@@ -4,7 +4,7 @@
 
 struct sUSER_DATA{
     unsigned _level;
-    unsigned _gold;
+    unsigned _coin;
     unsigned _bestTotalScore;
     unsigned _bestCombo;
     unsigned _currentCharacter;
@@ -29,13 +29,15 @@ class CUserDataManager
 {
 public:
     static CUserDataManager* Instance();
-    
+	bool CoinUpdate(int value);
+
+
     //getter & setter
     unsigned getUserDataLevel();
     void setUserDataLevel(unsigned value);
     
-    unsigned getUserDataGold();
-    void setUserDataGold(unsigned value);
+    unsigned getUserDataCoin();
+    void setUserDataCoin(unsigned value);
     
     unsigned getUserDataBestTotalScore();
     void setUserDataBestTotalScore(unsigned value);

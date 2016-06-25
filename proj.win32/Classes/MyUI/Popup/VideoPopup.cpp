@@ -1,6 +1,8 @@
 #include "VideoPopup.h"
 #include "../MyButton.h"
+#include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
+#include "../../DataManager/UserDataManager.h"
 
 const int g_coinToRevive = 1500;
 
@@ -124,6 +126,18 @@ bool CVideoPopup::initVariable()
 			m_btnEnd->setOpacity(0);
 		}
 
+		m_btnUserCoin = CUserCoinButton::create();
+		if (m_btnUserCoin != nullptr)
+		{
+			m_btnUserCoin->setPosition(Vec2(m_BG->getContentSize().width * 0.5f,
+				m_BG->getContentSize().height * 0.05f));
+			m_btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_BG->addChild(m_btnUserCoin);
+			m_btnUserCoin->setCascadeOpacityEnabled(true);
+			m_btnUserCoin->setOpacity(0);
+		}
+
+
 		m_Popup->setPopupOpenEffectFunc([=](CPopup* pausePopup){
 			auto winSize = Director::getInstance()->getWinSize();
 
@@ -143,6 +157,7 @@ bool CVideoPopup::initVariable()
 			reviveLabel->runAction(FadeIn::create(0.5f));
 
 			m_btnEnd->runAction(FadeIn::create(0.5f));
+			m_btnUserCoin->runAction(FadeIn::create(0.5f));
 		});
 
 		m_Popup->setPopupCloseEffectFunc([=](CPopup* pausePopup){
@@ -162,7 +177,7 @@ bool CVideoPopup::initVariable()
 			reviveLabel->runAction(FadeTo::create(0.5f, 0));
 
 			m_btnEnd->runAction(FadeTo::create(0.5f, 0));
-			
+			m_btnUserCoin->runAction(FadeTo::create(0.5f, 0));
 			m_Popup->scheduleOnce([this](float delta){
 				CSpecificPopupBase::PopupRelease();
 			}, 0.35f, "CVideoPopupClose");
@@ -188,7 +203,9 @@ void CVideoPopup::Video(){
 
 void CVideoPopup::UseCoin(){
 	CCLOG("format popup UseCoin");
-	CGameScene::getGameScene()->CountDownCancel();
-	CGameScene::getGameScene()->GameStart();
-	CSpecificPopupBase::PopupClose();
+	if (CUserDataManager::Instance()->CoinUpdate(-g_coinToRevive)){
+		CGameScene::getGameScene()->CountDownCancel();
+		CGameScene::getGameScene()->GameStart();
+		CSpecificPopupBase::PopupClose();
+	}
 }
