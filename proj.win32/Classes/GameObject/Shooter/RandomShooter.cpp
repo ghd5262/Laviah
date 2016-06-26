@@ -33,9 +33,13 @@ void CRandomShooter::ShootOnce()
 	m_nBulletCountAtOnceRandom = random<int>(1, m_ShooterParam._nBulletCountAtOneShoot);
 
 	// angle이 마이너스 이면 랜덤으로 사용한다. 
-	if (m_ShooterParam._isAngleRandom)
-		m_ShooterParam._fAngle = random<float>(0.f, 360.f);
-
+	if (m_ShooterParam._isAngleRandom){
+		if (random<int>(0, 100) < 95)
+			m_ShooterParam._fAngle = random<float>(0.f, 180.f);
+		else
+			m_ShooterParam._fAngle = random<float>(180.f, 360.f);
+		
+	}
 
 	char p = m_ShooterParam._randomShootSymbol;
 	sBULLET_PARAM bulletParam = CBulletDataManager::Instance()->getBulletInfo(p);
