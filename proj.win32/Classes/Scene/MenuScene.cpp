@@ -108,7 +108,7 @@ void CMenuScene::InitMenuSceneUI()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    auto gameStartBtn = CMyButton::createWithString("defaultBtn_2.png", "Start", 40, Color3B::WHITE, 
+	auto gameStartBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Start", 40, Color3B::WHITE,
                                    END, std::bind(&CMenuScene::createGameScene, this), EFFECT_SIZEDOWN);
     
     gameStartBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
@@ -118,7 +118,7 @@ void CMenuScene::InitMenuSceneUI()
     this->addChild(gameStartBtn);
     
     
-    auto characterSelectBtn = CMyButton::createWithString("defaultBtn_2.png", "Select", 40, Color3B::WHITE,
+	auto characterSelectBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Select", 40, Color3B::WHITE,
                                                           END, [this, origin, visibleSize](){
                                                               auto popup = CPopup::createWithSpecificFormat(CCharacterSelectPopup::create(), POPUPEFFECT_none);
                                                               popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
@@ -133,7 +133,7 @@ void CMenuScene::InitMenuSceneUI()
     characterSelectBtn->setCascadeOpacityEnabled(true);
     this->addChild(characterSelectBtn);
     
-    auto workShopBtn = CMyButton::createWithString("defaultBtn_2.png", "Workshop", 40, Color3B::WHITE,
+	auto workShopBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Workshop", 40, Color3B::WHITE,
                                                           END, [this, origin, visibleSize](){
                                                               auto popup = CPopup::createWithSpecificFormat(CWorkshopPopup::create(), POPUPEFFECT_none);
                                                               popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,

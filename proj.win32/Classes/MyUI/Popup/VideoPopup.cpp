@@ -93,6 +93,7 @@ bool CVideoPopup::initVariable()
 			m_BG->addChild(m_btnUseCoin);
 			m_btnUseCoin->setOpacity(0);
 			m_btnUseCoin->setCascadeOpacityEnabled(true);
+
 			auto useCoinIcon = Sprite::create("coin_5.png");
 			if (useCoinIcon != nullptr)
 			{
@@ -109,6 +110,9 @@ bool CVideoPopup::initVariable()
 				useCoinLabel->setPosition(Vec2(- m_btnUseCoin->getContentSize().width * 0.13f, 0));
 				m_btnUseCoin->addChild(useCoinLabel);
 			}
+
+			if (CUserDataManager::Instance()->getUserDataCoin() < g_coinToRevive)
+				m_btnUseCoin->setBtnUnable(true);
 		}
 
 		m_btnEnd = CMyButton::create("endIcon.png",

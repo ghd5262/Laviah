@@ -389,7 +389,8 @@ void CGameScene::GameExit()
 	
 	GamePause();
 
-	auto btnYes = CMyButton::createWithString("defaultBtn_1.png",
+	auto btnYes = CMyButton::createWithLayerColor(Size(430, 150),
+		Color4B(0, 0, 0, 255 * 0.8f),
 		"Yes",
 		40,
 		Color3B::WHITE,
@@ -401,7 +402,8 @@ void CGameScene::GameExit()
 #endif
 	}, EFFECT_ALPHA);
 
-	auto btnNo = CMyButton::createWithString("defaultBtn_2.png",
+	auto btnNo = CMyButton::createWithLayerColor(Size(430, 150),
+		Color4B(255, 48, 48, 255 * 0.8f),
 		"No",
 		40,
 		Color3B::WHITE,

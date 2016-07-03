@@ -104,7 +104,6 @@ private:
 
 	CMyButton* m_Btn1;
 	CMyButton* m_Btn2;
-	CMyButton* m_DefaultExitBtn;
 
 	std::string m_PopupNotice;
 	size_t m_FontSize;

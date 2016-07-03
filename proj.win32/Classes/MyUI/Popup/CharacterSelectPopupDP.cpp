@@ -45,7 +45,7 @@ bool CCharacterSelectPopupDP::initVariable()
             dpBack->addChild(m_ItemBack);
         }
         
-		auto dpSelectBtn = CMyButton::createWithString("empty150_b.png", "Select", 40, g_labelColor2, END, std::bind(&CCharacterSelectPopupDP::Select, this), EFFECT_GRAY);
+		auto dpSelectBtn = CMyButton::createWithLayerColor(Size(540, 150), Color4B(0, 0, 0, 255 * 0.8f),"Select", 40, g_labelColor2, END, std::bind(&CCharacterSelectPopupDP::Select, this), EFFECT_SIZEDOWN);
 		if (dpSelectBtn != nullptr)
 		{
 			dpSelectBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

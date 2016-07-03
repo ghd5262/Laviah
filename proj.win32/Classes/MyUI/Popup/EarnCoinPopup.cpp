@@ -39,7 +39,8 @@ bool CEarnCoinPopup::initVariable()
 			bg->addChild(mentLabel);
 		}
 
-		auto btnWatch = CMyButton::createWithString("defaultBtn_1.png",
+		auto btnWatch = CMyButton::createWithLayerColor(Size(430, 150),
+			Color4B(0, 0, 0, 255 * 0.8f),
 			"Watch",
 			40,
 			Color3B::WHITE,
@@ -53,7 +54,8 @@ bool CEarnCoinPopup::initVariable()
 			bg->addChild(btnWatch);
 		}
 
-		auto btnNo = CMyButton::createWithString("defaultBtn_2.png",
+		auto btnNo = CMyButton::createWithLayerColor(Size(430, 150),
+			Color4B(255, 48, 48, 255 * 0.8f),
 			"No",
 			40,
 			Color3B::WHITE,

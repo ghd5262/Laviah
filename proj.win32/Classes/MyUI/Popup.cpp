@@ -13,7 +13,6 @@ CPopup::CPopup(std::string popupNotice,
 	, m_PopupAble(nullptr)
 	, m_FontSize(fontSize)
 	, m_PopupInfo(ONEBTN)
-	, m_DefaultExitBtn(nullptr)
 	, m_FontColor(fontColor)
 	, m_PopupOpenEffectFunc(openEffectFunc)
 	, m_PopupCloseEffectFunc(nullptr)
@@ -35,7 +34,6 @@ CPopup::CPopup(std::string popupNotice,
 	, m_PopupAble(nullptr)
 	, m_FontSize(fontSize)
 	, m_PopupInfo(TWOBTN)
-	, m_DefaultExitBtn(nullptr)
 	, m_FontColor(fontColor)
 	, m_PopupOpenEffectFunc(openEffectFunc)
 	, m_PopupCloseEffectFunc(nullptr)
@@ -53,7 +51,6 @@ CPopup::CPopup(CSpecificPopupBase* format,
 	, m_PopupAble(std::shared_ptr<CSpecificPopupBase>(format))
 	, m_FontSize(20)
 	, m_PopupInfo(FORMAT)
-	, m_DefaultExitBtn(nullptr)
 	, m_FontColor(Color3B::BLACK)
 	, m_PopupOpenEffectFunc(openEffectFunc)
 	, m_PopupCloseEffectFunc(nullptr)
@@ -146,7 +143,14 @@ bool CPopup::init()
 bool CPopup::initVariable()
 {
 	try{
-		auto emptyBtnBG = CMyButton::create("empty1920_a.png", BEGIN, [](){});
+		auto emptyBtnBG = CMyButton::createWithLayerColor(Size(1080, 1920),
+			Color4B(255, 255, 255, 255 * 0.4f),
+			"",
+			40,
+			Color3B::WHITE,
+			END,
+			[](){});
+
         if(emptyBtnBG != nullptr){
             emptyBtnBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             emptyBtnBG->setPosition(Vec2::ZERO);
@@ -170,19 +174,6 @@ bool CPopup::initVariable()
 				m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));
 				defaultBG->addChild(m_NoticeLabel);
-			}
-
-			m_DefaultExitBtn = CMyButton::create("defaultExitBtn.png",
-				END,
-				std::bind(&CPopup::PopupClose, this),
-				EFFECT_GRAY);
-			if (m_DefaultExitBtn != nullptr)
-			{
-				m_DefaultExitBtn->setPosition(Vec2(defaultBG->getContentSize().width * 0.9f,
-					defaultBG->getContentSize().height * 0.9f));
-				m_DefaultExitBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				defaultBG->addChild(m_DefaultExitBtn);
-				m_DefaultExitBtn->AddState(END, std::bind(&CPopup::PopupRelease, this));
 			}
 
 			if (m_Btn1 != nullptr)
@@ -210,19 +201,6 @@ bool CPopup::initVariable()
 				m_NoticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				m_NoticeLabel->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));
 				defaultBG->addChild(m_NoticeLabel);
-			}
-
-			m_DefaultExitBtn = CMyButton::create("defaultExitBtn.png",
-				END,
-				std::bind(&CPopup::PopupClose, this),
-				EFFECT_GRAY);
-			if (m_DefaultExitBtn != nullptr)
-			{
-				m_DefaultExitBtn->setPosition(Vec2(defaultBG->getContentSize().width * 0.9f,
-					defaultBG->getContentSize().height * 0.9f));
-				m_DefaultExitBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				defaultBG->addChild(m_DefaultExitBtn);
-				m_DefaultExitBtn->AddState(END, std::bind(&CPopup::PopupRelease, this));
 			}
 
 			if (m_Btn1 != nullptr)

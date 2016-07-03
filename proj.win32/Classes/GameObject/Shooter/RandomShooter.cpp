@@ -34,7 +34,7 @@ void CRandomShooter::ShootOnce()
 
 	// angle이 마이너스 이면 랜덤으로 사용한다. 
 	if (m_ShooterParam._isAngleRandom){
-		if (random<int>(0, 100) < 95)
+		if (random<int>(0, 100) < 80)
 			m_ShooterParam._fAngle = random<float>(0.f, 180.f);
 		else
 			m_ShooterParam._fAngle = random<float>(180.f, 360.f);

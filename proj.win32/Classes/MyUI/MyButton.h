@@ -27,6 +27,13 @@ enum eMYBUTTON_EFFECT_FLAG{
 	EFFECT_TEXTURE = 0x0010
 };
 
+enum eMYBUTTON_KIND{
+	BUTTON_NORMAL = 0,
+	BUTTON_SPRITE = 1,
+	BUTTON_STRING = 2,
+	BUTTON_LAYER = 3
+};
+
 class CMyButton : public CGameObject
 {
 public:
@@ -57,6 +64,19 @@ public:
 		const std::function<void(void)> &func,		// 람다 전달
 		int effect = EFFECT_NONE);					// 버튼 이펙트
 
+
+	/* LayerColor와 함께 버튼 생성*/
+	static CMyButton* createWithLayerColor(
+		Size layerSize,								// 레이어 사이즈
+		Color4B layerColor,							// 레이어 색상
+		std::string labelString,					// 버튼의 label 내용
+		int fontSize,								// 폰트 사이즈
+		Color3B fontColor,							// 폰트 색상
+		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
+		const std::function<void(void)> &func,		// 람다 전달
+		int effect = EFFECT_NONE);					// 버튼 이펙트
+
+
 	/* 버튼에 펑션을 추가 */
 	void AddState(eMYBUTTON_STATE state,			// 상태 (해당 상태일 때 함수 호출됨)
 		const std::function<void(void)> &func);		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
@@ -65,10 +85,18 @@ public:
 	virtual void Execute(float delta = 0.f);
 
 	virtual const Size& getContentSize() const override { 
-		if (m_pNormalTexture != nullptr) 
+		if (m_ButtonKind == BUTTON_LAYER){
+			return m_LayerBtn->getContentSize();
+		}
+		else{
+			CCASSERT(m_pNormalTexture != nullptr, "Texture is nullptr");
 			return m_pNormalTexture->getContentSize();
-		CCASSERT(m_pNormalTexture != nullptr, "Texture is nullptr");
+		}
+		
 	}
+
+	void setBtnUnable(bool unable);
+	bool getBtnUnable() const { return m_Unable; }
 
 	// getter & setter
 	CC_SYNTHESIZE(Label*, m_pLabel, BtnLabel);
@@ -116,6 +144,16 @@ private:
 		const std::function<void(void)> &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
 		int effect);								// 버튼 이펙트
 		
+	CMyButton(
+		Size layerSize,								// 레이어 사이즈
+		Color4B layerColor,							// 레이어 색상
+		std::string labelString,					// 버튼의 label 내용
+		int fontSize,								// 폰트 사이즈
+		Color3B fontColor,							// 폰트 색상
+		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
+		const std::function<void(void)> &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
+		int effect);								// 버튼 이펙트
+
 	virtual ~CMyButton(){};
 
 private:
@@ -128,9 +166,14 @@ private:
 	std::string m_SelectedTextureName;
 	std::string m_LabelString;
 	Sprite* m_pNormalTexture;
+	Color4B m_LayerColor;
 	Color3B m_FontColor;
+	LayerColor* m_LayerBtn;
+	Size m_LayerSize;
 	int m_FontSize;
 	int m_ButtonEffect;
+	eMYBUTTON_KIND m_ButtonKind;
 	bool m_IsSelect;	//선택되었는지 (선택중이라도 true)
+	bool m_Unable;		//버튼을 누를수 없는지 여부
 };
 
