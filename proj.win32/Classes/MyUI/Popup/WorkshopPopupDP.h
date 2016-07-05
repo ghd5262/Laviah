@@ -6,7 +6,7 @@ USING_NS_CC;
 class CWorkshopPopupDP : public cocos2d::Layer
 {
 public:
-    static CWorkshopPopupDP* create(int CharacterIdx, const std::function<void(cocos2d::Ref*)> &func);
+	static CWorkshopPopupDP* create(int workshopItemIdx, const std::function<void(cocos2d::Ref*)> &func);
     void DeSelect();
     
 protected:
@@ -16,12 +16,12 @@ protected:
 private:
     void Buy();
     
-    CWorkshopPopupDP(int CharacterIdx, const std::function<void(cocos2d::Ref*)> &func)
-    : m_CharacterIdx(CharacterIdx)
+	CWorkshopPopupDP(int workshopItemIdx, const std::function<void(cocos2d::Ref*)> &func)
+		: m_WorkshopItemIdx(workshopItemIdx)
     , m_SelectFunc(func){};
     virtual ~CWorkshopPopupDP(){};
     
 private:
-    int m_CharacterIdx;
+    int m_WorkshopItemIdx;
     std::function<void(cocos2d::Ref*)> m_SelectFunc;
 };

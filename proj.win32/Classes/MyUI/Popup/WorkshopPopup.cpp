@@ -3,7 +3,7 @@
 #include "../MyButton.h"
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
-#include "../../DataManager/CharacterDataManager.h"
+#include "../../DataManager/WorkshopItemDataManager.h"
 #include "ui/UIScrollView.h"
 #include "ui/UIImageView.h"
 #include "ui/UIPageView.h"
@@ -59,8 +59,8 @@ bool CWorkshopPopup::initVariable()
         auto itemScroll = ScrollView::create();
         if(itemScroll != nullptr){
             
-            /* 캐릭터리스트 데이터 읽음 */
-            auto itemList = CCharacterDataManager::Instance()->getCharacterList();
+            /* 아이템리스트 데이터 읽음 */
+            auto itemList = CWorkshopItemDataManager::Instance()->getWorkshopItemList();
             size_t listCount = itemList.size();
             size_t dpDistance = 15;
             Size dpSize = Size(1080, 200);

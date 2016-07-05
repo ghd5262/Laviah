@@ -1,10 +1,11 @@
 #include "WorkshopPopupDP.h"
 #include "../MyButton.h"
-#include "../../DataManager/CharacterDataManager.h"
+#include "../LevelProgressBar.h"
+#include "../../DataManager/WorkshopItemDataManager.h"
 
-CWorkshopPopupDP* CWorkshopPopupDP::create(int CharacterIdx, const std::function<void(cocos2d::Ref*)> &func)
+CWorkshopPopupDP* CWorkshopPopupDP::create(int workshopItemIdx, const std::function<void(cocos2d::Ref*)> &func)
 {
-    CWorkshopPopupDP *pRet = new(std::nothrow) CWorkshopPopupDP(CharacterIdx, func);
+	CWorkshopPopupDP *pRet = new(std::nothrow) CWorkshopPopupDP(workshopItemIdx, func);
     if (pRet && pRet->init())
     {
         return pRet;
@@ -27,8 +28,8 @@ bool CWorkshopPopupDP::init()
 bool CWorkshopPopupDP::initVariable()
 {
     try{
-        auto characterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(m_CharacterIdx);
-        
+        auto workshopItemInfo = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByIndex(m_WorkshopItemIdx);
+		int currentLevel = 3;
         auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
         if (dpBack != nullptr){
             dpBack->ignoreAnchorPointForPosition(false);
@@ -45,7 +46,8 @@ bool CWorkshopPopupDP::initVariable()
             dpBack->addChild(dpItemBack);
         }
         
-        auto dpBuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f), "Buy", 40, g_labelColor2, END, std::bind(&CWorkshopPopupDP::Buy, this), EFFECT_SIZEDOWN);
+        auto dpBuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
+			, MakeString("%d\nBuy", workshopItemInfo._costPerLevel.at(currentLevel)), 40, g_labelColor2, END, std::bind(&CWorkshopPopupDP::Buy, this), EFFECT_SIZEDOWN);
         if (dpBuyBtn != nullptr)
         {
             dpBuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -53,21 +55,40 @@ bool CWorkshopPopupDP::initVariable()
             dpBack->addChild(dpBuyBtn);
         }
         
-        auto characterName = Label::createWithTTF(characterInfo._name.c_str(), "fonts/malgunbd.ttf", 40);
-        if (characterName != nullptr)
+		auto workshopItemName = Label::createWithTTF(workshopItemInfo._name.c_str(), "fonts/malgunbd.ttf", 40);
+        if (workshopItemName != nullptr)
         {
-            characterName->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            characterName->setPosition(Vec2(dpItemBack->getContentSize().width * 0.5f, dpItemBack->getContentSize().height * 0.5f));
-            characterName->setColor(g_labelColor2);
-            dpItemBack->addChild(characterName);
+            workshopItemName->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+            workshopItemName->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f, dpItemBack->getContentSize().height * 0.8f));
+            workshopItemName->setColor(g_labelColor2);
+            dpItemBack->addChild(workshopItemName);
         }
         
-        auto characterImg = Sprite::create(characterInfo._textureName);
-        if(characterImg != nullptr)
+		auto workshopItemExplain = Label::createWithTTF(workshopItemInfo._explain.c_str(), "fonts/malgun.ttf", 35);
+		if (workshopItemExplain != nullptr)
+		{
+			workshopItemExplain->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+			workshopItemExplain->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f, dpItemBack->getContentSize().height * 0.5f));
+			workshopItemExplain->setColor(g_labelColor2);
+			dpItemBack->addChild(workshopItemExplain);
+		}
+
+		auto levelProgressBar = CLevelProgressBar::create(
+			Size(dpItemBack->getContentSize().width * 0.7f, dpItemBack->getContentSize().height * 0.15f),
+			workshopItemInfo._maxLevel, currentLevel);
+		if (levelProgressBar != nullptr)
+		{
+			levelProgressBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+			levelProgressBar->setPosition(Vec2(dpItemBack->getContentSize().width * 0.6f, dpItemBack->getContentSize().height * 0.1f));
+			dpItemBack->addChild(levelProgressBar);
+		}
+		
+		auto workshopItemImg = Sprite::create(workshopItemInfo._textureName);
+        if(workshopItemImg != nullptr)
         {
-            characterImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            characterImg->setPosition(Vec2(0 + characterImg->getContentSize().width * 0.5f, dpItemBack->getContentSize().height * 0.5f));
-            dpItemBack->addChild(characterImg);
+            workshopItemImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			workshopItemImg->setPosition(Vec2((dpItemBack->getContentSize().width * 0.075f) + (workshopItemImg->getContentSize().width * 0.5f), dpItemBack->getContentSize().height * 0.5f));
+            dpItemBack->addChild(workshopItemImg);
         }
     }
     catch (...){
@@ -80,10 +101,12 @@ bool CWorkshopPopupDP::initVariable()
 void CWorkshopPopupDP::Buy()
 {
     m_SelectFunc(this);
+
+
 }
 
 void CWorkshopPopupDP::DeSelect()
 {
-    auto characterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(m_CharacterIdx);
-    CCLOG("%s", characterInfo._name.c_str());
+	auto workshopItemInfo = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByIndex(m_WorkshopItemIdx);
+	CCLOG("%s", workshopItemInfo._name.c_str());
 }

@@ -239,8 +239,8 @@ void CPlayer::GiantMode()
 		CallFunc::create([&](){
 		this->m_pTexture->setTexture(m_GiantTextureName); 
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.3f));
-		this->setBRadius(80.f);
-		m_pParticle->setStartSize(80.f);
+		this->setBRadius(90.f);
+		m_pParticle->setStartSize(90.f);
 		m_pParticle->setEndSize(40.f);
 	}), nullptr);
 	this->runAction(action);

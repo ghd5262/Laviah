@@ -10,9 +10,10 @@
 #include "../DataManager/BulletPatternDataManager.h"
 #include "../DataManager/StageDataManager.h"
 #include "../DataManager/BulletDataManager.h"
+#include "../DataManager/WorkshopItemDataManager.h"
 #include "../MyUI/Popup/CharacterSelectPopup.h"
 #include "../MyUI/Popup/WorkshopPopup.h"
-
+#include "../MyUI/LevelProgressBar.h"
 
 USING_NS_CC;
 
@@ -73,7 +74,8 @@ bool CMenuScene::initVariable()
         CStageDataManager::Instance();
         CBulletPatternDataManager::Instance();
         CBulletDataManager::Instance();
-        
+		CWorkshopItemDataManager::Instance();
+
         auto planet = CPlanet::create("planet.png", 170, 0.0f, 200.0f);
         planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
                                  origin.y + visibleSize.height * 0.5f));
@@ -147,6 +149,24 @@ void CMenuScene::InitMenuSceneUI()
     workShopBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     workShopBtn->setCascadeOpacityEnabled(true);
     this->addChild(workShopBtn);
+
+	auto bar1 = CLevelProgressBar::create(Size(800, 40), 10, 3);
+	bar1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	bar1->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		origin.x + visibleSize.height * 0.1f));
+	addChild(bar1);
+
+	auto bar2 = CLevelProgressBar::create(Size(800, 40), 15, 8);
+	bar2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	bar2->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		origin.x + visibleSize.height * 0.2f));
+	addChild(bar2);
+
+	auto bar3 = CLevelProgressBar::create(Size(800, 40), 3, 1);
+	bar3->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	bar3->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		origin.x + visibleSize.height * 0.3f));
+	addChild(bar3);
 }
 
 void CMenuScene::createGameScene()
