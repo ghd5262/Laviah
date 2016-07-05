@@ -1,0 +1,66 @@
+{
+	"workshopitems": [{
+		"name": "MagnetTime",
+		"textureName": "workshopMagnetTime.png",
+		"max_level": 20,
+		"cost_per_level": [
+			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
+		],
+		"time_per_level": 0.5,
+		"explain": "empty"
+	}, {
+		"name": "CoinTime",
+		"textureName": "workshopCoinTime.png",
+		"max_level": 20,
+		"cost_per_level": [
+			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
+		],
+		"time_per_level": 0.5,
+		"explain": "empty"
+	}, {
+		"name": "StarTime",
+		"textureName": "workshopStarTime.png",
+		"max_level": 20,
+		"cost_per_level": [
+			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
+		],
+		"time_per_level": 0.5,
+		"explain": "empty"
+	}, {
+		"name": "GiantTime",
+		"textureName": "workshopGiantTime.png",
+		"max_level": 20,
+		"cost_per_level": [
+			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
+		],
+		"time_per_level": 0.25,
+		"explain": "empty"
+	}, {
+		"name": "BonusTime",
+		"textureName": "workshopBonusTime.png",
+		"max_level": 20,
+		"cost_per_level": [
+			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
+		],
+		"time_per_level": 0.5,
+		"explain": "empty"
+	}, {
+		"name": "MagnetSize",
+		"textureName": "workshopMagnetSize.png",
+		"max_level": 20,
+		"cost_per_level": [
+			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
+		],
+		"time_per_level": 5,
+		"explain": "empty"
+	}, {
+		"name": "GiantSize",
+		"textureName": "workshopGiantSize.png",
+		"max_level": 20,
+		"cost_per_level": [
+			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
+		],
+		"time_per_level": 3,
+		"explain": "empty"
+	}]
+}
