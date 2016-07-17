@@ -113,11 +113,7 @@ bool CWorkshopPopup::initVariable()
 
         m_Popup->setPopupOpenEffectFunc([this, workShopLabel](CPopup* pausePopup){
             auto winSize = Director::getInstance()->getWinSize();
-            
-            m_Popup->scheduleOnce([this](float delta){
-                
-                
-            }, 0.1f, "WorkshopPopupOpen");
+
             workShopLabel->runAction(FadeIn::create(0.5f));
             m_ScrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(0, winSize.height * 0.12f))));
             m_btnEnd->runAction(FadeIn::create(0.5f));

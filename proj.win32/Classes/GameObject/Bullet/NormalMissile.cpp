@@ -14,6 +14,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/StageDataManager.h"
 #include "../../MyUI/MultipleScore.h"
+#include "../../DataManager/UserDataManager.h"
 
 CNormalMissile::CNormalMissile(
 	sBULLET_PARAM bulletParam,
@@ -233,10 +234,10 @@ void CNormalMissile::ChangeToCoinOrStar()
 
 	std::string patternName;
 	if (false == m_BulletParam._isAimingMissile){
-		patternName = MakeString("rocket%d_Pattern", 13);
+		patternName = MakeString("normalRocket%d_Pattern", CUserDataManager::Instance()->getUserDataCurrentCharacter());
 	}
 	else{
-		patternName = MakeString("rocket%d_Pattern", 14);
+		patternName = MakeString("aimingRocket%d_Pattern", CUserDataManager::Instance()->getUserDataCurrentCharacter());
 	}
 	float distance = m_TargetVec.distance(getPosition());
 	float speed = 600.f;

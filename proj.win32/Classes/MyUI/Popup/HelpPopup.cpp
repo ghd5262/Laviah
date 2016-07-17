@@ -77,12 +77,6 @@ bool CHelpPopup::initVariable()
 
 		m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
 			auto winSize = Director::getInstance()->getWinSize();
-
-			m_Popup->scheduleOnce([this](float delta){
-
-
-			}, 0.1f, "HelpPopupOpen");
-
 			m_BG->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(0, 0))));
 			m_btnEnd->runAction(FadeIn::create(0.5f));
 		});

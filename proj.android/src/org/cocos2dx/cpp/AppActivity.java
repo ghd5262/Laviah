@@ -33,15 +33,21 @@ import kr.HongSeongHee.StarStarStar.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -55,6 +61,18 @@ import com.google.android.gms.games.snapshot.SnapshotMetadata;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 
+
+import com.unity3d.ads.IUnityAdsListener;
+import com.unity3d.ads.UnityAds;
+import com.unity3d.ads.UnityAds.FinishState;
+import com.unity3d.ads.UnityAds.UnityAdsError;
+import com.unity3d.ads.log.DeviceLog;
+import com.unity3d.ads.metadata.MediationMetaData;
+import com.unity3d.ads.metadata.MetaData;
+import com.unity3d.ads.metadata.PlayerMetaData;
+import com.unity3d.ads.misc.Utilities;
+import com.unity3d.ads.properties.SdkProperties;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Random;
@@ -63,17 +81,9 @@ public class AppActivity extends Cocos2dxActivity implements View.OnClickListene
 GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "SavedGames";
-
-    // The AppState slot we are editing.  For simplicity this sample only manipulates a single
-    // Cloud Save slot and a corresponding Snapshot entry,  This could be changed to any integer
-    // 0-3 without changing functionality (Cloud Save has four slots, numbered 0-3).
-    private static final int APP_STATE_KEY = 0;
-
+    public static final String TAG_UnityAds = "UnityAds";
     // Request code used to invoke sign-in UI.
     private static final int RC_SIGN_IN = 9001;
-
-    // Request code used to invoke Snapshot selection UI.
-    private static final int RC_SELECT_SNAPSHOT = 9002;
     
     // True immediately after the user clicks the sign-in button/
     private boolean mSignInClicked = false;
@@ -90,12 +100,19 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
 
     private GoogleApiClient mGoogleApiClient;
 
+    // [Unity Ads]
+    final private String defaultGameId = "1096133";
+	private String interstitialPlacementId;
+	private String incentivizedPlacementId;
+	
+    // [Google Cloud - 2016-07-14] START
     // [START on_create]
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         
         // Create the Google API Client with access to Plus, Games, and Drive
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -112,10 +129,183 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
         findViewById(R.id.button_cloud_save_load).setOnClickListener(this);
         findViewById(R.id.button_cloud_save_update).setOnClickListener(this);
         findViewById(R.id.button_saved_games_select).setOnClickListener(this);
+        
+        
+     // [Unity Ads]
+        Log.d(TAG_UnityAds, "OnCreate1");
+        final AppActivity self = this;
+        final UnityAdsListener unityAdsListener = new UnityAdsListener();
+        Log.d(TAG_UnityAds, "OnCreate2");
+		UnityAds.setListener(unityAdsListener);
+		UnityAds.setDebugMode(true);
+        Log.d(TAG_UnityAds, "OnCreate3");
+		MediationMetaData mediationMetaData = new MediationMetaData(this);
+		mediationMetaData.setName("mediationPartner");
+		mediationMetaData.setVersion("v12345");
+		mediationMetaData.setOrdinal(1);
+		mediationMetaData.commit();
+
+		MetaData debugMetaData = new MetaData(this);
+		debugMetaData.set("test.debugOverlayEnabled", true);
+		debugMetaData.commit();
+
+		final Button interstitialButton = (Button) findViewById(R.id.unityads_example_interstitial_button);
+		disableButton(interstitialButton);
+		interstitialButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				disableButton(interstitialButton);
+
+				PlayerMetaData playerMetaData = new PlayerMetaData(self);
+				playerMetaData.setServerId("rikshot");
+				playerMetaData.commit();
+
+				UnityAds.show(self, interstitialPlacementId);
+			}
+		});
+
+		final Button incentivizedButton = (Button) findViewById(R.id.unityads_example_incentivized_button);
+		disableButton(incentivizedButton);
+		incentivizedButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				disableButton(incentivizedButton);
+
+				PlayerMetaData playerMetaData = new PlayerMetaData(self);
+				playerMetaData.setServerId("rikshot");
+				playerMetaData.commit();
+
+				UnityAds.show(self, incentivizedPlacementId);
+			}
+		});
+
+		final Button initializeButton = (Button) findViewById(R.id.unityads_example_initialize_button);
+		final EditText gameIdEdit = (EditText) findViewById(R.id.unityads_example_gameid_edit);
+		final CheckBox testModeCheckbox = (CheckBox) findViewById(R.id.unityads_example_testmode_checkbox);
+		final TextView statusText = (TextView) findViewById(R.id.unityads_example_statustext);
+
+		SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+		gameIdEdit.setText(preferences.getString("gameId", defaultGameId));
+
+		initializeButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String gameId = gameIdEdit.getText().toString();
+				if (gameId.isEmpty()) {
+					Toast.makeText(getApplicationContext(), "Missing game id", Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				disableButton(initializeButton);
+				gameIdEdit.setEnabled(false);
+				testModeCheckbox.setEnabled(false);
+
+				statusText.setText("Initializing...");
+				UnityAds.initialize(self, gameId, unityAdsListener, testModeCheckbox.isChecked());
+
+				// store entered gameid in app settings
+				SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
+				SharedPreferences.Editor preferencesEdit = preferences.edit();
+				preferencesEdit.putString("gameId", gameId);
+				preferencesEdit.commit();
+			}
+		});
+
+		LinearLayout layout = (LinearLayout)findViewById(R.id.unityads_example_button_container);
+
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			layout.setOrientation(LinearLayout.HORIZONTAL);
+
+		}
+		else {
+			layout.setOrientation(LinearLayout.VERTICAL);
+		}    
     }
     // [END on_create]
 
+    // [START onResume]
+    @Override
+	protected void onResume() {
+		super.onResume();
 
+		if (SdkProperties.isInitialized()) {
+			disableButton((Button) findViewById(R.id.unityads_example_initialize_button));
+
+			if (UnityAds.isReady(interstitialPlacementId)) {
+				enableButton((Button) findViewById(R.id.unityads_example_interstitial_button));
+			}
+			else {
+				disableButton((Button) findViewById(R.id.unityads_example_interstitial_button));
+			}
+
+			if (UnityAds.isReady(incentivizedPlacementId)) {
+				enableButton((Button) findViewById(R.id.unityads_example_incentivized_button));
+			}
+			else {
+				disableButton((Button) findViewById(R.id.unityads_example_incentivized_button));
+			}
+		}
+	}
+    // [END onResume]
+    
+    
+    // [START onClick]
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_sign_in:
+                beginUserInitiatedSignIn();
+                break;
+            case R.id.button_cloud_save_load:
+            	loadFromSnapshot();
+                break;
+            case R.id.button_cloud_save_update:
+            	Log.d(TAG,"send Data Button : " + getData());
+            	send(getData().getBytes());
+            	break;
+            case R.id.button_saved_games_select:
+            	showSavedGamesUI();
+                break;
+        }
+    }
+    // [END onClick]
+    
+    
+    // [START onConfigurationChanged]
+    @Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+
+		LinearLayout layout = (LinearLayout)findViewById(R.id.unityads_example_button_container);
+
+		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			layout.setOrientation(LinearLayout.HORIZONTAL);
+
+		}
+		else {
+			layout.setOrientation(LinearLayout.VERTICAL);
+		}
+	}
+    // [END onConfigurationChanged]
+    
+    
+    private void enableButton (Button btn) {
+		btn.setEnabled(true);
+		float alpha = 1f;
+		AlphaAnimation alphaUp = new AlphaAnimation(alpha, alpha);
+		alphaUp.setFillAfter(true);
+		btn.startAnimation(alphaUp);
+	}
+
+	private void disableButton (Button btn) {
+		float alpha = 0.45f;
+		btn.setEnabled(false);
+		AlphaAnimation alphaUp = new AlphaAnimation(alpha, alpha);
+		alphaUp.setFillAfter(true);
+		btn.startAnimation(alphaUp);
+	}
+
+	 
     // [START show_saved_games_ui]
     private static final int RC_SAVED_GAMES = 9009;
 
@@ -355,28 +545,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
         updateUI();
     }
     
-    // [START onClick]
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_sign_in:
-                beginUserInitiatedSignIn();
-                break;
-            case R.id.button_cloud_save_load:
-            	loadFromSnapshot();
-                break;
-            case R.id.button_cloud_save_update:
-            	Log.d(TAG,"send Data Button : " + getData());
-            	send(getData().getBytes());
-            	break;
-            case R.id.button_saved_games_select:
-            	showSavedGamesUI();
-                break;
-        }
-    }
-    // [END onClick]
-    
-    	
+  	
     // [START beginUserInitiatedSignIn]
     /**
      * Start the sign-in process after the user clicks the sign-in button.
@@ -476,4 +645,67 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
         EditText dataEditText = (EditText) findViewById(R.id.edit_game_data);
         return dataEditText.getText().toString();
     }
+    // [Google Cloud - 2016-07-14] END
+
+    // [Unity Ads - 2016-07-17] START
+    /* LISTENER */
+	private class UnityAdsListener implements IUnityAdsListener {
+
+		@Override
+		public void onUnityAdsReady(final String zoneId) {
+			TextView statusText = (TextView) findViewById(R.id.unityads_example_statustext);
+			statusText.setText("");
+
+			DeviceLog.debug("onUnityAdsReady: " + zoneId);
+			Utilities.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// look for various default placement ids over time
+					switch (zoneId) {
+						case "video":
+						case "defaultZone":
+						case "defaultVideoAndPictureZone":
+							interstitialPlacementId = zoneId;
+							enableButton((Button) findViewById(R.id.unityads_example_interstitial_button));
+							break;
+
+						case "rewardedVideo":
+						case "rewardedVideoZone":
+						case "incentivizedZone":
+							incentivizedPlacementId = zoneId;
+							enableButton((Button) findViewById(R.id.unityads_example_incentivized_button));
+							break;
+					}
+				}
+			});
+
+			toast("Ready", zoneId);
+		}
+
+		@Override
+		public void onUnityAdsStart(String zoneId) {
+			DeviceLog.debug("onUnityAdsStart: " + zoneId);
+			toast("Start", zoneId);
+		}
+
+		@Override
+		public void onUnityAdsFinish(String zoneId, UnityAds.FinishState result) {
+			DeviceLog.debug("onUnityAdsFinish: " + zoneId + " - " + result);
+			toast("Finish", zoneId + " " + result);
+		}
+
+		@Override
+		public void onUnityAdsError(UnityAds.UnityAdsError error, String message) {
+			DeviceLog.debug("onUnityAdsError: " + error + " - " + message);
+			toast("Error", error + " " + message);
+
+			TextView statusText = (TextView) findViewById(R.id.unityads_example_statustext);
+			statusText.setText(error + " - " + message);
+		}
+
+		private void toast(String callback, String msg) {
+			Toast.makeText(getApplicationContext(), callback + ": " + msg, Toast.LENGTH_SHORT).show();
+		}
+	}
+	// [Unity Ads - 2016-07-17] END
 }

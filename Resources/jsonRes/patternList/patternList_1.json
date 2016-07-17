@@ -149,10 +149,9 @@
 	}, {
 		"name": "maze_Pattern",
 		"widthAngleDistance": 8.0,
-		"heightDistance": 175.0,
+		"heightDistance": 100.0,
 		"pattern": [
 			"11111111111111111111RRRRR111111111111111111111"
-
 		]
 	}, {
 		"name": "leftScrewRocket1_Pattern",

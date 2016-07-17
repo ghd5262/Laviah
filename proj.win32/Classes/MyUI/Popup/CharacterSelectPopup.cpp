@@ -4,7 +4,7 @@
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/CharacterDataManager.h"
-
+#include "../../DataManager/UserDataManager.h"
 
 CCharacterSelectPopup* CCharacterSelectPopup::create()
 {
@@ -75,6 +75,11 @@ bool CCharacterSelectPopup::initVariable()
 					+ (dpSize.width * 0.5f),
 					dpSize.height * 0.5f));
 				characters->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+
+				// 현재 선택된 캐릭터는 DP Select로 변경
+				if (dpIdx == CUserDataManager::Instance()->getUserDataCurrentCharacter())
+					characters->Select();
+
                 m_ScrollView->addChild(characters);
             }
             
@@ -112,11 +117,7 @@ bool CCharacterSelectPopup::initVariable()
         
         m_Popup->setPopupOpenEffectFunc([this, selectLabel](CPopup* pausePopup){
             auto winSize = Director::getInstance()->getWinSize();
-            
-            m_Popup->scheduleOnce([this](float delta){
-            
-            
-            }, 0.1f, "CharacterSelectPopupOpen");
+       
             selectLabel->runAction(FadeIn::create(0.5f));
             m_ScrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(0, winSize.height * 0.12f))));
             m_btnEnd->runAction(FadeIn::create(0.5f));

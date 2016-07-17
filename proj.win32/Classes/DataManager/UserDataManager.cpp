@@ -19,13 +19,19 @@ CUserDataManager::CUserDataManager()
     m_UserData->_currentPet       = UserDefault::getInstance()->getIntegerForKey(       "USER_CUR_PET",                 0);
     m_UserData->_currentRocket    = UserDefault::getInstance()->getIntegerForKey(       "USER_CUR_ROCKET",              0);
     m_UserData->_currentChallenge = UserDefault::getInstance()->getIntegerForKey(       "USER_CUR_CHALLENGE",           0);
-    m_UserData->_myHealth       = UserDefault::getInstance()->getFloatForKey(           "USER_MY_HEALTH",               1);
+    m_UserData->_myHealth       = UserDefault::getInstance()->getFloatForKey(           "USER_MY_HEALTH",               1000);
     m_UserData->_myStarItemTime = UserDefault::getInstance()->getFloatForKey(           "USER_MY_STAR",                 5);
     m_UserData->_myCoinItemTime = UserDefault::getInstance()->getFloatForKey(           "USER_MY_COIN",                 5);
     m_UserData->_myBonusItemTime = UserDefault::getInstance()->getFloatForKey(          "USER_MY_BONUS",                10);
     m_UserData->_myMagnetItemTime = UserDefault::getInstance()->getFloatForKey(         "USER_MY_MAGNET",               5);
     m_UserData->_myMagnetItemLimitRadius = UserDefault::getInstance()->getFloatForKey(  "USER_MY_MAGNET_LIMIT_RADIUS",  80);
     m_UserData->_myGiantItemTime = UserDefault::getInstance()->getFloatForKey(          "USER_MY_GIANT",                5);
+
+	m_UserData->_characterList.push_back(true);
+	m_UserData->_characterList.push_back(false);
+	m_UserData->_characterList.push_back(false);
+	m_UserData->_characterList.push_back(false);
+	m_UserData->_characterList.push_back(false);
 }
 
 CUserDataManager::~CUserDataManager()
@@ -120,7 +126,7 @@ unsigned CUserDataManager::getUserDataCurrentCharacter()
 
 void CUserDataManager::setUserDataCurrentCharacter(unsigned value)
 {
-    m_UserData->_bestCombo = value;
+	m_UserData->_currentCharacter = value;
     UserDefault::getInstance()->setIntegerForKey("USER_CUR_CHARACTER", value);
 }
 
@@ -131,7 +137,7 @@ unsigned CUserDataManager::getUserDataCurrentPet()
 
 void CUserDataManager::setUserDataCurrentPet(unsigned value)
 {
-    m_UserData->_bestCombo = value;
+	m_UserData->_currentPet = value;
     UserDefault::getInstance()->setIntegerForKey("USER_CUR_PET", value);
 }
 
@@ -142,7 +148,7 @@ unsigned CUserDataManager::getUserDataCurrentRocket()
 
 void CUserDataManager::setUserDataCurrentRocket(unsigned value)
 {
-    m_UserData->_bestCombo = value;
+	m_UserData->_currentRocket = value;
     UserDefault::getInstance()->setIntegerForKey("USER_CUR_ROCKET", value);
 }
 
@@ -153,7 +159,7 @@ unsigned CUserDataManager::getUserDataCurrentChallenge()
 
 void CUserDataManager::setUserDataCurrentChallenge(unsigned value)
 {
-    m_UserData->_bestCombo = value;
+	m_UserData->_currentChallenge = value;
     UserDefault::getInstance()->setIntegerForKey("USER_CUR_CHALLENGE", value);
 }
 
@@ -232,4 +238,14 @@ void CUserDataManager::setUserDataMyGiant(float value)
 {
     m_UserData->_myGiantItemTime = value;
     UserDefault::getInstance()->setFloatForKey("USER_MY_GIANT", value);
+}
+
+bool CUserDataManager::isCharacterHave(int characterIdx)
+{
+	return m_UserData->_characterList.at(characterIdx);
+}
+
+void CUserDataManager::haveCharacter(int characterIdx)
+{
+	m_UserData->_characterList.at(characterIdx) = true;
 }

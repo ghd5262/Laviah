@@ -22,6 +22,7 @@
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../AI/States/StageStates.h"
 #include "../DataManager/UserDataManager.h"
+#include "../DataManager/CharacterDataManager.h"
 
 USING_NS_CC;
 
@@ -107,7 +108,13 @@ bool CGameScene::initVariable()
 
 		planet->setOriginPos(planet->getPosition());
 
-        auto player = CPlayer::create("player.png", "player_big.png", 6.f, 0.0f, 400.0f, CUserDataManager::Instance()->getUserDataMyHealth());
+		int currentCharacterIdx = CUserDataManager::Instance()->getUserDataCurrentCharacter();
+		sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+
+		auto player = CPlayer::create(currentCharacterInfo._normalTextureName,
+			currentCharacterInfo._giantTextureName,
+			6.f, 0.0f, 400.0f, currentCharacterInfo._health);
+
 		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			planet->getPosition().y + (planet->getBRadius() + 10)));
 		m_GridWorld->addChild(player, 100);

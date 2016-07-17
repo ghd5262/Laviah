@@ -8,13 +8,14 @@ class CCharacterSelectPopupDP : public cocos2d::Layer
 public:
 	static CCharacterSelectPopupDP* create(int CharacterIdx, const std::function<void(cocos2d::Ref*)> &func);
 	void DeSelect();
+	void Select();
+	void Buy();
 
 protected:
     virtual bool init() override;
     bool initVariable();
     
 private:
-    void Select();
     
 	CCharacterSelectPopupDP(int CharacterIdx, const std::function<void(cocos2d::Ref*)> &func)
     : m_CharacterIdx(CharacterIdx)

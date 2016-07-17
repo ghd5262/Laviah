@@ -18,11 +18,11 @@ struct sUSER_DATA{
     float _myMagnetItemTime;
     float _myMagnetItemLimitRadius;
     float _myGiantItemTime;
-    std::vector<int> _characterList;
-    std::vector<int> _petList;
-    std::vector<int> _rocketList;
-    std::vector<int> _completeChallengeList;
-    std::vector<int> _mtrlList;
+    std::vector<bool> _characterList;
+    std::vector<bool> _petList;
+    std::vector<bool> _rocketList;
+    std::vector<bool> _completeChallengeList;
+    std::vector<bool> _mtrlList;
 };
 
 class CUserDataManager
@@ -77,7 +77,11 @@ public:
     
     float getUserDataMyGiant();
     void setUserDataMyGiant(float value);
-    
+
+	std::vector<bool> getUserDataHaveCharacterList() { return m_UserData->_characterList; }
+	bool isCharacterHave(int characterIdx);
+	void haveCharacter(int characterIdx);
+
 private:
     CUserDataManager();
     virtual ~CUserDataManager();

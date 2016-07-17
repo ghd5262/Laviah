@@ -12,7 +12,8 @@ struct sCHARACTER_PARAM{
     float _bonusItemTime;
     float _magnetItemTime;
     float _giantItemTime;
-    std::string _textureName;
+    std::string _normalTextureName;
+	std::string _giantTextureName;
     std::string _name;
     std::string _skillName;
     std::string _story;

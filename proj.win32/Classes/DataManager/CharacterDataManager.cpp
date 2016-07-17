@@ -102,7 +102,8 @@ CCharacterDataManager::CCharacterDataManager()
 		character._bonusItemTime = 3.f;
 		character._magnetItemTime = 4.f;
 		character._giantItemTime = 5.f;
-		character._textureName = "player.png";
+		character._normalTextureName = MakeString("player%d.png", i);
+		character._giantTextureName = MakeString("player%d_big.png", i);
 		character._name = MakeString("character_%d", i);
 		character._skillName = MakeString("skill_%d", i);;
 		character._story = MakeString("story_%d", i);

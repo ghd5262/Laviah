@@ -70,8 +70,6 @@ bool CExitPopup::initVariable()
 
 		m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
 			auto winSize = Director::getInstance()->getWinSize();
-			m_Popup->scheduleOnce([this](float delta){
-			}, 0.1f, "ExitPopupOpen");
 		});
 
 		m_Popup->setPopupCloseEffectFunc([this](CPopup* pausePopup){
