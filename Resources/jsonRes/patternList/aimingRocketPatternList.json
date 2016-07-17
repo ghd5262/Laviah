@@ -1,0 +1,62 @@
+{
+	"patterns": [{
+		"name": "aimingRocket0_Pattern",
+		"widthAngleDistance": 3.0,
+		"heightDistance": 50.0,
+		"pattern": [
+			"  33 333 33  ",
+			"   3 333 3   ",
+			"     333     ",
+			"     333     ",
+			"      3      "
+		]
+
+	}, {
+		"name": "aimingRocket1_Pattern",
+		"widthAngleDistance": 3.0,
+		"heightDistance": 50.0,
+		"pattern": [
+			"  333333333  ",
+			"  3       3  ",
+			"  3       3  ",
+			"  3       3  ",
+			"  333333333  "
+		]
+
+	}, {
+		"name": "aimingRocket2_Pattern",
+		"widthAngleDistance": 3.0,
+		"heightDistance": 50.0,
+		"pattern": [
+			"      3      ",
+			"  333333333  ",
+			"    33333    ",
+			"    33 33    ",
+			"   3     3   "
+		]
+
+	}, {
+		"name": "aimingRocket3_Pattern",
+		"widthAngleDistance": 3.0,
+		"heightDistance": 50.0,
+		"pattern": [
+			"     333     ",
+			"   33   33   ",
+			"  33     33  ",
+			"   33   33   ",
+			"     333     "
+		]
+
+	}, {
+		"name": "aimingRocket4_Pattern",
+		"widthAngleDistance": 3.0,
+		"heightDistance": 50.0,
+		"pattern": [
+			"      3      ",
+			"     333     ",
+			"    33 33    ",
+			"   33   33   ",
+			"  333333333  "
+		]
+	}]
+}
