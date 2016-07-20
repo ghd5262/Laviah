@@ -1,4 +1,7 @@
 #include "SDKUtil_IOS.h"
+#include "cocos2d.h"
+
+USING_NS_CC;
 
 CSDKUtil_IOS::CSDKUtil_IOS()
 {

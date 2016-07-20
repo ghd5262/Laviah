@@ -1,6 +1,9 @@
 #include "SDKUtil.h"
 #include "SDKUtil_AOS.h"
 #include "SDKUtil_IOS.h"
+#include "cocos2d.h"
+
+USING_NS_CC;
 
 CSDKUtil* CSDKUtil::Instance()
 {

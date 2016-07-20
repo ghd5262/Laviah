@@ -1,11 +1,16 @@
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+
+
+
 #include "SDKUtil_AOS.h"
 #include "platform/android/jni/JniHelper.h"
+#include "cocos2d.h"
 
 USING_NS_CC;
 
 CSDKUtil_AOS::CSDKUtil_AOS()
 {
-    m_JavaUrlString = "kr/HongSeongHee/StarStarStar";
+    m_JavaUrlString = "org/cocos2dx/ccp";
 }
 
 CSDKUtil_AOS::~CSDKUtil_AOS()
@@ -75,3 +80,6 @@ void CSDKUtil_AOS::Toast(std::string content)
         CCLOG("There is no %s java method", methodName.c_str());
     }
 }
+
+
+#endif
