@@ -111,34 +111,31 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.unityads_example_layout);
 
         
-        // Create the Google API Client with access to Plus, Games, and Drive
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
-                .addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER)
-                .build();
-        
-        
-        
-        findViewById(R.id.button_sign_in).setOnClickListener(this);
-
-        findViewById(R.id.button_cloud_save_load).setOnClickListener(this);
-        findViewById(R.id.button_cloud_save_update).setOnClickListener(this);
-        findViewById(R.id.button_saved_games_select).setOnClickListener(this);
-        
+//        // Create the Google API Client with access to Plus, Games, and Drive
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+//                .addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER)
+//                .build();
+//        
+//        
+//        
+//        findViewById(R.id.button_sign_in).setOnClickListener(this);
+//
+//        findViewById(R.id.button_cloud_save_load).setOnClickListener(this);
+//        findViewById(R.id.button_cloud_save_update).setOnClickListener(this);
+//        findViewById(R.id.button_saved_games_select).setOnClickListener(this);
+//        
         
      // [Unity Ads]
-        Log.d(TAG_UnityAds, "OnCreate1");
         final AppActivity self = this;
         final UnityAdsListener unityAdsListener = new UnityAdsListener();
-        Log.d(TAG_UnityAds, "OnCreate2");
 		UnityAds.setListener(unityAdsListener);
 		UnityAds.setDebugMode(true);
-        Log.d(TAG_UnityAds, "OnCreate3");
 		MediationMetaData mediationMetaData = new MediationMetaData(this);
 		mediationMetaData.setName("mediationPartner");
 		mediationMetaData.setVersion("v12345");
@@ -148,7 +145,6 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
 		MetaData debugMetaData = new MetaData(this);
 		debugMetaData.set("test.debugOverlayEnabled", true);
 		debugMetaData.commit();
-
 		final Button interstitialButton = (Button) findViewById(R.id.unityads_example_interstitial_button);
 		disableButton(interstitialButton);
 		interstitialButton.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +159,6 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
 				UnityAds.show(self, interstitialPlacementId);
 			}
 		});
-
 		final Button incentivizedButton = (Button) findViewById(R.id.unityads_example_incentivized_button);
 		disableButton(incentivizedButton);
 		incentivizedButton.setOnClickListener(new View.OnClickListener() {
@@ -178,12 +173,10 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
 				UnityAds.show(self, incentivizedPlacementId);
 			}
 		});
-
 		final Button initializeButton = (Button) findViewById(R.id.unityads_example_initialize_button);
 		final EditText gameIdEdit = (EditText) findViewById(R.id.unityads_example_gameid_edit);
 		final CheckBox testModeCheckbox = (CheckBox) findViewById(R.id.unityads_example_testmode_checkbox);
 		final TextView statusText = (TextView) findViewById(R.id.unityads_example_statustext);
-
 		SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
 		gameIdEdit.setText(preferences.getString("gameId", defaultGameId));
 
@@ -210,7 +203,6 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
 				preferencesEdit.commit();
 			}
 		});
-
 		LinearLayout layout = (LinearLayout)findViewById(R.id.unityads_example_button_container);
 
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
