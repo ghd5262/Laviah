@@ -14,6 +14,7 @@
 #include "../MyUI/Popup/CharacterSelectPopup.h"
 #include "../MyUI/Popup/WorkshopPopup.h"
 #include "../MyUI/Popup/GachaPopup.h"
+#include "../SDKUtil/SDKUtil.h"
 
 USING_NS_CC;
 
@@ -165,6 +166,30 @@ void CMenuScene::InitMenuSceneUI()
 	gachaBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	gachaBtn->setCascadeOpacityEnabled(true);
 	this->addChild(gachaBtn);
+    
+    
+    auto unityBtnReward = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "RewardAds", 40, Color3B::WHITE,
+                                                          END, [this, origin, visibleSize](){
+                                                              CSDKUtil::Instance()->ShowUnityAdIncentivized();
+                                                          }, EFFECT_SIZEDOWN);
+    
+    unityBtnReward->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
+                                     origin.x + visibleSize.height * 0.5f));
+    unityBtnReward->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    unityBtnReward->setCascadeOpacityEnabled(true);
+    this->addChild(unityBtnReward);
+    
+    
+    auto unityBtnNormal = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "NormalAds", 40, Color3B::WHITE,
+                                                          END, [this, origin, visibleSize](){
+                                                              CSDKUtil::Instance()->ShowUnityAdInterstitial();
+                                                          }, EFFECT_SIZEDOWN);
+    
+    unityBtnNormal->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
+                                     origin.x + visibleSize.height * 0.6f));
+    unityBtnNormal->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    unityBtnNormal->setCascadeOpacityEnabled(true);
+    this->addChild(unityBtnNormal);
 }
 
 void CMenuScene::createGameScene()

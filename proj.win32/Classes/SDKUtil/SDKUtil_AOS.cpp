@@ -10,7 +10,7 @@ USING_NS_CC;
 
 CSDKUtil_AOS::CSDKUtil_AOS()
 {
-    m_JavaUrlString = "org/cocos2dx/ccp";
+    m_JavaUrlString = "org/cocos2dx/cpp/AppActivity";
 }
 
 CSDKUtil_AOS::~CSDKUtil_AOS()
@@ -34,7 +34,7 @@ void CSDKUtil_AOS::JavaCallMethod(const char* methodName)
 void CSDKUtil_AOS::GoogleCloudSend(std::string key, std::string value)
 {
     std::string methodName = "GoogleCloudSend";
-    CCLOG("JavaCallMethod %s", methodName);
+    CCLOG("JavaCallMethod %s", methodName.c_str());
     cocos2d::JniMethodInfo info;
     bool isHave = cocos2d::JniHelper::getStaticMethodInfo(info, m_JavaUrlString.c_str(), methodName.c_str(), "(Ljava/lang/String;Ljava/lang/String;)V");
     if (isHave) {
@@ -59,17 +59,11 @@ void CSDKUtil_AOS::ShowUnityAdInterstitial()
     JavaCallMethod("ShowUnityAdInterstitial");
 }
 
-// 유니티 애드 테스트 모드
-void CSDKUtil_AOS::UnityAdTestModeOn()
-{
-    JavaCallMethod("UnityAdTestModeOn");
-}
-
 // 토스트창
 void CSDKUtil_AOS::Toast(std::string content)
 {
     std::string methodName = "Toast";
-    CCLOG("JavaCallMethod %s", methodName);
+    CCLOG("JavaCallMethod %s", methodName.c_str());
     cocos2d::JniMethodInfo info;
     bool isHave = cocos2d::JniHelper::getStaticMethodInfo(info, m_JavaUrlString.c_str(), methodName.c_str(), "(Ljava/lang/String;)V");
     if (isHave) {

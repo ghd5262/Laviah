@@ -34,13 +34,6 @@ void CSDKUtil_IOS::ShowUnityAdInterstitial()
     CCLOG("IOS Method %s", methodName.c_str());
 }
 
-// 유니티 애드 테스트 모드
-void CSDKUtil_IOS::UnityAdTestModeOn()
-{
-    std::string methodName = "UnityAdTestModeOn";
-    CCLOG("IOS Method %s", methodName.c_str());
-}
-
 // 토스트창
 void CSDKUtil_IOS::Toast(std::string content)
 {

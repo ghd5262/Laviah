@@ -1,4 +1,5 @@
 #pragma once
+#include "../Common/HSHUtility.h"
 
 class CSDKUtil_AOS;
 class CSDKUtil_IOS;
@@ -14,9 +15,6 @@ public:
 
     // 유니티 애드 일반 광고
     void ShowUnityAdInterstitial();
-    
-    // 유니티 애드 테스트 모드
-    void UnityAdTestModeOn();
     
     // 토스트창
     void Toast(std::string content);

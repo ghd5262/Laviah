@@ -78,15 +78,47 @@ import java.math.BigInteger;
 import java.util.Random;
 
 public class AppActivity extends Cocos2dxActivity{
+	
+	private static UnityAdsUtils m_UnityAdsUtils = null;
+	
 	 // [START on_create]
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	super.onCreate(savedInstanceState);
+    	this.m_UnityAdsUtils = new UnityAdsUtils();
+    	this.m_UnityAdsUtils.init(this);
     }
     
     @Override
    	protected void onResume() {
    		super.onResume();
+   		this.m_UnityAdsUtils.Resume();
     }
+    
+    // Google Cloud Save      Key / Value(json)
+    public static void GoogleCloudSend(String key, String value)
+    {
+    	
+    }
+    
+    // Reward Unity Ads
+    public static void ShowUnityAdIncentivized()
+    {
+    	m_UnityAdsUtils.ShowAdsIncentivized();
+    }
+    
+    // Normal Unity Ads
+    public static void ShowUnityAdInterstitial()
+    {
+    	m_UnityAdsUtils.ShowAdsInterstitial();
+    }
+    
+    // Toast
+    public static void Toast(String content)
+    {
+    	
+    }
+
 }
 
 

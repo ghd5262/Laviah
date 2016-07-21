@@ -46,12 +46,6 @@ void CSDKUtil::ShowUnityAdInterstitial()
     m_SDKUtil->ShowUnityAdInterstitial();
 }
 
-// 유니티 애드 테스트 모드
-void CSDKUtil::UnityAdTestModeOn()
-{
-    m_SDKUtil->UnityAdTestModeOn();
-}
-
 // 토스트창
 void CSDKUtil::Toast(std::string content)
 {

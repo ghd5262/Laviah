@@ -65,12 +65,12 @@ public class UnityAdsUtils {
 	private static String interstitialPlacementId;
 	private static String incentivizedPlacementId;
 	private static boolean sInited = false;
+	private static boolean isTestMode = true;
 	private static AppActivity self = null;
 	
     public void init(final Activity activity) {
         if (!sInited) {
-            activity.setContentView(R.layout.unityads_example_layout);
-            self = (AppActivity)activity;
+        	self = (AppActivity)activity;
             final UnityAdsListener unityAdsListener = new UnityAdsListener();
     		UnityAds.setListener(unityAdsListener);
     		UnityAds.setDebugMode(true);
@@ -83,98 +83,143 @@ public class UnityAdsUtils {
     		MetaData debugMetaData = new MetaData(self);
     		debugMetaData.set("test.debugOverlayEnabled", true);
     		debugMetaData.commit();
-    		final Button interstitialButton = (Button) self.findViewById(R.id.unityads_example_interstitial_button);
-    		disableButton(interstitialButton);
-    		interstitialButton.setOnClickListener(new View.OnClickListener() {
-    			@Override
-    			public void onClick(View v) {
-    				disableButton(interstitialButton);
-
-    				PlayerMetaData playerMetaData = new PlayerMetaData(self);
-    				playerMetaData.setServerId("rikshot");
-    				playerMetaData.commit();
-
-    				UnityAds.show(self, interstitialPlacementId);
-    			}
-    		});
-    		final Button incentivizedButton = (Button) self.findViewById(R.id.unityads_example_incentivized_button);
-    		disableButton(incentivizedButton);
-    		incentivizedButton.setOnClickListener(new View.OnClickListener() {
-    			@Override
-    			public void onClick(View v) {
-    				disableButton(incentivizedButton);
-
-    				PlayerMetaData playerMetaData = new PlayerMetaData(self);
-    				playerMetaData.setServerId("rikshot");
-    				playerMetaData.commit();
-
-    				UnityAds.show(self, incentivizedPlacementId);
-    			}
-    		});
-    		final Button initializeButton = (Button) self.findViewById(R.id.unityads_example_initialize_button);
-    		final EditText gameIdEdit = (EditText) self.findViewById(R.id.unityads_example_gameid_edit);
-    		final CheckBox testModeCheckbox = (CheckBox) self.findViewById(R.id.unityads_example_testmode_checkbox);
-    		final TextView statusText = (TextView) self.findViewById(R.id.unityads_example_statustext);
-    		SharedPreferences preferences = self.getSharedPreferences("Settings", self.MODE_PRIVATE);
-    		gameIdEdit.setText(preferences.getString("gameId", defaultGameId));
-
-    		initializeButton.setOnClickListener(new View.OnClickListener() {
-    			@Override
-    			public void onClick(View v) {
-    				String gameId = gameIdEdit.getText().toString();
-    				if (gameId.isEmpty()) {
-    					Toast.makeText(self.getApplicationContext(), "Missing game id", Toast.LENGTH_SHORT).show();
-    					return;
-    				}
-
-    				disableButton(initializeButton);
-    				gameIdEdit.setEnabled(false);
-    				testModeCheckbox.setEnabled(false);
-
-    				statusText.setText("Initializing...");
-    				UnityAds.initialize(self, gameId, unityAdsListener, testModeCheckbox.isChecked());
-
-    				// store entered gameid in app settings
-    				SharedPreferences preferences = self.getSharedPreferences("Settings", self.MODE_PRIVATE);
-    				SharedPreferences.Editor preferencesEdit = preferences.edit();
-    				preferencesEdit.putString("gameId", gameId);
-    				preferencesEdit.commit();
-    			}
-    		});
-    		LinearLayout layout = (LinearLayout)self.findViewById(R.id.unityads_example_button_container);
-
-    		if (self.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-    			layout.setOrientation(LinearLayout.HORIZONTAL);
-
+          	
+    		String gameId = defaultGameId;
+    		if (gameId.isEmpty()) {
+    			Toast.makeText(self.getApplicationContext(), "Missing game id", Toast.LENGTH_SHORT).show();
+    			return;
     		}
-    		else {
-    			layout.setOrientation(LinearLayout.VERTICAL);
-    		}    
-            
+    		
+    		UnityAds.initialize(self, gameId, unityAdsListener, isTestMode);
+  		
+    		// store entered gameid in app settings
+  			SharedPreferences preferences = self.getSharedPreferences("Settings", self.MODE_PRIVATE);
+  			SharedPreferences.Editor preferencesEdit = preferences.edit();
+  			preferencesEdit.putString("gameId", gameId);
+  			preferencesEdit.commit();
+  		
+//            activity.setContentView(R.layout.unityads_example_layout);
+//            self = (AppActivity)activity;
+//            final UnityAdsListener unityAdsListener = new UnityAdsListener();
+//    		UnityAds.setListener(unityAdsListener);
+//    		UnityAds.setDebugMode(true);
+//    		MediationMetaData mediationMetaData = new MediationMetaData(self);
+//    		mediationMetaData.setName("mediationPartner");
+//    		mediationMetaData.setVersion("v12345");
+//    		mediationMetaData.setOrdinal(1);
+//    		mediationMetaData.commit();
+//
+//    		MetaData debugMetaData = new MetaData(self);
+//    		debugMetaData.set("test.debugOverlayEnabled", true);
+//    		debugMetaData.commit();
+//    		final Button interstitialButton = (Button) self.findViewById(R.id.unityads_example_interstitial_button);
+//    		disableButton(interstitialButton);
+//    		interstitialButton.setOnClickListener(new View.OnClickListener() {
+//    			@Override
+//    			public void onClick(View v) {
+//    				disableButton(interstitialButton);
+//
+//    				ShowAdsInterstitial();
+//    			}
+//    		});
+//    		final Button incentivizedButton = (Button) self.findViewById(R.id.unityads_example_incentivized_button);
+//    		disableButton(incentivizedButton);
+//    		incentivizedButton.setOnClickListener(new View.OnClickListener() {
+//    			@Override
+//    			public void onClick(View v) {
+//    				disableButton(incentivizedButton);
+//
+//    				ShowAdsIncentivized();
+//    			}
+//    		});
+//    		
+//    		
+//    		final Button initializeButton = (Button) self.findViewById(R.id.unityads_example_initialize_button);
+//    		final EditText gameIdEdit = (EditText) self.findViewById(R.id.unityads_example_gameid_edit);
+//    		final CheckBox testModeCheckbox = (CheckBox) self.findViewById(R.id.unityads_example_testmode_checkbox);
+//    		final TextView statusText = (TextView) self.findViewById(R.id.unityads_example_statustext);
+//    		SharedPreferences preferences = self.getSharedPreferences("Settings", self.MODE_PRIVATE);
+//    		gameIdEdit.setText(preferences.getString("gameId", defaultGameId));
+//
+//    		initializeButton.setOnClickListener(new View.OnClickListener() {
+//    			@Override
+//    			public void onClick(View v) {
+//    				String gameId = gameIdEdit.getText().toString();
+//    				if (gameId.isEmpty()) {
+//    					Toast.makeText(self.getApplicationContext(), "Missing game id", Toast.LENGTH_SHORT).show();
+//    					return;
+//    				}
+//
+//    				disableButton(initializeButton);
+//    				gameIdEdit.setEnabled(false);
+//    				testModeCheckbox.setEnabled(false);
+//
+//    				statusText.setText("Initializing...");
+//    				UnityAds.initialize(self, gameId, unityAdsListener, testModeCheckbox.isChecked());
+//
+//    				// store entered gameid in app settings
+//    				SharedPreferences preferences = self.getSharedPreferences("Settings", self.MODE_PRIVATE);
+//    				SharedPreferences.Editor preferencesEdit = preferences.edit();
+//    				preferencesEdit.putString("gameId", gameId);
+//    				preferencesEdit.commit();
+//    			}
+//    		});
+//    		LinearLayout layout = (LinearLayout)self.findViewById(R.id.unityads_example_button_container);
+//
+//    		if (self.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//    			layout.setOrientation(LinearLayout.HORIZONTAL);
+//
+//    		}
+//    		else {
+//    			layout.setOrientation(LinearLayout.VERTICAL);
+//    		}    
+//            
             sInited = true;
-
         }
     }
  
+    // [START Interstitial Ads]
+    public void ShowAdsInterstitial()
+    {
+    	PlayerMetaData playerMetaData = new PlayerMetaData(self);
+		playerMetaData.setServerId("rikshot");
+		playerMetaData.commit();
 
+		UnityAds.show(self, interstitialPlacementId);
+    }
+    // [END Interstitial Ads]
+    
+    
+    // [START Incentivized Ads]
+    public void ShowAdsIncentivized()
+    {
+    	PlayerMetaData playerMetaData = new PlayerMetaData(self);
+		playerMetaData.setServerId("rikshot");
+		playerMetaData.commit();
+
+		UnityAds.show(self, incentivizedPlacementId);
+    }
+    // [END Incentivized Ads]
+   
+    
     // [START Resume]
 	public void Resume() {
 
 		if (SdkProperties.isInitialized()) {
-			disableButton((Button) self.findViewById(R.id.unityads_example_initialize_button));
+//			disableButton((Button) self.findViewById(R.id.unityads_example_initialize_button));
 
 			if (UnityAds.isReady(interstitialPlacementId)) {
-				enableButton((Button) self.findViewById(R.id.unityads_example_interstitial_button));
+//				enableButton((Button) self.findViewById(R.id.unityads_example_interstitial_button));
 			}
 			else {
-				disableButton((Button) self.findViewById(R.id.unityads_example_interstitial_button));
+//				disableButton((Button) self.findViewById(R.id.unityads_example_interstitial_button));
 			}
 
 			if (UnityAds.isReady(incentivizedPlacementId)) {
-				enableButton((Button) self.findViewById(R.id.unityads_example_incentivized_button));
+//				enableButton((Button) self.findViewById(R.id.unityads_example_incentivized_button));
 			}
 			else {
-				disableButton((Button) self.findViewById(R.id.unityads_example_incentivized_button));
+//				disableButton((Button) self.findViewById(R.id.unityads_example_incentivized_button));
 			}
 		}
 	}
@@ -203,8 +248,8 @@ public class UnityAdsUtils {
 
 		@Override
 		public void onUnityAdsReady(final String zoneId) {
-			TextView statusText = (TextView) self.findViewById(R.id.unityads_example_statustext);
-			statusText.setText("");
+//			TextView statusText = (TextView) self.findViewById(R.id.unityads_example_statustext);
+//			statusText.setText("");
 
 			DeviceLog.debug("onUnityAdsReady: " + zoneId);
 			Utilities.runOnUiThread(new Runnable() {
@@ -216,14 +261,14 @@ public class UnityAdsUtils {
 						case "defaultZone":
 						case "defaultVideoAndPictureZone":
 							interstitialPlacementId = zoneId;
-							enableButton((Button) self.findViewById(R.id.unityads_example_interstitial_button));
+//							enableButton((Button) self.findViewById(R.id.unityads_example_interstitial_button));
 							break;
 
 						case "rewardedVideo":
 						case "rewardedVideoZone":
 						case "incentivizedZone":
 							incentivizedPlacementId = zoneId;
-							enableButton((Button) self.findViewById(R.id.unityads_example_incentivized_button));
+//							enableButton((Button) self.findViewById(R.id.unityads_example_incentivized_button));
 							break;
 					}
 				}

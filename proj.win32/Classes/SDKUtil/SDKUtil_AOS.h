@@ -1,5 +1,8 @@
 #pragma once
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#include "../Common/HSHUtility.h"
+
 class CSDKUtil_AOS{
 public:
     CSDKUtil_AOS();
@@ -14,9 +17,6 @@ public:
     // 유니티 애드 일반 광고
     void ShowUnityAdInterstitial();
     
-    // 유니티 애드 테스트 모드
-    void UnityAdTestModeOn();
-    
     // 토스트창
     void Toast(std::string content);
 
@@ -26,3 +26,5 @@ private:
 private:
     std::string m_JavaUrlString;
 };
+
+#endif
