@@ -40,6 +40,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 
@@ -275,20 +276,26 @@ public class UnityAdsUtils {
 			});
 
 			toast("Ready", zoneId);
+			Log.d(TAG_UnityAds, "Unity Ads Ready");
+			AppActivity.JAVA_UnityAdsReady();
 		}
 
 		@Override
 		public void onUnityAdsStart(String zoneId) {
 			DeviceLog.debug("onUnityAdsStart: " + zoneId);
 			toast("Start", zoneId);
+			Log.d(TAG_UnityAds, "Unity Ads Start");
+			AppActivity.JAVA_UnityAdsStart();
 		}
 
 		@Override
 		public void onUnityAdsFinish(String zoneId, UnityAds.FinishState result) {
 			DeviceLog.debug("onUnityAdsFinish: " + zoneId + " - " + result);
 			toast("Finish", zoneId + " " + result);
+			Log.d(TAG_UnityAds, "Unity Ads Finish");
+			AppActivity.JAVA_UnityAdsFinish();
 		}
-
+ 
 		@Override
 		public void onUnityAdsError(UnityAds.UnityAdsError error, String message) {
 			DeviceLog.debug("onUnityAdsError: " + error + " - " + message);
@@ -296,6 +303,8 @@ public class UnityAdsUtils {
 
 			TextView statusText = (TextView) self.findViewById(R.id.unityads_example_statustext);
 			statusText.setText(error + " - " + message);
+			Log.d(TAG_UnityAds, "Unity Ads Error");
+			AppActivity.JAVA_UnityAdsError();
 		}
 
 		private void toast(String callback, String msg) {

@@ -3,6 +3,7 @@
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
+#include "../../SDKUtil/SDKUtil.h"
 
 const int g_coinToRevive = 1500;
 
@@ -203,6 +204,7 @@ void CVideoPopup::End(){
 
 void CVideoPopup::Video(){
 	CCLOG("format popup Video");
+    CSDKUtil::Instance()->ShowUnityAdIncentivized();
 }
 
 void CVideoPopup::UseCoin(){

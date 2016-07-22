@@ -96,29 +96,40 @@ public class AppActivity extends Cocos2dxActivity{
     }
     
     // Google Cloud Save      Key / Value(json)
-    public static void GoogleCloudSend(String key, String value)
+    public static void CPP_GoogleCloudSend(String key, String value)
     {
     	
     }
     
     // Reward Unity Ads
-    public static void ShowUnityAdIncentivized()
+    public static void CPP_ShowUnityAdIncentivized()
     {
     	m_UnityAdsUtils.ShowAdsIncentivized();
     }
     
     // Normal Unity Ads
-    public static void ShowUnityAdInterstitial()
+    public static void CPP_ShowUnityAdInterstitial()
     {
     	m_UnityAdsUtils.ShowAdsInterstitial();
     }
     
     // Toast
-    public static void Toast(String content)
+    public static void CPP_Toast(String content)
     {
     	
     }
+    
+    // Call Cocos2dx Function - UnityAdsReady
+    public native static void JAVA_UnityAdsReady();
 
+    // Call Cocos2dx Function - UnityAdsStart
+    public native static void JAVA_UnityAdsStart();
+    
+    // Call Cocos2dx Function - UnityAdsFinish
+    public native static void JAVA_UnityAdsFinish();
+    
+    // Call Cocos2dx Function - UnityAdsError
+    public native static void JAVA_UnityAdsError();
 }
 
 

@@ -20,7 +20,7 @@ CSDKUtil_AOS::~CSDKUtil_AOS()
 
 void CSDKUtil_AOS::JavaCallMethod(const char* methodName)
 {
-    CCLOG("JavaCallMethod %s", methodName);
+    CCLOG("CPP_JavaCallMethod %s", methodName);
     cocos2d::JniMethodInfo info;
     bool isHave = cocos2d::JniHelper::getStaticMethodInfo(info, m_JavaUrlString.c_str(), methodName, "()V");
     if (isHave) {
@@ -33,7 +33,7 @@ void CSDKUtil_AOS::JavaCallMethod(const char* methodName)
 // 구글 클라우드 저장 Key / Value(json)
 void CSDKUtil_AOS::GoogleCloudSend(std::string key, std::string value)
 {
-    std::string methodName = "GoogleCloudSend";
+    std::string methodName = "CPP_GoogleCloudSend";
     CCLOG("JavaCallMethod %s", methodName.c_str());
     cocos2d::JniMethodInfo info;
     bool isHave = cocos2d::JniHelper::getStaticMethodInfo(info, m_JavaUrlString.c_str(), methodName.c_str(), "(Ljava/lang/String;Ljava/lang/String;)V");
@@ -50,19 +50,19 @@ void CSDKUtil_AOS::GoogleCloudSend(std::string key, std::string value)
 // 유니티 애드 보상형 광고
 void CSDKUtil_AOS::ShowUnityAdIncentivized()
 {
-    JavaCallMethod("ShowUnityAdIncentivized");
+    JavaCallMethod("CPP_ShowUnityAdIncentivized");
 }
 
 // 유니티 애드 일반 광고
 void CSDKUtil_AOS::ShowUnityAdInterstitial()
 {
-    JavaCallMethod("ShowUnityAdInterstitial");
+    JavaCallMethod("CPP_ShowUnityAdInterstitial");
 }
 
 // 토스트창
 void CSDKUtil_AOS::Toast(std::string content)
 {
-    std::string methodName = "Toast";
+    std::string methodName = "CPP_Toast";
     CCLOG("JavaCallMethod %s", methodName.c_str());
     cocos2d::JniMethodInfo info;
     bool isHave = cocos2d::JniHelper::getStaticMethodInfo(info, m_JavaUrlString.c_str(), methodName.c_str(), "(Ljava/lang/String;)V");
@@ -75,5 +75,33 @@ void CSDKUtil_AOS::Toast(std::string content)
     }
 }
 
+
+extern "C" {
+
+    JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_AppActivity_JAVA_1UnityAdsReady(JNIEnv*  env, jobject thiz)
+    {
+        std::string methodName = "JAVA_1UnityAdsReady";
+        CCLOG("JavaCallBackMethod %s", methodName.c_str());
+    }
+    
+    JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_AppActivity_JAVA_1UnityAdsStart(JNIEnv*  env, jobject thiz)
+    {
+        std::string methodName = "JAVA_1UnityAdsStart";
+        CCLOG("JavaCallBackMethod %s", methodName.c_str());
+    }
+    
+    JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_AppActivity_JAVA_1UnityAdsFinish(JNIEnv*  env, jobject thiz)
+    {
+        std::string methodName = "JAVA_1UnityAdsFinish";
+        CCLOG("JavaCallBackMethod %s", methodName.c_str());
+    }
+    
+    JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_AppActivity_JAVA_1UnityAdsError(JNIEnv*  env, jobject thiz)
+    {
+        std::string methodName = "JAVA_1UnityAdsError";
+        CCLOG("JavaCallBackMethod %s", methodName.c_str());
+    }
+
+}
 
 #endif
