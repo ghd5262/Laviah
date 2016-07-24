@@ -80,13 +80,16 @@ import java.util.Random;
 public class AppActivity extends Cocos2dxActivity{
 	
 	private static UnityAdsUtils m_UnityAdsUtils = null;
+	private static GoogleUtils m_GoogleUtils = null;
 	
 	 // [START on_create]
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	this.m_UnityAdsUtils = new UnityAdsUtils();
+    	this.m_GoogleUtils = new GoogleUtils();
     	this.m_UnityAdsUtils.init(this);
+    	this.m_GoogleUtils.init(this);
     }
     
     @Override
@@ -95,22 +98,41 @@ public class AppActivity extends Cocos2dxActivity{
    		this.m_UnityAdsUtils.Resume();
     }
     
-    // Google Cloud Save      Key / Value(json)
-    public static void CPP_GoogleCloudSend(String key, String value)
+    @Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+    
+    // Google Cloud Save      Key / Value
+    public static void CPP_GoogleCloudSave(String key, String value)
     {
-    	
+    	if(m_GoogleUtils.isSignedIn()){
+    		m_GoogleUtils.GoogleCloudSave(key, value);
+    	}
+    }
+    
+    // Google Cloud Load      Key
+    public static void CPP_GoogleCloudLoad(String key)
+    {
+    	if(m_GoogleUtils.isSignedIn()){
+    		m_GoogleUtils.GoogleCloudLoad(key);
+    	}
     }
     
     // Reward Unity Ads
-    public static void CPP_ShowUnityAdIncentivized()
+    public static void CPP_ShowRewardUnityAds()
     {
-    	m_UnityAdsUtils.ShowAdsIncentivized();
+    	if(!UnityAdsUtils.isVideoPlaying){
+    		m_UnityAdsUtils.ShowRewardUnityAds();
+    	}
     }
     
     // Normal Unity Ads
-    public static void CPP_ShowUnityAdInterstitial()
+    public static void CPP_ShowNormalUnityAds()
     {
-    	m_UnityAdsUtils.ShowAdsInterstitial();
+    	if(!UnityAdsUtils.isVideoPlaying){
+    		m_UnityAdsUtils.ShowNormalUnityAds();
+    	}
     }
     
     // Toast
@@ -119,16 +141,28 @@ public class AppActivity extends Cocos2dxActivity{
     	
     }
     
-    // Call Cocos2dx Function - UnityAdsReady
-    public native static void JAVA_UnityAdsReady();
+    // Call Cocos2dx Function - Google Login Result
+    public native static void JAVA_GoogleConnectionResult(final boolean isSucceed);
+    
+    // Call Cocos2dx Function - Google Connection Suspended
+    public native static void JAVA_GoogleConnectionSuspended();
+        
+    // Call Cocos2dx Function - Google Cloud Data Load
+    public native static void JAVA_GoogleCloudLoad(final String value);
+    
+    // Call Cocos2dx Function - Normal UnityAds Ready
+    public native static void JAVA_NormalUnityAdsReady();
+    
+    // Call Cocos2dx Function - Reward UnityAds Ready
+    public native static void JAVA_RewardUnityAdsReady();
 
-    // Call Cocos2dx Function - UnityAdsStart
+    // Call Cocos2dx Function - UnityAds Start
     public native static void JAVA_UnityAdsStart();
     
-    // Call Cocos2dx Function - UnityAdsFinish
+    // Call Cocos2dx Function - UnityAds Finish
     public native static void JAVA_UnityAdsFinish();
     
-    // Call Cocos2dx Function - UnityAdsError
+    // Call Cocos2dx Function - UnityAds Error
     public native static void JAVA_UnityAdsError();
 }
 

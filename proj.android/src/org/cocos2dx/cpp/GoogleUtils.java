@@ -31,6 +31,7 @@ import kr.HongSeongHee.StarStarStar.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -55,12 +56,11 @@ import com.google.android.gms.games.snapshot.SnapshotMetadata;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Random;
 
-public class GoogleUtils extends Activity implements View.OnClickListener,
+public class GoogleUtils implements 
 GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "SavedGames";
@@ -82,94 +82,51 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
 
     private GoogleApiClient mGoogleApiClient;
 	
+    private static boolean sInited = false;
+    
+    private static AppActivity self = null;
+    
     // [Google Cloud - 2016-07-14] START
-    // [START on_create]
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.unityads_example_layout);
-
-        
-        // Create the Google API Client with access to Plus, Games, and Drive
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
-                .addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER)
-                .build();
-
-        findViewById(R.id.button_sign_in).setOnClickListener(this);
-
-        findViewById(R.id.button_cloud_save_load).setOnClickListener(this);
-        findViewById(R.id.button_cloud_save_update).setOnClickListener(this);
-        findViewById(R.id.button_saved_games_select).setOnClickListener(this);     
-    }
-    // [END on_create]
+    // [START init]
     
-    
-    // [START onClick]
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_sign_in:
-                beginUserInitiatedSignIn();
-                break;
-            case R.id.button_cloud_save_load:
-            	loadFromSnapshot();
-                break;
-            case R.id.button_cloud_save_update:
-            	Log.d(TAG,"send Data Button : " + getData());
-            	send(getData().getBytes());
-            	break;
-            case R.id.button_saved_games_select:
-            	showSavedGamesUI();
-                break;
+    public void init(final Activity activity) {
+        if (!sInited) {
+        	self = (AppActivity)activity;
+        	
+        	mGoogleApiClient = new GoogleApiClient.Builder(self)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                    .addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER)
+                    .build();
+        	
+        	beginUserInitiatedSignIn();
+            sInited = true;
         }
     }
-    // [END onClick]
+    // [END init]
     
-    
-    // [START onConfigurationChanged]
-    @Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-
-		LinearLayout layout = (LinearLayout)findViewById(R.id.unityads_example_button_container);
-
-		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			layout.setOrientation(LinearLayout.HORIZONTAL);
-
-		}
-		else {
-			layout.setOrientation(LinearLayout.VERTICAL);
-		}
-	}
-    // [END onConfigurationChanged]
-
 	 
     // [START show_saved_games_ui]
-    private static final int RC_SAVED_GAMES = 9009;
+/*    private static final int RC_SAVED_GAMES = 9009;
 
-    private void showSavedGamesUI() {
+    public void ShowSavedGamesUI() {
         int maxNumberOfSavedGamesToShow = 5;
         Intent savedGamesIntent = Games.Snapshots.getSelectSnapshotIntent(mGoogleApiClient,
                 "See My Saves", true, true, maxNumberOfSavedGamesToShow);
-        startActivityForResult(savedGamesIntent, RC_SAVED_GAMES);
-    }
+        self.startActivityForResult(savedGamesIntent, RC_SAVED_GAMES);
+    }*/
     // [END show_saved_games_ui]
 
 
     // [START on_activity_result]
-    private String mCurrentSaveName = "snapshotTemp";
+    // private String mCurrentSaveName = "snapshotTemp";
 
     /**
      * This callback will be triggered after you call startActivityForResult from the
-     * showSavedGamesUI method.
+     * ShowSavedGamesUI method.
      */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent intent) {
+    /*public void ActivityResult(int requestCode, int resultCode, Intent intent) {
         if (intent != null) {
             if (intent.hasExtra(Snapshots.EXTRA_SNAPSHOT_METADATA)) {
                 // Load a snapshot.
@@ -188,33 +145,14 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                 // ...
             }
         }
-    }
+    }*/
     // [END on_activity_result]
-
-
-    // [START write_snapshot]
-    private PendingResult<Snapshots.CommitSnapshotResult> writeSnapshot(Snapshot snapshot,
-            byte[] data, Bitmap coverImage, String desc) {
-
-        // Set the data payload for the snapshot
-        snapshot.getSnapshotContents().writeBytes(data);
-
-        // Create the change operation
-        SnapshotMetadataChange metadataChange = new SnapshotMetadataChange.Builder()
-                .setCoverImage(coverImage)
-                .setDescription(desc)
-                .build();
-
-        // Commit the operation
-        return Games.Snapshots.commitAndClose(mGoogleApiClient, snapshot, metadataChange);
-    }
-    // [END write_snapshot]
-
+    
 
     // [START load_from_snapshot]
     private byte[] mSaveGameData;
 
-    void loadFromSnapshot() {
+    public void GoogleCloudLoad(final String key) {
         // Display a progress dialog
         // ...
     	showProgressDialog("loading...");
@@ -224,7 +162,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
             protected Integer doInBackground(Void... params) {
                 // Open the saved game using its name.
                 Snapshots.OpenSnapshotResult result = Games.Snapshots.open(mGoogleApiClient,
-                        mCurrentSaveName, true).await();
+                		key, true).await();
 
                 // Check the result of the open operation
                 if (result.getStatus().isSuccess()) {
@@ -248,10 +186,12 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                 // ...
             	
             	String loadData = new String(mSaveGameData);
-            	Toast.makeText(getBaseContext(), loadData, Toast.LENGTH_LONG).show();
+            	Toast.makeText(self.getBaseContext(), loadData, Toast.LENGTH_LONG).show();
             	dismissProgressDialog();
             	updateUI();
             	Log.d(TAG, "onPostExecute" + loadData);
+            	
+            	AppActivity.JAVA_GoogleCloudLoad(loadData);
             }
         };
 
@@ -261,12 +201,12 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
 
     
     // [START send]
-    public void send(final byte[] data) {
-        if(data==null) {
+    public void GoogleCloudSave(final String key, final String value) {
+        if(value == null) {
             return;
         }
         
-        Log.d(TAG, "send Data : " + data.toString());
+        Log.d(TAG, "send Data : " + value);
         
         if(mGoogleApiClient.isConnected()) {
              AsyncTask<Void, Void, Snapshots.OpenSnapshotResult> task = 
@@ -274,7 +214,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                  @Override
                  protected Snapshots.OpenSnapshotResult doInBackground(Void... params) {
                      return Games.Snapshots.open(mGoogleApiClient,
-                             mCurrentSaveName, true).await();
+                    		 key, true).await();
                  }
                  
                  @Override
@@ -282,9 +222,9 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                      try{
                          Snapshot toWrite = processSnapshotOpenResult(result, 0);
                          if(toWrite!=null) {
-                             toWrite.getSnapshotContents().writeBytes(data);
+                             toWrite.getSnapshotContents().writeBytes(value.getBytes());
                              SnapshotMetadataChange metadataChange = new SnapshotMetadataChange.Builder()
-                                     .setDescription(mCurrentSaveName)
+                                     .setDescription(key)
                                       .build();
                              Games.Snapshots.commitAndClose(mGoogleApiClient, toWrite, metadataChange);
                              
@@ -299,6 +239,23 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
         }        
     }
     // [END send]
+    
+    
+    /*private PendingResult<Snapshots.CommitSnapshotResult> writeSnapshot(Snapshot snapshot,
+            byte[] data, Bitmap coverImage, String desc) {
+
+        // Set the data payload for the snapshot
+        snapshot.getSnapshotContents().writeBytes(data);
+
+        // Create the change operation
+        SnapshotMetadataChange metadataChange = new SnapshotMetadataChange.Builder()
+                .setCoverImage(coverImage)
+                .setDescription(desc)
+                .build();
+
+        // Commit the operation
+        return Games.Snapshots.commitAndClose(mGoogleApiClient, snapshot, metadataChange);
+    }*/
     
     
     // [START process_snapshot_open_result]
@@ -341,7 +298,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                 // Failed, log error and show Toast to the user
                 String message = "Could not resolve snapshot conflicts";
                 Log.e(TAG, message);
-                Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
+                Toast.makeText(self.getBaseContext(), message, Toast.LENGTH_LONG).show();
             }
 
         }
@@ -356,6 +313,8 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
         Log.d(TAG, "onConnected");
         dismissProgressDialog();
         updateUI();
+        
+        AppActivity.JAVA_GoogleConnectionResult(true);
     }
 
     @Override
@@ -363,6 +322,8 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
         Log.d(TAG, "onConnectionSuspended: " + i);
         mGoogleApiClient.connect();
         updateUI();
+        
+        AppActivity.JAVA_GoogleConnectionSuspended();
     }
 
     @Override
@@ -380,11 +341,12 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
 
             // Attempt to resolve the connection failure.
             Log.d(TAG, "onConnectionFailed: begin resolution.");
-            mIsResolving = BaseGameUtils.resolveConnectionFailure(this, mGoogleApiClient,
-                    connectionResult, RC_SIGN_IN, getString(R.string.signin_other_error));
+            mIsResolving = BaseGameUtils.resolveConnectionFailure(self, mGoogleApiClient,
+                    connectionResult, RC_SIGN_IN, self.getString(R.string.signin_other_error));
         }
 
         updateUI();
+        AppActivity.JAVA_GoogleConnectionResult(false);
     }
     
   	
@@ -393,17 +355,20 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
      * Start the sign-in process after the user clicks the sign-in button.
      */
     private void beginUserInitiatedSignIn() {
-        Log.d(TAG, "beginUserInitiatedSignIn");
-        // Check to see the developer who's running this sample code read the instructions :-)
-        // NOTE: this check is here only because this is a sample! Don't include this
-        // check in your actual production app.
-        if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
-            Log.w(TAG, "*** Warning: setup problems detected. Sign in may not work!");
-        }
+    	if(!isSignedIn()){
+        	
+            Log.d(TAG, "beginUserInitiatedSignIn");
+            // Check to see the developer who's running this sample code read the instructions :-)
+            // NOTE: this check is here only because this is a sample! Don't include this
+            // check in your actual production app.
+            if (!BaseGameUtils.verifySampleSetup(self, R.string.app_id)) {
+                Log.w(TAG, "*** Warning: setup problems detected. Sign in may not work!");
+            }
 
-        showProgressDialog("Signing in.");
-        mSignInClicked = true;
-        mGoogleApiClient.connect();
+            showProgressDialog("Signing in.");
+            mSignInClicked = true;
+            mGoogleApiClient.connect();
+        }
     }
     // [END beginUserInitiatedSignIn]
     
@@ -416,14 +381,10 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
         // Show signed in or signed out view
         if (isSignedIn()) {
         	Log.d(TAG, "isSignedIn true");
-            findViewById(R.id.layout_signed_in).setVisibility(View.VISIBLE);
-            findViewById(R.id.layout_signed_out).setVisibility(View.GONE);
-            displayMessage(getString(R.string.message_signed_in), false);
+            displayMessage(self.getString(R.string.message_signed_in), false);
         } else {
         	Log.d(TAG, "isSignedIn false");
-            findViewById(R.id.layout_signed_in).setVisibility(View.GONE);
-            findViewById(R.id.layout_signed_out).setVisibility(View.VISIBLE);
-            displayMessage(getString(R.string.message_sign_in), false);
+            displayMessage(self.getString(R.string.message_sign_in), false);
         }
     }
     // [END updateUI]
@@ -433,7 +394,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
      * Determine if the Google API Client is signed in and ready to access Games APIs.
      * @return true if client exits and is signed in, false otherwise.
      */
-    private boolean isSignedIn() {
+    public boolean isSignedIn() {
         return (mGoogleApiClient != null && mGoogleApiClient.isConnected());
     }
     
@@ -445,7 +406,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
      */
     private void displayMessage(String msg, boolean error) {
         // Set text
-        TextView messageView = (TextView) findViewById(R.id.text_message);
+        TextView messageView = (TextView) self.findViewById(R.id.text_message);
         messageView.setText(msg);
 
         // Set text color
@@ -462,7 +423,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
      */
     private void showProgressDialog(String msg) {
         if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog = new ProgressDialog(self);
             mProgressDialog.setIndeterminate(true);
         }
 
@@ -479,13 +440,5 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
         }
     }
     
-    /**
-     * Get the data from the EditText.
-     * @return the String in the EditText, or "" if empty.
-     */
-    private String getData() {
-        EditText dataEditText = (EditText) findViewById(R.id.edit_game_data);
-        return dataEditText.getText().toString();
-    }
     // [Google Cloud - 2016-07-14] END
 }
