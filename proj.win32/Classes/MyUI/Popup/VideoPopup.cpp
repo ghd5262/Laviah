@@ -112,6 +112,7 @@ bool CVideoPopup::initVariable()
 				m_btnUseCoin->addChild(useCoinLabel);
 			}
 
+			// 돈이 모자르면 버튼 불가처리
 			if (CUserDataManager::Instance()->getUserDataCoin() < g_coinToRevive)
 				m_btnUseCoin->setBtnUnable(true);
 		}
@@ -204,14 +205,19 @@ void CVideoPopup::End(){
 
 void CVideoPopup::Video(){
 	CCLOG("format popup Video");
-    CSDKUtil::Instance()->ShowUnityAdIncentivized();
+	CSDKUtil::Instance()->ShowRewardUnityAds(std::bind(&CVideoPopup::Resume, this));
 }
 
 void CVideoPopup::UseCoin(){
 	CCLOG("format popup UseCoin");
 	if (CUserDataManager::Instance()->CoinUpdate(-g_coinToRevive)){
-		CGameScene::getGameScene()->CountDownCancel();
-		CGameScene::getGameScene()->GameStart();
-		CSpecificPopupBase::PopupClose();
+		Resume();
 	}
+}
+
+void CVideoPopup::Resume()
+{
+	CGameScene::getGameScene()->CountDownCancel();
+	CGameScene::getGameScene()->GameStart();
+	CSpecificPopupBase::PopupClose();
 }

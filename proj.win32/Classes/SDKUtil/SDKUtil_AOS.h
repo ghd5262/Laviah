@@ -8,14 +8,17 @@ public:
     CSDKUtil_AOS();
     ~CSDKUtil_AOS();
     
-    // 구글 클라우드 저장 Key / Value(json)
-    void GoogleCloudSend(std::string key, std::string value);
+	// 구글 클라우드 저장 Key / Value
+	void GoogleCloudSave(std::string key, std::string value);
+
+	// 구글 클라우드 로드 Key
+	void GoogleCloudLoad(std::string key);
     
     // 유니티 애드 보상형 광고
-    void ShowUnityAdIncentivized();
+	void ShowRewardUnityAds();
     
     // 유니티 애드 일반 광고
-    void ShowUnityAdInterstitial();
+	void ShowNormalUnityAds();
     
     // 토스트창
     void Toast(std::string content);

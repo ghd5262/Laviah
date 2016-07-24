@@ -14,8 +14,9 @@
 #include "../MyUI/Popup/CharacterSelectPopup.h"
 #include "../MyUI/Popup/WorkshopPopup.h"
 #include "../MyUI/Popup/GachaPopup.h"
+#include "../MyUI/Popup/GoogleCloudTestPopup.h"
 #include "../SDKUtil/SDKUtil.h"
-
+#include "../MyUI/Popup/GoogleCloudTestPopupDP.h"
 USING_NS_CC;
 
 CMenuScene* CMenuScene::m_MenuScene = nullptr;
@@ -168,28 +169,61 @@ void CMenuScene::InitMenuSceneUI()
 	this->addChild(gachaBtn);
     
     
-    auto unityBtnReward = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "RewardAds", 40, Color3B::WHITE,
-                                                          END, [this, origin, visibleSize](){
-                                                              CSDKUtil::Instance()->ShowUnityAdIncentivized();
-                                                          }, EFFECT_SIZEDOWN);
+	auto unityBtnReward = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "RewardAds", 40, Color3B::WHITE,
+		END, [this, origin, visibleSize](){
+		CSDKUtil::Instance()->ShowRewardUnityAds([this, origin, visibleSize](){
+			auto popup = CPopup::createWithOneButton("Finished RewardAds",
+				CMyButton::createWithLayerColor(Size(430, 150), Color4B(0, 0, 0, 255 * 0.8f), "OK", 40, Color3B::WHITE,
+				END, [](){}), 40);
+			popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+				origin.x + visibleSize.height * 0.5f));
+			popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			this->addChild(popup);
+		});
+	}, EFFECT_SIZEDOWN);
     
     unityBtnReward->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
                                      origin.x + visibleSize.height * 0.5f));
     unityBtnReward->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     unityBtnReward->setCascadeOpacityEnabled(true);
     this->addChild(unityBtnReward);
-    
-    
-    auto unityBtnNormal = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "NormalAds", 40, Color3B::WHITE,
-                                                          END, [this, origin, visibleSize](){
-                                                              CSDKUtil::Instance()->ShowUnityAdInterstitial();
-                                                          }, EFFECT_SIZEDOWN);
-    
-    unityBtnNormal->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
-                                     origin.x + visibleSize.height * 0.6f));
-    unityBtnNormal->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    unityBtnNormal->setCascadeOpacityEnabled(true);
-    this->addChild(unityBtnNormal);
+
+
+	auto unityBtnNormal = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "NormalAds", 40, Color3B::WHITE,
+		END, [this, origin, visibleSize](){
+		CSDKUtil::Instance()->ShowNormalUnityAds([this, origin, visibleSize](){
+			auto popup = CPopup::createWithOneButton("Finished NormalAds",
+				CMyButton::createWithLayerColor(Size(430, 150), Color4B(0, 0, 0, 255 * 0.8f), "OK", 40, Color3B::WHITE,
+				END, [](){}), 40);
+			popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+				origin.x + visibleSize.height * 0.5f));
+			popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			this->addChild(popup);
+		});
+	}, EFFECT_SIZEDOWN);
+
+	unityBtnNormal->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
+		origin.x + visibleSize.height * 0.6f));
+	unityBtnNormal->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	unityBtnNormal->setCascadeOpacityEnabled(true);
+	this->addChild(unityBtnNormal);
+
+
+	auto googleCloudSaveTestBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "CloudSave", 40, Color3B::WHITE,
+		END, [this, origin, visibleSize](){
+		auto popup = CPopup::createWithSpecificFormat(CGoogleCloudTestPopup::create(), POPUPEFFECT_none);
+		popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+			origin.x + visibleSize.height * 0.5f));
+		popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		this->addChild(popup);
+	}, EFFECT_SIZEDOWN);
+
+	googleCloudSaveTestBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
+		origin.x + visibleSize.height * 0.7f));
+	googleCloudSaveTestBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	googleCloudSaveTestBtn->setCascadeOpacityEnabled(true);
+	this->addChild(googleCloudSaveTestBtn);
+
 }
 
 void CMenuScene::createGameScene()

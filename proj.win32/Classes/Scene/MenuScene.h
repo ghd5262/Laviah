@@ -12,7 +12,7 @@ public:
     virtual void update(float delta) override;
     
     //getter & setter
-    static CMenuScene* getGameScene(){ return m_MenuScene; }
+    static CMenuScene* getMenuScene(){ return m_MenuScene; }
 
 protected:
 	virtual bool init() override;

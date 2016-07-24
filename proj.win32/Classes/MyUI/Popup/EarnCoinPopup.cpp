@@ -71,7 +71,6 @@ bool CEarnCoinPopup::initVariable()
 		}
 
 		m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
-			auto winSize = Director::getInstance()->getWinSize();
 		});
 
 		m_Popup->setPopupCloseEffectFunc([this](CPopup* pausePopup){

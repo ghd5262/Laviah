@@ -16,6 +16,7 @@ private:
 	void End();
 	void Video();
 	void UseCoin();
+	void Resume();
 
 	CVideoPopup()
 		: m_btnEnd(nullptr)
