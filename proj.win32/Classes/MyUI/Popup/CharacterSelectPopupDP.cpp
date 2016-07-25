@@ -8,6 +8,7 @@ CCharacterSelectPopupDP* CCharacterSelectPopupDP::create(int CharacterIdx, const
 	CCharacterSelectPopupDP *pRet = new(std::nothrow) CCharacterSelectPopupDP(CharacterIdx, func);
     if (pRet && pRet->init())
     {
+        pRet->autorelease();
         return pRet;
     }
     else

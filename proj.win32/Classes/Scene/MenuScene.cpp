@@ -16,7 +16,7 @@
 #include "../MyUI/Popup/GachaPopup.h"
 #include "../MyUI/Popup/GoogleCloudTestPopup.h"
 #include "../SDKUtil/SDKUtil.h"
-#include "../MyUI/Popup/GoogleCloudTestPopupDP.h"
+
 USING_NS_CC;
 
 CMenuScene* CMenuScene::m_MenuScene = nullptr;
@@ -223,7 +223,6 @@ void CMenuScene::InitMenuSceneUI()
 	googleCloudSaveTestBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	googleCloudSaveTestBtn->setCascadeOpacityEnabled(true);
 	this->addChild(googleCloudSaveTestBtn);
-
 }
 
 void CMenuScene::createGameScene()

@@ -8,6 +8,7 @@ CWorkshopPopupDP* CWorkshopPopupDP::create(int workshopItemIdx, const std::funct
 	CWorkshopPopupDP *pRet = new(std::nothrow) CWorkshopPopupDP(workshopItemIdx, func);
     if (pRet && pRet->init())
     {
+        pRet->autorelease();
         return pRet;
     }
     else

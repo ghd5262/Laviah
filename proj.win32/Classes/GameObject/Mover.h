@@ -1,6 +1,10 @@
 #pragma once
 #include "GameObject.h"
 
+/* 
+ * CMover 를 상속받는 오브젝트들은 autorelease() 를 호출하지 않는다. 
+ * PoolingManager에서 삭제하기 때문.
+ */
 class CMover : public CGameObject
 {
 public:

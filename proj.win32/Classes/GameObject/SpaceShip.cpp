@@ -38,6 +38,7 @@ CSpaceShip* CSpaceShip::create(sSPACESHIP_PARAM SpaceShipParam,
 
 	if (pRet && pRet->init())
 	{
+        pRet->autorelease();
 		return pRet;
 	}
 	else
