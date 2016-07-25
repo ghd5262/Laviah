@@ -94,7 +94,7 @@ void CSDKUtil_AOS::Toast(std::string content)
 
 extern "C" {
 	// 구글 클라우드 로그인 성공
-	JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_AppActivity_JAVA_1GoogleConnectionResult(JNIEnv*  env, jobject thiz, boolean isSucceed)
+	JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_AppActivity_JAVA_1GoogleConnectionResult(JNIEnv*  env, jobject thiz, bool isSucceed)
 	{
 		std::string methodName = "JAVA_1GoogleConnectionResult";
 		CCLOG("JavaCallBackMethod %s", methodName.c_str());
