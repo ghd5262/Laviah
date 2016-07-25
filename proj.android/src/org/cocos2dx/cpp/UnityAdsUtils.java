@@ -225,7 +225,7 @@ public class UnityAdsUtils {
 		public void onUnityAdsError(UnityAds.UnityAdsError error, String message) {
 			DeviceLog.debug("onUnityAdsError: " + error + " - " + message);
 			toast("Error", error + " " + message);
-			statusText.setText(error + " - " + message);
+//			statusText.setText(error + " - " + message);
 			Log.d(TAG_UnityAds, "Unity Ads Error");
 			AppActivity.JAVA_UnityAdsError();
 		}

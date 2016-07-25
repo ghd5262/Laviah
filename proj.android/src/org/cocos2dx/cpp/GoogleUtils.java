@@ -188,7 +188,6 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
             	String loadData = new String(mSaveGameData);
             	Toast.makeText(self.getBaseContext(), loadData, Toast.LENGTH_LONG).show();
             	dismissProgressDialog();
-            	updateUI();
             	Log.d(TAG, "onPostExecute" + loadData);
             	
             	AppActivity.JAVA_GoogleCloudLoad(loadData);
@@ -311,9 +310,6 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.d(TAG, "onConnected");
-        dismissProgressDialog();
-        updateUI();
-        
         AppActivity.JAVA_GoogleConnectionResult(true);
     }
 
@@ -321,8 +317,6 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
     public void onConnectionSuspended(int i) {
         Log.d(TAG, "onConnectionSuspended: " + i);
         mGoogleApiClient.connect();
-        updateUI();
-        
         AppActivity.JAVA_GoogleConnectionSuspended();
     }
 
@@ -345,7 +339,6 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                     connectionResult, RC_SIGN_IN, self.getString(R.string.signin_other_error));
         }
 
-        updateUI();
         AppActivity.JAVA_GoogleConnectionResult(false);
     }
     
@@ -365,29 +358,11 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                 Log.w(TAG, "*** Warning: setup problems detected. Sign in may not work!");
             }
 
-            showProgressDialog("Signing in.");
             mSignInClicked = true;
             mGoogleApiClient.connect();
         }
     }
     // [END beginUserInitiatedSignIn]
-    
-    
-    // [START updateUI]
-    /**
-     * Display either the signed-in or signed-out view, depending on the user's state.
-     */
-    private void updateUI() {
-        // Show signed in or signed out view
-        if (isSignedIn()) {
-        	Log.d(TAG, "isSignedIn true");
-            displayMessage(self.getString(R.string.message_signed_in), false);
-        } else {
-        	Log.d(TAG, "isSignedIn false");
-            displayMessage(self.getString(R.string.message_sign_in), false);
-        }
-    }
-    // [END updateUI]
     
     
     /**
@@ -399,23 +374,6 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
     }
     
     
-    /**
-     * Display a status message for the last operation at the bottom of the screen.
-     * @param msg the message to display.
-     * @param error true if an error occurred, false otherwise.
-     */
-    private void displayMessage(String msg, boolean error) {
-        // Set text
-        TextView messageView = (TextView) self.findViewById(R.id.text_message);
-        messageView.setText(msg);
-
-        // Set text color
-        if (error) {
-            messageView.setTextColor(Color.RED);
-        } else {
-            messageView.setTextColor(Color.BLACK);
-        }
-    }
     
     /**
      * Show a progress dialog for asynchronous operations.

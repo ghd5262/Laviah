@@ -37,15 +37,8 @@ bool CTextField::initVariable()
                                                              m_FontSize);
         
         if(m_TrackNode != nullptr){
-            addChild(m_TrackNode);
-            
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-            // on android, TextFieldTTF cannot auto adjust its position when soft-keyboard pop up
-            // so we had to set a higher position to make it visable
-            m_TrackNode->setPosition(Vec2(m_Pos.x, m_Pos.y + 50));
-#else
             m_TrackNode->setPosition(m_Pos);
-#endif
+            addChild(m_TrackNode);
         }
     }
     catch (...){
