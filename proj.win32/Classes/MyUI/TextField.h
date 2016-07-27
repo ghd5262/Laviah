@@ -18,6 +18,7 @@ public:
     // getter % setter
     void setTextColor(Color4B color) {m_TrackNode->setTextColor(color);}
     void setPlaceHolderColor(Color4B color) {m_TrackNode->setColorSpaceHolder(color);}
+    void setDimensions(Size size) {m_TrackNode->setDimensions(size.width, size.height);}
     
 protected:
     virtual bool init() override;

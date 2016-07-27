@@ -78,6 +78,7 @@ bool CGoogleCloudDataInfoPopup::initVariable()
                                                  keyBack->getContentSize().height * 0.5f));
         if(keyTextField != nullptr){
             keyTextField->setTextColor(Color4B::BLACK);
+            keyTextField->setDimensions(Size(keyBack->getContentSize().width * 0.9f, keyBack->getContentSize().height * 0.9f));
             keyBack->addChild(keyTextField);
         }
         std::string valuePlaceHolder = "Value is ...";
@@ -86,9 +87,10 @@ bool CGoogleCloudDataInfoPopup::initVariable()
         
         auto valueTextField = CTextField::create(valuePlaceHolder, "fonts/malgunbd.ttf", 40,
                                                Vec2(valueBack->getContentSize().width * 0.5f,
-                                                    valueBack->getContentSize().height * 0.9f));
+                                                    valueBack->getContentSize().height * 0.5f));
         if(valueTextField != nullptr){
             valueTextField->setTextColor(Color4B::BLACK);
+            valueTextField->setDimensions(Size(valueBack->getContentSize().width * 0.9f, valueBack->getContentSize().height * 0.9f));
             valueBack->addChild(valueTextField);
         }
         m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
