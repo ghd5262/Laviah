@@ -6,7 +6,7 @@ USING_NS_CC;
 class CGoogleCloudTestPopupDP : public cocos2d::Layer
 {
 public:
-	static CGoogleCloudTestPopupDP* create(int workshopItemIdx, const std::function<void(cocos2d::Ref*)> &func);
+	static CGoogleCloudTestPopupDP* create(int keyIdx, const std::function<void(cocos2d::Ref*)> &func);
 	void DeSelect();
 
 protected:
@@ -16,13 +16,13 @@ protected:
 private:
 	void Buy();
 
-	CGoogleCloudTestPopupDP(int workshopItemIdx, const std::function<void(cocos2d::Ref*)> &func)
-		: m_WorkshopItemIdx(workshopItemIdx)
+	CGoogleCloudTestPopupDP(int keyIdx, const std::function<void(cocos2d::Ref*)> &func)
+		: m_UserKeyIdx(keyIdx)
 		, m_SelectFunc(func){};
 	virtual ~CGoogleCloudTestPopupDP(){};
 
 private:
-	int m_WorkshopItemIdx;
+	int m_UserKeyIdx;
 	std::function<void(cocos2d::Ref*)> m_SelectFunc;
 };
 

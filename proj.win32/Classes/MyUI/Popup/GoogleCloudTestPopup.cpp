@@ -1,10 +1,12 @@
 #include "GoogleCloudTestPopup.h"
 #include "GoogleCloudTestPopupDP.h"
+#include "GoogleCloudTestAddKeyDP.h"
 #include "../MyButton.h"
 #include "../../Scene/GameScene.h"
 #include "ui/UIScrollView.h"
 #include "ui/UIImageView.h"
 #include "ui/UIPageView.h"
+#include "../../DataManager/UserDataManager.h"
 
 CGoogleCloudTestPopup* CGoogleCloudTestPopup::create()
 {
@@ -57,9 +59,9 @@ bool CGoogleCloudTestPopup::initVariable()
 		auto itemScroll = ScrollView::create();
 		if (itemScroll != nullptr){
 
-			/* ¾ÆÀÌÅÛ¸®½ºÆ® µ¥ÀÌÅÍ ÀÐÀ½ */
+			/* ì•„ì´í…œë¦¬ìŠ¤íŠ¸ ë°ì´í„° ì½ìŒ */
 			
-			size_t listCount = 5;
+            size_t listCount = CUserDataManager::Instance()->getUserDataKeyList().size();
 			size_t dpDistance = 15;
 			Size dpSize = Size(1080, 200);
 
@@ -67,18 +69,25 @@ bool CGoogleCloudTestPopup::initVariable()
 			itemScroll->setBounceEnabled(true);
 			itemScroll->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			itemScroll->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.5f));
-
-			for (int dpIdx = 0; dpIdx < listCount; dpIdx++)
+            itemScroll->setContentSize(Size(m_ScrollBack->getContentSize().width, (dpSize.height + dpDistance) * 4));
+            itemScroll->setInnerContainerSize(Size(dpSize.width, (dpSize.height + dpDistance) * listCount));
+			for (int keyIdx = 0; keyIdx < listCount; keyIdx++)
 			{
-				auto items = CGoogleCloudTestPopupDP::create(dpIdx, std::bind(&CGoogleCloudTestPopup::Select, this, std::placeholders::_1/*= È£ÃâÇÏ´Â °÷ÀÇ ÀÎÀÚ¸¦ »ç¿ëÇÑ´Ù.*/));
-				items->setPosition(Vec2(dpSize.width * 0.5f,
-					(dpSize.height + dpDistance) * dpIdx + (dpSize.height + dpDistance)));
-				items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-				itemScroll->addChild(items);
-			}
+                auto items = CGoogleCloudTestPopupDP::create(keyIdx, std::bind(&CGoogleCloudTestPopup::Select, this, std::placeholders::_1/*= Â»Â£âˆšâ€šÂ«Å“Â¥Â¬ âˆžËœÂ¿Â« Â¿Å’Â¿â„âˆÂ¶ ÂªÃÃ¸ÃŽÂ«â€”Â¥Å¸.*/));
+                
+                items->setPosition(Vec2(dpSize.width * 0.5f,
+                                        itemScroll->getInnerContainerSize().height - ((dpSize.height + dpDistance) * keyIdx + (dpSize.height + dpDistance))));
+                items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+                itemScroll->addChild(items);
+            }
 
-			itemScroll->setContentSize(Size(m_ScrollBack->getContentSize().width, (dpSize.height + dpDistance) * 4));
-			itemScroll->setInnerContainerSize(Size(dpSize.width, (dpSize.height + dpDistance) * listCount));
+            auto items = CGoogleCloudTestAddKeyDP::create();
+            
+            items->setPosition(Vec2(dpSize.width * 0.5f,
+                                    itemScroll->getInnerContainerSize().height - ((dpSize.height + dpDistance) * listCount + (dpSize.height + dpDistance))));
+            items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+            itemScroll->addChild(items);
+            listCount++;
 
 			m_ScrollBack->addChild(itemScroll);
 		}

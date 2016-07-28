@@ -1,10 +1,11 @@
 #include "GoogleCloudTestPopupDP.h"
 #include "GoogleCloudDataInfoPopup.h"
 #include "../MyButton.h"
+#include "../../DataManager/UserDataManager.h"
 
-CGoogleCloudTestPopupDP* CGoogleCloudTestPopupDP::create(int workshopItemIdx, const std::function<void(cocos2d::Ref*)> &func)
+CGoogleCloudTestPopupDP* CGoogleCloudTestPopupDP::create(int keyIdx, const std::function<void(cocos2d::Ref*)> &func)
 {
-	CGoogleCloudTestPopupDP *pRet = new(std::nothrow) CGoogleCloudTestPopupDP(workshopItemIdx, func);
+	CGoogleCloudTestPopupDP *pRet = new(std::nothrow) CGoogleCloudTestPopupDP(keyIdx, func);
 	if (pRet && pRet->init())
 	{
         pRet->autorelease();
@@ -28,8 +29,8 @@ bool CGoogleCloudTestPopupDP::init()
 bool CGoogleCloudTestPopupDP::initVariable()
 {
 	try{
-		//auto workshopItemInfo = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByIndex(m_WorkshopItemIdx);
-		int currentLevel = 3;
+        auto keyList = CUserDataManager::Instance()->getUserDataKeyList();
+        
 		auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
 		if (dpBack != nullptr){
 			dpBack->ignoreAnchorPointForPosition(false);
@@ -55,7 +56,7 @@ bool CGoogleCloudTestPopupDP::initVariable()
 			dpBack->addChild(dpBuyBtn);
 		}
 
-		auto googleCloudKey = Label::createWithTTF("Key Name", "fonts/malgunbd.ttf", 40);
+		auto googleCloudKey = Label::createWithTTF(keyList.at(m_UserKeyIdx), "fonts/malgunbd.ttf", 40);
 		if (googleCloudKey != nullptr)
 		{
 			googleCloudKey->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);

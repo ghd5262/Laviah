@@ -23,6 +23,7 @@ struct sUSER_DATA{
     std::vector<bool> _rocketList;
     std::vector<bool> _completeChallengeList;
     std::vector<bool> _mtrlList;
+    std::vector<std::string> _userDataKeyList;
 };
 
 class CUserDataManager
@@ -78,7 +79,12 @@ public:
     float getUserDataMyGiant();
     void setUserDataMyGiant(float value);
 
+    void addUserDataKey(std::string key);
+    std::vector<std::string> getUserDataKeyList() { return m_UserData->_userDataKeyList; }
+    
 	std::vector<bool> getUserDataHaveCharacterList() { return m_UserData->_characterList; }
+    
+    
 	bool isCharacterHave(int characterIdx);
 	void haveCharacter(int characterIdx);
 

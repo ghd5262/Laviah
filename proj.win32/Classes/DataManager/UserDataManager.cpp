@@ -3,6 +3,7 @@
 #include "../MyUI/MyButton.h"
 #include "../MyUI/Popup.h"
 #include "../MyUI/Popup/EarnCoinPopup.h"
+#include "../json/json.h"
 
 CUserDataManager::CUserDataManager()
 {
@@ -248,4 +249,23 @@ bool CUserDataManager::isCharacterHave(int characterIdx)
 void CUserDataManager::haveCharacter(int characterIdx)
 {
 	m_UserData->_characterList.at(characterIdx) = true;
+}
+
+void CUserDataManager::addUserDataKey(std::string key)
+{
+    m_UserData->_userDataKeyList.emplace_back(key);
+    
+    Json::Value root;
+    Json::Value keyString;
+    
+    for(auto data : m_UserData->_userDataKeyList)
+    {
+        keyString.append(data);
+    }
+    root["key"] = keyString;
+    Json::StyledWriter writer;
+    std::string outputConfig = writer.write( root );
+    
+    CCLOG("Save Cloud Key : %s Value : %s", "USER_DATA_KEY", outputConfig.c_str());
+//    bool result = WriteToFile("test.json", outputConfig.c_str(), outputConfig.length());
 }
