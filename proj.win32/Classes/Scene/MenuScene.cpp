@@ -78,24 +78,24 @@ bool CMenuScene::initVariable()
         CBulletDataManager::Instance();
 		CWorkshopItemDataManager::Instance();
 
-        auto planet = CPlanet::create("planet.png", 170, 0.0f, 200.0f);
-        planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-                                 origin.y + visibleSize.height * 0.5f));
-        this->addChild(planet);
-        planet->runAction(RepeatForever::create(RotateBy::create(30, 360)));
-        CMenuSceneObjectManager::Instance()->setPlanet(planet);
-        
-        
-        CPoolingManager::Instance()->CreateAlienList(30, 800);
-        
-        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+//        auto planet = CPlanet::create("planet.png", 170, 0.0f, 200.0f);
+//        planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+//                                 origin.y + visibleSize.height * 0.5f));
+//        this->addChild(planet);
+//        planet->runAction(RepeatForever::create(RotateBy::create(30, 360)));
+//        CMenuSceneObjectManager::Instance()->setPlanet(planet);
+//        
+//        
+//        CPoolingManager::Instance()->CreateAlienList(30, 800);
+//        
+//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
+//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
         
         InitMenuSceneUI();
 	}

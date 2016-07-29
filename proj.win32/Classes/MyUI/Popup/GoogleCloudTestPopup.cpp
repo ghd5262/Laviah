@@ -70,13 +70,13 @@ bool CGoogleCloudTestPopup::initVariable()
 			itemScroll->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			itemScroll->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.5f));
             itemScroll->setContentSize(Size(m_ScrollBack->getContentSize().width, (dpSize.height + dpDistance) * 4));
-            itemScroll->setInnerContainerSize(Size(dpSize.width, (dpSize.height + dpDistance) * listCount));
-			for (int keyIdx = 0; keyIdx < listCount; keyIdx++)
+            itemScroll->setInnerContainerSize(Size(dpSize.width, (dpSize.height + dpDistance) * (listCount + 1)));  // 마지막에 AddKeyDP 추가 위해 +1
+			for (int dpIdx = 0; dpIdx < listCount; dpIdx++)
 			{
-                auto items = CGoogleCloudTestPopupDP::create(keyIdx, std::bind(&CGoogleCloudTestPopup::Select, this, std::placeholders::_1/*= »£√‚«œ¥¬ ∞˜¿« ¿Œ¿⁄∏¶ ªÁøÎ«—¥Ÿ.*/));
+                auto items = CGoogleCloudTestPopupDP::create(dpIdx, std::bind(&CGoogleCloudTestPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
                 
                 items->setPosition(Vec2(dpSize.width * 0.5f,
-                                        itemScroll->getInnerContainerSize().height - ((dpSize.height + dpDistance) * keyIdx + (dpSize.height + dpDistance))));
+                                        (itemScroll->getInnerContainerSize().height - ((dpSize.height + dpDistance) * ((listCount-1) - dpIdx))))); // 최신이 항상 맨위로 가도록
                 items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
                 itemScroll->addChild(items);
             }
@@ -84,7 +84,7 @@ bool CGoogleCloudTestPopup::initVariable()
             auto items = CGoogleCloudTestAddKeyDP::create();
             
             items->setPosition(Vec2(dpSize.width * 0.5f,
-                                    itemScroll->getInnerContainerSize().height - ((dpSize.height + dpDistance) * listCount + (dpSize.height + dpDistance))));
+                                    (itemScroll->getInnerContainerSize().height - ((dpSize.height + dpDistance) * listCount)))); // 항상 가장 아래 
             items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
             itemScroll->addChild(items);
             listCount++;

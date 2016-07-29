@@ -148,7 +148,7 @@ public class AppActivity extends Cocos2dxActivity{
     public native static void JAVA_GoogleConnectionSuspended();
         
     // Call Cocos2dx Function - Google Cloud Data Load
-    public native static void JAVA_GoogleCloudLoad(final String value);
+    public native static void JAVA_GoogleCloudLoad(final String key, final String value);
     
     // Call Cocos2dx Function - Normal UnityAds Ready
     public native static void JAVA_NormalUnityAdsReady();

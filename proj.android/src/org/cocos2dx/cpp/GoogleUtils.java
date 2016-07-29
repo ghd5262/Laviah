@@ -190,7 +190,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
             	dismissProgressDialog();
             	Log.d(TAG, "onPostExecute" + loadData);
             	
-            	AppActivity.JAVA_GoogleCloudLoad(loadData);
+            	AppActivity.JAVA_GoogleCloudLoad(key, loadData);
             }
         };
 

@@ -108,7 +108,7 @@ extern "C" {
 	}
 
 	// 구글 클라우드 데이터 로드 
-	JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_AppActivity_JAVA_1GoogleCloudLoad(JNIEnv*  env, jobject thiz, jstring value)
+	JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_AppActivity_JAVA_1GoogleCloudLoad(JNIEnv*  env, jobject thiz, jstring key, jstring value)
 	{
 		std::string methodName = "JAVA_1GoogleCloudLoad";
 		CCLOG("JavaCallBackMethod %s", methodName.c_str());

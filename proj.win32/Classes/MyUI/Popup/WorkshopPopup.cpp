@@ -60,8 +60,7 @@ bool CWorkshopPopup::initVariable()
         if(itemScroll != nullptr){
             
             /* 아이템리스트 데이터 읽음 */
-            auto itemList = CWorkshopItemDataManager::Instance()->getWorkshopItemList();
-            size_t listCount = itemList.size();
+            size_t listCount = CWorkshopItemDataManager::Instance()->getWorkshopItemList().size();
             size_t dpDistance = 15;
             Size dpSize = Size(1080, 200);
             
