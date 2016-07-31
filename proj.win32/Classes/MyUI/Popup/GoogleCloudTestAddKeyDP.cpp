@@ -91,7 +91,7 @@ void CGoogleCloudTestAddKeyDP::Buy()
                                                   Color3B::WHITE,
                                                   END,
                                                   [this](){
-                                                      CUserDataManager::Instance()->addUserDataKey(m_TextField->getText());
+                                                      CUserDataManager::Instance()->addKey(m_TextField->getText());
                                                       m_TextField->setText("");
                                                   }, EFFECT_ALPHA);
     

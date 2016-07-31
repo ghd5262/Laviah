@@ -54,7 +54,7 @@ CPlayer::CPlayer(
 	, m_fRotateSpeed(rotateSpeed)
 	, m_fMaxLife(maxLife)
 	, m_fLife(maxLife)
-    , m_fMagnetLimitRadius(CUserDataManager::Instance()->getUserDataMyMagnetLimitRadius())
+	, m_fMagnetLimitRadius(CUserDataManager::Instance()->getMagnetItemLimitRadius())
 	, m_EffectItemTypes(eITEM_FLAG_none)
 	, m_pParticle(nullptr)
 	, m_pParticleDead(nullptr)
@@ -116,7 +116,7 @@ bool CPlayer::initVariable()
 			m_pParticle->setVisible(false);
 		}
         
-        m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, CUserDataManager::Instance()->getUserDataMyMagnet());
+        m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, CUserDataManager::Instance()->getMagnetItemLimitTime());
         if(m_MagnetEffect != nullptr)
         {
             m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

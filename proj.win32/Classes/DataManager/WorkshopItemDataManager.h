@@ -5,7 +5,8 @@
 struct sWORKSHOPITEM_PARAM{
 	int _idx;
 	int _maxLevel;
-	float _timePerLevel;
+	float _valuePerLevel;
+	bool _isSelling;
 	std::string _name;
 	std::string _textureName;
 	std::string _explain;
@@ -18,6 +19,7 @@ public:
 	static CWorkshopItemDataManager* Instance();
 
 	//getter & setter
+	sWORKSHOPITEM_PARAM getWorkshopItemInfoByName(std::string name) const;
 	sWORKSHOPITEM_PARAM getWorkshopItemInfoByIndex(int index) const;
 	std::vector<sWORKSHOPITEM_PARAM> getWorkshopItemList(){ return m_WorkshopItemList; };
 

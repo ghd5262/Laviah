@@ -1,6 +1,8 @@
 #include "SDKUtil_IOS.h"
 #include "cocos2d.h"
 
+#if ( CC_TARGET_PLATFORM == CC_PLATFORM_IOS )
+
 USING_NS_CC;
 
 CSDKUtil_IOS::CSDKUtil_IOS()
@@ -47,3 +49,5 @@ void CSDKUtil_IOS::Toast(std::string content)
     std::string methodName = "Toast";
     CCLOG("IOS Method %s", methodName.c_str());
 }
+
+#endif

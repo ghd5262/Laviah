@@ -1,7 +1,7 @@
 #pragma once
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include "../Common/HSHUtility.h"
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 
 class CSDKUtil_AOS{
 public:

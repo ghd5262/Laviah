@@ -304,9 +304,9 @@ bool CResultPopup::initVariable()
             std::string bestScoreStr = "Total Score";
             
             // total score가 best score면 저장한다.
-            if(totalScore->getScoreValue() > CUserDataManager::Instance()->getUserDataBestTotalScore()){
+            if(totalScore->getScoreValue() > CUserDataManager::Instance()->getBestTotalScore()){
                 bestScoreStr = "Best Score";
-                CUserDataManager::Instance()->setUserDataBestTotalScore(totalScore->getScoreValue());
+                CUserDataManager::Instance()->setBestTotalScore(totalScore->getScoreValue());
             }
             
             auto totalScoreLabel = Label::createWithTTF(bestScoreStr.c_str(), "fonts/malgunbd.ttf", 60);
@@ -352,7 +352,7 @@ bool CResultPopup::initVariable()
             }
             
             auto bestScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("BestScore"));
-            bestScore->UpdateValue(CUserDataManager::Instance()->getUserDataBestTotalScore());
+            bestScore->UpdateValue(CUserDataManager::Instance()->getBestTotalScore());
 			auto bestScoreValueLabel = Label::createWithTTF(bestScore->getValueString(), "fonts/malgunbd.ttf", 50);
             if (bestScoreValueLabel != nullptr){
                 bestScoreValueLabel->setColor(g_labelColor1);

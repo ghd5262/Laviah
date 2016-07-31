@@ -60,7 +60,8 @@ bool CWorkshopPopup::initVariable()
         if(itemScroll != nullptr){
             
             /* 아이템리스트 데이터 읽음 */
-            size_t listCount = CWorkshopItemDataManager::Instance()->getWorkshopItemList().size();
+			auto itemList = CWorkshopItemDataManager::Instance()->getWorkshopItemList();
+			size_t listCount = itemList.size();
             size_t dpDistance = 15;
             Size dpSize = Size(1080, 200);
             
@@ -69,13 +70,17 @@ bool CWorkshopPopup::initVariable()
             itemScroll->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             itemScroll->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.5f));
             
-            for(int dpIdx = 0 ; dpIdx < listCount ;dpIdx++ )
+			int dpIdx = 0;
+            for(auto item : itemList)
             {
-                auto items = CWorkshopPopupDP::create(dpIdx, std::bind(&CWorkshopPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
-                items->setPosition(Vec2(dpSize.width * 0.5f,
-                                             (dpSize.height + dpDistance) * dpIdx + (dpSize.height + dpDistance)));
-                items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-                itemScroll->addChild(items);
+				if (item._isSelling){
+					auto items = CWorkshopPopupDP::create(item, std::bind(&CWorkshopPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
+					items->setPosition(Vec2(dpSize.width * 0.5f,
+						(dpSize.height + dpDistance) * dpIdx + (dpSize.height + dpDistance)));
+					items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+					itemScroll->addChild(items);
+					dpIdx++;
+				}
             }
             
             itemScroll->setContentSize(Size(m_ScrollBack->getContentSize().width, (dpSize.height + dpDistance) * 4));

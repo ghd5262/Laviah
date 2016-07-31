@@ -1,9 +1,9 @@
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-
 #include "SDKUtil_AOS.h"
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include "platform/android/jni/JniHelper.h"
 #include "cocos2d.h"
 #include "SDKUtil.h"
+#include "../GoogleCloud/GoogleCloudManager.h"
 
 USING_NS_CC;
 
@@ -98,6 +98,8 @@ extern "C" {
 	{
 		std::string methodName = "JAVA_1GoogleConnectionResult";
 		CCLOG("JavaCallBackMethod %s", methodName.c_str());
+		CCLOG("Google Cloud Connection %s", (isSucceed == true) ? "SUCCEED", "FAILED");
+		CGoogleCloudManager::Instance()->IsConnected(isSucceed);
 	}
 
 	// 구글 클라우드 커넥션 끊김
@@ -112,6 +114,13 @@ extern "C" {
 	{
 		std::string methodName = "JAVA_1GoogleCloudLoad";
 		CCLOG("JavaCallBackMethod %s", methodName.c_str());
+
+		std::string keyStr = JniHelper::jstring2string(key);
+		std::string valueStr = JniHelper::jstring2string(value);
+
+		Director::getInstance()->getScheduler()->schedule([keyStr, valueStr](float delta){
+			CGoogleCloudManager::Instance()->GoogleCloudDataLoad(keyStr, valueStr);
+		}, Director::getInstance(), 0.f, 0, 0.f, false, "GoogleCloudDataLoad");
 	}
 
 	// 유니티 일반 광고 준비완료 

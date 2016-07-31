@@ -113,7 +113,7 @@ bool CVideoPopup::initVariable()
 			}
 
 			// 돈이 모자르면 버튼 불가처리
-			if (CUserDataManager::Instance()->getUserDataCoin() < g_coinToRevive)
+			if (CUserDataManager::Instance()->getCoin() < g_coinToRevive)
 				m_btnUseCoin->setBtnUnable(true);
 		}
 

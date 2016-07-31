@@ -77,7 +77,7 @@ bool CCharacterSelectPopup::initVariable()
 				characters->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 
 				// 현재 선택된 캐릭터는 DP Select로 변경
-				if (dpIdx == CUserDataManager::Instance()->getUserDataCurrentCharacter())
+				if (dpIdx == CUserDataManager::Instance()->getCurrentCharacter())
 					characters->Select();
 
                 m_ScrollView->addChild(characters);

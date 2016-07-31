@@ -33,7 +33,7 @@ bool CUserCoinButton::initVariable()
 		auto userCoin = CScoreUI::create("fonts/Number.ttf", 38, "run.png");
 		if (userCoin != nullptr){
 			this->addChild(userCoin);
-			userCoin->UpdateValue(CUserDataManager::Instance()->getUserDataCoin());
+			userCoin->UpdateValue(CUserDataManager::Instance()->getCoin());
 			userCoin->setVisible(false);
 		}
 		

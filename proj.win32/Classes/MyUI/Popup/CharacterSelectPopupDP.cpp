@@ -97,7 +97,7 @@ void CCharacterSelectPopupDP::Buy()
 
 	// USER 정보에 저장
 	CUserDataManager::Instance()->haveCharacter(m_CharacterIdx);
-	CUserDataManager::Instance()->setUserDataCurrentCharacter(m_CharacterIdx);
+	CUserDataManager::Instance()->setCurrentCharacter(m_CharacterIdx);
 }
 
 void CCharacterSelectPopupDP::Select()
@@ -106,7 +106,7 @@ void CCharacterSelectPopupDP::Select()
 	m_SelectFunc(this);
 
 	// USER 정보에 저장
-	CUserDataManager::Instance()->setUserDataCurrentCharacter(m_CharacterIdx);
+	CUserDataManager::Instance()->setCurrentCharacter(m_CharacterIdx);
 }
 
 void CCharacterSelectPopupDP::DeSelect()

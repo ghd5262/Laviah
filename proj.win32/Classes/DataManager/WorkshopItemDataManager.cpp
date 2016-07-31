@@ -41,8 +41,9 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 		param._textureName = valueItem["textureName"].asString();
 		param._name = valueItem["name"].asString();
 		param._maxLevel = valueItem["max_level"].asInt();
-		param._timePerLevel = valueItem["time_per_level"].asDouble();
+		param._valuePerLevel = valueItem["value_per_level"].asDouble();
 		param._explain = valueItem["explain"].asString();
+		param._isSelling = valueItem["selling"].asBool();
 
 		const Json::Value costPerLevelArray = valueItem["cost_per_level"];
 
@@ -91,4 +92,18 @@ CWorkshopItemDataManager* CWorkshopItemDataManager::Instance()
 sWORKSHOPITEM_PARAM CWorkshopItemDataManager::getWorkshopItemInfoByIndex(int index) const
 {
 	return m_WorkshopItemList.at(index);
+}
+
+sWORKSHOPITEM_PARAM CWorkshopItemDataManager::getWorkshopItemInfoByName(std::string name) const
+{
+	for (auto item : m_WorkshopItemList)
+	{
+		if (item._name == name)
+		{
+			return item;
+		}
+	}
+
+	CCLOG("There is no item : %s", name.c_str());
+	CCASSERT(false, "Wrong Item Name");
 }

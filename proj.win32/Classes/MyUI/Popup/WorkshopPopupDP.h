@@ -1,12 +1,12 @@
 #pragma once
 #include "cocos2d.h"
-
+#include "../../DataManager/WorkshopItemDataManager.h"
 USING_NS_CC;
 
 class CWorkshopPopupDP : public cocos2d::Layer
 {
 public:
-	static CWorkshopPopupDP* create(int workshopItemIdx, const std::function<void(cocos2d::Ref*)> &func);
+	static CWorkshopPopupDP* create(sWORKSHOPITEM_PARAM workshopItem, const std::function<void(cocos2d::Ref*)> &func);
     void DeSelect();
     
 protected:
@@ -16,12 +16,12 @@ protected:
 private:
     void Buy();
     
-	CWorkshopPopupDP(int workshopItemIdx, const std::function<void(cocos2d::Ref*)> &func)
-		: m_WorkshopItemIdx(workshopItemIdx)
+	CWorkshopPopupDP(sWORKSHOPITEM_PARAM workshopItem, const std::function<void(cocos2d::Ref*)> &func)
+		: m_WorkshopItem(workshopItem)
     , m_SelectFunc(func){};
     virtual ~CWorkshopPopupDP(){};
     
 private:
-    int m_WorkshopItemIdx;
+	const sWORKSHOPITEM_PARAM m_WorkshopItem;
     std::function<void(cocos2d::Ref*)> m_SelectFunc;
 };

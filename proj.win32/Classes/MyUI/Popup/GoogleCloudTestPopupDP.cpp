@@ -29,7 +29,7 @@ bool CGoogleCloudTestPopupDP::init()
 bool CGoogleCloudTestPopupDP::initVariable()
 {
 	try{
-        auto keyList = CUserDataManager::Instance()->getUserDataKeyList();
+        auto keyList = CUserDataManager::Instance()->getKeyList();
         
 		auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
 		if (dpBack != nullptr){

@@ -1,11 +1,11 @@
 #include "WorkshopPopupDP.h"
 #include "../MyButton.h"
 #include "../LevelProgressBar.h"
-#include "../../DataManager/WorkshopItemDataManager.h"
 
-CWorkshopPopupDP* CWorkshopPopupDP::create(int workshopItemIdx, const std::function<void(cocos2d::Ref*)> &func)
+
+CWorkshopPopupDP* CWorkshopPopupDP::create(sWORKSHOPITEM_PARAM workshopItem, const std::function<void(cocos2d::Ref*)> &func)
 {
-	CWorkshopPopupDP *pRet = new(std::nothrow) CWorkshopPopupDP(workshopItemIdx, func);
+	CWorkshopPopupDP *pRet = new(std::nothrow) CWorkshopPopupDP(workshopItem, func);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -29,7 +29,6 @@ bool CWorkshopPopupDP::init()
 bool CWorkshopPopupDP::initVariable()
 {
     try{
-        auto workshopItemInfo = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByIndex(m_WorkshopItemIdx);
 		int currentLevel = 3;
         auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
         if (dpBack != nullptr){
@@ -48,7 +47,7 @@ bool CWorkshopPopupDP::initVariable()
         }
         
         auto dpBuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
-			, MakeString("%d\nBuy", workshopItemInfo._costPerLevel.at(currentLevel)), 40, g_labelColor2, END, std::bind(&CWorkshopPopupDP::Buy, this), EFFECT_SIZEDOWN);
+			, MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(currentLevel)), 40, g_labelColor2, END, std::bind(&CWorkshopPopupDP::Buy, this), EFFECT_SIZEDOWN);
         if (dpBuyBtn != nullptr)
         {
             dpBuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -56,7 +55,7 @@ bool CWorkshopPopupDP::initVariable()
             dpBack->addChild(dpBuyBtn);
         }
         
-		auto workshopItemName = Label::createWithTTF(workshopItemInfo._name.c_str(), "fonts/malgunbd.ttf", 40);
+		auto workshopItemName = Label::createWithTTF(m_WorkshopItem._name.c_str(), "fonts/malgunbd.ttf", 40);
         if (workshopItemName != nullptr)
         {
             workshopItemName->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -65,7 +64,7 @@ bool CWorkshopPopupDP::initVariable()
             dpItemBack->addChild(workshopItemName);
         }
         
-		auto workshopItemExplain = Label::createWithTTF(workshopItemInfo._explain.c_str(), "fonts/malgun.ttf", 35);
+		auto workshopItemExplain = Label::createWithTTF(m_WorkshopItem._explain.c_str(), "fonts/malgun.ttf", 35);
 		if (workshopItemExplain != nullptr)
 		{
 			workshopItemExplain->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -76,7 +75,7 @@ bool CWorkshopPopupDP::initVariable()
 
 		auto levelProgressBar = CLevelProgressBar::create(
 			Size(dpItemBack->getContentSize().width * 0.7f, dpItemBack->getContentSize().height * 0.15f),
-			workshopItemInfo._maxLevel, currentLevel);
+			m_WorkshopItem._maxLevel, currentLevel);
 		if (levelProgressBar != nullptr)
 		{
 			levelProgressBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -84,7 +83,7 @@ bool CWorkshopPopupDP::initVariable()
 			dpItemBack->addChild(levelProgressBar);
 		}
 		
-		auto workshopItemImg = Sprite::create(workshopItemInfo._textureName);
+		auto workshopItemImg = Sprite::create(m_WorkshopItem._textureName);
         if(workshopItemImg != nullptr)
         {
             workshopItemImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -108,6 +107,5 @@ void CWorkshopPopupDP::Buy()
 
 void CWorkshopPopupDP::DeSelect()
 {
-	auto workshopItemInfo = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByIndex(m_WorkshopItemIdx);
-	CCLOG("%s", workshopItemInfo._name.c_str());
+	CCLOG("%s", m_WorkshopItem._name.c_str());
 }
