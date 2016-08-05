@@ -6,7 +6,7 @@
 
 CItemManager::CItemManager()
 {
-	// �⺻ ��
+	// 기본 값
 	m_ValueOfCoin[eCOIN_TYPE_bronze]	= 1.f;
 	m_ValueOfCoin[eCOIN_TYPE_silver]	= 3.f;
 	m_ValueOfCoin[eCOIN_TYPE_gold]		= 5.f;
@@ -71,7 +71,10 @@ void CItemManager::StartItemTimer(eITEM_TYPE itemType)
         default:
             break;
     }
-	m_CurrentItems |= (1 << itemType);
+    
+    // 계산된 값이 0보다 작거나 같은 경우 CurrentItem에 연산하지 않는다.
+    if(m_ItemTimersLimit[itemType] > 0)
+        m_CurrentItems |= (1 << itemType);
 }
 
 void CItemManager::Execute(float delta)

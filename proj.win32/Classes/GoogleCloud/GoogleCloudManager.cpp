@@ -59,8 +59,8 @@ void CGoogleCloudManager::GoogleCloudDataSave(std::string key, std::string value
 void CGoogleCloudManager::GoogleCloudDataLoad(std::string key, std::string valueJson)
 {
     CCLOG("===========================GoogleCloudLoad============================");
-    CCLOG("Key : %s", key.c_str());
-    CCLOG("Value : %s", valueJson.c_str());
+    CCLOG("Crypto Key : %s", key.c_str());
+    CCLOG("Crypto Value : %s", valueJson.c_str());
     CCLOG("======================================================================");
     
     CUserDataManager::Instance()->userDataLoad(key, valueJson);

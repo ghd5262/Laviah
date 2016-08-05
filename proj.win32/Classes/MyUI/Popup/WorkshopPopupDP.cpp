@@ -29,7 +29,8 @@ bool CWorkshopPopupDP::init()
 bool CWorkshopPopupDP::initVariable()
 {
     try{
-        int currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+        unsigned currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+        
         auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
         if (dpBack != nullptr){
             dpBack->ignoreAnchorPointForPosition(false);
@@ -47,12 +48,23 @@ bool CWorkshopPopupDP::initVariable()
         }
         
         auto dpBuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
-			, MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(currentLevel)), 40, g_labelColor2, END, std::bind(&CWorkshopPopupDP::Buy, this), EFFECT_SIZEDOWN);
+            , " ", 40, g_labelColor2, END, std::bind(&CWorkshopPopupDP::Buy, this), EFFECT_SIZEDOWN);
         if (dpBuyBtn != nullptr)
         {
             dpBuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             dpBuyBtn->setPosition(Vec2(dpBack->getContentSize().width - (dpBuyBtn->getContentSize().width * 0.5f), 0));
             dpBack->addChild(dpBuyBtn);
+            
+            auto btnLabel = dpBuyBtn->getBtnLabel();
+            
+            if(currentLevel >= m_WorkshopItem._maxLevel){
+                btnLabel->setString("MAX");
+                dpBuyBtn->setBtnUnable(true);
+                btnLabel->setColor(Color3B::BLACK);
+            }
+            else{
+                btnLabel->setString(MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(currentLevel)));
+            }
         }
         
 		auto workshopItemName = Label::createWithTTF(m_WorkshopItem._name.c_str(), "fonts/malgunbd.ttf", 40);
@@ -101,8 +113,8 @@ bool CWorkshopPopupDP::initVariable()
 void CWorkshopPopupDP::Buy()
 {
     m_SelectFunc(this);
-
-
+    unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+    CUserDataManager::Instance()->setUserData_Number(m_WorkshopItem._userDataKey, value + 1);
 }
 
 void CWorkshopPopupDP::DeSelect()

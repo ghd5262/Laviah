@@ -25,6 +25,8 @@
 	Json::Value data; \
 	Json::StyledWriter writer;
 
+static const std::string CRYPTO_KEY = "sktjdgmlq1024!";
+
 CUserDataManager::CUserDataManager()
 {
     m_UserData = std::shared_ptr<sUSER_DATA>(new sUSER_DATA(), [](sUSER_DATA* userData)
@@ -119,7 +121,8 @@ void CUserDataManager::dataLoadFromGoogleCloud()
 void CUserDataManager::dataLoadFromXML()
 {
     for(auto keyInfo : m_UserData->_userDataKeyMap){
-        userDataLoad(keyInfo.first.c_str(), UserDefault::getInstance()->getStringForKey(keyInfo.first.c_str(), ""));
+        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
+        userDataLoad(crypto_key.c_str(), UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), ""));
     }
 }
 
@@ -162,9 +165,10 @@ bool CUserDataManager::CoinUpdate(int value)
 
 unsigned CUserDataManager::getUserData_Number(std::string key)
 {
-    if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end())
-        return m_UserData->_userDataUnsignedMap.find(key)->second;
-    
+    if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end()){
+        auto value = m_UserData->_userDataUnsignedMap.find(key)->second;
+        return value;
+    }
     CCLOG("There is no user data key : %s", key.c_str());
     CCASSERT(false, "Wrong Key");
 }
@@ -244,11 +248,15 @@ void CUserDataManager::userDataSave_Number(std::string key)
     root["data"] = getUserData_Number(key);
     std::string dataStr = writer.write(root);
     
-    UserDefault::getInstance()->setStringForKey(key.c_str(), dataStr);
+    // 암호화
+    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
+    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
+    
+    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
     setSaveRevision(getUserData_Number("USER_DATA_SAVE_REVISION") + 1);
     
     if (CGoogleCloudManager::Instance()->getIsConnected())
-        CSDKUtil::Instance()->GoogleCloudSave(key.c_str(), dataStr);
+        CSDKUtil::Instance()->GoogleCloudSave(crypto_key.c_str(), crypto_value);
 }
 
 void CUserDataManager::userDataSave_List(std::string key)
@@ -264,36 +272,55 @@ void CUserDataManager::userDataSave_List(std::string key)
     root["data"] = jsonItemList;
     std::string dataStr = writer.write(root);
     
-    UserDefault::getInstance()->setStringForKey(key.c_str(), dataStr);
+    // 암호화
+    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
+    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
+    
+    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
     setSaveRevision(getUserData_Number("USER_DATA_SAVE_REVISION") + 1);
     
     if (CGoogleCloudManager::Instance()->getIsConnected())
-        CSDKUtil::Instance()->GoogleCloudSave(key.c_str(), dataStr);
+        CSDKUtil::Instance()->GoogleCloudSave(crypto_key.c_str(), crypto_value);
 }
 
 void CUserDataManager::userDataSave_Revision()
 {
+    std::string key = "USER_DATA_SAVE_REVISION";
+    
     JSONWRITER_CREATE
-    root["data"] = getUserData_Number("USER_DATA_SAVE_REVISION");
+    root["data"] = getUserData_Number(key);
     std::string dataStr = writer.write(root);
     
-    UserDefault::getInstance()->setStringForKey("USER_DATA_SAVE_REVISION", dataStr);
+    // 암호화
+    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
+    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
+    
+    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
     
     if (CGoogleCloudManager::Instance()->getIsConnected())
-        CSDKUtil::Instance()->GoogleCloudSave("USER_DATA_SAVE_REVISION", dataStr);
+        CSDKUtil::Instance()->GoogleCloudSave(crypto_key.c_str(), crypto_value);
 }
 
 
 void CUserDataManager::userDataLoad(std::string key, std::string valueJson)
 {
-    if(m_UserData->_userDataKeyMap.find(key) != m_UserData->_userDataKeyMap.end()){
-        if(m_UserData->_userDataKeyMap.find(key)->second == "userDefaultDatas_Number")
+    // 복호화
+    std::string decrypto_key = MakeCryptoString(key, CRYPTO_KEY);
+    std::string decrypto_value = MakeCryptoString(valueJson, CRYPTO_KEY);
+    
+    CCLOG("===========================GoogleCloudLoad============================");
+    CCLOG("Decrypto Key : %s", decrypto_key.c_str());
+    CCLOG("Decrypto Value : %s", decrypto_value.c_str());
+    CCLOG("======================================================================");
+    
+    if(m_UserData->_userDataKeyMap.find(decrypto_key) != m_UserData->_userDataKeyMap.end()){
+        if(m_UserData->_userDataKeyMap.find(decrypto_key)->second == "userDefaultDatas_Number")
         {
-            userDataLoad_Number(key, valueJson);
+            userDataLoad_Number(decrypto_key, decrypto_value);
         }
-        else if(m_UserData->_userDataKeyMap.find(key)->second == "userDefaultDatas_List")
+        else if(m_UserData->_userDataKeyMap.find(decrypto_key)->second == "userDefaultDatas_List")
         {
-            userDataLoad_List(key, valueJson);
+            userDataLoad_List(decrypto_key, decrypto_value);
         }
     }
 }

@@ -11,3 +11,20 @@ std::string MakeString(const char* str, ...)
 
 	return buf;
 }
+
+
+std::string MakeCryptoString(std::string origin, std::string key)
+{
+    size_t keySize = key.size();
+    size_t originSize = origin.size();
+    std::string cryptoString = "";
+    
+    int keyCount = 0;
+    for(int i = 0; i < originSize; i++)
+    {
+        cryptoString.push_back(origin.at(i) ^ key.at(keyCount++));
+        if(keyCount == keySize)
+            keyCount = 0;
+    }
+    return cryptoString;
+}

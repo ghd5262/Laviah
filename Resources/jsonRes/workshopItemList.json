@@ -6,7 +6,7 @@
 		"cost_per_level": [
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
-		"time_per_level": 10,
+		"value_per_level": 10,
 		"explain": "empty",
 		"selling": false,
 		"userDataKey":"USER_HEALTH_IDX"
@@ -17,7 +17,7 @@
 		"cost_per_level": [
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
-		"time_per_level": 0.5,
+		"value_per_level": 0.5,
 		"explain": "empty",
 		"selling": true,
 		"userDataKey":"USER_MAGNET_LIMIT_TIME_IDX"
@@ -28,7 +28,7 @@
 		"cost_per_level": [
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
-		"time_per_level": 0.5,
+		"value_per_level": 0.5,
 		"explain": "empty",
 		"selling": true,
 		"userDataKey":"USER_COIN_LIMIT_TIME_IDX"
@@ -39,7 +39,7 @@
 		"cost_per_level": [
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
-		"time_per_level": 0.5,
+		"value_per_level": 0.5,
 		"explain": "empty",
 		"selling": true,
 		"userDataKey":"USER_STAR_LIMIT_TIME_IDX"
@@ -50,7 +50,7 @@
 		"cost_per_level": [
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
-		"time_per_level": 0.25,
+		"value_per_level": 0.25,
 		"explain": "empty",
 		"selling": true,
 		"userDataKey":"USER_GIANT_LIMIT_TIME_IDX"
@@ -61,7 +61,7 @@
 		"cost_per_level": [
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
-		"time_per_level": 0.5,
+		"value_per_level": 0.5,
 		"explain": "empty",
 		"selling": true,
 		"userDataKey":"USER_BONUS_LIMIT_TIME_IDX"
@@ -72,7 +72,7 @@
 		"cost_per_level": [
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
-		"time_per_level": 5,
+		"value_per_level": 5,
 		"explain": "empty",
 		"selling": true,
 		"userDataKey":"USER_MAGNET_LIMIT_SIZE_IDX"
