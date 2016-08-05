@@ -1,11 +1,11 @@
 #include "GoogleCloudTestPopupDP.h"
 #include "GoogleCloudDataInfoPopup.h"
 #include "../MyButton.h"
-#include "../../DataManager/UserDataManager.h"
 
-CGoogleCloudTestPopupDP* CGoogleCloudTestPopupDP::create(int keyIdx, const std::function<void(cocos2d::Ref*)> &func)
+
+CGoogleCloudTestPopupDP* CGoogleCloudTestPopupDP::create(std::string key, const std::function<void(cocos2d::Ref*)> &func)
 {
-	CGoogleCloudTestPopupDP *pRet = new(std::nothrow) CGoogleCloudTestPopupDP(keyIdx, func);
+	CGoogleCloudTestPopupDP *pRet = new(std::nothrow) CGoogleCloudTestPopupDP(key, func);
 	if (pRet && pRet->init())
 	{
         pRet->autorelease();
@@ -56,7 +56,7 @@ bool CGoogleCloudTestPopupDP::initVariable()
 			dpBack->addChild(dpBuyBtn);
 		}
 
-		auto googleCloudKey = Label::createWithTTF(keyList.at(m_UserKeyIdx), "fonts/malgunbd.ttf", 40);
+		auto googleCloudKey = Label::createWithTTF(m_UserKey, "fonts/malgunbd.ttf", 40);
 		if (googleCloudKey != nullptr)
 		{
 			googleCloudKey->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);

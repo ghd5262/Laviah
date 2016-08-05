@@ -117,15 +117,15 @@ void CGachaPopup::End(){
 void CGachaPopup::PlayGacha(){
 	CCLOG("format popup PlayGacha");
 
-	int allCharacterCount = CCharacterDataManager::Instance()->getCharacterList().size();
-	std::vector<bool> haveCharacterList = CUserDataManager::Instance()->getUserDataHaveCharacterList();
+	size_t allCharacterCount = CCharacterDataManager::Instance()->getCharacterList().size();
+	auto haveCharacterList = CUserDataManager::Instance()->getUserData_List("USER_CHARACTER_LIST");
 	int currentCharacterCount = 0;
 
-	if (allCharacterCount != haveCharacterList.size())
+	if (allCharacterCount != haveCharacterList->size())
 		CCASSERT(false, "Error : ALL Character count and haveCharacterList count are different.");
 	
 	// 이미 가지고 있는 캐릭터 카운트
-	for (auto haveCharacter : haveCharacterList){
+	for (auto haveCharacter : *haveCharacterList){
 		if (haveCharacter == true){
 			currentCharacterCount++;
 		}
@@ -141,9 +141,9 @@ void CGachaPopup::PlayGacha(){
 	{ 
 		do{
 			randomIdx = random<int>(0, allCharacterCount - 1);
-		} while (haveCharacterList.at(randomIdx));
+		} while (haveCharacterList->at(randomIdx));
 	}
 
 	CCLOG("GET %d", randomIdx);
-	CUserDataManager::Instance()->haveCharacter(randomIdx);
+	CUserDataManager::Instance()->setUserData_ItemGet("USER_CHARACTER_LIST", randomIdx);
 }

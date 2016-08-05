@@ -67,25 +67,21 @@ bool CCharacterSelectPopup::initVariable()
             m_ScrollView->setBounceEnabled(true);
             m_ScrollView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             m_ScrollView->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.5f));
-        
-            for(int dpIdx = 0 ; dpIdx < listCount ;dpIdx++ )
-            {
-				auto characters = CCharacterSelectPopupDP::create(dpIdx, std::bind(&CCharacterSelectPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
-				characters->setPosition(Vec2((dpSize.width + dpDistance) * dpIdx
-					+ (dpSize.width * 0.5f),
-					dpSize.height * 0.5f));
-				characters->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+            m_ScrollView->setContentSize(Size(m_ScrollBack->getContentSize().width, dpSize.height));
+            m_ScrollView->setInnerContainerSize(Size((dpSize.width + dpDistance)* listCount, dpSize.height));
+            
+            int dpIdx = 0;
+            for(auto character : characterList){
+                auto selectDP = CCharacterSelectPopupDP::create(character, std::bind(&CCharacterSelectPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
+                selectDP->setPosition(Vec2((dpSize.width + dpDistance) * dpIdx
+                                             + (dpSize.width * 0.5f),
+                                             dpSize.height * 0.5f));
+                selectDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 
-				// 현재 선택된 캐릭터는 DP Select로 변경
-				if (dpIdx == CUserDataManager::Instance()->getCurrentCharacter())
-					characters->Select();
-
-                m_ScrollView->addChild(characters);
+                m_ScrollView->addChild(selectDP);
+                dpIdx++;
             }
-            
-			m_ScrollView->setContentSize(Size(m_ScrollBack->getContentSize().width, dpSize.height));
-			m_ScrollView->setInnerContainerSize(Size((dpSize.width + dpDistance)* listCount, dpSize.height));
-            
+        
             m_ScrollBack->addChild(m_ScrollView);
         }
         

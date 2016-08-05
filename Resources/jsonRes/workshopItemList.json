@@ -1,5 +1,16 @@
 {
 	"workshopitems": [{
+		"name": "Health",
+		"textureName": "workshopHealth.png",
+		"max_level": 20,
+		"cost_per_level": [
+			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
+		],
+		"time_per_level": 10,
+		"explain": "empty",
+		"selling": false,
+		"userDataKey":"USER_HEALTH_IDX"
+	}, {
 		"name": "MagnetTime",
 		"textureName": "workshopMagnetTime.png",
 		"max_level": 20,
@@ -7,7 +18,9 @@
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
 		"time_per_level": 0.5,
-		"explain": "empty"
+		"explain": "empty",
+		"selling": true,
+		"userDataKey":"USER_MAGNET_LIMIT_TIME_IDX"
 	}, {
 		"name": "CoinTime",
 		"textureName": "workshopCoinTime.png",
@@ -16,7 +29,9 @@
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
 		"time_per_level": 0.5,
-		"explain": "empty"
+		"explain": "empty",
+		"selling": true,
+		"userDataKey":"USER_COIN_LIMIT_TIME_IDX"
 	}, {
 		"name": "StarTime",
 		"textureName": "workshopStarTime.png",
@@ -25,7 +40,9 @@
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
 		"time_per_level": 0.5,
-		"explain": "empty"
+		"explain": "empty",
+		"selling": true,
+		"userDataKey":"USER_STAR_LIMIT_TIME_IDX"
 	}, {
 		"name": "GiantTime",
 		"textureName": "workshopGiantTime.png",
@@ -34,7 +51,9 @@
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
 		"time_per_level": 0.25,
-		"explain": "empty"
+		"explain": "empty",
+		"selling": true,
+		"userDataKey":"USER_GIANT_LIMIT_TIME_IDX"
 	}, {
 		"name": "BonusTime",
 		"textureName": "workshopBonusTime.png",
@@ -43,7 +62,9 @@
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
 		"time_per_level": 0.5,
-		"explain": "empty"
+		"explain": "empty",
+		"selling": true,
+		"userDataKey":"USER_BONUS_LIMIT_TIME_IDX"
 	}, {
 		"name": "MagnetSize",
 		"textureName": "workshopMagnetSize.png",
@@ -52,15 +73,8 @@
 			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
 		],
 		"time_per_level": 5,
-		"explain": "empty"
-	}, {
-		"name": "GiantSize",
-		"textureName": "workshopGiantSize.png",
-		"max_level": 20,
-		"cost_per_level": [
-			1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500
-		],
-		"time_per_level": 3,
-		"explain": "empty"
+		"explain": "empty",
+		"selling": true,
+		"userDataKey":"USER_MAGNET_LIMIT_SIZE_IDX"
 	}]
 }

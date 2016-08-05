@@ -116,10 +116,10 @@ extern "C" {
 		CCLOG("JavaCallBackMethod %s", methodName.c_str());
 
 		std::string keyStr = JniHelper::jstring2string(key);
-		std::string valueStr = JniHelper::jstring2string(value);
+		std::string valueJson = JniHelper::jstring2string(value);
 
-		Director::getInstance()->getScheduler()->schedule([keyStr, valueStr](float delta){
-			CGoogleCloudManager::Instance()->GoogleCloudDataLoad(keyStr, valueStr);
+		Director::getInstance()->getScheduler()->schedule([keyStr, valueJson](float delta){
+			CGoogleCloudManager::Instance()->GoogleCloudDataLoad(keyStr, valueJson);
 		}, Director::getInstance(), 0.f, 0, 0.f, false, "GoogleCloudDataLoad");
 	}
 

@@ -4,8 +4,8 @@ class CGoogleCloudManager{
 public:
     static CGoogleCloudManager* Instance();
     
-    void GoogleCloudDataSave(std::string key, std::string value);
-    void GoogleCloudDataLoad(std::string key, std::string value);
+    void GoogleCloudDataSave(std::string key, std::string valueJson);
+    void GoogleCloudDataLoad(std::string key, std::string valueJson);
     
 	//getter & setter
 	CC_SYNTHESIZE(bool, m_isConnected, IsConnected);
@@ -13,8 +13,4 @@ public:
 private:
     CGoogleCloudManager();
     ~CGoogleCloudManager();
-
-private:
-	typedef std::function<void(std::string)> FUNC;
-	std::map<std::string, FUNC> m_DataLoadFuncList;
 };

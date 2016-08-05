@@ -1,12 +1,13 @@
 #pragma once
 #include "cocos2d.h"
+#include "../../DataManager/UserDataManager.h"
 
 USING_NS_CC;
 
 class CGoogleCloudTestPopupDP : public cocos2d::Layer
 {
 public:
-	static CGoogleCloudTestPopupDP* create(int keyIdx, const std::function<void(cocos2d::Ref*)> &func);
+    static CGoogleCloudTestPopupDP* create(std::string key, const std::function<void(cocos2d::Ref*)> &func);
 	void DeSelect();
 
 protected:
@@ -16,13 +17,13 @@ protected:
 private:
 	void Buy();
 
-	CGoogleCloudTestPopupDP(int keyIdx, const std::function<void(cocos2d::Ref*)> &func)
-		: m_UserKeyIdx(keyIdx)
+	CGoogleCloudTestPopupDP(std::string key, const std::function<void(cocos2d::Ref*)> &func)
+		: m_UserKey(key)
 		, m_SelectFunc(func){};
 	virtual ~CGoogleCloudTestPopupDP(){};
 
 private:
-	int m_UserKeyIdx;
+    std::string m_UserKey;
 	std::function<void(cocos2d::Ref*)> m_SelectFunc;
 };
 

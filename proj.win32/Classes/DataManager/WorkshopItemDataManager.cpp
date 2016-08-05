@@ -44,6 +44,7 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 		param._valuePerLevel = valueItem["value_per_level"].asDouble();
 		param._explain = valueItem["explain"].asString();
 		param._isSelling = valueItem["selling"].asBool();
+        param._userDataKey = valueItem["userDataKey"].asString();
 
 		const Json::Value costPerLevelArray = valueItem["cost_per_level"];
 
@@ -94,16 +95,16 @@ sWORKSHOPITEM_PARAM CWorkshopItemDataManager::getWorkshopItemInfoByIndex(int ind
 	return m_WorkshopItemList.at(index);
 }
 
-sWORKSHOPITEM_PARAM CWorkshopItemDataManager::getWorkshopItemInfoByName(std::string name) const
+sWORKSHOPITEM_PARAM CWorkshopItemDataManager::getWorkshopItemInfoByKey(std::string key) const
 {
 	for (auto item : m_WorkshopItemList)
 	{
-		if (item._name == name)
+		if (item._userDataKey == key)
 		{
 			return item;
 		}
 	}
 
-	CCLOG("There is no item : %s", name.c_str());
-	CCASSERT(false, "Wrong Item Name");
+	CCLOG("There is no item : %s", key.c_str());
+	CCASSERT(false, "Wrong Item Key");
 }

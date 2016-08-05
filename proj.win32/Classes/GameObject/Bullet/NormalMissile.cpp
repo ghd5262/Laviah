@@ -234,10 +234,10 @@ void CNormalMissile::ChangeToCoinOrStar()
 
 	std::string patternName;
 	if (false == m_BulletParam._isAimingMissile){
-		patternName = MakeString("normalRocket%d_Pattern", CUserDataManager::Instance()->getCurrentCharacter());
+		patternName = MakeString("normalRocket%d_Pattern", CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER"));
 	}
 	else{
-		patternName = MakeString("aimingRocket%d_Pattern", CUserDataManager::Instance()->getCurrentCharacter());
+		patternName = MakeString("aimingRocket%d_Pattern", CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER"));
 	}
 	float distance = m_TargetVec.distance(getPosition());
 	float speed = 600.f;

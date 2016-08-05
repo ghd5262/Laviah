@@ -1,7 +1,7 @@
 #include "WorkshopPopupDP.h"
 #include "../MyButton.h"
 #include "../LevelProgressBar.h"
-
+#include "../../DataManager/UserDataManager.h"
 
 CWorkshopPopupDP* CWorkshopPopupDP::create(sWORKSHOPITEM_PARAM workshopItem, const std::function<void(cocos2d::Ref*)> &func)
 {
@@ -29,7 +29,7 @@ bool CWorkshopPopupDP::init()
 bool CWorkshopPopupDP::initVariable()
 {
     try{
-		int currentLevel = 3;
+        int currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
         auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
         if (dpBack != nullptr){
             dpBack->ignoreAnchorPointForPosition(false);

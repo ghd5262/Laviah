@@ -108,7 +108,7 @@ bool CGameScene::initVariable()
 
 		planet->setOriginPos(planet->getPosition());
 
-		int currentCharacterIdx = CUserDataManager::Instance()->getCurrentCharacter();
+        int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
 		sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
 
 		auto player = CPlayer::create(currentCharacterInfo._normalTextureName,
