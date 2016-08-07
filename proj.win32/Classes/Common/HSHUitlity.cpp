@@ -15,6 +15,9 @@ std::string MakeString(const char* str, ...)
 
 std::string MakeCryptoString(std::string origin, std::string key)
 {
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	return origin;
+#else
     size_t keySize = key.size();
     size_t originSize = origin.size();
     std::string cryptoString = "";
@@ -27,4 +30,5 @@ std::string MakeCryptoString(std::string origin, std::string key)
             keyCount = 0;
     }
     return cryptoString;
+#endif
 }
