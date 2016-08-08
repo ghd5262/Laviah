@@ -24,7 +24,7 @@ bool CEarnCoinPopup::initVariable()
 
 		auto bg = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
 		if (bg != nullptr){
-			bg->ignoreAnchorPointForPosition(false);
+			bg->setIgnoreAnchorPointForPosition(false);
 			bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			bg->setPosition(Vec2::ZERO);
 			m_Popup->addChild(bg);

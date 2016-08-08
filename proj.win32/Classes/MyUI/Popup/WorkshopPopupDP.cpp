@@ -33,7 +33,7 @@ bool CWorkshopPopupDP::initVariable()
         
         auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
         if (dpBack != nullptr){
-            dpBack->ignoreAnchorPointForPosition(false);
+            dpBack->setIgnoreAnchorPointForPosition(false);
             dpBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             dpBack->setPosition(Vec2::ZERO);
             this->addChild(dpBack);
@@ -41,7 +41,7 @@ bool CWorkshopPopupDP::initVariable()
         
         auto dpItemBack = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), 805.f, 200.f);
         if (dpItemBack != nullptr){
-            dpItemBack->ignoreAnchorPointForPosition(false);
+            dpItemBack->setIgnoreAnchorPointForPosition(false);
             dpItemBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             dpItemBack->setPosition(Vec2(0 + dpItemBack->getContentSize().width * 0.5f, 0));
             dpBack->addChild(dpItemBack);

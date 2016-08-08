@@ -29,7 +29,7 @@ bool CGachaPopup::initVariable()
 
 		m_BG = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
 		if (m_BG != nullptr){
-			m_BG->ignoreAnchorPointForPosition(false);
+			m_BG->setIgnoreAnchorPointForPosition(false);
 			m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_BG->setPosition(Vec2::ZERO);
 			m_Popup->addChild(m_BG);
@@ -37,7 +37,7 @@ bool CGachaPopup::initVariable()
 
 		m_GachaBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 1500.f);
 		if (m_GachaBG != nullptr){
-			m_GachaBG->ignoreAnchorPointForPosition(false);
+			m_GachaBG->setIgnoreAnchorPointForPosition(false);
 			m_GachaBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_GachaBG->setPosition(Vec2(0, origin.x + visibleSize.height * 1.5f));
 			m_Popup->addChild(m_GachaBG);

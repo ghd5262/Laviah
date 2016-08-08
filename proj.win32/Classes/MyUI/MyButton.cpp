@@ -233,7 +233,7 @@ bool CMyButton::initVariable()
 		if (m_LayerBtn != nullptr)
 		{
 			m_LayerBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_LayerBtn->ignoreAnchorPointForPosition(false);
+			m_LayerBtn->setIgnoreAnchorPointForPosition(false);
 			addChild(m_LayerBtn);
 		}
 

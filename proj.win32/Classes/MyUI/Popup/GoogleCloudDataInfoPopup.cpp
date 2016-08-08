@@ -22,7 +22,7 @@ bool CGoogleCloudDataInfoPopup::initVariable()
     try{
         auto dpBack = LayerColor::create(Color4B(0, 0, 0, 255 * 0.8f), 900.f, 1500.f);
         if (dpBack != nullptr){
-            dpBack->ignoreAnchorPointForPosition(false);
+            dpBack->setIgnoreAnchorPointForPosition(false);
             dpBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             dpBack->setPosition(Vec2::ZERO);
             m_Popup->addChild(dpBack);
@@ -30,7 +30,7 @@ bool CGoogleCloudDataInfoPopup::initVariable()
         
         auto keyBack = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 800.f, 120.f);
         if (keyBack != nullptr){
-            keyBack->ignoreAnchorPointForPosition(false);
+            keyBack->setIgnoreAnchorPointForPosition(false);
             keyBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             keyBack->setPosition(Vec2(dpBack->getContentSize().width * 0.5f, dpBack->getContentSize().height * 0.9f));
             dpBack->addChild(keyBack);
@@ -38,7 +38,7 @@ bool CGoogleCloudDataInfoPopup::initVariable()
         
         auto valueBack = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 800.f, 1000.f);
         if (valueBack != nullptr){
-            valueBack->ignoreAnchorPointForPosition(false);
+            valueBack->setIgnoreAnchorPointForPosition(false);
             valueBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             valueBack->setPosition(Vec2(dpBack->getContentSize().width * 0.5f, dpBack->getContentSize().height * 0.5f));
             dpBack->addChild(valueBack);

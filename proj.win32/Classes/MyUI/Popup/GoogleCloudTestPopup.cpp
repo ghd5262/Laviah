@@ -31,7 +31,7 @@ bool CGoogleCloudTestPopup::initVariable()
 
 		m_BG = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
 		if (m_BG != nullptr){
-			m_BG->ignoreAnchorPointForPosition(false);
+			m_BG->setIgnoreAnchorPointForPosition(false);
 			m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_BG->setPosition(Vec2::ZERO);
 			m_Popup->addChild(m_BG);
@@ -39,7 +39,7 @@ bool CGoogleCloudTestPopup::initVariable()
 
 		m_ScrollBack = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 1500.f);
 		if (m_ScrollBack != nullptr){
-			m_ScrollBack->ignoreAnchorPointForPosition(false);
+			m_ScrollBack->setIgnoreAnchorPointForPosition(false);
 			m_ScrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_ScrollBack->setPosition(Vec2(0, origin.x + visibleSize.height * 1.5f));
 			m_Popup->addChild(m_ScrollBack);

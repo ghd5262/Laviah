@@ -51,7 +51,7 @@ bool CUserCoinButton::initVariable()
 		if (coinLabelLayer != nullptr)
 		{
 			coinLabelLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			coinLabelLayer->ignoreAnchorPointForPosition(false);
+			coinLabelLayer->setIgnoreAnchorPointForPosition(false);
 			this->addChild(coinLabelLayer);
 
 			if (coinLabel != nullptr){

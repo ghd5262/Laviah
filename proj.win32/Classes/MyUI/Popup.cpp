@@ -162,7 +162,7 @@ bool CPopup::initVariable()
 		{
             auto defaultBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
             if(defaultBG != nullptr){
-                defaultBG->ignoreAnchorPointForPosition(false);
+                defaultBG->setIgnoreAnchorPointForPosition(false);
                 defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 defaultBG->setPosition(Vec2::ZERO);
                 this->addChild(defaultBG);
@@ -189,7 +189,7 @@ bool CPopup::initVariable()
 		{
             auto defaultBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
             if(defaultBG != nullptr){
-                defaultBG->ignoreAnchorPointForPosition(false);
+                defaultBG->setIgnoreAnchorPointForPosition(false);
                 defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 defaultBG->setPosition(Vec2::ZERO);
                 this->addChild(defaultBG);

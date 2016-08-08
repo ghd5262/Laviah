@@ -30,7 +30,7 @@ bool CHelpPopup::initVariable()
 
         m_BG = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
         if(m_BG != nullptr){
-            m_BG->ignoreAnchorPointForPosition(false);
+            m_BG->setIgnoreAnchorPointForPosition(false);
             m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             m_BG->setPosition(Vec2(0, visibleSize.height));
             m_Popup->addChild(m_BG);

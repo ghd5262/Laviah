@@ -30,7 +30,7 @@ bool CCharacterSelectPopupDP::initVariable()
     try{
         auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 540.f, 915.f);
         if (dpBack != nullptr){
-            dpBack->ignoreAnchorPointForPosition(false);
+            dpBack->setIgnoreAnchorPointForPosition(false);
             dpBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             dpBack->setPosition(Vec2::ZERO);
             this->addChild(dpBack);
@@ -38,7 +38,7 @@ bool CCharacterSelectPopupDP::initVariable()
         
         m_ItemBack = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), 540.f, 750.f);
         if (m_ItemBack != nullptr){
-            m_ItemBack->ignoreAnchorPointForPosition(false);
+            m_ItemBack->setIgnoreAnchorPointForPosition(false);
             m_ItemBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             m_ItemBack->setPosition(Vec2(dpBack->getContentSize().width * 0.5f, dpBack->getContentSize().height - m_ItemBack->getContentSize().height * 0.5f));
             dpBack->addChild(m_ItemBack);
