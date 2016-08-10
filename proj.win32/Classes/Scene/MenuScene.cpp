@@ -78,25 +78,26 @@ bool CMenuScene::initVariable()
         CBulletDataManager::Instance();
 		CWorkshopItemDataManager::Instance();
 
-//        auto planet = CPlanet::create("planet.png", 170, 0.0f, 200.0f);
+//        auto planet = CPlanet::create("planet.png", 290.f, 0.0f, 200.0f);
 //        planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 //                                 origin.y + visibleSize.height * 0.5f));
+//        planet->setScale(1.5f);
 //        this->addChild(planet);
 //        planet->runAction(RepeatForever::create(RotateBy::create(30, 360)));
 //        CMenuSceneObjectManager::Instance()->setPlanet(planet);
 //        
 //        
-//        CPoolingManager::Instance()->CreateAlienList(30, 800);
+//        CPoolingManager::Instance()->CreateAlienList(100, 800);
 //        
-//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-//        this->addChild(CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200));
-        
+//        for(int i = 0 ;i < 10 ;i++ ){
+//            auto alien = CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200);
+//            auto button = CMyButton::createWithLayerColor(Size(80, 80), Color4B(255, 255, 255, 0), "", 0, Color3B::WHITE, END, [alien](){
+//                
+//            });
+//            alien->addChild(button);
+//            this->addChild(alien);
+//            
+//        }
         InitMenuSceneUI();
 	}
 	catch (...){

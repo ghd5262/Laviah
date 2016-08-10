@@ -121,8 +121,8 @@ void CGachaPopup::PlayGacha(){
 	auto haveCharacterList = CUserDataManager::Instance()->getUserData_List("USER_CHARACTER_LIST");
 	int currentCharacterCount = 0;
 
-	if (allCharacterCount != haveCharacterList->size())
-		CCASSERT(false, "Error : ALL Character count and haveCharacterList count are different.");
+	if (allCharacterCount < haveCharacterList->size())
+		CCASSERT(false, "Error : Character count should be less than haveCharacterList count.");
 	
 	// 이미 가지고 있는 캐릭터 카운트
 	for (auto haveCharacter : *haveCharacterList){

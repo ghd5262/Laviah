@@ -206,8 +206,6 @@ void CGameScene::InitGameSceneUI()
 		origin.x + visibleSize.height * 0.5f));
 
 	m_GridWorld->addChild(leftButton, 102);
-	if (!CUIManager::Instance()->AddUIWithName(leftButton, "LButton"))
-		CCASSERT(false, "LBUTTON CAN NOT INIT");
 
 	// RotationObjectRight callback 등록
 	auto rightButton = CMyButton::createWithTexture(
@@ -221,8 +219,6 @@ void CGameScene::InitGameSceneUI()
 		origin.x + visibleSize.height * 0.5f));
 
 	m_GridWorld->addChild(rightButton, 102);
-	if (!CUIManager::Instance()->AddUIWithName(rightButton, "RButton"))
-		CCASSERT(false, "RBUTTON CAN NOT INIT");
 
 	// player의 HealthCalFunc callback 등록 
 	auto healthBar = CHealthBarUI::create(

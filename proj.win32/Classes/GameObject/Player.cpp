@@ -219,7 +219,7 @@ void CPlayer::Rotation(float dir, float delta)
 {
 	m_isRoatating = true;
 	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed * delta);
-	m_fAngle = static_cast<int>(m_fAngle) % 360;
+//	m_fAngle = static_cast<int>(m_fAngle) % 360;
 	m_pParticle->setStartSpin(m_fAngle);
 	m_pParticle->setEndSpin(m_fAngle);
 	m_pParticle->setAngle(dir == 1 ? 180 : 0);

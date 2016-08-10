@@ -174,7 +174,7 @@ void* CPoolingManager::AlienNew()
     
     /* 모든 메모리가 사용 중 상태라면 새롭게 하나 생성 */
     CCLOG("ALIEN LIST OVERFLOWED");
-    MEMORYBLOCK memBlock = NewMemoryBlock(m_ShooterSize);
+    MEMORYBLOCK memBlock = NewMemoryBlock(m_AlienSize);
     m_AlienList.emplace_back(memBlock);
     
     /* 오브젝트 매니저 리스트에 추가한다. */

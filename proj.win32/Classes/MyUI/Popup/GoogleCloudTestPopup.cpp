@@ -86,15 +86,15 @@ bool CGoogleCloudTestPopup::initVariable()
             }
 
 
-   //         auto items = CGoogleCloudTestAddKeyDP::create();
-   //         
-   //         items->setPosition(Vec2(dpSize.width * 0.5f,
-   //                                 (itemScroll->getInnerContainerSize().height - ((dpSize.height + dpDistance) * listCount)))); // 항상 가장 아래 
-   //         items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-   //         itemScroll->addChild(items);
-   //         listCount++;
+            auto items = CGoogleCloudTestAddKeyDP::create();
+            
+            items->setPosition(Vec2(dpSize.width * 0.5f,
+                                    (itemScroll->getInnerContainerSize().height - ((dpSize.height + dpDistance) * listCount)))); // 항상 가장 아래 
+            items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+            itemScroll->addChild(items);
+            listCount++;
 
-			//m_ScrollBack->addChild(itemScroll);
+			m_ScrollBack->addChild(itemScroll);
 		}
 
 		m_btnEnd = CMyButton::create("endIcon.png",
