@@ -33,9 +33,11 @@ bool CWorkshopPopupDP::initVariable()
         
         m_DPBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
         if (m_DPBack != nullptr){
+            this->setContentSize(m_DPBack->getContentSize());
+            
             m_DPBack->setIgnoreAnchorPointForPosition(false);
-            m_DPBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_DPBack->setPosition(Vec2::ZERO);
+            m_DPBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+            m_DPBack->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.5f));
             this->addChild(m_DPBack);
         }
         
@@ -108,13 +110,6 @@ bool CWorkshopPopupDP::initVariable()
         return false;
     }
     return true;
-}
-
-const Size& CWorkshopPopupDP::getContentSize() const {
-	if (m_DPBack != nullptr){
-		return m_DPBack->getContentSize();
-	}
-	CCASSERT(m_DPBack != nullptr, "ColorLayer is nullptr");
 }
 
 void CWorkshopPopupDP::Buy()

@@ -14,7 +14,7 @@ protected:
     
 private:
     void End();
-	void Select(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type);
+	void ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type);
     
     CWorkshopPopup()
     : m_btnEnd(nullptr)

@@ -2,9 +2,9 @@
 #include "../MyButton.h"
 #include "../../DataManager/UserDataManager.h"
 
-CCharacterSelectPopupDP* CCharacterSelectPopupDP::create(const sCHARACTER_PARAM character, const std::function<void(cocos2d::Ref*)> &func)
+CCharacterSelectPopupDP* CCharacterSelectPopupDP::create(const sCHARACTER_PARAM character)
 {
-    CCharacterSelectPopupDP *pRet = new(std::nothrow) CCharacterSelectPopupDP(character, func);
+    CCharacterSelectPopupDP *pRet = new(std::nothrow) CCharacterSelectPopupDP(character);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -28,20 +28,22 @@ bool CCharacterSelectPopupDP::init()
 bool CCharacterSelectPopupDP::initVariable()
 {
     try{
-        auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 540.f, 915.f);
-        if (dpBack != nullptr){
-            dpBack->setIgnoreAnchorPointForPosition(false);
-            dpBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            dpBack->setPosition(Vec2::ZERO);
-            this->addChild(dpBack);
+        m_DPBack = LayerColor::create(Color4B(0, 0, 0, 0), 540.f, 915.f);
+        if (m_DPBack != nullptr){
+            this->setContentSize(m_DPBack->getContentSize());
+            
+            m_DPBack->setIgnoreAnchorPointForPosition(false);
+            m_DPBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_DPBack->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.5f));
+            this->addChild(m_DPBack);
         }
         
         m_ItemBack = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), 540.f, 750.f);
         if (m_ItemBack != nullptr){
             m_ItemBack->setIgnoreAnchorPointForPosition(false);
             m_ItemBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_ItemBack->setPosition(Vec2(dpBack->getContentSize().width * 0.5f, dpBack->getContentSize().height - m_ItemBack->getContentSize().height * 0.5f));
-            dpBack->addChild(m_ItemBack);
+            m_ItemBack->setPosition(Vec2(m_DPBack->getContentSize().width * 0.5f, m_DPBack->getContentSize().height - m_ItemBack->getContentSize().height * 0.5f));
+            m_DPBack->addChild(m_ItemBack);
             
             // 선택된 캐릭터일 경우
             if(CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER") == m_Character._idx)
@@ -55,8 +57,8 @@ bool CCharacterSelectPopupDP::initVariable()
             if (dpSelectBtn != nullptr)
             {
                 dpSelectBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-                dpSelectBtn->setPosition(Vec2(dpBack->getContentSize().width * 0.5f, 0 + (dpSelectBtn->getContentSize().height * 0.5f)));
-                dpBack->addChild(dpSelectBtn);
+                dpSelectBtn->setPosition(Vec2(m_DPBack->getContentSize().width * 0.5f, 0 + (dpSelectBtn->getContentSize().height * 0.5f)));
+                m_DPBack->addChild(dpSelectBtn);
             }
         }
         else
@@ -65,8 +67,8 @@ bool CCharacterSelectPopupDP::initVariable()
             if (dpBuyBtn != nullptr)
             {
                 dpBuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-                dpBuyBtn->setPosition(Vec2(dpBack->getContentSize().width * 0.5f, 0 + (dpBuyBtn->getContentSize().height * 0.5f)));
-                dpBack->addChild(dpBuyBtn);
+                dpBuyBtn->setPosition(Vec2(m_DPBack->getContentSize().width * 0.5f, 0 + (dpBuyBtn->getContentSize().height * 0.5f)));
+                m_DPBack->addChild(dpBuyBtn);
             }
         }
         
@@ -97,7 +99,6 @@ bool CCharacterSelectPopupDP::initVariable()
 void CCharacterSelectPopupDP::Buy()
 {
     m_ItemBack->setOpacity(255 * 0.8f);
-    m_SelectFunc(this);
     
     // USER Data Save
     CUserDataManager::Instance()->setUserData_ItemGet("USER_CHARACTER_LIST", m_Character._idx);
@@ -107,10 +108,14 @@ void CCharacterSelectPopupDP::Buy()
 void CCharacterSelectPopupDP::Select()
 {
     m_ItemBack->setOpacity(255 * 0.8f);
-    m_SelectFunc(this);
     
     // USER Data Save
     CUserDataManager::Instance()->setUserData_Number("USER_CUR_CHARACTER", m_Character._idx);
+}
+
+void CCharacterSelectPopupDP::Center()
+{
+    m_ItemBack->setOpacity(255 * 0.8f);
 }
 
 void CCharacterSelectPopupDP::DeSelect()

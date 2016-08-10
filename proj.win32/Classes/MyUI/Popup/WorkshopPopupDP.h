@@ -8,8 +8,6 @@ class CWorkshopPopupDP : public Widget
 public:
 	static CWorkshopPopupDP* create(sWORKSHOPITEM_PARAM workshopItem);
 
-	virtual const Size& getContentSize() const override;
-
 protected:
     virtual bool init() override;
     bool initVariable();

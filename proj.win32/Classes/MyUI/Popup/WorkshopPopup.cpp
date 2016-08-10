@@ -53,8 +53,8 @@ bool CWorkshopPopup::initVariable()
             m_ScrollBack->addChild(workShopLabel);
             workShopLabel->setOpacity(0);
         }
+        
 		auto itemList = CWorkshopItemDataManager::Instance()->getSellingWorkshopItemList();
-		size_t listCount = itemList.size();
 		Size layerSize = m_ScrollBack->getContentSize();
 		Size dpSize = Size(1080, 200);
 		size_t dpDistance = 15;
@@ -71,15 +71,15 @@ bool CWorkshopPopup::initVariable()
 			listView->setItemsMargin(dpDistance);
 			listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			listView->setPosition(layerSize / 2);
-			listView->setMagneticType(ListView::MagneticType::BOTH_END);
-			listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CWorkshopPopup::Select, this, std::placeholders::_1, std::placeholders::_2));
+			listView->setMagneticType(ListView::MagneticType::NONE);
+			listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CWorkshopPopup::ScrollCallback, this, std::placeholders::_1, std::placeholders::_2));
 			m_ScrollBack->addChild(listView);
 
 			for (auto item : itemList)
 			{
-				auto items = CWorkshopPopupDP::create(item);
-				items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
-				listView->pushBackCustomItem(items);
+				auto itemDP = CWorkshopPopupDP::create(item);
+				itemDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+				listView->pushBackCustomItem(itemDP);
 			}
 		}
 
@@ -143,23 +143,11 @@ void CWorkshopPopup::End(){
     CSpecificPopupBase::PopupClose();
 }
 
-void CWorkshopPopup::Select(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
+void CWorkshopPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
 {
-    /*auto selectDP = dynamic_cast<CWorkshopPopupDP*>(dp);
-    if (selectDP != nullptr)
-    {
-        selectDP->DeSelect();
-    }*/
-
-
 	ListView* listView = dynamic_cast<ListView*>(ref);
 	if (listView == nullptr || type != ScrollView::EventType::CONTAINER_MOVED)
 	{
 		return;
 	}
-	auto left = listView->getLeftmostItemInCurrentView();
-	auto right = listView->getRightmostItemInCurrentView();
-	auto top = listView->getTopmostItemInCurrentView();
-	auto bottom = listView->getBottommostItemInCurrentView();
-	auto center = listView->getCenterItemInCurrentView();
 }

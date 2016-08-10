@@ -5,6 +5,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/CharacterDataManager.h"
 #include "../../DataManager/UserDataManager.h"
+#include "ui/UIListView.h"
 
 CCharacterSelectPopup* CCharacterSelectPopup::create()
 {
@@ -54,36 +55,35 @@ bool CCharacterSelectPopup::initVariable()
             selectLabel->setOpacity(0);
         }
         
-        m_ScrollView = ScrollView::create();
-        if(m_ScrollView != nullptr){
-            
-            /* 캐릭터리스트 데이터 읽음 */
-            auto characterList = CCharacterDataManager::Instance()->getCharacterList();
-            size_t listCount = characterList.size();
-            size_t dpDistance = 15;
-			Size dpSize = Size(540, 915);
-
-            m_ScrollView->setDirection(ScrollView::Direction::HORIZONTAL);
-            m_ScrollView->setBounceEnabled(true);
-            m_ScrollView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_ScrollView->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.5f));
-            m_ScrollView->setContentSize(Size(m_ScrollBack->getContentSize().width, dpSize.height));
-            m_ScrollView->setInnerContainerSize(Size((dpSize.width + dpDistance)* listCount, dpSize.height));
-            
-            int dpIdx = 0;
-            for(auto character : characterList){
-                auto selectDP = CCharacterSelectPopupDP::create(character, std::bind(&CCharacterSelectPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
-                selectDP->setPosition(Vec2((dpSize.width + dpDistance) * dpIdx
-                                             + (dpSize.width * 0.5f),
-                                             dpSize.height * 0.5f));
-                selectDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-
-                m_ScrollView->addChild(selectDP);
-                dpIdx++;
-            }
         
-            m_ScrollBack->addChild(m_ScrollView);
+        auto characterList = CCharacterDataManager::Instance()->getCharacterList();
+        Size layerSize = m_ScrollBack->getContentSize();
+        Size dpSize = Size(540, 915);
+        size_t dpDistance = 15;
+        
+        // Create the list view
+        auto listView = ListView::create();
+        if (listView != nullptr){
+            listView->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
+            listView->setBounceEnabled(true);
+            listView->setBackGroundImageScale9Enabled(true);
+            listView->setContentSize(Size(layerSize.width, dpSize.height));
+            listView->setScrollBarPositionFromCorner(Vec2(7, 7));
+            listView->setItemsMargin(dpDistance);
+            listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            listView->setPosition(layerSize / 2);
+            listView->setMagneticType(ListView::MagneticType::CENTER);
+            listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CCharacterSelectPopup::ScrollCallback, this, std::placeholders::_1, std::placeholders::_2));
+            m_ScrollBack->addChild(listView);
+            
+            for (auto character : characterList)
+            {
+                auto characterDP = CCharacterSelectPopupDP::create(character);
+                characterDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                listView->pushBackCustomItem(characterDP);
+            }
         }
+    
         
         m_btnEnd = CMyButton::create("endIcon.png",
                                      END,
@@ -95,10 +95,29 @@ bool CCharacterSelectPopup::initVariable()
             m_btnEnd->setPosition(Vec2(m_BG->getContentSize().width * 0.92f,
                                        m_BG->getContentSize().height * 0.05f));
             m_btnEnd->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_BG->addChild(m_btnEnd);
             m_btnEnd->setCascadeOpacityEnabled(true);
             m_btnEnd->setOpacity(0);
+            m_BG->addChild(m_btnEnd);
         }
+        
+        m_btnSelect = CMyButton::createWithLayerColor(Size(250, 150),
+                                                      Color4B(0, 0, 0, 255 * 0.8f),
+                                                      "Select",
+                                                      40,
+                                                      Color3B::WHITE,
+                                                      END,
+                                                      std::bind(&CCharacterSelectPopup::Select, this),
+                                                      EFFECT_ALPHA);
+        if (m_btnSelect != nullptr)
+        {
+            m_btnSelect->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f,
+                                          m_ScrollBack->getContentSize().height * 0.1f));
+            m_btnSelect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_btnSelect->setCascadeOpacityEnabled(true);
+            m_btnSelect->setOpacity(0);
+            m_ScrollBack->addChild(m_btnSelect);
+        }
+        
         
 		m_btnUserCoin = CUserCoinButton::create();
 		if (m_btnUserCoin != nullptr)
@@ -106,9 +125,9 @@ bool CCharacterSelectPopup::initVariable()
 			m_btnUserCoin->setPosition(Vec2(m_BG->getContentSize().width * 0.5f,
 				m_BG->getContentSize().height * 0.05f));
 			m_btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_BG->addChild(m_btnUserCoin);
 			m_btnUserCoin->setCascadeOpacityEnabled(true);
 			m_btnUserCoin->setOpacity(0);
+            m_BG->addChild(m_btnUserCoin);
 		}
         
         m_Popup->setPopupOpenEffectFunc([this, selectLabel](CPopup* pausePopup){
@@ -118,6 +137,7 @@ bool CCharacterSelectPopup::initVariable()
             m_ScrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(0, winSize.height * 0.12f))));
             m_btnEnd->runAction(FadeIn::create(0.5f));
 			m_btnUserCoin->runAction(FadeIn::create(0.5f));
+            m_btnSelect->runAction(FadeIn::create(0.5f));
         });
         
         m_Popup->setPopupCloseEffectFunc([this, visibleSize, origin, selectLabel](CPopup* pausePopup){
@@ -125,6 +145,7 @@ bool CCharacterSelectPopup::initVariable()
             selectLabel->runAction(FadeTo::create(0.5f, 0));
             m_btnEnd->runAction(FadeTo::create(0.5f, 0));
 			m_btnUserCoin->runAction(FadeTo::create(0.5f, 0));
+            m_btnSelect->runAction(FadeTo::create(0.5f, 0));
             m_Popup->scheduleOnce([this, visibleSize, origin](float delta){
                 m_ScrollBack->runAction(Sequence::create(EaseSineIn::create(MoveTo::create(0.4f, Vec2(0, origin.x + visibleSize.height * 1.5f))),
                                                  CallFunc::create([this](){
@@ -145,17 +166,50 @@ void CCharacterSelectPopup::End(){
     CSpecificPopupBase::PopupClose();
 }
 
-void CCharacterSelectPopup::Select(cocos2d::Ref* dp)
+void CCharacterSelectPopup::Select()
 {
-	auto selectDP = dynamic_cast<CCharacterSelectPopupDP*>(dp);
-	if (selectDP != nullptr)
-	{
-        for(auto child : m_ScrollView->getChildren())
+    if(m_CenterDP == nullptr) return;
+    
+    auto centerCharacterParam = m_CenterDP->getCharacterParam();
+    
+    if(CUserDataManager::Instance()->getUserData_IsItemHave("USER_CHARACTER_LIST", centerCharacterParam._idx))
+        m_CenterDP->Select();
+    else
+        m_CenterDP->Buy();
+}
+
+void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
+{
+    ListView* listView = dynamic_cast<ListView*>(ref);
+    if (listView == nullptr || type != ScrollView::EventType::CONTAINER_MOVED)
+    {
+        return;
+    }
+
+    auto center = listView->getCenterItemInCurrentView();
+    auto centerIdx = listView->getIndex(center);
+    auto centerChild = listView->getChildren().at(centerIdx);
+    m_CenterDP = dynamic_cast<CCharacterSelectPopupDP*>(centerChild);
+    
+    if (m_CenterDP == nullptr)
+        return;
+    
+    
+    m_CenterDP->Center();
+    
+    auto centerCharacterParam = m_CenterDP->getCharacterParam();
+    
+    if(CUserDataManager::Instance()->getUserData_IsItemHave("USER_CHARACTER_LIST", centerCharacterParam._idx))
+        m_btnSelect->getBtnLabel()->setString("Selet");
+    else
+        m_btnSelect->getBtnLabel()->setString(MakeString("$ %d", centerCharacterParam._cost));
+    
+    
+    for(auto characterDP : listView->getChildren())
+    {
+        if(characterDP != nullptr && characterDP != center)
         {
-            if(child != nullptr && child != selectDP)
-            {
-                dynamic_cast<CCharacterSelectPopupDP*>(child)->DeSelect();
-            }
+            dynamic_cast<CCharacterSelectPopupDP*>(characterDP)->DeSelect();
         }
-	}
+    }
 }
