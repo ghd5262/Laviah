@@ -211,57 +211,53 @@ bool CMyButton::init()
 bool CMyButton::initVariable()
 {
 	try{
-		auto listener = EventListenerTouchOneByOne::create();
-		listener->setSwallowTouches(true);
-		listener->onTouchBegan = CC_CALLBACK_2(CMyButton::onTouchBegan, this);
-		listener->onTouchEnded = CC_CALLBACK_2(CMyButton::onTouchEnded, this);
-		_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
-		m_BeginFuncList.reserve(5);
-		m_ExecuteFuncList.reserve(5);
-		m_EndFuncList.reserve(5);
-
-		if (m_NormalTextureName != "")
-			m_pNormalTexture = Sprite::create(m_NormalTextureName);
-		if (m_pNormalTexture != nullptr){
-			m_pNormalTexture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			addChild(m_pNormalTexture);
-		}
-
-		if (m_ButtonKind == BUTTON_LAYER)
-			m_LayerBtn = LayerColor::create(m_LayerColor, m_LayerSize.width, m_LayerSize.height);
-		if (m_LayerBtn != nullptr)
-		{
-			m_LayerBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_LayerBtn->setIgnoreAnchorPointForPosition(false);
-			addChild(m_LayerBtn);
-		}
-
-		if (m_LabelString != "")
-			m_pLabel = cocos2d::Label::createWithTTF(m_LabelString, "fonts/malgunbd.ttf", m_FontSize);
-		if (m_pLabel != nullptr){
-			m_pLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_pLabel->setColor(m_FontColor);
-			addChild(m_pLabel);
-		}
-	}
-	catch (...){
-		throw StringUtils::format("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
+        if (Widget::init())
+        {
+            this->scheduleUpdate();
+            this->addTouchEventListener(CC_CALLBACK_2(CMyButton::onTouchEvent, this));
+            this->setTouchEnabled(true);
+            
+            m_BeginFuncList.reserve(5);
+            m_ExecuteFuncList.reserve(5);
+            m_EndFuncList.reserve(5);
+            
+            if (m_NormalTextureName != "")
+                m_pNormalTexture = Sprite::create(m_NormalTextureName);
+            if (m_pNormalTexture != nullptr){
+                m_pNormalTexture->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+                addChild(m_pNormalTexture);
+                
+                this->setContentSize(m_pNormalTexture->getContentSize());
+            }
+            
+            if (m_ButtonKind == BUTTON_LAYER)
+                m_LayerBtn = LayerColor::create(m_LayerColor, m_LayerSize.width, m_LayerSize.height);
+            if (m_LayerBtn != nullptr)
+            {
+                m_LayerBtn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+                m_LayerBtn->setIgnoreAnchorPointForPosition(false);
+                addChild(m_LayerBtn);
+                
+                this->setContentSize(m_LayerBtn->getContentSize());
+            }
+            
+            if (m_LabelString != "")
+                m_pLabel = cocos2d::Label::createWithTTF(m_LabelString, "fonts/malgunbd.ttf", m_FontSize);
+            if (m_pLabel != nullptr){
+                m_pLabel->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.5f));
+                m_pLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                m_pLabel->setColor(m_FontColor);
+                addChild(m_pLabel);
+            }
+            
+            
+        }
+    }
+    catch (...){
+        throw StringUtils::format("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
 		return false;
 	}
 	return true;
-}
-
-// 가상함수는 인라인화하지 못한다.
-const Size& CMyButton::getContentSize() const {
-	if (m_ButtonKind == BUTTON_LAYER){
-		return m_LayerBtn->getContentSize();
-	}
-	else{
-		CCASSERT(m_pNormalTexture != nullptr, "Texture is nullptr");
-		return m_pNormalTexture->getContentSize();
-	}
-
 }
 
 /* 상태 (해당 상태일 때 함수 호출됨)
@@ -370,86 +366,64 @@ void CMyButton::btnEffectEnd()
 	}
 }
 
-
-/* 터치된 좌표를 버튼의 좌표로 변환 한 후에 버튼이 터치되었는지 검사 */
-bool CMyButton::touchHits(Touch  *touch)
+void CMyButton::onTouchEvent(Ref *pSender, Widget::TouchEventType type)
 {
-	if (m_ButtonKind == BUTTON_LAYER)
-	{
-		if (m_LayerBtn == nullptr)
-			return false;
-
-		const Rect area(0, 0, m_LayerBtn->getContentSize().width,
-			m_LayerBtn->getContentSize().height);
-
-		// world to nodespace 좌표 변환
-		return area.containsPoint(m_LayerBtn->convertToNodeSpace(touch->getLocation()));
-	}
-	else
-	{
-		if (m_pNormalTexture == nullptr)
-			return false;
-
-		const Rect area(0, 0, m_pNormalTexture->getContentSize().width,
-			m_pNormalTexture->getContentSize().height);
-
-		// world to nodespace 좌표 변환
-		return area.containsPoint(m_pNormalTexture->convertToNodeSpace(touch->getLocation()));
-	}
+    switch (type)
+    {
+        case Widget::TouchEventType::BEGAN:
+            onTouchBegan();
+            break;
+            
+        case Widget::TouchEventType::ENDED:
+            onTouchEnded();
+            break;
+            
+        default:
+            break;
+    }
 }
 
 /* 버튼이 눌렸을 때 BEGIN */
-bool CMyButton::onTouchBegan(Touch  *touch, Event  *event)
+bool CMyButton::onTouchBegan()
 {
-	CC_UNUSED_PARAM(event);
 	if (!m_Unable){
-
-		// 좌표 변환 후 터치 체크
-		m_IsSelect = touchHits(touch);
-
-		// 버튼의 좌표에서 진짜로 터치되었을 경우
-		if (m_IsSelect){
-
-			// BEGIN 상태일때 호출해야할 함수가 있다면 호출
-			std::for_each(m_BeginFuncList.begin(), m_BeginFuncList.end(),
-				[](const std::function<void(void)> &func){
-				func();
-			});
-
-			btnEffectStart();
-		}
-	}
+        
+        // BEGIN 상태일때 호출해야할 함수가 있다면 호출
+        if(m_BeginFuncList.size() > 0){
+            
+            std::for_each(m_BeginFuncList.begin(), m_BeginFuncList.end(),
+                          [](const std::function<void(void)> &func){
+                              func();
+                          });
+        }
+        btnEffectStart();
+        m_IsSelect = true;
+    }
 	return m_IsSelect;
 }
 
 /* 버튼에서 떨어졌을 때 END */
-void CMyButton::onTouchEnded(Touch  *touch, Event  *event)
+void CMyButton::onTouchEnded()
 {
-	CC_UNUSED_PARAM(event);
 	if (!m_Unable){
 
-		// 좌표 변환 후 터치 체크
-		m_IsSelect = touchHits(touch);
-
-		// 버튼의 좌표에서 진짜로 터치되었을 경우
-		if (m_IsSelect){
-
-			// END 상태일때 호출해야할 함수가 있다면 호출
-			std::for_each(m_EndFuncList.begin(), m_EndFuncList.end(),
-				[](const std::function<void(void)> &func){
-				func();
-			});
-
-		}
-		btnEffectEnd();
-
-		// 버튼 눌림 종료
-		m_IsSelect = false;
-	}
+        // END 상태일때 호출해야할 함수가 있다면 호출
+        if(m_EndFuncList.size() > 0){
+            
+            std::for_each(m_EndFuncList.begin(), m_EndFuncList.end(),
+                          [](const std::function<void(void)> &func){
+                              func();
+                          });
+        }
+        btnEffectEnd();
+        
+        // 버튼 눌림 종료
+        m_IsSelect = false;
+    }
 }
 
 /* 버튼이 눌리고 있는 중일때 EXECUTE */
-void CMyButton::Execute(float delta)
+void CMyButton::update(float delta)
 {
 	// 터치불가 상태 
 	if (m_Unable) return;

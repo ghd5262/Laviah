@@ -34,7 +34,7 @@ enum eMYBUTTON_KIND{
 	BUTTON_LAYER = 3
 };
 
-class CMyButton : public CGameObject
+class CMyButton : public Widget
 {
 public:
 	/* 기본 버튼 생성 */
@@ -82,9 +82,7 @@ public:
 		const std::function<void(void)> &func);		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
 
 	/* 버튼이 가지는 Execute callback함수 호출 */
-	virtual void Execute(float delta = 0.f);
-
-	virtual const Size& getContentSize() const override;
+	virtual void update(float delta = 0.f) override;
 
 	void setBtnUnable(bool unable);
 	bool getBtnUnable() const { return m_Unable; }
@@ -93,19 +91,18 @@ public:
 	CC_SYNTHESIZE(Label*, m_pLabel, BtnLabel);
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
+	bool initVariable();
 
 private:
-	/* 해당 버튼 영역에 터치되었는지 검사
-	* world to nodespace 좌표 변환 */
-	bool touchHits(Touch  *touch);
-
+    
+    void onTouchEvent(Ref *pSender, Widget::TouchEventType type);
+    
 	/* 버튼이 가지는 Begin callback함수 호출 */
-	bool onTouchBegan(Touch  *touch, Event  *event);
-
+    bool onTouchBegan();
+    
 	/* 버튼이 가지는 End callback함수 호출 */
-	void onTouchEnded(Touch  *touch, Event  *event);
-
+    void onTouchEnded();
+    
 	/* 버튼 눌릴 때 Effect 실행*/
 	void btnEffectStart();
 
