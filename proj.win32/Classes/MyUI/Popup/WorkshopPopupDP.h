@@ -3,12 +3,13 @@
 #include "../../DataManager/WorkshopItemDataManager.h"
 USING_NS_CC;
 
-class CWorkshopPopupDP : public cocos2d::Layer
+class CWorkshopPopupDP : public Widget
 {
 public:
-	static CWorkshopPopupDP* create(sWORKSHOPITEM_PARAM workshopItem, const std::function<void(cocos2d::Ref*)> &func);
-    void DeSelect();
-    
+	static CWorkshopPopupDP* create(sWORKSHOPITEM_PARAM workshopItem);
+
+	virtual const Size& getContentSize() const override;
+
 protected:
     virtual bool init() override;
     bool initVariable();
@@ -16,12 +17,11 @@ protected:
 private:
     void Buy();
     
-	CWorkshopPopupDP(sWORKSHOPITEM_PARAM workshopItem, const std::function<void(cocos2d::Ref*)> &func)
-		: m_WorkshopItem(workshopItem)
-    , m_SelectFunc(func){};
+	CWorkshopPopupDP(sWORKSHOPITEM_PARAM workshopItem)
+		: m_WorkshopItem(workshopItem){};
     virtual ~CWorkshopPopupDP(){};
     
 private:
 	const sWORKSHOPITEM_PARAM m_WorkshopItem;
-    std::function<void(cocos2d::Ref*)> m_SelectFunc;
+	LayerColor* m_DPBack;
 };

@@ -252,6 +252,18 @@ bool CMyButton::initVariable()
 	return true;
 }
 
+// 가상함수는 인라인화하지 못한다.
+const Size& CMyButton::getContentSize() const {
+	if (m_ButtonKind == BUTTON_LAYER){
+		return m_LayerBtn->getContentSize();
+	}
+	else{
+		CCASSERT(m_pNormalTexture != nullptr, "Texture is nullptr");
+		return m_pNormalTexture->getContentSize();
+	}
+
+}
+
 /* 상태 (해당 상태일 때 함수 호출됨)
  * 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void) */
 void CMyButton::AddState(eMYBUTTON_STATE state,

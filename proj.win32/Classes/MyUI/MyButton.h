@@ -84,16 +84,7 @@ public:
 	/* 버튼이 가지는 Execute callback함수 호출 */
 	virtual void Execute(float delta = 0.f);
 
-	virtual const Size& getContentSize() const override { 
-		if (m_ButtonKind == BUTTON_LAYER){
-			return m_LayerBtn->getContentSize();
-		}
-		else{
-			CCASSERT(m_pNormalTexture != nullptr, "Texture is nullptr");
-			return m_pNormalTexture->getContentSize();
-		}
-		
-	}
+	virtual const Size& getContentSize() const override;
 
 	void setBtnUnable(bool unable);
 	bool getBtnUnable() const { return m_Unable; }

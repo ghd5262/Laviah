@@ -4,9 +4,7 @@
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/WorkshopItemDataManager.h"
-#include "ui/UIScrollView.h"
-#include "ui/UIImageView.h"
-#include "ui/UIPageView.h"
+#include "ui/UIListView.h"
 
 CWorkshopPopup* CWorkshopPopup::create()
 {
@@ -55,39 +53,36 @@ bool CWorkshopPopup::initVariable()
             m_ScrollBack->addChild(workShopLabel);
             workShopLabel->setOpacity(0);
         }
-        
-        auto itemScroll = ScrollView::create();
-        if(itemScroll != nullptr){
-            
-            /* 아이템리스트 데이터 읽음 */
-			auto itemList = CWorkshopItemDataManager::Instance()->getSellingWorkshopItemList();
-			size_t listCount = itemList.size();
-            size_t dpDistance = 15;
-            Size dpSize = Size(1080, 200);
-            
-            itemScroll->setDirection(ScrollView::Direction::VERTICAL);
-            itemScroll->setBounceEnabled(true);
-            itemScroll->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            itemScroll->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.5f));
-            itemScroll->setContentSize(Size(m_ScrollBack->getContentSize().width, (dpSize.height + dpDistance) * 4));
-            itemScroll->setInnerContainerSize(Size(dpSize.width, (dpSize.height + dpDistance) * listCount));
-            
-			int dpIdx = 0;
-            for(auto item : itemList)
-            {
-                auto items = CWorkshopPopupDP::create(item, std::bind(&CWorkshopPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
-                items->setPosition(Vec2(dpSize.width * 0.5f,
-                                        (dpSize.height + dpDistance) * dpIdx + (dpSize.height + dpDistance)));
-                items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-                itemScroll->addChild(items);
-                dpIdx++;
-            }
-            
+		auto itemList = CWorkshopItemDataManager::Instance()->getSellingWorkshopItemList();
+		size_t listCount = itemList.size();
+		Size layerSize = m_ScrollBack->getContentSize();
+		Size dpSize = Size(1080, 200);
+		size_t dpDistance = 15;
+		float spawnCount = 4;
 
-            
-            m_ScrollBack->addChild(itemScroll);
-        }
-        
+		// Create the list view
+		auto listView = ListView::create();
+		if (listView != nullptr){
+			listView->setDirection(cocos2d::ui::ScrollView::Direction::VERTICAL);
+			listView->setBounceEnabled(true);
+			listView->setBackGroundImageScale9Enabled(true);
+			listView->setContentSize(Size(m_ScrollBack->getContentSize().width, (dpSize.height + dpDistance) * spawnCount));
+			listView->setScrollBarPositionFromCorner(Vec2(7, 7));
+			listView->setItemsMargin(dpDistance);
+			listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			listView->setPosition(layerSize / 2);
+			listView->setMagneticType(ListView::MagneticType::BOTH_END);
+			listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CWorkshopPopup::Select, this, std::placeholders::_1, std::placeholders::_2));
+			m_ScrollBack->addChild(listView);
+
+			for (auto item : itemList)
+			{
+				auto items = CWorkshopPopupDP::create(item);
+				items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+				listView->pushBackCustomItem(items);
+			}
+		}
+
         m_btnEnd = CMyButton::create("endIcon.png",
                                      END,
                                      std::bind(&CWorkshopPopup::End, this),
@@ -148,11 +143,23 @@ void CWorkshopPopup::End(){
     CSpecificPopupBase::PopupClose();
 }
 
-void CWorkshopPopup::Select(cocos2d::Ref* dp)
+void CWorkshopPopup::Select(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
 {
-    auto selectDP = dynamic_cast<CWorkshopPopupDP*>(dp);
+    /*auto selectDP = dynamic_cast<CWorkshopPopupDP*>(dp);
     if (selectDP != nullptr)
     {
         selectDP->DeSelect();
-    }
+    }*/
+
+
+	ListView* listView = dynamic_cast<ListView*>(ref);
+	if (listView == nullptr || type != ScrollView::EventType::CONTAINER_MOVED)
+	{
+		return;
+	}
+	auto left = listView->getLeftmostItemInCurrentView();
+	auto right = listView->getRightmostItemInCurrentView();
+	auto top = listView->getTopmostItemInCurrentView();
+	auto bottom = listView->getBottommostItemInCurrentView();
+	auto center = listView->getCenterItemInCurrentView();
 }

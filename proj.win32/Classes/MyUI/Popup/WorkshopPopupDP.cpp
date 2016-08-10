@@ -3,9 +3,9 @@
 #include "../LevelProgressBar.h"
 #include "../../DataManager/UserDataManager.h"
 
-CWorkshopPopupDP* CWorkshopPopupDP::create(sWORKSHOPITEM_PARAM workshopItem, const std::function<void(cocos2d::Ref*)> &func)
+CWorkshopPopupDP* CWorkshopPopupDP::create(sWORKSHOPITEM_PARAM workshopItem)
 {
-	CWorkshopPopupDP *pRet = new(std::nothrow) CWorkshopPopupDP(workshopItem, func);
+	CWorkshopPopupDP *pRet = new(std::nothrow) CWorkshopPopupDP(workshopItem);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -31,12 +31,12 @@ bool CWorkshopPopupDP::initVariable()
     try{
         unsigned currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
         
-        auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
-        if (dpBack != nullptr){
-            dpBack->setIgnoreAnchorPointForPosition(false);
-            dpBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            dpBack->setPosition(Vec2::ZERO);
-            this->addChild(dpBack);
+        m_DPBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
+        if (m_DPBack != nullptr){
+            m_DPBack->setIgnoreAnchorPointForPosition(false);
+            m_DPBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_DPBack->setPosition(Vec2::ZERO);
+            this->addChild(m_DPBack);
         }
         
         auto dpItemBack = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), 805.f, 200.f);
@@ -44,7 +44,7 @@ bool CWorkshopPopupDP::initVariable()
             dpItemBack->setIgnoreAnchorPointForPosition(false);
             dpItemBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             dpItemBack->setPosition(Vec2(0 + dpItemBack->getContentSize().width * 0.5f, 0));
-            dpBack->addChild(dpItemBack);
+            m_DPBack->addChild(dpItemBack);
         }
         
         auto dpBuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
@@ -52,8 +52,8 @@ bool CWorkshopPopupDP::initVariable()
         if (dpBuyBtn != nullptr)
         {
             dpBuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            dpBuyBtn->setPosition(Vec2(dpBack->getContentSize().width - (dpBuyBtn->getContentSize().width * 0.5f), 0));
-            dpBack->addChild(dpBuyBtn);
+            dpBuyBtn->setPosition(Vec2(m_DPBack->getContentSize().width - (dpBuyBtn->getContentSize().width * 0.5f), 0));
+            m_DPBack->addChild(dpBuyBtn);
             
             auto btnLabel = dpBuyBtn->getBtnLabel();
             
@@ -110,14 +110,16 @@ bool CWorkshopPopupDP::initVariable()
     return true;
 }
 
-void CWorkshopPopupDP::Buy()
-{
-    m_SelectFunc(this);
-    unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
-    CUserDataManager::Instance()->setUserData_Number(m_WorkshopItem._userDataKey, value + 1);
+const Size& CWorkshopPopupDP::getContentSize() const {
+	if (m_DPBack != nullptr){
+		return m_DPBack->getContentSize();
+	}
+	CCASSERT(m_DPBack != nullptr, "ColorLayer is nullptr");
 }
 
-void CWorkshopPopupDP::DeSelect()
+void CWorkshopPopupDP::Buy()
 {
-	CCLOG("%s", m_WorkshopItem._name.c_str());
+	CCLOG("Buy Item %s", m_WorkshopItem._name.c_str());
+    unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+    CUserDataManager::Instance()->setUserData_Number(m_WorkshopItem._userDataKey, value + 1);
 }

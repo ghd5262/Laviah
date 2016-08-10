@@ -1,5 +1,6 @@
 #pragma once
 #include "../Popup.h"
+#include "ui/UIScrollView.h"
 
 class CMyButton;
 class CUserCoinButton;
@@ -13,7 +14,7 @@ protected:
     
 private:
     void End();
-    void Select(cocos2d::Ref* dp);
+	void Select(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type);
     
     CWorkshopPopup()
     : m_btnEnd(nullptr)
