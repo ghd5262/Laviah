@@ -103,6 +103,9 @@ private:
 	/* 버튼이 가지는 End callback함수 호출 */
     void onTouchEnded();
     
+    /* 버튼터치가 Cancel 됬을 때 */
+    void onTouchCancelled();
+    
 	/* 버튼 눌릴 때 Effect 실행*/
 	void btnEffectStart();
 

@@ -224,21 +224,23 @@ bool CMyButton::initVariable()
             if (m_NormalTextureName != "")
                 m_pNormalTexture = Sprite::create(m_NormalTextureName);
             if (m_pNormalTexture != nullptr){
-                m_pNormalTexture->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
-                addChild(m_pNormalTexture);
-                
                 this->setContentSize(m_pNormalTexture->getContentSize());
+                
+                m_pNormalTexture->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.5f));
+                m_pNormalTexture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                addChild(m_pNormalTexture);
             }
             
             if (m_ButtonKind == BUTTON_LAYER)
                 m_LayerBtn = LayerColor::create(m_LayerColor, m_LayerSize.width, m_LayerSize.height);
             if (m_LayerBtn != nullptr)
             {
-                m_LayerBtn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+                this->setContentSize(m_LayerBtn->getContentSize());
+                
+                m_LayerBtn->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.5f));
+                m_LayerBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 m_LayerBtn->setIgnoreAnchorPointForPosition(false);
                 addChild(m_LayerBtn);
-                
-                this->setContentSize(m_LayerBtn->getContentSize());
             }
             
             if (m_LabelString != "")
@@ -378,6 +380,10 @@ void CMyButton::onTouchEvent(Ref *pSender, Widget::TouchEventType type)
             onTouchEnded();
             break;
             
+        case Widget::TouchEventType::CANCELED:
+            onTouchCancelled();
+            break;
+            
         default:
             break;
     }
@@ -415,6 +421,19 @@ void CMyButton::onTouchEnded()
                               func();
                           });
         }
+        // 종료 이펙트
+        btnEffectEnd();
+        
+        // 버튼 눌림 종료
+        m_IsSelect = false;
+    }
+}
+
+/* 버튼터치가 Cancel 됬을 때 */
+void CMyButton::onTouchCancelled()
+{
+    if (!m_Unable){
+        // 종료 이펙트
         btnEffectEnd();
         
         // 버튼 눌림 종료
