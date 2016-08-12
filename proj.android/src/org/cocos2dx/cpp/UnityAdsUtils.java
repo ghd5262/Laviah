@@ -26,29 +26,14 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.cpp;
 
-import kr.HongSeongHee.StarStarStar.R;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
 
 
 import com.unity3d.ads.IUnityAdsListener;
 import com.unity3d.ads.UnityAds;
-import com.unity3d.ads.UnityAds.FinishState;
-import com.unity3d.ads.UnityAds.UnityAdsError;
 import com.unity3d.ads.log.DeviceLog;
 import com.unity3d.ads.metadata.MediationMetaData;
 import com.unity3d.ads.metadata.MetaData;
@@ -59,7 +44,7 @@ import com.unity3d.ads.properties.SdkProperties;
 
 public class UnityAdsUtils {
 
-    public static final String TAG_UnityAds = "UnityAds";
+    public static final String TAG = "UnityAds";
 
  // [Unity Ads - 2016-07-17] START
     final private String defaultGameId = "1096133";
@@ -72,6 +57,8 @@ public class UnityAdsUtils {
 	
     public void init(final Activity activity) {
         if (!sInited) {
+        	Log.d(TAG, "UnityAds Init End");
+        	
         	self = (AppActivity)activity;
             final UnityAdsListener unityAdsListener = new UnityAdsListener();
     		UnityAds.setListener(unityAdsListener);
@@ -101,6 +88,8 @@ public class UnityAdsUtils {
   			preferencesEdit.commit();
   	
             sInited = true;
+            
+            Log.d(TAG, "UnityAds Init End");
         }
     }
  
@@ -150,23 +139,6 @@ public class UnityAdsUtils {
 		}
 	}
     // [END Resume]
-	
-    private void enableButton (Button btn) {
-		btn.setEnabled(true);
-		float alpha = 1f;
-		AlphaAnimation alphaUp = new AlphaAnimation(alpha, alpha);
-		alphaUp.setFillAfter(true);
-		btn.startAnimation(alphaUp);
-	}
-
-    private void disableButton (Button btn) {
-		float alpha = 0.45f;
-		btn.setEnabled(false);
-		AlphaAnimation alphaUp = new AlphaAnimation(alpha, alpha);
-		alphaUp.setFillAfter(true);
-		btn.startAnimation(alphaUp);
-	}
-	
     
     /* LISTENER */
 	private class UnityAdsListener implements IUnityAdsListener {
@@ -187,7 +159,7 @@ public class UnityAdsUtils {
 						case "defaultVideoAndPictureZone":
 							interstitialPlacementId = zoneId;
 							toast("Ready", zoneId);
-							Log.d(TAG_UnityAds, "Unity Ads Ready"+ zoneId);
+							Log.d(TAG, "Unity Ads Ready"+ zoneId);
 							AppActivity.JAVA_NormalUnityAdsReady();
 							break;
 
@@ -196,7 +168,7 @@ public class UnityAdsUtils {
 						case "incentivizedZone":
 							incentivizedPlacementId = zoneId;
 							toast("Ready", zoneId);
-							Log.d(TAG_UnityAds, "Unity Ads Ready"+ zoneId);
+							Log.d(TAG, "Unity Ads Ready"+ zoneId);
 							AppActivity.JAVA_RewardUnityAdsReady();
 							break;
 					}
@@ -208,7 +180,7 @@ public class UnityAdsUtils {
 		public void onUnityAdsStart(String zoneId) {
 			DeviceLog.debug("onUnityAdsStart: " + zoneId);
 			toast("Start", zoneId);
-			Log.d(TAG_UnityAds, "Unity Ads Start");
+			Log.d(TAG, "Unity Ads Start");
 			AppActivity.JAVA_UnityAdsStart();
 		}
 
@@ -217,7 +189,7 @@ public class UnityAdsUtils {
 			isVideoPlaying = false;
 			DeviceLog.debug("onUnityAdsFinish: " + zoneId + " - " + result);
 			toast("Finish", zoneId + " " + result);
-			Log.d(TAG_UnityAds, "Unity Ads Finish");
+			Log.d(TAG, "Unity Ads Finish");
 			AppActivity.JAVA_UnityAdsFinish();
 		}
  
@@ -226,7 +198,7 @@ public class UnityAdsUtils {
 			DeviceLog.debug("onUnityAdsError: " + error + " - " + message);
 			toast("Error", error + " " + message);
 //			statusText.setText(error + " - " + message);
-			Log.d(TAG_UnityAds, "Unity Ads Error");
+			Log.d(TAG, "Unity Ads Error");
 			AppActivity.JAVA_UnityAdsError();
 		}
 

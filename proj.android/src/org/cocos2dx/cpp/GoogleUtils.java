@@ -30,35 +30,22 @@ import kr.HongSeongHee.StarStarStar.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.view.View;
 
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
-import com.google.android.gms.games.snapshot.SnapshotMetadata;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Random;
 
 public class GoogleUtils implements 
 GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -91,6 +78,8 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
     
     public void init(final Activity activity) {
         if (!sInited) {
+        	Log.d(TAG, "GoogleUtils Init Start");
+        	
         	self = (AppActivity)activity;
         	
         	mGoogleApiClient = new GoogleApiClient.Builder(self)
@@ -102,6 +91,8 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
         	
         	beginUserInitiatedSignIn();
             sInited = true;
+            
+            Log.d(TAG, "GoogleUtils Init End");
         }
     }
     // [END init]
