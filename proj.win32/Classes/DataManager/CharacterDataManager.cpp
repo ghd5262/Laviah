@@ -89,7 +89,7 @@ CCharacterDataManager::CCharacterDataManager()
 //    CCLOG("The Loaded Stage Size is %d AND the Last Idx of Stage Is %d", static_cast<int>(m_CharacterList->size()), ForLOG);
 
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		sCHARACTER_PARAM character;
 
@@ -102,11 +102,11 @@ CCharacterDataManager::CCharacterDataManager()
 		character._bonusItemTime = 3.f;
 		character._magnetItemTime = 4.f;
 		character._giantItemTime = 5.f;
-		character._normalTextureName = MakeString("player%d.png", i);
-		character._giantTextureName = MakeString("player%d_big.png", i);
-		character._name = MakeString("character_%d", i);
-		character._skillName = MakeString("skill_%d", i);;
-		character._story = MakeString("story_%d", i);
+		character._normalTextureName = MakeString("player%d.png", i % 5);
+		character._giantTextureName = MakeString("player%d_big.png", i % 5);
+		character._name = MakeString("character_%d", i % 5);
+		character._skillName = MakeString("skill_%d", i % 5);;
+		character._story = MakeString("story_%d", i % 5);
 
 		m_CharacterList.emplace_back(character);
 	}

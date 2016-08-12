@@ -328,8 +328,10 @@ void CMyButton::btnEffectStart()
 			m_pNormalTexture->setColor(Color3B::GRAY);
 		if (m_pLabel != nullptr)
 			m_pLabel->setColor(Color3B::GRAY);
-		if (m_ButtonKind == BUTTON_LAYER)
+        if (m_ButtonKind == BUTTON_LAYER){
 			m_LayerBtn->setColor(Color3B::GRAY);
+            m_LayerBtn->setOpacity(m_LayerColor.a);
+        }
 	}
 
 	if (onEffect(EFFECT_TEXTURE))
@@ -467,8 +469,10 @@ void CMyButton::setBtnUnable(bool unable)
 			m_pNormalTexture->setColor(Color3B::GRAY);
 		if (m_pLabel != nullptr)
 			m_pLabel->setColor(Color3B::GRAY);
-		if (m_ButtonKind == BUTTON_LAYER)
+        if (m_ButtonKind == BUTTON_LAYER){
 			m_LayerBtn->setColor(Color3B::GRAY);
+            m_LayerBtn->setOpacity(m_LayerColor.a);
+        }
 	}
 	else
 	{

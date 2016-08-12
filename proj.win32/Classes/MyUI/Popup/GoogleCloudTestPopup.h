@@ -1,5 +1,6 @@
 #pragma once
 #include "../Popup.h"
+#include "ui/UIScrollView.h"
 
 class CMyButton;
 class CGoogleCloudTestPopup : public CSpecificPopupBase
@@ -13,7 +14,8 @@ protected:
 private:
 	void End();
 	void Select(cocos2d::Ref* dp);
-
+    void ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type);
+    
 	CGoogleCloudTestPopup()
 		: m_btnEnd(nullptr)
 		, m_BG(nullptr)

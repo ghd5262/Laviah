@@ -39,7 +39,7 @@ bool CScoreBullet::initVariable()
 {
 	try{
 		m_strScore = MakeString("%d", m_nScore);
-		m_labelScore = Label::create(MakeString("+ %s", m_strScore.c_str()), "fonts/Number.ttf", 25);
+		m_labelScore = Label::createWithTTF(MakeString("+ %s", m_strScore.c_str()), "fonts/Number.ttf", 25);
 		if (m_labelScore != nullptr){
 			m_labelScore->setTextColor(Color4B(30, 255, 0, 255));
 			m_labelScore->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

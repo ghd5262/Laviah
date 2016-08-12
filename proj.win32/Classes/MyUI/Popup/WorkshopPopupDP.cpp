@@ -49,19 +49,19 @@ bool CWorkshopPopupDP::initVariable()
             m_DPBack->addChild(dpItemBack);
         }
         
-        auto dpBuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
+        m_BuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
             , " ", 40, g_labelColor2, END, std::bind(&CWorkshopPopupDP::Buy, this), EFFECT_SIZEDOWN);
-        if (dpBuyBtn != nullptr)
+        if (m_BuyBtn != nullptr)
         {
-            dpBuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            dpBuyBtn->setPosition(Vec2(m_DPBack->getContentSize().width - (dpBuyBtn->getContentSize().width * 0.5f), 0));
-            m_DPBack->addChild(dpBuyBtn);
+            m_BuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_BuyBtn->setPosition(Vec2(m_DPBack->getContentSize().width - (m_BuyBtn->getContentSize().width * 0.5f), 0));
+            m_DPBack->addChild(m_BuyBtn);
             
-            auto btnLabel = dpBuyBtn->getBtnLabel();
+            auto btnLabel = m_BuyBtn->getBtnLabel();
             
             if(currentLevel >= m_WorkshopItem._maxLevel){
                 btnLabel->setString("MAX");
-                dpBuyBtn->setBtnUnable(true);
+                m_BuyBtn->setBtnUnable(true);
                 btnLabel->setColor(Color3B::BLACK);
             }
             else{
@@ -87,14 +87,14 @@ bool CWorkshopPopupDP::initVariable()
 			dpItemBack->addChild(workshopItemExplain);
 		}
 
-		auto levelProgressBar = CLevelProgressBar::create(
+		m_LevelProgressBar = CLevelProgressBar::create(
 			Size(dpItemBack->getContentSize().width * 0.7f, dpItemBack->getContentSize().height * 0.15f),
 			m_WorkshopItem._maxLevel, currentLevel);
-		if (levelProgressBar != nullptr)
+		if (m_LevelProgressBar != nullptr)
 		{
-			levelProgressBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-			levelProgressBar->setPosition(Vec2(dpItemBack->getContentSize().width * 0.6f, dpItemBack->getContentSize().height * 0.1f));
-			dpItemBack->addChild(levelProgressBar);
+			m_LevelProgressBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+			m_LevelProgressBar->setPosition(Vec2(dpItemBack->getContentSize().width * 0.6f, dpItemBack->getContentSize().height * 0.1f));
+			dpItemBack->addChild(m_LevelProgressBar);
 		}
 		
 		auto workshopItemImg = Sprite::create(m_WorkshopItem._textureName);
@@ -116,5 +116,25 @@ void CWorkshopPopupDP::Buy()
 {
 	CCLOG("Buy Item %s", m_WorkshopItem._name.c_str());
     unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
-    CUserDataManager::Instance()->setUserData_Number(m_WorkshopItem._userDataKey, value + 1);
+    value += 1;
+    CUserDataManager::Instance()->setUserData_Number(m_WorkshopItem._userDataKey, value);
+    
+    // Update button ui
+    auto btnLabel = m_BuyBtn->getBtnLabel();
+    
+    if(value >= m_WorkshopItem._maxLevel){
+        btnLabel->setString("MAX");
+        m_BuyBtn->setBtnUnable(true);
+        btnLabel->setColor(Color3B::BLACK);
+    }
+    else{
+        btnLabel->setString(MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(value)));
+    }
+    
+    // Update level progress
+    m_LevelProgressBar->setCurrentLevel(value);
+    m_LevelProgressBar->UpdateProgress();
+    
+    // set current selected item idx
+    CUserDataManager::Instance()->setUserData_Number("USER_CUR_SELECT_ITEM", m_WorkshopItem._idx);
 }

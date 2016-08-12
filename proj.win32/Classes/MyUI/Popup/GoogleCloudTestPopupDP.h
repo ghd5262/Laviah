@@ -4,10 +4,10 @@
 
 USING_NS_CC;
 
-class CGoogleCloudTestPopupDP : public cocos2d::Layer
+class CGoogleCloudTestPopupDP : public Widget
 {
 public:
-    static CGoogleCloudTestPopupDP* create(std::string key, const std::function<void(cocos2d::Ref*)> &func);
+    static CGoogleCloudTestPopupDP* create(std::string key);
 	void DeSelect();
 
 protected:
@@ -17,13 +17,13 @@ protected:
 private:
 	void Buy();
 
-	CGoogleCloudTestPopupDP(std::string key, const std::function<void(cocos2d::Ref*)> &func)
-		: m_UserKey(key)
-		, m_SelectFunc(func){};
+	CGoogleCloudTestPopupDP(std::string key)
+        : m_UserKey(key)
+        , m_DPBack(nullptr){};
 	virtual ~CGoogleCloudTestPopupDP(){};
 
 private:
     std::string m_UserKey;
-	std::function<void(cocos2d::Ref*)> m_SelectFunc;
+    LayerColor* m_DPBack;
 };
 

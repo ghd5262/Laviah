@@ -54,49 +54,54 @@ bool CGoogleCloudTestPopup::initVariable()
 			workShopLabel->setColor(g_labelColor1);
 			m_ScrollBack->addChild(workShopLabel);
 			workShopLabel->setOpacity(0);
-		}
-
-		auto itemScroll = ScrollView::create();
-		if (itemScroll != nullptr){
-
-			/* 아이템리스트 데이터 읽음 */
-			
-            auto keyList = CUserDataManager::Instance()->getKeyList();
-            size_t listCount = keyList.size();
-			size_t dpDistance = 15;
-			Size dpSize = Size(1080, 200);
-
-			itemScroll->setDirection(ScrollView::Direction::VERTICAL);
-			itemScroll->setBounceEnabled(true);
-			itemScroll->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			itemScroll->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.5f));
-            itemScroll->setContentSize(Size(m_ScrollBack->getContentSize().width, (dpSize.height + dpDistance) * 4));
-            itemScroll->setInnerContainerSize(Size(dpSize.width, (dpSize.height + dpDistance) * (listCount + 1)));  // 마지막에 AddKeyDP 추가 위해 +1
+        }
+        
+        
+        auto keyList = CUserDataManager::Instance()->getKeyList();
+        Size layerSize = m_ScrollBack->getContentSize();
+        Size dpSize = Size(1080, 200);
+        size_t dpDistance = 15;
+        float spawnCount = 4;
+        
+        unsigned currentKeyIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_SELECT_KEY");
+        
+        // Create the list view
+        auto listView = ListView::create();
+        if (listView != nullptr){
+            listView->setDirection(cocos2d::ui::ScrollView::Direction::VERTICAL);
+            listView->setBounceEnabled(true);
+            listView->setBackGroundImageScale9Enabled(true);
+            listView->setContentSize(Size(m_ScrollBack->getContentSize().width, (dpSize.height + dpDistance) * spawnCount));
+            listView->setScrollBarPositionFromCorner(Vec2(7, 7));
+            listView->setItemsMargin(dpDistance);
+            listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            listView->setPosition(layerSize / 2);
+            listView->setMagneticType(ListView::MagneticType::CENTER);
+            listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CGoogleCloudTestPopup::ScrollCallback, this, std::placeholders::_1, std::placeholders::_2));
+            m_ScrollBack->addChild(listView);
             
-            int dpIdx = 0;
+            unsigned dpIdx = 0;
+            unsigned currentItemDPIdx = 0;
+            
             for (auto key : keyList)
             {
-                auto item = CGoogleCloudTestPopupDP::create(key.first, std::bind(&CGoogleCloudTestPopup::Select, this, std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
+                auto keyDP = CGoogleCloudTestPopupDP::create(key.first);
+                keyDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                listView->pushBackCustomItem(keyDP);
                 
-                item->setPosition(Vec2(dpSize.width * 0.5f,
-                                        (itemScroll->getInnerContainerSize().height - ((dpSize.height + dpDistance) * ((listCount-1) - dpIdx))))); // 최신이 항상 맨위로 가도록
-                item->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-                itemScroll->addChild(item);
+                if( dpIdx == currentKeyIdx ){
+                    currentItemDPIdx = dpIdx;
+                }
                 dpIdx++;
             }
-
-
-            auto items = CGoogleCloudTestAddKeyDP::create();
             
-            items->setPosition(Vec2(dpSize.width * 0.5f,
-                                    (itemScroll->getInnerContainerSize().height - ((dpSize.height + dpDistance) * listCount)))); // 항상 가장 아래 
-            items->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-            itemScroll->addChild(items);
-            listCount++;
-
-			m_ScrollBack->addChild(itemScroll);
-		}
-
+            // Scrolling to current character
+            Director::getInstance()->getScheduler()->schedule([listView, currentItemDPIdx](float delta){
+                listView->scrollToItem(currentItemDPIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
+            }, Director::getInstance(), 0.f, 0, 0.f, false, "ScrollToItem");
+        }
+ 
+        
 		m_btnEnd = CMyButton::create("endIcon.png",
 			END,
 			std::bind(&CGoogleCloudTestPopup::End, this),
@@ -144,11 +149,11 @@ void CGoogleCloudTestPopup::End(){
 	CSpecificPopupBase::PopupClose();
 }
 
-void CGoogleCloudTestPopup::Select(cocos2d::Ref* dp)
+void CGoogleCloudTestPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
 {
-	auto selectDP = dynamic_cast<CGoogleCloudTestPopupDP*>(dp);
-	if (selectDP != nullptr)
-	{
-		selectDP->DeSelect();
-	}
+    ListView* listView = dynamic_cast<ListView*>(ref);
+    if (listView == nullptr || type != ScrollView::EventType::CONTAINER_MOVED)
+    {
+        return;
+    }
 }

@@ -26,7 +26,8 @@ private:
     , m_BG(nullptr)
     , m_ScrollBack(nullptr)
     , m_ScrollView(nullptr)
-    , m_CenterDP(nullptr){};
+    , m_CenterDP(nullptr)
+    , m_CenterCharacterNameLabel(nullptr){};
     virtual ~CCharacterSelectPopup(){};
     
 private:
@@ -37,4 +38,5 @@ private:
 	CUserCoinButton* m_btnUserCoin;
     cocos2d::ui::ScrollView* m_ScrollView;
     CCharacterSelectPopupDP* m_CenterDP;
+    Label* m_CenterCharacterNameLabel;
 };

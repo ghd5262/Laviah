@@ -11,9 +11,9 @@ CBulletDataManager::CBulletDataManager()
     Json::Reader reader;
     
     // patternList.json 파일 읽음
-    std::string strBulletList = CCFileUtils::sharedFileUtils()->fullPathForFilename("jsonRes/bulletList/bulletList.json");
+    std::string strBulletList = FileUtils::getInstance()->fullPathForFilename("jsonRes/bulletList/bulletList.json");
     ssize_t bufferSize = 0;
-    unsigned char* bulletListJson = CCFileUtils::sharedFileUtils()->getFileData(strBulletList.c_str(), "rb", &bufferSize);
+    unsigned char* bulletListJson = FileUtils::getInstance()->getFileData(strBulletList.c_str(), "rb", &bufferSize);
     std::string bulletListClearData((const char*)bulletListJson);
     size_t pos = bulletListClearData.rfind("}");
     bulletListClearData = bulletListClearData.substr(0, pos + 1);

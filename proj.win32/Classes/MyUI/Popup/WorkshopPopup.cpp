@@ -4,6 +4,7 @@
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/WorkshopItemDataManager.h"
+#include "../../DataManager/UserDataManager.h"
 #include "ui/UIListView.h"
 
 CWorkshopPopup* CWorkshopPopup::create()
@@ -59,7 +60,9 @@ bool CWorkshopPopup::initVariable()
 		Size dpSize = Size(1080, 200);
 		size_t dpDistance = 15;
 		float spawnCount = 4;
-
+        
+        unsigned currentItemIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_SELECT_ITEM");
+        
 		// Create the list view
 		auto listView = ListView::create();
 		if (listView != nullptr){
@@ -71,16 +74,29 @@ bool CWorkshopPopup::initVariable()
 			listView->setItemsMargin(dpDistance);
 			listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			listView->setPosition(layerSize / 2);
-			listView->setMagneticType(ListView::MagneticType::NONE);
+			listView->setMagneticType(ListView::MagneticType::CENTER);
 			listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CWorkshopPopup::ScrollCallback, this, std::placeholders::_1, std::placeholders::_2));
 			m_ScrollBack->addChild(listView);
 
+            unsigned dpIdx = 0;
+            unsigned currentItemDPIdx = 0;
+            
 			for (auto item : itemList)
 			{
 				auto itemDP = CWorkshopPopupDP::create(item);
 				itemDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				listView->pushBackCustomItem(itemDP);
+                
+                if( item._idx == currentItemIdx ){
+                    currentItemDPIdx = dpIdx;
+                }
+                dpIdx++;
 			}
+            
+            // Scrolling to current character
+            Director::getInstance()->getScheduler()->schedule([listView, currentItemDPIdx](float delta){
+                listView->scrollToItem(currentItemDPIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
+            }, Director::getInstance(), 0.f, 0, 0.f, false, "ScrollToItem");
 		}
 
         m_btnEnd = CMyButton::create("endIcon.png",

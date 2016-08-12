@@ -3,9 +3,9 @@
 #include "../MyButton.h"
 
 
-CGoogleCloudTestPopupDP* CGoogleCloudTestPopupDP::create(std::string key, const std::function<void(cocos2d::Ref*)> &func)
+CGoogleCloudTestPopupDP* CGoogleCloudTestPopupDP::create(std::string key)
 {
-	CGoogleCloudTestPopupDP *pRet = new(std::nothrow) CGoogleCloudTestPopupDP(key, func);
+	CGoogleCloudTestPopupDP *pRet = new(std::nothrow) CGoogleCloudTestPopupDP(key);
 	if (pRet && pRet->init())
 	{
         pRet->autorelease();
@@ -28,15 +28,15 @@ bool CGoogleCloudTestPopupDP::init()
 
 bool CGoogleCloudTestPopupDP::initVariable()
 {
-	try{
-        auto keyList = CUserDataManager::Instance()->getKeyList();
-        
-		auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
-		if (dpBack != nullptr){
-			dpBack->setIgnoreAnchorPointForPosition(false);
-			dpBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			dpBack->setPosition(Vec2::ZERO);
-			this->addChild(dpBack);
+    try{
+		m_DPBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
+		if (m_DPBack != nullptr){
+            this->setContentSize(m_DPBack->getContentSize());
+            
+			m_DPBack->setIgnoreAnchorPointForPosition(false);
+			m_DPBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+			m_DPBack->setPosition(m_DPBack->getContentSize() * 0.5f);
+			this->addChild(m_DPBack);
 		}
 
 		auto dpItemBack = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), 805.f, 200.f);
@@ -44,7 +44,7 @@ bool CGoogleCloudTestPopupDP::initVariable()
 			dpItemBack->setIgnoreAnchorPointForPosition(false);
 			dpItemBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			dpItemBack->setPosition(Vec2(0 + dpItemBack->getContentSize().width * 0.5f, 0));
-			dpBack->addChild(dpItemBack);
+			m_DPBack->addChild(dpItemBack);
 		}
 
 		auto dpBuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
@@ -52,8 +52,8 @@ bool CGoogleCloudTestPopupDP::initVariable()
 		if (dpBuyBtn != nullptr)
 		{
 			dpBuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			dpBuyBtn->setPosition(Vec2(dpBack->getContentSize().width - (dpBuyBtn->getContentSize().width * 0.5f), 0));
-			dpBack->addChild(dpBuyBtn);
+			dpBuyBtn->setPosition(Vec2(m_DPBack->getContentSize().width - (dpBuyBtn->getContentSize().width * 0.5f), 0));
+			m_DPBack->addChild(dpBuyBtn);
 		}
 
 		auto googleCloudKey = Label::createWithTTF(m_UserKey, "fonts/malgunbd.ttf", 40);
@@ -83,11 +83,9 @@ bool CGoogleCloudTestPopupDP::initVariable()
 
 void CGoogleCloudTestPopupDP::Buy()
 {
-	m_SelectFunc(this);
-
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	auto popup = CPopup::createWithSpecificFormat(CGoogleCloudDataInfoPopup::create(), POPUPEFFECT_none);
+	auto popup = CPopup::createWithSpecificFormat(CGoogleCloudDataInfoPopup::create(m_UserKey), POPUPEFFECT_none);
 	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		origin.x + visibleSize.height * 0.5f));
 	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

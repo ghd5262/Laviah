@@ -38,9 +38,9 @@ CUserDataManager::CUserDataManager()
     Json::Reader reader;
     
     // userDefaultDataList.json 읽음
-    std::string strUserDefaultDataList = FileUtils::sharedFileUtils()->fullPathForFilename("jsonRes/userDefaultDataList.json");
+    std::string strUserDefaultDataList = FileUtils::getInstance()->fullPathForFilename("jsonRes/userDefaultDataList.json");
     ssize_t bufferSize = 0;
-    unsigned char* userDefaultDataListJson = CCFileUtils::sharedFileUtils()->getFileData(strUserDefaultDataList.c_str(), "rb", &bufferSize);
+    unsigned char* userDefaultDataListJson = FileUtils::getInstance()->getFileData(strUserDefaultDataList.c_str(), "rb", &bufferSize);
     std::string userDefaultDataListClearData((const char*)userDefaultDataListJson);
     size_t pos = userDefaultDataListClearData.rfind("}");
     userDefaultDataListClearData = userDefaultDataListClearData.substr(0, pos + 1);

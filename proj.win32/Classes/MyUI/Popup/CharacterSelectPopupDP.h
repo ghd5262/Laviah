@@ -25,12 +25,12 @@ private:
     
 	CCharacterSelectPopupDP(const sCHARACTER_PARAM character)
     : m_Character(character)
-    , m_ItemBack(nullptr)
+    , m_CharacterImg(nullptr)
     , m_DPBack(nullptr){};
     virtual ~CCharacterSelectPopupDP(){};
     
 private:
     const sCHARACTER_PARAM m_Character;
-    LayerColor* m_ItemBack;
     LayerColor* m_DPBack;
+    Sprite* m_CharacterImg;
 };

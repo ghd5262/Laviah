@@ -4,7 +4,6 @@
 #include <iostream>
 #include "cocos2d.h"
 #include "Defines.h"
-#include "enums.h"
 #include <algorithm>
 #include <memory>
 #include <time.h>

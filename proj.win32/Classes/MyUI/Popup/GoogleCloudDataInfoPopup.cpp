@@ -1,10 +1,11 @@
 #include "GoogleCloudDataInfoPopup.h"
 #include "../MyButton.h"
 #include "../TextField.h"
+#include "../../DataManager/UserDataManager.h"
 
-CGoogleCloudDataInfoPopup* CGoogleCloudDataInfoPopup::create()
+CGoogleCloudDataInfoPopup* CGoogleCloudDataInfoPopup::create(std::string dataKey)
 {
-    CGoogleCloudDataInfoPopup *pRet = new(std::nothrow) CGoogleCloudDataInfoPopup();
+    CGoogleCloudDataInfoPopup *pRet = new(std::nothrow) CGoogleCloudDataInfoPopup(dataKey);
     if (pRet)
     {
         return pRet;
@@ -69,30 +70,45 @@ bool CGoogleCloudDataInfoPopup::initVariable()
             btnEnd->setCascadeOpacityEnabled(true);
         }
         
-        std::string keyPlaceHolder = "Key is ...";
-        if(1) // If Data isn't null
-           keyPlaceHolder = "Key is ...";
         
-        auto keyTextField = CTextField::create(keyPlaceHolder, "fonts/malgunbd.ttf", 40,
-                                            Vec2(keyBack->getContentSize().width * 0.5f,
-                                                 keyBack->getContentSize().height * 0.5f));
-        if(keyTextField != nullptr){
-            keyTextField->setTextColor(Color4B::BLACK);
-            keyTextField->setDimensions(Size(keyBack->getContentSize().width * 0.9f, keyBack->getContentSize().height * 0.9f));
-            keyBack->addChild(keyTextField);
+        auto keyLabel = Label::createWithTTF(m_UserDataKey, "fonts/malgunbd.ttf", 40);
+        if(keyLabel != nullptr)
+        {
+            keyLabel->setColor(Color3B::BLACK);
+            keyLabel->setPosition(keyBack->getContentSize() * 0.5f);
+            keyLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            keyBack->addChild(keyLabel);
         }
-        std::string valuePlaceHolder = "Value is ...";
-        if(1) // If Data isn't null
-            valuePlaceHolder = "Value is ...";
         
-        auto valueTextField = CTextField::create(valuePlaceHolder, "fonts/malgunbd.ttf", 40,
-                                               Vec2(valueBack->getContentSize().width * 0.5f,
-                                                    valueBack->getContentSize().height * 0.5f));
-        if(valueTextField != nullptr){
-            valueTextField->setTextColor(Color4B::BLACK);
-            valueTextField->setDimensions(Size(valueBack->getContentSize().width * 0.9f, valueBack->getContentSize().height * 0.9f));
-            valueBack->addChild(valueTextField);
+        
+        std::string valueStr = "";
+        auto userDataList = CUserDataManager::Instance()->getKeyList();
+        if(userDataList.find(m_UserDataKey) != userDataList.end()){
+            if(userDataList.find(m_UserDataKey)->second == "userDefaultDatas_Number")
+            {
+                auto data = CUserDataManager::Instance()->getUserData_Number(m_UserDataKey);
+                valueStr = MakeString("%u", data);
+            }
+            else if(userDataList.find(m_UserDataKey)->second == "userDefaultDatas_List")
+            {
+                auto dataList = CUserDataManager::Instance()->getUserData_List(m_UserDataKey);
+                for(auto data : *dataList)
+                {
+                    auto dataStr = MakeString(" %u", data);
+                    valueStr += dataStr;
+                }
+            }
         }
+        
+        auto valueLabel = Label::createWithTTF(valueStr, "fonts/malgunbd.ttf", 40);
+        if(valueLabel != nullptr){
+            valueLabel->setColor(Color3B::BLACK);
+            valueLabel->setPosition(valueBack->getContentSize() * 0.5f);
+            valueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            valueLabel->setDimensions(valueBack->getContentSize().width * 0.9f, valueBack->getContentSize().height * 0.9f);
+            valueBack->addChild(valueLabel);
+        }
+        
         m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
             
         });

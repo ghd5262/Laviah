@@ -98,8 +98,8 @@ extern "C" {
 	{
 		std::string methodName = "JAVA_1GoogleConnectionResult";
 		CCLOG("JavaCallBackMethod %s", methodName.c_str());
-		CCLOG("Google Cloud Connection %s", (isSucceed == true) ? "SUCCEED", "FAILED");
-		CGoogleCloudManager::Instance()->IsConnected(isSucceed);
+        CCLOG("Google Cloud Connection %s", (isSucceed == true) ? "SUCCEED" : "FAILED");
+		CGoogleCloudManager::Instance()->setIsConnected(isSucceed);
 	}
 
 	// 구글 클라우드 커넥션 끊김

@@ -13,9 +13,9 @@ CBulletPatternDataManager::CBulletPatternDataManager()
     
     
     // stageListIndex.json 파일 읽음
-    std::string strPatternListIndex = CCFileUtils::sharedFileUtils()->fullPathForFilename("jsonRes/patternList/patternListIndex.json");
+    std::string strPatternListIndex = FileUtils::getInstance()->fullPathForFilename("jsonRes/patternList/patternListIndex.json");
     ssize_t bufferSize = 0;
-    unsigned char* patternListIndexJson = CCFileUtils::sharedFileUtils()->getFileData(strPatternListIndex.c_str(), "rb", &bufferSize);
+    unsigned char* patternListIndexJson = FileUtils::getInstance()->getFileData(strPatternListIndex.c_str(), "rb", &bufferSize);
     std::string patternListIdxClearData((const char*)patternListIndexJson);
     size_t pos = patternListIdxClearData.rfind("}");
     patternListIdxClearData = patternListIdxClearData.substr(0, pos + 1);

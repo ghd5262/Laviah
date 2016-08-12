@@ -47,6 +47,12 @@
 	}, {
 		"dataKey": "USER_CUR_CHALLENGE",
 		"defaultValue": 0
+	}, {
+		"dataKey": "USER_CUR_SELECT_ITEM",
+		"defaultValue": 0
+	}, {
+		"dataKey": "USER_CUR_SELECT_KEY",
+		"defaultValue": 0
 	}],
 	"userDefaultDatas_List": [{
 			"dataKey": "USER_CHARACTER_LIST"

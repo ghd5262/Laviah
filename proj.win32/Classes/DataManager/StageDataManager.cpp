@@ -15,9 +15,9 @@ CStageDataManager::CStageDataManager()
     
     
     // stageListIndex.json 파일 읽음
-    std::string strStageListIndex = CCFileUtils::sharedFileUtils()->fullPathForFilename("jsonRes/stageList/stageListIndex.json");
+    std::string strStageListIndex = FileUtils::getInstance()->fullPathForFilename("jsonRes/stageList/stageListIndex.json");
     ssize_t bufferSize = 0;
-    unsigned char* stageListIndexJson = CCFileUtils::sharedFileUtils()->getFileData(strStageListIndex.c_str(), "rb", &bufferSize);
+    unsigned char* stageListIndexJson = FileUtils::getInstance()->getFileData(strStageListIndex.c_str(), "rb", &bufferSize);
     std::string stageListIdxClearData((const char*)stageListIndexJson);
     size_t pos = stageListIdxClearData.rfind("}");
     stageListIdxClearData = stageListIdxClearData.substr(0, pos + 1);
