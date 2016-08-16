@@ -27,7 +27,7 @@
 
 static const std::string CRYPTO_KEY = "sktjdgmlq1024!";
 
-CUserDataManager::CUserDataManager()
+CUserDataManager::CUserDataManager() : m_IsFirstRevisionCall(false)
 {
     m_UserData = std::shared_ptr<sUSER_DATA>(new sUSER_DATA(), [](sUSER_DATA* userData)
                                              {
@@ -77,8 +77,6 @@ CUserDataManager::CUserDataManager()
         addKey("userDefaultDatas_List", dataKey);
         m_UserData->_userDataListMap.emplace(std::pair<std::string, std::vector<unsigned>*>(dataKey, defaultValue));
     }
-
-	DataLoad();
 }
 
 CUserDataManager::~CUserDataManager()
@@ -96,17 +94,65 @@ CUserDataManager* CUserDataManager::Instance()
     return &instance;
 }
 
-void CUserDataManager::DataLoad()
+void CUserDataManager::GoogleLoginResult()
+{
+    CCLOG("GoogleLoginResult Called");
+    if (CGoogleCloudManager::Instance()->getIsConnected())
+    {
+        CCLOG("GoogleLoginResult Call google revision function");
+        
+        // 리비전 비교 위해 함수 호출
+        std::string crypto_key = MakeCryptoString("USER_DATA_SAVE_REVISION", CRYPTO_KEY);
+        CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
+        
+        m_IsFirstRevisionCall = true;
+    }
+    else{
+        CCLOG("GoogleLoginResult Call xml revision function");
+        
+        // XML로부터 데이터 로드
+        dataLoadFromXML();
+    }
+}
+
+void CUserDataManager::afterCallFirstRevision() {
+    
+    if(m_IsFirstRevisionCall){
+        dataLoad();
+        m_IsFirstRevisionCall = false;
+    }
+    
+}
+
+void CUserDataManager::dataLoad()
 {
 	/* saveRevision이 더 높은 데이터로 로딩한다.
 	 * 게임중 인터넷이 끊기면 구글클라우드에는 저장하지 않기 때문에 대부분 xml의 revision이 높을 것이다.
 	 * 하지만 게임을 지웠다가 다시 설치할 경우엔 클라우드의 데이터를 가져와야한다. */
-	if (0)
+    
+    unsigned xmlRevision = 0;
+    std::string crypto_key = MakeCryptoString("USER_DATA_SAVE_REVISION", CRYPTO_KEY);
+    auto valueJson = UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), "");
+    if (valueJson != ""){
+        JSONREADER_CREATE
+        xmlRevision = root["data"].asInt();
+    }
+    
+    unsigned googleRevision = getUserData_Number("USER_DATA_SAVE_REVISION");
+    
+    CCLOG("xmlRevision : %u googleRevision : %u", xmlRevision, googleRevision);
+    
+    
+    if (xmlRevision >= googleRevision)
 	{
-		dataLoadFromGoogleCloud();
+		dataLoadFromXML();
 	}
 	else{
-		dataLoadFromXML();
+		dataLoadFromGoogleCloud();
+        /* 구글 클라우드의 Revision이 높을때(새로 다운 받았을 경우)
+         * 마침 인터넷이 연결되어 있지 않다면 데이터가 날아갈 수 있다.(연결되어 있지 않다면 xml에서 로드 하기때문)
+         * 때문에 구글 클라우드의 Revision이 높을 경우에는 항상 XML에 모두 저장한다. 
+         * 전제조건으로 게임을 새로 설치한 경우에는 로그인하도록 유도한다. */
 	}
 }
 
@@ -114,15 +160,16 @@ void CUserDataManager::dataLoadFromGoogleCloud()
 {
     for(auto keyInfo : m_UserData->_userDataKeyMap)
     {
-        CSDKUtil::Instance()->GoogleCloudLoad(keyInfo.first);
+        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
+        CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
     }
 }
 
 void CUserDataManager::dataLoadFromXML()
 {
     for(auto keyInfo : m_UserData->_userDataKeyMap){
-        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
-        userDataLoad(crypto_key.c_str(), UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), ""));
+            std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
+            userDataLoad(crypto_key.c_str(), UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), ""));
     }
 }
 

@@ -8,19 +8,22 @@ public:
 	CSDKUtil_IOS();
 	~CSDKUtil_IOS();
 
-	// ±¸±Û Å¬¶ó¿ìµå ÀúÀå Key / Value
+    // êµ¬ê¸€ ë¡œê·¸ì¸
+    void GoogleLogin();
+    
+	// êµ¬ê¸€ í´ë¼ìš°ë“œ ì €ì¥ Key / Value
 	void GoogleCloudSave(std::string key, std::string value);
 
-	// ±¸±Û Å¬¶ó¿ìµå ·Îµå Key
+	// êµ¬ê¸€ í´ë¼ìš°ë“œ ë¡œë“œ Key
 	void GoogleCloudLoad(std::string key);
 
-	// À¯´ÏÆ¼ ¾Öµå º¸»óÇü ±¤°í
+	// ìœ ë‹ˆí‹° ì• ë“œ ë³´ìƒí˜• ê´‘ê³ 
 	void ShowRewardUnityAds();
 
-	// À¯´ÏÆ¼ ¾Öµå ÀÏ¹İ ±¤°í
+	// ìœ ë‹ˆí‹° ì• ë“œ ì¼ë°˜ ê´‘ê³ 
 	void ShowNormalUnityAds();
 
-	// Åä½ºÆ®Ã¢
+	// í† ìŠ¤íŠ¸ì°½
 	void Toast(std::string content);
 };
 

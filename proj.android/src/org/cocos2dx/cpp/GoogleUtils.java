@@ -30,6 +30,8 @@ import kr.HongSeongHee.StarStarStar.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -89,7 +91,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                     .addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER)
                     .build();
         	
-        	beginUserInitiatedSignIn();
+        	GoogleLogin();
             sInited = true;
             
             Log.d(TAG, "GoogleUtils Init End");
@@ -146,7 +148,8 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
     public void GoogleCloudLoad(final String key) {
         // Display a progress dialog
         // ...
-    	showProgressDialog("loading...");
+    	Log.d(TAG, "GoogleCloudLoad : " + key);
+//    	showProgressDialog("loading...");
     	
         AsyncTask<Void, Void, Integer> task = new AsyncTask<Void, Void, Integer>() {
             @Override
@@ -177,8 +180,8 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                 // ...
             	
             	String loadData = new String(mSaveGameData);
-            	Toast.makeText(self.getBaseContext(), loadData, Toast.LENGTH_LONG).show();
-            	dismissProgressDialog();
+            	Toast.makeText(self.getBaseContext(), key + " : " + loadData, Toast.LENGTH_LONG).show();
+//            	dismissProgressDialog();
             	Log.d(TAG, "onPostExecute" + loadData);
             	
             	AppActivity.JAVA_GoogleCloudLoad(key, loadData);
@@ -196,8 +199,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
             return;
         }
         
-        Log.d(TAG, "send Data : " + value);
-        
+        Log.d(TAG, "send Data : " + key + " : " + value);
         if(mGoogleApiClient.isConnected()) {
              AsyncTask<Void, Void, Snapshots.OpenSnapshotResult> task = 
                      new AsyncTask<Void, Void, Snapshots.OpenSnapshotResult>() {
@@ -301,6 +303,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.d(TAG, "onConnected");
+        Toast.makeText(self.getBaseContext(), "GoogleLogin Succeed", Toast.LENGTH_LONG).show();
         AppActivity.JAVA_GoogleConnectionResult(true);
     }
 
@@ -308,6 +311,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
     public void onConnectionSuspended(int i) {
         Log.d(TAG, "onConnectionSuspended: " + i);
         mGoogleApiClient.connect();
+        Toast.makeText(self.getBaseContext(), "GoogleLogin Suspended", Toast.LENGTH_LONG).show();
         AppActivity.JAVA_GoogleConnectionSuspended();
     }
 
@@ -329,7 +333,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
             mIsResolving = BaseGameUtils.resolveConnectionFailure(self, mGoogleApiClient,
                     connectionResult, RC_SIGN_IN, self.getString(R.string.signin_other_error));
         }
-
+        Toast.makeText(self.getBaseContext(), "GoogleLogin Failed", Toast.LENGTH_LONG).show();
         AppActivity.JAVA_GoogleConnectionResult(false);
     }
     
@@ -338,7 +342,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
     /**
      * Start the sign-in process after the user clicks the sign-in button.
      */
-    private void beginUserInitiatedSignIn() {
+    public void GoogleLogin() {
     	if(!isSignedIn()){
         	
             Log.d(TAG, "beginUserInitiatedSignIn");
@@ -351,6 +355,10 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
 
             mSignInClicked = true;
             mGoogleApiClient.connect();
+            
+            if(!isNetWork()){
+            	AppActivity.JAVA_GoogleConnectionResult(false);
+            }
         }
     }
     // [END beginUserInitiatedSignIn]
@@ -364,7 +372,21 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
         return (mGoogleApiClient != null && mGoogleApiClient.isConnected());
     }
     
-    
+    private Boolean isNetWork(){
+		ConnectivityManager manager = (ConnectivityManager) self.getSystemService (Context.CONNECTIVITY_SERVICE);
+		boolean isMobileAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isAvailable();
+		boolean isMobileConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+		boolean isWifiAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isAvailable();
+		boolean isWifiConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+
+		if ((isWifiAvailable && isWifiConnect) || (isMobileAvailable && isMobileConnect)){
+			Log.d(TAG, "Network is connected");
+			return true;
+		}else{
+			Log.d(TAG, "Network is not connected");
+			return false;
+		}
+	}
     
     /**
      * Show a progress dialog for asynchronous operations.

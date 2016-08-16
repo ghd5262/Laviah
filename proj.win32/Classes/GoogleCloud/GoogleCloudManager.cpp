@@ -64,4 +64,5 @@ void CGoogleCloudManager::GoogleCloudDataLoad(std::string key, std::string value
     CCLOG("======================================================================");
     
     CUserDataManager::Instance()->userDataLoad(key, valueJson);
+    CUserDataManager::Instance()->afterCallFirstRevision();
 }

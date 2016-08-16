@@ -8,6 +8,9 @@ public:
     CSDKUtil_AOS();
     ~CSDKUtil_AOS();
     
+    // 구글 로그인
+    void GoogleLogin();
+    
 	// 구글 클라우드 저장 Key / Value
 	void GoogleCloudSave(std::string key, std::string value);
 

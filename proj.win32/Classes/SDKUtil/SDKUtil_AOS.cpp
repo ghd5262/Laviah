@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "SDKUtil.h"
 #include "../GoogleCloud/GoogleCloudManager.h"
+#include "../DataManager/UserDataManager.h"
 
 USING_NS_CC;
 
@@ -28,6 +29,11 @@ void CSDKUtil_AOS::JavaCallMethod(const char* methodName)
     } else {
         CCLOG("There is no %s java method", methodName);
     }
+}
+
+void CSDKUtil_AOS::GoogleLogin()
+{
+    JavaCallMethod("CPP_GoogleLogin");
 }
 
 // 구글 클라우드 저장 Key / Value
@@ -99,7 +105,10 @@ extern "C" {
 		std::string methodName = "JAVA_1GoogleConnectionResult";
 		CCLOG("JavaCallBackMethod %s", methodName.c_str());
         CCLOG("Google Cloud Connection %s", (isSucceed == true) ? "SUCCEED" : "FAILED");
-		CGoogleCloudManager::Instance()->setIsConnected(isSucceed);
+        Director::getInstance()->getScheduler()->schedule([isSucceed](float delta){
+            CGoogleCloudManager::Instance()->setIsConnected(isSucceed);
+            CUserDataManager::Instance()->GoogleLoginResult();
+        }, Director::getInstance(), 0.f, 0, 0.f, false, "DataLoad");
 	}
 
 	// 구글 클라우드 커넥션 끊김

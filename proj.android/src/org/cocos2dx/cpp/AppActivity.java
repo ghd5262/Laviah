@@ -64,9 +64,24 @@ public class AppActivity extends Cocos2dxActivity{
 		super.onConfigurationChanged(newConfig);
 	}
     
+    public static void CPP_GoogleLogin()
+    {
+    	Log.d(TAG, "CPP_GoogleLogin Called");
+    	
+    	if(m_GoogleUtils == null)
+    		return;
+    	
+    	m_GoogleUtils.GoogleLogin();
+    }
+    
     // Google Cloud Save      Key / Value
     public static void CPP_GoogleCloudSave(String key, String value)
     {
+    	Log.d(TAG, "CPP_GoogleCloudSave Called");
+    	
+    	if(m_GoogleUtils == null)
+    		return;
+    	
     	if(m_GoogleUtils.isSignedIn()){
     		m_GoogleUtils.GoogleCloudSave(key, value);
     	}
@@ -75,6 +90,11 @@ public class AppActivity extends Cocos2dxActivity{
     // Google Cloud Load      Key
     public static void CPP_GoogleCloudLoad(String key)
     {
+    	Log.d(TAG, "CPP_GoogleCloudLoad Called");
+    	
+    	if(m_GoogleUtils == null)
+    		return;
+    	
     	if(m_GoogleUtils.isSignedIn()){
     		m_GoogleUtils.GoogleCloudLoad(key);
     	}
@@ -83,6 +103,11 @@ public class AppActivity extends Cocos2dxActivity{
     // Reward Unity Ads
     public static void CPP_ShowRewardUnityAds()
     {
+    	Log.d(TAG, "CPP_ShowRewardUnityAds Called");
+    	
+    	if(m_UnityAdsUtils == null)
+    		return;
+    	
     	if(!UnityAdsUtils.isVideoPlaying){
     		m_UnityAdsUtils.ShowRewardUnityAds();
     	}
@@ -91,6 +116,11 @@ public class AppActivity extends Cocos2dxActivity{
     // Normal Unity Ads
     public static void CPP_ShowNormalUnityAds()
     {
+    	Log.d(TAG, "CPP_ShowNormalUnityAds Called");
+    	
+    	if(m_UnityAdsUtils == null)
+    		return;
+    	
     	if(!UnityAdsUtils.isVideoPlaying){
     		m_UnityAdsUtils.ShowNormalUnityAds();
     	}

@@ -19,7 +19,8 @@ class CUserDataManager
     
 public:
     static CUserDataManager* Instance();
-	void DataLoad();
+    
+    void GoogleLoginResult();
 	
     void addKey(std::string keyKind, std::string key);
     
@@ -44,7 +45,11 @@ public:
 	float getMagnetItemLimitRadius();
 
 private:
-	void dataLoadFromXML();
+    void dataLoad();
+    
+    void afterCallFirstRevision();
+    
+    void dataLoadFromXML();
 	void dataLoadFromGoogleCloud();
 
     void userDataSave_Number(std::string key);
@@ -60,4 +65,5 @@ private:
     
 private:
     std::shared_ptr<sUSER_DATA> m_UserData;
+    bool m_IsFirstRevisionCall;
 };

@@ -11,6 +11,7 @@
 #include "../DataManager/StageDataManager.h"
 #include "../DataManager/BulletDataManager.h"
 #include "../DataManager/WorkshopItemDataManager.h"
+#include "../DataManager/UserDataManager.h"
 #include "../MyUI/Popup/CharacterSelectPopup.h"
 #include "../MyUI/Popup/WorkshopPopup.h"
 #include "../MyUI/Popup/GachaPopup.h"
@@ -77,6 +78,8 @@ bool CMenuScene::initVariable()
         CBulletPatternDataManager::Instance();
         CBulletDataManager::Instance();
 		CWorkshopItemDataManager::Instance();
+        CUserDataManager::Instance();
+        CSDKUtil::Instance();
 
 //        auto planet = CPlanet::create("planet.png", 290.f, 0.0f, 200.0f);
 //        planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
