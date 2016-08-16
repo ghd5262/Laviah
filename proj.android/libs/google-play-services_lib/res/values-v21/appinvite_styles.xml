@@ -2,6 +2,6 @@
 <resources>
 
     <!-- Base preview application theme. -->
-    <style name="Theme.AppInvite.Preview.Base" parent="@android:style/Theme.Material.Light.DialogWhenLarge.NoActionBar"/>
-
+    <!-- <style name="Theme.AppInvite.Preview.Base" parent="@android:style/Theme.Material.Light.DialogWhenLarge.NoActionBar"/> -->
+	<style name="Theme.AppInvite.Preview.Base" parent="@android:style/Theme.Holo.Light.DialogWhenLarge.NoActionBar"/>
 </resources>

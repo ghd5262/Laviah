@@ -15,9 +15,11 @@
         android:layout_weight="0"
         android:padding="@dimen/place_autocomplete_button_padding"
         android:src="@drawable/places_ic_search"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/place_autocomplete_search_hint"
         />
+        <!-- android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/place_autocomplete_search_hint"
+        /> -->
 
     <EditText
         android:id="@+id/place_autocomplete_search_input"
@@ -46,8 +48,10 @@
         android:layout_weight="0"
         android:padding="@dimen/place_autocomplete_button_padding"
         android:src="@drawable/places_ic_clear"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/place_autocomplete_clear_button"
         />
+        <!-- android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/place_autocomplete_clear_button"
+        /> -->
 
 </LinearLayout>

@@ -69,10 +69,10 @@
                 android:id="@+id/unityads_example_testmode_checkbox"
                 android:textColor="#ffffff"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:checked="false"
-                android:buttonTint="#ffffff"
+                android:checked="false"/>
+                <!-- android:buttonTint="#ffffff"
                 android:backgroundTint="#ffffff"
-                android:foregroundTint="#ffffff" />
+                android:foregroundTint="#ffffff" --> 
 
         </LinearLayout>
     </LinearLayout>

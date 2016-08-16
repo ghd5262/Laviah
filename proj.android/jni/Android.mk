@@ -11,7 +11,7 @@ LOCAL_MODULE := cocos2dcpp_shared
 LOCAL_MODULE_FILENAME := libcocos2dcpp
 
 #compile src--------------------------------------------------------------------
-cppfilestemp1 := $(shell find $(LOCAL_PATH)/../../Classes -type d)
+cppfilestemp1 := $(shell find $(LOCAL_PATH)/../../proj.win32/Classes -type d)
 cppfilestemp2 := $(shell find $(cppfilestemp1) -name *.cpp -o -name *.c)
 cppfilestemp3 := $(sort $(cppfilestemp2))
 cppfiles := $(subst $(LOCAL_PATH)/,,$(cppfilestemp3))
@@ -23,7 +23,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    $(cppfiles) \
 
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../proj.win32/Classes
 
 # _COCOS_HEADER_ANDROID_BEGIN
 # _COCOS_HEADER_ANDROID_END
