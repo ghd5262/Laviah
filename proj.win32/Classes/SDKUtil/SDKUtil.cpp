@@ -36,10 +36,7 @@ CSDKUtil::~CSDKUtil()
 }
 
 // 구글 로그인
-void CSDKUtil::GoogleLogin()
-{
-    m_SDKUtil->GoogleLogin();
-}
+void CSDKUtil::GoogleLogin(){ m_SDKUtil->GoogleLogin(); }
 
 // 구글 클라우드 저장 Key / Value(json)
 void CSDKUtil::GoogleCloudSave(std::string key, std::string value)
