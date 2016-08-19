@@ -219,7 +219,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                                      .setDescription(key)
                                       .build();
                              Games.Snapshots.commitAndClose(mGoogleApiClient, toWrite, metadataChange);
-                             
+                             AppActivity.CPP_Toast("Save Finished");
                          }
                      } catch(IllegalStateException e) {
                         

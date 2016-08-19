@@ -23,13 +23,15 @@ public:
     unsigned getUserData_Number(std::string key);
     std::vector<unsigned>* getUserData_List(std::string key);
     bool getUserData_IsItemHave(std::string key, unsigned itemIdx);
-    float getItemLimitTime(std::string key);
+    float getItemCurrentValue(std::string key);
     std::map<std::string, std::string> getKeyList() { return m_UserData->_userDataKeyMap; }
     
     void setSaveRevision(unsigned value);
     void setUserData_Number(std::string key, unsigned value);
     void setUserData_ItemGet(std::string key, unsigned itemIdx);
     bool CoinUpdate(int value);
+    
+    CC_SYNTHESIZE(bool, m_IsDataLoadFinish, IsDataLoadFinish);
 
 private:
     void callbackFirstRevision();
@@ -47,6 +49,8 @@ private:
     void convertUserDataToJson_Revision();
     
     void addKey(std::string keyKind, std::string key);
+    
+    void overwriteXmlByGoogleCloud(std::string key, std::string valueJson);
     
     CUserDataManager();
     virtual ~CUserDataManager();

@@ -30,13 +30,20 @@ import org.cocos2dx.lib.Cocos2dxActivity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 public class AppActivity extends Cocos2dxActivity{
 
 	public static final String TAG = "AppActivity";
+	private static AppActivity m_AppActivity = null;
 	private static UnityAdsUtils m_UnityAdsUtils = null;
 	private static GoogleUtils m_GoogleUtils = null;
+	private static Handler m_Handler = null;
+	private static String m_ToastMessage = "";
+	
 	
 	 // [START on_create]
     @Override
@@ -45,10 +52,20 @@ public class AppActivity extends Cocos2dxActivity{
     	
     	Log.d(TAG, "AppActivty Create Start");
     	
+    	m_AppActivity = this;
     	m_UnityAdsUtils = new UnityAdsUtils();
     	m_GoogleUtils = new GoogleUtils();
-    	m_UnityAdsUtils.init(this);
-    	m_GoogleUtils.init(this);
+    	m_UnityAdsUtils.init(m_AppActivity);
+    	m_GoogleUtils.init(m_AppActivity);
+    	
+    	m_Handler = new Handler(){
+    		@Override
+    		public void handleMessage(Message msg)
+    		{
+    			Toast.makeText(m_AppActivity, m_ToastMessage, Toast.LENGTH_SHORT).show();
+    			super.handleMessage(msg);
+    		}
+    	};
     	
     	Log.d(TAG, "AppActivty Create End");
     }
@@ -129,7 +146,8 @@ public class AppActivity extends Cocos2dxActivity{
     // Toast
     public static void CPP_Toast(String content)
     {
-    	
+    	m_ToastMessage = content;
+    	m_Handler.sendMessage( new Message() );
     }
     
     // Call Cocos2dx Function - Google Login Result

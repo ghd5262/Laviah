@@ -33,7 +33,9 @@ unsigned compare (unsigned a, unsigned b)
 
 static const std::string CRYPTO_KEY = "sktjdgmlq1024!";
 
-CUserDataManager::CUserDataManager() : m_IsFirstRevisionCall(false)
+CUserDataManager::CUserDataManager()
+: m_IsFirstRevisionCall(false)
+, m_IsDataLoadFinish(false)
 {
     m_UserData = std::shared_ptr<sUSER_DATA>(new sUSER_DATA(), [](sUSER_DATA* userData)
                                              {
@@ -81,6 +83,12 @@ CUserDataManager::CUserDataManager() : m_IsFirstRevisionCall(false)
         addKey("userDefaultDatas_List", dataKey);
         m_UserData->_userDataListMap.emplace(std::pair<std::string, std::vector<unsigned>*>(dataKey, defaultValue));
     }
+    
+    if(m_UserData->_userDataKeyMap.size())
+    {
+        CCLOG("WARNNING : There is no key of game data");
+        CCASSERT(false, "No Key");
+    }
 }
 
 CUserDataManager::~CUserDataManager()
@@ -113,7 +121,7 @@ void CUserDataManager::GoogleLoginResult()
         m_IsFirstRevisionCall = true;
     }
     else{
-        CCLOG("GoogleLoginResult : Call xml revision function");
+        CCLOG("GoogleLoginResult : Data load from xml google cloud didn't connected");
         
         // XML로부터 데이터 로드
         dataLoadFromXML();
@@ -163,7 +171,7 @@ bool CUserDataManager::getUserData_IsItemHave(std::string key, unsigned itemIdx)
     return false;
 }
 
-float CUserDataManager::getItemLimitTime(std::string key)
+float CUserDataManager::getItemCurrentValue(std::string key)
 {
     sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey(key.c_str());
     float limitTime = item._valuePerLevel * getUserData_Number(key.c_str());
@@ -175,7 +183,7 @@ float CUserDataManager::getItemLimitTime(std::string key)
 void CUserDataManager::setSaveRevision(unsigned value)
 {
     if(m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION") != m_UserData->_userDataUnsignedMap.end())
-    m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION")->second = value;
+        m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION")->second = value;
     
     convertUserDataToJson_Revision();
 }
@@ -279,6 +287,10 @@ void CUserDataManager::dataLoadFromXML()
         std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
         convertJsonToUserData(crypto_key.c_str(), UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), ""));
     }
+    
+    CCLOG("Data load finished from xml");
+    CSDKUtil::Instance()->Toast("Load finished from xml");
+    m_IsDataLoadFinish = true;
 }
 
 void CUserDataManager::dataLoadFromGoogleCloud()
@@ -419,4 +431,10 @@ void CUserDataManager::addKey(std::string keyKind, std::string key)
 {
     m_UserData->_userDataKeyMap.emplace(std::pair<std::string, std::string>(key, keyKind));
     CCLOG("Kind : %s Add Key : %s ", keyKind.c_str(), key.c_str());
+}
+
+void CUserDataManager::overwriteXmlByGoogleCloud(std::string key, std::string valueJson)
+{
+    CCLOG("Overwrite Xml by Google cloud data - key : %s value : %s ", key.c_str(), valueJson.c_str());
+    UserDefault::getInstance()->setStringForKey(key.c_str(), valueJson);
 }

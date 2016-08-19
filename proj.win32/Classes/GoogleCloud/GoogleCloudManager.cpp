@@ -7,6 +7,7 @@ using namespace std;
 
 CGoogleCloudManager::CGoogleCloudManager()
 	: m_isConnected(false)
+    , m_GoogleCloudDataLoadCount(0)
 {}
 
 CGoogleCloudManager::~CGoogleCloudManager()
@@ -34,6 +35,16 @@ void CGoogleCloudManager::GoogleCloudDataLoad(std::string key, std::string value
     CCLOG("Crypto Value : %s", valueJson.c_str());
     CCLOG("==============================================================");
     
+    
     CUserDataManager::Instance()->convertJsonToUserData(key, valueJson);
     CUserDataManager::Instance()->callbackFirstRevision();
+    CUserDataManager::Instance()->overwriteXmlByGoogleCloud(key, valueJson);
+    m_GoogleCloudDataLoadCount++;
+    
+    if(m_GoogleCloudDataLoadCount >= CUserDataManager::Instance()->getKeyList().size())
+    {
+        CCLOG("Data load finished from google cloud");
+        CSDKUtil::Instance()->Toast("Load finished from google cloud");
+        CUserDataManager::Instance()->setIsDataLoadFinish(true);
+    }
 }
