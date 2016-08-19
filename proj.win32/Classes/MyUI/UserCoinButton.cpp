@@ -39,14 +39,14 @@ bool CUserCoinButton::initVariable()
 		
 		auto coinLabel = Label::createWithTTF(userCoin->getValueString(), "fonts/malgunbd.ttf", 50);
 		auto coinIcon = Sprite::create("coinIcon_2.png");
-		auto earnCoinBtn = CMyButton::create("coinPlusIcon.png", END, std::bind(&CUserCoinButton::EarnCoin, this), EFFECT_SIZEDOWN);
+		//auto earnCoinBtn = CMyButton::create("coinPlusIcon.png", END, std::bind(&CUserCoinButton::EarnCoin, this), EFFECT_SIZEDOWN);
 		/* coinLabelLayer size
-		 * �ѤѤѤѤѤѤѤѤѤѤѤѤ�
+		 * ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		 * | coinIcon  | coinLabel |
-		 * �ѤѤѤѤѤѤѤѤѤѤѤѤ�
-		 * �ΰ� ���� ������ coinIcon ũ��*/
+		 * ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+		 * 두개 사이 간격은 coinIcon 크기*/
 		auto coinLabelLayer = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), coinLabel->getContentSize().width +
-			(coinIcon->getContentSize().width * 3.f) + earnCoinBtn->getContentSize().width, coinLabel->getContentSize().height * 1.5f);
+			(coinIcon->getContentSize().width * 2.5f) /*+ earnCoinBtn->getContentSize().width*/, coinLabel->getContentSize().height * 1.5f);
 
 		if (coinLabelLayer != nullptr)
 		{
@@ -68,14 +68,14 @@ bool CUserCoinButton::initVariable()
 				coinLabelLayer->addChild(coinIcon);
 			}
 			
-			if (earnCoinBtn != nullptr){
-				earnCoinBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				earnCoinBtn->setPosition(Vec2(coinLabel->getContentSize().width +
-					(coinIcon->getContentSize().width * 3.f),
-					coinLabelLayer->getContentSize().height * 0.5f));
-				earnCoinBtn->setColor(g_labelColor3);
-				coinLabelLayer->addChild(earnCoinBtn);
-			}
+//			if (earnCoinBtn != nullptr){
+//				earnCoinBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//				earnCoinBtn->setPosition(Vec2(coinLabel->getContentSize().width +
+//					(coinIcon->getContentSize().width * 3.f),
+//					coinLabelLayer->getContentSize().height * 0.5f));
+//				earnCoinBtn->setColor(g_labelColor3);
+//				coinLabelLayer->addChild(earnCoinBtn);
+//			}
 		}
 	}
 	catch (...){

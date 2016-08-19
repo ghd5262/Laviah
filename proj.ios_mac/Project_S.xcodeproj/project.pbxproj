@@ -244,7 +244,6 @@
 		937310AC1D5849C700D5EB5C /* AudioManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioManager.cpp; sourceTree = "<group>"; };
 		937310AD1D5849C700D5EB5C /* AudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManager.h; sourceTree = "<group>"; };
 		937310AE1D5849C700D5EB5C /* Defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
-		937310AF1D5849C700D5EB5C /* enums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = enums.h; sourceTree = "<group>"; };
 		937310B01D5849C700D5EB5C /* HSHUitlity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HSHUitlity.cpp; sourceTree = "<group>"; };
 		937310B11D5849C700D5EB5C /* HSHUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSHUtility.h; sourceTree = "<group>"; };
 		937310B31D5849C700D5EB5C /* BulletDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BulletDataManager.cpp; sourceTree = "<group>"; };
@@ -649,7 +648,6 @@
 				937310AC1D5849C700D5EB5C /* AudioManager.cpp */,
 				937310AD1D5849C700D5EB5C /* AudioManager.h */,
 				937310AE1D5849C700D5EB5C /* Defines.h */,
-				937310AF1D5849C700D5EB5C /* enums.h */,
 				937310B01D5849C700D5EB5C /* HSHUitlity.cpp */,
 				937310B11D5849C700D5EB5C /* HSHUtility.h */,
 			);

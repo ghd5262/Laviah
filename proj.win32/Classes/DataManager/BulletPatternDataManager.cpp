@@ -109,14 +109,16 @@ CBulletPatternDataManager* CBulletPatternDataManager::Instance()
 
 sPATTERN_SHOOTER_PARAM CBulletPatternDataManager::getPatternInfo(std::string patternName) const
 {
-	if (m_PatternList.find(patternName) == m_PatternList.end())
-		CCASSERT(false, "PATTERN KEY IS WRONG");
+    if (m_PatternList.find(patternName) == m_PatternList.end()){
+		CCASSERT(false, MakeString("PATTERN KEY IS WRONG : %s", patternName.c_str()).c_str());
+    }
 	return m_PatternList.find(patternName)->second;
 }
 
 bool CBulletPatternDataManager::AddPattern(std::string patternName, sPATTERN_SHOOTER_PARAM pattern){
 	bool addSuccess = m_PatternList.emplace(std::pair<std::string, sPATTERN_SHOOTER_PARAM>(patternName, pattern)).second;
-	if (!addSuccess)
-		CCASSERT(addSuccess, "PATTERN KEY WAS DUPLICATED");
+    if (!addSuccess){
+		CCASSERT(addSuccess, MakeString("PATTERN KEY WAS DUPLICATED : %s", patternName.c_str()).c_str());
+    }
 	return addSuccess;
 }

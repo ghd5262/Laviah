@@ -88,4 +88,6 @@ bool CEarnCoinPopup::initVariable()
 
 void CEarnCoinPopup::Video(){
 	CCLOG("format popup Video");
+    CSpecificPopupBase::PopupClose();
+//    CSDKUtil::Instance()->ShowRewardUnityAds(std::bind(&CVideoPopup::Resume, this));
 }

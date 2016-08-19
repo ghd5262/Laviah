@@ -84,7 +84,7 @@ CUserDataManager::CUserDataManager()
         m_UserData->_userDataListMap.emplace(std::pair<std::string, std::vector<unsigned>*>(dataKey, defaultValue));
     }
     
-    if(m_UserData->_userDataKeyMap.size())
+    if(m_UserData->_userDataKeyMap.size() == 0)
     {
         CCLOG("WARNNING : There is no key of game data");
         CCASSERT(false, "No Key");
@@ -289,7 +289,7 @@ void CUserDataManager::dataLoadFromXML()
     }
     
     CCLOG("Data load finished from xml");
-    CSDKUtil::Instance()->Toast("Load finished from xml");
+    //CSDKUtil::Instance()->Toast("Load finished from xml");
     m_IsDataLoadFinish = true;
 }
 

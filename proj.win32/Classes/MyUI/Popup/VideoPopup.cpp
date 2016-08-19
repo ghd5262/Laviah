@@ -66,7 +66,7 @@ bool CVideoPopup::initVariable()
 			if (watchVideoIcon != nullptr)
 			{
 				watchVideoIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				watchVideoIcon->setPosition(Vec2(- m_btnVideo->getContentSize().width * 0.18f, 0));
+				watchVideoIcon->setPosition(Vec2(m_btnVideo->getContentSize().width * 0.5 - m_btnVideo->getContentSize().width * 0.18f, m_btnVideo->getContentSize().height * 0.5));
 				m_btnVideo->addChild(watchVideoIcon);
 				watchVideoIcon->setColor(g_labelColor1);
 			}
@@ -75,7 +75,7 @@ bool CVideoPopup::initVariable()
 			if (watchVideoLabel != nullptr){
 				watchVideoLabel->setColor(g_labelColor1);
 				watchVideoLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-				watchVideoLabel->setPosition(Vec2(- m_btnVideo->getContentSize().width * 0.13f, 0));
+				watchVideoLabel->setPosition(Vec2(m_btnVideo->getContentSize().width * 0.5f - m_btnVideo->getContentSize().width * 0.13f, m_btnVideo->getContentSize().height * 0.5));
 				m_btnVideo->addChild(watchVideoLabel);
 			}
 		}
@@ -99,7 +99,7 @@ bool CVideoPopup::initVariable()
 			if (useCoinIcon != nullptr)
 			{
 				useCoinIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				useCoinIcon->setPosition(Vec2(- m_btnUseCoin->getContentSize().width * 0.18f, 0));
+				useCoinIcon->setPosition(Vec2(m_btnUseCoin->getContentSize().width * 0.5f - m_btnUseCoin->getContentSize().width * 0.18f, m_btnUseCoin->getContentSize().height * 0.5f));
 				m_btnUseCoin->addChild(useCoinIcon);
 				useCoinIcon->setColor(g_labelColor3);
 			}
@@ -108,7 +108,7 @@ bool CVideoPopup::initVariable()
 			if (useCoinLabel != nullptr){
 				useCoinLabel->setColor(g_labelColor3);
 				useCoinLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-				useCoinLabel->setPosition(Vec2(- m_btnUseCoin->getContentSize().width * 0.13f, 0));
+				useCoinLabel->setPosition(Vec2(m_btnUseCoin->getContentSize().width * 0.5f - m_btnUseCoin->getContentSize().width * 0.13f, m_btnUseCoin->getContentSize().height * 0.5f));
 				m_btnUseCoin->addChild(useCoinLabel);
 			}
 

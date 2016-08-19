@@ -6,6 +6,8 @@
 #include "../../DataManager/UserDataManager.h"
 #include <vector>
 
+const int g_coinToGacha = 1500;
+
 CGachaPopup* CGachaPopup::create()
 {
 	CGachaPopup *pRet = new(std::nothrow) CGachaPopup();
@@ -60,7 +62,7 @@ bool CGachaPopup::initVariable()
 
 		auto btnGacha = CMyButton::createWithLayerColor(Size(250, 150),
 			Color4B(0, 0, 0, 255 * 0.8f),
-			"Get -1000",
+			MakeString("Get -%d", g_coinToGacha),
 			40,
 			Color3B::WHITE,
 			END,
@@ -115,35 +117,33 @@ void CGachaPopup::End(){
 }
 
 void CGachaPopup::PlayGacha(){
-	CCLOG("format popup PlayGacha");
-
-	size_t allCharacterCount = CCharacterDataManager::Instance()->getCharacterList().size();
-	auto haveCharacterList = CUserDataManager::Instance()->getUserData_List("USER_CHARACTER_LIST");
-	int currentCharacterCount = 0;
-
-	if (allCharacterCount < haveCharacterList->size())
-		CCASSERT(false, "Error : Character count should be less than haveCharacterList count.");
-	
-	// ÀÌ¹Ì °¡Áö°í ÀÖ´Â Ä³¸¯ÅÍ Ä«¿îÆ®
-	for (auto haveCharacter : *haveCharacterList){
-		if (haveCharacter == true){
-			currentCharacterCount++;
-		}
-	}
-
-	int randomIdx = 0;
-	// »ÌÀ» Ä³¸¯ÅÍ°¡ ´õÀÌ»ó ¾øÀ» ¶§
-	if (allCharacterCount <= currentCharacterCount){
-		CCLOG("No more Character");
-		return;
-	}
-	else
-	{ 
-		do{
-			randomIdx = random<int>(0, allCharacterCount - 1);
-		} while (haveCharacterList->at(randomIdx));
-	}
-
-	CCLOG("GET %d", randomIdx);
-	CUserDataManager::Instance()->setUserData_ItemGet("USER_CHARACTER_LIST", randomIdx);
+    
+    if (CUserDataManager::Instance()->CoinUpdate(-g_coinToGacha)){
+        CCLOG("format popup PlayGacha");
+        
+        int allCharacterCount = static_cast<int>(CCharacterDataManager::Instance()->getCharacterList().size());
+        auto haveCharacterList = CUserDataManager::Instance()->getUserData_List("USER_CHARACTER_LIST");
+        int currentCharacterCount = static_cast<int>(haveCharacterList->size());
+        
+        if (allCharacterCount < haveCharacterList->size())
+            CCASSERT(false, "Error : Character count should be less than haveCharacterList count.");
+        
+        
+        int randomIdx = 0;
+        // ë½‘ì„ ìºë¦­í„°ê°€ ë”ì´ìƒ ì—†ì„ ë•Œ
+        if (allCharacterCount <= currentCharacterCount){
+            CCLOG("No more Character");
+            return;
+        }
+        else
+        {
+            do{
+                randomIdx = random<int>(0, allCharacterCount - 1);
+            } while (CUserDataManager::Instance()->getUserData_IsItemHave("USER_CHARACTER_LIST", randomIdx));
+        }
+        
+        CCLOG("GET %d", randomIdx);
+        CUserDataManager::Instance()->setUserData_ItemGet("USER_CHARACTER_LIST", randomIdx);
+        CUserDataManager::Instance()->setUserData_Number("USER_CUR_CHARACTER", randomIdx);
+    }
 }

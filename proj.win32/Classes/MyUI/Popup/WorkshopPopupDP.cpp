@@ -115,26 +115,31 @@ bool CWorkshopPopupDP::initVariable()
 void CWorkshopPopupDP::Buy()
 {
 	CCLOG("Buy Item %s", m_WorkshopItem._name.c_str());
+    
     unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
     value += 1;
-    CUserDataManager::Instance()->setUserData_Number(m_WorkshopItem._userDataKey, value);
     
-    // Update button ui
-    auto btnLabel = m_BuyBtn->getBtnLabel();
-    
-    if(value >= m_WorkshopItem._maxLevel){
-        btnLabel->setString("MAX");
-        m_BuyBtn->setBtnUnable(true);
-        btnLabel->setColor(Color3B::BLACK);
+    if (CUserDataManager::Instance()->CoinUpdate(-m_WorkshopItem._costPerLevel.at(value))){
+        
+        CUserDataManager::Instance()->setUserData_Number(m_WorkshopItem._userDataKey, value);
+        
+        // Update button ui
+        auto btnLabel = m_BuyBtn->getBtnLabel();
+        
+        if(value >= m_WorkshopItem._maxLevel){
+            btnLabel->setString("MAX");
+            m_BuyBtn->setBtnUnable(true);
+            btnLabel->setColor(Color3B::BLACK);
+        }
+        else{
+            btnLabel->setString(MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(value)));
+        }
+        
+        // Update level progress
+        m_LevelProgressBar->setCurrentLevel(value);
+        m_LevelProgressBar->UpdateProgress();
+        
+        // set current selected item idx
+        CUserDataManager::Instance()->setUserData_Number("USER_CUR_SELECT_ITEM", m_WorkshopItem._idx);
     }
-    else{
-        btnLabel->setString(MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(value)));
-    }
-    
-    // Update level progress
-    m_LevelProgressBar->setCurrentLevel(value);
-    m_LevelProgressBar->UpdateProgress();
-    
-    // set current selected item idx
-    CUserDataManager::Instance()->setUserData_Number("USER_CUR_SELECT_ITEM", m_WorkshopItem._idx);
 }
