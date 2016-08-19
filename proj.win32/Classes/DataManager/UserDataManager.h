@@ -3,13 +3,10 @@
 #include <vector>
 #include <map>
 
-
 struct sUSER_DATA{
-    
     std::map<std::string, unsigned> _userDataUnsignedMap;
     std::map<std::string, std::vector<unsigned>*> _userDataListMap;
     std::map<std::string, std::string> _userDataKeyMap;
-
 };
 
 class CGoogleCloudManager;
@@ -21,45 +18,36 @@ public:
     static CUserDataManager* Instance();
     
     void GoogleLoginResult();
-	
-    void addKey(std::string keyKind, std::string key);
-    
-	bool CoinUpdate(int value);
 
+    //getter & setter
     unsigned getUserData_Number(std::string key);
-    void setUserData_Number(std::string key, unsigned value);
-    
     std::vector<unsigned>* getUserData_List(std::string key);
     bool getUserData_IsItemHave(std::string key, unsigned itemIdx);
-    void setUserData_ItemGet(std::string key, unsigned itemIdx);
-    
-    //getter & setter
-	void setSaveRevision(unsigned value);
+    float getItemLimitTime(std::string key);
     std::map<std::string, std::string> getKeyList() { return m_UserData->_userDataKeyMap; }
-
-	float getStarItemLimitTime();
-	float getCoinItemLimitTime();
-	float getGiantItemLimitTime();
-	float getBonusItemLimitTime();
-	float getMagnetItemLimitTime();
-	float getMagnetItemLimitRadius();
+    
+    void setSaveRevision(unsigned value);
+    void setUserData_Number(std::string key, unsigned value);
+    void setUserData_ItemGet(std::string key, unsigned itemIdx);
+    bool CoinUpdate(int value);
 
 private:
+    void callbackFirstRevision();
+    
     void dataLoad();
-    
-    void afterCallFirstRevision();
-    
     void dataLoadFromXML();
 	void dataLoadFromGoogleCloud();
-
-    void userDataSave_Number(std::string key);
-    void userDataSave_List(std::string key);
-	void userDataSave_Revision();
     
-    void userDataLoad(std::string key, std::string valueJson);
-    void userDataLoad_Number(std::string key, std::string valueJson);
-    void userDataLoad_List(std::string key, std::string valueJson);
+    void convertJsonToUserData(std::string key, std::string valueJson);
+    void convertJsonToUserData_Number(std::string key, std::string valueJson);
+    void convertJsonToUserData_List(std::string key, std::string valueJson);
 
+    void convertUserDataToJson_Number(std::string key);
+    void convertUserDataToJson_List(std::string key);
+    void convertUserDataToJson_Revision();
+    
+    void addKey(std::string keyKind, std::string key);
+    
     CUserDataManager();
     virtual ~CUserDataManager();
     

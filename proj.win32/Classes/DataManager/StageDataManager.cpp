@@ -16,12 +16,9 @@ CStageDataManager::CStageDataManager()
     
     // stageListIndex.json 파일 읽음
     std::string strStageListIndex = FileUtils::getInstance()->fullPathForFilename("jsonRes/stageList/stageListIndex.json");
-    ssize_t bufferSize = 0;
-    unsigned char* stageListIndexJson = FileUtils::getInstance()->getFileData(strStageListIndex.c_str(), "rb", &bufferSize);
-    std::string stageListIdxClearData((const char*)stageListIndexJson);
+    std::string stageListIdxClearData = FileUtils::getInstance()->getStringFromFile(strStageListIndex);
     size_t pos = stageListIdxClearData.rfind("}");
     stageListIdxClearData = stageListIdxClearData.substr(0, pos + 1);
-    
     
     bool parsingSuccessful = reader.parse(stageListIdxClearData, root);
     if (! parsingSuccessful)
@@ -43,10 +40,8 @@ CStageDataManager::CStageDataManager()
         CCLOG("%s, ", stageListFileName.c_str());
         
         // patternList.json 파일 읽음
-        std::string strStageList = CCFileUtils::sharedFileUtils()->fullPathForFilename(MakeString("jsonRes/stageList/%s.json", stageListFileName.c_str()));
-        bufferSize = 0;
-        unsigned char* stageListJson = CCFileUtils::sharedFileUtils()->getFileData(strStageList.c_str(), "rb", &bufferSize);
-        std::string stageListClearData((const char*)stageListJson);
+        std::string strStageList = FileUtils::getInstance()->fullPathForFilename(MakeString("jsonRes/stageList/%s.json", stageListFileName.c_str()));
+        std::string stageListClearData = FileUtils::getInstance()->getStringFromFile(strStageList);
         pos = stageListClearData.rfind("}");
         stageListClearData = stageListClearData.substr(0, pos + 1);
         

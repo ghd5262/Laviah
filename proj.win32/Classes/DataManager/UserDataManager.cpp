@@ -25,6 +25,12 @@
 	Json::Value data; \
 	Json::StyledWriter writer;
 
+// 오름차순 compare
+unsigned compare (unsigned a, unsigned b)
+{
+    return ( a < b );
+}
+
 static const std::string CRYPTO_KEY = "sktjdgmlq1024!";
 
 CUserDataManager::CUserDataManager() : m_IsFirstRevisionCall(false)
@@ -39,9 +45,7 @@ CUserDataManager::CUserDataManager() : m_IsFirstRevisionCall(false)
     
     // userDefaultDataList.json 읽음
     std::string strUserDefaultDataList = FileUtils::getInstance()->fullPathForFilename("jsonRes/userDefaultDataList.json");
-    ssize_t bufferSize = 0;
-    unsigned char* userDefaultDataListJson = FileUtils::getInstance()->getFileData(strUserDefaultDataList.c_str(), "rb", &bufferSize);
-    std::string userDefaultDataListClearData((const char*)userDefaultDataListJson);
+    std::string userDefaultDataListClearData = FileUtils::getInstance()->getStringFromFile(strUserDefaultDataList);
     size_t pos = userDefaultDataListClearData.rfind("}");
     userDefaultDataListClearData = userDefaultDataListClearData.substr(0, pos + 1);
     
@@ -94,12 +98,13 @@ CUserDataManager* CUserDataManager::Instance()
     return &instance;
 }
 
+/* google login을 시도한 후에 호출됨 */
 void CUserDataManager::GoogleLoginResult()
 {
-    CCLOG("GoogleLoginResult Called");
+    CCLOG("GoogleLoginResult : Called");
     if (CGoogleCloudManager::Instance()->getIsConnected())
     {
-        CCLOG("GoogleLoginResult Call google revision function");
+        CCLOG("GoogleLoginResult : Call google revision function");
         
         // 리비전 비교 위해 함수 호출
         std::string crypto_key = MakeCryptoString("USER_DATA_SAVE_REVISION", CRYPTO_KEY);
@@ -108,75 +113,91 @@ void CUserDataManager::GoogleLoginResult()
         m_IsFirstRevisionCall = true;
     }
     else{
-        CCLOG("GoogleLoginResult Call xml revision function");
+        CCLOG("GoogleLoginResult : Call xml revision function");
         
         // XML로부터 데이터 로드
         dataLoadFromXML();
     }
 }
 
-void CUserDataManager::afterCallFirstRevision() {
-    
-    if(m_IsFirstRevisionCall){
-        dataLoad();
-        m_IsFirstRevisionCall = false;
+#pragma mark -
+#pragma mark [ interface function getter ]
+unsigned CUserDataManager::getUserData_Number(std::string key)
+{
+    if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end()){
+        auto value = m_UserData->_userDataUnsignedMap.find(key)->second;
+        return value;
     }
-    
+    CCLOG("There is no user data key : %s", key.c_str());
+    CCASSERT(false, "Wrong Key");
 }
 
-void CUserDataManager::dataLoad()
+std::vector<unsigned>* CUserDataManager::getUserData_List(std::string key)
 {
-	/* saveRevision이 더 높은 데이터로 로딩한다.
-	 * 게임중 인터넷이 끊기면 구글클라우드에는 저장하지 않기 때문에 대부분 xml의 revision이 높을 것이다.
-	 * 하지만 게임을 지웠다가 다시 설치할 경우엔 클라우드의 데이터를 가져와야한다. */
-    
-    unsigned xmlRevision = 0;
-    std::string crypto_key = MakeCryptoString("USER_DATA_SAVE_REVISION", CRYPTO_KEY);
-    auto valueJson = UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), "");
-    if (valueJson != ""){
-        JSONREADER_CREATE
-        xmlRevision = root["data"].asInt();
+    if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
+        auto list = m_UserData->_userDataListMap.find(key)->second;
+        return list;
     }
-    
-    unsigned googleRevision = getUserData_Number("USER_DATA_SAVE_REVISION");
-    
-    CCLOG("xmlRevision : %u googleRevision : %u", xmlRevision, googleRevision);
-    
-    
-    if (xmlRevision >= googleRevision)
-	{
-		dataLoadFromXML();
-	}
-	else{
-		dataLoadFromGoogleCloud();
-        /* 구글 클라우드의 Revision이 높을때(새로 다운 받았을 경우)
-         * 마침 인터넷이 연결되어 있지 않다면 데이터가 날아갈 수 있다.(연결되어 있지 않다면 xml에서 로드 하기때문)
-         * 때문에 구글 클라우드의 Revision이 높을 경우에는 항상 XML에 모두 저장한다. 
-         * 전제조건으로 게임을 새로 설치한 경우에는 로그인하도록 유도한다. */
-	}
+    CCLOG("There is no user data key : %s", key.c_str());
+    CCASSERT(false, "Wrong Key");
 }
 
-void CUserDataManager::dataLoadFromGoogleCloud()
+bool CUserDataManager::getUserData_IsItemHave(std::string key, unsigned itemIdx)
 {
-    for(auto keyInfo : m_UserData->_userDataKeyMap)
+    if(m_UserData->_userDataListMap.find(key) == m_UserData->_userDataListMap.end()){
+        CCLOG("There is no list with this key %s", key.c_str());
+        CCASSERT(false, "Wrong Key");
+    }
+    
+    auto itemList = m_UserData->_userDataListMap.find(key)->second;
+    size_t listSize = itemList->size();
+    
+    if (listSize > 0)
     {
-        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
-        CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
+        for(auto item : *itemList)
+        {
+            if(item == itemIdx)
+            return true;
+        }
     }
+    return false;
 }
 
-void CUserDataManager::dataLoadFromXML()
+float CUserDataManager::getItemLimitTime(std::string key)
 {
-    for(auto keyInfo : m_UserData->_userDataKeyMap){
-            std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
-            userDataLoad(crypto_key.c_str(), UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), ""));
-    }
+    sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey(key.c_str());
+    float limitTime = item._valuePerLevel * getUserData_Number(key.c_str());
+    return limitTime;
 }
 
-void CUserDataManager::addKey(std::string keyKind, std::string key)
+#pragma mark -
+#pragma mark [ interface function setter ]
+void CUserDataManager::setSaveRevision(unsigned value)
 {
-    m_UserData->_userDataKeyMap.emplace(std::pair<std::string, std::string>(key, keyKind));
-    CCLOG("Kind : %s Add Key : %s ", keyKind.c_str(), key.c_str());
+    if(m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION") != m_UserData->_userDataUnsignedMap.end())
+    m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION")->second = value;
+    
+    convertUserDataToJson_Revision();
+}
+
+void CUserDataManager::setUserData_Number(std::string key, unsigned value)
+{
+    if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end())
+        m_UserData->_userDataUnsignedMap.find(key)->second = value;
+    
+    convertUserDataToJson_Number(key);
+}
+
+void CUserDataManager::setUserData_ItemGet(std::string key, unsigned itemIdx)
+{
+    if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
+        auto list = m_UserData->_userDataListMap.find(key)->second;
+
+        list->push_back(itemIdx);
+        
+        std::sort(list->begin(), list->end(), compare);
+    }
+    convertUserDataToJson_List(key);
 }
 
 bool CUserDataManager::CoinUpdate(int value)
@@ -210,169 +231,91 @@ bool CUserDataManager::CoinUpdate(int value)
     return result;
 }
 
-unsigned CUserDataManager::getUserData_Number(std::string key)
-{
-    if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end()){
-        auto value = m_UserData->_userDataUnsignedMap.find(key)->second;
-        return value;
-    }
-    CCLOG("There is no user data key : %s", key.c_str());
-    CCASSERT(false, "Wrong Key");
-}
-
-void CUserDataManager::setUserData_Number(std::string key, unsigned value)
-{
-    if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end())
-        m_UserData->_userDataUnsignedMap.find(key)->second = value;
+#pragma mark -
+#pragma mark [ private function ]
+void CUserDataManager::callbackFirstRevision() {
     
-    userDataSave_Number(key);
-}
-
-void CUserDataManager::setSaveRevision(unsigned value)
-{
-    if(m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION") != m_UserData->_userDataUnsignedMap.end())
-        m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION")->second = value;
-    
-    userDataSave_Revision();
-}
-
-
-
-std::vector<unsigned>* CUserDataManager::getUserData_List(std::string key)
-{
-    if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
-        auto list = m_UserData->_userDataListMap.find(key)->second;
-        return list;
-    }
-    CCLOG("There is no user data key : %s", key.c_str());
-    CCASSERT(false, "Wrong Key");
-}
-
-bool CUserDataManager::getUserData_IsItemHave(std::string key, unsigned itemIdx)
-{
-    if(m_UserData->_userDataListMap.find(key) == m_UserData->_userDataListMap.end()){
-        CCLOG("There is no list with this key %s", key.c_str());
-        CCASSERT(false, "Wrong Key");
+    if(m_IsFirstRevisionCall){
+        dataLoad();
+        m_IsFirstRevisionCall = false;
     }
     
-    auto itemList = m_UserData->_userDataListMap.find(key)->second;
-    size_t listSize = itemList->size();
+}
+
+void CUserDataManager::dataLoad()
+{
+    /* saveRevision이 더 높은 데이터로 로딩한다.
+     * 게임중 인터넷이 끊기면 구글클라우드에는 저장하지 않기 때문에 대부분 xml의 revision이 높을 것이다.
+     * 하지만 게임을 지웠다가 다시 설치할 경우엔 클라우드의 데이터를 가져와야한다. */
     
-    if (listSize > 0)
+    unsigned xmlRevision = 0;
+    std::string crypto_key = MakeCryptoString("USER_DATA_SAVE_REVISION", CRYPTO_KEY);
+    auto valueJson = UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), "");
+    if (valueJson != ""){
+        JSONREADER_CREATE
+        xmlRevision = root["data"].asInt();
+    }
+    
+    unsigned googleRevision = getUserData_Number("USER_DATA_SAVE_REVISION");
+    
+    CCLOG("xmlRevision : %u googleRevision : %u", xmlRevision, googleRevision);
+    
+    
+    if (xmlRevision >= googleRevision)
     {
-        for(auto item : *itemList)
-        {
-            if(item == itemIdx)
-                return true;
-        }
+        dataLoadFromXML();
     }
-    return false;
+    else{
+        dataLoadFromGoogleCloud();
+        /* 구글 클라우드의 Revision이 높을때(새로 다운 받았을 경우)
+         * 마침 인터넷이 연결되어 있지 않다면 데이터가 날아갈 수 있다.(연결되어 있지 않다면 xml에서 로드 하기때문)
+         * 때문에 게임을 새로 설치한 경우에는 항상 로그인을 하도록 하고 XML에 모두 저장한다. */
+    }
 }
 
-
-// 오름차순 compare
-unsigned compare (unsigned a, unsigned b)
+void CUserDataManager::dataLoadFromXML()
 {
-    return ( a < b );
+    for(auto keyInfo : m_UserData->_userDataKeyMap){
+        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
+        convertJsonToUserData(crypto_key.c_str(), UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), ""));
+    }
 }
 
-void CUserDataManager::setUserData_ItemGet(std::string key, unsigned itemIdx)
+void CUserDataManager::dataLoadFromGoogleCloud()
 {
-    if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
-        auto list = m_UserData->_userDataListMap.find(key)->second;
-
-        list->push_back(itemIdx);
+    for(auto keyInfo : m_UserData->_userDataKeyMap)
+    {
+        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
         
-        std::sort(list->begin(), list->end(), compare);
+        // google sdk와 통신후 convertJsonToUserData 호출됨
+        CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
     }
-    userDataSave_List(key);
 }
 
-
-void CUserDataManager::userDataSave_Number(std::string key)
-{
-    JSONWRITER_CREATE
-    root["data"] = getUserData_Number(key);
-    std::string dataStr = writer.write(root);
-    
-    // 암호화
-    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
-    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
-    
-    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
-    setSaveRevision(getUserData_Number("USER_DATA_SAVE_REVISION") + 1);
-    
-    if (CGoogleCloudManager::Instance()->getIsConnected())
-        CSDKUtil::Instance()->GoogleCloudSave(crypto_key.c_str(), crypto_value);
-}
-
-void CUserDataManager::userDataSave_List(std::string key)
-{
-    JSONWRITER_CREATE
-    Json::Value jsonItemList;
-    auto list = getUserData_List(key);
-    
-    for(auto data : *list)
-    {
-        jsonItemList.append(static_cast<unsigned>(data));
-    }
-    root["data"] = jsonItemList;
-    std::string dataStr = writer.write(root);
-    
-    // 암호화
-    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
-    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
-    
-    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
-    setSaveRevision(getUserData_Number("USER_DATA_SAVE_REVISION") + 1);
-    
-    if (CGoogleCloudManager::Instance()->getIsConnected())
-        CSDKUtil::Instance()->GoogleCloudSave(crypto_key.c_str(), crypto_value);
-}
-
-void CUserDataManager::userDataSave_Revision()
-{
-    std::string key = "USER_DATA_SAVE_REVISION";
-    
-    JSONWRITER_CREATE
-    root["data"] = getUserData_Number(key);
-    std::string dataStr = writer.write(root);
-    
-    // 암호화
-    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
-    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
-    
-    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
-    
-    if (CGoogleCloudManager::Instance()->getIsConnected())
-        CSDKUtil::Instance()->GoogleCloudSave(crypto_key.c_str(), crypto_value);
-}
-
-
-void CUserDataManager::userDataLoad(std::string key, std::string valueJson)
+void CUserDataManager::convertJsonToUserData(std::string key, std::string valueJson)
 {
     // 복호화
     std::string decrypto_key = MakeCryptoString(key, CRYPTO_KEY);
     std::string decrypto_value = MakeCryptoString(valueJson, CRYPTO_KEY);
     
-    CCLOG("===========================GoogleCloudLoad============================");
+    CCLOG("=======================GoogleCloudLoad========================");
     CCLOG("Decrypto Key : %s", decrypto_key.c_str());
     CCLOG("Decrypto Value : %s", decrypto_value.c_str());
-    CCLOG("======================================================================");
+    CCLOG("==============================================================");
     
     if(m_UserData->_userDataKeyMap.find(decrypto_key) != m_UserData->_userDataKeyMap.end()){
         if(m_UserData->_userDataKeyMap.find(decrypto_key)->second == "userDefaultDatas_Number")
         {
-            userDataLoad_Number(decrypto_key, decrypto_value);
+            convertJsonToUserData_Number(decrypto_key, decrypto_value);
         }
         else if(m_UserData->_userDataKeyMap.find(decrypto_key)->second == "userDefaultDatas_List")
         {
-            userDataLoad_List(decrypto_key, decrypto_value);
+            convertJsonToUserData_List(decrypto_key, decrypto_value);
         }
     }
 }
 
-void CUserDataManager::userDataLoad_Number(std::string key, std::string valueJson)
+void CUserDataManager::convertJsonToUserData_Number(std::string key, std::string valueJson)
 {
     if (valueJson != ""){
         JSONREADER_CREATE
@@ -387,7 +330,7 @@ void CUserDataManager::userDataLoad_Number(std::string key, std::string valueJso
     }
 }
 
-void CUserDataManager::userDataLoad_List(std::string key, std::string valueJson)
+void CUserDataManager::convertJsonToUserData_List(std::string key, std::string valueJson)
 {
     std::vector<unsigned>* list;
     
@@ -413,44 +356,67 @@ void CUserDataManager::userDataLoad_List(std::string key, std::string valueJson)
     }
 }
 
-float CUserDataManager::getStarItemLimitTime()
+void CUserDataManager::convertUserDataToJson_Number(std::string key)
 {
-    sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey("USER_STAR_LIMIT_TIME_IDX");
-    float limitTime = item._valuePerLevel * getUserData_Number("USER_STAR_LIMIT_TIME_IDX");
-    return limitTime;
+    JSONWRITER_CREATE
+    root["data"] = getUserData_Number(key);
+    std::string dataStr = writer.write(root);
+    
+    // 암호화
+    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
+    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
+    
+    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
+    setSaveRevision(getUserData_Number("USER_DATA_SAVE_REVISION") + 1);
+    
+    if (CGoogleCloudManager::Instance()->getIsConnected())
+        CGoogleCloudManager::Instance()->GoogleCloudDataSave(crypto_key.c_str(), crypto_value);
 }
 
-float CUserDataManager::getCoinItemLimitTime()
+void CUserDataManager::convertUserDataToJson_List(std::string key)
 {
-    sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey("USER_COIN_LIMIT_TIME_IDX");
-    float limitTime = item._valuePerLevel * getUserData_Number("USER_COIN_LIMIT_TIME_IDX");
-    return limitTime;
+    JSONWRITER_CREATE
+    Json::Value jsonItemList;
+    auto list = getUserData_List(key);
+    
+    for(auto data : *list)
+    {
+        jsonItemList.append(static_cast<unsigned>(data));
+    }
+    root["data"] = jsonItemList;
+    std::string dataStr = writer.write(root);
+    
+    // 암호화
+    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
+    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
+    
+    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
+    setSaveRevision(getUserData_Number("USER_DATA_SAVE_REVISION") + 1);
+    
+    if (CGoogleCloudManager::Instance()->getIsConnected())
+        CGoogleCloudManager::Instance()->GoogleCloudDataSave(crypto_key.c_str(), crypto_value);
 }
 
-float CUserDataManager::getGiantItemLimitTime()
+void CUserDataManager::convertUserDataToJson_Revision()
 {
-    sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey("USER_GIANT_LIMIT_TIME_IDX");
-    float limitTime = item._valuePerLevel * getUserData_Number("USER_GIANT_LIMIT_TIME_IDX");
-    return limitTime;
+    std::string key = "USER_DATA_SAVE_REVISION";
+    
+    JSONWRITER_CREATE
+    root["data"] = getUserData_Number(key);
+    std::string dataStr = writer.write(root);
+    
+    // 암호화
+    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
+    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
+    
+    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
+    
+    if (CGoogleCloudManager::Instance()->getIsConnected())
+        CGoogleCloudManager::Instance()->GoogleCloudDataSave(crypto_key.c_str(), crypto_value);
 }
 
-float CUserDataManager::getBonusItemLimitTime()
+void CUserDataManager::addKey(std::string keyKind, std::string key)
 {
-    sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey("USER_BONUS_LIMIT_TIME_IDX");
-    float limitTime = item._valuePerLevel * getUserData_Number("USER_BONUS_LIMIT_TIME_IDX");
-    return limitTime;
-}
-
-float CUserDataManager::getMagnetItemLimitTime()
-{
-    sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey("USER_MAGNET_LIMIT_TIME_IDX");
-    float limitTime = item._valuePerLevel * getUserData_Number("USER_MAGNET_LIMIT_TIME_IDX");
-    return limitTime;
-}
-
-float CUserDataManager::getMagnetItemLimitRadius()
-{
-    sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey("USER_MAGNET_LIMIT_SIZE_IDX");
-    float limitTime = item._valuePerLevel * getUserData_Number("USER_MAGNET_LIMIT_SIZE_IDX");
-    return limitTime;
+    m_UserData->_userDataKeyMap.emplace(std::pair<std::string, std::string>(key, keyKind));
+    CCLOG("Kind : %s Add Key : %s ", keyKind.c_str(), key.c_str());
 }

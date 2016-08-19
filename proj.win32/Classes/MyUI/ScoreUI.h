@@ -6,7 +6,7 @@ class CScoreUI : public CGameObject
 public:
 	static CScoreUI* create(std::string fontName, size_t fontSize, std::string valueImgName = "");
 
-	virtual void Execute(float delta = 0.f);
+	virtual void Execute(float delta = 0.f) override;
 	void UpdateValue(int number);
 	void SetLabelAnchor(Vec2 point);
 

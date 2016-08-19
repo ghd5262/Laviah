@@ -12,9 +12,7 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 
 	// patternList.json 파일 읽음
 	std::string strWorkshopItemList = FileUtils::getInstance()->fullPathForFilename("jsonRes/workshopItemList.json");
-	ssize_t bufferSize = 0;
-	unsigned char* workshopItemListJson = FileUtils::getInstance()->getFileData(strWorkshopItemList.c_str(), "rb", &bufferSize);
-	std::string workshopItemListClearData((const char*)workshopItemListJson);
+	std::string workshopItemListClearData = FileUtils::getInstance()->getStringFromFile(strWorkshopItemList);
 	size_t pos = workshopItemListClearData.rfind("}");
 	workshopItemListClearData = workshopItemListClearData.substr(0, pos + 1);
 

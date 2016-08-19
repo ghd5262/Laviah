@@ -53,7 +53,7 @@ bool CScoreUI::initVariable()
 void CScoreUI::insertComma(const char* valueStr, char* resultStr)
 {
 	int len;
-	len = strlen(valueStr);
+	len = static_cast<int>(strlen(valueStr));
 
 	while ((*resultStr++ = *valueStr++)) {
 		if (--len && (len % 3) == 0)

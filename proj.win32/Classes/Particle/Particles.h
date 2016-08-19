@@ -13,7 +13,7 @@ protected:
 		: m_strTextureName(textureName){}
 	virtual ~CParticle_Flame(){}
 
-	bool init(){ return initWithTotalParticles(50); }
+	bool init() override { return initWithTotalParticles(50); }
 	virtual bool initWithTotalParticles(int numberOfParticles) override;
 
 private:
@@ -35,7 +35,7 @@ protected:
 		: m_strTextureName(textureName){}
 	virtual ~CParticle_Explosion(){}
 
-	bool init(){ return initWithTotalParticles(30); }
+	bool init() override { return initWithTotalParticles(30); }
 	virtual bool initWithTotalParticles(int numberOfParticles) override;
 
 private:
@@ -57,7 +57,7 @@ protected:
 		: m_strTextureName(textureName){}
 	virtual ~CParticle_Explosion_2(){}
 
-	bool init(){ return initWithTotalParticles(300); }
+	bool init() override { return initWithTotalParticles(300); }
 	virtual bool initWithTotalParticles(int numberOfParticles) override;
 
 private:
@@ -79,7 +79,7 @@ protected:
 		: m_strTextureName(textureName){}
 	virtual ~CParticle_Line(){}
 
-	bool init(){ return initWithTotalParticles(120); }
+	bool init() override { return initWithTotalParticles(120); }
 	virtual bool initWithTotalParticles(int numberOfParticles) override;
 
 private:
