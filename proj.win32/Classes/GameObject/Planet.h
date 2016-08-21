@@ -13,6 +13,7 @@ public:
 	//getter & setter
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
 	cocos2d::Vec2 getOriginPos(){ return m_OriginPos; }
+	void setPlanetTexture(std::string textureName) { if(m_pTexture != nullptr) m_pTexture->setTexture(textureName); }
 
 protected:
 	virtual bool init() override;

@@ -49,7 +49,6 @@ enum eSTAR_TYPE{
 };
 
 struct sBULLET_PARAM{
-	std::string _TextureName;
 	float _fBouningRadius;
 	float _fDistance;
 	float _fPower;
@@ -61,7 +60,6 @@ struct sBULLET_PARAM{
 	char _symbol;
 
 	sBULLET_PARAM(
-		std::string textureName,
 		float boundingRadius,
 		float distance,
 		float power,
@@ -70,8 +68,7 @@ struct sBULLET_PARAM{
 		eCOIN_TYPE coinType = eCOIN_TYPE_none,
 		eSTAR_TYPE starType = eSTAR_TYPE_none,
 		eITEM_TYPE itemType = eITEM_TYPE_none)
-		: _TextureName(textureName)
-		, _fBouningRadius(boundingRadius)
+		: _fBouningRadius(boundingRadius)
 		, _fDistance(distance)
 		, _fPower(power)
 		, _isFly(isFly)

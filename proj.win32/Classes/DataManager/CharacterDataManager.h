@@ -12,10 +12,19 @@ struct sCHARACTER_PARAM{
     float _bonusItemTime;
     float _magnetItemTime;
     float _giantItemTime;
+	float _magnetItemSize;
     std::string _normalTextureName;
 	std::string _giantTextureName;
+	std::string _planetTextureName;
+	std::string _normalBulletTextureName;
+	std::string _stickBulletTextureName;
+	std::string _normalMissileLine;
+	std::string _aimingMissileLine;
+	std::string _normalMissileTextureName;
+	std::string _aimingMissileTextureName;
+	std::string _normalMissilePattern;
+	std::string _aimingMissilePattern;
     std::string _name;
-    std::string _skillName;
     std::string _story;
 };
 
@@ -28,6 +37,7 @@ public:
     //getter & setter
     sCHARACTER_PARAM getCharacterInfoByIndex(int index) const;
     std::vector<sCHARACTER_PARAM> getCharacterList(){ return m_CharacterList; };
+	void PrintCharacterInfo(int index);
     
 private:
     CCharacterDataManager();

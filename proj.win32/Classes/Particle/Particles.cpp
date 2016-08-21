@@ -60,29 +60,29 @@ bool CParticle_Flame::initWithTotalParticles(int numberOfParticles)
 		this->_angleVar = 20;
 
 		// life of particles
-		this->_life = 0.4f;
-		this->_lifeVar = 1;
+		this->_life = 0.8f;
+		this->_lifeVar = 1.5;
 
 		// emits per frame
 		this->_emissionRate = _totalParticles / _life;
 
 		// color of particles
-		_startColor.r = 0.5f;
-		_startColor.g = 0.5f;
-		_startColor.b = 0.5f;
-		_startColor.a = 1.0f;
-		_startColorVar.r = 0.5f;
-		_startColorVar.g = 0.5f;
-		_startColorVar.b = 0.5f;
-		_startColorVar.a = 0.1f;
-		_endColor.r = 0.1f;
-		_endColor.g = 0.1f;
-		_endColor.b = 0.1f;
-		_endColor.a = 0.2f;
-		_endColorVar.r = 0.1f;
-		_endColorVar.g = 0.1f;
-		_endColorVar.b = 0.1f;
-		_endColorVar.a = 0.2f;
+		_startColor.r = 1.0f;
+		_startColor.g = 1.0f;
+		_startColor.b = 1.0f;
+		_startColor.a = 0.8f;
+		_startColorVar.r = 0.8f;
+		_startColorVar.g = 0.8f;
+		_startColorVar.b = 0.8f;
+		_startColorVar.a = 0.5f;
+		_endColor.r = 0.8f;
+		_endColor.g = 0.8f;
+		_endColor.b = 0.8f;
+		_endColor.a = 0.1f;
+		_endColorVar.r = 0.8f;
+		_endColorVar.g = 0.8f;
+		_endColorVar.b = 0.8f;
+		_endColorVar.a = 0.1f;
 
 		// size, in pixels
 		_startSize = 30.0f;

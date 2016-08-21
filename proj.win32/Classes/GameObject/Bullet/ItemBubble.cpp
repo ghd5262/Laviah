@@ -52,7 +52,7 @@ bool CItemBubble::initVariable()
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 		m_ScreenRect = Rect(0, 0, visibleSize.width, visibleSize.height);
 
-		m_Bubble = CSpeechBubble::create(m_BulletParam._TextureName.c_str(), m_BubbleIconName.c_str());
+		m_Bubble = CSpeechBubble::create("bubble_1.png", m_BubbleIconName.c_str());
 		if (m_Bubble != nullptr)
 		{
 			m_Bubble->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

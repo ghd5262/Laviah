@@ -42,7 +42,7 @@ void CMenuSceneObjectManager::Auto_ReturnToMemoryBlock()
 void CMenuSceneObjectManager::RemoveAllObject()
 {
 	RemoveAllAlien();
-	m_AlienList.clear();
+	Clear();
 }
 
 void CMenuSceneObjectManager::Execute(float delta)

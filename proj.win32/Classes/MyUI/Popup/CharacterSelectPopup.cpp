@@ -5,6 +5,8 @@
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/CharacterDataManager.h"
 #include "../../DataManager/UserDataManager.h"
+#include "../../GameObject/MenuSceneObjectManager.h"
+#include "../../GameObject/Planet.h"
 #include "ui/UIListView.h"
 
 CCharacterSelectPopup* CCharacterSelectPopup::create()
@@ -194,13 +196,18 @@ void CCharacterSelectPopup::Select()
     if(m_CenterDP == nullptr) return;
     
     auto centerCharacterParam = m_CenterDP->getCharacterParam();
+
+	auto planet = CMenuSceneObjectManager::Instance()->getPlanet();
+	if (planet != nullptr)
+		planet->setPlanetTexture(centerCharacterParam._planetTextureName);
     
-    if(CUserDataManager::Instance()->getUserData_IsItemHave("USER_CHARACTER_LIST", centerCharacterParam._idx))
+	if(CUserDataManager::Instance()->getUserData_IsItemHave("USER_CHARACTER_LIST", centerCharacterParam._idx))
     {
         m_CenterDP->Select();
     }else{
         m_CenterDP->Buy();
         m_btnSelect->getBtnLabel()->setString("Select");
+		m_btnUserCoin->UpdateUI();
     }
 }
 

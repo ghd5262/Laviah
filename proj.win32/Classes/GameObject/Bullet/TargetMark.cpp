@@ -64,9 +64,11 @@ bool CTargetMark::initVariable()
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20)) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
 
-		auto texture = Director::getInstance()->getTextureCache()->addImage(m_BulletParam._TextureName);
-		
-		
+		std::string missileLineTextureName = m_pPlayer->getCharacterParam()._normalMissileLine;
+		if (m_BulletParam._isAimingMissile)
+			missileLineTextureName = m_pPlayer->getCharacterParam()._aimingMissileLine;
+
+		auto texture = Director::getInstance()->getTextureCache()->addImage(missileLineTextureName);
 
 		if (m_bIsMissileChangedToCoin){
 

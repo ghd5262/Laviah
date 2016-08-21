@@ -81,8 +81,7 @@ void CObjectManager::RemoveAllObject()
 {
 	RemoveAllBullet();
 	RemoveAllShooter();
-	m_BulletList.clear();
-	m_ShooterList.clear();
+	Clear();
 }
 
 void CObjectManager::CreateShooterByTimer()

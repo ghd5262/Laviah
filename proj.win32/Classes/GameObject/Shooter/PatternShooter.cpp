@@ -1,4 +1,3 @@
-#pragma once
 #include "PatternShooter.h"
 #include "../Bullet/BulletHeaders.h"
 #include "../../DataManager/BulletPatternDataManager.h"
@@ -109,7 +108,6 @@ void CPatternShooter::ShootOnce()
 				else if (p == 'z')//랜덤 아이템
 				{
 					bulletParam._itemType = static_cast<eITEM_TYPE>(random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2));
-                    bulletParam._TextureName = MakeString("playItem_%d.png", bulletParam._itemType - 1);
 					CGameScene::getGridWorld()->addChild(CPlayItem::create(
 						bulletParam,
 						bulletAngle,

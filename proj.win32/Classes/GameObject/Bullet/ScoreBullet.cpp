@@ -5,7 +5,7 @@
 #include "../../Particle/Particles.h"
 
 CScoreBullet::CScoreBullet(int score/* = 0 */)
-	: CBullet(sBULLET_PARAM("scoreBullet", 0, 0, 0), 0.0f, 0.0f)
+	: CBullet(sBULLET_PARAM(0, 0, 0), 0.0f, 0.0f)
 	, m_nScore(score)
 	, m_strScore("")
 	, m_labelScore(nullptr)

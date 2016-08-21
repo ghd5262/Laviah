@@ -101,11 +101,20 @@ CCharacterDataManager::CCharacterDataManager()
 		character._coinItemTime = 2.f;
 		character._bonusItemTime = 3.f;
 		character._magnetItemTime = 4.f;
+		character._magnetItemSize = 5.f;
 		character._giantItemTime = 5.f;
 		character._normalTextureName = MakeString("player%d.png", i % 5);
 		character._giantTextureName = MakeString("player%d_big.png", i % 5);
+		character._planetTextureName = MakeString("planet_%d.png", i % 5);
+		character._normalBulletTextureName = MakeString("bullet_%d.png", i % 5);
+		character._stickBulletTextureName = MakeString("stickBullet_%d.png", i % 5);
+		character._normalMissileLine = MakeString("normalMissileLine_%d.png", i % 5);
+		character._aimingMissileLine = MakeString("aimingMissileLine_%d.png", i % 5);
+		character._normalMissileTextureName = MakeString("normalMissile_%d.png", i % 5);
+		character._aimingMissileTextureName = MakeString("aimingMissile_%d.png", i % 5);
+		character._normalMissilePattern = MakeString("normalMissile%d_Pattern", i % 5);
+		character._aimingMissilePattern = MakeString("aimingMissile%d_Pattern", i % 5);
 		character._name = MakeString("character_%d", i % 5);
-		character._skillName = MakeString("skill_%d", i % 5);;
 		character._story = MakeString("story_%d", i % 5);
 
 		m_CharacterList.emplace_back(character);
@@ -125,4 +134,34 @@ CCharacterDataManager* CCharacterDataManager::Instance()
 sCHARACTER_PARAM CCharacterDataManager::getCharacterInfoByIndex(int index) const
 {
     return m_CharacterList.at(index);
+} 
+
+void CCharacterDataManager::PrintCharacterInfo(int index)
+{
+	auto character = m_CharacterList.at(index);
+	CCLOG("=======================Character Info=======================");
+	CCLOG("Index						: %d", character._idx);
+	CCLOG("Open Level					: %d", character._openLevel);
+	CCLOG("Cost							: %d", character._cost);
+	CCLOG("Health						: %d", character._health);
+	CCLOG("Star Item Time				: %f", character._starItemTime);
+	CCLOG("Coin Item Time				: %f", character._coinItemTime);
+	CCLOG("Magnet Item Time				: %f", character._magnetItemTime);
+	CCLOG("Bonus Item Time				: %f", character._bonusItemTime);
+	CCLOG("Giant Item Time				: %f", character._giantItemTime);
+	CCLOG("Magnet Item Size				: %f", character._magnetItemSize);
+	CCLOG("Normal Texture Name			: %s", character._normalTextureName.c_str());
+	CCLOG("Giant Texture Name			: %s", character._giantTextureName.c_str());
+	CCLOG("Planet Texture Name			: %s", character._planetTextureName.c_str());
+	CCLOG("Normal Bullet Texture Name	: %s", character._normalBulletTextureName.c_str());
+	CCLOG("Stick Bullet Texture Name	: %s", character._stickBulletTextureName.c_str());
+	CCLOG("Normal Missile Line Texture Name	: %s", character._normalMissileLine.c_str());
+	CCLOG("Aiming Missile Line Texture Name	: %s", character._aimingMissileLine.c_str());
+	CCLOG("Normal Missile Texture Name	: %s", character._normalMissileTextureName.c_str());
+	CCLOG("Aiming Missile Texture Name	: %s", character._aimingMissileTextureName.c_str());
+	CCLOG("Normal Missile Pattern Name	: %s", character._normalMissilePattern.c_str());
+	CCLOG("Aiming Missile Pattern Name	: %s", character._aimingMissilePattern.c_str());
+	CCLOG("Name							: %s", character._name.c_str());
+	CCLOG("Story						: %s", character._story.c_str());
+	CCLOG("============================================================");
 }

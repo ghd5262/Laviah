@@ -2,7 +2,6 @@
 {
 	"bullets": [{
 		"symbol": "1",
-			"textureName" : "bullet_1.png",
 			"bindingRadius" : 5.0,
 			"power" : 5,
 			"distance" : 1700.0,
@@ -12,7 +11,6 @@
 			"itemType" : 0
 	}, {
 		"symbol": "2",
-		"textureName" : "bullet_2.png",
 		"bindingRadius" : 5.0,
 		"power" : 8,
 		"distance" : 1700.0,
@@ -22,7 +20,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "3",
-		"textureName" : "bullet_3.png",
 		"bindingRadius" : 5.0,
 		"power" : 13,
 		"distance" : 1700.0,
@@ -32,7 +29,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "4",
-		"textureName" : "missile_1.png",
 		"bindingRadius" : 8.0,
 		"power" : 18,
 		"distance" : 4000.0,
@@ -42,7 +38,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "5",
-		"textureName" : "missile_2.png",
 		"bindingRadius" : 8.0,
 		"power" : 18,
 		"distance" : 2500.0,
@@ -52,7 +47,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "6",
-		"textureName" : "stick.png",
 		"bindingRadius" : 15.0,
 		"power" : 5,
 		"distance" : 1700.0,
@@ -62,7 +56,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "A",
-		"textureName" : "playItem_0.png",
 		"bindingRadius" : 20.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -72,7 +65,6 @@
 		"itemType" : 1
 	}, {
 		"symbol": "B",
-		"textureName" : "playItem_1.png",
 		"bindingRadius" : 20.0,
 		"power" : 0,
 		"distance" : 1700,
@@ -82,7 +74,6 @@
 		"itemType" : 2
 	}, {
 		"symbol": "C",
-		"textureName" : "playItem_2.png",
 		"bindingRadius" : 20.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -92,7 +83,6 @@
 		"itemType" : 3
 	}, {
 		"symbol": "D",
-		"textureName" : "playItem_3.png",
 		"bindingRadius" : 20.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -102,7 +92,6 @@
 		"itemType" : 4
 	}, {
 		"symbol": "E",
-		"textureName" : "playItem_4.png",
 		"bindingRadius" : 20.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -112,7 +101,6 @@
 		"itemType" : 5
 	}, {
 		"symbol": "F",
-		"textureName" : "playItem_5.png",
 		"bindingRadius" : 20.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -122,7 +110,6 @@
 		"itemType" : 6
 	}, {
 		"symbol": "G",
-		"textureName" : "playItem_6.png",
 		"bindingRadius" : 20.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -132,7 +119,6 @@
 		"itemType" : 7
 	}, {
 		"symbol": "P",
-		"textureName" : "coin_1.png",
 		"bindingRadius" : 15.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -142,7 +128,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "Q",
-		"textureName" : "coin_2.png",
 		"bindingRadius" : 15.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -152,7 +137,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "R",
-		"textureName" : "coin_3.png",
 		"bindingRadius" : 15.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -162,7 +146,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "S",
-		"textureName" : "coin_4.png",
 		"bindingRadius" : 30.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -172,7 +155,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "T",
-		"textureName" : "coin_5.png",
 		"bindingRadius" : 30.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -182,7 +164,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "U",
-		"textureName" : "star_1.png",
 		"bindingRadius" : 15.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -192,7 +173,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "V",
-		"textureName" : "star_2.png",
 		"bindingRadius" : 15.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -202,7 +182,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "W",
-		"textureName" : "star_3.png",
 		"bindingRadius" : 15.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -212,7 +191,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "X",
-		"textureName" : "star_4.png",
 		"bindingRadius" : 30.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -222,7 +200,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "Y",
-		"textureName" : "star_5.png",
 		"bindingRadius" : 30.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -232,7 +209,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "Z",
-		"textureName" : "bonusLetter_0.png",
 		"bindingRadius" : 30.0,
 		"power" : 0,
 		"distance" : 1700.0,
@@ -242,7 +218,6 @@
 		"itemType" : 0
 	}, {
 		"symbol": "z",
-		"textureName" : "playItem_5.png",
 		"bindingRadius" : 30.0,
 		"power" : 0,
 		"distance" : 1700.0,

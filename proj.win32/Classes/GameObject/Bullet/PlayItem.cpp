@@ -61,7 +61,7 @@ bool CPlayItem::initVariable()
         setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
         setRotation(-m_fAngle);
         
-        m_pTexture = Sprite::create(m_BulletParam._TextureName);
+		m_pTexture = Sprite::create(MakeString("playItem_%d.png", m_BulletParam._itemType));
 		if (m_pTexture != nullptr){
 			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 			addChild(m_pTexture);
@@ -70,7 +70,6 @@ bool CPlayItem::initVariable()
 		if (m_BulletParam._isFly){
 			CGameScene::getGridWorld()->addChild(CItemBubble::create(
 				sBULLET_PARAM(
-				"bubble_1.png",							//이미지 이름 
 				0.f, 0.f, 0.f,
 				false,									//FlyItem 여부
 				m_BulletParam._isAimingMissile),		//AimingMissile 여부

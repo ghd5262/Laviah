@@ -69,10 +69,15 @@ bool CNormalMissile::initVariable()
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
 
-		m_pTexture = Sprite::create(m_BulletParam._TextureName);
-		m_pTexture->setAnchorPoint(Vec2(0.2f, 0.5f));
-		addChild(m_pTexture);
-	
+		std::string missileTextureName = m_pPlayer->getCharacterParam()._normalMissileTextureName;
+		if (m_BulletParam._isAimingMissile)
+			missileTextureName = m_pPlayer->getCharacterParam()._aimingMissileTextureName;
+
+		m_pTexture = Sprite::create(missileTextureName);
+		if (m_pTexture != nullptr){
+			m_pTexture->setAnchorPoint(Vec2(0.2f, 0.5f));
+			addChild(m_pTexture);
+		}	
 
 		Vec2 temp((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  1800.f) + m_pPlanet->getPosition().x,
 			(sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  1800.f) + m_pPlanet->getPosition().y);
@@ -101,7 +106,6 @@ bool CNormalMissile::initVariable()
 		this->scheduleOnce([&](float delta){
 			CGameScene::getGridWorld()->addChild(CTargetMark::create(
 				sBULLET_PARAM(
-				MakeString("missile_target_%d.png", m_BulletParam._isAimingMissile + 1),//이미지 이름
 				0.f, 0.f, 0.f,
 				false,									//FlyItem 여부
 				m_BulletParam._isAimingMissile),		//AimingMissile 여부
@@ -234,10 +238,10 @@ void CNormalMissile::ChangeToCoinOrStar()
 
 	std::string patternName;
 	if (false == m_BulletParam._isAimingMissile){
-		patternName = MakeString("normalRocket%d_Pattern", CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER"));
+		patternName = m_pPlayer->getCharacterParam()._normalMissilePattern;
 	}
 	else{
-		patternName = MakeString("aimingRocket%d_Pattern", CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER"));
+		patternName = m_pPlayer->getCharacterParam()._aimingMissilePattern;
 	}
 	float distance = m_TargetVec.distance(getPosition());
 	float speed = 600.f;
@@ -257,7 +261,6 @@ void CNormalMissile::ChangeToCoinOrStar()
 
 	CGameScene::getGridWorld()->addChild(CTargetMark::create(
 		sBULLET_PARAM(
-		MakeString("missile_target_%d.png", m_BulletParam._isAimingMissile + 1),//이미지 이름
 		0.f,
 		0.f,
 		0.f,

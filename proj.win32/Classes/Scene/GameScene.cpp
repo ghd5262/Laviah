@@ -96,27 +96,26 @@ bool CGameScene::initVariable()
 		m_GridWorld = NodeGrid::create();
 		addChild(m_GridWorld, 0, 1);
 
+		int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
+		sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+
 		auto background = Sprite::create("background_2.png");
 		background->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.5f));
 		m_GridWorld->addChild(background);
 
-		auto planet = CPlanet::create("planet.png", 180, 0.0f, 100.f);
+		auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 180, 0.0f, 100.f);
 		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.y + visibleSize.height * 0.35f));
 		m_GridWorld->addChild(planet, 100);
 
 		planet->setOriginPos(planet->getPosition());
 
-        int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
-		sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
-
-		auto player = CPlayer::create(currentCharacterInfo._normalTextureName,
-			currentCharacterInfo._giantTextureName,
-			6.f, 0.0f, 400.0f, currentCharacterInfo._health);
+		CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
+		auto player = CPlayer::create(currentCharacterInfo, 6.f, 0.0f, 400.0f);
 
 		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-			planet->getPosition().y + (planet->getBRadius() + 10)));
+			planet->getPosition().y + (planet->getBRadius() + 20)));
 		m_GridWorld->addChild(player, 100);
 
 		player->setOriginPos(player->getPosition());
@@ -157,8 +156,6 @@ bool CGameScene::initVariable()
 			}break;
 			}
 		};
-
-
 
 		Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
 

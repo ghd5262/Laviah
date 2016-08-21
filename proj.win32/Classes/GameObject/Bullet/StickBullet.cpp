@@ -55,7 +55,7 @@ bool CStickBullet::initVariable()
         setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
         setRotation(-m_fAngle);
         
-        m_pTexture = Sprite::create(m_BulletParam._TextureName);
+        m_pTexture = Sprite::create(m_pPlayer->getCharacterParam()._stickBulletTextureName);
         m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
         addChild(m_pTexture);
         
@@ -123,7 +123,6 @@ void CStickBullet::ChangeToCoinOrStar()
         float distance = m_TargetVec.distance(getPosition());
         CGameScene::getGridWorld()->addChild(CPlayStar::create(
                                                                sBULLET_PARAM(
-                                                                             MakeString("star_%d.png", static_cast<int>(5)),
                                                                              25.f, distance, 0.f, true, false,
                                                                              eCOIN_TYPE_none,
                                                                              static_cast<eSTAR_TYPE>(5)),
@@ -134,7 +133,6 @@ void CStickBullet::ChangeToCoinOrStar()
     else{
         CGameScene::getGridWorld()->addChild(CPlayCoin::create(
                                                                sBULLET_PARAM(
-                                                                             MakeString("coin_%d.png", static_cast<int>(5)),
                                                                              25.f, distance, 0.f, true, false,
                                                                              static_cast<eCOIN_TYPE>(5)),
                                                                -getRotation(),

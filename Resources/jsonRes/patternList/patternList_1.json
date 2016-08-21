@@ -1,7 +1,7 @@
 {
 	"patterns": [{
 		"name": "heartBullet_Pattern",
-		"widthAngleDistance": 3.0,
+		"widthAngleDistance": 5.0,
 		"heightDistance": 50.0,
 		"pattern": [
 			" 111   111 ",
@@ -14,7 +14,7 @@
 		]
 	}, {
 		"name": "starBullet1_Pattern",
-		"widthAngleDistance": 3.0,
+		"widthAngleDistance": 5.0,
 		"heightDistance": 50.0,
 		"pattern": [
 			"      1      ",
@@ -27,7 +27,7 @@
 		]
 	}, {
 		"name": "starBullet2_Pattern",
-		"widthAngleDistance": 3.0,
+		"widthAngleDistance": 5.0,
 		"heightDistance": 50.0,
 		"pattern": [
 			"      2      ",
@@ -40,7 +40,7 @@
 		]
 	}, {
 		"name": "starBullet3_Pattern",
-		"widthAngleDistance": 3.0,
+		"widthAngleDistance": 5.0,
 		"heightDistance": 50.0,
 		"pattern": [
 			"      3      ",
@@ -53,7 +53,7 @@
 		]
 	}, {
 		"name": "squareBullet_Pattern",
-		"widthAngleDistance": 3.0,
+		"widthAngleDistance": 5.0,
 		"heightDistance": 50.0,
 		"pattern": [
 			"11111111111",

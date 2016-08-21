@@ -49,23 +49,23 @@ void CItemManager::StartItemTimer(eITEM_TYPE itemType)
             
         case eITEM_TYPE_magnet:
             CObjectManager::Instance()->getPlayer()->GotMagnetItem();
-            m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_TIME_IDX");
+			m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CObjectManager::Instance()->getPlayer()->getMagnetLimitTime();
             break;
             
         case eITEM_TYPE_coin:
-            m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getItemCurrentValue("USER_COIN_LIMIT_TIME_IDX");
+			m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CObjectManager::Instance()->getPlayer()->getCoinLimitTime();
             break;
             
         case eITEM_TYPE_star:
-            m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getItemCurrentValue("USER_STAR_LIMIT_TIME_IDX");
+			m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CObjectManager::Instance()->getPlayer()->getStarLimitTime();
             break;
             
         case eITEM_TYPE_giant:
-            m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getItemCurrentValue("USER_GIANT_LIMIT_TIME_IDX");
+			m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CObjectManager::Instance()->getPlayer()->getGiantLimitTime();
             break;
             
         case eITEM_TYPE_bonustime:
-            m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CUserDataManager::Instance()->getItemCurrentValue("USER_BONUS_LIMIT_TIME_IDX");
+			m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CObjectManager::Instance()->getPlayer()->getBonusTimeLimitTime();
             break;
             
         default:

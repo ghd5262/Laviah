@@ -1,4 +1,3 @@
-#pragma once
 #include "RandomShooter.h"
 #include "../Bullet/BulletHeaders.h"
 #include "../../Scene/GameScene.h"
@@ -44,7 +43,7 @@ void CRandomShooter::ShootOnce()
 	char p = m_ShooterParam._randomShootSymbol;
 	sBULLET_PARAM bulletParam = CBulletDataManager::Instance()->getBulletInfo(p);
 	bulletParam._isFly = m_ShooterParam._isFly;
-
+	CCLOG("create bullet power : %f", bulletParam._fPower);
 	if (p >= '1' && p <= '3') //일반 bullet
 	{
 		CGameScene::getGridWorld()->addChild(CNormalBullet::create(
@@ -97,7 +96,6 @@ void CRandomShooter::ShootOnce()
 	else if (p == 'z')//랜덤 아이템
 	{
 		bulletParam._itemType = static_cast<eITEM_TYPE>(random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2));
-        bulletParam._TextureName = MakeString("playItem_%d.png", bulletParam._itemType -1);
 		bulletParam._isFly = random<int>(0, 1);
 		CGameScene::getGridWorld()->addChild(CPlayItem::create(
 			bulletParam,

@@ -35,7 +35,6 @@ CBulletDataManager::CBulletDataManager()
         
         sBULLET_PARAM param;
         
-        param._TextureName = valueBullet["textureName"].asString();
         param._fBouningRadius = valueBullet["bindingRadius"].asDouble();
         param._fPower = valueBullet["power"].asDouble();
         param._fDistance = valueBullet["distance"].asDouble();

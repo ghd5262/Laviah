@@ -30,42 +30,44 @@ bool CUserCoinButton::init()
 bool CUserCoinButton::initVariable()
 {
 	try{
-		auto userCoin = CScoreUI::create("fonts/Number.ttf", 38, "run.png");
-		if (userCoin != nullptr){
-			this->addChild(userCoin);
-			userCoin->UpdateValue(CUserDataManager::Instance()->getUserData_Number("USER_COIN"));
-			userCoin->setVisible(false);
+		m_UserCoin = CScoreUI::create("fonts/Number.ttf", 38, "run.png");
+		if (m_UserCoin != nullptr){
+			this->addChild(m_UserCoin);
+			m_UserCoin->UpdateValue(CUserDataManager::Instance()->getUserData_Number("USER_COIN"));
+			m_UserCoin->setVisible(false);
 		}
 		
-		auto coinLabel = Label::createWithTTF(userCoin->getValueString(), "fonts/malgunbd.ttf", 50);
-		auto coinIcon = Sprite::create("coinIcon_2.png");
+		m_CoinLabel = Label::createWithTTF(m_UserCoin->getValueString(), "fonts/malgunbd.ttf", 50);
+		m_CoinIcon = Sprite::create("coinIcon_2.png");
 		//auto earnCoinBtn = CMyButton::create("coinPlusIcon.png", END, std::bind(&CUserCoinButton::EarnCoin, this), EFFECT_SIZEDOWN);
 		/* coinLabelLayer size
 		 * ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		 * | coinIcon  | coinLabel |
 		 * ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		 * 두개 사이 간격은 coinIcon 크기*/
-		auto coinLabelLayer = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), coinLabel->getContentSize().width +
-			(coinIcon->getContentSize().width * 2.5f) /*+ earnCoinBtn->getContentSize().width*/, coinLabel->getContentSize().height * 1.5f);
+		m_Back = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), m_CoinLabel->getContentSize().width + (m_CoinIcon->getContentSize().width * 2.5f) 
+			/*+ earnCoinBtn->getContentSize().width*/, m_CoinLabel->getContentSize().height * 1.5f);
 
-		if (coinLabelLayer != nullptr)
+		if (m_Back != nullptr)
 		{
-			coinLabelLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			coinLabelLayer->setIgnoreAnchorPointForPosition(false);
-			this->addChild(coinLabelLayer);
+			this->setContentSize(m_Back->getContentSize());
+			m_Back->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_Back->setPosition(this->getContentSize() * 0.5f);
+			m_Back->setIgnoreAnchorPointForPosition(false);
+			this->addChild(m_Back);
 
-			if (coinLabel != nullptr){
-				coinLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-				coinLabel->setPosition(Vec2((coinIcon->getContentSize().width * 2), coinLabelLayer->getContentSize().height * 0.5f));
-				coinLabel->setColor(g_labelColor3);
-				coinLabelLayer->addChild(coinLabel);
+			if (m_CoinLabel != nullptr){
+				m_CoinLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+				m_CoinLabel->setPosition(Vec2(m_CoinIcon->getContentSize().width * 2.f, this->getContentSize().height * 0.5f));
+				m_CoinLabel->setColor(g_labelColor3);
+				m_Back->addChild(m_CoinLabel);
 			}
 
-			if (coinIcon != nullptr){
-				coinIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				coinIcon->setPosition(Vec2(coinIcon->getContentSize().width, coinLabelLayer->getContentSize().height * 0.5f));
-				coinIcon->setColor(g_labelColor3);
-				coinLabelLayer->addChild(coinIcon);
+			if (m_CoinIcon != nullptr){
+				m_CoinIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+				m_CoinIcon->setPosition(Vec2(m_CoinIcon->getContentSize().width, this->getContentSize().height * 0.5f));
+				m_CoinIcon->setColor(g_labelColor3);
+				m_Back->addChild(m_CoinIcon);
 			}
 			
 //			if (earnCoinBtn != nullptr){
@@ -99,4 +101,13 @@ void CUserCoinButton::EarnCoin()
 	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	Director::getInstance()->getRunningScene()->addChild(popup, 102);
 
+}
+
+void CUserCoinButton::UpdateUI()
+{
+	m_CoinLabel->setString(m_UserCoin->getValueString());
+	m_Back->setContentSize(Size(m_CoinLabel->getContentSize().width + (m_CoinIcon->getContentSize().width * 2.5f)
+		/*+ earnCoinBtn->getContentSize().width*/, m_CoinLabel->getContentSize().height * 1.5f));
+	m_CoinLabel->setPosition(Vec2(m_CoinIcon->getContentSize().width * 2.f, this->getContentSize().height * 0.5f));
+	m_CoinIcon->setPosition(Vec2(m_CoinIcon->getContentSize().width, this->getContentSize().height * 0.5f));
 }

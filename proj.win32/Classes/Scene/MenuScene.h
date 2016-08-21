@@ -7,8 +7,6 @@ class CMenuScene : public cocos2d::Layer
 public:
 	CREATE_FUNC(CMenuScene);
 	static cocos2d::Scene* createScene();
-	virtual ~CMenuScene();
-
     virtual void update(float delta) override;
     
     //getter & setter
@@ -18,6 +16,8 @@ protected:
 	virtual bool init() override;
 
 private:
+	virtual ~CMenuScene();
+
 	void clearData();
 	bool initVariable();
     void InitMenuSceneUI();

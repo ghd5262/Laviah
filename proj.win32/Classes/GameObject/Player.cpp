@@ -12,20 +12,16 @@
 #include "../DataManager/UserDataManager.h"
 
 CPlayer* CPlayer::create(
-	std::string normalTextureName,
-	std::string giantTextureName,
+	sCHARACTER_PARAM characterParam,
 	float boundingRadius,
 	float angle,
-	float rotateSpeed, 
-	float maxLife)
+	float rotateSpeed)
 {
 	CPlayer *pRet = new(std::nothrow) CPlayer(
-		normalTextureName
-		, giantTextureName
+		characterParam
 		, boundingRadius
 		, angle
-		, rotateSpeed
-		, maxLife);
+		, rotateSpeed);
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -40,21 +36,18 @@ CPlayer* CPlayer::create(
 }
 
 CPlayer::CPlayer(
-	std::string normalTextureName,
-	std::string giantTextureName,
+	sCHARACTER_PARAM characterParam,
 	float boundingRadius,
 	float angle,
-	float rotateSpeed,
-	float maxLife)
-
+	float rotateSpeed)
 	: CGameObject(boundingRadius)
-	, m_NormalTextureName(normalTextureName)
-	, m_GiantTextureName(giantTextureName)
+	, m_CharacterParam(characterParam)
 	, m_fAngle(angle)
 	, m_fRotateSpeed(rotateSpeed)
-	, m_fMaxLife(maxLife)
-	, m_fLife(maxLife)
-	, m_fMagnetLimitRadius(CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_SIZE_IDX"))
+	, m_fMaxLife(characterParam._health)
+	, m_fLife(characterParam._health)
+	, m_fMagnetLimitTime(0)
+	, m_fMagnetLimitRadius(0)
 	, m_EffectItemTypes(eITEM_FLAG_none)
 	, m_pParticle(nullptr)
 	, m_pParticleDead(nullptr)
@@ -79,6 +72,13 @@ bool CPlayer::init()
 bool CPlayer::initVariable()
 {
 	try{
+		m_fMagnetLimitTime		= m_CharacterParam._magnetItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_TIME_IDX");
+		m_fMagnetLimitRadius	= m_CharacterParam._magnetItemSize + CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_SIZE_IDX");
+		m_fCoinLimitTime		= m_CharacterParam._coinItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_COIN_LIMIT_TIME_IDX");
+		m_fStarLimitTime		= m_CharacterParam._starItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_STAR_LIMIT_TIME_IDX");
+		m_fBonusTimeLimitTime	= m_CharacterParam._bonusItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_BONUS_LIMIT_TIME_IDX");
+		m_fGiantLimitTime		= m_CharacterParam._giantItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_GIANT_LIMIT_TIME_IDX");
+
 		setItemEffect(eITEM_FLAG_giant);
         setCascadeOpacityEnabled(true);
         m_FSM = std::shared_ptr<CStateMachine<CPlayer>>(
@@ -98,25 +98,28 @@ bool CPlayer::initVariable()
             addChild(m_pItemBarrier);
         }
         
-		m_pTexture = Sprite::create(m_NormalTextureName);
+		m_pTexture = Sprite::create(m_CharacterParam._normalTextureName);
 		if (m_pTexture != nullptr){
 			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-			m_pTexture->setScale(0.5f);
+			m_pTexture->setScale(1.f);
 			addChild(m_pTexture);
 			m_pTexture->setVisible(false);
 		}
 
-		m_pParticle = CParticle_Flame::create(m_NormalTextureName);
+		m_pParticle = CParticle_Flame::create("particle.png");
 		if (m_pParticle != nullptr){
 			m_pParticle->retain();
 			m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_pParticle->setAngle(90);
 			m_pParticle->setGravity(Vec2(0, -270));
+			m_pParticle->setStartSize(80.f);
+			m_pParticle->setEndSize(4.f);
 			CGameScene::getGridWorld()->addChild(m_pParticle, 10);
 			m_pParticle->setVisible(false);
 		}
         
-        m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_TIME_IDX"));
+		
+		m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, m_fMagnetLimitTime);
         if(m_MagnetEffect != nullptr)
         {
             m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -205,9 +208,11 @@ void CPlayer::LostSomeHealth(float loseHealth)
     CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
 	if (0.f < (m_fLife - loseHealth))
 	{
+		CCLOG("Lost health %f/%f", loseHealth, m_fLife);
 		m_fLife -= loseHealth;
 	}
 	else{
+		CCLOG("Dead");
 		PlayerDead();
 		CGameScene::getGameScene()->watchVideo();
 		m_fLife = 0.f;
@@ -237,10 +242,10 @@ void CPlayer::GiantMode()
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, 3.0f),
 		CallFunc::create([&](){
-		this->m_pTexture->setTexture(m_GiantTextureName); 
+		this->m_pTexture->setTexture(m_CharacterParam._giantTextureName); 
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.3f));
-		this->setBRadius(90.f);
-		m_pParticle->setStartSize(90.f);
+		this->setBRadius(60.f);
+		m_pParticle->setStartSize(100.f);
 		m_pParticle->setEndSize(40.f);
 	}), nullptr);
 	this->runAction(action);
@@ -253,10 +258,10 @@ void CPlayer::NormalMode()
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, 1.0f),
 		CallFunc::create([&](){
-		this->m_pTexture->setTexture(m_NormalTextureName);
+		this->m_pTexture->setTexture(m_CharacterParam._normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBRadius(6.f);
-		m_pParticle->setStartSize(30.f);
+		m_pParticle->setStartSize(90.f);
         m_pParticle->setEndSize(4.f);
 	}), nullptr);
 	this->runAction(action);

@@ -17,6 +17,8 @@
 #include "../MyUI/Popup/GachaPopup.h"
 #include "../MyUI/Popup/GoogleCloudTestPopup.h"
 #include "../SDKUtil/SDKUtil.h"
+#include "../DataManager/UserDataManager.h"
+#include "../DataManager/CharacterDataManager.h"
 
 USING_NS_CC;
 
@@ -70,7 +72,7 @@ bool CMenuScene::initVariable()
 	{
 		clearData();
 		m_MenuScene = this;
-        
+
         Size visibleSize = Director::getInstance()->getVisibleSize();
         Vec2 origin = Director::getInstance()->getVisibleOrigin();
         
@@ -81,6 +83,16 @@ bool CMenuScene::initVariable()
         CUserDataManager::Instance();
         CSDKUtil::Instance();
 
+		int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
+		sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+
+		auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 290.f, 0.0f, 200.0f);
+		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.y + visibleSize.height * 0.5f));
+		planet->setScale(1.5f);
+		planet->runAction(RepeatForever::create(RotateBy::create(90, 360)));
+		this->addChild(planet);
+
+		CMenuSceneObjectManager::Instance()->setPlanet(planet);
 //        auto planet = CPlanet::create("planet.png", 290.f, 0.0f, 200.0f);
 //        planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 //                                 origin.y + visibleSize.height * 0.5f));
@@ -90,17 +102,17 @@ bool CMenuScene::initVariable()
 //        CMenuSceneObjectManager::Instance()->setPlanet(planet);
 //        
 //        
-//        CPoolingManager::Instance()->CreateAlienList(100, 800);
+        CPoolingManager::Instance()->CreateAlienList(100, 800);
 //        
-//        for(int i = 0 ;i < 10 ;i++ ){
-//            auto alien = CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200);
-//            auto button = CMyButton::createWithLayerColor(Size(80, 80), Color4B(255, 255, 255, 0), "", 0, Color3B::WHITE, END, [alien](){
-//                
-//            });
-//            alien->addChild(button);
-//            this->addChild(alien);
-//            
-//        }
+        for(int i = 0 ;i < 10 ;i++ ){
+            auto alien = CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200);
+            auto button = CMyButton::createWithLayerColor(Size(80, 80), Color4B(255, 255, 255, 0), "", 0, Color3B::WHITE, END, [alien](){
+                
+            });
+            alien->addChild(button);
+            this->addChild(alien);
+            
+        }
         InitMenuSceneUI();
 	}
 	catch (...){

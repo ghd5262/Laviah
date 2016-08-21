@@ -57,10 +57,11 @@ bool CNormalBullet::initVariable()
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
 
-		m_pTexture = Sprite::create(m_BulletParam._TextureName);
-		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		addChild(m_pTexture);
-
+		m_pTexture = Sprite::create(m_pPlayer->getCharacterParam()._normalBulletTextureName);
+		if (m_pTexture != nullptr){
+			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+			addChild(m_pTexture);
+		}
 		m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
 
 		m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
@@ -91,6 +92,7 @@ void CNormalBullet::CollisionWithPlayer()
 	}
 	else{
 		m_pPlayer->StackedRL(0.1f, 10, 10, 5);
+		CCLOG("Bullet Power %f", m_BulletParam._fPower);
 		m_pPlayer->LostSomeHealth(m_BulletParam._fPower);
         ReturnToMemoryBlock();
 	}
@@ -110,7 +112,6 @@ void CNormalBullet::ChangeToCoinOrStar()
 		float distance = m_TargetVec.distance(getPosition());
 		CGameScene::getGridWorld()->addChild(CPlayStar::create(
 			sBULLET_PARAM(
-			MakeString("star_%d.png", static_cast<int>(m_BulletParam._symbol - '0')),
 			25.f, distance, 0.f, true, false,
 			eCOIN_TYPE_none,
 			static_cast<eSTAR_TYPE>(m_BulletParam._symbol - '0')),
@@ -121,7 +122,6 @@ void CNormalBullet::ChangeToCoinOrStar()
 	else{
 		CGameScene::getGridWorld()->addChild(CPlayCoin::create(
 			sBULLET_PARAM(
-			MakeString("coin_%d.png", static_cast<int>(m_BulletParam._symbol - '0')),
 			25.f, distance, 0.f, true, false,
 			static_cast<eCOIN_TYPE>(m_BulletParam._symbol - '0')),
 			-getRotation(),

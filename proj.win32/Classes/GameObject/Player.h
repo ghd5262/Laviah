@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Bullet/Bullet.h"
 #include "../AI/StateMachine.h"
+#include "../DataManager/CharacterDataManager.h"
 
 /* ----------------HealthCalculatorInNormal에 대해서----------------
 * Player클래스에 virtual로 계산 함수를 구현할까 했지만
@@ -15,12 +16,10 @@ class CMagnetEffect;
 class CPlayer : public CGameObject {
 public:
 	static CPlayer* create(
-		std::string normalTextureName,
-		std::string giantTextureName, 
+		sCHARACTER_PARAM characterParam,
 		float boundingRadius, 
 		float angle, 
-		float rotateSpeed,
-		float maxLife);
+		float rotateSpeed);
 
 	virtual void Execute(float delta = 0.f) override;
 
@@ -70,37 +69,39 @@ protected:
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fAngle, Angle);
 	CC_SYNTHESIZE(float, m_fRotateSpeed, RotateSpeed);
-	CC_SYNTHESIZE(float, m_fLife, Life);
 	CC_SYNTHESIZE(float, m_fMaxLife, MaxLife);
+	CC_SYNTHESIZE(float, m_fLife, Life);
 	CC_SYNTHESIZE(float, m_fLevel, Level);
+	CC_SYNTHESIZE(float, m_fMagnetLimitTime, MagnetLimitTime);
 	CC_SYNTHESIZE(float, m_fMagnetLimitRadius, MagnetLimitRadius);
+	CC_SYNTHESIZE(float, m_fCoinLimitTime, CoinLimitTime);
+	CC_SYNTHESIZE(float, m_fStarLimitTime, StarLimitTime);
+	CC_SYNTHESIZE(float, m_fGiantLimitTime, GiantLimitTime);
+	CC_SYNTHESIZE(float, m_fBonusTimeLimitTime, BonusTimeLimitTime);
 	CC_SYNTHESIZE(CItemBarrier*, m_pItemBarrier, ItemBarrier);
+	CC_SYNTHESIZE(sCHARACTER_PARAM, m_CharacterParam, CharacterParam);
 	CC_SYNTHESIZE(bool, m_isPlayerDead, IsDead);
     
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
 
 	CPlayer(
-		std::string normalTextureName,
-		std::string giantTextureName,
+		sCHARACTER_PARAM characterParam,
 		float boundingRadius,
 		float rotate,
-		float rotateSpeed,
-		float maxLife);
+		float rotateSpeed);
 	virtual ~CPlayer(){}
 
 private:
 	std::shared_ptr<CStateMachine<CPlayer>> m_FSM;
 	cocos2d::Vec2 m_OriginPos;
-	std::string m_NormalTextureName;
-	std::string m_GiantTextureName;
 	Sprite* m_pTexture;
 	ParticleSystemQuad* m_pParticle;
 	ParticleSystemQuad* m_pParticleDead;
 	ParticleSystemQuad* m_pParticleAlive;
-	bool m_isRoatating;
     CScoreUI* m_pUIRunScore;
     CMagnetEffect* m_MagnetEffect;
+	bool m_isRoatating;
 	bool m_Invincibility;
 
 	// 영향을 받는 아이템 타입 

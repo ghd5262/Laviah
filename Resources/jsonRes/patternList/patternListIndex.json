@@ -3,8 +3,8 @@
 		"Intro",
 		"patternList_1",
 		"patternList_2",
-		"normalRocketPatternList",
-		"aimingRocketPatternList"
+		"normalMissilePatternList",
+		"aimingMissilePatternList"
 
 	]
 }
