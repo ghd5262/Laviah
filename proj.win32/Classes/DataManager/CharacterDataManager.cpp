@@ -97,25 +97,30 @@ CCharacterDataManager::CCharacterDataManager()
 		character._openLevel = 10;
 		character._cost = 100;
 		character._health = 10;
-		character._starItemTime = 1.f;
-		character._coinItemTime = 2.f;
-		character._bonusItemTime = 3.f;
-		character._magnetItemTime = 4.f;
-		character._magnetItemSize = 5.f;
-		character._giantItemTime = 5.f;
+		character._starItemTime = 10.f;
+		character._coinItemTime = 10.f;
+		character._bonusItemTime = 10.f;
+		character._magnetItemTime = 10.f;
+		character._magnetItemSize = 200.f;
+		character._giantItemTime = 10.f;
 		character._normalTextureName = MakeString("player%d.png", i % 5);
 		character._giantTextureName = MakeString("player%d_big.png", i % 5);
 		character._planetTextureName = MakeString("planet_%d.png", i % 5);
 		character._normalBulletTextureName = MakeString("bullet_%d.png", i % 5);
 		character._stickBulletTextureName = MakeString("stickBullet_%d.png", i % 5);
-		character._normalMissileLine = MakeString("normalMissileLine_%d.png", i % 5);
-		character._aimingMissileLine = MakeString("aimingMissileLine_%d.png", i % 5);
+		character._normalMissileLine = MakeString("normalMissileLine_%d", i % 5);
+		character._aimingMissileLine = MakeString("aimingMissileLine_%d", i % 5);
 		character._normalMissileTextureName = MakeString("normalMissile_%d.png", i % 5);
 		character._aimingMissileTextureName = MakeString("aimingMissile_%d.png", i % 5);
 		character._normalMissilePattern = MakeString("normalMissile%d_Pattern", i % 5);
 		character._aimingMissilePattern = MakeString("aimingMissile%d_Pattern", i % 5);
 		character._name = MakeString("character_%d", i % 5);
 		character._story = MakeString("story_%d", i % 5);
+		character._texturePackName = MakeString("characterTexturePack_%d", i % 5);
+
+
+		// Load the non-encrypted atlas
+		SpriteFrameCache::getInstance()->addSpriteFramesWithFile(MakeString("%s.plist", character._texturePackName.c_str()), MakeString("%s.png", character._texturePackName.c_str()));
 
 		m_CharacterList.emplace_back(character);
 	}

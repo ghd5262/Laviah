@@ -117,10 +117,8 @@ void CWorkshopPopupDP::Buy()
 	CCLOG("Buy Item %s", m_WorkshopItem._name.c_str());
     
     unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
-    value += 1;
-    
     if (CUserDataManager::Instance()->CoinUpdate(-m_WorkshopItem._costPerLevel.at(value))){
-        
+		value += 1;
         CUserDataManager::Instance()->setUserData_Number(m_WorkshopItem._userDataKey, value);
         
         // Update button ui

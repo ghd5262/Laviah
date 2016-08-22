@@ -33,6 +33,8 @@ private:
 	virtual ~CTargetMark(){};
 
 private:
+	Vector<SpriteFrame*> m_AnimationFrames;
+	Sprite* m_SpriteFrame;
 	CBullet* m_OwnerBullet;			// owner missile
 	float m_fArriveTime;			// 미사일 도착시간 =  target
 	Rect m_ScreenRect;

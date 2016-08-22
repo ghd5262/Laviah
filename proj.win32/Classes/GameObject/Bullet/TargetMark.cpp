@@ -19,6 +19,7 @@ CTargetMark::CTargetMark(
 	, m_OwnerBullet(owner)
 	, m_bIsMissileChangedToCoin(isMissileChangedToCoin)
 	, m_pParticle(nullptr)
+	, m_SpriteFrame(nullptr)
 {
 	float distance = m_pPlanet->getPosition().distance(missilePos);
 	m_fArriveTime = (distance / missileSpeed);
@@ -68,7 +69,7 @@ bool CTargetMark::initVariable()
 		if (m_BulletParam._isAimingMissile)
 			missileLineTextureName = m_pPlayer->getCharacterParam()._aimingMissileLine;
 
-		auto texture = Director::getInstance()->getTextureCache()->addImage(missileLineTextureName);
+		//auto texture = Director::getInstance()->getTextureCache()->addImage(missileLineTextureName);
 
 		if (m_bIsMissileChangedToCoin){
 
@@ -76,7 +77,7 @@ bool CTargetMark::initVariable()
 			if (m_pParticle != nullptr){
 				m_pParticle->retain();
 				m_pParticle->setAnchorPoint(Vec2::ZERO);
-				m_pParticle->setPosition(Vec2(texture->getContentSize().width * 0.32f, 0));
+				m_pParticle->setPosition(Vec2(1300 * 0.32f, 0));
 				this->addChild(m_pParticle, 10);
 			}
 		}
@@ -86,8 +87,22 @@ bool CTargetMark::initVariable()
 			* m_bIsMissileChangedToCoin = true일 때는
 			* 일반 미사일이 생성된 후 별로 변경되는 거라
 			* targetmark를 변경이 완료된후에 생성하기 위해서 */
-			this->scheduleOnce([=](float delta){
-				const int FrameCount_MAX = 3;
+			this->scheduleOnce([this, missileLineTextureName](float delta){
+				
+				auto spritecache = SpriteFrameCache::getInstance();
+				char str[100];
+				for (int i = 0; i < 3; i++)
+				{
+					sprintf(str, "%s_%d.png", missileLineTextureName.c_str(), i);
+					m_AnimationFrames.pushBack(spritecache->getSpriteFrameByName(str));
+				}
+				m_SpriteFrame = Sprite::createWithSpriteFrame(m_AnimationFrames.front());
+				auto animation = Animation::createWithSpriteFrames(m_AnimationFrames, 0.1f);
+				m_SpriteFrame->setAnchorPoint(Vec2(0.04f, 0.5f));
+				addChild(m_SpriteFrame);
+				m_SpriteFrame->runAction(RepeatForever::create(Animate::create(animation)));
+
+				/*const int FrameCount_MAX = 3;
 				SpriteFrame* frame[FrameCount_MAX];
 				Vector<SpriteFrame*> animFrames(FrameCount_MAX);
 				for (int frameCount = 0; frameCount < FrameCount_MAX; frameCount++)
@@ -105,7 +120,7 @@ bool CTargetMark::initVariable()
 
 				auto animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
 				auto animate = Animate::create(animation);
-				sprite->runAction(RepeatForever::create(animate));
+				sprite->runAction(RepeatForever::create(animate));*/
 				CAudioManager::Instance()->PlayEffectSound("sounds/missile_warning_1.mp3", false, 0.7f);
 			}, 0.05f, "targetMarkInit");
 		}

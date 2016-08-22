@@ -114,12 +114,15 @@ void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 	if (true == bullet->getBulletParam()._isFly || bullet->getIsPlayerGet())
 		bullet->Seek(delta);
 
+	auto player = bullet->getPlayer();
+	float magnetSize = player->getMagnetLimitRadius();
+
 	if (bullet->IsHit(bullet->getPlayer()))
 	{
 		bullet->CollisionWithPlayer();
 		return;
 	}
-	else if (bullet->IsHit(bullet->getPlayer()->getPosition(), bullet->getPlayer()->getMagnetLimitRadius()))
+	else if (bullet->IsHit(player->getPosition(), magnetSize))
 	{
 		bullet->setIsPlayerGet(true);
 		bullet->setTargetVec(bullet->getPlayer()->getPosition());

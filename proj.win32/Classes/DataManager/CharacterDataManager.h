@@ -26,6 +26,7 @@ struct sCHARACTER_PARAM{
 	std::string _aimingMissilePattern;
     std::string _name;
     std::string _story;
+	std::string _texturePackName;
 };
 
 
