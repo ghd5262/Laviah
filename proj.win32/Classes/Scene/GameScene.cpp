@@ -314,18 +314,18 @@ void CGameScene::InitGameSceneUI()
 	m_GridWorld->addChild(m_PauseBtn, 102);
     
     
-//    auto giantModeBtn = CMyButton::create("player_big.png",
-//                                   END,
-//                                   [this, origin, visibleSize]()
-//                                   {
-//                                       CItemManager::Instance()->StartItemTimer(eITEM_TYPE_giant);
-//                                   }, EFFECT_SIZEDOWN);
-//    
-//    giantModeBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
-//                                 origin.x + visibleSize.height * 0.5f));
-//    giantModeBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-//    giantModeBtn->setCascadeOpacityEnabled(true);
-//    m_GridWorld->addChild(giantModeBtn, 102);
+    auto giantModeBtn = CMyButton::create("bonusLetter_0.png",
+                                   END,
+                                   [this, origin, visibleSize]()
+                                   {
+                                       CItemManager::Instance()->StartItemTimer(eITEM_TYPE_giant);
+                                   }, EFFECT_SIZEDOWN);
+    
+    giantModeBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
+                                 origin.x + visibleSize.height * 0.5f));
+    giantModeBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    giantModeBtn->setCascadeOpacityEnabled(true);
+    m_GridWorld->addChild(giantModeBtn, 102);
     
     
     

@@ -240,11 +240,14 @@ void CPlayer::Rotation(float dir, float delta)
 void CPlayer::GiantMode()
 {
 	auto action = Sequence::create(
-		ScaleTo::create(0.5f, 3.0f),
+		Spawn::create(ScaleTo::create(0.5f, 2.f),
+		MoveTo::create(0.5f, Vec2(this->getPositionX(), this->getPositionY() + 30)), NULL),
 		CallFunc::create([&](){
-		this->m_pTexture->setTexture(m_CharacterParam._giantTextureName); 
-		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.3f));
-		this->setBRadius(60.f);
+		auto spritecache = SpriteFrameCache::getInstance();
+		this->m_pTexture->setTexture(spritecache->getSpriteFrameByName(m_CharacterParam._giantTextureName)->getTexture());
+		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+		this->setBRadius(100.f);
+		this->m_OriginPos = this->getPosition();
 		m_pParticle->setStartSize(100.f);
 		m_pParticle->setEndSize(40.f);
 	}), nullptr);
@@ -256,11 +259,14 @@ void CPlayer::NormalMode()
     //1초간 무적
     InvincibilityMode(2.f);
 	auto action = Sequence::create(
-		ScaleTo::create(0.5f, 1.0f),
+		Spawn::create(ScaleTo::create(0.5f, 1.0f),
+		MoveTo::create(0.5f, Vec2(this->getPositionX(), this->getPositionY() - 30)), NULL),
 		CallFunc::create([&](){
-		this->m_pTexture->setTexture(m_CharacterParam._normalTextureName);
+		auto spritecache = SpriteFrameCache::getInstance();
+		this->m_pTexture->setTexture(spritecache->getSpriteFrameByName(m_CharacterParam._normalTextureName)->getTexture());
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBRadius(6.f);
+		this->m_OriginPos = this->getPosition();
 		m_pParticle->setStartSize(90.f);
         m_pParticle->setEndSize(4.f);
 	}), nullptr);
