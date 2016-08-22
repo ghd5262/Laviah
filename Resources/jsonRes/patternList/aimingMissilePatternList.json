@@ -1,0 +1,62 @@
+{
+	"patterns": [{
+		"name": "aimingMissile0_Pattern",
+		"widthAngleDistance": 3.0,
+		"heightDistance": 50.0,
+		"pattern": [
+			"  33 333 33  ",
+			"   3 333 3   ",
+			"     333     ",
+			"     333     ",
+			"      3      "
+		]
+
+	}, {
+		"name": "aimingMissile1_Pattern",
+		"widthAngleDistance": 3.0,
+		"heightDistance": 50.0,
+		"pattern": [
+			"  333333333  ",
+			"  3       3  ",
+			"  3       3  ",
+			"  3       3  ",
+			"  333333333  "
+		]
+
+	}, {
+		"name": "aimingMissile2_Pattern",
+		"widthAngleDistance": 3.0,
+		"heightDistance": 50.0,
+		"pattern": [
+			"      3      ",
+			"  333333333  ",
+			"    33333    ",
+			"    33 33    ",
+			"   3     3   "
+		]
+
+	}, {
+		"name": "aimingMissile3_Pattern",
+		"widthAngleDistance": 3.0,
+		"heightDistance": 50.0,
+		"pattern": [
+			"     333     ",
+			"   33   33   ",
+			"  33     33  ",
+			"   33   33   ",
+			"     333     "
+		]
+
+	}, {
+		"name": "aimingMissile4_Pattern",
+		"widthAngleDistance": 3.0,
+		"heightDistance": 50.0,
+		"pattern": [
+			"      3      ",
+			"     333     ",
+			"    33 33    ",
+			"   33   33   ",
+			"  333333333  "
+		]
+	}]
+}
