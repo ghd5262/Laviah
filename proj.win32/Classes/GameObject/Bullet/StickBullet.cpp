@@ -55,7 +55,7 @@ bool CStickBullet::initVariable()
         setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
         setRotation(-m_fAngle);
         
-        m_pTexture = Sprite::create(m_pPlayer->getCharacterParam()._stickBulletTextureName);
+        m_pTexture = Sprite::createWithSpriteFrameName(m_pPlayer->getCharacterParam()._stickBulletTextureName);
         m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
         addChild(m_pTexture);
         

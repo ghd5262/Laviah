@@ -73,7 +73,7 @@ bool CNormalMissile::initVariable()
 		if (m_BulletParam._isAimingMissile)
 			missileTextureName = m_pPlayer->getCharacterParam()._aimingMissileTextureName;
 
-		m_pTexture = Sprite::create(missileTextureName);
+		m_pTexture = Sprite::createWithSpriteFrameName(missileTextureName);
 		if (m_pTexture != nullptr){
 			m_pTexture->setAnchorPoint(Vec2(0.2f, 0.5f));
 			addChild(m_pTexture);

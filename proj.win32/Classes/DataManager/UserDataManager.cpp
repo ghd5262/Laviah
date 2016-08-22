@@ -30,7 +30,7 @@ unsigned compare (unsigned a, unsigned b)
 {
     return ( a < b );
 }
-
+//d8d56d34a90de34339f8a174523adaae - texturepacker global key
 static const std::string CRYPTO_KEY = "sktjdgmlq1024!";
 
 CUserDataManager::CUserDataManager()

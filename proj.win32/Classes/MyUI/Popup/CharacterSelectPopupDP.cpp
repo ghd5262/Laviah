@@ -38,7 +38,7 @@ bool CCharacterSelectPopupDP::initVariable()
             this->addChild(m_DPBack);
         }
         
-        m_CharacterImg = Sprite::create(m_Character._normalTextureName.c_str());
+        m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character._normalTextureName.c_str());
         if(m_CharacterImg != nullptr)
         {
             m_CharacterImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

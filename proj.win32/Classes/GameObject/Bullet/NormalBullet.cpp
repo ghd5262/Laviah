@@ -57,7 +57,7 @@ bool CNormalBullet::initVariable()
 		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
 		setRotation(-m_fAngle);
 
-		m_pTexture = Sprite::create(m_pPlayer->getCharacterParam()._normalBulletTextureName);
+		m_pTexture = Sprite::createWithSpriteFrameName(m_pPlayer->getCharacterParam()._normalBulletTextureName);
 		if (m_pTexture != nullptr){
 			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 			addChild(m_pTexture);

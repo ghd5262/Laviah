@@ -46,7 +46,7 @@ bool CPlanet::init()
 bool CPlanet::initVariable()
 {
 	try{
-		m_pTexture = Sprite::create(m_TextureName);
+		m_pTexture = Sprite::createWithSpriteFrameName(m_TextureName);
 		if (m_pTexture != nullptr){
 			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
             m_pTexture->setCascadeColorEnabled(true);

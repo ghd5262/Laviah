@@ -98,7 +98,7 @@ bool CPlayer::initVariable()
             addChild(m_pItemBarrier);
         }
         
-		m_pTexture = Sprite::create(m_CharacterParam._normalTextureName);
+		m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam._normalTextureName);
 		if (m_pTexture != nullptr){
 			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 			m_pTexture->setScale(1.f);
