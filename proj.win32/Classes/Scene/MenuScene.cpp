@@ -3,6 +3,7 @@
 #include "EmptyScene.h"
 #include "../GameObject/Planet.h"
 #include "../GameObject/Alien.h"
+#include "../GameObject/SpaceShip.h"
 #include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
 #include "../Task/PoolingManager.h"
@@ -87,23 +88,22 @@ bool CMenuScene::initVariable()
 		sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
 
 		auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 290.f, 0.0f, 200.0f);
-		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.y + visibleSize.height * 0.5f));
-		planet->setScale(1.5f);
-		planet->runAction(RepeatForever::create(RotateBy::create(90, 360)));
-		this->addChild(planet);
-
-		CMenuSceneObjectManager::Instance()->setPlanet(planet);
-//        auto planet = CPlanet::create("planet.png", 290.f, 0.0f, 200.0f);
-//        planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-//                                 origin.y + visibleSize.height * 0.5f));
-//        planet->setScale(1.5f);
-//        this->addChild(planet);
-//        planet->runAction(RepeatForever::create(RotateBy::create(30, 360)));
-//        CMenuSceneObjectManager::Instance()->setPlanet(planet);
-//        
-//        
+        if(planet != nullptr){
+            planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.y + visibleSize.height * 0.5f));
+            planet->setScale(1.5f);
+            planet->runAction(RepeatForever::create(RotateBy::create(90, 360)));
+            this->addChild(planet);
+            CMenuSceneObjectManager::Instance()->setPlanet(planet);
+        }
+        auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM(), 40, 430);
+        if(spaceship != nullptr)
+        {
+            this->addChild(spaceship);
+            CMenuSceneObjectManager::Instance()->setSpaceShip(spaceship);
+        }
+        
         CPoolingManager::Instance()->CreateAlienList(100, 800);
-//        
+       
         for(int i = 0 ;i < 10 ;i++ ){
             auto alien = CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200);
             auto button = CMyButton::createWithLayerColor(Size(80, 80), Color4B(255, 255, 255, 0), "", 0, Color3B::WHITE, END, [alien](){

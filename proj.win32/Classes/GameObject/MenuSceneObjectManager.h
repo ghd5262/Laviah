@@ -3,18 +3,18 @@
 #include <vector>
 #include "../Common/HSHUtility.h"
 
-/*-----------------------MenuSceneObjectManager Å¬·¡½º¼³¸í------------------------------
+/*-----------------------MenuSceneObjectManager í´ë˜ìŠ¤ì„¤ëª…------------------------------
 *
-* MenuScene¿¡¼­ µ¿ÀÛÇÏ´Â ¿ÀºêÁ§Æ®µéÀ» °ü¸®ÇÔ.
-* CMover¸¦ »ó¼Ó¹Ş´Â ¸ğµç Å¬·¡½º¸¦ Execute¹× RemoveÇÏ´Â ÇÔ¼öÀÌ´Ù.
-* ÇöÀç ÁÖÀÇÇØ¾ß ÇÒ »çÇ×Àº RemoveÇÔ¼ö°¡ DeleteÇÔ¼ö¸¦ È£ÃâÇÏ´Â ±¸Á¶ÀÌ´Ù.
-* ÀÌÀ¯´Â Delete¿¡¼­ removeFromParent()¿Í operator delete¸¦ È£ÃâÇÏ¿© ¼Ò¸êÀÚ¸¦ È£ÃâÇÏ±â À§ÇÔ
+* MenuSceneì—ì„œ ë™ì‘í•˜ëŠ” ì˜¤ë¸Œì íŠ¸ë“¤ì„ ê´€ë¦¬í•¨.
+* CMoverë¥¼ ìƒì†ë°›ëŠ” ëª¨ë“  í´ë˜ìŠ¤ë¥¼ Executeë° Removeí•˜ëŠ” í•¨ìˆ˜ì´ë‹¤.
+* í˜„ì¬ ì£¼ì˜í•´ì•¼ í•  ì‚¬í•­ì€ Removeí•¨ìˆ˜ê°€ Deleteí•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ëŠ” êµ¬ì¡°ì´ë‹¤.
+* ì´ìœ ëŠ” Deleteì—ì„œ removeFromParent()ì™€ operator deleteë¥¼ í˜¸ì¶œí•˜ì—¬ ì†Œë©¸ìë¥¼ í˜¸ì¶œí•˜ê¸° ìœ„í•¨
 *
 *-----------------------------------------------------------------------------------*/
 
 class CAlien;
 class CPlanet;
-
+class CSpaceShip;
 class CMenuSceneObjectManager
 {
 public:
@@ -24,15 +24,16 @@ public:
 	void RemoveAllObject();
 	void Execute(float delta);
 
-	// ÃÊ±âÈ­
+	// ì´ˆê¸°í™”
 	void Clear();
 
 protected:
 	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
+    CC_SYNTHESIZE(CSpaceShip*, m_SpaceShip, SpaceShip);
 
 private:
-	void Auto_ReturnToMemoryBlock();	// Alive°¡ falseÀÎ ¿ÀºêÁ§Æ®¸¦ ¸ğµÎ ¸Ş¸ğ¸® ºí·°À¸·Î µÇµ¹¸°´Ù.
-	void RemoveAllAlien();				// DeleteÇÔ¼ö È£Ãâ! ÀÌÀ¯´Â ±¸ÇöºÎ¿¡~
+	void Auto_ReturnToMemoryBlock();	// Aliveê°€ falseì¸ ì˜¤ë¸Œì íŠ¸ë¥¼ ëª¨ë‘ ë©”ëª¨ë¦¬ ë¸”ëŸ­ìœ¼ë¡œ ë˜ëŒë¦°ë‹¤.
+	void RemoveAllAlien();				// Deleteí•¨ìˆ˜ í˜¸ì¶œ! ì´ìœ ëŠ” êµ¬í˜„ë¶€ì—~
 	CMenuSceneObjectManager();
 	~CMenuSceneObjectManager(){};
 

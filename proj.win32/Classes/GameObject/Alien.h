@@ -26,11 +26,11 @@ protected:
 	virtual bool init() override;
 	virtual bool initVariable() override;
 
-	// PoolingManager¿¡¼­ ¸Ş¸ğ¸®¸¦ ÇÒ´ç ¹Ş´Â´Ù.
+	// PoolingManagerì—ì„œ ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹ ë°›ëŠ”ë‹¤.
 	void* operator new (size_t size, const std::nothrow_t);
 
-	// ½ÇÁ¦ ¸Ş¸ğ¸® ÇØÁ¦´Â memorypooling¿¡¼­ ´ã´çÇÏÁö¸¸
-	// ¼Ò¸êÀÚ¸¦ È£ÃâÇÏ¿© Node°è¿­ÀÌ ¾Æ´Ñ ¸Ş¸ğ¸®µéÀ» »èÁ¦ÇÏ±â À§ÇÔ
+	// ì‹¤ì œ ë©”ëª¨ë¦¬ í•´ì œëŠ” memorypoolingì—ì„œ ë‹´ë‹¹í•˜ì§€ë§Œ
+	// ì†Œë©¸ìë¥¼ í˜¸ì¶œí•˜ì—¬ Nodeê³„ì—´ì´ ì•„ë‹Œ ë©”ëª¨ë¦¬ë“¤ì„ ì‚­ì œí•˜ê¸° ìœ„í•¨
 	void operator delete(void* ptr){};
 
 	CAlien(sALIEN_PARAM alienParam, float walkingSpeed, float distance);
@@ -38,7 +38,7 @@ protected:
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fWalkingSpeed, WalkingSpeed);
-	CC_SYNTHESIZE(float, m_fDistance, Distance);    // 0 > Distance ÀÌ¸é bulletÀÇ ¿ø·¡ distance°ªÀ» »ç¿ëÇÔ
+	CC_SYNTHESIZE(float, m_fDistance, Distance);    // 0 > Distance ì´ë©´ bulletì˜ ì›ë˜ distanceê°’ì„ ì‚¬ìš©í•¨
 	CC_SYNTHESIZE(float, m_fActionTime, ActionTime);
 	CC_SYNTHESIZE(int, m_Direction, Direction);     // -1 : left     1 : right
 	CC_SYNTHESIZE(int, m_CurrentAction, CurrentAction);

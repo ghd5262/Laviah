@@ -29,7 +29,7 @@ protected:
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fFlySpeed, FlySpeed);
-	CC_SYNTHESIZE(float, m_fDistance, Distance);    // 0 > Distance ÀÌ¸é bulletÀÇ ¿ø·¡ distance°ªÀ» »ç¿ëÇÔ
+	CC_SYNTHESIZE(float, m_fDistance, Distance);    // 0 > Distance ì´ë©´ bulletì˜ ì›ë˜ distanceê°’ì„ ì‚¬ìš©í•¨
 	CC_SYNTHESIZE(float, m_fActionTime, ActionTime);
 	CC_SYNTHESIZE(int, m_Direction, Direction);     // -1 : left     1 : right
 	CC_SYNTHESIZE(int, m_CurrentAction, CurrentAction);
@@ -39,6 +39,6 @@ protected:
 	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
 
 private:
-	//ºÒ²É ÆÄÆ¼Å¬
+	//ë¶ˆê½ƒ íŒŒí‹°í´
 	ParticleSystemQuad* m_pParticleFlame;
 };

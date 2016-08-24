@@ -13,7 +13,7 @@ CSpaceShip::CSpaceShip(sSPACESHIP_PARAM SpaceShipParam, float flySpeed, float di
 	, m_FSM(nullptr)
 	, m_pPlanet(CMenuSceneObjectManager::Instance()->getPlanet())
 {
-	// bulletÀÌ ÃÊ±âÈ­ µÉ¶§¸¶´Ù ¸Å¹ø »ı¼ºÇÏÁö ¾Ê´Â´Ù.
+	// bulletì´ ì´ˆê¸°í™” ë ë•Œë§ˆë‹¤ ë§¤ë²ˆ ìƒì„±í•˜ì§€ ì•ŠëŠ”ë‹¤.
 	if (m_FSM == nullptr){
 		m_FSM = new CStateMachine<CSpaceShip>(this);
 	}
@@ -61,27 +61,29 @@ bool CSpaceShip::init()
 bool CSpaceShip::initVariable()
 {
 	try{
-		setPositionX((cos(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ 300) + m_pPlanet->getPosition().x);
-		setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ 300) + m_pPlanet->getPosition().y);
-		setRotation(-90);
+		setPositionX((cos(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ m_fDistance) + m_pPlanet->getPosition().x);
+		setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ m_fDistance) + m_pPlanet->getPosition().y);
 
-		auto texture = Sprite::create("whiteSquare.png");
+		auto texture = Sprite::create("spaceship_0.png");
 		texture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		addChild(texture);
 
-		// ºÒ²É ÆÄÆ¼Å¬
-		m_pParticleFlame = CParticle_Flame::create("missileFlame.png");
+		// ë¶ˆê½ƒ íŒŒí‹°í´
+		m_pParticleFlame = CParticle_Flame::create("fire.png");
 		if (m_pParticleFlame != nullptr){
 			m_pParticleFlame->retain();
 			m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_pParticleFlame->setAngle(-90);
 			m_pParticleFlame->setGravity(Vec2(90, 0));
 			m_pParticleFlame->setPosition(Vec2(texture->getContentSize().width * 1.1f, texture->getContentSize().height * 0.5f));
-			m_pParticleFlame->setStartSpin(-90);
-			m_pParticleFlame->setStartSpin(270);
-			m_pParticleFlame->setLife(0.1f);
-			m_pParticleFlame->setLifeVar(0.15f);
-
+            m_pParticleFlame->setStartSize(100);
+			m_pParticleFlame->setLife(0.8f);
+			m_pParticleFlame->setLifeVar(0.15f );
+            m_pParticleFlame->setStartColor(Color4F(1.f, 1.f, 0.5f, 1.f));
+            m_pParticleFlame->setStartColorVar(Color4F(0, 0, 0.8f, 0));
+            m_pParticleFlame->setEndColor(Color4F(1.f, 1.f, 1.f, 0.4f));
+            m_pParticleFlame->setEndColorVar(Color4F(0, 0, 0, 0));
+            m_pParticleFlame->setPosVar(Vec2(0 , 10));
+            m_pParticleFlame->setTotalParticles(80);
 			texture->addChild(m_pParticleFlame);
 		}
 	}
@@ -94,32 +96,32 @@ bool CSpaceShip::initVariable()
 }
 
 
-/* È¸ÀüÇà·ÄÀ» ÀÌ¿ëÇÏ¿© ¿ÀºêÁ§Æ® È¸Àü ¹× ÀÌµ¿ */
+/* íšŒì „í–‰ë ¬ì„ ì´ìš©í•˜ì—¬ ì˜¤ë¸Œì íŠ¸ íšŒì „ ë° ì´ë™ */
 void CSpaceShip::FlyAround(float delta)
 {
-	// È¸Àü ¼Óµµ¿Í ¹æÇâÀ» ÀÌ¿ëÇÏ¿© °¢µµ¸¦ ±¸ÇÏ°í ¶óµğ¾ÈÀ¸·Î º¯È¯
+	// íšŒì „ ì†ë„ì™€ ë°©í–¥ì„ ì´ìš©í•˜ì—¬ ê°ë„ë¥¼ êµ¬í•˜ê³  ë¼ë””ì•ˆìœ¼ë¡œ ë³€í™˜
 	float radian = CC_DEGREES_TO_RADIANS(m_Direction * (m_fFlySpeed * delta));
 
-	// ÇöÀçÀÇ Direction Vector¸¦ ÀúÀåÇÑ´Ù.
+	// í˜„ì¬ì˜ Direction Vectorë¥¼ ì €ì¥í•œë‹¤.
 	Vec2 beforeRotation = getPosition() - m_pPlanet->getPosition();
 
-	// °Å¸®µµ ÀúÀå
+	// ê±°ë¦¬ë„ ì €ì¥
 	float length = beforeRotation.length();
 
-	/* È¸ÀüÇà·ÄÀ» ±¸ÇÔ
+	/* íšŒì „í–‰ë ¬ì„ êµ¬í•¨
 	* rotate x = ((x_ * cos(angle)) - (y_ * sin(angle)))
 	* rotate y = ((x_ * sin(angle)) + (y_ * cos(angle))) */
 	m_RotationVec = Vec2((float)((beforeRotation.x * cos(radian)) - (beforeRotation.y * sin(radian))),
 		(float)((beforeRotation.x * sin(radian)) + (beforeRotation.y * cos(radian))));
 
-	// ³ë¸»¶óÀÌÁî
+	// ë…¸ë§ë¼ì´ì¦ˆ
 	m_RotationVec.normalize();
 	m_RotationVec *= length;
 
-	// ±âÁ¸ÀÇ ÁÂÇ¥¿¡ »õ·Î¿î ÁÂÇ¥¸¦ ´õÇØÁØ´Ù.
+	// ê¸°ì¡´ì˜ ì¢Œí‘œì— ìƒˆë¡œìš´ ì¢Œí‘œë¥¼ ë”í•´ì¤€ë‹¤.
 	setPosition(m_pPlanet->getPosition() + m_RotationVec);
 
-	// ¿ÀºêÁ§Æ® ÀÚÃ¼µµ È¸Àü
+	// ì˜¤ë¸Œì íŠ¸ ìì²´ë„ íšŒì „
 	setRotation(getRotation() - (m_Direction *(m_fFlySpeed * delta)));
 }
 

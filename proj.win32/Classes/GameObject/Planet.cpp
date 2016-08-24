@@ -118,3 +118,10 @@ void CPlanet::Rotation(float dir, float delta)
 //	m_fAngle = static_cast<int>(m_fAngle) % 360;
 	this->setRotation(m_fAngle);
 }
+
+void CPlanet::setPlanetTexture(std::string textureName)
+{
+    if(m_pTexture != nullptr){
+        this->m_pTexture->setSpriteFrame(textureName);
+    }
+}
