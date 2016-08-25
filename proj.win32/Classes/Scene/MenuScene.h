@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cocos2d.h"
+#include "network/CCDownloader.h"
 
 class CMenuScene : public cocos2d::Layer
 {
@@ -25,4 +26,5 @@ private:
     
 private:
     static CMenuScene* m_MenuScene;
+    std::unique_ptr<cocos2d::network::Downloader> downloader;
 };

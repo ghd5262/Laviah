@@ -56,6 +56,6 @@ void CMenuSceneObjectManager::Execute(float delta)
 			alien->Execute(delta);
 		}
 	}
-    
-    m_SpaceShip->Execute(delta);
+    if(m_SpaceShip != nullptr)
+        m_SpaceShip->Execute(delta);
 }
