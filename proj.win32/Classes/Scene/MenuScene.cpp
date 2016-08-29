@@ -82,10 +82,11 @@ bool CMenuScene::initVariable()
         CBulletDataManager::Instance();
 		CWorkshopItemDataManager::Instance();
         CUserDataManager::Instance();
+		CCharacterDataManager::Instance();
         CSDKUtil::Instance();
 
-		int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
-		sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+		//int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
+		//sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
 
 //		auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 290.f, 0.0f, 200.0f);
 //        if(planet != nullptr){
@@ -241,102 +242,102 @@ void CMenuScene::InitMenuSceneUI()
 	googleCloudSaveTestBtn->setCascadeOpacityEnabled(true);
 	this->addChild(googleCloudSaveTestBtn);
     
-    downloader.reset(new network::Downloader());
+    //downloader.reset(new network::Downloader());
     
-    auto downloadByCDNTestBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Downlaod", 40, Color3B::WHITE,
-        END, [this, origin, visibleSize](){
-            
-            downloader->createDownloadDataTask("http://www.nowtrade.co.kr/Resources/imageRes/coin_1.png", "coin_1.png");
-            
-            
-            
-            // define progress callback
-            downloader->onTaskProgress = [this](const network::DownloadTask& task,
-                                                int64_t bytesReceived,
-                                                int64_t totalBytesReceived,
-                                                int64_t totalBytesExpected)
-            {
-                float percent = float(totalBytesReceived * 100) / totalBytesExpected;
-                char buf[32];
-                sprintf(buf, "%.1f%%[total %d KB]", percent, int(totalBytesExpected/1024));
-        
-                CCLOG("%s", buf);
-            };
-            
-            // define success callback
-            downloader->onDataTaskSuccess = [this, origin, visibleSize](const cocos2d::network::DownloadTask& task, std::vector<unsigned char>& data)
-            {
-                // create texture from data
-                Texture2D* texture = nullptr;
-                do
-                {
-                    Image img;
-                    if (false == img.initWithImageData(data.data(), data.size()))
-                    {
-                        break;
-                    }
-                    
-                    texture = new Texture2D();
-                    if (false == texture->initWithImage(&img))
-                    {
-                        break;
-                    }
-                    auto sprite = Sprite::createWithTexture(texture);
-                    sprite->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.x + visibleSize.height * 0.5f));
-                    auto spriteSize = sprite->getContentSize();
-                    this->addChild(sprite);
-                    
-                } while (0);
-                CC_SAFE_RELEASE(texture);
-            };
-            
-            downloader->onFileTaskSuccess = [this](const cocos2d::network::DownloadTask& task)
-            {
-                Texture2D* texture = nullptr;
-                do
-                {
-                    auto view = this->getChildByName(task.identifier);
-                    if (std::string::npos == task.storagePath.find(".png"))
-                    {
-                        // download big file success
-                        char buf[32];
-                        sprintf(buf, "Download [%s] success.", task.identifier.c_str());
-                        break;
-                    }
-                    // create sprite from file
-                    auto sprite = Sprite::create(task.storagePath);
-                    auto viewSize = view->getContentSize();
-                    sprite->setPosition(viewSize.width / 2, viewSize.height / 2);
-                    auto spriteSize = sprite->getContentSize();
-                    float scale = MIN((viewSize.height - 20) / spriteSize.height, (viewSize.width - 20) / spriteSize.width);
-                    sprite->setScale(scale);
-                    view->addChild(sprite);
-                    
-                } while (0);
-                CC_SAFE_RELEASE(texture);
-            };
-            
-            // define failed callback
-            downloader->onTaskError = [this](const cocos2d::network::DownloadTask& task,
-                                             int errorCode,
-                                             int errorCodeInternal,
-                                             const std::string& errorStr)
-            {
-                CCLOG("Failed to download : %s, identifier(%s) error code(%d), internal error code(%d) desc(%s)"
-                    , task.requestURL.c_str()
-                    , task.identifier.c_str()
-                    , errorCode
-                    , errorCodeInternal
-                    , errorStr.c_str());
-            };
-            
-        }, EFFECT_SIZEDOWN);
-    
-    downloadByCDNTestBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
-                                             origin.x + visibleSize.height * 0.8f));
-    downloadByCDNTestBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    downloadByCDNTestBtn->setCascadeOpacityEnabled(true);
-    this->addChild(downloadByCDNTestBtn);
+    //auto downloadByCDNTestBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Downlaod", 40, Color3B::WHITE,
+    //    END, [this, origin, visibleSize](){
+    //        
+    //        downloader->createDownloadDataTask("http://www.nowtrade.co.kr/Resources/imageRes/coin_1.png", "coin_1.png");
+    //        
+    //        
+    //        
+    //        // define progress callback
+    //        downloader->onTaskProgress = [this](const network::DownloadTask& task,
+    //                                            int64_t bytesReceived,
+    //                                            int64_t totalBytesReceived,
+    //                                            int64_t totalBytesExpected)
+    //        {
+    //            float percent = float(totalBytesReceived * 100) / totalBytesExpected;
+    //            char buf[32];
+    //            sprintf(buf, "%.1f%%[total %d KB]", percent, int(totalBytesExpected/1024));
+    //    
+    //            CCLOG("%s", buf);
+    //        };
+    //        
+    //        // define success callback
+    //        downloader->onDataTaskSuccess = [this, origin, visibleSize](const cocos2d::network::DownloadTask& task, std::vector<unsigned char>& data)
+    //        {
+    //            // create texture from data
+    //            Texture2D* texture = nullptr;
+    //            do
+    //            {
+    //                Image img;
+    //                if (false == img.initWithImageData(data.data(), data.size()))
+    //                {
+    //                    break;
+    //                }
+    //                
+    //                texture = new Texture2D();
+    //                if (false == texture->initWithImage(&img))
+    //                {
+    //                    break;
+    //                }
+    //                auto sprite = Sprite::createWithTexture(texture);
+    //                sprite->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.x + visibleSize.height * 0.5f));
+    //                auto spriteSize = sprite->getContentSize();
+    //                this->addChild(sprite);
+    //                
+    //            } while (0);
+    //            CC_SAFE_RELEASE(texture);
+    //        };
+    //        
+    //        downloader->onFileTaskSuccess = [this](const cocos2d::network::DownloadTask& task)
+    //        {
+    //            Texture2D* texture = nullptr;
+    //            do
+    //            {
+    //                auto view = this->getChildByName(task.identifier);
+    //                if (std::string::npos == task.storagePath.find(".png"))
+    //                {
+    //                    // download big file success
+    //                    char buf[32];
+    //                    sprintf(buf, "Download [%s] success.", task.identifier.c_str());
+    //                    break;
+    //                }
+    //                // create sprite from file
+    //                auto sprite = Sprite::create(task.storagePath);
+    //                auto viewSize = view->getContentSize();
+    //                sprite->setPosition(viewSize.width / 2, viewSize.height / 2);
+    //                auto spriteSize = sprite->getContentSize();
+    //                float scale = MIN((viewSize.height - 20) / spriteSize.height, (viewSize.width - 20) / spriteSize.width);
+    //                sprite->setScale(scale);
+    //                view->addChild(sprite);
+    //                
+    //            } while (0);
+    //            CC_SAFE_RELEASE(texture);
+    //        };
+    //        
+    //        // define failed callback
+    //        downloader->onTaskError = [this](const cocos2d::network::DownloadTask& task,
+    //                                         int errorCode,
+    //                                         int errorCodeInternal,
+    //                                         const std::string& errorStr)
+    //        {
+    //            CCLOG("Failed to download : %s, identifier(%s) error code(%d), internal error code(%d) desc(%s)"
+    //                , task.requestURL.c_str()
+    //                , task.identifier.c_str()
+    //                , errorCode
+    //                , errorCodeInternal
+    //                , errorStr.c_str());
+    //        };
+    //        
+    //    }, EFFECT_SIZEDOWN);
+    //
+    //downloadByCDNTestBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
+    //                                         origin.x + visibleSize.height * 0.8f));
+    //downloadByCDNTestBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    //downloadByCDNTestBtn->setCascadeOpacityEnabled(true);
+    //this->addChild(downloadByCDNTestBtn);
     
 }
 

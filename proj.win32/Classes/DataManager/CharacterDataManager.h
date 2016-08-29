@@ -1,5 +1,6 @@
 #pragma once
 #include "../Common/HSHUtility.h"
+#include "network/CCDownloader.h"
 #include <vector>
 
 struct sCHARACTER_PARAM{
@@ -46,4 +47,5 @@ private:
     
 private:
     std::vector<sCHARACTER_PARAM> m_CharacterList;
+	std::unique_ptr<cocos2d::network::Downloader> m_Downloader;
 };

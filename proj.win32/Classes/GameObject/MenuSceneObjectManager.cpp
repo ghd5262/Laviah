@@ -17,7 +17,7 @@ void CMenuSceneObjectManager::Clear()
 {
 	m_AlienList.clear();
 	m_Planet = nullptr;
-    m_SpaceShip = nullptr;
+	m_SpaceShip = nullptr;
 }
 
 void CMenuSceneObjectManager::AddAlien(void* alien)
@@ -26,7 +26,7 @@ void CMenuSceneObjectManager::AddAlien(void* alien)
 }
 
 /* bullet->Delete() :
-* ê²Œìž„ ì¢…ë£Œì‹œ ê°€ì§€ê³  ìžˆëŠ” Non_Nodeê³„ì—´ì˜ í¬ì¸í„°ë¥¼ í•´ì œí•˜ê¸°ìœ„í•´ */
+* °ÔÀÓ Á¾·á½Ã °¡Áö°í ÀÖ´Â Non_Node°è¿­ÀÇ Æ÷ÀÎÅÍ¸¦ ÇØÁ¦ÇÏ±âÀ§ÇØ */
 void CMenuSceneObjectManager::RemoveAllAlien()
 {
 	for (auto alien : m_AlienList)
@@ -56,6 +56,6 @@ void CMenuSceneObjectManager::Execute(float delta)
 			alien->Execute(delta);
 		}
 	}
-    if(m_SpaceShip != nullptr)
-        m_SpaceShip->Execute(delta);
+	if (m_SpaceShip != nullptr)
+		m_SpaceShip->Execute(delta);
 }

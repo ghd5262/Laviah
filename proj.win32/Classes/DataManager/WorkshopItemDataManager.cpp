@@ -90,6 +90,10 @@ CWorkshopItemDataManager* CWorkshopItemDataManager::Instance()
 
 sWORKSHOPITEM_PARAM CWorkshopItemDataManager::getWorkshopItemInfoByIndex(int index) const
 {
+	if (m_WorkshopItemList.size() <= index){
+		CCLOG("WARNNING - There is no item with index %d", index);
+		return m_WorkshopItemList.at(0);
+	}
 	return m_WorkshopItemList.at(index);
 }
 
