@@ -47,7 +47,7 @@ Scene* CGameScene::createScene()
 CGameScene::~CGameScene()
 {
 	CObjectManager::Instance()->RemoveAllObject();
-	removeAllChildrenWithCleanup(true);
+	removeAllChildrenWithCleanup(true); // 이부분 검토
 	CPoolingManager::Instance()->DeleteAllMemory();
 	clearData();
 }

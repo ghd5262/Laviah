@@ -89,7 +89,7 @@ CCharacterDataManager::CCharacterDataManager()
 //    
 //    CCLOG("The Loaded Stage Size is %d AND the Last Idx of Stage Is %d", static_cast<int>(m_CharacterList->size()), ForLOG);
 	m_Downloader.reset(new network::Downloader());
-
+    
 	for (int i = 0; i < 3; i++)
 	{
 		sCHARACTER_PARAM character;
@@ -124,14 +124,14 @@ CCharacterDataManager::CCharacterDataManager()
 		std::string downloadedPath = FileUtils::getInstance()->getWritablePath() + "Download/Character/";
 		std::string downloadPath = "http://www.nowtrade.co.kr/Resources/imageRes/";
 		auto util = FileUtils::getInstance();
-
+        
 		// if file already exist, remove it
 		if (util->isFileExist(texturepackPNG) && util->isFileExist(texturepackPLIST))
 		{
 			CCLOG("User local file %s", texturepackPNG.c_str());
 			CCLOG("User local file %s", texturepackPLIST.c_str());
 			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
-			m_CharacterList.emplace_back(character);
+//			m_CharacterList.emplace_back(character);
 
 			/*if (false == util->removeFile(coTask._fileName))
 			{
@@ -145,7 +145,7 @@ CCharacterDataManager::CCharacterDataManager()
 		else if (util->isFileExist(downloadedPath + texturepackPNG) && util->isFileExist(downloadedPath + texturepackPLIST))
 		{
 			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(downloadedPath + texturepackPLIST, downloadedPath + texturepackPNG);
-			m_CharacterList.emplace_back(character);
+//			m_CharacterList.emplace_back(character);
 		}
 		else
 		{
@@ -157,7 +157,7 @@ CCharacterDataManager::CCharacterDataManager()
 				if (util->isFileExist(downloadedPath + texturepackPNG) && util->isFileExist(downloadedPath + texturepackPLIST))
 				{
 					SpriteFrameCache::getInstance()->addSpriteFramesWithFile(downloadedPath + texturepackPLIST, downloadedPath + texturepackPNG);
-					m_CharacterList.emplace_back(character);
+//					m_CharacterList.emplace_back(character);
 				}
 			};
 
@@ -176,7 +176,13 @@ CCharacterDataManager::CCharacterDataManager()
 				CSDKUtil::Instance()->Toast(warnning);
 			};
 		}
+        m_CharacterList.emplace_back(character);
 	}
+}
+
+void CCharacterDataManager::InitWithCharacter()
+{
+    
 }
 
 CCharacterDataManager::~CCharacterDataManager()

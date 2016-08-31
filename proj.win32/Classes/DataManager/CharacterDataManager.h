@@ -36,6 +36,8 @@ class CCharacterDataManager
 public:
     static CCharacterDataManager* Instance();
     
+    void InitWithCharacter();
+    
     //getter & setter
     sCHARACTER_PARAM getCharacterInfoByIndex(int index) const;
     std::vector<sCHARACTER_PARAM> getCharacterList(){ return m_CharacterList; };

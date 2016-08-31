@@ -47,6 +47,8 @@
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		9312B4781D58A0A800FE954C /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9312B4771D58A0A800FE954C /* CoreText.framework */; };
 		9312B47C1D58A12600FE954C /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93865F3E1D588C39007ECE5A /* libiconv.tbd */; };
+		9329BAB61D75C50100878CEF /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9329BAB41D75C50100878CEF /* LoadingScene.cpp */; };
+		9329BABC1D75E47500878CEF /* AMTestScene1 in Resources */ = {isa = PBXBuildFile; fileRef = 9329BABB1D75E47500878CEF /* AMTestScene1 */; };
 		937311591D5849C800D5EB5C /* AlienStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373109E1D5849C700D5EB5C /* AlienStates.cpp */; };
 		9373115A1D5849C800D5EB5C /* BulletStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A01D5849C700D5EB5C /* BulletStates.cpp */; };
 		9373115B1D5849C800D5EB5C /* PlayerStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A21D5849C700D5EB5C /* PlayerStates.cpp */; };
@@ -227,6 +229,9 @@
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		9312B4771D58A0A800FE954C /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
 		9312B47A1D58A10100FE954C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		9329BAB41D75C50100878CEF /* LoadingScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadingScene.cpp; sourceTree = "<group>"; };
+		9329BAB51D75C50100878CEF /* LoadingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingScene.h; sourceTree = "<group>"; };
+		9329BABB1D75E47500878CEF /* AMTestScene1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AMTestScene1; sourceTree = "<group>"; };
 		9373109C1D5849C700D5EB5C /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
 		9373109E1D5849C700D5EB5C /* AlienStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AlienStates.cpp; sourceTree = "<group>"; };
 		9373109F1D5849C700D5EB5C /* AlienStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlienStates.h; sourceTree = "<group>"; };
@@ -536,6 +541,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9329BABB1D75E47500878CEF /* AMTestScene1 */,
 				937311AC1D5849D500D5EB5C /* fonts */,
 				937311AD1D5849D500D5EB5C /* imageRes */,
 				937311AE1D5849D500D5EB5C /* json */,
@@ -869,6 +875,8 @@
 				9373114B1D5849C800D5EB5C /* MenuScene.h */,
 				9373114C1D5849C800D5EB5C /* SceneTransition.cpp */,
 				9373114D1D5849C800D5EB5C /* SceneTransition.h */,
+				9329BAB41D75C50100878CEF /* LoadingScene.cpp */,
+				9329BAB51D75C50100878CEF /* LoadingScene.h */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -1008,6 +1016,7 @@
 				937311B71D5849D500D5EB5C /* sounds in Resources */,
 				937311861D5849C800D5EB5C /* json_valueiterator.inl in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
+				9329BABC1D75E47500878CEF /* AMTestScene1 in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
@@ -1131,6 +1140,7 @@
 				937311961D5849C800D5EB5C /* GoogleCloudTestPopupDP.cpp in Sources */,
 				9373117A1D5849C800D5EB5C /* ObjectManager.cpp in Sources */,
 				937311691D5849C800D5EB5C /* BonusLetter.cpp in Sources */,
+				9329BAB61D75C50100878CEF /* LoadingScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
