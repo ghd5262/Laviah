@@ -1,7 +1,8 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "extensions/cocos-ext.h"
+//#include "../extensions/cocos-ext.h"
+//#include "../extensions/assets-manager/CCEventListenerAssetsManagerEx.h"
 
 class CLoadingScene : public cocos2d::Layer
 {
@@ -19,7 +20,6 @@ protected:
 private:
     virtual ~CLoadingScene();
     
-    void onLoadEnd();
     void clearData();
     bool initVariable();
     void InitLoadingSceneUI();
@@ -27,6 +27,4 @@ private:
     
 private:
     static CLoadingScene* m_LoadingScene;
-    cocos2d::extension::AssetsManagerEx* m_AssetsManager;
-    cocos2d::extension::EventListenerAssetsManagerEx* m_AssetsManagerListener;
 };

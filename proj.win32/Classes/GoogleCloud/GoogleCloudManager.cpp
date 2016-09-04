@@ -35,8 +35,10 @@ void CGoogleCloudManager::GoogleCloudDataLoad(std::string key, std::string value
     CCLOG("Crypto Value : %s", valueJson.c_str());
     CCLOG("==============================================================");
     
-    
-    CUserDataManager::Instance()->convertJsonToUserData(key, valueJson);
+	CUserDataManager::Instance()->googleCloudDataLoad(valueJson);
+
+	// 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
+    /*CUserDataManager::Instance()->convertJsonToUserData(key, valueJson);
     CUserDataManager::Instance()->callbackFirstRevision();
     CUserDataManager::Instance()->overwriteXmlByGoogleCloud(key, valueJson);
     m_GoogleCloudDataLoadCount++;
@@ -46,5 +48,5 @@ void CGoogleCloudManager::GoogleCloudDataLoad(std::string key, std::string value
         CCLOG("Data load finished from google cloud");
         CSDKUtil::Instance()->Toast("Load finished from google cloud");
         CUserDataManager::Instance()->setIsDataLoadFinish(true);
-    }
+    }*/
 }

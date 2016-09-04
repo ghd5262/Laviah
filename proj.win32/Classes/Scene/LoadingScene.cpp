@@ -3,12 +3,7 @@
 #include "EmptyScene.h"
 #include "../GameObject/Player.h"
 #include "../MyUI/MyButton.h"
-USING_NS_CC;
-USING_NS_CC_EXT;
-
-const char* sceneManifest = "AMTestScene1/project.manifest";
-const char* storagePath = "Download/";
-const char* backgroundPath = "compressed/Daisy_Flower.jpg";
+#include "../DataManager/UserDataManager.h"
 
 CLoadingScene* CLoadingScene::m_LoadingScene = nullptr;
 
@@ -36,8 +31,6 @@ CLoadingScene::~CLoadingScene()
 void CLoadingScene::clearData()
 {
     m_LoadingScene = nullptr;
-    m_AssetsManager = nullptr;
-    m_AssetsManagerListener = nullptr;
 }
 
 bool CLoadingScene::init()
@@ -60,6 +53,8 @@ bool CLoadingScene::initVariable()
         clearData();
         m_LoadingScene = this;
         
+		CUserDataManager::Instance();
+
         Size visibleSize = Director::getInstance()->getVisibleSize();
         Vec2 origin = Director::getInstance()->getVisibleOrigin();
         
@@ -69,11 +64,11 @@ bool CLoadingScene::initVariable()
         addChild(loadingImg);
         loadingImg->runAction(RepeatForever::create(RotateBy::create(1.f, 360)));
         
-        std::string manifest = sceneManifest;
+        /*std::string manifest = sceneManifest;
         std::string storage = FileUtils::getInstance()->getWritablePath() + storagePath;
         CCLOG("Storage path for this test : %s", storage.c_str());
         m_AssetsManager = AssetsManagerEx::create(manifest, storage);
-        m_AssetsManager->retain();
+        m_AssetsManager->retain();*/
         
         
 //        sCHARACTER_PARAM tempInfo;
@@ -97,7 +92,7 @@ bool CLoadingScene::initVariable()
 
 void CLoadingScene::InitLoadingSceneUI()
 {
-    if (!m_AssetsManager->getLocalManifest()->isLoaded())
+   /* if (!m_AssetsManager->getLocalManifest()->isLoaded())
     {
         CCLOG("Fail to update assets, step skipped.");
         onLoadEnd();
@@ -190,21 +185,21 @@ void CLoadingScene::InitLoadingSceneUI()
         Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(m_AssetsManagerListener, 1);
         
         m_AssetsManager->update();
-    }
+    }*/
 
 }
 
-void CLoadingScene::onLoadEnd()
-{
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    auto loadEndBtn = CMyButton::create(backgroundPath, END, [](){CCLOG("Load End");});
-    if(loadEndBtn != nullptr){
-        loadEndBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.x + visibleSize.height * 0.1f));
-        loadEndBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        addChild(loadEndBtn);
-    }
-}
+//void CLoadingScene::onLoadEnd()
+//{
+//    Size visibleSize = Director::getInstance()->getVisibleSize();
+//    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+//    auto loadEndBtn = CMyButton::create(backgroundPath, END, [](){CCLOG("Load End");});
+//    if(loadEndBtn != nullptr){
+//        loadEndBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.x + visibleSize.height * 0.1f));
+//        loadEndBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//        addChild(loadEndBtn);
+//    }
+//}
 
 void CLoadingScene::createMenuScene()
 {

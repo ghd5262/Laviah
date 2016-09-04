@@ -6,7 +6,7 @@
 struct sUSER_DATA{
     std::map<std::string, unsigned> _userDataUnsignedMap;
     std::map<std::string, std::vector<unsigned>*> _userDataListMap;
-    std::map<std::string, std::string> _userDataKeyMap;
+	std::map<std::string, std::string> _userDataKeyMap;
 };
 
 class CGoogleCloudManager;
@@ -17,7 +17,8 @@ class CUserDataManager
 public:
     static CUserDataManager* Instance();
     
-    void GoogleLoginResult();
+	// 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
+    //void GoogleLoginResult();
 
     //getter & setter
     unsigned getUserData_Number(std::string key);
@@ -30,11 +31,30 @@ public:
     void setUserData_Number(std::string key, unsigned value);
     void setUserData_ItemGet(std::string key, unsigned itemIdx);
     bool CoinUpdate(int value);
-    
-    CC_SYNTHESIZE(bool, m_IsDataLoadFinish, IsDataLoadFinish);
+    //
+    //CC_SYNTHESIZE(bool, m_IsDataLoadFinish, IsDataLoadFinish);
 
 private:
-    void callbackFirstRevision();
+	void dataLoad();
+
+	void dataLoadFromXML();
+
+	void dataLoadFromGoogleCloud();
+
+	void convertJsonToUserData(std::string valueJson);
+
+	void convertUserDataToJson();
+
+	void googleCloudDataLoad(std::string cryptoValue);
+
+	void overwriteXmlByGoogleCloud(std::string valueJson);
+
+	bool isGoogleRevisionHigher();
+
+	void addKey(std::string keyKind, std::string key);
+
+	// 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
+    /*void callbackFirstRevision();
     
     void dataLoad();
     void dataLoadFromXML();
@@ -50,12 +70,16 @@ private:
     
     void addKey(std::string keyKind, std::string key);
     
-    void overwriteXmlByGoogleCloud(std::string key, std::string valueJson);
+    void overwriteXmlByGoogleCloud(std::string key, std::string valueJson);*/
     
     CUserDataManager();
     virtual ~CUserDataManager();
     
 private:
     std::shared_ptr<sUSER_DATA> m_UserData;
-    bool m_IsFirstRevisionCall;
+	std::string m_JsonUserDataFromXML;
+	std::string m_JsonUserDataFromGoogleCloud;
+	
+	// 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
+    //bool m_IsFirstRevisionCall;
 };

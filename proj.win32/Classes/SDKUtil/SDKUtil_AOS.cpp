@@ -107,7 +107,9 @@ extern "C" {
         CCLOG("Google Cloud Connection %s", (isSucceed == true) ? "SUCCEED" : "FAILED");
         Director::getInstance()->getScheduler()->schedule([isSucceed](float delta){
             CGoogleCloudManager::Instance()->setIsConnected(isSucceed);
-            CUserDataManager::Instance()->GoogleLoginResult();
+            
+			// 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
+			//CUserDataManager::Instance()->GoogleLoginResult();
         }, Director::getInstance(), 0.f, 0, 0.f, false, "DataLoad");
 	}
 
