@@ -8,8 +8,7 @@
 class CSDKUtil_WIN{
 public:
 	CSDKUtil_WIN(){
-		// 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
-        //CUserDataManager::Instance()->GoogleLoginResult();
+        CUserDataManager::Instance()->GoogleLoginResult();
 	};
 	~CSDKUtil_WIN(){};
 

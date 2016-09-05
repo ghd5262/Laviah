@@ -93,8 +93,6 @@ CUserDataManager::CUserDataManager()
         CCLOG("WARNNING : There is no key of game data");
         CCASSERT(false, "No Key");
     }
-
-	dataLoad();
 }
 
 CUserDataManager::~CUserDataManager()
@@ -112,6 +110,12 @@ CUserDataManager* CUserDataManager::Instance()
     return &instance;
 }
 
+void CUserDataManager::GoogleLoginResult()
+{
+    CCLOG("GoogleLoginResult : Called");
+    dataLoad();
+}
+
 void CUserDataManager::dataLoad()
 {
 	bool isFirstTimeToLoad = true;
@@ -119,12 +123,12 @@ void CUserDataManager::dataLoad()
     std::string crypto_key = MakeCryptoString("USER_DATA_FIRSTLOAD", CRYPTO_KEY);
 	isFirstTimeToLoad = UserDefault::getInstance()->getBoolForKey(crypto_key.c_str(), true);
 
-	if (isFirstTimeToLoad)
+	if (isFirstTimeToLoad && CGoogleCloudManager::Instance()->getIsConnected())
 	{
 		// 첫 로드일 경우 구글 클라우드 로드를 기다린다.
 		dataLoadFromGoogleCloud();
 		dataLoadFromXML();
-		convertJsonToUserData(m_JsonUserDataFromXML);
+//		convertJsonToUserData(m_JsonUserDataFromXML);
 	}
 	else
 	{
@@ -174,6 +178,11 @@ void CUserDataManager::convertJsonToUserData(std::string valueJson)
 {
 	if (valueJson == "")
 	{
+        // 첫 실행시 0번째 아이템은 가지고 있는 상태
+        for(auto list : m_UserData->_userDataListMap)
+        {
+            list.second->emplace_back(0);
+        }
 		CCLOG("This is the first time to load. use default value");
 		return;
 	}
@@ -252,6 +261,7 @@ bool CUserDataManager::isGoogleRevisionHigher()
 		xmlRevision = dataArray[key.c_str()].asUInt();
 	}
 
+    CCLOG("Compare revision - Google : %d vs XML : %d", googleRevision, xmlRevision);
 	if (googleRevision > xmlRevision)
 	{
 		return true;
@@ -386,6 +396,12 @@ void CUserDataManager::setUserData_Number(std::string key, unsigned value)
 
 void CUserDataManager::setUserData_ItemGet(std::string key, unsigned itemIdx)
 {
+    if(getUserData_IsItemHave(key, itemIdx))
+    {
+        CCLOG("Item get : Already have %s", key.c_str());
+        return;
+    }
+    
     if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
         auto list = m_UserData->_userDataListMap.find(key)->second;
 

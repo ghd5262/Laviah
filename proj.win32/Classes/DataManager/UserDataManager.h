@@ -17,8 +17,7 @@ class CUserDataManager
 public:
     static CUserDataManager* Instance();
     
-	// 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
-    //void GoogleLoginResult();
+    void GoogleLoginResult();
 
     //getter & setter
     unsigned getUserData_Number(std::string key);
