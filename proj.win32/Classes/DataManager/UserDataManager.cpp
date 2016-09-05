@@ -128,7 +128,7 @@ void CUserDataManager::dataLoad()
 		// 첫 로드일 경우 구글 클라우드 로드를 기다린다.
 		dataLoadFromGoogleCloud();
 		dataLoadFromXML();
-//		convertJsonToUserData(m_JsonUserDataFromXML);
+		//convertJsonToUserData(m_JsonUserDataFromXML);
 	}
 	else
 	{
@@ -208,16 +208,29 @@ void CUserDataManager::convertJsonToUserData(std::string valueJson)
 		if (keyKind == "userDefaultDatas_Number")
 		{
 			unsigned value = dataArray[key.c_str()].asUInt();
-			m_UserData->_userDataUnsignedMap.emplace(std::pair<std::string, unsigned>(key, value));
+			if (m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end())
+				m_UserData->_userDataUnsignedMap.find(key)->second = value;
 		}
 		else if (keyKind == "userDefaultDatas_List")
 		{
-			std::vector<unsigned>* emptyList = new std::vector<unsigned>();
-			m_UserData->_userDataListMap.emplace(std::pair<std::string, std::vector<unsigned>*>(key, emptyList));
 			const Json::Value arrayValue = dataArray[key.c_str()];
 			for (auto value : arrayValue)
 			{
-				m_UserData->_userDataListMap[key]->emplace_back(value.asUInt());
+				unsigned itemIdx = value.asUInt();
+
+				if (getUserData_IsItemHave(key, itemIdx))
+				{
+					CCLOG("Item get : Already have %s", key.c_str());
+					continue;
+				}
+
+				if (m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
+					auto list = m_UserData->_userDataListMap.find(key)->second;
+
+					list->push_back(itemIdx);
+
+					std::sort(list->begin(), list->end(), compare);
+				}
 			}
 		}
 	}
