@@ -66,7 +66,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(EngineRoot)external\win32-specific\zlib\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
@@ -148,6 +148,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Classes\AssetDownload\AssetPanel.cpp" />
+    <ClCompile Include="Classes\GameObject\Alien.cpp" />
     <ClCompile Include="Classes\AI\States\AlienStates.cpp" />
     <ClCompile Include="Classes\AI\States\BulletStates.cpp" />
     <ClCompile Include="Classes\AI\States\PlayerStates.cpp" />
@@ -177,7 +179,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\GameObject\ItemBarrier.cpp" />
     <ClCompile Include="Classes\GameObject\ItemManager.cpp" />
     <ClCompile Include="Classes\GameObject\MagnetEffect.cpp" />
-    <ClCompile Include="Classes\GameObject\MenuSceneObjectManager.cpp" />
     <ClCompile Include="Classes\GameObject\Mover.cpp" />
     <ClCompile Include="Classes\GameObject\ObjectManager.cpp" />
     <ClCompile Include="Classes\GameObject\Planet.cpp" />
@@ -185,7 +186,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\GameObject\Shooter\PatternShooter.cpp" />
     <ClCompile Include="Classes\GameObject\Shooter\RandomShooter.cpp" />
     <ClCompile Include="Classes\GameObject\Shooter\Shooter.cpp" />
-    <ClCompile Include="Classes\GameObject\Alien.cpp" />
     <ClCompile Include="Classes\GoogleCloud\GoogleCloudManager.cpp" />
     <ClCompile Include="Classes\json\json_reader.cpp" />
     <ClCompile Include="Classes\json\json_value.cpp" />
@@ -216,6 +216,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\Particle\Particles.cpp" />
     <ClCompile Include="Classes\Scene\EmptyScene.cpp" />
     <ClCompile Include="Classes\Scene\GameScene.cpp" />
+    <ClCompile Include="Classes\Scene\LoadingScene.cpp" />
     <ClCompile Include="Classes\Scene\MenuScene.cpp" />
     <ClCompile Include="Classes\Scene\SceneTransition.cpp" />
     <ClCompile Include="Classes\SDKUtil\SDKUtil.cpp" />
@@ -223,14 +224,17 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\Shaders\ShaderEffect.cpp" />
     <ClCompile Include="Classes\Task\PoolingManager.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\GachaPopup.cpp" />
-    <ClCompile Include="Classes\GameObject\SpaceShip.cpp" />
     <ClCompile Include="Classes\AI\States\SpaceShipStates.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\GoogleCloudTestPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\GoogleCloudTestPopupDP.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Classes\SDKUtil\SDKUtil_IOS.cpp" />
+    <ClCompile Include="Classes\GameObject\SpaceShip.cpp" />
+    <ClCompile Include="Classes\GameObject\MenuSceneObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Classes\AssetDownload\AssetPanel.h" />
+    <ClInclude Include="Classes\GameObject\Alien.h" />
     <ClInclude Include="Classes\AI\StateMachine.h" />
     <ClInclude Include="Classes\AI\States\AlienStates.h" />
     <ClInclude Include="Classes\AI\States\BulletStates.h" />
@@ -262,11 +266,9 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\GameObject\Bullet\StickBullet.h" />
     <ClInclude Include="Classes\GameObject\Bullet\TargetMark.h" />
     <ClInclude Include="Classes\GameObject\GameObject.h" />
-    <ClInclude Include="Classes\GameObject\Alien.h" />
     <ClInclude Include="Classes\GameObject\ItemBarrier.h" />
     <ClInclude Include="Classes\GameObject\ItemManager.h" />
     <ClInclude Include="Classes\GameObject\MagnetEffect.h" />
-    <ClInclude Include="Classes\GameObject\MenuSceneObjectManager.h" />
     <ClInclude Include="Classes\GameObject\Mover.h" />
     <ClInclude Include="Classes\GameObject\ObjectManager.h" />
     <ClInclude Include="Classes\GameObject\Planet.h" />
@@ -312,6 +314,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\Particle\Particles.h" />
     <ClInclude Include="Classes\Scene\EmptyScene.h" />
     <ClInclude Include="Classes\Scene\GameScene.h" />
+    <ClInclude Include="Classes\Scene\LoadingScene.h" />
     <ClInclude Include="Classes\Scene\MenuScene.h" />
     <ClInclude Include="Classes\Scene\SceneTransition.h" />
     <ClInclude Include="Classes\SDKUtil\SDKUtil_AOS.h" />
@@ -321,11 +324,12 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\Shaders\ShaderEffect.h" />
     <ClInclude Include="Classes\Task\PoolingManager.h" />
     <ClInclude Include="Classes\MyUI\Popup\GachaPopup.h" />
-    <ClInclude Include="Classes\GameObject\SpaceShip.h" />
     <ClInclude Include="Classes\AI\States\SpaceShipStates.h" />
     <ClInclude Include="Classes\MyUI\Popup\GoogleCloudTestPopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\GoogleCloudTestPopupDP.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Classes\GameObject\SpaceShip.h" />
+    <ClInclude Include="Classes\GameObject\MenuSceneObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cocos2d\cocos\2d\libcocos2d.vcxproj">
