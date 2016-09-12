@@ -1,0 +1,9 @@
+{
+	"package":"http://www.nowtrade.co.kr/Resources/update/package.json",
+	"version":16091200,
+	"files":{
+		"16091200":{
+			"url":"http://nowtrade.co.kr/Resources/update/ver_001/package.zip"
+		}
+	}
+}
