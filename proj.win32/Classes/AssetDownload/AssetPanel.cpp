@@ -5,8 +5,6 @@
 #define	BUFFER_SIZE		8192
 #define	MAX_FILENAME	512
 
-#define	VERSION_FILE_URL	"http://somewhere.to/resversion.json"
-
 static string basename(const string &path) {
     size_t found = path.find_last_of("/\\");
     
@@ -68,6 +66,16 @@ static bool decompress(const string &zip) {
 			unzClose(zipfile);
 			return false;
 		}
+        
+        // 패키지 파일 압축을 풀기 진행 상황을 알린다.
+        Director::getInstance()->getScheduler()->performFunctionInCocosThread([=]{
+            RefValueMap values;
+            values.putInt("total", global_info.number_entry);
+            values.putInt("now", i + 1);
+            
+            __NotificationCenter::getInstance()->postNotification("AssetPanel::onProgressDecompressPackageFile", (Ref *)&values);
+        });
+        
 		const std::string fullPath = rootPath + fileName;
 
 		// Check if this entry is a directory or a file.
@@ -146,12 +154,15 @@ static bool decompress(const string &zip) {
 	return true;
 }
 
-AssetPanel::AssetPanel() {
-	m_serverVersionFileData = "";
-	m_clientVersion = 0;
-	m_downloadIndex = 0;
-	m_downloadCount = 0;
-	m_updatePackages.clear();
+AssetPanel::AssetPanel()
+: m_PackageURL("")
+, m_ServerVersionFileData("")
+, m_ClientVersion(0)
+, m_DownloadIndex(0)
+, m_DownloadCount(0)
+{
+    m_PackageURL = "";
+		m_UpdatePackages.clear();
 }
 
 AssetPanel::~AssetPanel() {
@@ -160,21 +171,21 @@ AssetPanel::~AssetPanel() {
 bool AssetPanel::init() {
 	if (!Node::init())
         return false;
-
-	auto statusLabel = Label::createWithTTF("Status...", "fonts/Marker Felt.ttf", 20);
-	statusLabel->setName("statusLabel");
-	statusLabel->setColor(Color3B::RED);
-	statusLabel->setPosition(0, 15);
-	addChild(statusLabel);
-
-	auto prograssLabel = Label::createWithTTF("Progress...", "fonts/Marker Felt.ttf", 20);
-	prograssLabel->setName("prograssLabel");
-	prograssLabel->setColor(Color3B::RED);
-	prograssLabel->setPosition(0, -15);
-	addChild(prograssLabel);
-
-	NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(AssetPanel::onProgressDownloadPackageFile), "AssetPanel::onProgressDownloadPackageFile", NULL);
-	NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(AssetPanel::onProgressDecompressPackageFile), "AssetPanel::onProgressDecompressPackageFile", NULL);
+    
+    auto statusLabel = Label::createWithTTF("Status...", "fonts/Marker Felt.ttf", 20);
+    statusLabel->setName("statusLabel");
+    statusLabel->setColor(Color3B::RED);
+    statusLabel->setPosition(0, 15);
+    addChild(statusLabel);
+    
+    auto prograssLabel = Label::createWithTTF("Progress...", "fonts/Marker Felt.ttf", 20);
+    prograssLabel->setName("prograssLabel");
+    prograssLabel->setColor(Color3B::RED);
+    prograssLabel->setPosition(0, -15);
+    addChild(prograssLabel);
+    
+	__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(AssetPanel::onProgressDownloadPackageFile), "AssetPanel::onProgressDownloadPackageFile", NULL);
+	__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(AssetPanel::onProgressDecompressPackageFile), "AssetPanel::onProgressDecompressPackageFile", NULL);
 
 	return true;
 }
@@ -184,26 +195,39 @@ void AssetPanel::onEnter() {
 
 	// 번들 디렉토리에서 클라이언트 리소스 버전 파일을 읽어들인다. 만약 번들 디렉토리에
 	// 파일이 없으면 캐쉬 디렉토리에서 읽어들인다.
-	string buf = FileUtils::getInstance()->getStringFromFile("resversion.json");
-
-	// 클라이언트 리소스 버전 파일을 읽어들이는데 실패했다면 로고 화면으로 전환한다.
-	if (buf.length() == 0) {
-		NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
-		removeFromParentAndCleanup(true);
-		return;
-	}
+    
+    auto versionFilePath = FileUtils::getInstance()->getWritablePath() + "update/package.json";
+    
+    string versionData = "";
+    string cache = FileUtils::getInstance()->getStringFromFile(versionFilePath);
+    string buf = FileUtils::getInstance()->getStringFromFile("update/package.json");
+    if(cache.length() != 0)
+    {
+        versionData = cache;
+    }
+    else if(buf.length() != 0)
+    {
+        versionData = buf;
+    }
+    else{
+        // 클라이언트 리소스 버전 파일을 읽어들이는데 실패했다면 로고 화면으로 전환한다.
+        __NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
+        removeFromParentAndCleanup(true);
+        return;
+    }
 
 	// 클라이언트 리소스 버전 파일을 읽어들여 현재 적용된 업데이트의 버전을 알아낸다.
 	rapidjson::Document json;
-	json.Parse<0>(buf.c_str());
+	json.Parse<0>(versionData.c_str());
 
 	if (json.HasParseError()) {
-		NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
+		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
 		removeFromParentAndCleanup(true);
 		return;
 	}
 
-	m_clientVersion = json["version"].GetInt();
+    m_PackageURL = json["package"].GetString();
+    m_ClientVersion = json["version"].GetInt();
 
 	// 업데이트 서버에서 리소스 버전 파일 다운로드를 요청한다.
 	downloadVersionFile();
@@ -213,20 +237,24 @@ void AssetPanel::onExit() {
 	Node::onExit();
 
 	stopAllActions();
-	NotificationCenter::getInstance()->removeAllObservers(this);
+	__NotificationCenter::getInstance()->removeAllObservers(this);
 }
 
 // 업데이트 서버에서 리소스 버전 파일 다운로드를 요청한다.
 void AssetPanel::downloadVersionFile() {
 	CCLOG("AssetPanel::downloadVersionFile()");
 
-	auto request = new HttpRequest();
-	request->setUrl(VERSION_FILE_URL);
-	request->setRequestType(HttpRequest::Type::GET);
-	request->setResponseCallback((ccHttpRequestCallback)std::bind(&AssetPanel::onDownloadVersionFile, this, std::placeholders::_1, std::placeholders::_2));
-
-	HttpClient::getInstance()->send(request);
-	request->release();
+    auto versionFilePath = FileUtils::getInstance()->getWritablePath() + "update/";
+    if (FileUtils::getInstance()->createDirectory(versionFilePath))
+    {
+        auto request = new HttpRequest();
+        request->setUrl(m_PackageURL);
+        request->setRequestType(HttpRequest::Type::GET);
+        request->setResponseCallback((ccHttpRequestCallback)std::bind(&AssetPanel::onDownloadVersionFile, this, std::placeholders::_1, std::placeholders::_2));
+        
+        HttpClient::getInstance()->send(request);
+        request->release();
+    }
 }
 
 // 요청한 리소스 버전 파일 다운로드가 완료되면 호출된다.
@@ -235,23 +263,23 @@ void AssetPanel::onDownloadVersionFile(HttpClient *client, HttpResponse *respons
 
 	// 리소스 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
 	if (response == NULL) {
-		NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
+		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
 		removeFromParentAndCleanup(true);
 		return;
 	}
 
 	auto data = response->getResponseData();
 
-	m_serverVersionFileData = string(data->begin(), data->end());
+	m_ServerVersionFileData = string(data->begin(), data->end());
 
-	if (m_serverVersionFileData.length() == 0)
+	if (m_ServerVersionFileData.length() == 0)
 		return;
 
 	rapidjson::Document json;
-	json.Parse<0>(m_serverVersionFileData.c_str());
+	json.Parse<0>(m_ServerVersionFileData.c_str());
 
 	if (json.HasParseError()) {
-		NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
+		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
 		removeFromParentAndCleanup(true);
 		return;
 	}
@@ -259,8 +287,8 @@ void AssetPanel::onDownloadVersionFile(HttpClient *client, HttpResponse *respons
 	int serverVersion = json["version"].GetInt();
 
 	// 클라이언트 리소스가 최신 버전이면 업데이트를 완료한다.
-	if (m_clientVersion >= serverVersion) {
-		NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateComplete", NULL);
+	if (m_ClientVersion >= serverVersion) {
+		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateComplete", NULL);
 		removeFromParentAndCleanup(true);
 		return;
 	}
@@ -279,14 +307,14 @@ void AssetPanel::onDownloadVersionFile(HttpClient *client, HttpResponse *respons
 		int packageVersion = atoi(key.c_str());
 
 		// 이미 적용된 업데이트 버전이라면 생략한다.
-		if (packageVersion <= m_clientVersion)
+		if (packageVersion <= m_ClientVersion)
 			continue;
 
-		m_updatePackages.push_back(url);
+		m_UpdatePackages.push_back(url);
 	}
 
-	m_downloadCount = m_updatePackages.size();
-
+	m_DownloadCount = m_UpdatePackages.size();
+    
 	// 업데이트 패키지 파일 다운로드를 시작한다.
 	downloadNextPackageFile();
 }
@@ -296,21 +324,21 @@ void AssetPanel::downloadNextPackageFile() {
 	log("AssetPanel::downloadNextPackageFile()");
 
 	// 모든 패키지 파일 다운로드가 완료되었을 경우
-	if (m_updatePackages.size() == 0) {
+	if (m_UpdatePackages.size() == 0) {
 		// 다운로드한 버전 파일을 저장한다.
-		auto versionFilePath = FileUtils::getInstance()->getWritablePath() + "asset/resversion.json";
-		saveVersionFile(versionFilePath, m_serverVersionFileData);
+		auto versionFilePath = FileUtils::getInstance()->getWritablePath() + "update/package.json";
+		saveVersionFile(versionFilePath, m_ServerVersionFileData);
 
-		NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateComplete", NULL);
+		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateComplete", NULL);
 		removeFromParentAndCleanup(true);
 		return;
 	}
 
-	++m_downloadIndex;
+	++m_DownloadIndex;
 
 	// 패키지 파일의 다운로드를 요청한다.
 	auto request = new HttpRequest();
-	request->setUrl((*m_updatePackages.begin()).c_str());
+	request->setUrl((*m_UpdatePackages.begin()).c_str());
 	request->setRequestType(HttpRequest::Type::GET);
 	request->setResponseCallback((ccHttpRequestCallback)std::bind(&AssetPanel::onDownloadPackageFile, this, std::placeholders::_1, std::placeholders::_2));
 
@@ -318,7 +346,7 @@ void AssetPanel::downloadNextPackageFile() {
 	request->release();
 
 	// 다운로드 요청된 패키지 파일을 리스트에서 삭제하고
-	m_updatePackages.erase(m_updatePackages.begin());
+	m_UpdatePackages.erase(m_UpdatePackages.begin());
 
 	// 요청한 패키지 파일의 다운로드 진행 상태를 0.5초에 한번씩 Polling하여 모니터링한다.
 	auto action = RepeatForever::create(
@@ -326,20 +354,20 @@ void AssetPanel::downloadNextPackageFile() {
 			DelayTime::create(0.5f),
 			CallFunc::create(
 			[&]() {
-				//int total = HttpClient::getInstance()->getTotalToDownload();
-				//int now = HttpClient::getInstance()->getNowDownloaded();
+				int total = m_DownloadCount;
+                int now = m_DownloadIndex;
 
-				//RefValueMap values;
-				//values.putInt("total", total);
-				//values.putInt("now", now);
+				RefValueMap values;
+				values.putInt("total", total);
+				values.putInt("now", now);
 
-				//NotificationCenter::getInstance()->postNotification("AssetPanel::onProgressDownloadPackageFile", (Ref *)&values);
+				__NotificationCenter::getInstance()->postNotification("AssetPanel::onProgressDownloadPackageFile", (Ref *)&values);
 
-				//// 다운로드가 완료되었다면
-				//if (total <= now) {
-				//	// 모니터링을 그만둔다.
-				//	stopActionByTag(100);
-				//}
+				// 다운로드가 완료되었다면
+				if (total <= now) {
+					// 모니터링을 그만둔다.
+					stopActionByTag(100);
+				}
 			})));
 	action->setTag(100);
 	runAction(action);
@@ -354,7 +382,7 @@ void AssetPanel::onProgressDownloadPackageFile(Ref *object) {
 	auto statusLabel = (Label *)getChildByName("statusLabel");
 	auto prograssLabel = (Label *)getChildByName("prograssLabel");
 
-	statusLabel->setString(__String::createWithFormat("Downloading... (%d/%d)", m_downloadIndex, m_downloadCount)->getCString());
+	statusLabel->setString(__String::createWithFormat("Downloading... (%d/%d)", m_DownloadIndex, m_DownloadCount)->getCString());
 	prograssLabel->setString(__String::createWithFormat("%d/%d", now, total)->getCString());
 }
 
@@ -364,13 +392,13 @@ void AssetPanel::onDownloadPackageFile(HttpClient *client, HttpResponse *respons
 
 	// 애셋 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
 	if (response == NULL) {
-		NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
+		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
 		removeFromParentAndCleanup(true);
 		return;
 	}
 
 	// 다운로드한 업데이트 패키지 파일을 저장한다.
-	string packageFilePath = FileUtils::getInstance()->getWritablePath() + "asset/package.zip";
+	string packageFilePath = FileUtils::getInstance()->getWritablePath() + "update/package.zip";
 	auto buf = response->getResponseData();
 
 	savePackageFile(packageFilePath, buf);
@@ -389,11 +417,11 @@ void AssetPanel::decompressPackageFile() {
 	log("AssetPanel::decompressPackageFile()");
 
 	std::thread thread = std::thread([&]() {
-		string packageFilePath = FileUtils::getInstance()->getWritablePath() + "asset/package.zip";
+		string packageFilePath = FileUtils::getInstance()->getWritablePath() + "update/package.zip";
 
 		// 패키지 파일의 압축을 푸는데 실패하면 로고 화면으로 전환한다.
 		if (!decompress(packageFilePath)) {
-			NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
+			__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
 			removeFromParentAndCleanup(true);
 			return;
 		}

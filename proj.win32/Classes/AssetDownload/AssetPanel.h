@@ -59,9 +59,10 @@ private:
 	bool savePackageFile(const string &path, const vector<char> *buf);
 
 private:
-	string m_serverVersionFileData;
-	int m_clientVersion;
-	int m_downloadIndex;
-	int m_downloadCount;
-	vector<string> m_updatePackages;
+	string m_ServerVersionFileData;
+    string m_PackageURL;
+	int m_ClientVersion;
+	int m_DownloadIndex;
+	int m_DownloadCount;
+	vector<string> m_UpdatePackages;
 };

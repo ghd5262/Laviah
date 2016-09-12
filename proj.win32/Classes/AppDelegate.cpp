@@ -49,7 +49,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
     
     // create a scene. it's an autorelease object
-    auto scene = CMenuScene::createScene();
+    auto scene = CLoadingScene::createScene();
     
     // run
     director->runWithScene(scene);
