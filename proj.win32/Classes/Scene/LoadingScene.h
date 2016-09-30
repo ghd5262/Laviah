@@ -5,6 +5,7 @@
 //#include "../extensions/assets-manager/CCEventListenerAssetsManagerEx.h"
 
 class AssetPanel;
+class CBackGround;
 class CLoadingScene : public cocos2d::Layer
 {
 public:
@@ -32,4 +33,5 @@ private:
     AssetPanel* m_Downlaoder;
     cocos2d::extension::AssetsManagerEx* m_AssetsManager;
     cocos2d::extension::EventListenerAssetsManagerEx* m_AssetsManagerListener;
+    CBackGround* m_BackGround;
 };

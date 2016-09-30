@@ -95,7 +95,7 @@ bool CNormalMissile::initVariable()
 			m_pParticleFlame->setGravity(Vec2(90, 0));
 			m_pParticleFlame->setPosition(Vec2(m_pTexture->getContentSize().width * 1.1f, m_pTexture->getContentSize().height * 0.5f));
 			m_pParticleFlame->setStartSpin(-90);
-			m_pParticleFlame->setStartSpin(270);
+			m_pParticleFlame->setEndSpin(270);
 			m_pParticleFlame->setLife(0.1f);
 			m_pParticleFlame->setLifeVar(0.15f);
 

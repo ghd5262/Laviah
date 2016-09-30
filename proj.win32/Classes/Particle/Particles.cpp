@@ -432,3 +432,115 @@ bool CParticle_Line::initWithTotalParticles(int numberOfParticles)
 	}
 	return false;
 }
+
+
+#pragma mark - Particle_BackGround
+CParticle_BackGround* CParticle_BackGround::create(std::string textureName)
+{
+    CParticle_BackGround* ret = new (std::nothrow) CParticle_BackGround(textureName);
+    if (ret && ret->init())
+    {
+        ret->autorelease();
+    }
+    else
+    {
+        CC_SAFE_DELETE(ret);
+    }
+    return ret;
+}
+
+CParticle_BackGround* CParticle_BackGround::createWithTotalParticles(int numberOfParticles, std::string textureName)
+{
+    CParticle_BackGround* ret = new (std::nothrow) CParticle_BackGround(textureName);
+    if (ret && ret->initWithTotalParticles(numberOfParticles))
+    {
+        ret->autorelease();
+    }
+    else
+    {
+        CC_SAFE_DELETE(ret);
+    }
+    return ret;
+}
+
+bool CParticle_BackGround::initWithTotalParticles(int numberOfParticles)
+{
+    if (ParticleSystemQuad::initWithTotalParticles(numberOfParticles))
+    {
+        this->setAutoRemoveOnFinish(true);
+        
+        // duration
+        _duration = DURATION_INFINITY;
+        
+        // Gravity Mode
+        this->_emitterMode = Mode::GRAVITY;
+        
+        // Gravity Mode: gravity
+        this->modeA.gravity = Vec2(0, 0);
+        
+        // Gravity Mode:  radial
+        this->modeA.radialAccel = 0;
+        this->modeA.radialAccelVar = 0;
+        
+        //  Gravity Mode: speed of particles
+        this->modeA.speed = 3;
+        this->modeA.speedVar = 3;
+        
+        // emitter position
+        Size winSize = Director::getInstance()->getWinSize();
+        this->setPosVar(Vec2(winSize.width, winSize.height * 0.25f));
+        this->setPositionType(ParticleSystem::PositionType::GROUPED);
+        
+        // angle
+        this->_angle = 0;
+        this->_angleVar = 80;
+        // life of particles
+        this->_life = 2.0f;
+        this->_lifeVar = 0.5f;
+        
+        this->_startSpin = 0.f;
+        this->_startSpinVar = 360.f;
+        
+        this->_endSpin = 360.f;
+        this->_endSpinVar = 360.f;
+        
+        this->modeA.speed = 10;
+        this->modeA.speedVar = 3;
+        
+        // emits per frame
+        this->_emissionRate = _totalParticles / _life;
+        
+        // color of particles
+        _startColor.r = 1.f;
+        _startColor.g = 1.f;
+        _startColor.b = 1.f;
+        _startColor.a = 1.0f;
+        _startColorVar.a = 0.4f;
+        
+        _endColor.r = 1.0f;
+        _endColor.g = 1.0f;
+        _endColor.b = 1.0f;
+        _endColor.a = 0.0f;
+        
+        // size, in pixels
+        _startSize = 10.f;
+        _startSizeVar = 5.f;
+        _endSize = 0.f;
+        
+        Texture2D* texture = nullptr;
+        texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_strTextureName);
+        
+        if (texture != nullptr)
+        {
+            setTexture(texture);
+        }
+        else
+        {
+            setTexture(Director::getInstance()->getTextureCache()->addImage(m_strTextureName));
+        }
+        // additive
+        this->setBlendAdditive(false);
+        return true;
+    }
+    return false;
+}

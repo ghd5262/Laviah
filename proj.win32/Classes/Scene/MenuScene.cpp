@@ -20,6 +20,7 @@
 #include "../SDKUtil/SDKUtil.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
+#include "../DataManager/GradientDataManager.h"
 
 USING_NS_CC;
 
@@ -84,6 +85,7 @@ bool CMenuScene::initVariable()
         CUserDataManager::Instance();
 		CCharacterDataManager::Instance();
         CSDKUtil::Instance();
+        CGradientDataManager::Instance();
 
 		//int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
 		//sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);

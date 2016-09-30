@@ -3,6 +3,8 @@
 #include "EmptyScene.h"
 #include "../GameObject/Player.h"
 #include "../MyUI/MyButton.h"
+#include "../GameObject/BackGround.h"
+
 USING_NS_CC;
 USING_NS_CC_EXT;
 
@@ -60,20 +62,20 @@ bool CLoadingScene::initVariable()
         clearData();
         m_LoadingScene = this;
         
-        Size visibleSize = Director::getInstance()->getVisibleSize();
-        Vec2 origin = Director::getInstance()->getVisibleOrigin();
-        
-        auto loadingImg = Sprite::create("player.png");
-        loadingImg->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.x + visibleSize.height * 0.5f));
-        loadingImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        addChild(loadingImg);
-        loadingImg->runAction(RepeatForever::create(RotateBy::create(1.f, 360)));
-        
-        std::string manifest = sceneManifest;
-        std::string storage = FileUtils::getInstance()->getWritablePath() + storagePath;
-        CCLOG("Storage path for this test : %s", storage.c_str());
-        m_AssetsManager = AssetsManagerEx::create(manifest, storage);
-        m_AssetsManager->retain();
+//        Size visibleSize = Director::getInstance()->getVisibleSize();
+//        Vec2 origin = Director::getInstance()->getVisibleOrigin();
+//        
+//        auto loadingImg = Sprite::create("player.png");
+//        loadingImg->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.x + visibleSize.height * 0.5f));
+//        loadingImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//        addChild(loadingImg);
+//        loadingImg->runAction(RepeatForever::create(RotateBy::create(1.f, 360)));
+//        
+//        std::string manifest = sceneManifest;
+//        std::string storage = FileUtils::getInstance()->getWritablePath() + storagePath;
+//        CCLOG("Storage path for this test : %s", storage.c_str());
+//        m_AssetsManager = AssetsManagerEx::create(manifest, storage);
+//        m_AssetsManager->retain();
         //        m_Downlaoder = AssetPanel::create();
         //        addChild(m_Downlaoder);
         
@@ -86,8 +88,10 @@ bool CLoadingScene::initVariable()
         //            this->addChild(m_LoadingImg);
         //        }
         
+        m_BackGround = CBackGround::create();
+        addChild(m_BackGround);
         
-        InitLoadingSceneUI();
+        //InitLoadingSceneUI();
     }
     catch (...){
         CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
@@ -225,5 +229,6 @@ void CLoadingScene::createMenuScene()
 
 void CLoadingScene::update(float delta)
 {
+    m_BackGround->Execute(delta);
     //    m_LoadingImg->Rotation(1, delta);
 }
