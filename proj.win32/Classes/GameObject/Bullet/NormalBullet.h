@@ -28,4 +28,8 @@ private:
 		float angle,
 		float speed);
 	virtual ~CNormalBullet(){};
+
+private:
+	//충돌 파티클
+	ParticleSystemQuad* m_pParticleCrash;
 };

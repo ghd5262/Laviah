@@ -60,7 +60,7 @@ private:
 
 private:
 	string m_ServerVersionFileData;
-    string m_PackageURL;
+	string m_PackageURL;
 	int m_ClientVersion;
 	int m_DownloadIndex;
 	int m_DownloadCount;

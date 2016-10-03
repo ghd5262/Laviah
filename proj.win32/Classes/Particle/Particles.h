@@ -35,7 +35,7 @@ protected:
 		: m_strTextureName(textureName){}
 	virtual ~CParticle_Explosion(){}
 
-	bool init() override { return initWithTotalParticles(30); }
+	bool init() override { return initWithTotalParticles(50); }
 	virtual bool initWithTotalParticles(int numberOfParticles) override;
 
 private:
@@ -100,7 +100,7 @@ protected:
     : m_strTextureName(textureName){}
     virtual ~CParticle_BackGround(){}
     
-    bool init() override { return initWithTotalParticles(120); }
+    bool init() override { return initWithTotalParticles(60); }
     virtual bool initWithTotalParticles(int numberOfParticles) override;
     
 private:

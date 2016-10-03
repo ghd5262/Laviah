@@ -160,8 +160,8 @@ bool CParticle_Explosion::initWithTotalParticles(int numberOfParticles)
 		this->modeA.radialAccelVar = 0;
 
 		//  Gravity Mode: speed of particles
-		this->modeA.speed = 150;
-		this->modeA.speedVar = 200;
+		this->modeA.speed = 200;
+		this->modeA.speedVar = 100;
 
 		// emitter position
 		Size winSize = Director::getInstance()->getWinSize();
@@ -169,7 +169,7 @@ bool CParticle_Explosion::initWithTotalParticles(int numberOfParticles)
 
 		// angle
 		this->_angle = 0;
-		this->_angleVar = 80;
+		this->_angleVar = 50;
 		// life of particles
 		this->_life = 0.15f;
 		this->_lifeVar = 0.2f;
@@ -182,23 +182,15 @@ bool CParticle_Explosion::initWithTotalParticles(int numberOfParticles)
 		_startColor.g = 1.f;
 		_startColor.b = 1.f;
 		_startColor.a = 1.0f;
-		_startColorVar.r = 0.5f;
-		_startColorVar.g = 0.5f;
-		_startColorVar.b = 0.5f;
-		_startColorVar.a = 0.1f;
-		_endColor.r = 0.0f;
-		_endColor.g = 0.0f;
-		_endColor.b = 0.0f;
-		_endColor.a = 0.1f;
-		_endColorVar.r = 0.0f;
-		_endColorVar.g = 0.0f;
-		_endColorVar.b = 0.0f;
-		_endColorVar.a = 0.2f;
+		_endColor.r = 1.f;
+		_endColor.g = 1.f;
+		_endColor.b = 1.f;
+		_endColor.a = 0.0f;
 
 		// size, in pixels
-		_startSize = 50.f;
+		_startSize = 30.f;
 		_startSizeVar = 4.f;
-		_endSize = 30.f;
+		_endSize = 10.f;
 
 		Texture2D* texture = nullptr;
 		texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_strTextureName);
@@ -492,8 +484,8 @@ bool CParticle_BackGround::initWithTotalParticles(int numberOfParticles)
         this->setPositionType(ParticleSystem::PositionType::GROUPED);
         
         // angle
-        this->_angle = 0;
-        this->_angleVar = 80;
+        this->_angle = 90;
+        this->_angleVar = 360;
         // life of particles
         this->_life = 2.0f;
         this->_lifeVar = 0.5f;

@@ -5,6 +5,8 @@
 #include "../ItemManager.h"
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
+#include "../../Particle/Particles.h"
+#include "../../Scene/GameScene.h"
 
 CPlayCoin::CPlayCoin(
 	sBULLET_PARAM bulletParam,
@@ -17,6 +19,7 @@ CPlayCoin::CPlayCoin(
 	angle,
 	speed)
 	, m_CreatePos(createPosition)
+	, m_pParticleCrash(nullptr)
 {}
 
 CPlayCoin* CPlayCoin::create(
@@ -93,6 +96,18 @@ void CPlayCoin::CollisionWithPlanet()
 	if (true == m_BulletParam._isFly)
 	{
 		ReturnToMemoryBlock();
+
+		m_pParticleCrash = CParticle_Explosion::create("coin_5.png");
+		if (m_pParticleCrash != nullptr){
+			m_pParticleCrash->retain();
+			m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_pParticleCrash->setAngle(-getRotation());
+			m_pParticleCrash->setPosition(getPosition());
+			m_pParticleCrash->setGravity(m_RotationVec);
+			m_pParticleCrash->setSpeed(100);
+			m_pParticleCrash->setSpeedVar(50);
+			CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
+		}
 	}
 }
 

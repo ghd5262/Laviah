@@ -6,10 +6,12 @@
 #include "../Planet.h"
 #include "../Player.h"
 #include "../ItemManager.h"
+#include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
 #include "../../MyUI/MultipleScore.h"
+
 CNormalBullet::CNormalBullet(
 	sBULLET_PARAM bulletParam,
 	float angle,				    //bullet 초기 각도 
@@ -18,6 +20,7 @@ CNormalBullet::CNormalBullet(
 	bulletParam,
 	angle, 
 	speed)
+	, m_pParticleCrash(nullptr)
 {}
 
 CNormalBullet* CNormalBullet::create(
@@ -82,6 +85,18 @@ void CNormalBullet::Execute(float delta)
 void CNormalBullet::CollisionWithPlanet()
 {
 	ReturnToMemoryBlock();
+
+	m_pParticleCrash = CParticle_Explosion::create("whiteSquare.png");
+	if (m_pParticleCrash != nullptr){
+		m_pParticleCrash->retain();
+		m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_pParticleCrash->setAngle(-getRotation());
+		m_pParticleCrash->setPosition(getPosition());
+		m_pParticleCrash->setGravity(m_RotationVec);
+		m_pParticleCrash->setSpeed(100);
+		m_pParticleCrash->setSpeedVar(50);
+		CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
+	}
 }
 
 void CNormalBullet::CollisionWithPlayer()

@@ -97,7 +97,7 @@ CCharacterDataManager::CCharacterDataManager()
 		character._idx = i;
 		character._openLevel = 10;
 		character._cost = 100;
-		character._health = 10;
+		character._health = 1;
 		character._starItemTime = 10.f;
 		character._coinItemTime = 10.f;
 		character._bonusItemTime = 10.f;

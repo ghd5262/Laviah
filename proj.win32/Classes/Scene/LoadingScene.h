@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "../extensions/cocos-ext.h"
+//#include "../extensions/cocos-ext.h"
 //#include "../extensions/assets-manager/CCEventListenerAssetsManagerEx.h"
 
 class AssetPanel;
@@ -31,7 +31,6 @@ private:
 private:
     static CLoadingScene* m_LoadingScene;
     AssetPanel* m_Downlaoder;
-    cocos2d::extension::AssetsManagerEx* m_AssetsManager;
-    cocos2d::extension::EventListenerAssetsManagerEx* m_AssetsManagerListener;
-    CBackGround* m_BackGround;
+    //cocos2d::extension::AssetsManagerEx* m_AssetsManager;
+    //cocos2d::extension::EventListenerAssetsManagerEx* m_AssetsManagerListener;
 };

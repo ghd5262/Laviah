@@ -3,10 +3,10 @@
 #include "EmptyScene.h"
 #include "../GameObject/Player.h"
 #include "../MyUI/MyButton.h"
-#include "../GameObject/BackGround.h"
+#include "../AssetDownload/AssetPanel.h"
 
 USING_NS_CC;
-USING_NS_CC_EXT;
+//USING_NS_CC_EXT;
 
 const char* sceneManifest = "AMTestScene1/project.manifest";
 const char* storagePath = "Download/";
@@ -38,8 +38,8 @@ CLoadingScene::~CLoadingScene()
 void CLoadingScene::clearData()
 {
     m_LoadingScene = nullptr;
-    m_AssetsManager = nullptr;
-    m_AssetsManagerListener = nullptr;
+//    m_AssetsManager = nullptr;
+//    m_AssetsManagerListener = nullptr;
 }
 
 bool CLoadingScene::init()
@@ -51,7 +51,7 @@ bool CLoadingScene::init()
     }
     
     if (!initVariable())
-    return false;
+        return false;
     return true;
 }
 
@@ -62,6 +62,7 @@ bool CLoadingScene::initVariable()
         clearData();
         m_LoadingScene = this;
         
+		//CUserDataManager::Instance();
 //        Size visibleSize = Director::getInstance()->getVisibleSize();
 //        Vec2 origin = Director::getInstance()->getVisibleOrigin();
 //        
@@ -78,7 +79,6 @@ bool CLoadingScene::initVariable()
 //        m_AssetsManager->retain();
         //        m_Downlaoder = AssetPanel::create();
         //        addChild(m_Downlaoder);
-        
         //        sCHARACTER_PARAM tempInfo;
         //        tempInfo._normalTextureName = "player0.png";
         //
@@ -87,9 +87,7 @@ bool CLoadingScene::initVariable()
         //            m_LoadingImg->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.x + visibleSize.height * 0.5f));
         //            this->addChild(m_LoadingImg);
         //        }
-        
-        m_BackGround = CBackGround::create();
-        addChild(m_BackGround);
+
         
         //InitLoadingSceneUI();
     }
@@ -101,7 +99,7 @@ bool CLoadingScene::initVariable()
     return true;
 }
 
-void CLoadingScene::InitLoadingSceneUI()
+/*void CLoadingScene::InitLoadingSceneUI()
 {
     if (!m_AssetsManager->getLocalManifest()->isLoaded())
     {
@@ -119,13 +117,13 @@ void CLoadingScene::InitLoadingSceneUI()
                     AssetsManagerEx::State state = m_AssetsManager->getState();
                     CCLOG("AM state:%d", (int)state);
                 }
-                break;
+                    break;
                 case EventAssetsManagerEx::EventCode::ERROR_NO_LOCAL_MANIFEST:
                 {
                     CCLOG("No local manifest file found, skip assets update.");
                     this->onLoadEnd();
                 }
-                break;
+                    break;
                 case EventAssetsManagerEx::EventCode::UPDATE_PROGRESSION:
                 {
                     std::string assetId = event->getAssetId();
@@ -147,21 +145,21 @@ void CLoadingScene::InitLoadingSceneUI()
                     
                     CCLOG("%s", str.c_str());
                 }
-                break;
+                    break;
                 case EventAssetsManagerEx::EventCode::ERROR_DOWNLOAD_MANIFEST:
                 case EventAssetsManagerEx::EventCode::ERROR_PARSE_MANIFEST:
                 {
                     CCLOG("Fail to download manifest file, update skipped.");
                     this->onLoadEnd();
                 }
-                break;
+                    break;
                 case EventAssetsManagerEx::EventCode::ALREADY_UP_TO_DATE:
                 case EventAssetsManagerEx::EventCode::UPDATE_FINISHED:
                 {
                     CCLOG("Update finished. %s", event->getMessage().c_str());
                     this->onLoadEnd();
                 }
-                break;
+                    break;
                 case EventAssetsManagerEx::EventCode::UPDATE_FAILED:
                 {
                     CCLOG("Update failed. %s", event->getMessage().c_str());
@@ -178,19 +176,19 @@ void CLoadingScene::InitLoadingSceneUI()
                         this->onLoadEnd();
                     }
                 }
-                break;
+                    break;
                 case EventAssetsManagerEx::EventCode::ERROR_UPDATING:
                 {
                     CCLOG("Asset %s : %s", event->getAssetId().c_str(), event->getMessage().c_str());
                 }
-                break;
+                    break;
                 case EventAssetsManagerEx::EventCode::ERROR_DECOMPRESS:
                 {
                     CCLOG("%s", event->getMessage().c_str());
                 }
-                break;
+                    break;
                 default:
-                break;
+                    break;
             }
         });
         Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(m_AssetsManagerListener, 1);
@@ -210,7 +208,7 @@ void CLoadingScene::onLoadEnd()
         loadEndBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         addChild(loadEndBtn);
     }
-}
+}*/
 
 void CLoadingScene::createMenuScene()
 {
@@ -229,6 +227,5 @@ void CLoadingScene::createMenuScene()
 
 void CLoadingScene::update(float delta)
 {
-    m_BackGround->Execute(delta);
     //    m_LoadingImg->Rotation(1, delta);
 }

@@ -33,5 +33,7 @@ private:
 private:
 	Vec2 m_CreatePos;
 	float m_fCoinValue;
+	//충돌 파티클
+	ParticleSystemQuad* m_pParticleCrash;
 };
 

@@ -9,6 +9,7 @@
 #include "../GameObject/ItemManager.h"
 #include "../GameObject/Shooter/ShooterHeaders.h"
 #include "../GameObject/Bullet/Bullet.h"
+#include "../GameObject/BackGround.h"
 #include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/HealthBarUI.h"
@@ -99,9 +100,7 @@ bool CGameScene::initVariable()
 		int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
 		sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
 
-		auto background = Sprite::create("background_2.png");
-		background->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-			origin.y + visibleSize.height * 0.5f));
+		auto background = CBackGround::create();
 		m_GridWorld->addChild(background);
 
 		auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 180, 0.0f, 100.f);
@@ -121,6 +120,7 @@ bool CGameScene::initVariable()
 		player->setOriginPos(player->getPosition());
 		player->setParticlePos(player->getPosition());
 
+		CObjectManager::Instance()->setBackground(background);
 		CObjectManager::Instance()->setPlayer(player);
 		CObjectManager::Instance()->setPlanet(planet);
 		CPoolingManager::Instance()->CreateBulletList(1000, 900);
@@ -162,7 +162,7 @@ bool CGameScene::initVariable()
 		InitGameSceneUI();
 		GameStart();
 
-		CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
+		//CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 	}
 	catch (...){
 		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
@@ -218,20 +218,20 @@ void CGameScene::InitGameSceneUI()
 	m_GridWorld->addChild(rightButton, 102);
 
 	// player의 HealthCalFunc callback 등록 
-	auto healthBar = CHealthBarUI::create(
-		std::bind(&CPlayer::HealthCalculatorInNormal, CObjectManager::Instance()->getPlayer(), std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
+	//auto healthBar = CHealthBarUI::create(
+	//	std::bind(&CPlayer::HealthCalculatorInNormal, CObjectManager::Instance()->getPlayer(), std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
 
-	healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	healthBar->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-		origin.x + visibleSize.height * 0.945f));
-	m_GridWorld->addChild(healthBar, 102);
-	if (!CUIManager::Instance()->AddUIWithName(healthBar, "HealthBar"))
-		CCASSERT(false, "HealthBar CAN NOT INIT");
+	//healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	//healthBar->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+	//	origin.x + visibleSize.height * 0.945f));
+	//m_GridWorld->addChild(healthBar, 102);
+	//if (!CUIManager::Instance()->AddUIWithName(healthBar, "HealthBar"))
+	//	CCASSERT(false, "HealthBar CAN NOT INIT");
 
 	auto bonusTime = CBonusTimeUI::create();
 	bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 	bonusTime->setPosition(Vec2(origin.x + visibleSize.width * 0.06f,
-		origin.x + visibleSize.height * 0.905f));
+		origin.x + visibleSize.height * 0.925f));
 	m_GridWorld->addChild(bonusTime, 102);
 	if (!CUIManager::Instance()->AddUIWithName(bonusTime, "BonusTime"))
 		CCASSERT(false, "BonusTime CAN NOT INIT");
@@ -240,7 +240,7 @@ void CGameScene::InitGameSceneUI()
 	starScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	starScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
 	starScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.96f,
-		origin.x + visibleSize.height * 0.98f));
+		origin.x + visibleSize.height * 0.96f));
 	m_GridWorld->addChild(starScoreUI, 102);
 	if (!CUIManager::Instance()->AddUIWithName(starScoreUI, "StarScoreUI"))
 		CCASSERT(false, "StarScoreUI CAN NOT INIT");
@@ -255,7 +255,7 @@ void CGameScene::InitGameSceneUI()
 	coinScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	coinScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
 	coinScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.1f,
-		origin.x + visibleSize.height * 0.98f));
+		origin.x + visibleSize.height * 0.96f));
 	m_GridWorld->addChild(coinScoreUI, 102);
 	if (!CUIManager::Instance()->AddUIWithName(coinScoreUI, "CoinScoreUI"))
 		CCASSERT(false, "CoinScoreUI CAN NOT INIT");
@@ -264,7 +264,7 @@ void CGameScene::InitGameSceneUI()
     runScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     runScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
     runScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.96f,
-        origin.x + visibleSize.height * 0.905f));
+        origin.x + visibleSize.height * 0.925f));
 	m_GridWorld->addChild(runScoreUI, 102);
     if (!CUIManager::Instance()->AddUIWithName(runScoreUI, "RunScoreUI"))
         CCASSERT(false, "RunScoreUI CAN NOT INIT");

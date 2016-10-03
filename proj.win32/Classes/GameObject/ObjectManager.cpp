@@ -1,6 +1,7 @@
 #include "ObjectManager.h"
 #include "Planet.h"
 #include "Player.h"
+#include "BackGround.h"
 #include "ItemManager.h"
 #include "Bullet/Bullet.h"
 #include "Shooter/Shooter.h"
@@ -115,6 +116,8 @@ void CObjectManager::CreateShooterByTimer()
 
 void CObjectManager::ExecuteAllObject(float delta)
 {
+	m_Background->Execute(delta);
+
 	if (m_IsGamePause)
 		return;
 
@@ -137,8 +140,10 @@ void CObjectManager::ExecuteAllObject(float delta)
 		}
 	}
 
+
 	m_Planet->Execute();
 	m_Player->Execute(delta);
+
 }
 
 void CObjectManager::Execute(float delta)

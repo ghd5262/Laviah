@@ -6,7 +6,9 @@ using namespace cocos2d;
 class CBackGround : public CGameObject {
 public:
     static CBackGround* create();
-    
+
+	void ChangeBackground();
+	void setParticlePause(bool isPause);
     virtual void Execute(float delta = 0.f) override;
 
 protected:

@@ -16,6 +16,7 @@ class CShooter;
 class CBullet;
 class CPlanet;
 class CPlayer;
+class CBackGround;
 
 class CObjectManager
 {
@@ -52,6 +53,7 @@ public:
 	//getter & setter
 	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
 	CC_SYNTHESIZE(CPlayer*, m_Player, Player);
+	CC_SYNTHESIZE(CBackGround*, m_Background, Background);
 	CC_SYNTHESIZE(CStateMachine<CObjectManager>*, m_FSM, FSM);
 	CC_SYNTHESIZE(float, m_fStageTime, StageTime);
 	CC_SYNTHESIZE(float, m_fDelta, Delta);

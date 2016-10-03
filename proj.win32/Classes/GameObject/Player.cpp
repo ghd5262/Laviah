@@ -106,17 +106,19 @@ bool CPlayer::initVariable()
 			m_pTexture->setVisible(false);
 		}
 
-		m_pParticle = CParticle_Flame::create("particle.png");
+		/*m_pParticle = CParticle_Flame::create("whiteSquare.png");
 		if (m_pParticle != nullptr){
 			m_pParticle->retain();
 			m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_pParticle->setAngle(90);
 			m_pParticle->setGravity(Vec2(0, -270));
-			m_pParticle->setStartSize(80.f);
+			m_pParticle->setPosVar(Vec2(10, 10));
+			m_pParticle->setStartSize(40.f);
+			m_pParticle->setStartSizeVar(20.f);
 			m_pParticle->setEndSize(4.f);
 			CGameScene::getGridWorld()->addChild(m_pParticle, 10);
 			m_pParticle->setVisible(false);
-		}
+		}*/
         
 		
 		m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, m_fMagnetLimitTime);
@@ -144,8 +146,8 @@ void CPlayer::Execute(float delta)
     m_MagnetEffect->Execute(delta);
 	if (!m_isRoatating)
 	{
-		m_pParticle->setAngle(90);
-		m_pParticle->setGravity(Vec2(0, -270));
+		//m_pParticle->setAngle(90);
+		//m_pParticle->setGravity(Vec2(0, -270));
 	}
 	m_isRoatating = false;
 }
@@ -166,7 +168,7 @@ void CPlayer::PlayerAlive(){
 
 	this->scheduleOnce([this](float delta){
 		m_isPlayerDead = false;
-		m_pParticle->setVisible(true);
+		//m_pParticle->setVisible(true);
 		m_pTexture->setVisible(true);
 
 		// 1초간 무적 
@@ -184,7 +186,7 @@ void CPlayer::PlayerDead(){
 		CGameScene::getGridWorld()->addChild(m_pParticleDead, 100);
 	}
     m_isPlayerDead = true;
-	m_pParticle->setVisible(false);
+	//m_pParticle->setVisible(false);
 	m_pTexture->setVisible(false);
 }
 
@@ -225,10 +227,10 @@ void CPlayer::Rotation(float dir, float delta)
 	m_isRoatating = true;
 	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed * delta);
 //	m_fAngle = static_cast<int>(m_fAngle) % 360;
-	m_pParticle->setStartSpin(m_fAngle);
-	m_pParticle->setEndSpin(m_fAngle);
-	m_pParticle->setAngle(dir == 1 ? 180 : 0);
-	m_pParticle->setGravity(Vec2(-90 * dir, 0));
+	//m_pParticle->setStartSpin(m_fAngle);
+	//m_pParticle->setEndSpin(m_fAngle);
+	//m_pParticle->setAngle(dir == 1 ? 180 : 0);
+	//m_pParticle->setGravity(Vec2(-90 * dir, 0));
 	this->setRotation(m_fAngle);
 
 	// 플레이어가 생성되는 시점에는 m_pUIRunScore가 없다.
@@ -245,8 +247,8 @@ void CPlayer::GiantMode()
         this->m_pTexture->setSpriteFrame(m_CharacterParam._giantTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBRadius(100.f);
-		m_pParticle->setStartSize(120.f);
-		m_pParticle->setEndSize(40.f);
+		//m_pParticle->setStartSize(120.f);
+		//m_pParticle->setEndSize(40.f);
 	}), nullptr);
 	this->runAction(action);
 }
@@ -261,8 +263,8 @@ void CPlayer::NormalMode()
         this->m_pTexture->setSpriteFrame(m_CharacterParam._normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBRadius(6.f);
-		m_pParticle->setStartSize(90.f);
-        m_pParticle->setEndSize(4.f);
+		//m_pParticle->setStartSize(90.f);
+        //m_pParticle->setEndSize(4.f);
 	}), nullptr);
 	this->runAction(action);
 }
@@ -287,7 +289,7 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 }
 
 void CPlayer::setParticlePos(Vec2 pos){
-    m_pParticle->setPosition(pos);
+    //m_pParticle->setPosition(pos);
     m_MagnetEffect->setPosition(pos);
 }
 
