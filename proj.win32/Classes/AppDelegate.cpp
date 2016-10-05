@@ -30,6 +30,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     FileUtils *fileUtils = FileUtils::getInstance();
     auto searchPaths = fileUtils->getSearchPaths();
     searchPaths.insert(searchPaths.begin() + i++, "imageRes");
+    searchPaths.insert(searchPaths.begin() + i++, StringUtils::format("%supdate/", fileUtils->getWritablePath().c_str()));
     fileUtils->setSearchPaths(searchPaths);
     
     // initialize director
@@ -49,7 +50,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
     
     // create a scene. it's an autorelease object
-    auto scene = CMenuScene::createScene();
+    auto scene = CLoadingScene::createScene();
     
     // run
     director->runWithScene(scene);

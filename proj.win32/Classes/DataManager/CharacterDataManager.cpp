@@ -115,67 +115,26 @@ CCharacterDataManager::CCharacterDataManager()
 		character._aimingMissileTextureName = MakeString("aimingMissile_%d.png", i % 5);
 		character._normalMissilePattern = MakeString("normalMissile%d_Pattern", i % 5);
 		character._aimingMissilePattern = MakeString("aimingMissile%d_Pattern", i % 5);
+        character._deadParticleTextureName = MakeString("deadParticle_%d.png", i % 5);
+        character._missileParticleTextureName = MakeString("missileParticle_%d.png", i % 5);
 		character._name = MakeString("character_%d", i % 5);
 		character._story = MakeString("story_%d", i % 5);
 		character._texturePackName = MakeString("characterTexturePack_%d", i % 5);
 
 		std::string texturepackPNG = MakeString("%s.png", character._texturePackName.c_str());
 		std::string texturepackPLIST = MakeString("%s.plist", character._texturePackName.c_str());
-		std::string downloadedPath = FileUtils::getInstance()->getWritablePath() + "Download/Character/";
-		std::string downloadPath = "http://www.nowtrade.co.kr/Resources/imageRes/";
-		auto util = FileUtils::getInstance();
         
-		// if file already exist, remove it
+		auto util = FileUtils::getInstance();
+        auto spriteFrameCache = SpriteFrameCache::getInstance();
+//
+//		// if file already exist, remove it
 		if (util->isFileExist(texturepackPNG) && util->isFileExist(texturepackPLIST))
 		{
-			CCLOG("User local file %s", texturepackPNG.c_str());
-			CCLOG("User local file %s", texturepackPLIST.c_str());
-			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
-//			m_CharacterList.emplace_back(character);
-
-			/*if (false == util->removeFile(coTask._fileName))
-			{
-				coTask._errCode = DownloadTask::ERROR_FILE_OP_FAILED;
-				coTask._errCodeInternal = 0;
-				coTask._errDescription = "Can't remove old file: ";
-				coTask._errDescription.append(coTask._fileName);
-				break;
-			}*/
+            if(!spriteFrameCache->isSpriteFramesWithFileLoaded(texturepackPLIST)){
+                spriteFrameCache->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
+            }
 		}
-		else if (util->isFileExist(downloadedPath + texturepackPNG) && util->isFileExist(downloadedPath + texturepackPLIST))
-		{
-			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(downloadedPath + texturepackPLIST, downloadedPath + texturepackPNG);
-//			m_CharacterList.emplace_back(character);
-		}
-		else
-		{
-			m_Downloader->createDownloadFileTask(downloadPath + texturepackPNG, downloadedPath + texturepackPNG, texturepackPNG);
-			m_Downloader->createDownloadFileTask(downloadPath + texturepackPLIST, downloadedPath + texturepackPLIST, texturepackPLIST);
-			m_Downloader->onFileTaskSuccess = [this, util, character, downloadedPath, texturepackPNG, texturepackPLIST](const cocos2d::network::DownloadTask& task)
-			{
-				// Load the non-encrypted atlas
-				if (util->isFileExist(downloadedPath + texturepackPNG) && util->isFileExist(downloadedPath + texturepackPLIST))
-				{
-					SpriteFrameCache::getInstance()->addSpriteFramesWithFile(downloadedPath + texturepackPLIST, downloadedPath + texturepackPNG);
-//					m_CharacterList.emplace_back(character);
-				}
-			};
-
-			m_Downloader->onTaskError = [this](const cocos2d::network::DownloadTask& task,
-				int errorCode,
-				int errorCodeInternal,
-				const std::string& errorStr)
-			{
-				std::string warnning = MakeString("Failed to download : %s, identifier(%s) error code(%d), internal error code(%d) desc(%s)"
-					, task.requestURL.c_str()
-					, task.identifier.c_str()
-					, errorCode
-					, errorCodeInternal
-					, errorStr.c_str());
-				CCLOG("WARNNING - %s", warnning.c_str());
-				CSDKUtil::Instance()->Toast(warnning);
-			};
-		}
+        
         m_CharacterList.emplace_back(character);
 	}
 }

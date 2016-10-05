@@ -1,6 +1,7 @@
 ﻿#include "json/document.h"
 #include "unzip/unzip.h"
 #include "AssetPanel.h"
+#include "../json/json.h"
 
 #define	BUFFER_SIZE		8192
 #define	MAX_FILENAME	512
@@ -148,7 +149,7 @@ static bool decompress(const string &zip) {
 				return false;
 			}
 		}
-	}
+    }
 
 	unzClose(zipfile);
 	return true;
@@ -162,7 +163,7 @@ AssetPanel::AssetPanel()
 , m_DownloadCount(0)
 {
     m_PackageURL = "";
-		m_UpdatePackages.clear();
+    m_UpdatePackages.clear();
 }
 
 AssetPanel::~AssetPanel() {
@@ -198,6 +199,8 @@ void AssetPanel::onEnter() {
     
     auto versionFilePath = FileUtils::getInstance()->getWritablePath() + "update/package.json";
     
+    CCLOG("Version file path : %s", versionFilePath.c_str());
+    
     string versionData = "";
     string cache = FileUtils::getInstance()->getStringFromFile(versionFilePath);
     string buf = FileUtils::getInstance()->getStringFromFile("update/package.json");
@@ -211,23 +214,28 @@ void AssetPanel::onEnter() {
     }
     else{
         // 클라이언트 리소스 버전 파일을 읽어들이는데 실패했다면 로고 화면으로 전환한다.
-        __NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
+        __NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateError", NULL);
         removeFromParentAndCleanup(true);
         return;
     }
 
 	// 클라이언트 리소스 버전 파일을 읽어들여 현재 적용된 업데이트의 버전을 알아낸다.
-	rapidjson::Document json;
-	json.Parse<0>(versionData.c_str());
-
-	if (json.HasParseError()) {
-		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
-		removeFromParentAndCleanup(true);
-		return;
-	}
-
-    m_PackageURL = json["package"].GetString();
-    m_ClientVersion = json["version"].GetInt();
+    Json::Value root;
+    Json::Reader reader;
+    
+    size_t pos = versionData.rfind("}");
+    versionData = versionData.substr(0, pos + 1);
+    
+    bool parsingSuccessful = reader.parse(versionData, root);
+    if (!parsingSuccessful)
+    {
+        CCASSERT(false, StringUtils::format("parser failed : \n %s", versionData.c_str()).c_str());
+        return;
+    }
+    CCLOG("Local Download JSON : \n %s\n", versionData.c_str());
+    
+    m_PackageURL = root["package"].asString();
+    m_ClientVersion = root["patchversion"].asInt();
 
 	// 업데이트 서버에서 리소스 버전 파일 다운로드를 요청한다.
 	downloadVersionFile();
@@ -259,11 +267,11 @@ void AssetPanel::downloadVersionFile() {
 
 // 요청한 리소스 버전 파일 다운로드가 완료되면 호출된다.
 void AssetPanel::onDownloadVersionFile(HttpClient *client, HttpResponse *response) {
-	log("AssetPanel::onDownloadVersionFile()");
+	CCLOG("AssetPanel::onDownloadVersionFile()");
 
 	// 리소스 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
 	if (response == NULL) {
-		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
+		__NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateError", NULL);
 		removeFromParentAndCleanup(true);
 		return;
 	}
@@ -275,43 +283,51 @@ void AssetPanel::onDownloadVersionFile(HttpClient *client, HttpResponse *respons
 	if (m_ServerVersionFileData.length() == 0)
 		return;
 
-	rapidjson::Document json;
-	json.Parse<0>(m_ServerVersionFileData.c_str());
-
-	if (json.HasParseError()) {
-		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
-		removeFromParentAndCleanup(true);
-		return;
-	}
-
-	int serverVersion = json["version"].GetInt();
-
-	// 클라이언트 리소스가 최신 버전이면 업데이트를 완료한다.
-	if (m_ClientVersion >= serverVersion) {
-		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateComplete", NULL);
-		removeFromParentAndCleanup(true);
-		return;
-	}
-
-	// 다운로드해야할 업데이트 패키지 파일을 리스트에 저장한다.
-	const auto &files = json["files"];
-
-	for (rapidjson::Value::ConstMemberIterator itr = files.MemberBegin(); itr != files.MemberEnd(); ++itr) {
-		string key = itr->name.GetString();
-
-		if (!itr->value.HasMember("url"))
-			continue;
-
-		string url = itr->value["url"].GetString();
-
-		int packageVersion = atoi(key.c_str());
-
-		// 이미 적용된 업데이트 버전이라면 생략한다.
-		if (packageVersion <= m_ClientVersion)
-			continue;
-
-		m_UpdatePackages.push_back(url);
-	}
+    Json::Value root;
+    Json::Reader reader;
+    
+    std::string downloadListClearData = m_ServerVersionFileData;
+    size_t pos = downloadListClearData.rfind("}");
+    downloadListClearData = downloadListClearData.substr(0, pos + 1);
+    
+    bool parsingSuccessful = reader.parse(downloadListClearData, root);
+    if (!parsingSuccessful)
+    {
+        CCASSERT(false, StringUtils::format("parser failed : \n %s", downloadListClearData.c_str()).c_str());
+        return;
+    }
+    CCLOG("Server Download JSON : \n %s\n", downloadListClearData.c_str());
+    
+    int serverVersion = root["patchversion"].asInt();
+    
+    // 클라이언트 리소스가 최신 버전이면 업데이트를 완료한다.
+    if (m_ClientVersion >= serverVersion) {
+        CCLOG("Do not have to update. Already latest file");
+        __NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateComplete", NULL);
+        removeFromParentAndCleanup(true);
+        return;
+    }
+    
+    const Json::Value fileArray = root["files"];
+    
+    for (unsigned int fileCount = 0; fileCount < fileArray.size(); ++fileCount)
+    {
+        const Json::Value file = fileArray[fileCount];
+        
+        sDOWNLOADFILE downloadInfo;
+        
+        downloadInfo._fileName = file["filename"].asString();
+        downloadInfo._url = file["url"].asString();
+        downloadInfo._localPath = file["localpath"].asString();
+        downloadInfo._version = file["version"].asInt();
+        downloadInfo._isCompressed = file["compress"].asInt();
+        
+        // 이미 적용된 업데이트 버전이라면 생략한다.
+        if (downloadInfo._version <= m_ClientVersion)
+            continue;
+        
+        m_UpdatePackages.push_back(downloadInfo);
+    }
 
 	m_DownloadCount = m_UpdatePackages.size();
     
@@ -321,32 +337,27 @@ void AssetPanel::onDownloadVersionFile(HttpClient *client, HttpResponse *respons
 
 // 업데이트 서버에서 패키지 파일 다운로드를 요청한다.
 void AssetPanel::downloadNextPackageFile() {
-	log("AssetPanel::downloadNextPackageFile()");
+	CCLOG("AssetPanel::downloadNextPackageFile()");
 
 	// 모든 패키지 파일 다운로드가 완료되었을 경우
-	if (m_UpdatePackages.size() == 0) {
+	if (m_UpdatePackages.size() == m_DownloadIndex) {
 		// 다운로드한 버전 파일을 저장한다.
 		auto versionFilePath = FileUtils::getInstance()->getWritablePath() + "update/package.json";
 		saveVersionFile(versionFilePath, m_ServerVersionFileData);
 
-		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateComplete", NULL);
+		__NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateComplete", NULL);
 		removeFromParentAndCleanup(true);
 		return;
-	}
-
-	++m_DownloadIndex;
+    }
 
 	// 패키지 파일의 다운로드를 요청한다.
 	auto request = new HttpRequest();
-	request->setUrl((*m_UpdatePackages.begin()).c_str());
+	request->setUrl(m_UpdatePackages.at(m_DownloadIndex)._url.c_str());
 	request->setRequestType(HttpRequest::Type::GET);
 	request->setResponseCallback((ccHttpRequestCallback)std::bind(&AssetPanel::onDownloadPackageFile, this, std::placeholders::_1, std::placeholders::_2));
 
 	HttpClient::getInstance()->send(request);
 	request->release();
-
-	// 다운로드 요청된 패키지 파일을 리스트에서 삭제하고
-	m_UpdatePackages.erase(m_UpdatePackages.begin());
 
 	// 요청한 패키지 파일의 다운로드 진행 상태를 0.5초에 한번씩 Polling하여 모니터링한다.
 	auto action = RepeatForever::create(
@@ -360,9 +371,12 @@ void AssetPanel::downloadNextPackageFile() {
 				RefValueMap values;
 				values.putInt("total", total);
 				values.putInt("now", now);
-
+                
+                CCLOG("Download %d / %d", now, total);
+                
 				__NotificationCenter::getInstance()->postNotification("AssetPanel::onProgressDownloadPackageFile", (Ref *)&values);
 
+                
 				// 다운로드가 완료되었다면
 				if (total <= now) {
 					// 모니터링을 그만둔다.
@@ -388,49 +402,75 @@ void AssetPanel::onProgressDownloadPackageFile(Ref *object) {
 
 // 패키지 파일 다운로드가 완료되면 호출된다.
 void AssetPanel::onDownloadPackageFile(HttpClient *client, HttpResponse *response) {
-	log("AssetPanel::onDownloadPackageFile()");
+	CCLOG("AssetPanel::onDownloadPackageFile()");
 
 	// 애셋 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
 	if (response == NULL) {
-		__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
+		__NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateError", NULL);
 		removeFromParentAndCleanup(true);
 		return;
 	}
 
-	// 다운로드한 업데이트 패키지 파일을 저장한다.
-	string packageFilePath = FileUtils::getInstance()->getWritablePath() + "update/package.zip";
-	auto buf = response->getResponseData();
+    if(m_UpdatePackages.size() > m_DownloadIndex){
+        auto downloadedFile = m_UpdatePackages.at(m_DownloadIndex);
+        
+        // 다운로드한 업데이트 패키지 파일을 저장한다.
+        string packageFilePath = FileUtils::getInstance()->getWritablePath() + downloadedFile._localPath;
+        string fullpath = packageFilePath + downloadedFile._fileName;
+        auto buf = response->getResponseData();
+        
+        savePackageFile(fullpath, buf);
+        
+        if(downloadedFile._isCompressed){
+            // 패키지 파일의 압축을 푼다.
+            int currentDownloadIdx = m_DownloadIndex;
+            auto action = Sequence::createWithTwoActions(
+                                                         DelayTime::create(1.0f),
+                                                         CallFunc::create(
+                                                                          [=]() {
+                                                                              decompressPackageFile(currentDownloadIdx);
+                                                                          }));
+            runAction(action);
+        }
+        else{
+            
+            // 나머지 업데이트 패키지 파일 다운로드를 시작한다.
+            auto action = Sequence::createWithTwoActions(
+                                                         DelayTime::create(1.0f),
+                                                         CallFunc::create(
+                                                                          [&]() {
+                                                                              downloadNextPackageFile();
+                                                                          }));
+            runAction(action);
 
-	savePackageFile(packageFilePath, buf);
-
-	// 패키지 파일의 압축을 푼다.
-	auto action = Sequence::createWithTwoActions(
-		DelayTime::create(1.0f),
-		CallFunc::create(
-		[&]() {
-			decompressPackageFile();
-		}));
-	runAction(action);
+        }
+        
+        ++m_DownloadIndex;
+    }
 }
 
-void AssetPanel::decompressPackageFile() {
-	log("AssetPanel::decompressPackageFile()");
+void AssetPanel::decompressPackageFile(int fileIdx) {
+	CCLOG("AssetPanel::decompressPackageFile()");
 
-	std::thread thread = std::thread([&]() {
-		string packageFilePath = FileUtils::getInstance()->getWritablePath() + "update/package.zip";
-
-		// 패키지 파일의 압축을 푸는데 실패하면 로고 화면으로 전환한다.
-		if (!decompress(packageFilePath)) {
-			__NotificationCenter::getInstance()->postNotification("HelloWorld::onAssetUpdateError", NULL);
-			removeFromParentAndCleanup(true);
-			return;
-		}
-
-		// 압축을 푼 패키지 파일을 삭제한다.
-		FileUtils::getInstance()->removeFile(packageFilePath);
-	});
-
-	thread.detach();
+    if(m_UpdatePackages.size() > fileIdx){
+        auto downloadedFile = m_UpdatePackages.at(fileIdx);
+        
+        std::thread thread = std::thread([=]() {
+            string packageFilePath = FileUtils::getInstance()->getWritablePath() + downloadedFile._localPath + downloadedFile._fileName;
+            
+            // 패키지 파일의 압축을 푸는데 실패하면 로고 화면으로 전환한다.
+            if (!decompress(packageFilePath)) {
+                __NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateError", NULL);
+                removeFromParentAndCleanup(true);
+                return;
+            }
+            
+            // 압축을 푼 패키지 파일을 삭제한다.
+            FileUtils::getInstance()->removeFile(packageFilePath);
+        });
+        
+        thread.detach();
+    }
 }
 
 void AssetPanel::onProgressDecompressPackageFile(Ref *object) {
@@ -444,6 +484,8 @@ void AssetPanel::onProgressDecompressPackageFile(Ref *object) {
 	statusLabel->setString("Decompressing...");
 	prograssLabel->setString(__String::createWithFormat("%d/%d", now, total)->getCString());
 
+    CCLOG("Decompressing... %d / %d", now, total);
+    
 	// 압축을 다 풀었다면
 	if (total <= now) {
 		// 나머지 업데이트 패키지 파일 다운로드를 시작한다.

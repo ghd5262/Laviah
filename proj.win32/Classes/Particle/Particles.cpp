@@ -108,13 +108,112 @@ bool CParticle_Flame::initWithTotalParticles(int numberOfParticles)
 }
 
 
+CParticle_Character* CParticle_Character::create(std::string textureName)
+{
+    CParticle_Character* ret = new (std::nothrow) CParticle_Character(textureName);
+    if (ret && ret->init())
+    {
+        ret->autorelease();
+    }
+    else
+    {
+        CC_SAFE_DELETE(ret);
+    }
+    return ret;
+}
 
+CParticle_Character* CParticle_Character::createWithTotalParticles(int numberOfParticles, std::string textureName)
+{
+    CParticle_Character* ret = new (std::nothrow) CParticle_Character(textureName);
+    if (ret && ret->initWithTotalParticles(numberOfParticles))
+    {
+        ret->autorelease();
+    }
+    else
+    {
+        CC_SAFE_DELETE(ret);
+    }
+    return ret;
+}
 
+bool CParticle_Character::initWithTotalParticles(int numberOfParticles)
+{
+    if (ParticleSystemQuad::initWithTotalParticles(numberOfParticles))
+    {
+        // duration
+        _duration = DURATION_INFINITY;
+        
+        // Gravity Mode
+        this->_emitterMode = Mode::GRAVITY;
+        
+        // Gravity Mode: gravity
+        this->modeA.gravity = Vec2(90, 0);
+        
+        // Gravity Mode:  radial
+        this->modeA.radialAccel = 0;
+        this->modeA.radialAccelVar = 0;
+        
+        //  Gravity Mode: speed of particles
+        this->modeA.speed = 50;
+        this->modeA.speedVar = 50;
+        
+        // emitter position
+        Size winSize = Director::getInstance()->getWinSize();
+        this->setPosition(winSize.width / 2, winSize.height / 2);
+        
+        // angle
+        this->_angle = 0;
+        this->_angleVar = 20;
+        
+        // life of particles
+        this->_life = 0.8f;
+        this->_lifeVar = 1.5;
+        
+        // emits per frame
+        this->_emissionRate = _totalParticles / _life;
+        
+        // color of particles
+        _startColor.r = 1.0f;
+        _startColor.g = 1.0f;
+        _startColor.b = 1.0f;
+        _startColor.a = 0.8f;
+        _startColorVar.r = 0.8f;
+        _startColorVar.g = 0.8f;
+        _startColorVar.b = 0.8f;
+        _startColorVar.a = 0.5f;
+        _endColor.r = 0.8f;
+        _endColor.g = 0.8f;
+        _endColor.b = 0.8f;
+        _endColor.a = 0.1f;
+        _endColorVar.r = 0.8f;
+        _endColorVar.g = 0.8f;
+        _endColorVar.b = 0.8f;
+        _endColorVar.a = 0.1f;
+        
+        // size, in pixels
+        _startSize = 30.0f;
+        _startSizeVar = 4.0f;
+        _endSize = 5;
+        
+        SpriteFrame* spriteFrame = nullptr;
+        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_strTextureName);
+        
+        if (spriteFrame != nullptr)
+        {
+            this->setTextureWithRect(spriteFrame->getTexture(), spriteFrame->getRect());
+        }
+        
+        // additive
+        this->setBlendAdditive(false);
+        return true;
+    }
+    return false;
+}
 
 
 CParticle_Explosion* CParticle_Explosion::create(std::string textureName)
 {
-	CParticle_Explosion* ret = new (std::nothrow) CParticle_Explosion(textureName);
+    CParticle_Explosion* ret = new (std::nothrow) CParticle_Explosion(textureName);
 	if (ret && ret->init())
 	{
 		ret->autorelease();

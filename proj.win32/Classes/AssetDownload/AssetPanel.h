@@ -52,17 +52,32 @@ private:
 	void onProgressDownloadPackageFile(Ref *object);
 	void onDownloadPackageFile(HttpClient *client, HttpResponse *response);
 
-	void decompressPackageFile();
+	void decompressPackageFile(int fileIdx);
 	void onProgressDecompressPackageFile(Ref *object);
 
 	bool saveVersionFile(const string &path, const string &buf);
 	bool savePackageFile(const string &path, const vector<char> *buf);
 
 private:
+    struct sDOWNLOADFILE{
+        std::string _fileName;
+        std::string _url;
+        std::string _localPath;
+        int _version;
+        bool _isCompressed;
+        
+        sDOWNLOADFILE()
+        : _fileName("")
+        , _url("")
+        , _localPath("")
+        , _version(0)
+        , _isCompressed(false){}
+    };
+    
 	string m_ServerVersionFileData;
 	string m_PackageURL;
 	int m_ClientVersion;
 	int m_DownloadIndex;
 	int m_DownloadCount;
-	vector<string> m_UpdatePackages;
+	vector<sDOWNLOADFILE> m_UpdatePackages;
 };

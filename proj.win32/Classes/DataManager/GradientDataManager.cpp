@@ -41,7 +41,7 @@ CGradientDataManager::CGradientDataManager()
         
         m_GradientList.push_back(param);
     }
-  }
+}
 
 CGradientDataManager::~CGradientDataManager()
 {
