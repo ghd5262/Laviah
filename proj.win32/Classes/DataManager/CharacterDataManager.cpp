@@ -8,139 +8,131 @@
 
 CCharacterDataManager::CCharacterDataManager()
 {
-//    Json::Value root;
-//    Json::Reader reader;
-//    m_CharacterList = new std::vector<sSHOOTER_PARAM>();
-//    
-//    
-//    // stageListIndex.json 파일 읽음
-//    std::string strStageListIndex = CCFileUtils::sharedFileUtils()->fullPathForFilename("jsonRes/stageList/stageListIndex.json");
-//    ssize_t bufferSize = 0;
-//    unsigned char* stageListIndexJson = CCFileUtils::sharedFileUtils()->getFileData(strStageListIndex.c_str(), "rb", &bufferSize);
-//    std::string stageListIdxClearData((const char*)stageListIndexJson);
-//    size_t pos = stageListIdxClearData.rfind("}");
-//    stageListIdxClearData = stageListIdxClearData.substr(0, pos + 1);
-//    
-//    
-//    bool parsingSuccessful = reader.parse(stageListIdxClearData, root);
-//    if (! parsingSuccessful)
-//    {
-//        CCASSERT(false, MakeString("parser failed : \n %s", stageListIdxClearData.c_str()).c_str());
-//        return ;
-//    }
-//    // stageListIndex.json log출력
-//    CCLOG("strStageListIndex JSON : \n %s\n", stageListIdxClearData.c_str());
-//    
-//    int ForLOG = 0;
-//    
-//    //array
-//    Json::Value stageListArray = root["stageListIndex"];
-//    for (unsigned int stageListCount = 0; stageListCount < stageListArray.size(); ++stageListCount)
-//    {
-//        
-//        std::string stageListFileName = stageListArray[stageListCount].asString();
-//        CCLOG("%s, ", stageListFileName.c_str());
-//        
-//        // patternList.json 파일 읽음
-//        std::string strStageList = CCFileUtils::sharedFileUtils()->fullPathForFilename(MakeString("jsonRes/stageList/%s.json", stageListFileName.c_str()));
-//        bufferSize = 0;
-//        unsigned char* stageListJson = CCFileUtils::sharedFileUtils()->getFileData(strStageList.c_str(), "rb", &bufferSize);
-//        std::string stageListClearData((const char*)stageListJson);
-//        pos = stageListClearData.rfind("}");
-//        stageListClearData = stageListClearData.substr(0, pos + 1);
-//        
-//        // patternList.json log출력
-//        parsingSuccessful = reader.parse(stageListClearData, stageListArray[stageListCount]);
-//        if (! parsingSuccessful)
-//        {
-//            CCASSERT(false, MakeString("parser failed : \n %s", stageListClearData.c_str()).c_str());
-//            return ;
-//        }
-//        CCLOG("strStageList JSON : \n %s\n", stageListClearData.c_str());
-//        
-//        
-//        // stage는 배열이다.
-//        const Json::Value stageArray = stageListArray[stageListCount]["stage"];
-//        
-//        for (unsigned int stageCount = 0; stageCount < stageArray.size(); ++stageCount)
-//        {
-//            const Json::Value valueStage = stageArray[stageCount];
-//            
-//            sSHOOTER_PARAM param;
-//            
-//            param._ShooterName = valueStage["ShooterName"].asString();
-//            param._PatternName = valueStage["PatternName"].asString();
-//            param._randomShootSymbol = (valueStage["Symbol"].asString())[0];
-//            param._fStartTime = valueStage["StartTime"].asDouble();
-//            param._fEndTime = valueStage["EndTime"].asDouble();
-//            param._fSpeed = valueStage["BulletSpeed"].asDouble();
-//            param._isAngleRandom = valueStage["AngleRandom"].asBool();
-//            param._fAngle = valueStage["BulletAngle"].asDouble();
-//            param._isOneShoot = valueStage["OneShoot"].asBool();
-//            param._fInterval = valueStage["Interval"].asDouble();
-//            param._nBulletCountAtOneShoot = valueStage["BulletOneShoot"].asInt();
-//            param._isFly = valueStage["Fly"].asBool();
-//            
-//            
-//            m_CharacterList->emplace_back(param);
-//            ForLOG++;
-//        }
-//    }
-//    
-//    CCLOG("The Loaded Stage Size is %d AND the Last Idx of Stage Is %d", static_cast<int>(m_CharacterList->size()), ForLOG);
-	m_Downloader.reset(new network::Downloader());
-    
-	for (int i = 0; i < 3; i++)
+	Json::Value root;
+	Json::Reader reader;
+
+	// patternList.json 파일 읽음
+	std::string strCharacterList = FileUtils::getInstance()->fullPathForFilename("characterList.json");
+	std::string characterListClearData = FileUtils::getInstance()->getStringFromFile(strCharacterList);
+	size_t pos = characterListClearData.rfind("}");
+	characterListClearData = characterListClearData.substr(0, pos + 1);
+
+	// patternList.json log출력
+	bool parsingSuccessful = reader.parse(characterListClearData, root);
+	if (!parsingSuccessful)
 	{
-		sCHARACTER_PARAM character;
-
-		character._idx = i;
-		character._openLevel = 10;
-		character._cost = 100;
-		character._health = 1;
-		character._starItemTime = 10.f;
-		character._coinItemTime = 10.f;
-		character._bonusItemTime = 10.f;
-		character._magnetItemTime = 10.f;
-		character._magnetItemSize = 200.f;
-		character._giantItemTime = 10.f;
-        character._aliveTextureName = MakeString("player%d_alive.png", i % 5);
-		character._normalTextureName = MakeString("player%d.png", i % 5);
-		character._giantTextureName = MakeString("player%d_big.png", i % 5);
-		character._planetTextureName = MakeString("planet_%d.png", i % 5);
-		character._normalBulletTextureName = MakeString("bullet_%d.png", i % 5);
-		character._stickBulletTextureName = MakeString("stickBullet_%d.png", i % 5);
-		character._normalMissileLine = MakeString("normalMissileLine_%d", i % 5);
-		character._aimingMissileLine = MakeString("aimingMissileLine_%d", i % 5);
-		character._normalMissileTextureName = MakeString("normalMissile_%d.png", i % 5);
-		character._aimingMissileTextureName = MakeString("aimingMissile_%d.png", i % 5);
-		character._normalMissilePattern = MakeString("normalMissile%d_Pattern", i % 5);
-		character._aimingMissilePattern = MakeString("aimingMissile%d_Pattern", i % 5);
-        character._deadParticleTextureName = MakeString("deadParticle_%d.png", i % 5);
-        character._missileParticleTextureName = MakeString("missileParticle_%d.png", i % 5);
-		character._name = MakeString("character_%d", i % 5);
-		character._story = MakeString("story_%d", i % 5);
-		character._texturePackName = MakeString("characterTexturePack_%d", i % 5);
-
-        
-        if(character._texturePackName != ""){
-            std::string texturepackPNG = MakeString("%s.png", character._texturePackName.c_str());
-            std::string texturepackPLIST = MakeString("%s.plist", character._texturePackName.c_str());
-            
-            auto util = FileUtils::getInstance();
-            auto spriteFrameCache = SpriteFrameCache::getInstance();
-            //
-            //		// if file already exist, remove it
-            if (util->isFileExist(texturepackPNG) && util->isFileExist(texturepackPLIST))
-            {
-                if(!spriteFrameCache->isSpriteFramesWithFileLoaded(texturepackPLIST)){
-                    spriteFrameCache->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
-                }
-            }
-        }
-        
-        m_CharacterList.emplace_back(character);
+		CCASSERT(false, MakeString("parser failed : \n %s", characterListClearData.c_str()).c_str());
+		return;
 	}
+	CCLOG("strCharacterList JSON : \n %s\n", characterListClearData.c_str());
+
+
+	// stage는 배열이다.
+	const Json::Value itemArray = root["characters"];
+
+	for (unsigned int itemCount = 0; itemCount < itemArray.size(); ++itemCount)
+	{
+		const Json::Value valueItem = itemArray[itemCount];
+
+		sCHARACTER_PARAM param;
+
+		param._idx = itemCount;
+		param._openLevel = valueItem["openLevel"].asInt();
+		param._cost = valueItem["cost"].asInt();
+		param._health = valueItem["health"].asInt();
+		param._starItemTime = valueItem["defaultStarItemTime"].asInt();
+		param._coinItemTime = valueItem["defaultCoinItemTime"].asInt();
+		param._bonusItemTime = valueItem["defaultBonusItemTime"].asInt();
+		param._magnetItemTime = valueItem["defaultMagnetItemTime"].asInt();
+		param._giantItemTime = valueItem["defaultGiantItemTime"].asInt();
+		param._magnetItemSize = valueItem["defaultMagnetItemSize"].asInt();
+		param._aliveTextureName = valueItem["alive"].asString();
+		param._normalTextureName = valueItem["normal"].asString();
+		param._giantTextureName = valueItem["giant"].asString();
+		param._planetTextureName = valueItem["planet"].asString();
+		param._normalBulletTextureName = valueItem["normalBullet"].asString();
+		param._stickBulletTextureName = valueItem["stickBullet"].asString();\
+		param._normalMissileTextureName = valueItem["normalMissile"].asString();
+		param._aimingMissileTextureName = valueItem["aimingMissile"].asString();
+		param._normalMissilePattern = valueItem["normalMissilePattern"].asString();
+		param._aimingMissilePattern = valueItem["aimingMissilePattern"].asString();
+		param._deadParticleTextureName = valueItem["deadParticle"].asString();
+		param._missileParticleTextureName = valueItem["missileParticle"].asString();
+		param._name = valueItem["name"].asString();
+		param._story = valueItem["story"].asString();
+		param._texturePackName = valueItem["texturePackName"].asString();
+
+
+		if (param._texturePackName != ""){
+			std::string texturepackPNG = MakeString("%s.png", param._texturePackName.c_str());
+			std::string texturepackPLIST = MakeString("%s.plist", param._texturePackName.c_str());
+
+			auto util = FileUtils::getInstance();
+			auto spriteFrameCache = SpriteFrameCache::getInstance();
+			//
+			//		// if file already exist, remove it
+			if (util->isFileExist(texturepackPNG) && util->isFileExist(texturepackPLIST))
+			{
+				if (!spriteFrameCache->isSpriteFramesWithFileLoaded(texturepackPLIST)){
+					spriteFrameCache->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
+				}
+			}
+		}
+
+		m_CharacterList.emplace_back(param);
+	}
+    
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	sCHARACTER_PARAM character;
+
+	//	character._idx = i;
+	//	character._openLevel = 10;
+	//	character._cost = 100;
+	//	character._health = 1;
+	//	character._starItemTime = 10.f;
+	//	character._coinItemTime = 10.f;
+	//	character._bonusItemTime = 10.f;
+	//	character._magnetItemTime = 10.f;
+	//	character._magnetItemSize = 200.f;
+	//	character._giantItemTime = 10.f;
+ //       character._aliveTextureName = MakeString("player%d_alive.png", i % 5);
+	//	character._normalTextureName = MakeString("player%d.png", i % 5);
+	//	character._giantTextureName = MakeString("player%d_big.png", i % 5);
+	//	character._planetTextureName = MakeString("planet_%d.png", i % 5);
+	//	character._normalBulletTextureName = MakeString("bullet_%d.png", i % 5);
+	//	character._stickBulletTextureName = MakeString("stickBullet_%d.png", i % 5);
+	//	character._normalMissileLine = MakeString("normalMissileLine_%d", i % 5);
+	//	character._aimingMissileLine = MakeString("aimingMissileLine_%d", i % 5);
+	//	character._normalMissileTextureName = MakeString("normalMissile_%d.png", i % 5);
+	//	character._aimingMissileTextureName = MakeString("aimingMissile_%d.png", i % 5);
+	//	character._normalMissilePattern = MakeString("normalMissile%d_Pattern", i % 5);
+	//	character._aimingMissilePattern = MakeString("aimingMissile%d_Pattern", i % 5);
+ //       character._deadParticleTextureName = MakeString("deadParticle_%d.png", i % 5);
+ //       character._missileParticleTextureName = MakeString("missileParticle_%d.png", i % 5);
+	//	character._name = MakeString("character_%d", i % 5);
+	//	character._story = MakeString("story_%d", i % 5);
+	//	character._texturePackName = MakeString("characterTexturePack_%d", i % 5);
+
+ //       
+ //       if(character._texturePackName != ""){
+ //           std::string texturepackPNG = MakeString("%s.png", character._texturePackName.c_str());
+ //           std::string texturepackPLIST = MakeString("%s.plist", character._texturePackName.c_str());
+ //           
+ //           auto util = FileUtils::getInstance();
+ //           auto spriteFrameCache = SpriteFrameCache::getInstance();
+ //           //
+ //           //		// if file already exist, remove it
+ //           if (util->isFileExist(texturepackPNG) && util->isFileExist(texturepackPLIST))
+ //           {
+ //               if(!spriteFrameCache->isSpriteFramesWithFileLoaded(texturepackPLIST)){
+ //                   spriteFrameCache->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
+ //               }
+ //           }
+ //       }
+ //       
+ //       m_CharacterList.emplace_back(character);
+	//}
 }
 
 void CCharacterDataManager::InitWithCharacter()

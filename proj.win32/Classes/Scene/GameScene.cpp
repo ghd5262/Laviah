@@ -102,7 +102,7 @@ bool CGameScene::initVariable()
 
 		auto background = CBackGround::create();
 		m_GridWorld->addChild(background);
-        background->setVisible(false);
+        //background->setVisible(false);
         
 		auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 180, 0.0f, 100.f);
 		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,

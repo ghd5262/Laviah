@@ -101,7 +101,7 @@ bool CPlayer::initVariable()
 		m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam._normalTextureName);
 		if (m_pTexture != nullptr){
 			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-			m_pTexture->setScale(1.f);
+			m_pTexture->setScale(0.9f);
 			addChild(m_pTexture);
 			m_pTexture->setVisible(false);
 		}
@@ -112,9 +112,7 @@ bool CPlayer::initVariable()
 			m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_pParticle->setAngle(90);
 			m_pParticle->setGravity(Vec2(0, -270));
-			m_pParticle->setPosVar(Vec2(10, 10));
-			m_pParticle->setStartSize(40.f);
-			m_pParticle->setStartSizeVar(20.f);
+			m_pParticle->setStartSize(60.f);
 			m_pParticle->setEndSize(4.f);
 			CGameScene::getGridWorld()->addChild(m_pParticle, 10);
 			m_pParticle->setVisible(false);
@@ -265,7 +263,7 @@ void CPlayer::NormalMode()
         this->m_pTexture->setSpriteFrame(m_CharacterParam._normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBRadius(6.f);
-		m_pParticle->setStartSize(90.f);
+		m_pParticle->setStartSize(60.f);
         m_pParticle->setEndSize(4.f);
 	}), nullptr);
 	this->runAction(action);
