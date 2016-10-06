@@ -14,6 +14,7 @@ struct sCHARACTER_PARAM{
     float _magnetItemTime;
     float _giantItemTime;
 	float _magnetItemSize;
+    std::string _aliveTextureName;
     std::string _normalTextureName;
 	std::string _giantTextureName;
 	std::string _planetTextureName;

@@ -106,7 +106,7 @@ bool CPlayer::initVariable()
 			m_pTexture->setVisible(false);
 		}
 
-		m_pParticle = CParticle_Character::create(m_CharacterParam._normalTextureName);
+		m_pParticle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
 		if (m_pParticle != nullptr){
 			m_pParticle->retain();
 			m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -155,7 +155,7 @@ void CPlayer::Execute(float delta)
 
 void CPlayer::PlayerAlive(){
 
-	m_pParticleAlive = CParticle_Explosion_2::create("whiteSquare.png");
+	m_pParticleAlive = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
 	if (m_pParticleAlive != nullptr){
 		m_pParticleAlive->retain();
 		m_pParticleAlive->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -165,12 +165,14 @@ void CPlayer::PlayerAlive(){
 		m_pParticleAlive->setDuration(0.5f);
 		CGameScene::getGridWorld()->addChild(m_pParticleAlive, 100);
 	}
+    
+    m_pTexture->setSpriteFrame(m_CharacterParam._aliveTextureName);
 
 	this->scheduleOnce([this](float delta){
 		m_isPlayerDead = false;
 		m_pParticle->setVisible(true);
 		m_pTexture->setVisible(true);
-
+        m_pTexture->setSpriteFrame(m_CharacterParam._normalTextureName);
 		// 1초간 무적 
 		InvincibilityMode(4.f); //카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
 	}, 1.5f, "PlayerAlive");
@@ -178,7 +180,7 @@ void CPlayer::PlayerAlive(){
 }
 
 void CPlayer::PlayerDead(){
-	m_pParticleDead = CParticle_Explosion_2::create("whiteSquare.png");
+	m_pParticleDead = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
 	if (m_pParticleDead != nullptr){
 		m_pParticleDead->retain();
 		m_pParticleDead->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

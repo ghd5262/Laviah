@@ -23,27 +23,6 @@ private:
 
 
 
-class CParticle_Character : public ParticleSystemQuad
-{
-public:
-    static CParticle_Character* create(std::string textureName);
-    static CParticle_Character* createWithTotalParticles(int numberOfParticles, std::string textureName);
-    
-protected:
-    CParticle_Character(std::string textureName)
-    : m_strTextureName(textureName){}
-    virtual ~CParticle_Character(){}
-    
-    bool init() override { return initWithTotalParticles(50); }
-    virtual bool initWithTotalParticles(int numberOfParticles) override;
-    
-private:
-    CC_DISALLOW_COPY_AND_ASSIGN(CParticle_Character);
-    std::string m_strTextureName;
-};
-
-
-
 class CParticle_Explosion : public ParticleSystemQuad
 {
 public:
@@ -62,7 +41,6 @@ private:
 	CC_DISALLOW_COPY_AND_ASSIGN(CParticle_Explosion);
 	std::string m_strTextureName;
 };
-
 
 
 

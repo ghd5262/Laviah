@@ -104,6 +104,7 @@ CCharacterDataManager::CCharacterDataManager()
 		character._magnetItemTime = 10.f;
 		character._magnetItemSize = 200.f;
 		character._giantItemTime = 10.f;
+        character._aliveTextureName = MakeString("player%d_alive.png", i % 5);
 		character._normalTextureName = MakeString("player%d.png", i % 5);
 		character._giantTextureName = MakeString("player%d_big.png", i % 5);
 		character._planetTextureName = MakeString("planet_%d.png", i % 5);
@@ -121,19 +122,22 @@ CCharacterDataManager::CCharacterDataManager()
 		character._story = MakeString("story_%d", i % 5);
 		character._texturePackName = MakeString("characterTexturePack_%d", i % 5);
 
-		std::string texturepackPNG = MakeString("%s.png", character._texturePackName.c_str());
-		std::string texturepackPLIST = MakeString("%s.plist", character._texturePackName.c_str());
         
-		auto util = FileUtils::getInstance();
-        auto spriteFrameCache = SpriteFrameCache::getInstance();
-//
-//		// if file already exist, remove it
-		if (util->isFileExist(texturepackPNG) && util->isFileExist(texturepackPLIST))
-		{
-            if(!spriteFrameCache->isSpriteFramesWithFileLoaded(texturepackPLIST)){
-                spriteFrameCache->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
+        if(character._texturePackName != ""){
+            std::string texturepackPNG = MakeString("%s.png", character._texturePackName.c_str());
+            std::string texturepackPLIST = MakeString("%s.plist", character._texturePackName.c_str());
+            
+            auto util = FileUtils::getInstance();
+            auto spriteFrameCache = SpriteFrameCache::getInstance();
+            //
+            //		// if file already exist, remove it
+            if (util->isFileExist(texturepackPNG) && util->isFileExist(texturepackPLIST))
+            {
+                if(!spriteFrameCache->isSpriteFramesWithFileLoaded(texturepackPLIST)){
+                    spriteFrameCache->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
+                }
             }
-		}
+        }
         
         m_CharacterList.emplace_back(character);
 	}
