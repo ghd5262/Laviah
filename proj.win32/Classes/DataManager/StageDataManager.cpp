@@ -15,7 +15,7 @@ CStageDataManager::CStageDataManager()
     
     
     // stageListIndex.json 파일 읽음
-    std::string strStageListIndex = FileUtils::getInstance()->fullPathForFilename("jsonRes/stageList/stageListIndex.json");
+    std::string strStageListIndex = FileUtils::getInstance()->fullPathForFilename("stageListIndex.json");
     std::string stageListIdxClearData = FileUtils::getInstance()->getStringFromFile(strStageListIndex);
     size_t pos = stageListIdxClearData.rfind("}");
     stageListIdxClearData = stageListIdxClearData.substr(0, pos + 1);
@@ -40,7 +40,7 @@ CStageDataManager::CStageDataManager()
         CCLOG("%s, ", stageListFileName.c_str());
         
         // patternList.json 파일 읽음
-        std::string strStageList = FileUtils::getInstance()->fullPathForFilename(MakeString("jsonRes/stageList/%s.json", stageListFileName.c_str()));
+        std::string strStageList = FileUtils::getInstance()->fullPathForFilename(MakeString("%s.json", stageListFileName.c_str()));
         std::string stageListClearData = FileUtils::getInstance()->getStringFromFile(strStageList);
         pos = stageListClearData.rfind("}");
         stageListClearData = stageListClearData.substr(0, pos + 1);

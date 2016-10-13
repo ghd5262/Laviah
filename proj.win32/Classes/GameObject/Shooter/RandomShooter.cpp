@@ -43,7 +43,6 @@ void CRandomShooter::ShootOnce()
 	char p = m_ShooterParam._randomShootSymbol;
 	sBULLET_PARAM bulletParam = CBulletDataManager::Instance()->getBulletInfo(p);
 	bulletParam._isFly = m_ShooterParam._isFly;
-	CCLOG("create bullet power : %f", bulletParam._fPower);
 	if (p >= '1' && p <= '3') //일반 bullet
 	{
 		CGameScene::getGridWorld()->addChild(CNormalBullet::create(

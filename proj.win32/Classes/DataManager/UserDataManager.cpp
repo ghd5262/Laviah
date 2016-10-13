@@ -49,7 +49,7 @@ CUserDataManager::CUserDataManager()
     Json::Reader reader;
     
     // userDefaultDataList.json 읽음
-    std::string strUserDefaultDataList = FileUtils::getInstance()->fullPathForFilename("jsonRes/userDefaultDataList.json");
+    std::string strUserDefaultDataList = FileUtils::getInstance()->fullPathForFilename("userDefaultDataList.json");
     std::string userDefaultDataListClearData = FileUtils::getInstance()->getStringFromFile(strUserDefaultDataList);
     size_t pos = userDefaultDataListClearData.rfind("}");
     userDefaultDataListClearData = userDefaultDataListClearData.substr(0, pos + 1);

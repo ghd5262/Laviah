@@ -7,7 +7,7 @@ CGradientDataManager::CGradientDataManager()
     Json::Value root;
     Json::Reader reader;
     
-    std::string strGradientList = FileUtils::getInstance()->fullPathForFilename("jsonRes/backgroundGradientList.json");
+    std::string strGradientList = FileUtils::getInstance()->fullPathForFilename("backgroundGradientList.json");
     std::string gradientListClearData = FileUtils::getInstance()->getStringFromFile(strGradientList);
     size_t pos = gradientListClearData.rfind("}");
     gradientListClearData = gradientListClearData.substr(0, pos + 1);

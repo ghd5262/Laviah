@@ -1,11 +1,5 @@
 {
 	"package": "http://www.nowtrade.co.kr/Resources/update/package.json",
 	"patchversion": 0,
-	"files": [{
-		"filename": "package.zip",
-		"url": "http://nowtrade.co.kr/Resources/update/ver_001/package.zip",
-		"localpath": "update/",
-		"version": 0,
-		"compress": 1
-	}]
+	"files": []
 }
