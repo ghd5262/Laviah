@@ -8,7 +8,6 @@ CBulletPatternDataManager::CBulletPatternDataManager()
     Json::Value root;
     Json::Reader reader;
     
-    
     // stageListIndex.json 파일 읽음
     std::string strPatternListIndex = FileUtils::getInstance()->fullPathForFilename("patternListIndex.json");
     std::string patternListIdxClearData = FileUtils::getInstance()->getStringFromFile(strPatternListIndex);
@@ -115,7 +114,7 @@ sPATTERN_SHOOTER_PARAM CBulletPatternDataManager::getPatternInfo(std::string pat
 	return m_PatternList.find(patternName)->second;
 }
 
-bool CBulletPatternDataManager::AddPattern(std::string patternName, sPATTERN_SHOOTER_PARAM pattern){
+bool CBulletPatternDataManager::AddPattern(std::string patternName, const sPATTERN_SHOOTER_PARAM& pattern){
 	bool addSuccess = m_PatternList.emplace(std::pair<std::string, sPATTERN_SHOOTER_PARAM>(patternName, pattern)).second;
     if (!addSuccess){
 		CCASSERT(addSuccess, MakeString("PATTERN KEY WAS DUPLICATED : %s", patternName.c_str()).c_str());

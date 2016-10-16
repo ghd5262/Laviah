@@ -6,7 +6,7 @@ class CBulletPatternDataManager
 {
 public:
 	static CBulletPatternDataManager* Instance();
-	bool AddPattern(std::string patternName, sPATTERN_SHOOTER_PARAM pattern);
+	bool AddPattern(std::string patternName, const sPATTERN_SHOOTER_PARAM& pattern);
 
 	//getter & setter
 	sPATTERN_SHOOTER_PARAM getPatternInfo(std::string patternName) const ;

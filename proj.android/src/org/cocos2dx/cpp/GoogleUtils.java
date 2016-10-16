@@ -91,7 +91,7 @@ GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener 
                     .addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER)
                     .build();
         	
-        	GoogleLogin();
+        	//GoogleLogin();
             sInited = true;
             
             Log.d(TAG, "GoogleUtils Init End");

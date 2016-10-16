@@ -65,7 +65,7 @@ sBULLET_PARAM CBulletDataManager::getBulletInfo(const char bulletSymbol) const
 	return m_BulletDataList.find(bulletSymbol)->second;
 }
 
-bool CBulletDataManager::AddBulletData(const char bulletSymbol, sBULLET_PARAM bullet){
+bool CBulletDataManager::AddBulletData(const char bulletSymbol, const sBULLET_PARAM& bullet){
 	bool addSuccess = m_BulletDataList.emplace(std::pair<const char, sBULLET_PARAM>(bulletSymbol, bullet)).second;
 	if (!addSuccess)
 		CCASSERT(addSuccess, "BULLET KEY WAS DUPLICATED");

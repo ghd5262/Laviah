@@ -6,7 +6,7 @@ class CBulletDataManager
 {
 public:
 	static CBulletDataManager* Instance();
-	bool AddBulletData(const char bulletSymbol, sBULLET_PARAM bullet);
+	bool AddBulletData(const char bulletSymbol, const sBULLET_PARAM& bullet);
 
 	//getter & setter
 	sBULLET_PARAM getBulletInfo(const char bulletSymbol) const;

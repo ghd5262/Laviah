@@ -84,9 +84,8 @@ bool CMenuScene::initVariable()
 		CWorkshopItemDataManager::Instance();
         CUserDataManager::Instance();
 		CCharacterDataManager::Instance();
-        CSDKUtil::Instance();
         CGradientDataManager::Instance();
-
+		CSDKUtil::Instance()->GoogleLogin();
 		//int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
 		//sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
 
