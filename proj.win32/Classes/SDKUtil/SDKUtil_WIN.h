@@ -1,27 +1,26 @@
 #pragma once
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include "SDKUtil.h"
 #include "../Common/HSHUtility.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 
 class CSDKUtil_WIN{
 public:
-	CSDKUtil_WIN(){
-        CUserDataManager::Instance()->GoogleLoginResult();
-	};
+	CSDKUtil_WIN(){};
 	~CSDKUtil_WIN(){};
 
-    // êµ¬ê¸€ ë¡œê·¸ì¸
-    void GoogleLogin(){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); };
-    
-	// êµ¬ê¸€ í´ë¼ìš°ë“œ ì €ìž¥ Key / Value
+	// ±¸±Û ·Î±×ÀÎ
+	void GoogleLogin(){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); CUserDataManager::Instance()->GoogleLoginResult(); };
+
+	// ±¸±Û Å¬¶ó¿ìµå ÀúÀå Key / Value
 	void GoogleCloudSave(std::string key, std::string value){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); }
 
-	// êµ¬ê¸€ í´ë¼ìš°ë“œ ë¡œë“œ Key
+	// ±¸±Û Å¬¶ó¿ìµå ·Îµå Key
 	void GoogleCloudLoad(std::string key){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); };
 
-	// ìœ ë‹ˆí‹° ì• ë“œ ë³´ìƒí˜• ê´‘ê³ 
+	// À¯´ÏÆ¼ ¾Öµå º¸»óÇü ±¤°í
 	void ShowRewardUnityAds(){
 		CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
 
@@ -32,18 +31,18 @@ public:
 		CSDKUtil::Instance()->setIsRewardUnityAdsReady(true);
 	}
 
-	// ìœ ë‹ˆí‹° ì• ë“œ ì¼ë°˜ ê´‘ê³ 
-	void ShowNormalUnityAds(){ 
-		CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); 
+	// À¯´ÏÆ¼ ¾Öµå ÀÏ¹Ý ±¤°í
+	void ShowNormalUnityAds(){
+		CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
 
 		Director::getInstance()->getScheduler()->schedule([](float delta){
 			CSDKUtil::Instance()->CallSavedFuncion();
 		}, Director::getInstance(), 0.f, 0, 0.f, false, "CallSavedFuncion");
 
-		CSDKUtil::Instance()->setIsNormalUnityAdsReady(true); 
+		CSDKUtil::Instance()->setIsNormalUnityAdsReady(true);
 	}
 
-	// í† ìŠ¤íŠ¸ì°½
+	// Åä½ºÆ®Ã¢
 	void Toast(std::string content){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); }
 };
 

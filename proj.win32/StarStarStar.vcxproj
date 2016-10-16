@@ -220,7 +220,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\Scene\LoadingScene.cpp" />
     <ClCompile Include="Classes\Scene\MenuScene.cpp" />
     <ClCompile Include="Classes\Scene\SceneTransition.cpp" />
-    <ClCompile Include="Classes\SDKUtil\SDKUtil.cpp" />
     <ClCompile Include="Classes\SDKUtil\SDKUtil_AOS.cpp" />
     <ClCompile Include="Classes\Shaders\ShaderEffect.cpp" />
     <ClCompile Include="Classes\Task\PoolingManager.cpp" />
@@ -232,6 +231,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\SDKUtil\SDKUtil_IOS.cpp" />
     <ClCompile Include="Classes\GameObject\SpaceShip.cpp" />
     <ClCompile Include="Classes\GameObject\MenuSceneObjectManager.cpp" />
+    <ClCompile Include="Classes\SDKUtil\SDKUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes\AssetDownload\AssetPanel.h" />
@@ -321,7 +321,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\Scene\SceneTransition.h" />
     <ClInclude Include="Classes\SDKUtil\SDKUtil_AOS.h" />
     <ClInclude Include="Classes\SDKUtil\SDKUtil_IOS.h" />
-    <ClInclude Include="Classes\SDKUtil\SDKUtil.h" />
     <ClInclude Include="Classes\SDKUtil\SDKUtil_WIN.h" />
     <ClInclude Include="Classes\Shaders\ShaderEffect.h" />
     <ClInclude Include="Classes\Task\PoolingManager.h" />
@@ -332,6 +331,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="main.h" />
     <ClInclude Include="Classes\GameObject\SpaceShip.h" />
     <ClInclude Include="Classes\GameObject\MenuSceneObjectManager.h" />
+    <ClInclude Include="Classes\SDKUtil\SDKUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cocos2d\cocos\2d\libcocos2d.vcxproj">

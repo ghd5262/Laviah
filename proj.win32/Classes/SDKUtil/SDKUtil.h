@@ -6,43 +6,43 @@ class CSDKUtil_IOS;
 class CSDKUtil_WIN;
 class CSDKUtil{
 public:
-    static CSDKUtil* Instance();
-    
-	// êµ¬ê¸€ ë¡œê·¸ì¸
+	static CSDKUtil* Instance();
+
+	// ±¸±Û ·Î±×ÀÎ
 	void GoogleLogin();
 
-    // êµ¬ê¸€ í´ë¼ìš°ë“œ ì €ì¥ Key / Value
-    void GoogleCloudSave(std::string key, std::string value);
+	// ±¸±Û Å¬¶ó¿ìµå ÀúÀå Key / Value
+	void GoogleCloudSave(std::string key, std::string value);
 
-	// êµ¬ê¸€ í´ë¼ìš°ë“œ ë¡œë“œ Key
+	// ±¸±Û Å¬¶ó¿ìµå ·Îµå Key
 	void GoogleCloudLoad(std::string key);
-    
-    // ìœ ë‹ˆí‹° ì• ë“œ ë³´ìƒí˜• ê´‘ê³ 
+
+	// À¯´ÏÆ¼ ¾Öµå º¸»óÇü ±¤°í
 	void ShowRewardUnityAds(const std::function<void(void)> &func);
 
-    // ìœ ë‹ˆí‹° ì• ë“œ ì¼ë°˜ ê´‘ê³ 
+	// À¯´ÏÆ¼ ¾Öµå ÀÏ¹İ ±¤°í
 	void ShowNormalUnityAds(const std::function<void(void)> &func);
-    
-    // í† ìŠ¤íŠ¸ì°½
-    void Toast(std::string content);
 
-	// ì €ì¥ëœ í•¨ìˆ˜ í˜¸ì¶œ
+	// Åä½ºÆ®Ã¢
+	void Toast(std::string content);
+
+	// ÀúÀåµÈ ÇÔ¼ö È£Ãâ
 	void CallSavedFuncion();
-    
+
 private:
 	void saveFunctionForCallBack(const std::function<void(void)> &func);
 
-    CSDKUtil();
-    ~CSDKUtil();
-    
+	CSDKUtil();
+	~CSDKUtil();
+
 	CC_SYNTHESIZE(bool, m_isRewardUnityAdsReady, IsRewardUnityAdsReady);
 	CC_SYNTHESIZE(bool, m_isNormalUnityAdsReady, IsNormalUnityAdsReady);
 
 private:
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    CSDKUtil_IOS* m_SDKUtil;
+	CSDKUtil_IOS* m_SDKUtil;
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    CSDKUtil_AOS* m_SDKUtil;
+	CSDKUtil_AOS* m_SDKUtil;
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	CSDKUtil_WIN* m_SDKUtil;
 #endif
