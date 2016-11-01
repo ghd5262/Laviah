@@ -47,9 +47,9 @@
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		9312B4781D58A0A800FE954C /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9312B4771D58A0A800FE954C /* CoreText.framework */; };
 		9312B47C1D58A12600FE954C /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93865F3E1D588C39007ECE5A /* libiconv.tbd */; };
+		931D9DB11DB0FEBC008BA5AC /* DownloadManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */; };
 		9329BAB61D75C50100878CEF /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9329BAB41D75C50100878CEF /* LoadingScene.cpp */; };
 		9329BABC1D75E47500878CEF /* AMTestScene1 in Resources */ = {isa = PBXBuildFile; fileRef = 9329BABB1D75E47500878CEF /* AMTestScene1 */; };
-		9348C5A81D82A6D8000E8D1B /* AssetPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9348C5A61D82A6D8000E8D1B /* AssetPanel.cpp */; };
 		9348C5AF1D868481000E8D1B /* update in Resources */ = {isa = PBXBuildFile; fileRef = 9348C5AE1D868481000E8D1B /* update */; };
 		9348E4C61D9D62B1007DF5D9 /* GradientDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9348E4C41D9D62B1007DF5D9 /* GradientDataManager.cpp */; };
 		937311591D5849C800D5EB5C /* AlienStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373109E1D5849C700D5EB5C /* AlienStates.cpp */; };
@@ -232,11 +232,11 @@
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		9312B4771D58A0A800FE954C /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
 		9312B47A1D58A10100FE954C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DownloadManager.cpp; sourceTree = "<group>"; };
+		931D9DB01DB0FEBC008BA5AC /* DownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadManager.h; sourceTree = "<group>"; };
 		9329BAB41D75C50100878CEF /* LoadingScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadingScene.cpp; sourceTree = "<group>"; };
 		9329BAB51D75C50100878CEF /* LoadingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingScene.h; sourceTree = "<group>"; };
 		9329BABB1D75E47500878CEF /* AMTestScene1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AMTestScene1; sourceTree = "<group>"; };
-		9348C5A61D82A6D8000E8D1B /* AssetPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetPanel.cpp; sourceTree = "<group>"; };
-		9348C5A71D82A6D8000E8D1B /* AssetPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetPanel.h; sourceTree = "<group>"; };
 		9348C5AE1D868481000E8D1B /* update */ = {isa = PBXFileReference; lastKnownFileType = folder; path = update; sourceTree = "<group>"; };
 		9348E4C41D9D62B1007DF5D9 /* GradientDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GradientDataManager.cpp; sourceTree = "<group>"; };
 		9348E4C51D9D62B1007DF5D9 /* GradientDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientDataManager.h; sourceTree = "<group>"; };
@@ -609,19 +609,19 @@
 			path = ios;
 			sourceTree = SOURCE_ROOT;
 		};
-		9348C5A51D82A6D8000E8D1B /* AssetDownload */ = {
+		931D9DAE1DB0FEBC008BA5AC /* Download */ = {
 			isa = PBXGroup;
 			children = (
-				9348C5A61D82A6D8000E8D1B /* AssetPanel.cpp */,
-				9348C5A71D82A6D8000E8D1B /* AssetPanel.h */,
+				931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */,
+				931D9DB01DB0FEBC008BA5AC /* DownloadManager.h */,
 			);
-			path = AssetDownload;
+			path = Download;
 			sourceTree = "<group>";
 		};
 		9373109A1D5849C700D5EB5C /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				9348C5A51D82A6D8000E8D1B /* AssetDownload */,
+				931D9DAE1DB0FEBC008BA5AC /* Download */,
 				9373109B1D5849C700D5EB5C /* AI */,
 				937310A91D5849C700D5EB5C /* AppDelegate.cpp */,
 				937310AA1D5849C700D5EB5C /* AppDelegate.h */,
@@ -1097,6 +1097,7 @@
 				937311A61D5849C800D5EB5C /* MenuScene.cpp in Sources */,
 				9373115D1D5849C800D5EB5C /* StageStates.cpp in Sources */,
 				9373119C1D5849C800D5EB5C /* WorkshopPopupDP.cpp in Sources */,
+				931D9DB11DB0FEBC008BA5AC /* DownloadManager.cpp in Sources */,
 				9373117F1D5849C800D5EB5C /* Shooter.cpp in Sources */,
 				937311AA1D5849C800D5EB5C /* SDKUtil_IOS.cpp in Sources */,
 				937311A11D5849C800D5EB5C /* UIManager.cpp in Sources */,
@@ -1148,7 +1149,6 @@
 				9373116C1D5849C800D5EB5C /* NormalBullet.cpp in Sources */,
 				937311791D5849C800D5EB5C /* Mover.cpp in Sources */,
 				937311901D5849C800D5EB5C /* EarnCoinPopup.cpp in Sources */,
-				9348C5A81D82A6D8000E8D1B /* AssetPanel.cpp in Sources */,
 				937311771D5849C800D5EB5C /* MagnetEffect.cpp in Sources */,
 				937311661D5849C800D5EB5C /* WorkshopItemDataManager.cpp in Sources */,
 				9373118C1D5849C800D5EB5C /* MultipleScore.cpp in Sources */,

@@ -25,6 +25,11 @@ CTargetMark::CTargetMark(
 	m_fArriveTime = (distance / missileSpeed);
 }
 
+CTargetMark::~CTargetMark()
+{
+//    m_AnimationFrames.clear();
+}
+
 CTargetMark* CTargetMark::create(
 	sBULLET_PARAM bulletParam,
 	float angle,					//TargetMark 초기 각도 

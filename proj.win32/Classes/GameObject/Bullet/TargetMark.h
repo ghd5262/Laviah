@@ -30,7 +30,7 @@ private:
 		bool isMissileChangedToCoin,
 		CBullet* owner);
 
-	virtual ~CTargetMark(){};
+	virtual ~CTargetMark();
 
 private:
 	Vector<SpriteFrame*> m_AnimationFrames;

@@ -3,7 +3,7 @@
 #include "EmptyScene.h"
 #include "../GameObject/Player.h"
 #include "../MyUI/MyButton.h"
-#include "../AssetDownload/AssetPanel.h"
+#include "../Download/DownloadManager.h"
 
 USING_NS_CC;
 //USING_NS_CC_EXT;
@@ -60,7 +60,7 @@ bool CLoadingScene::initVariable()
         
         __NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(CLoadingScene::onAssetUpdateComplete), "CLoadingScene::onAssetUpdateComplete", NULL);
         
-        m_Downlaoder = AssetPanel::create();
+        m_Downlaoder = CDownloadManager::create();
         addChild(m_Downlaoder);
         
         InitLoadingSceneUI();

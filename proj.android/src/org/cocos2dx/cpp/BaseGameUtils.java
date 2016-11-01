@@ -44,9 +44,11 @@ public class BaseGameUtils {
 
         if (result.hasResolution()) {
             try {
+            	Log.d("SavedGames", "resolveConnectionFailure has resoulutions");
                 result.startResolutionForResult(activity, requestCode);
                 return true;
             } catch (IntentSender.SendIntentException e) {
+            	Log.d("SavedGames", "resolveConnectionFailur connect again");
                 // The intent was canceled before it was sent.  Return to the default
                 // state and attempt to connect to get an updated ConnectionResult.
                 client.connect();
@@ -55,6 +57,7 @@ public class BaseGameUtils {
         } else {
             // not resolvable... so show an error message
             int errorCode = result.getErrorCode();
+            Log.d("SavedGames", "resolveConnectionFailure has not resolvable" + errorCode);
             Dialog dialog = GooglePlayServicesUtil.getErrorDialog(errorCode,
                     activity, requestCode);
             if (dialog != null) {

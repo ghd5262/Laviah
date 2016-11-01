@@ -26,6 +26,7 @@ PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/Scene/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/Task/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/SDKUtil/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/GoogleCloud/*.cpp)
+PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/Download/*.cpp)
 
 PROJECT_FILES := $(PROJECT_FILES:$(LOCAL_PATH)/%=%)
 

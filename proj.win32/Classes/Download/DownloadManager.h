@@ -32,17 +32,17 @@ private:
 	Map<string, Ref *> map;
 };
 
-class AssetPanel : public Node {
+class CDownloadManager : public Node {
 public:
-	AssetPanel();
-	virtual ~AssetPanel();
+	CDownloadManager();
+	virtual ~CDownloadManager();
 
 public:
 	virtual bool init();
 	virtual void onEnter();
 	virtual void onExit();
 
-	CREATE_FUNC(AssetPanel);
+	CREATE_FUNC(CDownloadManager);
 
 private:
 	void downloadVersionFile();

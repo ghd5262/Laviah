@@ -28,6 +28,7 @@ package org.cocos2dx.cpp;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,9 +54,9 @@ public class AppActivity extends Cocos2dxActivity{
     	Log.d(TAG, "AppActivty Create Start");
     	
     	m_AppActivity = this;
-    	m_UnityAdsUtils = new UnityAdsUtils();
+    	//m_UnityAdsUtils = new UnityAdsUtils();
     	m_GoogleUtils = new GoogleUtils();
-    	m_UnityAdsUtils.init(m_AppActivity);
+    	//m_UnityAdsUtils.init(m_AppActivity);
     	m_GoogleUtils.init(m_AppActivity);
     	
     	m_Handler = new Handler(){
@@ -73,13 +74,34 @@ public class AppActivity extends Cocos2dxActivity{
     @Override
    	protected void onResume() {
    		super.onResume();
-   		m_UnityAdsUtils.Resume();
+   		//m_UnityAdsUtils.Resume();
     }
     
     @Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 	}
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    	super.onActivityResult(requestCode, resultCode, intent);
+    	m_GoogleUtils.ActivityResult(requestCode, resultCode, intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+    
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onBackPressed() {
+    	super.onBackPressed();
+    }
     
     public static void CPP_GoogleLogin()
     {
@@ -100,7 +122,7 @@ public class AppActivity extends Cocos2dxActivity{
     		return;
     	
     	if(m_GoogleUtils.isSignedIn()){
-    		m_GoogleUtils.GoogleCloudSave(key, value);
+    		m_GoogleUtils.saveSnapshot(null, key, value);
     	}
     }
     
@@ -113,7 +135,7 @@ public class AppActivity extends Cocos2dxActivity{
     		return;
     	
     	if(m_GoogleUtils.isSignedIn()){
-    		m_GoogleUtils.GoogleCloudLoad(key);
+    		m_GoogleUtils.loadFromSnapshot(null, key);
     	}
     }
     

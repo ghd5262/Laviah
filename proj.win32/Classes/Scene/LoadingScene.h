@@ -2,7 +2,7 @@
 
 #include "cocos2d.h"
 
-class AssetPanel;
+class CDownloadManager;
 class CBackGround;
 class CLoadingScene : public cocos2d::Layer
 {
@@ -31,5 +31,5 @@ private:
     
 private:
     static CLoadingScene* m_LoadingScene;
-    AssetPanel* m_Downlaoder;
+    CDownloadManager* m_Downlaoder;
 };

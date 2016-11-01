@@ -1,6 +1,6 @@
 ﻿#include "json/document.h"
 #include "unzip/unzip.h"
-#include "AssetPanel.h"
+#include "DownloadManager.h"
 #include "../json/json.h"
 
 #define	BUFFER_SIZE		8192
@@ -74,7 +74,7 @@ static bool decompress(const string &zip) {
             values.putInt("total", global_info.number_entry);
             values.putInt("now", i + 1);
             
-            __NotificationCenter::getInstance()->postNotification("AssetPanel::onProgressDecompressPackageFile", (Ref *)&values);
+            __NotificationCenter::getInstance()->postNotification("CDownloadManager::onProgressDecompressPackageFile", (Ref *)&values);
         });
         
 		const std::string fullPath = rootPath + fileName;
@@ -155,7 +155,7 @@ static bool decompress(const string &zip) {
 	return true;
 }
 
-AssetPanel::AssetPanel()
+CDownloadManager::CDownloadManager()
 : m_PackageURL("")
 , m_ServerVersionFileData("")
 , m_ClientVersion(0)
@@ -166,10 +166,10 @@ AssetPanel::AssetPanel()
     m_UpdatePackages.clear();
 }
 
-AssetPanel::~AssetPanel() {
+CDownloadManager::~CDownloadManager() {
 }
 
-bool AssetPanel::init() {
+bool CDownloadManager::init() {
 	if (!Node::init())
         return false;
     
@@ -185,13 +185,13 @@ bool AssetPanel::init() {
     prograssLabel->setPosition(0, -15);
     addChild(prograssLabel);
     
-	__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(AssetPanel::onProgressDownloadPackageFile), "AssetPanel::onProgressDownloadPackageFile", NULL);
-	__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(AssetPanel::onProgressDecompressPackageFile), "AssetPanel::onProgressDecompressPackageFile", NULL);
+	__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(CDownloadManager::onProgressDownloadPackageFile), "CDownloadManager::onProgressDownloadPackageFile", NULL);
+	__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(CDownloadManager::onProgressDecompressPackageFile), "CDownloadManager::onProgressDecompressPackageFile", NULL);
 
 	return true;
 }
 
-void AssetPanel::onEnter() {
+void CDownloadManager::onEnter() {
 	Node::onEnter();
 
 	// 번들 디렉토리에서 클라이언트 리소스 버전 파일을 읽어들인다. 만약 번들 디렉토리에
@@ -241,7 +241,7 @@ void AssetPanel::onEnter() {
 	downloadVersionFile();
 }
 
-void AssetPanel::onExit() {
+void CDownloadManager::onExit() {
 	Node::onExit();
 
 	stopAllActions();
@@ -249,8 +249,8 @@ void AssetPanel::onExit() {
 }
 
 // 업데이트 서버에서 리소스 버전 파일 다운로드를 요청한다.
-void AssetPanel::downloadVersionFile() {
-	CCLOG("AssetPanel::downloadVersionFile()");
+void CDownloadManager::downloadVersionFile() {
+	CCLOG("CDownloadManager::downloadVersionFile()");
 
     auto versionFilePath = FileUtils::getInstance()->getWritablePath() + "update/";
     if (FileUtils::getInstance()->createDirectory(versionFilePath))
@@ -258,7 +258,7 @@ void AssetPanel::downloadVersionFile() {
         auto request = new HttpRequest();
         request->setUrl(m_PackageURL);
         request->setRequestType(HttpRequest::Type::GET);
-        request->setResponseCallback((ccHttpRequestCallback)std::bind(&AssetPanel::onDownloadVersionFile, this, std::placeholders::_1, std::placeholders::_2));
+        request->setResponseCallback((ccHttpRequestCallback)std::bind(&CDownloadManager::onDownloadVersionFile, this, std::placeholders::_1, std::placeholders::_2));
         
         HttpClient::getInstance()->send(request);
         request->release();
@@ -266,8 +266,8 @@ void AssetPanel::downloadVersionFile() {
 }
 
 // 요청한 리소스 버전 파일 다운로드가 완료되면 호출된다.
-void AssetPanel::onDownloadVersionFile(HttpClient *client, HttpResponse *response) {
-	CCLOG("AssetPanel::onDownloadVersionFile()");
+void CDownloadManager::onDownloadVersionFile(HttpClient *client, HttpResponse *response) {
+	CCLOG("CDownloadManager::onDownloadVersionFile()");
 
 	// 리소스 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
 	if (response == NULL) {
@@ -336,8 +336,8 @@ void AssetPanel::onDownloadVersionFile(HttpClient *client, HttpResponse *respons
 }
 
 // 업데이트 서버에서 패키지 파일 다운로드를 요청한다.
-void AssetPanel::downloadNextPackageFile() {
-	CCLOG("AssetPanel::downloadNextPackageFile()");
+void CDownloadManager::downloadNextPackageFile() {
+	CCLOG("CDownloadManager::downloadNextPackageFile()");
 
 	// 모든 패키지 파일 다운로드가 완료되었을 경우
 	if (m_UpdatePackages.size() == m_DownloadIndex) {
@@ -354,7 +354,7 @@ void AssetPanel::downloadNextPackageFile() {
 	auto request = new HttpRequest();
 	request->setUrl(m_UpdatePackages.at(m_DownloadIndex)._url.c_str());
 	request->setRequestType(HttpRequest::Type::GET);
-	request->setResponseCallback((ccHttpRequestCallback)std::bind(&AssetPanel::onDownloadPackageFile, this, std::placeholders::_1, std::placeholders::_2));
+	request->setResponseCallback((ccHttpRequestCallback)std::bind(&CDownloadManager::onDownloadPackageFile, this, std::placeholders::_1, std::placeholders::_2));
 
 	HttpClient::getInstance()->send(request);
 	request->release();
@@ -374,7 +374,7 @@ void AssetPanel::downloadNextPackageFile() {
                 
                 CCLOG("Download %d / %d", now, total);
                 
-				__NotificationCenter::getInstance()->postNotification("AssetPanel::onProgressDownloadPackageFile", (Ref *)&values);
+				__NotificationCenter::getInstance()->postNotification("CDownloadManager::onProgressDownloadPackageFile", (Ref *)&values);
 
                 
 				// 다운로드가 완료되었다면
@@ -388,7 +388,7 @@ void AssetPanel::downloadNextPackageFile() {
 }
 
 // 패키지 파일 다운로드가 진행되는 동안 호출된다.
-void AssetPanel::onProgressDownloadPackageFile(Ref *object) {
+void CDownloadManager::onProgressDownloadPackageFile(Ref *object) {
 	RefValueMap *values = (RefValueMap *)object;
 	int total = values->getInt("total");
 	int now = values->getInt("now");
@@ -401,8 +401,8 @@ void AssetPanel::onProgressDownloadPackageFile(Ref *object) {
 }
 
 // 패키지 파일 다운로드가 완료되면 호출된다.
-void AssetPanel::onDownloadPackageFile(HttpClient *client, HttpResponse *response) {
-	CCLOG("AssetPanel::onDownloadPackageFile()");
+void CDownloadManager::onDownloadPackageFile(HttpClient *client, HttpResponse *response) {
+	CCLOG("CDownloadManager::onDownloadPackageFile()");
 
 	// 애셋 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
 	if (response == NULL) {
@@ -449,8 +449,8 @@ void AssetPanel::onDownloadPackageFile(HttpClient *client, HttpResponse *respons
     }
 }
 
-void AssetPanel::decompressPackageFile(int fileIdx) {
-	CCLOG("AssetPanel::decompressPackageFile()");
+void CDownloadManager::decompressPackageFile(int fileIdx) {
+	CCLOG("CDownloadManager::decompressPackageFile()");
 
     if(m_UpdatePackages.size() > fileIdx){
         auto downloadedFile = m_UpdatePackages.at(fileIdx);
@@ -473,7 +473,7 @@ void AssetPanel::decompressPackageFile(int fileIdx) {
     }
 }
 
-void AssetPanel::onProgressDecompressPackageFile(Ref *object) {
+void CDownloadManager::onProgressDecompressPackageFile(Ref *object) {
 	RefValueMap *values = (RefValueMap *)object;
 	int total = values->getInt("total");
 	int now = values->getInt("now");
@@ -499,7 +499,7 @@ void AssetPanel::onProgressDecompressPackageFile(Ref *object) {
 	}
 }
 
-bool AssetPanel::saveVersionFile(const string &path, const string &buf) {
+bool CDownloadManager::saveVersionFile(const string &path, const string &buf) {
 	// 다운로드한 버전 파일을 저장한다.
 	FILE *f = fopen(path.c_str(), "wt");
 
@@ -513,7 +513,7 @@ bool AssetPanel::saveVersionFile(const string &path, const string &buf) {
 	return true;
 }
 
-bool AssetPanel::savePackageFile(const string &path, const vector<char> *buf) {
+bool CDownloadManager::savePackageFile(const string &path, const vector<char> *buf) {
 	// 다운로드한 업데이트 패키지 파일을 저장한다.
 	FILE *f = fopen(path.c_str(), "wb");
 
