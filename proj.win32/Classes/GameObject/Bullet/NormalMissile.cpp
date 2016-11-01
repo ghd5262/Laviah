@@ -174,7 +174,7 @@ void CNormalMissile::CollisionWithPlanet()
 		CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
 	}
 
-	CAudioManager::Instance()->PlayEffectSound(MakeString("sounds/explosion_%d.mp3", m_BulletParam._isAimingMissile + 1), false);
+	//CAudioManager::Instance()->PlayEffectSound(MakeString("sounds/explosion_%d.mp3", m_BulletParam._isAimingMissile + 1), false);
 
 	ReturnToMemoryBlock();
 }

@@ -96,7 +96,7 @@ bool CTargetMark::initVariable()
                 auto targetmark = Sprite::create("test.png");
                 if(targetmark != nullptr)
                 {
-                    targetmark->setAnchorPoint(Vec2(0.01f, 0.5f));
+                    targetmark->setAnchorPoint(Vec2(0.05f, 0.5f));
                     targetmark->setOpacity(255 * 0.4f);
                     addChild(targetmark);
                 }
