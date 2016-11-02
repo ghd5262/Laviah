@@ -57,6 +57,9 @@ private:
 
 	bool saveVersionFile(const string &path, const string &buf);
 	bool savePackageFile(const string &path, const vector<char> *buf);
+    
+    bool decompress(const string &zip);
+    void sendNotice(std::string key, Ref* sender = nullptr);
 
 private:
     struct sDOWNLOADFILE{

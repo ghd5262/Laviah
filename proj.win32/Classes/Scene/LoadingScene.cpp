@@ -4,6 +4,10 @@
 #include "../GameObject/Player.h"
 #include "../MyUI/MyButton.h"
 #include "../Download/DownloadManager.h"
+#include "../DataManager/UserDataManager.h"
+#include "../SDKUtil/SDKUtil.h"
+#include "../MyUI/Popup.h"
+#include "../Common/NoticeDefine.h"
 
 USING_NS_CC;
 //USING_NS_CC_EXT;
@@ -27,6 +31,7 @@ Scene* CLoadingScene::createScene()
 
 CLoadingScene::~CLoadingScene()
 {
+    __NotificationCenter::getInstance()->removeAllObservers(this);
     removeAllChildrenWithCleanup(true);
     clearData();
 }
@@ -55,13 +60,19 @@ bool CLoadingScene::initVariable()
     {
         clearData();
         m_LoadingScene = this;
+  
+        auto createNotice = [=](cocos2d::SEL_CallFuncO selector, std::string name){
+            __NotificationCenter::getInstance()->addObserver(this, selector, name, NULL);
+        };
         
-        __NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(CLoadingScene::onAssetUpdateError), "CLoadingScene::onAssetUpdateError", NULL);
+        createNotice(callfuncO_selector(CLoadingScene::callbackNetworkResult), NOTICE::NETWORK_RESULT);
+        createNotice(callfuncO_selector(CLoadingScene::callbackLoginResult), NOTICE::LOGIN_RESULT);
+        createNotice(callfuncO_selector(CLoadingScene::callbackUserDataLoadFinish), NOTICE::USERDATA_LOAD_FINISH);
+        createNotice(callfuncO_selector(CLoadingScene::callbackDownloadFail), NOTICE::DOWN_ERROR);
+        createNotice(callfuncO_selector(CLoadingScene::callbackDownloadComplete), NOTICE::DOWN_COMPLETE);
         
-        __NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(CLoadingScene::onAssetUpdateComplete), "CLoadingScene::onAssetUpdateComplete", NULL);
-        
-        m_Downlaoder = CDownloadManager::create();
-        addChild(m_Downlaoder);
+        CUserDataManager::Instance();
+        CSDKUtil::Instance()->IsNetworkConnect();
         
         InitLoadingSceneUI();
     }
@@ -78,15 +89,46 @@ void CLoadingScene::InitLoadingSceneUI()
     
 }
 
+void CLoadingScene::callbackNetworkResult(Ref* object)
+{
+    // 첫 실행 이라면 인터넷 연결 하라는 팝업
+    if(CUserDataManager::Instance()->getIsFirstPlay() &&
+       !CSDKUtil::Instance()->getIsNetworkConnect())
+    {
+        createNetworkConnectPopup();
+    }
+    else{
+        if(CSDKUtil::Instance()->getIsNetworkConnect()){
+            // 인터넷 연결되어 있다면 패키지 버전 비교 후 정상 실행
+            m_Downlaoder = CDownloadManager::create();
+            addChild(m_Downlaoder);
+        }
+        else{
+            __NotificationCenter::getInstance()->postNotification(NOTICE::DOWN_COMPLETE, nullptr);
+        }
+    }
+}
 
-//assets downloader callback
-void CLoadingScene::onAssetUpdateError(Ref* object)
+void CLoadingScene::callbackDownloadFail(Ref* object)
 {
     
 }
 
-void CLoadingScene::onAssetUpdateComplete(Ref* object)
+void CLoadingScene::callbackDownloadComplete(Ref* object)
 {
+    // 로그인
+    CSDKUtil::Instance()->GoogleLogin();
+}
+
+void CLoadingScene::callbackLoginResult(Ref* object)
+{
+    CUserDataManager::Instance()->initUserDefaultValue();
+    CUserDataManager::Instance()->UserDataLoad();
+}
+
+void CLoadingScene::callbackUserDataLoadFinish(Ref* object)
+{
+    // 데이터 로딩 완료 후 패키지 다운로드
     createMenuScene();
 }
 
@@ -103,6 +145,20 @@ void CLoadingScene::createMenuScene()
         }, Director::getInstance(), 1.f, 0, 0.f, false, "createMenuScene");
         
     }, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
+}
+
+void CLoadingScene::createNetworkConnectPopup()
+{
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    
+    auto popup = CPopup::createWithOneButton("Please connect to the internet \n to download resources.",
+                                             CMyButton::createWithLayerColor(Size(430, 150), Color4B(0, 0, 0, 255 * 0.8f), "OK", 40, Color3B::WHITE,
+                                                                             END, [=](){
+                                                                                 CSDKUtil::Instance()->IsNetworkConnect();
+                                                                             }), 40);
+    popup->setPosition(visibleSize / 2);
+    popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    this->addChild(popup);
 }
 
 void CLoadingScene::update(float delta)

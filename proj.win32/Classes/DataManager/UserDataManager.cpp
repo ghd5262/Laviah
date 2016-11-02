@@ -7,7 +7,7 @@
 #include "../DataManager/WorkshopItemDataManager.h"
 #include "../SDKUtil/SDKUtil.h"
 #include "../GoogleCloud/GoogleCloudManager.h"
-#include "../DataManager/CharacterDataManager.h"
+#include "../Common/NoticeDefine.h"
 #include <algorithm>     /* qsort */
 
 #define JSONREADER_CREATE \
@@ -34,17 +34,35 @@ unsigned compare (unsigned a, unsigned b)
 static const std::string CRYPTO_KEY = "sktjdgmlq1024!";
 
 CUserDataManager::CUserDataManager()
-	: m_JsonUserDataFromXML("")
-	, m_JsonUserDataFromGoogleCloud("")
+: m_JsonUserDataFromXML("")
+, m_JsonUserDataFromGoogleCloud("")
 // 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
 //: m_IsFirstRevisionCall(false)
 //, m_IsDataLoadFinish(false)
-{
-	m_UserData = std::shared_ptr<sUSER_DATA>(new sUSER_DATA(), [](sUSER_DATA* userData)
-	{
-		delete userData;
-	});
+{}
 
+CUserDataManager::~CUserDataManager()
+{
+	std::for_each(m_UserData->_userDataListMap.begin(), m_UserData->_userDataListMap.end(), [=](std::pair<std::string, std::vector<unsigned>*> list)
+	{
+		if (list.second != nullptr)
+			delete list.second;
+	});
+}
+
+CUserDataManager* CUserDataManager::Instance()
+{
+    static CUserDataManager instance;
+    return &instance;
+}
+
+void CUserDataManager::initUserDefaultValue()
+{
+    m_UserData = std::shared_ptr<sUSER_DATA>(new sUSER_DATA(), [](sUSER_DATA* userData)
+                                             {
+                                                 delete userData;
+                                             });
+    
     Json::Value root;
     Json::Reader reader;
     
@@ -82,49 +100,33 @@ CUserDataManager::CUserDataManager()
         const Json::Value valueItem = listDataArray[dataCount];
         
         std::string dataKey = valueItem["dataKey"].asString();
-		auto emptyList = new std::vector<unsigned>();
+        auto emptyList = new std::vector<unsigned>();
         addKey("userDefaultDatas_List", dataKey);
-
-		m_UserData->_userDataListMap.emplace(std::pair<std::string, std::vector<unsigned>*>(dataKey, emptyList));
+        
+        m_UserData->_userDataListMap.emplace(std::pair<std::string, std::vector<unsigned>*>(dataKey, emptyList));
     }
     
-	if (m_UserData->_userDataKeyMap.size() == 0)
+    if (m_UserData->_userDataKeyMap.size() == 0)
     {
         CCLOG("WARNNING : There is no key of game data");
         CCASSERT(false, "No Key");
     }
 }
 
-CUserDataManager::~CUserDataManager()
+bool CUserDataManager::getIsFirstPlay()
 {
-	std::for_each(m_UserData->_userDataListMap.begin(), m_UserData->_userDataListMap.end(), [=](std::pair<std::string, std::vector<unsigned>*> list)
-	{
-		if (list.second != nullptr)
-			delete list.second;
-	});
-}
-
-CUserDataManager* CUserDataManager::Instance()
-{
-    static CUserDataManager instance;
-    return &instance;
-}
-
-void CUserDataManager::GoogleLoginResult()
-{
-    CCLOG("GoogleLoginResult : Called");
-    dataLoad();
-}
-
-void CUserDataManager::dataLoad()
-{
-	bool isFirstTimeToLoad = true;
-
     std::string crypto_key = MakeCryptoString("USER_DATA_FIRSTLOAD", CRYPTO_KEY);
-	isFirstTimeToLoad = UserDefault::getInstance()->getBoolForKey(crypto_key.c_str(), true);
+    return UserDefault::getInstance()->getBoolForKey(crypto_key.c_str(), true);
+}
 
-	if (isFirstTimeToLoad && CGoogleCloudManager::Instance()->getIsConnected())
+void CUserDataManager::UserDataLoad()
+{
+	if (getIsFirstPlay() &&
+        CGoogleCloudManager::Instance()->getIsConnected() &&
+        CSDKUtil::Instance()->getIsNetworkConnect())
 	{
+        CSDKUtil::Instance()->Toast("This is first play");
+        
 		// 첫 로드일 경우 구글 클라우드 로드를 기다린다.
 		dataLoadFromGoogleCloud();
 		dataLoadFromXML();
@@ -132,9 +134,12 @@ void CUserDataManager::dataLoad()
 	}
 	else
 	{
+        CSDKUtil::Instance()->Toast("This is not first play");
+        
 		// 첫 로드가 아닐 경우 xml에서 로드
 		dataLoadFromXML();
 		convertJsonToUserData(m_JsonUserDataFromXML);
+        __NotificationCenter::getInstance()->postNotification(NOTICE::USERDATA_LOAD_FINISH, NULL);
 	}
 
 }
@@ -165,13 +170,20 @@ void CUserDataManager::googleCloudDataLoad(std::string cryptoValue)
 
 	if (isGoogleRevisionHigher())
 	{
+        CSDKUtil::Instance()->Toast("Google revision");
+        
 		convertJsonToUserData(m_JsonUserDataFromGoogleCloud);
 		overwriteXmlByGoogleCloud(m_JsonUserDataFromGoogleCloud);
+        UserDefault::getInstance()->setBoolForKey("USER_DATA_FIRSTLOAD", false);
 	}
 	else
 	{
+        CSDKUtil::Instance()->Toast("xml revision");
+        
 		convertJsonToUserData(m_JsonUserDataFromXML);
 	}
+    
+    __NotificationCenter::getInstance()->postNotification(NOTICE::USERDATA_LOAD_FINISH, NULL);
 }
 
 void CUserDataManager::convertJsonToUserData(std::string valueJson)
@@ -287,7 +299,7 @@ bool CUserDataManager::isGoogleRevisionHigher()
 
 void CUserDataManager::overwriteXmlByGoogleCloud(std::string valueJson)
 {
-    CCLOG("Overwrite Xml by Google cloud data - value : %s ", valueJson.c_str());
+    CSDKUtil::Instance()->Toast("Overwrite to xml");
     UserDefault::getInstance()->setStringForKey("USER_DATA", valueJson);
 }
 

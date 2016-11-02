@@ -25,8 +25,8 @@ public:
 		CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
 
 		Director::getInstance()->getScheduler()->schedule([](float delta){
-			CSDKUtil::Instance()->CallSavedFuncion();
-		}, Director::getInstance(), 0.f, 0, 0.f, false, "CallSavedFuncion");
+			CSDKUtil::Instance()->CallUnityAdsSavedFunction();
+		}, Director::getInstance(), 0.f, 0, 0.f, false, "CallUnityAdsSavedFunction");
 
 		CSDKUtil::Instance()->setIsRewardUnityAdsReady(true);
 	}
@@ -36,14 +36,16 @@ public:
 		CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
 
 		Director::getInstance()->getScheduler()->schedule([](float delta){
-			CSDKUtil::Instance()->CallSavedFuncion();
-		}, Director::getInstance(), 0.f, 0, 0.f, false, "CallSavedFuncion");
+			CSDKUtil::Instance()->CallUnityAdsSavedFunction();
+		}, Director::getInstance(), 0.f, 0, 0.f, false, "CallUnityAdsSavedFunction");
 
 		CSDKUtil::Instance()->setIsNormalUnityAdsReady(true);
 	}
 
 	// 토스트창
 	void Toast(std::string content){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); }
+    
+    void IsNetworkConnect();
 };
 
 #endif

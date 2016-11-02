@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include "SDKUtil.h"
 #include "../DataManager/UserDataManager.h"
+#include "../Common/NoticeDefine.h"
 
 #if ( CC_TARGET_PLATFORM == CC_PLATFORM_IOS )
 
@@ -9,7 +10,7 @@ USING_NS_CC;
 
 CSDKUtil_IOS::CSDKUtil_IOS()
 {
-    CUserDataManager::Instance()->GoogleLoginResult();
+    __NotificationCenter::getInstance()->postNotification(NOTICE::LOGIN_RESULT, NULL);
 }
 
 CSDKUtil_IOS::~CSDKUtil_IOS()
@@ -62,5 +63,12 @@ void CSDKUtil_IOS::Toast(std::string content)
     std::string methodName = "Toast";
     CCLOG("IOS Method %s", methodName.c_str());
 }
+
+// 네트워크 연결 여부
+void CSDKUtil_IOS::IsNetworkConnect()
+{
+    
+}
+
 
 #endif

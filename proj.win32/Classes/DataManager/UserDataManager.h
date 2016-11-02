@@ -16,10 +16,11 @@ class CUserDataManager
     
 public:
     static CUserDataManager* Instance();
-    
-    void GoogleLoginResult();
+    void UserDataLoad();
 
     //getter & setter
+    void initUserDefaultValue();
+    bool getIsFirstPlay();
     unsigned getUserData_Number(std::string key);
     std::vector<unsigned>* getUserData_List(std::string key);
     bool getUserData_IsItemHave(std::string key, unsigned itemIdx);
@@ -30,11 +31,9 @@ public:
     void setUserData_Number(std::string key, unsigned value);
     void setUserData_ItemGet(std::string key, unsigned itemIdx);
     bool CoinUpdate(int value);
-    //
-    //CC_SYNTHESIZE(bool, m_IsDataLoadFinish, IsDataLoadFinish);
-
+    
 private:
-	void dataLoad();
+
 
 	void dataLoadFromXML();
 

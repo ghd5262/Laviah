@@ -1,13 +1,14 @@
 {
-	"packageUrl" : "http://www.nowtrade.co.kr/Resources/manifest/update_1.0.0",
+	"packageUrl" : "http://www.nowtrade.co.kr/Resources/manifest",
 	"remoteManifestUrl" : "http://www.nowtrade.co.kr/Resources/manifest/project_dev.manifest",
 	"remoteVersionUrl" : "http://www.nowtrade.co.kr/Resources/manifest/version_dev.manifest",
 	"version" : "1.0.0",
 	"engineVersion" : "3.0 beta",
 
 	"assets" : {
-		"imageRes/helpImg_1.jpg" : {
-			"md5" : "..."
+		"compressed1.zip" : {
+			"md5" : "...",
+			"compressed" : true
 		}
 	},
     

@@ -11,10 +11,13 @@ public:
     static cocos2d::Scene* createScene();
     virtual void update(float delta) override;
     
-    //assets downloader callback
-    void onAssetUpdateError(Ref* object);
-    void onAssetUpdateComplete(Ref* object);
-    
+    //callback
+    void callbackNetworkResult(Ref* object);
+    void callbackLoginResult(Ref* object);
+    void callbackUserDataLoadFinish(Ref* object);
+    void callbackDownloadFail(Ref* object);
+    void callbackDownloadComplete(Ref* object);
+
     //getter & setter
     static CLoadingScene* getLoadingScene(){ return m_LoadingScene; }
     
@@ -28,6 +31,7 @@ private:
     bool initVariable();
     void InitLoadingSceneUI();
     void createMenuScene();
+    void createNetworkConnectPopup();
     
 private:
     static CLoadingScene* m_LoadingScene;

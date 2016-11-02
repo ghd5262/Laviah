@@ -54,9 +54,9 @@ public class AppActivity extends Cocos2dxActivity{
     	Log.d(TAG, "AppActivty Create Start");
     	
     	m_AppActivity = this;
-    	//m_UnityAdsUtils = new UnityAdsUtils();
+    	m_UnityAdsUtils = new UnityAdsUtils();
     	m_GoogleUtils = new GoogleUtils();
-    	//m_UnityAdsUtils.init(m_AppActivity);
+    	m_UnityAdsUtils.init(m_AppActivity);
     	m_GoogleUtils.init(m_AppActivity);
     	
     	m_Handler = new Handler(){
@@ -72,9 +72,14 @@ public class AppActivity extends Cocos2dxActivity{
     }
     
     @Override
+    protected void onStart() {
+        super.onStart();
+    }
+    
+    @Override
    	protected void onResume() {
    		super.onResume();
-   		//m_UnityAdsUtils.Resume();
+   		m_UnityAdsUtils.Resume();
     }
     
     @Override
@@ -88,11 +93,6 @@ public class AppActivity extends Cocos2dxActivity{
     	m_GoogleUtils.ActivityResult(requestCode, resultCode, intent);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-    
     @Override
     protected void onStop() {
         super.onStop();
@@ -172,6 +172,13 @@ public class AppActivity extends Cocos2dxActivity{
     	m_Handler.sendMessage( new Message() );
     }
     
+    // Is Network Connect
+    public static void CPP_IsNetworkConnect()
+    {
+    	JAVA_NetworkConnect(BaseGameUtils.isNetWork(m_AppActivity));
+    }
+    
+    
     // Call Cocos2dx Function - Google Login Result
     public native static void JAVA_GoogleConnectionResult(final boolean isSucceed);
     
@@ -195,4 +202,7 @@ public class AppActivity extends Cocos2dxActivity{
     
     // Call Cocos2dx Function - UnityAds Error
     public native static void JAVA_UnityAdsError();
+    
+    // Call Cocos2dx Function - Network Connect
+    public native static void JAVA_NetworkConnect(final boolean isConnect);
 }

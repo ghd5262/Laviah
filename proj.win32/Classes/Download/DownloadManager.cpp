@@ -2,9 +2,14 @@
 #include "unzip/unzip.h"
 #include "DownloadManager.h"
 #include "../json/json.h"
-
+#include "../Common/NoticeDefine.h"
 #define	BUFFER_SIZE		8192
 #define	MAX_FILENAME	512
+
+namespace DOWNLOAD_NOTICE {
+    const static std::string DECOMPRESS_PROCESS     = "decompressProcess";
+    const static std::string DOWNLOAD_PROCESS       = "downloadProcess";
+}
 
 static string basename(const string &path) {
     size_t found = path.find_last_of("/\\");
@@ -13,146 +18,6 @@ static string basename(const string &path) {
         return path.substr(0, found);
     else
         return path;
-}
-
-static bool decompress(const string &zip) {
-	// Find root path for zip file
-	size_t pos = zip.find_last_of("/\\");
-	if (pos == std::string::npos)
-	{
-		CCLOG("AssetsManagerEx : no root path specified for zip file %s\n", zip.c_str());
-		return false;
-	}
-	const std::string rootPath = zip.substr(0, pos + 1);
-
-	// Open the zip file
-
-
-	unzFile zipfile = unzOpen(FileUtils::getInstance()->getSuitableFOpen(zip).c_str());
-
-	if (!zipfile)
-	{
-		CCLOG("AssetsManagerEx : can not open downloaded zip file %s\n", zip.c_str());
-		return false;
-	}
-
-	// Get info about the zip file
-	unz_global_info global_info;
-	if (unzGetGlobalInfo(zipfile, &global_info) != UNZ_OK)
-	{
-		CCLOG("AssetsManagerEx : can not read file global info of %s\n", zip.c_str());
-		unzClose(zipfile);
-		return false;
-	}
-
-	// Buffer to hold data read from the zip file
-	char readBuffer[BUFFER_SIZE];
-	// Loop to extract all files.
-	unsigned long i;
-	for (i = 0; i < global_info.number_entry; ++i)
-	{
-		// Get info about current file.
-		unz_file_info fileInfo;
-		char fileName[MAX_FILENAME];
-		if (unzGetCurrentFileInfo(zipfile,
-			&fileInfo,
-			fileName,
-			MAX_FILENAME,
-			NULL,
-			0,
-			NULL,
-			0) != UNZ_OK)
-		{
-			CCLOG("AssetsManagerEx : can not read compressed file info\n");
-			unzClose(zipfile);
-			return false;
-		}
-        
-        // 패키지 파일 압축을 풀기 진행 상황을 알린다.
-        Director::getInstance()->getScheduler()->performFunctionInCocosThread([=]{
-            RefValueMap values;
-            values.putInt("total", global_info.number_entry);
-            values.putInt("now", i + 1);
-            
-            __NotificationCenter::getInstance()->postNotification("CDownloadManager::onProgressDecompressPackageFile", (Ref *)&values);
-        });
-        
-		const std::string fullPath = rootPath + fileName;
-
-		// Check if this entry is a directory or a file.
-		const size_t filenameLength = strlen(fileName);
-		if (fileName[filenameLength - 1] == '/')
-		{
-			//There are not directory entry in some case.
-			//So we need to create directory when decompressing file entry
-			if (!FileUtils::getInstance()->createDirectory(basename(fullPath)))
-			{
-				// Failed to create directory
-				CCLOG("AssetsManagerEx : can not create directory %s\n", fullPath.c_str());
-				unzClose(zipfile);
-				return false;
-			}
-		}
-		else
-		{
-			// Entry is a file, so extract it.
-			// Open current file.
-			if (unzOpenCurrentFile(zipfile) != UNZ_OK)
-			{
-				CCLOG("AssetsManagerEx : can not extract file %s\n", fileName);
-				unzClose(zipfile);
-				return false;
-			}
-
-			// Create a file to store current file.
-			FILE *out = fopen(FileUtils::getInstance()->getSuitableFOpen(fullPath).c_str(), "wb");
-			if (!out)
-			{
-				CCLOG("AssetsManagerEx : can not create decompress destination file %s\n", fullPath.c_str());
-				unzCloseCurrentFile(zipfile);
-				unzClose(zipfile);
-				return false;
-			}
-
-			// Write current file content to destinate file.
-			int error = UNZ_OK;
-			do
-			{
-				error = unzReadCurrentFile(zipfile, readBuffer, BUFFER_SIZE);
-				if (error < 0)
-				{
-					CCLOG("AssetsManagerEx : can not read zip file %s, error code is %d\n", fileName, error);
-					fclose(out);
-					unzCloseCurrentFile(zipfile);
-					unzClose(zipfile);
-					return false;
-				}
-
-				if (error > 0)
-				{
-					fwrite(readBuffer, error, 1, out);
-				}
-			} while (error > 0);
-
-			fclose(out);
-		}
-
-		unzCloseCurrentFile(zipfile);
-
-		// Goto next entry listed in the zip file.
-		if ((i + 1) < global_info.number_entry)
-		{
-			if (unzGoToNextFile(zipfile) != UNZ_OK)
-			{
-				CCLOG("AssetsManagerEx : can not read next file for decompressing\n");
-				unzClose(zipfile);
-				return false;
-			}
-		}
-    }
-
-	unzClose(zipfile);
-	return true;
 }
 
 CDownloadManager::CDownloadManager()
@@ -185,8 +50,12 @@ bool CDownloadManager::init() {
     prograssLabel->setPosition(0, -15);
     addChild(prograssLabel);
     
-	__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(CDownloadManager::onProgressDownloadPackageFile), "CDownloadManager::onProgressDownloadPackageFile", NULL);
-	__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(CDownloadManager::onProgressDecompressPackageFile), "CDownloadManager::onProgressDecompressPackageFile", NULL);
+    auto createNotice = [=](cocos2d::SEL_CallFuncO selector, std::string name){
+        __NotificationCenter::getInstance()->addObserver(this, selector, name, NULL);
+    };
+    
+	createNotice(callfuncO_selector(CDownloadManager::onProgressDownloadPackageFile), DOWNLOAD_NOTICE::DOWNLOAD_PROCESS);
+	createNotice(callfuncO_selector(CDownloadManager::onProgressDecompressPackageFile), DOWNLOAD_NOTICE::DECOMPRESS_PROCESS);
 
 	return true;
 }
@@ -214,7 +83,7 @@ void CDownloadManager::onEnter() {
     }
     else{
         // 클라이언트 리소스 버전 파일을 읽어들이는데 실패했다면 로고 화면으로 전환한다.
-        __NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateError", NULL);
+        sendNotice(NOTICE::DOWN_ERROR);
         removeFromParentAndCleanup(true);
         return;
     }
@@ -271,7 +140,7 @@ void CDownloadManager::onDownloadVersionFile(HttpClient *client, HttpResponse *r
 
 	// 리소스 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
 	if (response == NULL) {
-		__NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateError", NULL);
+		sendNotice(NOTICE::DOWN_ERROR);
 		removeFromParentAndCleanup(true);
 		return;
 	}
@@ -303,7 +172,7 @@ void CDownloadManager::onDownloadVersionFile(HttpClient *client, HttpResponse *r
     // 클라이언트 리소스가 최신 버전이면 업데이트를 완료한다.
     if (m_ClientVersion >= serverVersion) {
         CCLOG("Do not have to update. Already latest file");
-        __NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateComplete", NULL);
+        sendNotice(NOTICE::DOWN_COMPLETE);
         removeFromParentAndCleanup(true);
         return;
     }
@@ -345,7 +214,7 @@ void CDownloadManager::downloadNextPackageFile() {
 		auto versionFilePath = FileUtils::getInstance()->getWritablePath() + "update/package.json";
 		saveVersionFile(versionFilePath, m_ServerVersionFileData);
 
-		__NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateComplete", NULL);
+		sendNotice(NOTICE::DOWN_COMPLETE);
 		removeFromParentAndCleanup(true);
 		return;
     }
@@ -374,7 +243,7 @@ void CDownloadManager::downloadNextPackageFile() {
                 
                 CCLOG("Download %d / %d", now, total);
                 
-				__NotificationCenter::getInstance()->postNotification("CDownloadManager::onProgressDownloadPackageFile", (Ref *)&values);
+				sendNotice(DOWNLOAD_NOTICE::DOWNLOAD_PROCESS, (Ref *)&values);
 
                 
 				// 다운로드가 완료되었다면
@@ -406,7 +275,7 @@ void CDownloadManager::onDownloadPackageFile(HttpClient *client, HttpResponse *r
 
 	// 애셋 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
 	if (response == NULL) {
-		__NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateError", NULL);
+		sendNotice(NOTICE::DOWN_ERROR);
 		removeFromParentAndCleanup(true);
 		return;
 	}
@@ -460,7 +329,7 @@ void CDownloadManager::decompressPackageFile(int fileIdx) {
             
             // 패키지 파일의 압축을 푸는데 실패하면 로고 화면으로 전환한다.
             if (!decompress(packageFilePath)) {
-                __NotificationCenter::getInstance()->postNotification("CLoadingScene::onAssetUpdateError", NULL);
+                sendNotice(NOTICE::DOWN_ERROR);
                 removeFromParentAndCleanup(true);
                 return;
             }
@@ -525,4 +394,149 @@ bool CDownloadManager::savePackageFile(const string &path, const vector<char> *b
 	fclose(f);
 
 	return true;
+}
+
+bool CDownloadManager::decompress(const string &zip) {
+    // Find root path for zip file
+    size_t pos = zip.find_last_of("/\\");
+    if (pos == std::string::npos)
+    {
+        CCLOG("AssetsManagerEx : no root path specified for zip file %s\n", zip.c_str());
+        return false;
+    }
+    const std::string rootPath = zip.substr(0, pos + 1);
+    
+    // Open the zip file
+    
+    
+    unzFile zipfile = unzOpen(FileUtils::getInstance()->getSuitableFOpen(zip).c_str());
+    
+    if (!zipfile)
+    {
+        CCLOG("AssetsManagerEx : can not open downloaded zip file %s\n", zip.c_str());
+        return false;
+    }
+    
+    // Get info about the zip file
+    unz_global_info global_info;
+    if (unzGetGlobalInfo(zipfile, &global_info) != UNZ_OK)
+    {
+        CCLOG("AssetsManagerEx : can not read file global info of %s\n", zip.c_str());
+        unzClose(zipfile);
+        return false;
+    }
+    
+    // Buffer to hold data read from the zip file
+    char readBuffer[BUFFER_SIZE];
+    // Loop to extract all files.
+    unsigned long i;
+    for (i = 0; i < global_info.number_entry; ++i)
+    {
+        // Get info about current file.
+        unz_file_info fileInfo;
+        char fileName[MAX_FILENAME];
+        if (unzGetCurrentFileInfo(zipfile,
+                                  &fileInfo,
+                                  fileName,
+                                  MAX_FILENAME,
+                                  NULL,
+                                  0,
+                                  NULL,
+                                  0) != UNZ_OK)
+        {
+            CCLOG("AssetsManagerEx : can not read compressed file info\n");
+            unzClose(zipfile);
+            return false;
+        }
+        
+        // 패키지 파일 압축을 풀기 진행 상황을 알린다.
+        Director::getInstance()->getScheduler()->performFunctionInCocosThread([=]{
+            RefValueMap values;
+            values.putInt("total", global_info.number_entry);
+            values.putInt("now", i + 1);
+            
+            sendNotice(DOWNLOAD_NOTICE::DECOMPRESS_PROCESS, (Ref *)&values);
+        });
+        
+        const std::string fullPath = rootPath + fileName;
+        
+        // Check if this entry is a directory or a file.
+        const size_t filenameLength = strlen(fileName);
+        if (fileName[filenameLength - 1] == '/')
+        {
+            //There are not directory entry in some case.
+            //So we need to create directory when decompressing file entry
+            if (!FileUtils::getInstance()->createDirectory(basename(fullPath)))
+            {
+                // Failed to create directory
+                CCLOG("AssetsManagerEx : can not create directory %s\n", fullPath.c_str());
+                unzClose(zipfile);
+                return false;
+            }
+        }
+        else
+        {
+            // Entry is a file, so extract it.
+            // Open current file.
+            if (unzOpenCurrentFile(zipfile) != UNZ_OK)
+            {
+                CCLOG("AssetsManagerEx : can not extract file %s\n", fileName);
+                unzClose(zipfile);
+                return false;
+            }
+            
+            // Create a file to store current file.
+            FILE *out = fopen(FileUtils::getInstance()->getSuitableFOpen(fullPath).c_str(), "wb");
+            if (!out)
+            {
+                CCLOG("AssetsManagerEx : can not create decompress destination file %s\n", fullPath.c_str());
+                unzCloseCurrentFile(zipfile);
+                unzClose(zipfile);
+                return false;
+            }
+            
+            // Write current file content to destinate file.
+            int error = UNZ_OK;
+            do
+            {
+                error = unzReadCurrentFile(zipfile, readBuffer, BUFFER_SIZE);
+                if (error < 0)
+                {
+                    CCLOG("AssetsManagerEx : can not read zip file %s, error code is %d\n", fileName, error);
+                    fclose(out);
+                    unzCloseCurrentFile(zipfile);
+                    unzClose(zipfile);
+                    return false;
+                }
+                
+                if (error > 0)
+                {
+                    fwrite(readBuffer, error, 1, out);
+                }
+            } while (error > 0);
+            
+            fclose(out);
+        }
+        
+        unzCloseCurrentFile(zipfile);
+        
+        // Goto next entry listed in the zip file.
+        if ((i + 1) < global_info.number_entry)
+        {
+            if (unzGoToNextFile(zipfile) != UNZ_OK)
+            {
+                CCLOG("AssetsManagerEx : can not read next file for decompressing\n");
+                unzClose(zipfile);
+                return false;
+            }
+        }
+    }
+    
+    unzClose(zipfile);
+    return true;
+}
+
+void CDownloadManager::sendNotice(std::string key, Ref* sender/* = nullptr*/)
+{
+    __NotificationCenter::getInstance()->postNotification(key, sender);
 }

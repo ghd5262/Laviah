@@ -406,7 +406,6 @@
 		9373114C1D5849C800D5EB5C /* SceneTransition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneTransition.cpp; sourceTree = "<group>"; };
 		9373114D1D5849C800D5EB5C /* SceneTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneTransition.h; sourceTree = "<group>"; };
 		9373114F1D5849C800D5EB5C /* SDKUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDKUtil.cpp; sourceTree = "<group>"; };
-		937311501D5849C800D5EB5C /* SDKUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKUtil.h; sourceTree = "<group>"; };
 		937311511D5849C800D5EB5C /* SDKUtil_AOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDKUtil_AOS.cpp; sourceTree = "<group>"; };
 		937311521D5849C800D5EB5C /* SDKUtil_AOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKUtil_AOS.h; sourceTree = "<group>"; };
 		937311531D5849C800D5EB5C /* SDKUtil_IOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDKUtil_IOS.cpp; sourceTree = "<group>"; };
@@ -421,6 +420,8 @@
 		937311B01D5849D500D5EB5C /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		937311B11D5849D500D5EB5C /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		93865F3E1D588C39007ECE5A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
+		939694091DC990EF008B2CD2 /* SDKUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKUtil.h; sourceTree = "<group>"; };
+		9396940A1DC9CE17008B2CD2 /* NoticeDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoticeDefine.h; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -675,6 +676,7 @@
 				937310AE1D5849C700D5EB5C /* Defines.h */,
 				937310B01D5849C700D5EB5C /* HSHUitlity.cpp */,
 				937310B11D5849C700D5EB5C /* HSHUtility.h */,
+				9396940A1DC9CE17008B2CD2 /* NoticeDefine.h */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -906,12 +908,12 @@
 			isa = PBXGroup;
 			children = (
 				9373114F1D5849C800D5EB5C /* SDKUtil.cpp */,
-				937311501D5849C800D5EB5C /* SDKUtil.h */,
 				937311511D5849C800D5EB5C /* SDKUtil_AOS.cpp */,
 				937311521D5849C800D5EB5C /* SDKUtil_AOS.h */,
 				937311531D5849C800D5EB5C /* SDKUtil_IOS.cpp */,
 				937311541D5849C800D5EB5C /* SDKUtil_IOS.h */,
 				937311551D5849C800D5EB5C /* SDKUtil_WIN.h */,
+				939694091DC990EF008B2CD2 /* SDKUtil.h */,
 			);
 			path = SDKUtil;
 			sourceTree = "<group>";

@@ -14,8 +14,8 @@ CSDKUtil* CSDKUtil::Instance()
 CSDKUtil::CSDKUtil()
 	: m_SDKUtil(nullptr)
 	, m_SavedFunc(nullptr)
-	, m_isNormalUnityAdsReady(false)
-	, m_isRewardUnityAdsReady(false)
+	, m_IsNormalUnityAdsReady(false)
+	, m_IsRewardUnityAdsReady(false)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	CCLOG("SDKUtil_IOS");
@@ -35,62 +35,68 @@ CSDKUtil::~CSDKUtil()
 		delete m_SDKUtil;
 }
 
-// ±¸±Û ·Î±×ÀÎ
+// Â±âˆÂ±â‚¬ âˆ‘Å’Â±â—ŠÂ¿Å’
 void CSDKUtil::GoogleLogin(){
 	m_SDKUtil->GoogleLogin();
 }
 
-// ±¸±Û Å¬¶ó¿ìµå ÀúÀå Key / Value(json)
+// Â±âˆÂ±â‚¬ â‰ˆÂ¨âˆ‚Ã›Ã¸ÃÂµÃ‚ Â¿Ë™Â¿Ã‚ Key / Value(json)
 void CSDKUtil::GoogleCloudSave(std::string key, std::string value)
 {
 	m_SDKUtil->GoogleCloudSave(key, value);
 }
 
-// ±¸±Û Å¬¶ó¿ìµå ·Îµå Key
+// Â±âˆÂ±â‚¬ â‰ˆÂ¨âˆ‚Ã›Ã¸ÃÂµÃ‚ âˆ‘Å’ÂµÃ‚ Key
 void CSDKUtil::GoogleCloudLoad(std::string key)
 {
 	m_SDKUtil->GoogleCloudLoad(key);
 }
 
-void CSDKUtil::saveFunctionForCallBack(const std::function<void(void)> &func)
+void CSDKUtil::saveFuncUnityAdsCallBack(const std::function<void(void)> &func)
 {
 	if (func == nullptr)
 		CCASSERT(false, "Saving Function is null");
 	m_SavedFunc = func;
 }
 
-// À¯´ÏÆ¼ ¾Öµå º¸»óÇü ±¤°í
+// Â¿Ã˜Â¥Å“âˆ†Âº Ã¦Ã·ÂµÃ‚ âˆ«âˆÂªÃ›Â«Â¸ Â±Â§âˆÃŒ
 void CSDKUtil::ShowRewardUnityAds(const std::function<void(void)> &func)
 {
-	if (m_isRewardUnityAdsReady){
-		m_isRewardUnityAdsReady = false;
-		saveFunctionForCallBack(func);
+	if (m_IsRewardUnityAdsReady){
+		m_IsRewardUnityAdsReady = false;
+		saveFuncUnityAdsCallBack(func);
 		m_SDKUtil->ShowRewardUnityAds();
 	}
 }
 
-// À¯´ÏÆ¼ ¾Öµå ÀÏ¹İ ±¤°í
+// Â¿Ã˜Â¥Å“âˆ†Âº Ã¦Ã·ÂµÃ‚ Â¿Å“Ï€â€º Â±Â§âˆÃŒ
 void CSDKUtil::ShowNormalUnityAds(const std::function<void(void)> &func)
 {
-	if (m_isNormalUnityAdsReady){
-		m_isNormalUnityAdsReady = false;
-		saveFunctionForCallBack(func);
+	if (m_IsNormalUnityAdsReady){
+		m_IsNormalUnityAdsReady = false;
+		saveFuncUnityAdsCallBack(func);
 		m_SDKUtil->ShowNormalUnityAds();
 	}
 }
-// Åä½ºÆ®Ã¢
+// â‰ˆâ€°Î©âˆ«âˆ†Ã†âˆšÂ¢
 void CSDKUtil::Toast(std::string content)
 {
 	m_SDKUtil->Toast(content);
 }
 
-// ÀúÀåµÈ ÇÔ¼ö È£Ãâ
-void CSDKUtil::CallSavedFuncion()
+// ë„¤íŠ¸ì›Œí¬ ì—°ê²° ì—¬ë¶€
+void CSDKUtil::IsNetworkConnect()
+{
+    m_SDKUtil->IsNetworkConnect();
+}
+
+// Â¿Ë™Â¿Ã‚ÂµÂ» Â«â€˜ÂºË† Â»Â£âˆšâ€š
+void CSDKUtil::CallUnityAdsSavedFunction()
 {
 	if (m_SavedFunc != nullptr)
 	{
 		m_SavedFunc();
-		m_SavedFunc = nullptr;	// ÇÑ¹ø È£ÃâÇÏ¸é »èÁ¦ 
+		m_SavedFunc = nullptr;	// Â«â€”Ï€Â¯ Â»Â£âˆšâ€šÂ«Å“âˆÃˆ ÂªÃ‹Â¡Â¶ 
 	}
 	else
 		CCASSERT(false, "No Function was saved.");

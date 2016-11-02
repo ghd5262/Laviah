@@ -25,6 +25,9 @@ public:
     
     // 토스트창
     void Toast(std::string content);
+    
+    // 네트워크 연결 여부
+    void IsNetworkConnect();
 
 private:
     void JavaCallMethod(const char* methodName);

@@ -3,7 +3,9 @@ package org.cocos2dx.cpp;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.IntentSender;
+import android.net.ConnectivityManager;
 import android.util.Log;
 
 import kr.HongSeongHee.StarStarStar.R;
@@ -180,4 +182,19 @@ public class BaseGameUtils {
                 .create();
     }
 
+    public static Boolean isNetWork(Activity activity){
+ 		ConnectivityManager manager = (ConnectivityManager) activity.getSystemService (Context.CONNECTIVITY_SERVICE);
+ 		boolean isMobileAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isAvailable();
+ 		boolean isMobileConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+ 		boolean isWifiAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isAvailable();
+ 		boolean isWifiConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+
+ 		if ((isWifiAvailable && isWifiConnect) || (isMobileAvailable && isMobileConnect)){
+ 			Log.d("Network", "Network is connected");
+ 			return true;
+ 		}else{
+ 			Log.d("Network", "Network is not connected");
+ 			return false;
+ 		}
+ 	}
 }
