@@ -5,6 +5,7 @@
 #include "../Common/HSHUtility.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
+#include "../Common/NoticeDefine.h"
 
 class CSDKUtil_WIN{
 public:
@@ -12,7 +13,10 @@ public:
 	~CSDKUtil_WIN(){};
 
 	// 구글 로그인
-	void GoogleLogin(){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); CUserDataManager::Instance()->GoogleLoginResult(); };
+	void GoogleLogin(){
+		CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); 
+		__NotificationCenter::getInstance()->postNotification(NOTICE::LOGIN_RESULT, NULL);
+	};
 
 	// 구글 클라우드 저장 Key / Value
 	void GoogleCloudSave(std::string key, std::string value){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); }
@@ -45,7 +49,10 @@ public:
 	// 토스트창
 	void Toast(std::string content){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); }
     
-    void IsNetworkConnect();
+	void IsNetworkConnect(){ 
+		__NotificationCenter::getInstance()->postNotification(NOTICE::NETWORK_RESULT, NULL);
+		CSDKUtil::Instance()->setIsNetworkConnect(true);
+	};
 };
 
 #endif

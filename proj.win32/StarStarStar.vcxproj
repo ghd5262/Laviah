@@ -148,8 +148,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Classes\AssetDownload\AssetPanel.cpp" />
     <ClCompile Include="Classes\DataManager\GradientDataManager.cpp" />
+    <ClCompile Include="Classes\Download\DownloadManager.cpp" />
     <ClCompile Include="Classes\GameObject\Alien.cpp" />
     <ClCompile Include="Classes\AI\States\AlienStates.cpp" />
     <ClCompile Include="Classes\AI\States\BulletStates.cpp" />
@@ -217,25 +217,26 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\Particle\Particles.cpp" />
     <ClCompile Include="Classes\Scene\EmptyScene.cpp" />
     <ClCompile Include="Classes\Scene\GameScene.cpp" />
-    <ClCompile Include="Classes\Scene\LoadingScene.cpp" />
     <ClCompile Include="Classes\Scene\MenuScene.cpp" />
     <ClCompile Include="Classes\Scene\SceneTransition.cpp" />
     <ClCompile Include="Classes\SDKUtil\SDKUtil_AOS.cpp" />
+    <ClCompile Include="Classes\SDKUtil\SDKUtil.cpp" />
     <ClCompile Include="Classes\Shaders\ShaderEffect.cpp" />
     <ClCompile Include="Classes\Task\PoolingManager.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\GachaPopup.cpp" />
     <ClCompile Include="Classes\AI\States\SpaceShipStates.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\GoogleCloudTestPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\GoogleCloudTestPopupDP.cpp" />
+    <ClCompile Include="Classes\Scene\LoadingScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Classes\SDKUtil\SDKUtil_IOS.cpp" />
     <ClCompile Include="Classes\GameObject\SpaceShip.cpp" />
     <ClCompile Include="Classes\GameObject\MenuSceneObjectManager.cpp" />
-    <ClCompile Include="Classes\SDKUtil\SDKUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Classes\AssetDownload\AssetPanel.h" />
+    <ClInclude Include="Classes\Common\NoticeDefine.h" />
     <ClInclude Include="Classes\DataManager\GradientDataManager.h" />
+    <ClInclude Include="Classes\Download\DownloadManager.h" />
     <ClInclude Include="Classes\GameObject\Alien.h" />
     <ClInclude Include="Classes\AI\StateMachine.h" />
     <ClInclude Include="Classes\AI\States\AlienStates.h" />
@@ -316,9 +317,9 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\Particle\Particles.h" />
     <ClInclude Include="Classes\Scene\EmptyScene.h" />
     <ClInclude Include="Classes\Scene\GameScene.h" />
-    <ClInclude Include="Classes\Scene\LoadingScene.h" />
     <ClInclude Include="Classes\Scene\MenuScene.h" />
     <ClInclude Include="Classes\Scene\SceneTransition.h" />
+    <ClInclude Include="Classes\SDKUtil\SDKUtil.h" />
     <ClInclude Include="Classes\SDKUtil\SDKUtil_AOS.h" />
     <ClInclude Include="Classes\SDKUtil\SDKUtil_IOS.h" />
     <ClInclude Include="Classes\SDKUtil\SDKUtil_WIN.h" />
@@ -328,10 +329,10 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\AI\States\SpaceShipStates.h" />
     <ClInclude Include="Classes\MyUI\Popup\GoogleCloudTestPopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\GoogleCloudTestPopupDP.h" />
+    <ClInclude Include="Classes\Scene\LoadingScene.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Classes\GameObject\SpaceShip.h" />
     <ClInclude Include="Classes\GameObject\MenuSceneObjectManager.h" />
-    <ClInclude Include="Classes\SDKUtil\SDKUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cocos2d\cocos\2d\libcocos2d.vcxproj">

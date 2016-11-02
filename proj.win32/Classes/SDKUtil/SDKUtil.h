@@ -5,51 +5,51 @@ class CSDKUtil_AOS;
 class CSDKUtil_IOS;
 class CSDKUtil_WIN;
 class CSDKUtil{
-    public:
-    static CSDKUtil* Instance();
-    
-    // êµ¬ê¸€ ë¡œê·¸ì¸
-    void GoogleLogin();
-    
-    // êµ¬ê¸€ í´ë¼ìš°ë“œ ì €ì¥ Key / Value
-    void GoogleCloudSave(std::string key, std::string value);
-    
-    // êµ¬ê¸€ í´ë¼ìš°ë“œ ë¡œë“œ Key
-    void GoogleCloudLoad(std::string key);
-    
-    // ìœ ë‹ˆí‹° ì• ë“œ ë³´ìƒí˜• ê´‘ê³ 
-    void ShowRewardUnityAds(const std::function<void(void)> &func);
-    
-    // ìœ ë‹ˆí‹° ì• ë“œ ì¼ë°˜ ê´‘ê³ 
-    void ShowNormalUnityAds(const std::function<void(void)> &func);
-    
-    // í† ìŠ¤íŠ¸ì°½
-    void Toast(std::string content);
-    
-    // ë„¤íŠ¸ì›Œí¬ ì—°ê²° ì—¬ë¶€
-    void IsNetworkConnect();
-    
-    // ì €ì¥ëœ í•¨ìˆ˜ í˜¸ì¶œ
-    void CallUnityAdsSavedFunction();
-    
-    private:
-    void saveFuncUnityAdsCallBack(const std::function<void(void)> &func);
-    
-    CSDKUtil();
-    ~CSDKUtil();
-    
-    CC_SYNTHESIZE(bool, m_IsRewardUnityAdsReady, IsRewardUnityAdsReady);
-    CC_SYNTHESIZE(bool, m_IsNormalUnityAdsReady, IsNormalUnityAdsReady);
-    CC_SYNTHESIZE(bool, m_IsNetworkConnect, IsNetworkConnect);
-    
-    private:
+public:
+	static CSDKUtil* Instance();
+
+	// ±¸±Û ·Î±×ÀÎ
+	void GoogleLogin();
+
+	// ±¸±Û Å¬¶ó¿ìµå ÀúÀå Key / Value
+	void GoogleCloudSave(std::string key, std::string value);
+
+	// ±¸±Û Å¬¶ó¿ìµå ·Îµå Key
+	void GoogleCloudLoad(std::string key);
+
+	// À¯´ÏÆ¼ ¾Öµå º¸»óÇü ±¤°í
+	void ShowRewardUnityAds(const std::function<void(void)> &func);
+
+	// À¯´ÏÆ¼ ¾Öµå ÀÏ¹İ ±¤°í
+	void ShowNormalUnityAds(const std::function<void(void)> &func);
+
+	// Åä½ºÆ®Ã¢
+	void Toast(std::string content);
+
+	// ³×Æ®¿öÅ© ¿¬°á ¿©ºÎ
+	void IsNetworkConnect();
+
+	// ÀúÀåµÈ ÇÔ¼ö È£Ãâ
+	void CallUnityAdsSavedFunction();
+
+private:
+	void saveFuncUnityAdsCallBack(const std::function<void(void)> &func);
+
+	CSDKUtil();
+	~CSDKUtil();
+
+	CC_SYNTHESIZE(bool, m_IsRewardUnityAdsReady, IsRewardUnityAdsReady);
+	CC_SYNTHESIZE(bool, m_IsNormalUnityAdsReady, IsNormalUnityAdsReady);
+	CC_SYNTHESIZE(bool, m_IsNetworkConnect, IsNetworkConnect);
+
+private:
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    CSDKUtil_IOS* m_SDKUtil;
+	CSDKUtil_IOS* m_SDKUtil;
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    CSDKUtil_AOS* m_SDKUtil;
+	CSDKUtil_AOS* m_SDKUtil;
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-    CSDKUtil_WIN* m_SDKUtil;
+	CSDKUtil_WIN* m_SDKUtil;
 #endif
-    
-    std::function<void(void)> m_SavedFunc;
+
+	std::function<void(void)> m_SavedFunc;
 };

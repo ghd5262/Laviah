@@ -39,7 +39,12 @@ CUserDataManager::CUserDataManager()
 // 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
 //: m_IsFirstRevisionCall(false)
 //, m_IsDataLoadFinish(false)
-{}
+{
+	m_UserData = std::shared_ptr<sUSER_DATA>(new sUSER_DATA(), [](sUSER_DATA* userData)
+	{
+		delete userData;
+	});
+}
 
 CUserDataManager::~CUserDataManager()
 {
@@ -58,11 +63,6 @@ CUserDataManager* CUserDataManager::Instance()
 
 void CUserDataManager::initUserDefaultValue()
 {
-    m_UserData = std::shared_ptr<sUSER_DATA>(new sUSER_DATA(), [](sUSER_DATA* userData)
-                                             {
-                                                 delete userData;
-                                             });
-    
     Json::Value root;
     Json::Reader reader;
     

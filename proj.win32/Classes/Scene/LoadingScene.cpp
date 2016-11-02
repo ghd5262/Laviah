@@ -16,152 +16,152 @@ CLoadingScene* CLoadingScene::m_LoadingScene = nullptr;
 
 Scene* CLoadingScene::createScene()
 {
-    // 'scene' is an autorelease object
-    auto scene = Scene::create();
-    
-    // 'layer' is an autorelease object
-    auto layer = CLoadingScene::create();
-    // add layer as a child to scene
-    scene->setAnchorPoint(Vec2(0, 0));
-    layer->setAnchorPoint(Vec2(0, 0));
-    scene->addChild(layer);
-    
-    return scene;
+	// 'scene' is an autorelease object
+	auto scene = Scene::create();
+
+	// 'layer' is an autorelease object
+	auto layer = CLoadingScene::create();
+	// add layer as a child to scene
+	scene->setAnchorPoint(Vec2(0, 0));
+	layer->setAnchorPoint(Vec2(0, 0));
+	scene->addChild(layer);
+
+	return scene;
 }
 
 CLoadingScene::~CLoadingScene()
 {
-    __NotificationCenter::getInstance()->removeAllObservers(this);
-    removeAllChildrenWithCleanup(true);
-    clearData();
+	__NotificationCenter::getInstance()->removeAllObservers(this);
+	removeAllChildrenWithCleanup(true);
+	clearData();
 }
 
 void CLoadingScene::clearData()
 {
-    m_LoadingScene = nullptr;
+	m_LoadingScene = nullptr;
 }
 
 bool CLoadingScene::init()
 {
-    scheduleUpdate();
-    if (!Layer::init())
-    {
-        return false;
-    }
-    
-    if (!initVariable())
-        return false;
-    return true;
+	scheduleUpdate();
+	if (!Layer::init())
+	{
+		return false;
+	}
+
+	if (!initVariable())
+		return false;
+	return true;
 }
 
 bool CLoadingScene::initVariable()
 {
-    try
-    {
-        clearData();
-        m_LoadingScene = this;
-  
-        auto createNotice = [=](cocos2d::SEL_CallFuncO selector, std::string name){
-            __NotificationCenter::getInstance()->addObserver(this, selector, name, NULL);
-        };
-        
-        createNotice(callfuncO_selector(CLoadingScene::callbackNetworkResult), NOTICE::NETWORK_RESULT);
-        createNotice(callfuncO_selector(CLoadingScene::callbackLoginResult), NOTICE::LOGIN_RESULT);
-        createNotice(callfuncO_selector(CLoadingScene::callbackUserDataLoadFinish), NOTICE::USERDATA_LOAD_FINISH);
-        createNotice(callfuncO_selector(CLoadingScene::callbackDownloadFail), NOTICE::DOWN_ERROR);
-        createNotice(callfuncO_selector(CLoadingScene::callbackDownloadComplete), NOTICE::DOWN_COMPLETE);
-        
-        CUserDataManager::Instance();
-        CSDKUtil::Instance()->IsNetworkConnect();
-        
-        InitLoadingSceneUI();
-    }
-    catch (...){
-        CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-        assert(false);
-        return false;
-    }
-    return true;
+	try
+	{
+		clearData();
+		m_LoadingScene = this;
+
+		auto createNotice = [=](cocos2d::SEL_CallFuncO selector, std::string name){
+			__NotificationCenter::getInstance()->addObserver(this, selector, name, NULL);
+		};
+
+		createNotice(callfuncO_selector(CLoadingScene::callbackNetworkResult), NOTICE::NETWORK_RESULT);
+		createNotice(callfuncO_selector(CLoadingScene::callbackLoginResult), NOTICE::LOGIN_RESULT);
+		createNotice(callfuncO_selector(CLoadingScene::callbackUserDataLoadFinish), NOTICE::USERDATA_LOAD_FINISH);
+		createNotice(callfuncO_selector(CLoadingScene::callbackDownloadFail), NOTICE::DOWN_ERROR);
+		createNotice(callfuncO_selector(CLoadingScene::callbackDownloadComplete), NOTICE::DOWN_COMPLETE);
+
+		CUserDataManager::Instance();
+		CSDKUtil::Instance()->IsNetworkConnect();
+
+		InitLoadingSceneUI();
+	}
+	catch (...){
+		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
+		assert(false);
+		return false;
+	}
+	return true;
 }
 
 void CLoadingScene::InitLoadingSceneUI()
 {
-    
+
 }
 
 void CLoadingScene::callbackNetworkResult(Ref* object)
 {
-    // ì²« ì‹¤í–‰ ì´ë¼ë©´ ì¸í„°ë„· ì—°ê²° í•˜ë¼ëŠ” íŒì—…
-    if(CUserDataManager::Instance()->getIsFirstPlay() &&
-       !CSDKUtil::Instance()->getIsNetworkConnect())
-    {
-        createNetworkConnectPopup();
-    }
-    else{
-        if(CSDKUtil::Instance()->getIsNetworkConnect()){
-            // ì¸í„°ë„· ì—°ê²°ë˜ì–´ ìžˆë‹¤ë©´ íŒ¨í‚¤ì§€ ë²„ì „ ë¹„êµ í›„ ì •ìƒ ì‹¤í–‰
-            m_Downlaoder = CDownloadManager::create();
-            addChild(m_Downlaoder);
-        }
-        else{
-            __NotificationCenter::getInstance()->postNotification(NOTICE::DOWN_COMPLETE, nullptr);
-        }
-    }
+	// Ã¹ ½ÇÇà ÀÌ¶ó¸é ÀÎÅÍ³Ý ¿¬°á ÇÏ¶ó´Â ÆË¾÷
+	if (CUserDataManager::Instance()->getIsFirstPlay() &&
+		!CSDKUtil::Instance()->getIsNetworkConnect())
+	{
+		createNetworkConnectPopup();
+	}
+	else{
+		if (CSDKUtil::Instance()->getIsNetworkConnect()){
+			// ÀÎÅÍ³Ý ¿¬°áµÇ¾î ÀÖ´Ù¸é ÆÐÅ°Áö ¹öÀü ºñ±³ ÈÄ Á¤»ó ½ÇÇà
+			m_Downlaoder = CDownloadManager::create();
+			addChild(m_Downlaoder);
+		}
+		else{
+			__NotificationCenter::getInstance()->postNotification(NOTICE::DOWN_COMPLETE, nullptr);
+		}
+	}
 }
 
 void CLoadingScene::callbackDownloadFail(Ref* object)
 {
-    
+
 }
 
 void CLoadingScene::callbackDownloadComplete(Ref* object)
 {
-    // ë¡œê·¸ì¸
-    CSDKUtil::Instance()->GoogleLogin();
+	// ·Î±×ÀÎ
+	CSDKUtil::Instance()->GoogleLogin();
 }
 
 void CLoadingScene::callbackLoginResult(Ref* object)
 {
-    CUserDataManager::Instance()->initUserDefaultValue();
-    CUserDataManager::Instance()->UserDataLoad();
+	CUserDataManager::Instance()->initUserDefaultValue();
+	CUserDataManager::Instance()->UserDataLoad();
 }
 
 void CLoadingScene::callbackUserDataLoadFinish(Ref* object)
 {
-    // ë°ì´í„° ë¡œë”© ì™„ë£Œ í›„ íŒ¨í‚¤ì§€ ë‹¤ìš´ë¡œë“œ
-    createMenuScene();
+	// µ¥ÀÌÅÍ ·Îµù ¿Ï·á ÈÄ ÆÐÅ°Áö ´Ù¿î·Îµå
+	createMenuScene();
 }
 
 void CLoadingScene::createMenuScene()
 {
-    Director::getInstance()->getScheduler()->schedule([](float delta){
-        
-        auto tempScene = CEmptyScene::createScene();
-        Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
-        
-        Director::getInstance()->getScheduler()->schedule([](float delta){
-            auto Scene = CMenuScene::createScene();
-            Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
-        }, Director::getInstance(), 1.f, 0, 0.f, false, "createMenuScene");
-        
-    }, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
+	Director::getInstance()->getScheduler()->schedule([](float delta){
+
+		auto tempScene = CEmptyScene::createScene();
+		Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
+
+		Director::getInstance()->getScheduler()->schedule([](float delta){
+			auto Scene = CMenuScene::createScene();
+			Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
+		}, Director::getInstance(), 1.f, 0, 0.f, false, "createMenuScene");
+
+	}, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
 }
 
 void CLoadingScene::createNetworkConnectPopup()
 {
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    
-    auto popup = CPopup::createWithOneButton("Please connect to the internet \n to download resources.",
-                                             CMyButton::createWithLayerColor(Size(430, 150), Color4B(0, 0, 0, 255 * 0.8f), "OK", 40, Color3B::WHITE,
-                                                                             END, [=](){
-                                                                                 CSDKUtil::Instance()->IsNetworkConnect();
-                                                                             }), 40);
-    popup->setPosition(visibleSize / 2);
-    popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    this->addChild(popup);
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+
+	auto popup = CPopup::createWithOneButton("Please connect to the internet \n to download resources.",
+		CMyButton::createWithLayerColor(Size(430, 150), Color4B(0, 0, 0, 255 * 0.8f), "OK", 40, Color3B::WHITE,
+		END, [=](){
+		CSDKUtil::Instance()->IsNetworkConnect();
+	}), 40);
+	popup->setPosition(visibleSize / 2);
+	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	this->addChild(popup);
 }
 
 void CLoadingScene::update(float delta)
 {
-    //    m_LoadingImg->Rotation(1, delta);
+	//    m_LoadingImg->Rotation(1, delta);
 }
