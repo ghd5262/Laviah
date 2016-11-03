@@ -64,7 +64,7 @@ bool CGoogleCloudTestAddKeyDP::initVariable()
         }
 
         auto dpAddKeyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
-                                                        ,"ADD KEY" , 40, g_labelColor2, END, std::bind(&CGoogleCloudTestAddKeyDP::Buy, this), EFFECT_SIZEDOWN);
+			, "ADD KEY", 40, g_labelColor2, END, [=](Node* sender){this->Buy(sender); }, EFFECT_SIZEDOWN);
         if (dpAddKeyBtn != nullptr)
         {
             dpAddKeyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -79,7 +79,7 @@ bool CGoogleCloudTestAddKeyDP::initVariable()
     return true;
 }
 
-void CGoogleCloudTestAddKeyDP::Buy()
+void CGoogleCloudTestAddKeyDP::Buy(Node* sender)
 {
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -90,7 +90,7 @@ void CGoogleCloudTestAddKeyDP::Buy()
                                                   40,
                                                   Color3B::WHITE,
                                                   END,
-                                                  [this](){
+												  [this](Node* sender){
 //                                                      CUserDataManager::Instance()->addKey(m_TextField->getText());
                                                       m_TextField->setText("");
                                                   }, EFFECT_ALPHA);
@@ -101,7 +101,7 @@ void CGoogleCloudTestAddKeyDP::Buy()
                                                  40,
                                                  Color3B::WHITE,
                                                  END,
-                                                 [](){}, EFFECT_ALPHA);
+												 [](Node* sender){}, EFFECT_ALPHA);
     
     auto popup = CPopup::createWithTwoButton("Are you sure you want to save the key?"
                                              , btnNo, btnYes, 40, Color3B::BLACK);

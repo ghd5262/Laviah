@@ -36,12 +36,13 @@ enum eMYBUTTON_KIND{
 
 class CMyButton : public Widget
 {
+	typedef std::function<void(Node*)> BUTTON_CALLBACK;
 public:
 	/* 기본 버튼 생성 */
 	static CMyButton* create(
 		std::string textureName,					// 버튼의 텍스쳐 이름
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func,		// 람다 전달
+		const BUTTON_CALLBACK &func,		// 람다 전달
 		int effect = EFFECT_NONE);					// 버튼 이펙트
 
 
@@ -51,7 +52,7 @@ public:
 		std::string normalTextureName,				// 선택 전 버튼의 텍스쳐 이름
 		std::string selectedTextureName,			// 선택 중 버튼의 텍스쳐 이름
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func);		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
+		const BUTTON_CALLBACK &func);		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
 
 
 	/* 문자열과 함께 버튼 생성 */
@@ -61,7 +62,7 @@ public:
 		int fontSize,								// 폰트 사이즈
 		Color3B fontColor,							// 폰트 색상
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func,		// 람다 전달
+		const BUTTON_CALLBACK &func,		// 람다 전달
 		int effect = EFFECT_NONE);					// 버튼 이펙트
 
 
@@ -73,13 +74,13 @@ public:
 		int fontSize,								// 폰트 사이즈
 		Color3B fontColor,							// 폰트 색상
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func,		// 람다 전달
+		const BUTTON_CALLBACK &func,		// 람다 전달
 		int effect = EFFECT_NONE);					// 버튼 이펙트
 
 
 	/* 버튼에 펑션을 추가 */
 	void AddState(eMYBUTTON_STATE state,			// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func);		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
+		const BUTTON_CALLBACK &func);		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
 
 	/* 버튼이 가지는 Execute callback함수 호출 */
 	virtual void update(float delta = 0.f) override;
@@ -117,14 +118,14 @@ private:
 	CMyButton(
 		std::string textureName,					// 버튼의 텍스쳐 이름
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func,		// 람다 전달
+		const BUTTON_CALLBACK &func,		// 람다 전달
 		int effect);								// 버튼 이펙트
 
 	CMyButton(
 		std::string normalTextureName,				// 선택 전 버튼의 텍스쳐 이름
 		std::string selectedTextureName,			// 선택 중 버튼의 텍스쳐 이름
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func);		// 람다 전달
+		const BUTTON_CALLBACK &func);		// 람다 전달
 
 	CMyButton(
 		std::string normalTextureName,				// 버튼의 텍스쳐 이름
@@ -132,7 +133,7 @@ private:
 		int fontSize,								// 폰트 사이즈
 		Color3B fontColor,							// 폰트 색상
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
+		const BUTTON_CALLBACK &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
 		int effect);								// 버튼 이펙트
 		
 	CMyButton(
@@ -142,7 +143,7 @@ private:
 		int fontSize,								// 폰트 사이즈
 		Color3B fontColor,							// 폰트 색상
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-		const std::function<void(void)> &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
+		const BUTTON_CALLBACK &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
 		int effect);								// 버튼 이펙트
 
 	virtual ~CMyButton(){};
@@ -150,9 +151,9 @@ private:
 private:
 	/* lambda, 함수 포인터를 리스트로 저장
 	* 각 상태일 때 호출할 함수를 저장하는 리스트 */
-	std::vector<std::function<void(void)>> m_BeginFuncList;
-	std::vector<std::function<void(void)>> m_ExecuteFuncList;
-	std::vector<std::function<void(void)>> m_EndFuncList;
+	std::vector<BUTTON_CALLBACK> m_BeginFuncList;
+	std::vector<BUTTON_CALLBACK> m_ExecuteFuncList;
+	std::vector<BUTTON_CALLBACK> m_EndFuncList;
 	std::string m_NormalTextureName;
 	std::string m_SelectedTextureName;
 	std::string m_LabelString;

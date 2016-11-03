@@ -14,11 +14,11 @@ protected:
 	virtual bool initVariable() override;
 
 private:
-	void Play();
-	void Reset();
-	void GoHome();
-    void GameExit();
-    void Help();
+	void Play(Node* sender);
+	void Reset(Node* sender);
+	void GoHome(Node* sender);
+	void GameExit(Node* sender);
+	void Help(Node* sender);
 
 	CPausePopup()
 		: m_btnHome(nullptr)

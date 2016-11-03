@@ -49,7 +49,7 @@ bool CPausePopup::initVariable()
 
 		m_btnHome = CMyButton::create("homeButton.png",
 			END,
-			std::bind(&CPausePopup::GoHome, this),
+			[=](Node* sender){this->GoHome(sender); },
 			EFFECT_ALPHA);
 
 		if (m_btnHome != nullptr)
@@ -62,7 +62,7 @@ bool CPausePopup::initVariable()
 
 		m_btnReset = CMyButton::create("restartButton.png",
 			END,
-			std::bind(&CPausePopup::Reset, this),
+			[=](Node* sender){this->Reset(sender); },
 			EFFECT_ALPHA);
 
 		if (m_btnReset != nullptr)
@@ -75,7 +75,7 @@ bool CPausePopup::initVariable()
 
 		m_btnPlay = CMyButton::create("playButton.png",
 			END,
-			std::bind(&CPausePopup::Play, this),
+			[=](Node* sender){this->Play(sender); },
 			EFFECT_ALPHA);
 
 		if (m_btnPlay != nullptr)
@@ -88,7 +88,7 @@ bool CPausePopup::initVariable()
 
         m_btnExit = CMyButton::create("exitButton.png",
                                      END,
-                                     std::bind(&CPausePopup::GameExit, this),
+									 [=](Node* sender){this->GameExit(sender); },
                                      EFFECT_ALPHA);
         
         if (m_btnExit != nullptr)
@@ -104,7 +104,7 @@ bool CPausePopup::initVariable()
         
         m_btnHelp = CMyButton::create("helpButton.png",
                                       END,
-                                      std::bind(&CPausePopup::Help, this),
+									  [=](Node* sender){this->Help(sender); },
                                       EFFECT_ALPHA);
         
         if (m_btnHelp != nullptr)
@@ -178,30 +178,30 @@ bool CPausePopup::initVariable()
 	return true;
 }
 
-void CPausePopup::Play(){
+void CPausePopup::Play(Node* sender){
 	CCLOG("format popup Play");
 	CGameScene::getGameScene()->GameResume();
 	CSpecificPopupBase::PopupClose();
 }
 
-void CPausePopup::Reset(){
+void CPausePopup::Reset(Node* sender){
 	CCLOG("format popup Replay");
 	CGameScene::getGameScene()->resetGameScene();
 }
 
-void CPausePopup::GoHome(){
+void CPausePopup::GoHome(Node* sender){
 	CCLOG("format popup GoHome");
     CGameScene::getGameScene()->backToMenuScene();
 	CSpecificPopupBase::PopupClose();
 }
 
-void CPausePopup::GameExit(){
+void CPausePopup::GameExit(Node* sender){
     CCLOG("format popup GameExit");
     CGameScene::getGameScene()->GameExit();
     CSpecificPopupBase::PopupClose();
 }
 
-void CPausePopup::Help()
+void CPausePopup::Help(Node* sender)
 {
     CGameScene::getGameScene()->GameHelp();
 }

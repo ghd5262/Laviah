@@ -303,7 +303,7 @@ void CGameScene::InitGameSceneUI()
 	m_PauseBtn = nullptr;
 	m_PauseBtn = CMyButton::create("pauseIcon.png",
 		END,
-		[this, origin, visibleSize]()
+		[this, origin, visibleSize](Node* sender)
 	{
 		OpenGamePausePopup();
 	}, EFFECT_SIZEDOWN);
@@ -317,7 +317,7 @@ void CGameScene::InitGameSceneUI()
     
     auto giantModeBtn = CMyButton::create("bonusLetter_0.png",
                                    END,
-                                   [this, origin, visibleSize]()
+								   [this, origin, visibleSize](Node* sender)
                                    {
                                        CItemManager::Instance()->StartItemTimer(eITEM_TYPE_giant);
                                    }, EFFECT_SIZEDOWN);
@@ -396,7 +396,7 @@ void CGameScene::GameExit()
 		40,
 		Color3B::WHITE,
 		END,
-		[this](){
+		[this](Node* sender){
             Director::getInstance()->end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
             exit(0);
@@ -409,7 +409,7 @@ void CGameScene::GameExit()
 		40,
 		Color3B::WHITE,
 		END,
-		[this](){
+		[this](Node* sender){
             GameResume();
 	}, EFFECT_ALPHA);
 

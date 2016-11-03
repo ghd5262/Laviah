@@ -10,8 +10,8 @@ protected:
     virtual bool initVariable() override;
     
 private:
-    void Save();
-    void End();
+	void Save(Node* sender);
+	void End(Node* sender);
     void Select(cocos2d::Ref* dp);
     
     CGoogleCloudDataInfoPopup(std::string dataKey)

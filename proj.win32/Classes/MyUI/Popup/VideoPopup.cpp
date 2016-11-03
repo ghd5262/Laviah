@@ -53,7 +53,7 @@ bool CVideoPopup::initVariable()
 		m_btnVideo = CMyButton::create(
 			"resultPopup_1.png",
 			END, 
-			std::bind(&CVideoPopup::Video, this),
+			[=](Node* sender){this->Video(sender); },
 			EFFECT_SIZEDOWN);
 
 		if (m_btnVideo != nullptr){
@@ -85,7 +85,7 @@ bool CVideoPopup::initVariable()
 		m_btnUseCoin = CMyButton::create(
 			"resultPopup_1.png",
 			END,
-			std::bind(&CVideoPopup::UseCoin, this),
+			[=](Node* sender){this->UseCoin(sender); },
 			EFFECT_SIZEDOWN);
 
 		if (m_btnUseCoin != nullptr){
@@ -119,7 +119,7 @@ bool CVideoPopup::initVariable()
 
 		m_btnEnd = CMyButton::create("endIcon.png",
 			END,
-			std::bind(&CVideoPopup::End, this),
+			[=](Node* sender){this->End(sender); },
 			EFFECT_ALPHA);
 
 		if (m_btnEnd != nullptr)
@@ -196,22 +196,22 @@ bool CVideoPopup::initVariable()
 	return true;
 }
 
-void CVideoPopup::End(){
+void CVideoPopup::End(Node* sender){
 	CCLOG("format popup End");
     CGameScene::getGameScene()->CountDownCancel();
 	CGameScene::getGameScene()->GameEnd();
 	CSpecificPopupBase::PopupClose();
 }
 
-void CVideoPopup::Video(){
+void CVideoPopup::Video(Node* sender){
 	CCLOG("format popup Video");
-	CSDKUtil::Instance()->ShowRewardUnityAds(std::bind(&CVideoPopup::Resume, this));
+	CSDKUtil::Instance()->ShowRewardUnityAds([=](){this->Resume(); });
 }
 
-void CVideoPopup::UseCoin(){
+void CVideoPopup::UseCoin(Node* sender){
 	CCLOG("format popup UseCoin");
 	if (CUserDataManager::Instance()->CoinUpdate(-g_coinToRevive)){
-		Resume();
+		this->Resume();
 	}
 }
 

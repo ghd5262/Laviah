@@ -3,7 +3,7 @@
 CMyButton::CMyButton(
 	std::string textureName,					// 버튼의 텍스쳐 이름
 	eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-	const std::function<void(void)> &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
+	const BUTTON_CALLBACK &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
 	int effect)									// 버튼 이펙트
 	: m_NormalTextureName(textureName)
 	, m_SelectedTextureName("")
@@ -25,7 +25,7 @@ CMyButton::CMyButton(
 	std::string normalTextureName,				// 선택 전 버튼의 텍스쳐 이름
 	std::string selectedTextureName,			// 선택 중 버튼의 텍스쳐 이름
 	eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-	const std::function<void(void)> &func)		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
+	const BUTTON_CALLBACK &func)		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
 	: m_NormalTextureName(normalTextureName)		
 	, m_SelectedTextureName(selectedTextureName)
 	, m_LabelString("")
@@ -48,7 +48,7 @@ CMyButton::CMyButton(
 	int fontSize,								// 폰트 사이즈
 	Color3B fontColor,							// 폰트 색상
 	eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-	const std::function<void(void)> &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
+	const BUTTON_CALLBACK &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
 	int effect)									// 버튼 이펙트
 	: m_NormalTextureName(normalTextureName)
 	, m_SelectedTextureName("")
@@ -73,7 +73,7 @@ CMyButton::CMyButton(
 	int fontSize,								// 폰트 사이즈
 	Color3B fontColor,							// 폰트 색상
 	eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
-	const std::function<void(void)> &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
+	const BUTTON_CALLBACK &func,		// 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void)
 	int effect)									// 버튼 이펙트
 	: m_LayerColor(layerColor)
 	, m_LayerSize(layerSize)
@@ -96,7 +96,7 @@ CMyButton::CMyButton(
 CMyButton* CMyButton::create(
 	std::string textureName,
 	eMYBUTTON_STATE state,
-	const std::function<void(void)> &func,
+	const BUTTON_CALLBACK &func,
 	int effect/* = NONE*/)
 {
 	CMyButton *pRet = new(std::nothrow) CMyButton(textureName,
@@ -120,7 +120,7 @@ CMyButton* CMyButton::createWithTexture(
 	std::string normalTextureName,
 	std::string selectedTextureName,
 	eMYBUTTON_STATE state,
-	const std::function<void(void)> &func)
+	const BUTTON_CALLBACK &func)
 {
 	CMyButton *pRet = new(std::nothrow) CMyButton(normalTextureName,
 		selectedTextureName,
@@ -145,7 +145,7 @@ CMyButton* CMyButton::createWithString(
 	int fontSize,							
 	Color3B fontColor,						
 	eMYBUTTON_STATE state,					
-	const std::function<void(void)> &func,	
+	const BUTTON_CALLBACK &func,	
 	int effect/* = NONE*/)					
 {
 	CMyButton *pRet = new(std::nothrow) CMyButton(normalTextureName,
@@ -176,7 +176,7 @@ CMyButton* CMyButton::createWithLayerColor(
 	int fontSize,
 	Color3B fontColor,
 	eMYBUTTON_STATE state,
-	const std::function<void(void)> &func,
+	const BUTTON_CALLBACK &func,
 	int effect/* = NONE*/)
 {
 	CMyButton *pRet = new(std::nothrow) CMyButton(layerSize,
@@ -265,7 +265,7 @@ bool CMyButton::initVariable()
 /* 상태 (해당 상태일 때 함수 호출됨)
  * 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void) */
 void CMyButton::AddState(eMYBUTTON_STATE state,
-	const std::function<void(void)> &func)
+	const BUTTON_CALLBACK &func)
 {
 	switch (state)
 	{
@@ -399,10 +399,12 @@ bool CMyButton::onTouchBegan()
         // BEGIN 상태일때 호출해야할 함수가 있다면 호출
         if(m_BeginFuncList.size() > 0){
             
-            std::for_each(m_BeginFuncList.begin(), m_BeginFuncList.end(),
-                          [](const std::function<void(void)> &func){
-                              func();
-                          });
+			std::for_each(m_BeginFuncList.begin(), m_BeginFuncList.end(),
+				[=](const BUTTON_CALLBACK &func){
+				this->retain();
+				func(this);
+				this->release();
+			});
         }
         btnEffectStart();
         m_IsSelect = true;
@@ -417,11 +419,13 @@ void CMyButton::onTouchEnded()
 
         // END 상태일때 호출해야할 함수가 있다면 호출
         if(m_EndFuncList.size() > 0){
-            
-            std::for_each(m_EndFuncList.begin(), m_EndFuncList.end(),
-                          [](const std::function<void(void)> &func){
-                              func();
-                          });
+           
+			std::for_each(m_EndFuncList.begin(), m_EndFuncList.end(),
+				[=](const BUTTON_CALLBACK &func){
+				this->retain();
+				func(this);
+				this->release();
+			});
         }
         // 종료 이펙트
         btnEffectEnd();
@@ -454,8 +458,10 @@ void CMyButton::update(float delta)
 	{
 		// EXECUTE 상태일때 호출해야할 함수가 있다면 호출
 		std::for_each(m_ExecuteFuncList.begin(), m_ExecuteFuncList.end(),
-			[](const std::function<void(void)> &func){
-			func();
+			[=](const BUTTON_CALLBACK &func){
+			this->retain();
+			func(this);
+			this->release();
 		});
 	}
 }

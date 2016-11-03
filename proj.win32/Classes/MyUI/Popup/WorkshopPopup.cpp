@@ -101,7 +101,7 @@ bool CWorkshopPopup::initVariable()
 
         m_btnEnd = CMyButton::create("endIcon.png",
                                      END,
-                                     std::bind(&CWorkshopPopup::End, this),
+									 [=](Node* sender){this->End(sender); },
                                      EFFECT_ALPHA);
         
         if (m_btnEnd != nullptr)
@@ -154,7 +154,7 @@ bool CWorkshopPopup::initVariable()
     return true;
 }
 
-void CWorkshopPopup::End(){
+void CWorkshopPopup::End(Node* sender){
     CCLOG("format popup End");
     CSpecificPopupBase::PopupClose();
 }

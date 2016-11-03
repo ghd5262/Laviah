@@ -11,7 +11,7 @@ protected:
 	virtual bool initVariable() override;
 
 private:
-	void Video();
+	void Video(Node* sender);
 
 	CEarnCoinPopup(){};
 	virtual ~CEarnCoinPopup(){};

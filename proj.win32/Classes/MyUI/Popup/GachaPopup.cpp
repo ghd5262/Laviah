@@ -47,7 +47,7 @@ bool CGachaPopup::initVariable()
 
 		m_btnExit = CMyButton::create("endIcon.png",
 			END,
-			std::bind(&CGachaPopup::End, this),
+			[=](Node* sender){this->End(sender); },
 			EFFECT_ALPHA);
 
 		if (m_btnExit != nullptr)
@@ -66,7 +66,7 @@ bool CGachaPopup::initVariable()
 			40,
 			Color3B::WHITE,
 			END,
-			std::bind(&CGachaPopup::PlayGacha, this),
+			[=](Node* sender){this->PlayGacha(sender); },
 			EFFECT_ALPHA);
 		if (btnGacha != nullptr)
 		{
@@ -111,12 +111,12 @@ bool CGachaPopup::initVariable()
 	return true;
 }
 
-void CGachaPopup::End(){
+void CGachaPopup::End(Node* sender){
 	CCLOG("format popup End");
 	CSpecificPopupBase::PopupClose();
 }
 
-void CGachaPopup::PlayGacha(){
+void CGachaPopup::PlayGacha(Node* sender){
     
     if (CUserDataManager::Instance()->CoinUpdate(-g_coinToGacha)){
         CCLOG("format popup PlayGacha");

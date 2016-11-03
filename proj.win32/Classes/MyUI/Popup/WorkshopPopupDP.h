@@ -15,7 +15,7 @@ protected:
     bool initVariable();
     
 private:
-    void Buy();
+	void Buy(Node* sender);
     
 	CWorkshopPopupDP(sWORKSHOPITEM_PARAM workshopItem)
 		: m_WorkshopItem(workshopItem)

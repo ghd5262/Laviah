@@ -13,8 +13,8 @@ protected:
 	virtual bool initVariable() override;
 
 private:
-	void PlayGacha();
-	void End();
+	void PlayGacha(Node* sender);
+	void End(Node* sender);
 
 	CGachaPopup() 
 		: m_BG(nullptr)

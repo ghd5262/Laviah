@@ -44,7 +44,7 @@ bool CExitPopup::initVariable()
 			40,
 			Color3B::WHITE,
 			END,
-			std::bind(&CExitPopup::Exit, this),
+			[=](Node* sender){this->Exit(sender); },
 			EFFECT_ALPHA);
 		if (btnExit != nullptr)
 		{
@@ -58,7 +58,7 @@ bool CExitPopup::initVariable()
 			40,
 			Color3B::WHITE,
 			END,
-			[this](){
+			[this](Node* sender){
 			CSpecificPopupBase::PopupClose();
 		}, EFFECT_ALPHA);
 		if (btnNo != nullptr)
@@ -85,6 +85,6 @@ bool CExitPopup::initVariable()
 	return true;
 }
 
-void CExitPopup::Exit(){
+void CExitPopup::Exit(Node* sender){
 	CCLOG("format popup Video");
 }

@@ -116,7 +116,7 @@ bool CCharacterSelectPopup::initVariable()
                                                       40,
                                                       Color3B::WHITE,
                                                       END,
-                                                      std::bind(&CCharacterSelectPopup::Select, this),
+													  [=](Node* sender){this->Select(sender); },
                                                       EFFECT_ALPHA);
         if (m_btnSelect != nullptr)
         {
@@ -141,7 +141,7 @@ bool CCharacterSelectPopup::initVariable()
         
         m_btnEnd = CMyButton::create("endIcon.png",
                                      END,
-                                     std::bind(&CCharacterSelectPopup::End, this),
+									 [=](Node* sender){this->End(sender); },
                                      EFFECT_ALPHA);
         
         if (m_btnEnd != nullptr)
@@ -185,13 +185,13 @@ bool CCharacterSelectPopup::initVariable()
     return true;
 }
 
-void CCharacterSelectPopup::End(){
+void CCharacterSelectPopup::End(Node* sender){
     CCLOG("format popup End");
     CSpecificPopupBase::PopupClose();
 }
 
 // When touch the select or buy button
-void CCharacterSelectPopup::Select()
+void CCharacterSelectPopup::Select(Node* sender)
 {
     if(m_CenterDP == nullptr) return;
     

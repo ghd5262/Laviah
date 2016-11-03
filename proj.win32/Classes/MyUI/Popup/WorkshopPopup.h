@@ -13,7 +13,7 @@ protected:
     virtual bool initVariable() override;
     
 private:
-    void End();
+	void End(Node* sender);
 	void ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type);
     
     CWorkshopPopup()

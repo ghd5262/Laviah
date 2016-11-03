@@ -22,7 +22,7 @@ private:
 	void clearData();
 	bool initVariable();
     void InitMenuSceneUI();
-    void createGameScene();
+	void createGameScene(Node* sender);
     
 private:
     static CMenuScene* m_MenuScene;

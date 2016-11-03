@@ -12,8 +12,8 @@ protected:
 	virtual bool initVariable() override;
 
 private: 
-	void Reset();
-	void GoHome();
+	void Reset(Node* sender);
+	void GoHome(Node* sender);
 
 	CResultPopup()
 		: m_btnHome(nullptr)

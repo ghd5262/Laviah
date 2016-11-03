@@ -50,7 +50,7 @@ bool CWorkshopPopupDP::initVariable()
         }
         
         m_BuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
-            , " ", 40, g_labelColor2, END, std::bind(&CWorkshopPopupDP::Buy, this), EFFECT_SIZEDOWN);
+			, " ", 40, g_labelColor2, END, [=](Node* sender){this->Buy(sender); }, EFFECT_SIZEDOWN);
         if (m_BuyBtn != nullptr)
         {
             m_BuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -112,7 +112,7 @@ bool CWorkshopPopupDP::initVariable()
     return true;
 }
 
-void CWorkshopPopupDP::Buy()
+void CWorkshopPopupDP::Buy(Node* sender)
 {
 	CCLOG("Buy Item %s", m_WorkshopItem._name.c_str());
     

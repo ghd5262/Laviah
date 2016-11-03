@@ -45,7 +45,7 @@ bool CGoogleCloudDataInfoPopup::initVariable()
             dpBack->addChild(valueBack);
         }
         
-        auto btnSave = CMyButton::createWithLayerColor(Size(200, 100), Color4B(255, 48, 48, 255 * 0.8f), "Save", 40, Color3B::WHITE, END, std::bind(&CGoogleCloudDataInfoPopup::Save, this), EFFECT_ALPHA);
+		auto btnSave = CMyButton::createWithLayerColor(Size(200, 100), Color4B(255, 48, 48, 255 * 0.8f), "Save", 40, Color3B::WHITE, END, [=](Node* sender){this->Save(sender); }, EFFECT_ALPHA);
         
         if (btnSave != nullptr)
         {
@@ -58,7 +58,7 @@ bool CGoogleCloudDataInfoPopup::initVariable()
         
         auto btnEnd = CMyButton::create("endIcon.png",
                                         END,
-                                        std::bind(&CGoogleCloudDataInfoPopup::End, this),
+										[=](Node* sender){this->End(sender); },
                                         EFFECT_ALPHA);
         
         if (btnEnd != nullptr)
@@ -126,12 +126,12 @@ bool CGoogleCloudDataInfoPopup::initVariable()
     return true;
 }
 
-void CGoogleCloudDataInfoPopup::Save(){
+void CGoogleCloudDataInfoPopup::Save(Node* sender){
     CCLOG("format popup Save");
     
 }
 
-void CGoogleCloudDataInfoPopup::End(){
+void CGoogleCloudDataInfoPopup::End(Node* sender){
     CCLOG("format popup End");
     CSpecificPopupBase::PopupClose();
 }

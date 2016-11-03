@@ -1,6 +1,21 @@
 #include "Popup.h"
 #include "MyButton.h"
 
+CPopup::CPopup()
+	: m_PositiveButtonFunc(nullptr)
+	, m_NegativeButtonFunc(nullptr)
+	, m_WidgetInitFunc(nullptr)
+	, m_OpenEffectFunc(nullptr)
+	, m_CloseEffectFunc(nullptr)
+	, m_Message("")
+	, m_PositiveButtonName("")
+	, m_NegativeButtonName("")
+	, m_MessageFontColor(Color3B::BLACK)
+	, m_ButtonFontColor(Color3B::WHITE)
+	, m_MessageFontSize(40)
+	, m_ButtonFontSize(40)
+{}
+
 CPopup::CPopup(std::string popupNotice,
 	CMyButton* button,
 	size_t fontSize,
@@ -58,6 +73,22 @@ CPopup::CPopup(CSpecificPopupBase* format,
 	, m_PopupCloseEffect(POPUPEFFECT_none)
 {}
 
+
+CPopup* CPopup::create()
+{
+	CPopup *pRet = new(std::nothrow) CPopup();
+	if (pRet && pRet->init())
+	{
+		pRet->autorelease();
+		return pRet;
+	}
+	else
+	{
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
+}
 
 CPopup* CPopup::createWithOneButton(std::string popupNotice,
 	CMyButton* button,
@@ -149,7 +180,7 @@ bool CPopup::initVariable()
 			40,
 			Color3B::WHITE,
 			END,
-			[](){});
+			[](Node* sender){});
 
         if(emptyBtnBG != nullptr){
             emptyBtnBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -238,6 +269,152 @@ bool CPopup::initVariable()
 	}
 	return true;
 }
+
+CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
+{
+	this->setContentSize(Director::getInstance()->getVisibleSize());
+
+	if (m_WidgetInitFunc != nullptr){
+		this->retain();
+		m_WidgetInitFunc(this);
+		this->release();
+	}
+	else{
+		auto defaultBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
+		defaultBG->setIgnoreAnchorPointForPosition(false);
+		defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		defaultBG->setPosition(this->getContentSize() / 2);
+		this->addChild(defaultBG);
+		
+		auto message = Label::createWithTTF(m_Message, "fonts/malgunbd.ttf", m_MessageFontSize);
+		message->setColor(m_MessageFontColor);
+		message->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		message->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));
+		defaultBG->addChild(message);
+			
+		auto createLayerButton = [=](const FUNCTION_CALLBACK &func, Color4B btnColor, std::string name){
+			return CMyButton::createWithLayerColor(Size(430, 150), btnColor, name, m_ButtonFontSize, m_ButtonFontColor, END, func);
+		};
+
+		CMyButton* positiveButton = nullptr;
+		CMyButton* negativeButton = nullptr;
+
+		if (m_PositiveButtonFunc != nullptr)
+		{
+			positiveButton = createLayerButton([=](Node* sender){
+				this->retain();
+				m_PositiveButtonFunc(this);
+				this->removeFromParent();
+				this->release();
+			}, Color4B(255, 48, 48, 255 * 0.8f), m_PositiveButtonName);
+			positiveButton->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.25f));
+			positiveButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			defaultBG->addChild(positiveButton);
+		}
+
+		if (m_NegativeButtonFunc != nullptr)
+		{
+			negativeButton = createLayerButton([=](Node* sender){
+				this->retain();
+				m_NegativeButtonFunc(this);
+				this->removeFromParent();
+				this->release();
+			}, Color4B(0, 0, 0, 255 * 0.8f), m_NegativeButtonName);
+			negativeButton->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.25f));
+			negativeButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			defaultBG->addChild(negativeButton);
+		}
+
+		if (positiveButton && negativeButton)
+		{
+			positiveButton->setPosition(Vec2(defaultBG->getContentSize().width * 0.275f, defaultBG->getContentSize().height * 0.25f));
+			negativeButton->setPosition(Vec2(defaultBG->getContentSize().width * 0.725f, defaultBG->getContentSize().height * 0.25f));
+		}
+	}
+
+	if (m_OpenEffectFunc != nullptr){
+		this->retain();
+		m_OpenEffectFunc(this);
+		this->release();
+	}
+
+	parent->addChild(this, zOrder);
+	
+	return this;
+}
+
+CPopup* CPopup::setPositiveButton(const FUNCTION_CALLBACK &func, std::string btnName)
+{
+	m_PositiveButtonFunc = func;
+	m_PositiveButtonName = btnName;
+
+	return this;
+}
+
+CPopup* CPopup::setNegativeButton(const FUNCTION_CALLBACK &func, std::string btnName)
+{
+	m_NegativeButtonFunc = func;
+	m_NegativeButtonName = btnName;
+
+	return this;
+}
+
+CPopup* CPopup::setWidget(const FUNCTION_CALLBACK &func)
+{
+	m_WidgetInitFunc = func;
+
+	return this;
+}
+
+CPopup* CPopup::setOpenEffect(const FUNCTION_CALLBACK &func)
+{
+	m_OpenEffectFunc = func;
+
+	return this;
+}
+
+CPopup* CPopup::setCloseEffect(const FUNCTION_CALLBACK &func)
+{
+	m_CloseEffectFunc = func;
+
+	return this;
+}
+
+CPopup* CPopup::setMessage(std::string message)
+{
+	m_Message = message;
+
+	return this;
+}
+
+CPopup* CPopup::setMessageFont(Color3B fontColor, int size)
+{
+	m_MessageFontColor = fontColor;
+	m_MessageFontSize = size;
+
+	return this;
+}
+
+CPopup* CPopup::setButtonFont(Color3B fontColor, int size)
+{
+	m_ButtonFontColor = fontColor;
+	m_ButtonFontSize = size;
+
+	return this;
+}
+
+void CPopup::playEffect(const FUNCTION_CALLBACK &func)
+{
+	if (func != nullptr){
+		this->retain();
+		func(this);
+		this->release();
+	}
+}
+
+
+
+
 
 void CPopup::setPosition(const Vec2& position)
 {

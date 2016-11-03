@@ -11,7 +11,7 @@ protected:
 	virtual bool initVariable() override;
 
 private:
-	void End();
+	void End(Node* sender);
 
 	CHelpPopup()
 		: m_btnEnd(nullptr)

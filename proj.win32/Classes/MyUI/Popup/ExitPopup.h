@@ -11,7 +11,7 @@ protected:
 	virtual bool initVariable() override;
 
 private:
-	void Exit();
+	void Exit(Node* sender);
 
 	CExitPopup(){};
 	virtual ~CExitPopup(){};

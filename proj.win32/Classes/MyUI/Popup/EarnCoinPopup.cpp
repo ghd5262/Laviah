@@ -45,7 +45,7 @@ bool CEarnCoinPopup::initVariable()
 			40,
 			Color3B::WHITE,
 			END,
-			std::bind(&CEarnCoinPopup::Video, this), 
+			[=](Node* sender){this->Video(sender); },
 			EFFECT_ALPHA);
 		if (btnWatch != nullptr)
 		{
@@ -60,7 +60,7 @@ bool CEarnCoinPopup::initVariable()
 			40,
 			Color3B::WHITE,
 			END,
-			[this](){
+			[this](Node* sender){
 			CSpecificPopupBase::PopupClose();
 		}, EFFECT_ALPHA);
 		if (btnNo != nullptr)
@@ -86,7 +86,7 @@ bool CEarnCoinPopup::initVariable()
 	return true;
 }
 
-void CEarnCoinPopup::Video(){
+void CEarnCoinPopup::Video(Node* sender){
 	CCLOG("format popup Video");
     CSpecificPopupBase::PopupClose();
 //    CSDKUtil::Instance()->ShowRewardUnityAds(std::bind(&CVideoPopup::Resume, this));

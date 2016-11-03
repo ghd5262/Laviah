@@ -364,7 +364,7 @@ bool CResultPopup::initVariable()
         
         m_btnHome = CMyButton::create("homeIcon.png",
                                       END,
-                                      std::bind(&CResultPopup::GoHome, this),
+									  [=](Node* sender){this->GoHome(sender); },
                                       EFFECT_ALPHA);
         
         if (m_btnHome != nullptr)
@@ -379,7 +379,7 @@ bool CResultPopup::initVariable()
         
         m_btnReset = CMyButton::create("resetIcon.png",
                                        END,
-                                       std::bind(&CResultPopup::Reset, this),
+									   [=](Node* sender){this->Reset(sender); },
                                        EFFECT_ALPHA);
         
         if (m_btnReset != nullptr)
@@ -532,12 +532,12 @@ bool CResultPopup::initVariable()
     return true;
 }
 
-void CResultPopup::Reset(){
+void CResultPopup::Reset(Node* sender){
     CCLOG("format popup Replay");
     CGameScene::getGameScene()->resetGameScene();
 }
 
-void CResultPopup::GoHome(){
+void CResultPopup::GoHome(Node* sender){
     CCLOG("format popup GoHome");
     CGameScene::getGameScene()->backToMenuScene();
     CSpecificPopupBase::PopupClose();

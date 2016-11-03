@@ -131,7 +131,7 @@ void CMenuScene::InitMenuSceneUI()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
 	auto gameStartBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Start", 40, Color3B::WHITE,
-                                   END, std::bind(&CMenuScene::createGameScene, this), EFFECT_SIZEDOWN);
+		END, [=](Node* sender){this->createGameScene(sender); }, EFFECT_SIZEDOWN);
     
     gameStartBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
                                  origin.x + visibleSize.height * 0.1f));
@@ -141,7 +141,7 @@ void CMenuScene::InitMenuSceneUI()
     
     
 	auto characterSelectBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Select", 40, Color3B::WHITE,
-                                                          END, [this, origin, visibleSize](){
+		END, [this, origin, visibleSize](Node* sender){
                                                               auto popup = CPopup::createWithSpecificFormat(CCharacterSelectPopup::create(), POPUPEFFECT_none);
                                                               popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
                                                                                       origin.x + visibleSize.height * 0.5f));
@@ -156,7 +156,7 @@ void CMenuScene::InitMenuSceneUI()
     this->addChild(characterSelectBtn);
     
 	auto workShopBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Workshop", 40, Color3B::WHITE,
-                                                          END, [this, origin, visibleSize](){
+		END, [this, origin, visibleSize](Node* sender){
                                                               auto popup = CPopup::createWithSpecificFormat(CWorkshopPopup::create(), POPUPEFFECT_none);
                                                               popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
                                                                                       origin.x + visibleSize.height * 0.5f));
@@ -172,7 +172,7 @@ void CMenuScene::InitMenuSceneUI()
 
 
 	auto gachaBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Gacha", 40, Color3B::WHITE,
-		END, [this, origin, visibleSize](){
+		END, [this, origin, visibleSize](Node* sender){
 		auto popup = CPopup::createWithSpecificFormat(CGachaPopup::create(), POPUPEFFECT_none);
 		popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.x + visibleSize.height * 0.5f));
@@ -188,11 +188,11 @@ void CMenuScene::InitMenuSceneUI()
     
     
 	auto unityBtnReward = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "RewardAds", 40, Color3B::WHITE,
-		END, [this, origin, visibleSize](){
+		END, [this, origin, visibleSize](Node* sender){
 		CSDKUtil::Instance()->ShowRewardUnityAds([this, origin, visibleSize](){
 			auto popup = CPopup::createWithOneButton("Finished RewardAds",
 				CMyButton::createWithLayerColor(Size(430, 150), Color4B(0, 0, 0, 255 * 0.8f), "OK", 40, Color3B::WHITE,
-				END, [](){}), 40);
+				END, [](Node* sender){}), 40);
 			popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 				origin.x + visibleSize.height * 0.5f));
 			popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -208,11 +208,11 @@ void CMenuScene::InitMenuSceneUI()
 
 
 	auto unityBtnNormal = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "NormalAds", 40, Color3B::WHITE,
-		END, [this, origin, visibleSize](){
+		END, [this, origin, visibleSize](Node* sender){
 		CSDKUtil::Instance()->ShowNormalUnityAds([this, origin, visibleSize](){
 			auto popup = CPopup::createWithOneButton("Finished NormalAds",
 				CMyButton::createWithLayerColor(Size(430, 150), Color4B(0, 0, 0, 255 * 0.8f), "OK", 40, Color3B::WHITE,
-				END, [](){}), 40);
+				END, [](Node* sender){}), 40);
 			popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 				origin.x + visibleSize.height * 0.5f));
 			popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -228,7 +228,7 @@ void CMenuScene::InitMenuSceneUI()
 
 
 	auto googleCloudSaveTestBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "CloudSave", 40, Color3B::WHITE,
-		END, [this, origin, visibleSize](){
+		END, [this, origin, visibleSize](Node* sender){
 		auto popup = CPopup::createWithSpecificFormat(CGoogleCloudTestPopup::create(), POPUPEFFECT_none);
 		popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 			origin.x + visibleSize.height * 0.5f));
@@ -249,7 +249,7 @@ void CMenuScene::InitMenuSceneUI()
     }
 }
 
-void CMenuScene::createGameScene()
+void CMenuScene::createGameScene(Node* sender)
 {
     Director::getInstance()->getScheduler()->schedule([](float delta){
         

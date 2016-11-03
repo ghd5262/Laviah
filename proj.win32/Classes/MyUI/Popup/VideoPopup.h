@@ -13,9 +13,9 @@ protected:
 	virtual bool initVariable() override;
 
 private:
-	void End();
-	void Video();
-	void UseCoin();
+	void End(Node* sender);
+	void Video(Node* sender);
+	void UseCoin(Node* sender);
 	void Resume();
 
 	CVideoPopup()

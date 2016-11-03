@@ -14,7 +14,7 @@ protected:
     bool initVariable();
     
 private:
-    void Buy();
+	void Buy(Node* sender);
     
     CGoogleCloudTestAddKeyDP()
     : m_TextField(nullptr){};

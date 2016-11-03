@@ -8,14 +8,14 @@ class CGoogleCloudTestPopupDP : public Widget
 {
 public:
     static CGoogleCloudTestPopupDP* create(std::string key);
-	void DeSelect();
+	void DeSelect(Node* sender);
 
 protected:
 	virtual bool init() override;
 	bool initVariable();
 
 private:
-	void Buy();
+	void Buy(Node* sender);
 
 	CGoogleCloudTestPopupDP(std::string key)
         : m_UserKey(key)

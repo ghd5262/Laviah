@@ -13,8 +13,10 @@ enum ePOPUP_EFFECT{
 	POPUPEFFECT_default_fade,
 	POPUPEFFECT_custom
 };
-class CPopup : public cocos2d::Layer
+class CPopup : public cocos2d::Node
 {
+	typedef std::function<void(Node*)> FUNCTION_CALLBACK;
+
 	friend CSpecificPopupBase;
 	enum ePOPUPINFO{
 		ONEBTN,
@@ -23,6 +25,8 @@ class CPopup : public cocos2d::Layer
 	};
 
 public:
+	static CPopup* create();
+
 	static CPopup* createWithOneButton(std::string popupNotice,
 		CMyButton* button,
 		size_t fontSize = 20,
@@ -43,6 +47,16 @@ public:
 		const std::function<void(CPopup*)> &openEffectFunc = nullptr);
 
 	//getter & setter
+	CPopup* setPositiveButton(const FUNCTION_CALLBACK &func, std::string btnName);
+	CPopup* setNegativeButton(const FUNCTION_CALLBACK &func, std::string btnName);
+	CPopup* setWidget(const FUNCTION_CALLBACK &func);
+	CPopup* setOpenEffect(const FUNCTION_CALLBACK &func);
+	CPopup* setCloseEffect(const FUNCTION_CALLBACK &func);
+	CPopup* setMessage(std::string message);
+	CPopup* setMessageFont(Color3B fontColor, int size);
+	CPopup* setButtonFont(Color3B fontColor, int size);
+	CPopup* show(Node* parent, int zOrder = 0);
+
 	inline void setPopupCloseEffectFunc(const std::function<void(CPopup*)> &func)
 	{
 		m_PopupCloseEffect = POPUPEFFECT_custom;
@@ -66,10 +80,14 @@ protected:
 	CC_SYNTHESIZE(ePOPUP_EFFECT, m_PopupCloseEffect, PopupCloseEffect);
 
 private:
+	void playEffect(const FUNCTION_CALLBACK &func);
+
 	void PopupClose(){ popupCloseEffect(); }
 	void PopupRelease(){ this->scheduleOnce([this](float delta){removeFromParent(); }, 0.f, "RemovePopupAtNextFrame"); }
 	void popupOpenEffect();
 	void popupCloseEffect();
+	
+	CPopup();
 
 	CPopup(std::string popupNotice,
 		CMyButton* button,
@@ -98,6 +116,20 @@ private:
 	void popupCloseEffect_fadeOut(std::function<void(CPopup*)>& popup);
 
 private:
+	FUNCTION_CALLBACK m_PositiveButtonFunc;
+	FUNCTION_CALLBACK m_NegativeButtonFunc;
+	FUNCTION_CALLBACK m_WidgetInitFunc;
+	FUNCTION_CALLBACK m_OpenEffectFunc;
+	FUNCTION_CALLBACK m_CloseEffectFunc;
+
+	std::string m_Message;
+	std::string m_PositiveButtonName;
+	std::string m_NegativeButtonName;
+	Color3B m_MessageFontColor;
+	Color3B m_ButtonFontColor;
+	int m_MessageFontSize;
+	int m_ButtonFontSize;
+
 	std::shared_ptr<CSpecificPopupBase> m_PopupAble;
 	std::function<void(CPopup*)> m_PopupOpenEffectFunc;
 	std::function<void(CPopup*)> m_PopupCloseEffectFunc;

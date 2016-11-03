@@ -14,8 +14,8 @@ protected:
     virtual bool initVariable() override;
     
 private:
-    void End();
-    void Select();
+	void End(Node* sender);
+	void Select(Node* sender);
     void ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type);
     
     

@@ -134,15 +134,15 @@ void CLoadingScene::callbackUserDataLoadFinish(Ref* object)
 
 void CLoadingScene::createMenuScene()
 {
-	Director::getInstance()->getScheduler()->schedule([](float delta){
+	Director::getInstance()->getScheduler()->schedule([=](float delta){
 
 		auto tempScene = CEmptyScene::createScene();
 		Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
 
-		Director::getInstance()->getScheduler()->schedule([](float delta){
+		Director::getInstance()->getScheduler()->schedule([=](float delta){
 			auto Scene = CMenuScene::createScene();
 			Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
-		}, Director::getInstance(), 1.f, 0, 0.f, false, "createMenuScene");
+		}, Director::getInstance(), 0.f, 0, 1.f, false, "createMenuScene");
 
 	}, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
 }
@@ -151,14 +151,12 @@ void CLoadingScene::createNetworkConnectPopup()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 
-	auto popup = CPopup::createWithOneButton("Please connect to the internet \n to download resources.",
-		CMyButton::createWithLayerColor(Size(430, 150), Color4B(0, 0, 0, 255 * 0.8f), "OK", 40, Color3B::WHITE,
-		END, [=](){
+	CPopup::create()
+		->setPositiveButton([=](Node* sender){
 		CSDKUtil::Instance()->IsNetworkConnect();
-	}), 40);
-	popup->setPosition(visibleSize / 2);
-	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	this->addChild(popup);
+		}, "OK")
+		->setMessage("Please connect to the internet \n to download resources.")
+		->show(this);
 }
 
 void CLoadingScene::update(float delta)

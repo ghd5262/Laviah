@@ -48,7 +48,7 @@ bool CGoogleCloudTestPopupDP::initVariable()
 		}
 
 		auto dpBuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
-			,"Info" , 40, g_labelColor2, END, std::bind(&CGoogleCloudTestPopupDP::Buy, this), EFFECT_SIZEDOWN);
+			, "Info", 40, g_labelColor2, END, [=](Node* sender){this->Buy(sender); }, EFFECT_SIZEDOWN);
 		if (dpBuyBtn != nullptr)
 		{
 			dpBuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -81,7 +81,7 @@ bool CGoogleCloudTestPopupDP::initVariable()
 	return true;
 }
 
-void CGoogleCloudTestPopupDP::Buy()
+void CGoogleCloudTestPopupDP::Buy(Node* sender)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -92,7 +92,7 @@ void CGoogleCloudTestPopupDP::Buy()
 	Director::getInstance()->getRunningScene()->addChild(popup, 102);
 }
 
-void CGoogleCloudTestPopupDP::DeSelect()
+void CGoogleCloudTestPopupDP::DeSelect(Node* sender)
 {
 	
 }

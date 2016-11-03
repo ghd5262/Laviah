@@ -61,7 +61,7 @@ bool CHelpPopup::initVariable()
 
 		m_btnEnd = CMyButton::create("endIcon.png",
 			END,
-			std::bind(&CHelpPopup::End, this),
+			[=](Node* sender){this->End(sender); },
 			EFFECT_ALPHA);
 
 		if (m_btnEnd != nullptr)
@@ -100,7 +100,7 @@ bool CHelpPopup::initVariable()
 	return true;
 }
 
-void CHelpPopup::End(){
+void CHelpPopup::End(Node* sender){
 	CCLOG("format popup End");
 	CSpecificPopupBase::PopupClose();
 }
