@@ -34,7 +34,7 @@ bool CCharacterSelectPopup::initVariable()
         if(m_BG != nullptr){
             m_BG->setIgnoreAnchorPointForPosition(false);
             m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_BG->setPosition(Vec2::ZERO);
+            m_BG->setPosition(m_Popup->getContentSize() / 2);
             m_Popup->addChild(m_BG);
         }
         
@@ -42,7 +42,7 @@ bool CCharacterSelectPopup::initVariable()
         if(m_ScrollBack != nullptr){
             m_ScrollBack->setIgnoreAnchorPointForPosition(false);
             m_ScrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_ScrollBack->setPosition(Vec2(0, origin.x + visibleSize.height * 1.5f));
+            m_ScrollBack->setPosition(Vec2(visibleSize.width / 2, visibleSize.height * 1.5f));
             m_Popup->addChild(m_ScrollBack);
         }
         
@@ -115,9 +115,9 @@ bool CCharacterSelectPopup::initVariable()
                                                       "Select",
                                                       40,
                                                       Color3B::WHITE,
-                                                      END,
+                                                      eMYBUTTON_STATE::END,
 													  [=](Node* sender){this->Select(sender); },
-                                                      EFFECT_ALPHA);
+                                                      EFFECT_ALPHA)->show(m_ScrollBack);
         if (m_btnSelect != nullptr)
         {
             m_btnSelect->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f,
@@ -125,7 +125,6 @@ bool CCharacterSelectPopup::initVariable()
             m_btnSelect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             m_btnSelect->setCascadeOpacityEnabled(true);
             m_btnSelect->setOpacity(0);
-            m_ScrollBack->addChild(m_btnSelect);
         }
         
 		m_btnUserCoin = CUserCoinButton::create();
@@ -140,9 +139,9 @@ bool CCharacterSelectPopup::initVariable()
 		}
         
         m_btnEnd = CMyButton::create("endIcon.png",
-                                     END,
+                                     eMYBUTTON_STATE::END,
 									 [=](Node* sender){this->End(sender); },
-                                     EFFECT_ALPHA);
+                                     EFFECT_ALPHA)->show(m_BG);
         
         if (m_btnEnd != nullptr)
         {
@@ -151,14 +150,13 @@ bool CCharacterSelectPopup::initVariable()
             m_btnEnd->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             m_btnEnd->setCascadeOpacityEnabled(true);
             m_btnEnd->setOpacity(0);
-            m_BG->addChild(m_btnEnd);
         }
         
         m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
             auto winSize = Director::getInstance()->getWinSize();
        
             m_CenterCharacterNameLabel->runAction(FadeIn::create(0.5f));
-            m_ScrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(0, winSize.height * 0.12f))));
+            m_ScrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(winSize.width / 2, winSize.height * 0.62f))));
             m_btnEnd->runAction(FadeIn::create(0.5f));
 			m_btnUserCoin->runAction(FadeIn::create(0.5f));
             m_btnSelect->runAction(FadeIn::create(0.5f));
@@ -206,7 +204,7 @@ void CCharacterSelectPopup::Select(Node* sender)
         m_CenterDP->Select();
     }else{
         m_CenterDP->Buy();
-        m_btnSelect->getBtnLabel()->setString("Select");
+        m_btnSelect->changeContents("Select");
 		m_btnUserCoin->UpdateUI();
     }
 }
@@ -235,9 +233,9 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
     
     // If already have the Center Character, Change the Button String to "Select"
     if(CUserDataManager::Instance()->getUserData_IsItemHave("USER_CHARACTER_LIST", centerCharacterParam._idx))
-        m_btnSelect->getBtnLabel()->setString("Select");
+        m_btnSelect->changeContents("Select");
     else// If do not have, Change the Button String to "buy cost"
-        m_btnSelect->getBtnLabel()->setString(MakeString("$ %d", centerCharacterParam._cost));
+        m_btnSelect->changeContents(MakeString("$ %d", centerCharacterParam._cost));
     
     // Change name label
     m_CenterCharacterNameLabel->setString(centerCharacterParam._name);

@@ -363,31 +363,29 @@ bool CResultPopup::initVariable()
         }
         
         m_btnHome = CMyButton::create("homeIcon.png",
-                                      END,
+                                      eMYBUTTON_STATE::END,
 									  [=](Node* sender){this->GoHome(sender); },
-                                      EFFECT_ALPHA);
+                                      EFFECT_ALPHA)->show(m_BG);
         
         if (m_btnHome != nullptr)
         {
             m_btnHome->setPosition(Vec2(m_BG->getContentSize().width * 0.08f,
                                         m_BG->getContentSize().height * 0.05f));
             m_btnHome->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_BG->addChild(m_btnHome);
             m_btnHome->setCascadeOpacityEnabled(true);
             m_btnHome->setOpacity(0);
         }
         
         m_btnReset = CMyButton::create("resetIcon.png",
-                                       END,
+                                       eMYBUTTON_STATE::END,
 									   [=](Node* sender){this->Reset(sender); },
-                                       EFFECT_ALPHA);
+                                       EFFECT_ALPHA)->show(m_BG);
         
         if (m_btnReset != nullptr)
         {
             m_btnReset->setPosition(Vec2(m_BG->getContentSize().width * 0.92f,
                                          m_BG->getContentSize().height * 0.05f));
             m_btnReset->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_BG->addChild(m_btnReset);
             m_btnReset->setCascadeOpacityEnabled(true);
             m_btnReset->setOpacity(0);
         }

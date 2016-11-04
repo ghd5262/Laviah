@@ -64,7 +64,7 @@ bool CGoogleCloudTestAddKeyDP::initVariable()
         }
 
         auto dpAddKeyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
-			, "ADD KEY", 40, g_labelColor2, END, [=](Node* sender){this->Buy(sender); }, EFFECT_SIZEDOWN);
+			, "ADD KEY", 40, g_labelColor2, eMYBUTTON_STATE::END, [=](Node* sender){this->Buy(sender); }, EFFECT_SIZEDOWN)->show(dpBack);
         if (dpAddKeyBtn != nullptr)
         {
             dpAddKeyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -89,7 +89,7 @@ void CGoogleCloudTestAddKeyDP::Buy(Node* sender)
                                                   "Yes",
                                                   40,
                                                   Color3B::WHITE,
-                                                  END,
+                                                  eMYBUTTON_STATE::END,
 												  [this](Node* sender){
 //                                                      CUserDataManager::Instance()->addKey(m_TextField->getText());
                                                       m_TextField->setText("");
@@ -100,13 +100,12 @@ void CGoogleCloudTestAddKeyDP::Buy(Node* sender)
                                                  "No",
                                                  40,
                                                  Color3B::WHITE,
-                                                 END,
+                                                 eMYBUTTON_STATE::END,
 												 [](Node* sender){}, EFFECT_ALPHA);
     
     auto popup = CPopup::createWithTwoButton("Are you sure you want to save the key?"
-                                             , btnNo, btnYes, 40, Color3B::BLACK);
+                                             , btnNo, btnYes, 40, Color3B::BLACK)->show(Director::getInstance()->getRunningScene(), 102);
     popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
                             origin.x + visibleSize.height * 0.5f));
     popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    Director::getInstance()->getRunningScene()->addChild(popup, 102);
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "cocos2d.h"
+#include "../Common/HSHUtility.h"
 
 USING_NS_CC;
 
@@ -16,7 +16,8 @@ enum ePOPUP_EFFECT{
 class CPopup : public cocos2d::Node
 {
 	typedef std::function<void(Node*)> FUNCTION_CALLBACK;
-
+    typedef cocos2d::ui::Button::ccWidgetTouchCallback BUTTON_CALLBACK;
+    
 	friend CSpecificPopupBase;
 	enum ePOPUPINFO{
 		ONEBTN,
@@ -25,7 +26,9 @@ class CPopup : public cocos2d::Node
 	};
 
 public:
-	static CPopup* create();
+    static CPopup* create();
+    
+	static CPopup* create(CSpecificPopupBase* test);
 
 	static CPopup* createWithOneButton(std::string popupNotice,
 		CMyButton* button,
@@ -47,26 +50,34 @@ public:
 		const std::function<void(CPopup*)> &openEffectFunc = nullptr);
 
 	//getter & setter
-	CPopup* setPositiveButton(const FUNCTION_CALLBACK &func, std::string btnName);
-	CPopup* setNegativeButton(const FUNCTION_CALLBACK &func, std::string btnName);
+	CPopup* setPositiveButton(const BUTTON_CALLBACK &callback, std::string btnName);
+	CPopup* setNegativeButton(const BUTTON_CALLBACK &callback, std::string btnName);
 	CPopup* setWidget(const FUNCTION_CALLBACK &func);
 	CPopup* setOpenEffect(const FUNCTION_CALLBACK &func);
 	CPopup* setCloseEffect(const FUNCTION_CALLBACK &func);
 	CPopup* setMessage(std::string message);
 	CPopup* setMessageFont(Color3B fontColor, int size);
 	CPopup* setButtonFont(Color3B fontColor, int size);
+    CPopup* WidgetInitTest();
+    CPopup* setPopupPosition(cocos2d::Vec2 position);
+    CPopup* setPopupAnchorPoint(cocos2d::Vec2 anchorPoint);
 	CPopup* show(Node* parent, int zOrder = 0);
 
 	inline void setPopupCloseEffectFunc(const std::function<void(CPopup*)> &func)
 	{
-		m_PopupCloseEffect = POPUPEFFECT_custom;
-		m_PopupCloseEffectFunc = func;
+//		m_PopupCloseEffect = POPUPEFFECT_custom;
+//		m_PopupCloseEffectFunc = func;
 	}
 
 	inline void setPopupOpenEffectFunc(const std::function<void(CPopup*)> &func)
 	{
-		m_PopupOpenEffect = POPUPEFFECT_custom;
-		m_PopupOpenEffectFunc = func;
+//		m_PopupOpenEffect = POPUPEFFECT_custom;
+//		m_PopupOpenEffectFunc = func;
+        
+        m_OpenEffectFunc = [=](Node* sender){
+            if(func != nullptr)
+                func(dynamic_cast<CPopup*>(sender));
+        };
 	}
 
 	virtual void setPosition(const Vec2& position) override;
@@ -87,7 +98,9 @@ private:
 	void popupOpenEffect();
 	void popupCloseEffect();
 	
-	CPopup();
+    CPopup();
+    
+	CPopup(CSpecificPopupBase* test);
 
 	CPopup(std::string popupNotice,
 		CMyButton* button,
@@ -104,9 +117,9 @@ private:
 		ePOPUP_EFFECT openEffect = POPUPEFFECT_none,
 		const std::function<void(CPopup*)> &openEffectFunc = nullptr);
 
-	CPopup(CSpecificPopupBase* format,
-		ePOPUP_EFFECT openEffect = POPUPEFFECT_none,
-		const std::function<void(CPopup*)> &openEffectFunc = nullptr);
+//	CPopup(CSpecificPopupBase* format,
+//		ePOPUP_EFFECT openEffect = POPUPEFFECT_none,
+//		const std::function<void(CPopup*)> &openEffectFunc = nullptr);
 
 	~CPopup(){};
 
@@ -116,8 +129,8 @@ private:
 	void popupCloseEffect_fadeOut(std::function<void(CPopup*)>& popup);
 
 private:
-	FUNCTION_CALLBACK m_PositiveButtonFunc;
-	FUNCTION_CALLBACK m_NegativeButtonFunc;
+    BUTTON_CALLBACK m_PositiveButtonFunc;
+	BUTTON_CALLBACK m_NegativeButtonFunc;
 	FUNCTION_CALLBACK m_WidgetInitFunc;
 	FUNCTION_CALLBACK m_OpenEffectFunc;
 	FUNCTION_CALLBACK m_CloseEffectFunc;
@@ -129,6 +142,8 @@ private:
 	Color3B m_ButtonFontColor;
 	int m_MessageFontSize;
 	int m_ButtonFontSize;
+    Vec2 m_Position;
+    Vec2 m_AnchorPoint;
 
 	std::shared_ptr<CSpecificPopupBase> m_PopupAble;
 	std::function<void(CPopup*)> m_PopupOpenEffectFunc;

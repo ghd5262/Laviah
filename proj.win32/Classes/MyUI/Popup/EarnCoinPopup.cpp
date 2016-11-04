@@ -44,14 +44,14 @@ bool CEarnCoinPopup::initVariable()
 			"Watch",
 			40,
 			Color3B::WHITE,
-			END,
+			eMYBUTTON_STATE::END,
 			[=](Node* sender){this->Video(sender); },
-			EFFECT_ALPHA);
+			EFFECT_ALPHA)->show(bg);
 		if (btnWatch != nullptr)
 		{
 			btnWatch->setPosition(Vec2(bg->getContentSize().width * 0.275f, bg->getContentSize().height * 0.25f));
 			btnWatch->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			bg->addChild(btnWatch);
+
 		}
 
 		auto btnNo = CMyButton::createWithLayerColor(Size(430, 150),
@@ -59,15 +59,15 @@ bool CEarnCoinPopup::initVariable()
 			"No",
 			40,
 			Color3B::WHITE,
-			END,
+			eMYBUTTON_STATE::END,
 			[this](Node* sender){
 			CSpecificPopupBase::PopupClose();
-		}, EFFECT_ALPHA);
+		}, EFFECT_ALPHA)->show(bg);
 		if (btnNo != nullptr)
 		{
 			btnNo->setPosition(Vec2(bg->getContentSize().width * 0.725f, bg->getContentSize().height * 0.25f));
 			btnNo->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			bg->addChild(btnNo);
+
 		}
 
 		m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){

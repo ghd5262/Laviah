@@ -10,7 +10,7 @@
 * 끝났을 때 체크
 --------------------------------------------------------------*/
 
-enum eMYBUTTON_STATE{
+enum class eMYBUTTON_STATE{
 	BEGIN = 0,
 	EXECUTE = 1,
 	END = 2,
@@ -38,6 +38,21 @@ class CMyButton : public Widget
 {
 	typedef std::function<void(Node*)> BUTTON_CALLBACK;
 public:
+    static CMyButton* create();
+    
+    CMyButton* addEventListener(const ccWidgetTouchCallback &callback, eMYBUTTON_STATE state = eMYBUTTON_STATE::END);
+    CMyButton* setLayer(LayerColor* layer);
+    CMyButton* setButtonNormalImage(std::string imgName);
+    CMyButton* setButtonClickedImage(std::string imgName);
+    CMyButton* setContents(std::string contents);
+    CMyButton* setFont(Color3B fontColor, int fontSize);
+    CMyButton* setButtonPosition(Vec2 position);
+    CMyButton* setButtonAnchorPoint(Vec2 anchorPoint);
+    CMyButton* show(Node* parent, int zOrder = 0);
+    
+    void changeContents(std::string contents);
+    void changeFontColor(Color3B fontColor);
+    
 	/* 기본 버튼 생성 */
 	static CMyButton* create(
 		std::string textureName,					// 버튼의 텍스쳐 이름
@@ -115,6 +130,8 @@ private:
 
 	bool onEffect(eMYBUTTON_EFFECT_FLAG effect){ return (m_ButtonEffect & effect) == effect; }
 
+    CMyButton();
+    
 	CMyButton(
 		std::string textureName,					// 버튼의 텍스쳐 이름
 		eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
@@ -149,20 +166,32 @@ private:
 	virtual ~CMyButton(){};
 
 private:
-	/* lambda, 함수 포인터를 리스트로 저장
+    std::vector<ccWidgetTouchCallback> m_BeginFunctionList;
+    std::vector<ccWidgetTouchCallback> m_ExecuteFunctionList;
+    std::vector<ccWidgetTouchCallback> m_EndFunctionList;
+    ccWidgetTouchCallback m_TouchListener;
+    LayerColor* m_Layer;
+    Label* m_ContentsLabel;
+    std::string m_ButtonNormalImg;
+    std::string m_ButtonClickedImg;
+    std::string m_Contents;
+    Color3B m_FontColor;
+    int m_FontSize;
+    Vec2 m_Position;
+    Vec2 m_AnchorPoint;
+    
+    /* lambda, 함수 포인터를 리스트로 저장
 	* 각 상태일 때 호출할 함수를 저장하는 리스트 */
-	std::vector<BUTTON_CALLBACK> m_BeginFuncList;
-	std::vector<BUTTON_CALLBACK> m_ExecuteFuncList;
-	std::vector<BUTTON_CALLBACK> m_EndFuncList;
-	std::string m_NormalTextureName;
-	std::string m_SelectedTextureName;
-	std::string m_LabelString;
+    std::vector<BUTTON_CALLBACK> m_BeginFuncList;
+    std::vector<BUTTON_CALLBACK> m_ExecuteFuncList;
+    std::vector<BUTTON_CALLBACK> m_EndFuncList;
+    Color4B m_LayerColor;
+    Size m_LayerSize;
+    std::string m_NormalTextureName;
+    std::string m_SelectedTextureName;
+    std::string m_LabelString;
 	Sprite* m_pNormalTexture;
-	Color4B m_LayerColor;
-	Color3B m_FontColor;
 	LayerColor* m_LayerBtn;
-	Size m_LayerSize;
-	int m_FontSize;
 	int m_ButtonEffect;
 	eMYBUTTON_KIND m_ButtonKind;
 	bool m_IsSelect;	//선택되었는지 (선택중이라도 true)

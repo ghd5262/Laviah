@@ -50,22 +50,19 @@ bool CWorkshopPopupDP::initVariable()
         }
         
         m_BuyBtn = CMyButton::createWithLayerColor(Size(260, 200), Color4B(0, 0, 0, 255 * 0.8f)
-			, " ", 40, g_labelColor2, END, [=](Node* sender){this->Buy(sender); }, EFFECT_SIZEDOWN);
+			, " ", 40, g_labelColor2, eMYBUTTON_STATE::END, [=](Node* sender){this->Buy(sender); }, EFFECT_SIZEDOWN)->show(m_DPBack);
         if (m_BuyBtn != nullptr)
         {
             m_BuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             m_BuyBtn->setPosition(Vec2(m_DPBack->getContentSize().width - (m_BuyBtn->getContentSize().width * 0.5f), 0));
-            m_DPBack->addChild(m_BuyBtn);
-            
-            auto btnLabel = m_BuyBtn->getBtnLabel();
             
             if(currentLevel >= m_WorkshopItem._maxLevel){
-                btnLabel->setString("MAX");
+                m_BuyBtn->changeContents("MAX");
                 m_BuyBtn->setBtnUnable(true);
-                btnLabel->setColor(Color3B::BLACK);
+                m_BuyBtn->changeFontColor(Color3B::BLACK);
             }
             else{
-                btnLabel->setString(MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(currentLevel)));
+                m_BuyBtn->changeContents(MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(currentLevel)));
             }
         }
         
@@ -122,15 +119,13 @@ void CWorkshopPopupDP::Buy(Node* sender)
         CUserDataManager::Instance()->setUserData_Number(m_WorkshopItem._userDataKey, value);
         
         // Update button ui
-        auto btnLabel = m_BuyBtn->getBtnLabel();
-        
         if(value >= m_WorkshopItem._maxLevel){
-            btnLabel->setString("MAX");
+            m_BuyBtn->changeContents("MAX");
             m_BuyBtn->setBtnUnable(true);
-            btnLabel->setColor(Color3B::BLACK);
+            m_BuyBtn->changeFontColor(Color3B::BLACK);
         }
         else{
-            btnLabel->setString(MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(value)));
+            m_BuyBtn->changeContents(MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(value)));
         }
         
         // Update level progress

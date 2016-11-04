@@ -45,28 +45,26 @@ bool CGoogleCloudDataInfoPopup::initVariable()
             dpBack->addChild(valueBack);
         }
         
-		auto btnSave = CMyButton::createWithLayerColor(Size(200, 100), Color4B(255, 48, 48, 255 * 0.8f), "Save", 40, Color3B::WHITE, END, [=](Node* sender){this->Save(sender); }, EFFECT_ALPHA);
+		auto btnSave = CMyButton::createWithLayerColor(Size(200, 100), Color4B(255, 48, 48, 255 * 0.8f), "Save", 40, Color3B::WHITE, eMYBUTTON_STATE::END, [=](Node* sender){this->Save(sender); }, EFFECT_ALPHA)->show(dpBack);
         
         if (btnSave != nullptr)
         {
             btnSave->setPosition(Vec2(dpBack->getContentSize().width * 0.5f, dpBack->getContentSize().height * 0.08f ));
             btnSave->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            dpBack->addChild(btnSave);
             btnSave->setCascadeOpacityEnabled(true);
         }
 
         
         auto btnEnd = CMyButton::create("endIcon.png",
-                                        END,
+                                        eMYBUTTON_STATE::END,
 										[=](Node* sender){this->End(sender); },
-                                        EFFECT_ALPHA);
+                                        EFFECT_ALPHA)->show(dpBack);
         
         if (btnEnd != nullptr)
         {
             btnEnd->setPosition(Vec2(dpBack->getContentSize().width - btnEnd->getContentSize().width * 0.5f,
                                      dpBack->getContentSize().height - btnEnd->getContentSize().height * 0.5f ));
             btnEnd->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            dpBack->addChild(btnEnd);
             btnEnd->setCascadeOpacityEnabled(true);
         }
         

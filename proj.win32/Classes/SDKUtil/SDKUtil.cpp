@@ -18,8 +18,13 @@ CSDKUtil::CSDKUtil()
 	, m_IsRewardUnityAdsReady(false)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#if TARGET_OS_SIMULATOR
+    m_IsNormalUnityAdsReady = true;
+    m_IsRewardUnityAdsReady = true;
+#else
 	CCLOG("SDKUtil_IOS");
 	m_SDKUtil = new CSDKUtil_IOS();
+#endif
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	CCLOG("SDKUtil_AOS");
 	m_SDKUtil = new CSDKUtil_AOS();

@@ -43,29 +43,29 @@ bool CExitPopup::initVariable()
 			"Watch",
 			40,
 			Color3B::WHITE,
-			END,
+			eMYBUTTON_STATE::END,
 			[=](Node* sender){this->Exit(sender); },
-			EFFECT_ALPHA);
+			EFFECT_ALPHA)->show(bg);
 		if (btnExit != nullptr)
 		{
 			btnExit->setPosition(Vec2(bg->getContentSize().width * 0.275f, bg->getContentSize().height * 0.25f));
 			btnExit->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			bg->addChild(btnExit);
+		
 		}
 
 		auto btnNo = CMyButton::createWithString("defaultBtn_2.png",
 			"No",
 			40,
 			Color3B::WHITE,
-			END,
+			eMYBUTTON_STATE::END,
 			[this](Node* sender){
 			CSpecificPopupBase::PopupClose();
-		}, EFFECT_ALPHA);
+		}, EFFECT_ALPHA)->show(bg);
 		if (btnNo != nullptr)
 		{
 			btnNo->setPosition(Vec2(bg->getContentSize().width * 0.725f, bg->getContentSize().height * 0.25f));
 			btnNo->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			bg->addChild(btnNo);
+		
 		}
 
 		m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){

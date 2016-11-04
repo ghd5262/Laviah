@@ -48,71 +48,66 @@ bool CPausePopup::initVariable()
 		m_PauseBG->addChild(noticeLabel);
 
 		m_btnHome = CMyButton::create("homeButton.png",
-			END,
+			eMYBUTTON_STATE::END,
 			[=](Node* sender){this->GoHome(sender); },
-			EFFECT_ALPHA);
+			EFFECT_ALPHA)->show(m_PauseBG);
 
 		if (m_btnHome != nullptr)
 		{
 			m_btnHome->setPosition(Vec2(m_PauseBG->getContentSize().width * -1.1f,
 				m_PauseBG->getContentSize().height * 0.85f));
 			m_btnHome->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_PauseBG->addChild(m_btnHome);
 		}
 
 		m_btnReset = CMyButton::create("restartButton.png",
-			END,
+			eMYBUTTON_STATE::END,
 			[=](Node* sender){this->Reset(sender); },
-			EFFECT_ALPHA);
+			EFFECT_ALPHA)->show(m_PauseBG);
 
 		if (m_btnReset != nullptr)
 		{
 			m_btnReset->setPosition(Vec2(m_PauseBG->getContentSize().width * -1.1f,
 				m_PauseBG->getContentSize().height * 0.7f));
 			m_btnReset->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_PauseBG->addChild(m_btnReset);
 		}
 
 		m_btnPlay = CMyButton::create("playButton.png",
-			END,
+			eMYBUTTON_STATE::END,
 			[=](Node* sender){this->Play(sender); },
-			EFFECT_ALPHA);
+			EFFECT_ALPHA)->show(m_PauseBG);
 
 		if (m_btnPlay != nullptr)
 		{
 			m_btnPlay->setPosition(Vec2(m_PauseBG->getContentSize().width * -1.1f,
 				m_PauseBG->getContentSize().height * 0.55f));
 			m_btnPlay->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_PauseBG->addChild(m_btnPlay);
 		}
 
         m_btnExit = CMyButton::create("exitButton.png",
-                                     END,
+                                     eMYBUTTON_STATE::END,
 									 [=](Node* sender){this->GameExit(sender); },
-                                     EFFECT_ALPHA);
+                                     EFFECT_ALPHA)->show(m_BG);
         
         if (m_btnExit != nullptr)
         {
             m_btnExit->setPosition(Vec2(m_BG->getContentSize().width * 0.92f,
                                        m_BG->getContentSize().height * 0.05f));
             m_btnExit->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_BG->addChild(m_btnExit);
             m_btnExit->setCascadeOpacityEnabled(true);
             m_btnExit->setOpacity(0);
         }
         
         
         m_btnHelp = CMyButton::create("helpButton.png",
-                                      END,
+                                      eMYBUTTON_STATE::END,
 									  [=](Node* sender){this->Help(sender); },
-                                      EFFECT_ALPHA);
+                                      EFFECT_ALPHA)->show(m_PauseBG);
         
         if (m_btnHelp != nullptr)
         {
             m_btnHelp->setPosition(Vec2(m_BG->getContentSize().width * 0.08f,
                                         m_BG->getContentSize().height * 0.05f));
             m_btnHelp->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_BG->addChild(m_btnHelp);
             m_btnHelp->setCascadeOpacityEnabled(true);
             m_btnHelp->setOpacity(0);
         }

@@ -1,5 +1,20 @@
 #include "MyButton.h"
 
+CMyButton::CMyButton()
+: m_Layer(nullptr)
+, m_TouchListener(nullptr)
+, m_ButtonNormalImg("")
+, m_ButtonClickedImg("")
+, m_Contents("")
+, m_FontColor(Color3B::WHITE)
+, m_FontSize(40)
+, m_Position(Vec2::ZERO)
+, m_AnchorPoint(Vec2::ZERO)
+, m_Unable(false) //TODO : 뺼지 생각해봄
+, m_IsSelect(false) //TODO : 마찬가지
+{
+}
+
 CMyButton::CMyButton(
 	std::string textureName,					// 버튼의 텍스쳐 이름
 	eMYBUTTON_STATE state,						// 상태 (해당 상태일 때 함수 호출됨)
@@ -93,27 +108,49 @@ CMyButton::CMyButton(
 	AddState(state, func);
 }
 
+CMyButton* CMyButton::create()
+{
+    CMyButton *pRet = new(std::nothrow) CMyButton();
+    if (pRet && pRet->init())
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+    else
+    {
+        delete pRet;
+        pRet = NULL;
+        return NULL;
+    }
+}
+
 CMyButton* CMyButton::create(
 	std::string textureName,
 	eMYBUTTON_STATE state,
 	const BUTTON_CALLBACK &func,
 	int effect/* = NONE*/)
 {
-	CMyButton *pRet = new(std::nothrow) CMyButton(textureName,
-		state,
-		func,
-		effect);
-	if (pRet && pRet->init())
-	{
-		pRet->autorelease();
-		return pRet;
-	}
-	else
-	{
-		delete pRet;
-		pRet = NULL;
-		return NULL;
-	}
+//	CMyButton *pRet = new(std::nothrow) CMyButton(textureName,
+//		state,
+//		func,
+//		effect);
+//	if (pRet && pRet->init())
+//	{
+//		pRet->autorelease();
+//		return pRet;
+//	}
+//	else
+//	{
+//		delete pRet;
+//		pRet = NULL;
+//		return NULL;
+//	}
+    
+    return CMyButton::create()
+    ->addEventListener([=](Ref* sender, Widget::TouchEventType type){
+        func(static_cast<Node*>(sender));
+    }, state)
+    ->setButtonNormalImage(textureName);
 }
 
 CMyButton* CMyButton::createWithTexture(
@@ -122,21 +159,27 @@ CMyButton* CMyButton::createWithTexture(
 	eMYBUTTON_STATE state,
 	const BUTTON_CALLBACK &func)
 {
-	CMyButton *pRet = new(std::nothrow) CMyButton(normalTextureName,
-		selectedTextureName,
-		state,
-		func);
-	if (pRet && pRet->init())
-	{
-		pRet->autorelease();
-		return pRet;
-	}
-	else
-	{
-		delete pRet;
-		pRet = NULL;
-		return NULL;
-	}
+//	CMyButton *pRet = new(std::nothrow) CMyButton(normalTextureName,
+//		selectedTextureName,
+//		state,
+//		func);
+//	if (pRet && pRet->init())
+//	{
+//		pRet->autorelease();
+//		return pRet;
+//	}
+//	else
+//	{
+//		delete pRet;
+//		pRet = NULL;
+//		return NULL;
+//	}
+    
+    return CMyButton::create()
+    ->addEventListener([=](Ref* sender, Widget::TouchEventType type){
+        func(static_cast<Node*>(sender));
+    }, state)
+    ->setButtonNormalImage(normalTextureName);
 }
 
 CMyButton* CMyButton::createWithString(
@@ -148,24 +191,32 @@ CMyButton* CMyButton::createWithString(
 	const BUTTON_CALLBACK &func,	
 	int effect/* = NONE*/)					
 {
-	CMyButton *pRet = new(std::nothrow) CMyButton(normalTextureName,
-		labelString,
-		fontSize,
-		fontColor,
-		state,
-		func,
-		effect);
-	if (pRet && pRet->init())
-	{
-		pRet->autorelease();
-		return pRet;
-	}
-	else
-	{
-		delete pRet;
-		pRet = NULL;
-		return NULL;
-	}
+//	CMyButton *pRet = new(std::nothrow) CMyButton(normalTextureName,
+//		labelString,
+//		fontSize,
+//		fontColor,
+//		state,
+//		func,
+//		effect);
+//	if (pRet && pRet->init())
+//	{
+//		pRet->autorelease();
+//		return pRet;
+//	}
+//	else
+//	{
+//		delete pRet;
+//		pRet = NULL;
+//		return NULL;
+//	}
+    
+    return CMyButton::create()
+    ->addEventListener([=](Ref* sender, Widget::TouchEventType type){
+        func(static_cast<Node*>(sender));
+    }, state)
+    ->setButtonNormalImage(normalTextureName)
+    ->setContents(labelString)
+    ->setFont(fontColor, fontSize);
 }
 
 /* LayerColor와 함께 버튼 생성*/
@@ -179,37 +230,58 @@ CMyButton* CMyButton::createWithLayerColor(
 	const BUTTON_CALLBACK &func,
 	int effect/* = NONE*/)
 {
-	CMyButton *pRet = new(std::nothrow) CMyButton(layerSize,
-		layerColor,
-		labelString,
-		fontSize,
-		fontColor,
-		state,
-		func,
-		effect);
-	if (pRet && pRet->init())
-	{
-		pRet->autorelease();
-		return pRet;
-	}
-	else
-	{
-		delete pRet;
-		pRet = NULL;
-		return NULL;
-	}
+//	CMyButton *pRet = new(std::nothrow) CMyButton(layerSize,
+//		layerColor,
+//		labelString,
+//		fontSize,
+//		fontColor,
+//		state,
+//		func,
+//		effect);
+//	if (pRet && pRet->init())
+//	{
+//		pRet->autorelease();
+//		return pRet;
+//	}
+//	else
+//	{
+//		delete pRet;
+//		pRet = NULL;
+//		return NULL;
+//	}
+    
+    return CMyButton::create()
+    ->addEventListener([=](Ref* sender, Widget::TouchEventType type){
+        func(static_cast<Node*>(sender));
+    }, state)
+    ->setLayer(LayerColor::create(layerColor, layerSize.width, layerSize.height))
+    ->setContents(labelString)
+    ->setFont(fontColor, fontSize);
 }
 
 
 bool CMyButton::init()
 {
-	if (!initVariable())
+	if (!Widget::init())
 		return false;
-	return true;
+
+    this->setTouchEnabled(true);
+    this->scheduleUpdate();
+    
+    m_BeginFunctionList.clear();
+    m_ExecuteFunctionList.clear();
+    m_EndFunctionList.clear();
+    
+    m_BeginFuncList.clear();
+    m_ExecuteFuncList.clear();
+    m_EndFuncList.clear();
+    
+    return true;
 }
 
 bool CMyButton::initVariable()
 {
+    return true;
 	try{
         if (Widget::init())
         {
@@ -262,6 +334,143 @@ bool CMyButton::initVariable()
 	return true;
 }
 
+CMyButton* CMyButton::show(Node* parent, int zOrder/* = 0*/)
+{
+    auto createContentLabel = [=](Node* sender) {
+        if(m_Contents != "")
+        {
+            m_ContentsLabel = Label::createWithTTF(m_Contents, "fonts/malgunbd.ttf", m_FontSize);
+            m_ContentsLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_ContentsLabel->setPosition(sender->getContentSize() / 2);
+            m_ContentsLabel->setColor(m_FontColor);
+            sender->addChild(m_ContentsLabel);
+        }
+    };
+    
+    if(m_Layer != nullptr)
+    {
+        this->setContentSize(m_Layer->getContentSize());
+        m_Layer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_Layer->setIgnoreAnchorPointForPosition(false);
+        m_Layer->setPosition(this->getContentSize() / 2);
+        this->addChild(m_Layer);
+        
+        createContentLabel(m_Layer);
+    }
+    
+    if(m_ButtonNormalImg != "")
+    {
+        auto image = Sprite::create(m_ButtonNormalImg);
+        this->setContentSize(image->getContentSize());
+        image->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        image->setPosition(this->getContentSize() / 2);
+        this->addChild(image);
+        
+        createContentLabel(image);
+    }
+    
+    if(m_ButtonClickedImg != "")
+    {
+//        auto image = Sprite::create(m_ButtonNormalImg);
+//        image->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//        image->setPosition(this->getContentSize() / 2);
+//        this->addChild(image);
+//        createContentLabel(image);
+//        this->loadTexturePressed(m_ButtonClickedImg);
+    }
+
+    this->addTouchEventListener([=](Ref *pSender, Widget::TouchEventType type){
+        this->onTouchEvent(pSender, type);
+    });
+    
+    this->setAnchorPoint(m_AnchorPoint);
+    this->setPosition(m_Position);
+    parent->addChild(this, zOrder);
+    
+    return this;
+}
+
+CMyButton* CMyButton::addEventListener(const ccWidgetTouchCallback &callback,
+                                       eMYBUTTON_STATE state/* = eMYBUTTON_STATE::END*/)
+{
+    switch (state)
+    {
+        case eMYBUTTON_STATE::BEGIN: m_BeginFunctionList.emplace_back(callback); break;
+        case eMYBUTTON_STATE::EXECUTE: m_ExecuteFunctionList.emplace_back(callback); break;
+        case eMYBUTTON_STATE::END: m_EndFunctionList.emplace_back(callback); break;
+        default: throw "WRONG BUTTON STATE. PLEASE CHECK THE STATE.";
+    }
+    
+    return this;
+}
+
+CMyButton* CMyButton::setLayer(LayerColor* layer)
+{
+    m_Layer = layer;
+    
+    return this;
+}
+
+CMyButton* CMyButton::setButtonNormalImage(std::string imgName)
+{
+    m_ButtonNormalImg = imgName;
+    
+    return this;
+}
+
+CMyButton* CMyButton::setButtonClickedImage(std::string imgName)
+{
+    m_ButtonClickedImg = imgName;
+    
+    return this;
+}
+
+CMyButton* CMyButton::setContents(std::string contents)
+{
+    m_Contents = contents;
+    
+    return this;
+}
+
+CMyButton* CMyButton::setFont(Color3B fontColor, int fontSize)
+{
+    m_FontColor = fontColor;
+    m_FontSize = fontSize;
+    
+    return this;
+}
+
+CMyButton* CMyButton::setButtonPosition(cocos2d::Vec2 position)
+{
+    m_Position = position;
+    
+    return this;
+}
+
+CMyButton* CMyButton::setButtonAnchorPoint(cocos2d::Vec2 anchorPoint)
+{
+    m_AnchorPoint = anchorPoint;
+    
+    return this;
+}
+
+void CMyButton::changeContents(std::string contents)
+{
+    if(m_ContentsLabel != nullptr)
+    {
+        m_ContentsLabel->setString(contents);
+    }
+}
+
+void CMyButton::changeFontColor(cocos2d::Color3B fontColor)
+{
+    if(m_ContentsLabel != nullptr)
+    {
+        m_ContentsLabel->setColor(fontColor);
+    }
+}
+
+
 /* 상태 (해당 상태일 때 함수 호출됨)
  * 람다 혹은 함수포인터 혹은 함수객체 전달(매개 변수는 void) */
 void CMyButton::AddState(eMYBUTTON_STATE state,
@@ -269,22 +478,10 @@ void CMyButton::AddState(eMYBUTTON_STATE state,
 {
 	switch (state)
 	{
-	case BEGIN:
-	{
-		m_BeginFuncList.emplace_back(func);
-	}break;
-	case EXECUTE:
-	{
-		m_ExecuteFuncList.emplace_back(func);
-	}break;
-	case END:
-	{
-		m_EndFuncList.emplace_back(func);
-	}break;
-	default:
-	{
-		throw "WRONG BUTTON STATE. PLEASE CHECK THE STATE.";
-	}
+        case eMYBUTTON_STATE::BEGIN: m_BeginFuncList.emplace_back(func); break;
+        case eMYBUTTON_STATE::EXECUTE: m_ExecuteFuncList.emplace_back(func); break;
+        case eMYBUTTON_STATE::END: m_EndFuncList.emplace_back(func); break;
+        default: throw "WRONG BUTTON STATE. PLEASE CHECK THE STATE.";
 	}
 }
 
@@ -292,6 +489,8 @@ void CMyButton::AddState(eMYBUTTON_STATE state,
 /* 버튼 눌릴 때 Effect 실행*/
 void CMyButton::btnEffectStart()
 {
+    return; // TODO: 빼야함
+    
 	if (onEffect(EFFECT_ALPHA))
 	{
 		if (m_pNormalTexture != nullptr)
@@ -347,6 +546,7 @@ void CMyButton::btnEffectStart()
 /* 버튼 떨어질 때 Effect 실행 */
 void CMyButton::btnEffectEnd()
 {
+    return; // TODO: 빼야함
 	// 원 상태로 복구
 	if (m_pNormalTexture != nullptr)
 	{
@@ -372,96 +572,82 @@ void CMyButton::btnEffectEnd()
 
 void CMyButton::onTouchEvent(Ref *pSender, Widget::TouchEventType type)
 {
-    switch (type)
+    switch(type)
     {
-        case Widget::TouchEventType::BEGAN:
-            onTouchBegan();
-            break;
-            
-        case Widget::TouchEventType::ENDED:
-            onTouchEnded();
-            break;
-            
-        case Widget::TouchEventType::CANCELED:
-            onTouchCancelled();
-            break;
-            
-        default:
-            break;
+        case Widget::TouchEventType::BEGAN:     this->onTouchBegan(); break;
+        case Widget::TouchEventType::ENDED:     this->onTouchEnded(); break;
+        case Widget::TouchEventType::CANCELED:  this->onTouchCancelled(); break;
+        default: break;
     }
 }
 
 /* 버튼이 눌렸을 때 BEGIN */
 bool CMyButton::onTouchBegan()
 {
-	if (!m_Unable){
+    // 터치불가 상태
+    if (m_Unable) return false;
+    
+    // BEGIN 상태일때 호출해야할 함수가 있다면 호출
+    if(m_BeginFunctionList.size() > 0){
         
-        // BEGIN 상태일때 호출해야할 함수가 있다면 호출
-        if(m_BeginFuncList.size() > 0){
-            
-			std::for_each(m_BeginFuncList.begin(), m_BeginFuncList.end(),
-				[=](const BUTTON_CALLBACK &func){
-				this->retain();
-				func(this);
-				this->release();
-			});
-        }
-        btnEffectStart();
-        m_IsSelect = true;
+        std::for_each(m_BeginFunctionList.begin(), m_BeginFunctionList.end(),
+                      [=](const ccWidgetTouchCallback &func){
+                          func(this, TouchEventType::BEGAN);
+                      });
     }
-	return m_IsSelect;
+    btnEffectStart();
+    m_IsSelect = true;
+    
+    return m_IsSelect;
 }
 
 /* 버튼에서 떨어졌을 때 END */
 void CMyButton::onTouchEnded()
 {
-	if (!m_Unable){
-
-        // END 상태일때 호출해야할 함수가 있다면 호출
-        if(m_EndFuncList.size() > 0){
-           
-			std::for_each(m_EndFuncList.begin(), m_EndFuncList.end(),
-				[=](const BUTTON_CALLBACK &func){
-				this->retain();
-				func(this);
-				this->release();
-			});
-        }
-        // 종료 이펙트
-        btnEffectEnd();
+    // 터치불가 상태
+    if (m_Unable) return;
+	
+    // END 상태일때 호출해야할 함수가 있다면 호출
+    if(m_EndFunctionList.size() > 0){
         
-        // 버튼 눌림 종료
-        m_IsSelect = false;
+        std::for_each(m_EndFunctionList.begin(), m_EndFunctionList.end(),
+                      [=](const ccWidgetTouchCallback &func){
+                          func(this, TouchEventType::ENDED);
+                      });
     }
+    // 종료 이펙트
+    btnEffectEnd();
+    
+    // 버튼 눌림 종료
+    m_IsSelect = false;
 }
 
 /* 버튼터치가 Cancel 됬을 때 */
 void CMyButton::onTouchCancelled()
 {
-    if (!m_Unable){
-        // 종료 이펙트
-        btnEffectEnd();
-        
-        // 버튼 눌림 종료
-        m_IsSelect = false;
-    }
+    // 터치불가 상태
+    if (m_Unable) return;
+    
+    // 종료 이펙트
+    btnEffectEnd();
+    
+    // 버튼 눌림 종료
+    m_IsSelect = false;
 }
 
 /* 버튼이 눌리고 있는 중일때 EXECUTE */
-void CMyButton::update(float delta)
+void CMyButton::update(float delta/* = 0*/)
 {
 	// 터치불가 상태 
 	if (m_Unable) return;
 
 	// 버튼 눌림 상태이며, EXECUTE 상태일 때 실행되어야 할 함수가 1개 이상일 때
-	if (m_IsSelect && m_ExecuteFuncList.size())
+	if (m_IsSelect && m_ExecuteFunctionList.size())
 	{
 		// EXECUTE 상태일때 호출해야할 함수가 있다면 호출
-		std::for_each(m_ExecuteFuncList.begin(), m_ExecuteFuncList.end(),
-			[=](const BUTTON_CALLBACK &func){
-			this->retain();
-			func(this);
-			this->release();
+		std::for_each(m_ExecuteFunctionList.begin(), m_ExecuteFunctionList.end(),
+			[=](const ccWidgetTouchCallback &func){
+			func(this, TouchEventType::MOVED);
 		});
 	}
 }

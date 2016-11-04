@@ -95,12 +95,10 @@ void CUserCoinButton::EarnCoin()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto popup = CPopup::createWithSpecificFormat(CEarnCoinPopup::create(), POPUPEFFECT_none);
+	auto popup = CPopup::createWithSpecificFormat(CEarnCoinPopup::create(), POPUPEFFECT_none)->show(Director::getInstance()->getRunningScene(), 102);
 	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		origin.x + visibleSize.height * 0.5f));
 	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	Director::getInstance()->getRunningScene()->addChild(popup, 102);
-
 }
 
 void CUserCoinButton::UpdateUI()

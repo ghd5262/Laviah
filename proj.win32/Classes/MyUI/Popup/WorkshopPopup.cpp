@@ -100,16 +100,15 @@ bool CWorkshopPopup::initVariable()
 		}
 
         m_btnEnd = CMyButton::create("endIcon.png",
-                                     END,
+                                     eMYBUTTON_STATE::END,
 									 [=](Node* sender){this->End(sender); },
-                                     EFFECT_ALPHA);
+                                     EFFECT_ALPHA)->show(m_BG);
         
         if (m_btnEnd != nullptr)
         {
             m_btnEnd->setPosition(Vec2(m_BG->getContentSize().width * 0.92f,
                                        m_BG->getContentSize().height * 0.05f));
             m_btnEnd->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_BG->addChild(m_btnEnd);
             m_btnEnd->setCascadeOpacityEnabled(true);
             m_btnEnd->setOpacity(0);
         }

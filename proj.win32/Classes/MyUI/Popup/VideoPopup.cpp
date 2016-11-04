@@ -52,14 +52,13 @@ bool CVideoPopup::initVariable()
 		/* Video */
 		m_btnVideo = CMyButton::create(
 			"resultPopup_1.png",
-			END, 
+			eMYBUTTON_STATE::END,
 			[=](Node* sender){this->Video(sender); },
-			EFFECT_SIZEDOWN);
+			EFFECT_SIZEDOWN)->show(m_BG);
 
 		if (m_btnVideo != nullptr){
 			m_btnVideo->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_btnVideo->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.3f));
-			m_BG->addChild(m_btnVideo);
 			m_btnVideo->setOpacity(0);
 			m_btnVideo->setCascadeOpacityEnabled(true);
 			auto watchVideoIcon = Sprite::create("videoIcon.png");
@@ -84,14 +83,13 @@ bool CVideoPopup::initVariable()
 		/* Use Coin */
 		m_btnUseCoin = CMyButton::create(
 			"resultPopup_1.png",
-			END,
+			eMYBUTTON_STATE::END,
 			[=](Node* sender){this->UseCoin(sender); },
-			EFFECT_SIZEDOWN);
+			EFFECT_SIZEDOWN)->show(m_BG);
 
 		if (m_btnUseCoin != nullptr){
 			m_btnUseCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_btnUseCoin->setPosition(Vec2(m_BG->getContentSize().width * 0.5f, m_BG->getContentSize().height * 0.2f));
-			m_BG->addChild(m_btnUseCoin);
 			m_btnUseCoin->setOpacity(0);
 			m_btnUseCoin->setCascadeOpacityEnabled(true);
 
@@ -118,16 +116,15 @@ bool CVideoPopup::initVariable()
 		}
 
 		m_btnEnd = CMyButton::create("endIcon.png",
-			END,
+			eMYBUTTON_STATE::END,
 			[=](Node* sender){this->End(sender); },
-			EFFECT_ALPHA);
+			EFFECT_ALPHA)->show(m_BG);
 
 		if (m_btnEnd != nullptr)
 		{
 			m_btnEnd->setPosition(Vec2(m_BG->getContentSize().width * 0.92f,
 				m_BG->getContentSize().height * 0.05f));
 			m_btnEnd->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_BG->addChild(m_btnEnd);
 			m_btnEnd->setCascadeOpacityEnabled(true);
 			m_btnEnd->setOpacity(0);
 		}

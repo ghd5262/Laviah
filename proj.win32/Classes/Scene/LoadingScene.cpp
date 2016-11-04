@@ -72,6 +72,7 @@ bool CLoadingScene::initVariable()
 		createNotice(callfuncO_selector(CLoadingScene::callbackDownloadComplete), NOTICE::DOWN_COMPLETE);
 
 		CUserDataManager::Instance();
+        CSDKUtil::Instance();
 		CSDKUtil::Instance()->IsNetworkConnect();
 
 		InitLoadingSceneUI();
@@ -91,7 +92,7 @@ void CLoadingScene::InitLoadingSceneUI()
 
 void CLoadingScene::callbackNetworkResult(Ref* object)
 {
-	// Ã¹ ½ÇÇà ÀÌ¶ó¸é ÀÎÅÍ³Ý ¿¬°á ÇÏ¶ó´Â ÆË¾÷
+	// ì²« ì‹¤í–‰ ì´ë¼ë©´ ì¸í„°ë„· ì—°ê²° í•˜ë¼ëŠ” íŒì—…
 	if (CUserDataManager::Instance()->getIsFirstPlay() &&
 		!CSDKUtil::Instance()->getIsNetworkConnect())
 	{
@@ -99,7 +100,7 @@ void CLoadingScene::callbackNetworkResult(Ref* object)
 	}
 	else{
 		if (CSDKUtil::Instance()->getIsNetworkConnect()){
-			// ÀÎÅÍ³Ý ¿¬°áµÇ¾î ÀÖ´Ù¸é ÆÐÅ°Áö ¹öÀü ºñ±³ ÈÄ Á¤»ó ½ÇÇà
+			// ì¸í„°ë„· ì—°ê²°ë˜ì–´ ìžˆë‹¤ë©´ íŒ¨í‚¤ì§€ ë²„ì „ ë¹„êµ í›„ ì •ìƒ ì‹¤í–‰
 			m_Downlaoder = CDownloadManager::create();
 			addChild(m_Downlaoder);
 		}
@@ -116,7 +117,7 @@ void CLoadingScene::callbackDownloadFail(Ref* object)
 
 void CLoadingScene::callbackDownloadComplete(Ref* object)
 {
-	// ·Î±×ÀÎ
+	// ë¡œê·¸ì¸
 	CSDKUtil::Instance()->GoogleLogin();
 }
 
@@ -128,7 +129,7 @@ void CLoadingScene::callbackLoginResult(Ref* object)
 
 void CLoadingScene::callbackUserDataLoadFinish(Ref* object)
 {
-	// µ¥ÀÌÅÍ ·Îµù ¿Ï·á ÈÄ ÆÐÅ°Áö ´Ù¿î·Îµå
+	// ë°ì´í„° ë¡œë”© ì™„ë£Œ í›„ íŒ¨í‚¤ì§€ ë‹¤ìš´ë¡œë“œ
 	createMenuScene();
 }
 
@@ -149,14 +150,12 @@ void CLoadingScene::createMenuScene()
 
 void CLoadingScene::createNetworkConnectPopup()
 {
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-
-	CPopup::create()
-		->setPositiveButton([=](Node* sender){
-		CSDKUtil::Instance()->IsNetworkConnect();
-		}, "OK")
-		->setMessage("Please connect to the internet \n to download resources.")
-		->show(this);
+    CPopup::create()
+    ->setPositiveButton([=](Ref* sender, Widget::TouchEventType type){
+        CSDKUtil::Instance()->IsNetworkConnect();
+    }, "OK")
+    ->setMessage("Please connect to the internet \n to download resources.")
+    ->show(this);
 }
 
 void CLoadingScene::update(float delta)

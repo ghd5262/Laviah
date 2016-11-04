@@ -196,27 +196,24 @@ void CGameScene::InitGameSceneUI()
 	auto leftButton = CMyButton::createWithTexture(
 		"leftButton_1.png",
 		"leftButton_2.png",
-		EXECUTE,
-		std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -1.f));
+                                                   eMYBUTTON_STATE::EXECUTE,
+		std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -1.f))->show(m_GridWorld, 102);
 
 	leftButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	leftButton->setPosition(Vec2(origin.x + visibleSize.width * 0.25f,
 		origin.x + visibleSize.height * 0.5f));
 
-	m_GridWorld->addChild(leftButton, 102);
 
 	// RotationObjectRight callback 등록
 	auto rightButton = CMyButton::createWithTexture(
 		"rightButton_1.png",
 		"rightButton_2.png",
-		EXECUTE,
-		std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), 1.f));
+		eMYBUTTON_STATE::EXECUTE,
+		std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), 1.f))->show(m_GridWorld, 102);
 
 	rightButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	rightButton->setPosition(Vec2(origin.x + visibleSize.width * 0.75f,
 		origin.x + visibleSize.height * 0.5f));
-
-	m_GridWorld->addChild(rightButton, 102);
 
 	// player의 HealthCalFunc callback 등록 
 	//auto healthBar = CHealthBarUI::create(
@@ -302,31 +299,29 @@ void CGameScene::InitGameSceneUI()
     
 	m_PauseBtn = nullptr;
 	m_PauseBtn = CMyButton::create("pauseIcon.png",
-		END,
+		eMYBUTTON_STATE::END,
 		[this, origin, visibleSize](Node* sender)
 	{
 		OpenGamePausePopup();
-	}, EFFECT_SIZEDOWN);
+	}, EFFECT_SIZEDOWN)->show(m_GridWorld, 102);
 
 	m_PauseBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
 		origin.x + visibleSize.height * 0.05f));
 	m_PauseBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	m_PauseBtn->setCascadeOpacityEnabled(true);
-	m_GridWorld->addChild(m_PauseBtn, 102);
     
     
     auto giantModeBtn = CMyButton::create("bonusLetter_0.png",
-                                   END,
+                                   eMYBUTTON_STATE::END,
 								   [this, origin, visibleSize](Node* sender)
                                    {
                                        CItemManager::Instance()->StartItemTimer(eITEM_TYPE_giant);
-                                   }, EFFECT_SIZEDOWN);
+                                   }, EFFECT_SIZEDOWN)->show(m_GridWorld, 102);
     
     giantModeBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
                                  origin.x + visibleSize.height * 0.5f));
     giantModeBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     giantModeBtn->setCascadeOpacityEnabled(true);
-    m_GridWorld->addChild(giantModeBtn, 102);
     
     
     
@@ -395,7 +390,7 @@ void CGameScene::GameExit()
 		"Yes",
 		40,
 		Color3B::WHITE,
-		END,
+		eMYBUTTON_STATE::END,
 		[this](Node* sender){
             Director::getInstance()->end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
@@ -408,17 +403,16 @@ void CGameScene::GameExit()
 		"No",
 		40,
 		Color3B::WHITE,
-		END,
+		eMYBUTTON_STATE::END,
 		[this](Node* sender){
             GameResume();
 	}, EFFECT_ALPHA);
 
 	auto popup = CPopup::createWithTwoButton("Are you sure you want to exit StarStarStar?"
-		, btnNo, btnYes, 40, Color3B::BLACK);
+		, btnNo, btnYes, 40, Color3B::BLACK)->show(this, 102);
 	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		origin.x + visibleSize.height * 0.5f));
 	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	this->addChild(popup, 102);
 }
 
 void CGameScene::update(float delta)
@@ -481,11 +475,10 @@ void CGameScene::GameEnd()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto popup = CPopup::createWithSpecificFormat(CResultPopup::create(), POPUPEFFECT_none);
+	auto popup = CPopup::createWithSpecificFormat(CResultPopup::create(), POPUPEFFECT_none)->show(m_GridWorld, 102);
 	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		origin.x + visibleSize.height * 0.5f));
 	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	m_GridWorld->addChild(popup, 102);
 
 	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
 	GamePause();
@@ -496,11 +489,10 @@ void CGameScene::GameHelp()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    auto popup = CPopup::createWithSpecificFormat(CHelpPopup::create(), POPUPEFFECT_none);
+    auto popup = CPopup::createWithSpecificFormat(CHelpPopup::create(), POPUPEFFECT_none)->show(m_GridWorld, 102);
     popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
                             origin.x + visibleSize.height * 0.5f));
     popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_GridWorld->addChild(popup, 102);
 }
 
 void CGameScene::CountDownCancel()
@@ -554,11 +546,10 @@ void CGameScene::watchVideo()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto popup = CPopup::createWithSpecificFormat(CVideoPopup::create(), POPUPEFFECT_none);
+	auto popup = CPopup::createWithSpecificFormat(CVideoPopup::create(), POPUPEFFECT_none)->show(m_GridWorld, 102);
 	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		origin.x + visibleSize.height * 0.5f));
 	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	m_GridWorld->addChild(popup, 102);
 
 	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
 	GamePause();
@@ -576,11 +567,10 @@ void CGameScene::OpenGamePausePopup()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    auto popup = CPopup::createWithSpecificFormat(CPausePopup::create(), POPUPEFFECT_none);
+    auto popup = CPopup::createWithSpecificFormat(CPausePopup::create(), POPUPEFFECT_none)->show(m_GridWorld, 102);
     popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
                             origin.x + visibleSize.height * 0.5f));
     popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_GridWorld->addChild(popup, 102);
 }
 
 void CGameScene::backToMenuScene()

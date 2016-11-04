@@ -46,16 +46,15 @@ bool CGachaPopup::initVariable()
 		}
 
 		m_btnExit = CMyButton::create("endIcon.png",
-			END,
+			eMYBUTTON_STATE::END,
 			[=](Node* sender){this->End(sender); },
-			EFFECT_ALPHA);
+			EFFECT_ALPHA)->show(m_BG);
 
 		if (m_btnExit != nullptr)
 		{
 			m_btnExit->setPosition(Vec2(m_BG->getContentSize().width * 0.92f,
 				m_BG->getContentSize().height * 0.05f));
 			m_btnExit->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_BG->addChild(m_btnExit);
 			m_btnExit->setCascadeOpacityEnabled(true);
 			m_btnExit->setOpacity(0);
 		}
@@ -65,14 +64,13 @@ bool CGachaPopup::initVariable()
 			MakeString("Get -%d", g_coinToGacha),
 			40,
 			Color3B::WHITE,
-			END,
+			eMYBUTTON_STATE::END,
 			[=](Node* sender){this->PlayGacha(sender); },
-			EFFECT_ALPHA);
+			EFFECT_ALPHA)->show(m_GachaBG);
 		if (btnGacha != nullptr)
 		{
 			btnGacha->setPosition(Vec2(m_GachaBG->getContentSize().width * 0.5f, m_GachaBG->getContentSize().height * 0.15f));
 			btnGacha->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_GachaBG->addChild(btnGacha);
 		}
 
 		m_btnUserCoin = CUserCoinButton::create();
