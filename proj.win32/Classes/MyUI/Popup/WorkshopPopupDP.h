@@ -15,18 +15,16 @@ protected:
     bool initVariable();
     
 private:
-	void Buy(Node* sender);
+	void Buy(cocos2d::Node* sender);
     
 	CWorkshopPopupDP(sWORKSHOPITEM_PARAM workshopItem)
 		: m_WorkshopItem(workshopItem)
-        , m_DPBack(nullptr)
-        , m_BuyBtn(nullptr)
+		, m_BtnBuy(nullptr)
         , m_LevelProgressBar(nullptr){};
     virtual ~CWorkshopPopupDP(){};
     
 private:
 	const sWORKSHOPITEM_PARAM m_WorkshopItem;
-	LayerColor* m_DPBack;
-    CMyButton* m_BuyBtn;
+	CMyButton* m_BtnBuy;
     CLevelProgressBar* m_LevelProgressBar;
 };

@@ -2,16 +2,16 @@
 #include "../Popup.h"
 
 class CMyButton;
-class CEarnCoinPopup : public CSpecificPopupBase
+class CEarnCoinPopup : public CPopup
 {
 public:
 	static CEarnCoinPopup* create();
 
 protected:
-	virtual bool initVariable() override;
+	virtual bool init() override;
 
 private:
-	void Video(Node* sender);
+	void Video(cocos2d::Node* sender);
 
 	CEarnCoinPopup(){};
 	virtual ~CEarnCoinPopup(){};

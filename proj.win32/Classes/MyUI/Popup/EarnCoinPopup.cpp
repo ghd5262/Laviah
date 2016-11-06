@@ -4,8 +4,9 @@
 CEarnCoinPopup* CEarnCoinPopup::create()
 {
 	CEarnCoinPopup *pRet = new(std::nothrow) CEarnCoinPopup();
-	if (pRet)
+	if (pRet && pRet->init())
 	{
+		pRet->autorelease();
 		return pRet;
 	}
 	else
@@ -16,78 +17,58 @@ CEarnCoinPopup* CEarnCoinPopup::create()
 	}
 }
 
-bool CEarnCoinPopup::initVariable()
+bool CEarnCoinPopup::init()
 {
-	try{
-		Size visibleSize = Director::getInstance()->getVisibleSize();
-		Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	if (!CPopup::init()) return false;
 
-		auto bg = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
-		if (bg != nullptr){
-			bg->setIgnoreAnchorPointForPosition(false);
-			bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			bg->setPosition(Vec2::ZERO);
-			m_Popup->addChild(bg);
-		}
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-		auto mentLabel = Label::createWithTTF(MakeString("Would you like to watch a video to earn %d more?", 500).c_str(), "fonts/malgunbd.ttf", 40);
-		if (mentLabel != nullptr)
-		{
-			mentLabel->setColor(g_labelColor1);
-			mentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			mentLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.6f));
-			bg->addChild(mentLabel);
-		}
-
-		auto btnWatch = CMyButton::createWithLayerColor(Size(430, 150),
-			Color4B(0, 0, 0, 255 * 0.8f),
-			"Watch",
-			40,
-			Color3B::WHITE,
-			eMYBUTTON_STATE::END,
-			[=](Node* sender){this->Video(sender); },
-			EFFECT_ALPHA)->show(bg);
-		if (btnWatch != nullptr)
-		{
-			btnWatch->setPosition(Vec2(bg->getContentSize().width * 0.275f, bg->getContentSize().height * 0.25f));
-			btnWatch->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-
-		}
-
-		auto btnNo = CMyButton::createWithLayerColor(Size(430, 150),
-			Color4B(255, 48, 48, 255 * 0.8f),
-			"No",
-			40,
-			Color3B::WHITE,
-			eMYBUTTON_STATE::END,
-			[this](Node* sender){
-			CSpecificPopupBase::PopupClose();
-		}, EFFECT_ALPHA)->show(bg);
-		if (btnNo != nullptr)
-		{
-			btnNo->setPosition(Vec2(bg->getContentSize().width * 0.725f, bg->getContentSize().height * 0.25f));
-			btnNo->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-
-		}
-
-		m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
-		});
-
-		m_Popup->setPopupCloseEffectFunc([this](CPopup* pausePopup){
-			m_Popup->scheduleOnce([this](float delta){
-				CSpecificPopupBase::PopupRelease();
-			}, 0.1f, "EarnCoinPopupClose");
-		});
+	auto bg = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
+	if (bg != nullptr){
+		bg->setIgnoreAnchorPointForPosition(false);
+		bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		bg->setPosition(this->getContentSize() / 2);
+		this->addChild(bg);
 	}
-	catch (...){
-		throw StringUtils::format("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		return false;
+
+	auto mentLabel = Label::createWithTTF(MakeString("Would you like to watch a video to earn %d more?", 500).c_str(), "fonts/malgunbd.ttf", 40);
+	if (mentLabel != nullptr)
+	{
+		mentLabel->setColor(g_labelColor1);
+		mentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		mentLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.6f));
+		bg->addChild(mentLabel);
 	}
+
+	CMyButton::create()
+		->addEventListener([=](Node* sender){
+		this->Video(sender);
+	})
+		->setLayer(LayerColor::create(Color4B(0, 0, 0, 255 * 0.8f), 430, 150))
+		->setContents("Watch")
+		->setFont(Color3B::WHITE, 40)
+		->setButtonPosition(Vec2(bg->getContentSize().width * 0.275f, bg->getContentSize().height * 0.25f))
+		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->show(bg);
+
+
+	CMyButton::create()
+		->addEventListener([=](Node* sender){
+		this->popupClose();
+	})
+		->setLayer(LayerColor::create(Color4B(255, 48, 48, 255 * 0.8f), 430, 150))
+		->setContents("No")
+		->setFont(Color3B::WHITE, 40)
+		->setButtonPosition(Vec2(bg->getContentSize().width * 0.725f, bg->getContentSize().height * 0.25f))
+		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->show(bg);
+
 	return true;
 }
 
 void CEarnCoinPopup::Video(Node* sender){
 	CCLOG("format popup Video");
-    CSpecificPopupBase::PopupClose();
+    this->popupClose();
 //    CSDKUtil::Instance()->ShowRewardUnityAds(std::bind(&CVideoPopup::Resume, this));
 }

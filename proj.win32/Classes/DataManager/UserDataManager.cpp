@@ -453,10 +453,10 @@ bool CUserDataManager::CoinUpdate(int value)
             Size visibleSize = Director::getInstance()->getVisibleSize();
             Vec2 origin = Director::getInstance()->getVisibleOrigin();
             
-            auto popup = CPopup::createWithSpecificFormat(CEarnCoinPopup::create(), POPUPEFFECT_none)->show(Director::getInstance()->getRunningScene(), 102);
-            popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-                                    origin.x + visibleSize.height * 0.5f));
-            popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			CEarnCoinPopup::create()
+				->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+				->setPopupPosition(visibleSize / 2)
+				->show(Director::getInstance()->getRunningScene(), 102);
         }
         else
         {

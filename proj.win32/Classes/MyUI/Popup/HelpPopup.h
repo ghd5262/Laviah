@@ -2,23 +2,17 @@
 #include "../Popup.h"
 
 class CMyButton;
-class CHelpPopup : public CSpecificPopupBase
+class CHelpPopup : public CPopup
 {
 public:
 	static CHelpPopup* create();
 
 protected:
-	virtual bool initVariable() override;
+	virtual bool init() override;
 
 private:
-	void End(Node* sender);
+	void End(cocos2d::Node* sender);
 
-	CHelpPopup()
-		: m_btnEnd(nullptr)
-		, m_BG(nullptr){};
+	CHelpPopup(){};
 	virtual ~CHelpPopup(){};
-
-private:
-	CMyButton* m_btnEnd;
-	LayerColor* m_BG;
 };

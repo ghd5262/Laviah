@@ -19,8 +19,8 @@ CSDKUtil::CSDKUtil()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 #if TARGET_OS_SIMULATOR
-    m_IsNormalUnityAdsReady = true;
-    m_IsRewardUnityAdsReady = true;
+	m_IsNormalUnityAdsReady = true;
+	m_IsRewardUnityAdsReady = true;
 #else
 	CCLOG("SDKUtil_IOS");
 	m_SDKUtil = new CSDKUtil_IOS();
@@ -41,6 +41,7 @@ CSDKUtil::~CSDKUtil()
 }
 
 void CSDKUtil::GoogleLogin(){
+	CCLOG("GoogleLogin");
 	m_SDKUtil->GoogleLogin();
 }
 

@@ -27,7 +27,7 @@ CBackGround::CBackGround()
 , m_tempStartGradient(nullptr)
 , m_tempEndGradient(nullptr)
 , m_fTime(0.f)
-, m_fLimitTime(15.f)
+, m_fLimitTime(20.f)
 {
 }
 

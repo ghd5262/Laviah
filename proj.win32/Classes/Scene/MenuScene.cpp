@@ -16,13 +16,14 @@
 #include "../MyUI/Popup/CharacterSelectPopup.h"
 #include "../MyUI/Popup/WorkshopPopup.h"
 #include "../MyUI/Popup/GachaPopup.h"
-#include "../MyUI/Popup/GoogleCloudTestPopup.h"
 #include "../SDKUtil/SDKUtil.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/GradientDataManager.h"
 
 USING_NS_CC;
+using namespace cocos2d;
+using namespace cocos2d::ui;
 
 CMenuScene* CMenuScene::m_MenuScene = nullptr;
 
@@ -125,136 +126,68 @@ bool CMenuScene::initVariable()
 	return true;
 }
 
+static const Color4B COLOR_BUTTON_RED = Color4B(255, 48, 48, 255 * 0.8f);
+
 void CMenuScene::InitMenuSceneUI()
 {
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    
-    CMyButton::create()
-    ->addEventListener([=](Ref* sender, Widget::TouchEventType type){
-        CPopup::create()
-        ->setMessage("New Button, Popup Test Succeed")
-        ->setPositiveButton([=](Ref* sender, Widget::TouchEventType type){
-            CCLOG("PRESS OK!!");
-        }, "OK")
-        ->show(this);
-    }, eMYBUTTON_STATE::EXECUTE)
-    ->setLayer(LayerColor::create(Color4B(255, 48, 48, 255 * 0.8f), 430, 150))
-    ->setContents("New Button")
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setButtonPosition(Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.8f))
-    ->show(this);
 
-    auto gameStartBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Start", 40, Color3B::WHITE, eMYBUTTON_STATE::END, [=](Node* sender){
-        this->createGameScene(sender);
-//        CCLOG("Start Button Press!!");
-    }, EFFECT_SIZEDOWN)
-    ->show(this);
-    
-    gameStartBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
-                                 origin.x + visibleSize.height * 0.1f));
-    gameStartBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    gameStartBtn->setCascadeOpacityEnabled(true);
-//    this->addChild(gameStartBtn);
-//
-//    
-	CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Select", 40, Color3B::WHITE,
-		eMYBUTTON_STATE::END, [=](Node* sender){
-            
-            CPopup::create(CCharacterSelectPopup::create())
-            ->WidgetInitTest()
-            ->setPopupPosition(visibleSize / 2)
-            ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-            ->show(this);
-        }, EFFECT_SIZEDOWN)
-    ->setButtonPosition(Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.2f))
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(this);
-    
-	auto workShopBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Workshop", 40, Color3B::WHITE,
-		eMYBUTTON_STATE::END, [this, origin, visibleSize](Node* sender){
-                                                              auto popup = CPopup::createWithSpecificFormat(CWorkshopPopup::create(), POPUPEFFECT_none)->show(this);
-                                                              popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-                                                                                      origin.x + visibleSize.height * 0.5f));
-                                                              popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-                                                          }, EFFECT_SIZEDOWN)->show(this);
-    
-    workShopBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
-                                         origin.x + visibleSize.height * 0.3f));
-    workShopBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    workShopBtn->setCascadeOpacityEnabled(true);
+	auto createTestButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos){
+		CMyButton::create()
+			->addEventListener(callback)
+			->setLayer(LayerColor::create(COLOR_BUTTON_RED, 430, 150))
+			->setContents(name)
+			->setFont(Color3B::WHITE, 40)
+			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->setButtonPosition(pos)
+			->show(this);
+	};
 
+	auto createWidgetPopup = [=](CPopup* widget){
+		widget->setPopupPosition(visibleSize / 2)
+			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->show(this);
+	};
 
-	auto gachaBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "Gacha", 40, Color3B::WHITE,
-		eMYBUTTON_STATE::END, [this, origin, visibleSize](Node* sender){
-		auto popup = CPopup::createWithSpecificFormat(CGachaPopup::create(), POPUPEFFECT_none)->show(this);
-		popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-			origin.x + visibleSize.height * 0.5f));
-		popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	}, EFFECT_SIZEDOWN)->show(this);
+	auto createOneButtonPopup = [=](std::string message){
+		CPopup::create()
+			->setPositiveButton([=](Node* sender){}, "OK")
+			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+			->setMessage(message)
+			->setMessageFont(Color3B::WHITE, 40)
+			->setPopupPosition(visibleSize / 2)
+			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->show(this);
+	};
 
-	gachaBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
-		origin.x + visibleSize.height * 0.4f));
-	gachaBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	gachaBtn->setCascadeOpacityEnabled(true);
-    
-    
-	auto unityBtnReward = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "RewardAds", 40, Color3B::WHITE,
-		eMYBUTTON_STATE::END, [this, origin, visibleSize](Node* sender){
-		CSDKUtil::Instance()->ShowRewardUnityAds([this, origin, visibleSize](){
-			auto popup = CPopup::createWithOneButton("Finished RewardAds",
-				CMyButton::createWithLayerColor(Size(430, 150), Color4B(0, 0, 0, 255 * 0.8f), "OK", 40, Color3B::WHITE,
-				eMYBUTTON_STATE::END, [](Node* sender){}), 40)->show(this);
-			popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-				origin.x + visibleSize.height * 0.5f));
-			popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		});
-	}, EFFECT_SIZEDOWN)->show(this);
-    
-    unityBtnReward->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
-                                     origin.x + visibleSize.height * 0.5f));
-    unityBtnReward->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    unityBtnReward->setCascadeOpacityEnabled(true);
+	createTestButton([=](Node* sender){
+		this->createGameScene(sender);
+	}, "Start", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.1f));
+   
+	createTestButton([=](Node* sender){
+		createWidgetPopup(CCharacterSelectPopup::create());
+	}, "Select", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.2f));
 
+	createTestButton([=](Node* sender){
+		createWidgetPopup(CWorkshopPopup::create());
+	}, "Workshop", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.3f));
 
-    auto unityBtnNormal = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "NormalAds", 40, Color3B::WHITE, eMYBUTTON_STATE::END,
-        [=](Node* sender){
-             CSDKUtil::Instance()->ShowNormalUnityAds([=](){
-                 auto popup = CPopup::createWithOneButton("Finished NormalAds",
-                                                          CMyButton::createWithLayerColor(Size(430, 150), Color4B(0, 0, 0, 255 * 0.8f), "OK", 40, Color3B::WHITE, eMYBUTTON_STATE::END,
-                                                            [=](Node* sender){
-                                                            
-                                                            }), 40)->show(this);
-                 popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-                                         origin.x + visibleSize.height * 0.5f));
-                 popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-             });
-        }, EFFECT_SIZEDOWN)->show(this);
-    
-    unityBtnNormal->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
-                                     origin.x + visibleSize.height * 0.6f));
-    unityBtnNormal->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    unityBtnNormal->setCascadeOpacityEnabled(true);
-    
-    
-    auto googleCloudSaveTestBtn = CMyButton::createWithLayerColor(Size(430, 150), Color4B(255, 48, 48, 255 * 0.8f), "CloudSave", 40, Color3B::WHITE,
-		eMYBUTTON_STATE::END, [this, origin, visibleSize](Node* sender){
-		auto popup = CPopup::createWithSpecificFormat(CGoogleCloudTestPopup::create(), POPUPEFFECT_none)->show(this);
-		popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-			origin.x + visibleSize.height * 0.5f));
-		popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	}, EFFECT_SIZEDOWN)->show(this);
+	createTestButton([=](Node* sender){
+		createWidgetPopup(CGachaPopup::create());
+	}, "Gacha", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.4f));
 
-	googleCloudSaveTestBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.8f,
-		origin.x + visibleSize.height * 0.7f));
-	googleCloudSaveTestBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	googleCloudSaveTestBtn->setCascadeOpacityEnabled(true);
+	createTestButton([=](Node* sender){
+		createOneButtonPopup("Finished Reward Ads");
+	}, "RewardAds", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.5f));
+
+	createTestButton([=](Node* sender){
+		createOneButtonPopup("Finished Normal Ads");
+	}, "NormalAds", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.6f));
     
-    auto sprite = Sprite::create("cocos2dbanner.png");
-    if(sprite != nullptr)
-    {
-        addChild(sprite);
-    }
+	//createTestButton([=](Node* sender){
+	//	createWidgetPopup(CGoogleCloudTestPopup::create());
+	//}, "CloudSave", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.7f));
 }
 
 void CMenuScene::createGameScene(Node* sender)

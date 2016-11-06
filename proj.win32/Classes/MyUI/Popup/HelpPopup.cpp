@@ -8,8 +8,9 @@
 CHelpPopup* CHelpPopup::create()
 {
 	CHelpPopup *pRet = new(std::nothrow) CHelpPopup();
-	if (pRet)
+	if (pRet && pRet->init())
 	{
+		pRet->autorelease();
 		return pRet;
 	}
 	else
@@ -20,86 +21,75 @@ CHelpPopup* CHelpPopup::create()
 	}
 }
 
-bool CHelpPopup::initVariable()
+bool CHelpPopup::init()
 {
-	try{
-		Size visibleSize = Director::getInstance()->getVisibleSize();
-		Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	if (!CPopup::init()) return false;
 
-		size_t helpImgCount = 2;
+	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-        m_BG = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
-        if(m_BG != nullptr){
-            m_BG->setIgnoreAnchorPointForPosition(false);
-            m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_BG->setPosition(Vec2(0, visibleSize.height));
-            m_Popup->addChild(m_BG);
-        }
+	size_t helpImgCount = 2;
 
-		// PageView 생성
-		auto pageview = PageView::create();
-		pageview->setTouchEnabled(true);
-		pageview->setContentSize(visibleSize);
-		pageview->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f));
-		pageview->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		for (int i = 0; i < helpImgCount; i++) {
-			// Layout 생성
-			auto layout = Layout::create();
-			layout->setSize(visibleSize);
+	//auto bg = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
+	//if (bg != nullptr){
+	//	bg->setIgnoreAnchorPointForPosition(false);
+	//	bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	//	bg->setPosition(this->getContentSize() / 2);
+	//	this->addChild(bg);
+	//}
 
-			// ImageView를 생성하고 Layout에 add함
-			auto imageView = ImageView::create(StringUtils::format("helpImg_%d.png", i + 1));
-			imageView->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
-			layout->addChild(imageView);
+	// PageView 생성
+	auto pageview = PageView::create();
+	pageview->setTouchEnabled(true);
+	pageview->setContentSize(visibleSize);
+	pageview->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f));
+	pageview->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	for (int i = 0; i < helpImgCount; i++) {
+		// Layout 생성
+		auto layout = Layout::create();
+		layout->setSize(visibleSize);
 
-			// Layout을 PageView에 add함
-			pageview->addPage(layout);
-		}
+		// ImageView를 생성하고 Layout에 add함
+		auto imageView = ImageView::create(StringUtils::format("helpImg_%d.png", i + 1));
+		imageView->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+		layout->addChild(imageView);
 
-		m_BG->addChild(pageview);
-
-
-		m_btnEnd = CMyButton::create("endIcon.png",
-			eMYBUTTON_STATE::END,
-			[=](Node* sender){this->End(sender); },
-			EFFECT_ALPHA)->show(m_BG, 10);
-
-		if (m_btnEnd != nullptr)
-		{
-			m_btnEnd->setPosition(Vec2(m_BG->getContentSize().width * 0.92f,
-				m_BG->getContentSize().height * 0.05f));
-			m_btnEnd->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_btnEnd->setCascadeOpacityEnabled(true);
-			m_btnEnd->setOpacity(0);
-		}
-
-
-		m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
-			auto winSize = Director::getInstance()->getWinSize();
-			m_BG->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(0, 0))));
-			m_btnEnd->runAction(FadeIn::create(0.5f));
-		});
-
-		m_Popup->setPopupCloseEffectFunc([this, visibleSize, origin](CPopup* pausePopup){
-
-
-			m_btnEnd->runAction(FadeTo::create(0.5f, 0));
-			m_Popup->scheduleOnce([this, visibleSize, origin](float delta){
-				m_BG->runAction(Sequence::create(EaseSineIn::create(MoveTo::create(0.4f, Vec2(0, origin.x + visibleSize.height))),
-					CallFunc::create([this](){
-					CSpecificPopupBase::PopupRelease();
-				}), nullptr));
-			}, 0.1f, "HelpPopupClose");
-		});
+		// Layout을 PageView에 add함
+		pageview->addPage(layout);
 	}
-	catch (...){
-		throw StringUtils::format("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		return false;
-	}
+
+	this->addChild(pageview);
+
+
+	auto btnEnd = CMyButton::create()
+		->addEventListener([=](Node* sender){
+		this->End(sender);
+	})
+		->setButtonNormalImage("endIcon.png")
+		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setButtonPosition(Vec2(this->getContentSize().width * 0.92f, this->getContentSize().height * 0.05f))
+		->show(this, 10);
+
+	btnEnd->setCascadeOpacityEnabled(true);
+	btnEnd->setOpacity(0);
+
+	this->setOpenAnimation([=](Node* sender){
+		pageview->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f))));
+
+		this->scheduleOnce([=](float delta){
+			btnEnd->runAction(FadeIn::create(0.5f));
+		}, 0.5f, "HelpPopupOpen");
+	});
+
+	this->setCloseAnimation([=](Node* sender){
+		pageview->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f))));
+
+		btnEnd->runAction(FadeTo::create(0.5f, 0));
+	});
+
 	return true;
 }
 
 void CHelpPopup::End(Node* sender){
 	CCLOG("format popup End");
-	CSpecificPopupBase::PopupClose();
+	this->popupClose();
 }

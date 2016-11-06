@@ -118,7 +118,8 @@ void CLoadingScene::callbackDownloadFail(Ref* object)
 void CLoadingScene::callbackDownloadComplete(Ref* object)
 {
 	// 로그인
-	CSDKUtil::Instance()->GoogleLogin();
+	//CSDKUtil::Instance()->GoogleLogin();
+	callbackLoginResult(object);
 }
 
 void CLoadingScene::callbackLoginResult(Ref* object)
@@ -151,10 +152,13 @@ void CLoadingScene::createMenuScene()
 void CLoadingScene::createNetworkConnectPopup()
 {
     CPopup::create()
-    ->setPositiveButton([=](Ref* sender, Widget::TouchEventType type){
+    ->setPositiveButton([=](Node* sender){
         CSDKUtil::Instance()->IsNetworkConnect();
     }, "OK")
+	->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
     ->setMessage("Please connect to the internet \n to download resources.")
+	->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+	->setPopupPosition(this->getContentSize() / 2)
     ->show(this);
 }
 

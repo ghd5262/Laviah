@@ -1,18 +1,18 @@
 #pragma once
-#include "../GameObject/GameObject.h"
+#include "../Common/HSHUtility.h"
 
 class CScoreUI;
 class CMyButton;
+class CUserDataManager;
 
-class CUserCoinButton : public CGameObject
+class CUserCoinButton : public cocos2d::Node
 {
 public:
 	static CUserCoinButton* create();
-	void UpdateUI();
-
+	
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
+	virtual void update(float delta) override;
 
 private:
 	void EarnCoin();
@@ -21,12 +21,12 @@ private:
 		: m_CoinLabel(nullptr)
 		, m_CoinIcon(nullptr)
 		, m_Back(nullptr)
-		, m_UserCoin(nullptr){}
+		, m_UserData(nullptr){}
 	virtual ~CUserCoinButton(){};
 
 private:
 	Label* m_CoinLabel;
 	Sprite* m_CoinIcon;
 	LayerColor* m_Back;
-	CScoreUI* m_UserCoin;
+	CUserDataManager* m_UserData;
 };

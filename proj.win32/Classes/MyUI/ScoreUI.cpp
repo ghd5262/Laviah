@@ -26,8 +26,7 @@ bool CScoreUI::init()
 bool CScoreUI::initVariable()
 {
 	try{
-		memset(m_ValueString, 0, sizeof(m_ValueString));
-		m_ValueString[0] = '0';
+
 		m_ValueLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
 		if (nullptr != m_ValueLabel)
 			addChild(m_ValueLabel);
@@ -50,20 +49,26 @@ bool CScoreUI::initVariable()
 	return true;
 }
 
-void CScoreUI::insertComma(const char* valueStr, char* resultStr)
+std::string CScoreUI::insertComma(unsigned value)
 {
-	int len;
-	len = static_cast<int>(strlen(valueStr));
+	std::string valueStr = StringUtils::format("%u", value).c_str();
+	std::string resultStr = "";
+	//memset(resultStr, 0, sizeof(resultStr));
 
-	while ((*resultStr++ = *valueStr++)) {
-		if (--len && (len % 3) == 0)
-			*resultStr++ = ',';
+	int len = valueStr.length();
+
+	int idx = 0;
+	while (len) {
+		resultStr += valueStr[idx++];
+		if ((len % 4) == 0)
+			resultStr += ',';
+		len--;
 	}
 
-	*resultStr = '\0';
+	return resultStr;
 }
 
-void CScoreUI::SetLabelAnchor(Vec2 point)
+void CScoreUI::setLabelAnchor(Vec2 point)
 {
 	m_ValueLabel->setAnchorPoint(point);
 	if (m_ValueImg != nullptr)
@@ -73,14 +78,20 @@ void CScoreUI::SetLabelAnchor(Vec2 point)
 
 }
 
-void CScoreUI::UpdateValue(int number)
+void CScoreUI::addValue(int value)
 {
-	m_Value += number;
-	insertComma(MakeString("%u", m_Value).c_str(), m_ValueString);
+	m_Value += value;
+	
+	setValue(m_Value);
+}
+
+void CScoreUI::setValue(int value)
+{
+	m_ValueString = insertComma(value);
 	m_ValueLabel->setString(m_ValueString);
 	if (m_ValueImg != nullptr)
 		m_ValueImg->setPosition(
-		Vec2((m_ValueLabel->getContentSize().width * -m_ValueLabel->getAnchorPoint().x) - (m_ValueImg->getContentSize().width * 0.7f), 
+		Vec2((m_ValueLabel->getContentSize().width * -m_ValueLabel->getAnchorPoint().x) - (m_ValueImg->getContentSize().width * 0.7f),
 		m_ValueLabel->getContentSize().height * 0.05f));
 }
 

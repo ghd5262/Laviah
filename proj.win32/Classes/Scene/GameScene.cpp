@@ -178,42 +178,21 @@ void CGameScene::InitGameSceneUI()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    
-//    auto closeItem = MenuItemImage::create("CloseNormal.png",
-//                                           "CloseSelected.png",
-//                                           CC_CALLBACK_1(CGameScene::menuCloseCallback, this));
-//    
-//    closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-//                                origin.y + closeItem->getContentSize().height/2));
-//    
-//    // create menu, it's an autorelease object
-//    auto menu = Menu::create(closeItem, NULL);
-//    menu->setPosition(Vec2::ZERO);
-//	m_GridWorld->addChild(menu, 103);
+	CMyButton::create()
+		->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -1.f), eMYBUTTON_STATE::EXECUTE)
+		->setButtonNormalImage("leftButton_1.png")
+		->setButtonClickedImage("leftButton_2.png")
+		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setButtonPosition(Vec2(visibleSize.width * 0.25f, visibleSize.height * 0.5f))
+		->show(m_GridWorld, 102);
 
-    
-    // RotationObjectLeft callback 등록
-	auto leftButton = CMyButton::createWithTexture(
-		"leftButton_1.png",
-		"leftButton_2.png",
-                                                   eMYBUTTON_STATE::EXECUTE,
-		std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -1.f))->show(m_GridWorld, 102);
-
-	leftButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	leftButton->setPosition(Vec2(origin.x + visibleSize.width * 0.25f,
-		origin.x + visibleSize.height * 0.5f));
-
-
-	// RotationObjectRight callback 등록
-	auto rightButton = CMyButton::createWithTexture(
-		"rightButton_1.png",
-		"rightButton_2.png",
-		eMYBUTTON_STATE::EXECUTE,
-		std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), 1.f))->show(m_GridWorld, 102);
-
-	rightButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	rightButton->setPosition(Vec2(origin.x + visibleSize.width * 0.75f,
-		origin.x + visibleSize.height * 0.5f));
+	CMyButton::create()
+		->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), 1.f), eMYBUTTON_STATE::EXECUTE)
+		->setButtonNormalImage("rightButton_1.png")
+		->setButtonClickedImage("rightButton_2.png")
+		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setButtonPosition(Vec2(visibleSize.width * 0.75f, visibleSize.height * 0.5f))
+		->show(m_GridWorld, 102);
 
 	// player의 HealthCalFunc callback 등록 
 	//auto healthBar = CHealthBarUI::create(
@@ -226,22 +205,29 @@ void CGameScene::InitGameSceneUI()
 	//if (!CUIManager::Instance()->AddUIWithName(healthBar, "HealthBar"))
 	//	CCASSERT(false, "HealthBar CAN NOT INIT");
 
-	auto bonusTime = CBonusTimeUI::create();
-	bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-	bonusTime->setPosition(Vec2(origin.x + visibleSize.width * 0.06f,
-		origin.x + visibleSize.height * 0.925f));
-	m_GridWorld->addChild(bonusTime, 102);
-	if (!CUIManager::Instance()->AddUIWithName(bonusTime, "BonusTime"))
-		CCASSERT(false, "BonusTime CAN NOT INIT");
-
 	auto starScoreUI = CScoreUI::create("fonts/Number.ttf", 38, "score.png");
 	starScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	starScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-	starScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.96f,
-		origin.x + visibleSize.height * 0.96f));
+	starScoreUI->setLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
+	starScoreUI->setPosition(Vec2(visibleSize.width * 0.96f, visibleSize.height * 0.96f));
 	m_GridWorld->addChild(starScoreUI, 102);
 	if (!CUIManager::Instance()->AddUIWithName(starScoreUI, "StarScoreUI"))
 		CCASSERT(false, "StarScoreUI CAN NOT INIT");
+
+	auto coinScoreUI = CScoreUI::create("fonts/Number.ttf", 38, "coinIcon_2.png");
+	coinScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	coinScoreUI->setLabelAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+	coinScoreUI->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.96f));
+	m_GridWorld->addChild(coinScoreUI, 102);
+	if (!CUIManager::Instance()->AddUIWithName(coinScoreUI, "CoinScoreUI"))
+		CCASSERT(false, "CoinScoreUI CAN NOT INIT");
+    
+	auto runScoreUI = CScoreUI::create("fonts/Number.ttf", 38, "run.png");
+    runScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    runScoreUI->setLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
+    runScoreUI->setPosition(Vec2(visibleSize.width * 0.96f, visibleSize.height * 0.925f));
+	m_GridWorld->addChild(runScoreUI, 102);
+    if (!CUIManager::Instance()->AddUIWithName(runScoreUI, "RunScoreUI"))
+        CCASSERT(false, "RunScoreUI CAN NOT INIT");
 
 	auto multipleScoreUI = CMultipleScore::create();
 	m_GridWorld->addChild(multipleScoreUI); // referenceCount를 위하여 addChild
@@ -249,82 +235,45 @@ void CGameScene::InitGameSceneUI()
 	if (!CUIManager::Instance()->AddUIWithName(multipleScoreUI, "MultipleScoreUI"))
 		CCASSERT(false, "MultipleScoreUI CAN NOT INIT");
 
-	auto coinScoreUI = CScoreUI::create("fonts/Number.ttf", 38, "coinIcon_2.png");
-	coinScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	coinScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-	coinScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.1f,
-		origin.x + visibleSize.height * 0.96f));
-	m_GridWorld->addChild(coinScoreUI, 102);
-	if (!CUIManager::Instance()->AddUIWithName(coinScoreUI, "CoinScoreUI"))
-		CCASSERT(false, "CoinScoreUI CAN NOT INIT");
-    
-	auto runScoreUI = CScoreUI::create("fonts/Number.ttf", 38, "run.png");
-    runScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    runScoreUI->SetLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-    runScoreUI->setPosition(Vec2(origin.x + visibleSize.width * 0.96f,
-        origin.x + visibleSize.height * 0.925f));
-	m_GridWorld->addChild(runScoreUI, 102);
-    if (!CUIManager::Instance()->AddUIWithName(runScoreUI, "RunScoreUI"))
-        CCASSERT(false, "RunScoreUI CAN NOT INIT");
+	auto bonusTime = CBonusTimeUI::create();
+	bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+	bonusTime->setPosition(Vec2(visibleSize.width * 0.06f, visibleSize.height * 0.925f));
+	m_GridWorld->addChild(bonusTime, 102);
+	if (!CUIManager::Instance()->AddUIWithName(bonusTime, "BonusTime"))
+		CCASSERT(false, "BonusTime CAN NOT INIT");
 
-	auto bonusTimeCount = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-	m_GridWorld->addChild(bonusTimeCount, 102);// referenceCount를 위하여 addChild
-	bonusTimeCount->setVisible(false);
-	if (!CUIManager::Instance()->AddUIWithName(bonusTimeCount, "BonusTimeCount"))
-		CCASSERT(false, "BonusTimeCount CAN NOT INIT");
+	auto createScoreUI = [=](std::string name){
+		auto scoreUI = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
+		m_GridWorld->addChild(scoreUI, 102);// referenceCount를 위하여 addChild
+		scoreUI->setVisible(false);
+		if (!CUIManager::Instance()->AddUIWithName(scoreUI, name))
+			CCASSERT(false, StringUtils::format("%s CAN NOT INIT", name.c_str()).c_str());
+		return scoreUI;
+	};
 
-	auto alienGetCount = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-	m_GridWorld->addChild(alienGetCount, 102);// referenceCount를 위하여 addChild
-	alienGetCount->setVisible(false);
-	if (!CUIManager::Instance()->AddUIWithName(alienGetCount, "AlienGetCount"))
-		CCASSERT(false, "AlienGetCount CAN NOT INIT");
-
-	auto challengeClearCount = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-	m_GridWorld->addChild(challengeClearCount, 102);// referenceCount를 위하여 addChild
-	challengeClearCount->setVisible(false);
-	if (!CUIManager::Instance()->AddUIWithName(challengeClearCount, "ChallengeClearCount"))
-		CCASSERT(false, "ChallengeClearCount CAN NOT INIT");
-
-	auto totalScore = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-	m_GridWorld->addChild(totalScore, 102);// referenceCount를 위하여 addChild
-	totalScore->setVisible(false);
-	if (!CUIManager::Instance()->AddUIWithName(totalScore, "TotalScore"))
-		CCASSERT(false, "TotalScore CAN NOT INIT");
-    
-    auto bestScore = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-    m_GridWorld->addChild(bestScore, 102);// referenceCount를 위하여 addChild
-    bestScore->setVisible(false);
-    if (!CUIManager::Instance()->AddUIWithName(bestScore, "BestScore"))
-        CCASSERT(false, "BestScore CAN NOT INIT");
-    
-	m_PauseBtn = nullptr;
-	m_PauseBtn = CMyButton::create("pauseIcon.png",
-		eMYBUTTON_STATE::END,
-		[this, origin, visibleSize](Node* sender)
-	{
-		OpenGamePausePopup();
-	}, EFFECT_SIZEDOWN)->show(m_GridWorld, 102);
-
-	m_PauseBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
-		origin.x + visibleSize.height * 0.05f));
-	m_PauseBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	m_PauseBtn = CMyButton::create()
+		->addEventListener([=](Node* sender){
+		this->OpenGamePausePopup();
+	})
+		->setButtonNormalImage("pauseIcon.png")
+		->setButtonPosition(Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.05f))
+		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->show(m_GridWorld, 102);
 	m_PauseBtn->setCascadeOpacityEnabled(true);
     
-    
-    auto giantModeBtn = CMyButton::create("bonusLetter_0.png",
-                                   eMYBUTTON_STATE::END,
-								   [this, origin, visibleSize](Node* sender)
-                                   {
-                                       CItemManager::Instance()->StartItemTimer(eITEM_TYPE_giant);
-                                   }, EFFECT_SIZEDOWN)->show(m_GridWorld, 102);
-    
-    giantModeBtn->setPosition(Vec2(origin.x + visibleSize.width * 0.08f,
-                                 origin.x + visibleSize.height * 0.5f));
-    giantModeBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    giantModeBtn->setCascadeOpacityEnabled(true);
-    
-    
-    
+	CMyButton::create()
+		->addEventListener([=](Node* sender){
+		CItemManager::Instance()->StartItemTimer(eITEM_TYPE_giant);
+	})
+		->setButtonNormalImage("bonusLetter_0.png")
+		->setButtonPosition(Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.5f))
+		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->show(m_GridWorld, 102);
+
+	createScoreUI("BonusTimeCount");
+	createScoreUI("AlienGetCount");
+	createScoreUI("ChallengeClearCount");
+	createScoreUI("TotalScore");
 
 //	auto gridTest = CMyButton::create("pauseIcon.png",
 //		END,
@@ -355,8 +304,6 @@ void CGameScene::GameExit()
 	return;
 #endif
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
 	
 
 	/*utils::captureScreen([this](bool succed, std::string name)
@@ -385,34 +332,22 @@ void CGameScene::GameExit()
 	
 	GamePause();
 
-	auto btnYes = CMyButton::createWithLayerColor(Size(430, 150),
-		Color4B(0, 0, 0, 255 * 0.8f),
-		"Yes",
-		40,
-		Color3B::WHITE,
-		eMYBUTTON_STATE::END,
-		[this](Node* sender){
-            Director::getInstance()->end();
+	CPopup::create()
+		->setPositiveButton([=](Node* sender){
+		Director::getInstance()->end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-            exit(0);
+		exit(0);
 #endif
-	}, EFFECT_ALPHA);
-
-	auto btnNo = CMyButton::createWithLayerColor(Size(430, 150),
-		Color4B(255, 48, 48, 255 * 0.8f),
-		"No",
-		40,
-		Color3B::WHITE,
-		eMYBUTTON_STATE::END,
-		[this](Node* sender){
-            GameResume();
-	}, EFFECT_ALPHA);
-
-	auto popup = CPopup::createWithTwoButton("Are you sure you want to exit StarStarStar?"
-		, btnNo, btnYes, 40, Color3B::BLACK)->show(this, 102);
-	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-		origin.x + visibleSize.height * 0.5f));
-	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	}, "Yes")
+		->setNegativeButton([=](Node* sender){
+		this->GameResume();
+	}, "No")
+		->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+		->setMessage("Are you sure you want to exit StarStarStar?")
+		->setMessageFont(Color3B::BLACK, 40)
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(visibleSize / 2)
+		->show(this);
 }
 
 void CGameScene::update(float delta)
@@ -473,12 +408,11 @@ void CGameScene::GameResume()
 void CGameScene::GameEnd()
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto popup = CPopup::createWithSpecificFormat(CResultPopup::create(), POPUPEFFECT_none)->show(m_GridWorld, 102);
-	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-		origin.x + visibleSize.height * 0.5f));
-	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	CResultPopup::create()
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(visibleSize / 2)
+		->show(m_GridWorld, 102);
 
 	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
 	GamePause();
@@ -487,12 +421,11 @@ void CGameScene::GameEnd()
 void CGameScene::GameHelp()
 {
     Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    
-    auto popup = CPopup::createWithSpecificFormat(CHelpPopup::create(), POPUPEFFECT_none)->show(m_GridWorld, 102);
-    popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-                            origin.x + visibleSize.height * 0.5f));
-    popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+
+	CHelpPopup::create()
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(visibleSize / 2)
+		->show(m_GridWorld, 102);
 }
 
 void CGameScene::CountDownCancel()
@@ -546,10 +479,10 @@ void CGameScene::watchVideo()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto popup = CPopup::createWithSpecificFormat(CVideoPopup::create(), POPUPEFFECT_none)->show(m_GridWorld, 102);
-	popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-		origin.x + visibleSize.height * 0.5f));
-	popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	CVideoPopup::create()
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(visibleSize / 2)
+		->show(m_GridWorld, 102);
 
 	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
 	GamePause();
@@ -567,10 +500,10 @@ void CGameScene::OpenGamePausePopup()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    auto popup = CPopup::createWithSpecificFormat(CPausePopup::create(), POPUPEFFECT_none)->show(m_GridWorld, 102);
-    popup->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-                            origin.x + visibleSize.height * 0.5f));
-    popup->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	CPausePopup::create()
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(visibleSize / 2)
+		->show(m_GridWorld, 102);
 }
 
 void CGameScene::backToMenuScene()

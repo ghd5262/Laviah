@@ -3,12 +3,18 @@
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 
+CPausePopup::CPausePopup()
+{}
+
+CPausePopup::~CPausePopup()
+{}
 
 CPausePopup* CPausePopup::create()
 {
 	CPausePopup *pRet = new(std::nothrow) CPausePopup();
-	if (pRet)
+	if (pRet && pRet->init())
 	{
+		pRet->autorelease();
 		return pRet;
 	}
 	else
@@ -19,164 +25,123 @@ CPausePopup* CPausePopup::create()
 	}
 }
 
-bool CPausePopup::initVariable()
+bool CPausePopup::init()
 {
-	try{
-		Size visibleSize = Director::getInstance()->getVisibleSize();
-		Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	if (!CPopup::init()) return false;
 
-        m_BG = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
-        if(m_BG != nullptr){
-            m_BG->setIgnoreAnchorPointForPosition(false);
-            m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_BG->setPosition(Vec2::ZERO);
-            m_Popup->addChild(m_BG);
-        }
-        
-        m_PauseBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
-        if(m_PauseBG != nullptr){
-            m_PauseBG->setIgnoreAnchorPointForPosition(false);
-            m_PauseBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_PauseBG->setPosition(Vec2(0, origin.x + visibleSize.height * 0.75f));
-            m_Popup->addChild(m_PauseBG);
-        }
-        
-        auto noticeLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 25);
-		noticeLabel->setColor(Color3B::BLACK);
-		noticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		noticeLabel->setPosition(Vec2(m_PauseBG->getContentSize().width * 0.5f, m_PauseBG->getContentSize().height * 0.5f));
-		m_PauseBG->addChild(noticeLabel);
+	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-		m_btnHome = CMyButton::create("homeButton.png",
-			eMYBUTTON_STATE::END,
-			[=](Node* sender){this->GoHome(sender); },
-			EFFECT_ALPHA)->show(m_PauseBG);
+	auto pauseBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
+	if (pauseBG != nullptr){
+		pauseBG->setIgnoreAnchorPointForPosition(false);
+		pauseBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		pauseBG->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f));
+		this->addChild(pauseBG);
+	}
 
-		if (m_btnHome != nullptr)
-		{
-			m_btnHome->setPosition(Vec2(m_PauseBG->getContentSize().width * -1.1f,
-				m_PauseBG->getContentSize().height * 0.85f));
-			m_btnHome->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		}
+	std::string btnImageName[] = {
+		"homeButton.png",
+		"restartButton.png",
+		"playButton.png",
+		"exitButton.png",
+		"helpButton.png"
+	};
 
-		m_btnReset = CMyButton::create("restartButton.png",
-			eMYBUTTON_STATE::END,
-			[=](Node* sender){this->Reset(sender); },
-			EFFECT_ALPHA)->show(m_PauseBG);
+	Vec2 btnPosArray[] = {
+		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.85f),
+		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.7f),
+		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.55f),
+		Vec2(this->getContentSize().width * 0.92f, this->getContentSize().height * 0.05f),
+		Vec2(this->getContentSize().width * 0.08f, this->getContentSize().height * 0.05f)
+	};
 
-		if (m_btnReset != nullptr)
-		{
-			m_btnReset->setPosition(Vec2(m_PauseBG->getContentSize().width * -1.1f,
-				m_PauseBG->getContentSize().height * 0.7f));
-			m_btnReset->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		}
-
-		m_btnPlay = CMyButton::create("playButton.png",
-			eMYBUTTON_STATE::END,
-			[=](Node* sender){this->Play(sender); },
-			EFFECT_ALPHA)->show(m_PauseBG);
-
-		if (m_btnPlay != nullptr)
-		{
-			m_btnPlay->setPosition(Vec2(m_PauseBG->getContentSize().width * -1.1f,
-				m_PauseBG->getContentSize().height * 0.55f));
-			m_btnPlay->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		}
-
-        m_btnExit = CMyButton::create("exitButton.png",
-                                     eMYBUTTON_STATE::END,
-									 [=](Node* sender){this->GameExit(sender); },
-                                     EFFECT_ALPHA)->show(m_BG);
-        
-        if (m_btnExit != nullptr)
-        {
-            m_btnExit->setPosition(Vec2(m_BG->getContentSize().width * 0.92f,
-                                       m_BG->getContentSize().height * 0.05f));
-            m_btnExit->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_btnExit->setCascadeOpacityEnabled(true);
-            m_btnExit->setOpacity(0);
-        }
-        
-        
-        m_btnHelp = CMyButton::create("helpButton.png",
-                                      eMYBUTTON_STATE::END,
-									  [=](Node* sender){this->Help(sender); },
-                                      EFFECT_ALPHA)->show(m_PauseBG);
-        
-        if (m_btnHelp != nullptr)
-        {
-            m_btnHelp->setPosition(Vec2(m_BG->getContentSize().width * 0.08f,
-                                        m_BG->getContentSize().height * 0.05f));
-            m_btnHelp->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_btnHelp->setCascadeOpacityEnabled(true);
-            m_btnHelp->setOpacity(0);
-        }
-        
-		m_btnUserCoin = CUserCoinButton::create();
-		if (m_btnUserCoin != nullptr)
-		{
-			m_btnUserCoin->setPosition(Vec2(m_BG->getContentSize().width * 0.5f,
-				m_BG->getContentSize().height * 0.05f));
-			m_btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_BG->addChild(m_btnUserCoin);
-			m_btnUserCoin->setCascadeOpacityEnabled(true);
-			m_btnUserCoin->setOpacity(0);
-		}
-
-        m_Popup->setPopupOpenEffectFunc([this](CPopup* pausePopup){
-			auto winSize = Director::getInstance()->getWinSize();
-
-			m_Popup->scheduleOnce([this](float delta){
-				m_btnHome->runAction(EaseExponentialOut::create(MoveTo::create(1.0f, Vec2(m_PauseBG->getContentSize().width * 0.15f,
-					m_PauseBG->getContentSize().height * 0.85f))));
-
-				m_btnReset->runAction(EaseExponentialOut::create(MoveTo::create(1.0f, Vec2(m_PauseBG->getContentSize().width * 0.15f,
-					m_PauseBG->getContentSize().height * 0.7f))));
-
-				m_btnPlay->runAction(EaseExponentialOut::create(MoveTo::create(1.0f, Vec2(m_PauseBG->getContentSize().width * 0.15f,
-					m_PauseBG->getContentSize().height * 0.55f))));
-			}, 0.1f, "PausePopupOpen");
+	auto createButton = [=](const std::function<void(Node*)> &callback, std::string imageName, Vec2 pos)->CMyButton*{
+		return CMyButton::create()
+			->addEventListener(callback)
+			->setButtonNormalImage(imageName)
+			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->setButtonPosition(pos);
+	};
 	
-			m_PauseBG->runAction(EaseExponentialOut::create(MoveTo::create(0.5f, Vec2(0, winSize.height * 0.36f))));
-            m_btnExit->runAction(FadeIn::create(0.5f));
-            m_btnHelp->runAction(FadeIn::create(0.5f));
-			m_btnUserCoin->runAction(FadeIn::create(0.5f));
-        });
+	auto btnHome = createButton([=](Node* sender){ this->GoHome(sender); }, btnImageName[0], btnPosArray[0])->show(pauseBG);
+	auto btnReset = createButton([=](Node* sender){ this->Reset(sender); }, btnImageName[1], btnPosArray[1])->show(pauseBG);
+	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[2], btnPosArray[2])->show(pauseBG);
+	auto btnExit = createButton([=](Node* sender){ this->GameExit(sender); }, btnImageName[3], btnPosArray[3])->show(this);
+	btnExit->setOpacity(0);
+	auto btnHelp = createButton([=](Node* sender){ this->Help(sender); }, btnImageName[4], btnPosArray[4])->show(this);
+	btnHelp->setOpacity(0);
+	
+	auto noticeLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 25);
+	noticeLabel->setColor(Color3B::BLACK);
+	noticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	noticeLabel->setPosition(Vec2(pauseBG->getContentSize().width * 0.5f, pauseBG->getContentSize().height * 0.5f));
+	pauseBG->addChild(noticeLabel);
 
-		m_Popup->setPopupCloseEffectFunc([this, visibleSize, origin](CPopup* pausePopup){
-
-			m_btnHome->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(m_PauseBG->getContentSize().width * -1.1f,
-				m_PauseBG->getContentSize().height * 0.85f))));
-
-			m_btnReset->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(m_PauseBG->getContentSize().width * -1.1f,
-				m_PauseBG->getContentSize().height * 0.7f))));
-
-			m_btnPlay->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(m_PauseBG->getContentSize().width * -1.1f,
-				m_PauseBG->getContentSize().height * 0.55f))));
-
-            m_btnExit->runAction(FadeTo::create(0.5f, 0));
-            m_btnHelp->runAction(FadeTo::create(0.5f, 0));
-			m_btnUserCoin->runAction(FadeTo::create(0.5f, 0));
-            
-			m_Popup->scheduleOnce([this, visibleSize, origin](float delta){
-				m_PauseBG->runAction(Sequence::create(EaseSineIn::create(MoveTo::create(0.3f, Vec2(0, origin.x + visibleSize.height * 0.75f))),
-					CallFunc::create([this](){
-					CSpecificPopupBase::PopupRelease();
-				}), nullptr));
-			}, 0.1f, "PausePopupClose");
-		});
+	auto btnUserCoin = CUserCoinButton::create();
+	if (btnUserCoin != nullptr)
+	{
+		btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.05f));
+		btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		btnUserCoin->setCascadeOpacityEnabled(true);
+		btnUserCoin->setOpacity(0);
+		this->addChild(btnUserCoin);
 	}
-	catch (...){
-		throw StringUtils::format("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		return false;
-	}
+
+	this->setOpenAnimation([=](Node* sender){
+		this->scheduleOnce([=](float delta){
+
+			auto action = [=](Node* sender, float height){
+				sender->runAction(
+					EaseExponentialOut::create(
+					MoveTo::create(1.0f,
+					Vec2(pauseBG->getContentSize().width * 0.15f,
+					pauseBG->getContentSize().height * height))));
+			};
+
+			action(btnHome, 0.85f);
+			action(btnReset, 0.7f);
+			action(btnPlay, 0.55f);
+
+		}, 0.1f, "PausePopupOpen");
+
+		pauseBG->runAction(EaseExponentialOut::create(MoveTo::create(0.5f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.86f))));
+		btnExit->runAction(FadeIn::create(0.5f));
+		btnHelp->runAction(FadeIn::create(0.5f));
+		btnUserCoin->runAction(FadeIn::create(0.5f));
+	});
+
+	this->setCloseAnimation([=](Node* sender){
+
+		auto action = [=](Node* sender, float height){
+			sender->runAction(
+				EaseSineIn::create(
+				MoveTo::create(0.4f, 
+				Vec2(pauseBG->getContentSize().width * -1.1f,
+				pauseBG->getContentSize().height * height))));
+		};
+
+		action(btnHome, 0.85f);
+		action(btnReset, 0.7f);
+		action(btnPlay, 0.55f);
+
+		this->scheduleOnce([=](float delta){
+
+			btnExit->runAction(FadeTo::create(0.5f, 0));
+			btnHelp->runAction(FadeTo::create(0.5f, 0));
+			btnUserCoin->runAction(FadeTo::create(0.5f, 0));
+			pauseBG->runAction(Sequence::create(
+				EaseSineIn::create(
+				MoveTo::create(0.3f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f))), NULL));
+		}, 0.1f, "PausePopupClose");
+	});
+
 	return true;
 }
 
 void CPausePopup::Play(Node* sender){
 	CCLOG("format popup Play");
 	CGameScene::getGameScene()->GameResume();
-	CSpecificPopupBase::PopupClose();
+	this->popupClose();
 }
 
 void CPausePopup::Reset(Node* sender){
@@ -186,18 +151,18 @@ void CPausePopup::Reset(Node* sender){
 
 void CPausePopup::GoHome(Node* sender){
 	CCLOG("format popup GoHome");
-    CGameScene::getGameScene()->backToMenuScene();
-	CSpecificPopupBase::PopupClose();
+	CGameScene::getGameScene()->backToMenuScene();
+	this->popupClose();
 }
 
 void CPausePopup::GameExit(Node* sender){
-    CCLOG("format popup GameExit");
-    CGameScene::getGameScene()->GameExit();
-    CSpecificPopupBase::PopupClose();
+	CCLOG("format popup GameExit");
+	CGameScene::getGameScene()->GameExit();
+	this->popupClose();
 }
 
 void CPausePopup::Help(Node* sender)
 {
-    CGameScene::getGameScene()->GameHelp();
+	CGameScene::getGameScene()->GameHelp();
 }
 

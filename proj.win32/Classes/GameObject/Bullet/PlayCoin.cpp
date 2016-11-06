@@ -115,5 +115,5 @@ void CPlayCoin::CollisionWithPlayer()
 {
 	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
-	m_pUIScore->UpdateValue(m_fCoinValue);
+	m_pUIScore->addValue(m_fCoinValue);
 }

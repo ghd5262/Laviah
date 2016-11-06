@@ -85,7 +85,7 @@ void CMultipleScore::calculateScore()
 	unsigned calculatedScore = m_MultipleNumber * m_SavedScore;
 	
 	// 점수 반영
-	m_StarScore->UpdateValue(calculatedScore);
+	m_StarScore->addValue(calculatedScore);
 }
 
 void CMultipleScore::multipleScoreReset()

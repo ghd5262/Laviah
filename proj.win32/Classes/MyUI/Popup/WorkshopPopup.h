@@ -4,28 +4,18 @@
 
 class CMyButton;
 class CUserCoinButton;
-class CWorkshopPopup : public CSpecificPopupBase
+class CWorkshopPopup : public CPopup
 {
 public:
     static CWorkshopPopup* create();
     
 protected:
-    virtual bool initVariable() override;
+	virtual bool init() override;
     
 private:
-	void End(Node* sender);
+	void End(cocos2d::Node* sender);
 	void ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type);
     
-    CWorkshopPopup()
-    : m_btnEnd(nullptr)
-	, m_btnUserCoin(nullptr)
-    , m_BG(nullptr)
-    , m_ScrollBack(nullptr){};
+    CWorkshopPopup(){};
     virtual ~CWorkshopPopup(){};
-    
-private:
-    CMyButton* m_btnEnd;
-    LayerColor* m_BG;
-    LayerColor* m_ScrollBack;
-	CUserCoinButton* m_btnUserCoin;
 };

@@ -236,7 +236,7 @@ void CPlayer::Rotation(float dir, float delta)
 	// 플레이어가 생성되는 시점에는 m_pUIRunScore가 없다.
     if(m_pUIRunScore == nullptr)
         m_pUIRunScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("RunScoreUI"));
-    m_pUIRunScore->UpdateValue(1);
+    m_pUIRunScore->addValue(1);
 }
 
 void CPlayer::GiantMode()

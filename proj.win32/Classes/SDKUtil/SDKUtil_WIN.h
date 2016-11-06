@@ -9,50 +9,28 @@
 
 class CSDKUtil_WIN{
 public:
-	CSDKUtil_WIN(){};
-	~CSDKUtil_WIN(){};
+	CSDKUtil_WIN();
+	~CSDKUtil_WIN();
 
-	// êµ¬ê¸€ ë¡œê·¸ì¸
-	void GoogleLogin(){
-		CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); 
-		__NotificationCenter::getInstance()->postNotification(NOTICE::LOGIN_RESULT, NULL);
-	};
+	// ±¸±Û ·Î±×ÀÎ
+	void GoogleLogin();
 
-	// êµ¬ê¸€ í´ë¼ìš°ë“œ ì €ìž¥ Key / Value
-	void GoogleCloudSave(std::string key, std::string value){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); }
+	// ±¸±Û Å¬¶ó¿ìµå ÀúÀå Key / Value
+	void GoogleCloudSave(std::string key, std::string value); 
 
-	// êµ¬ê¸€ í´ë¼ìš°ë“œ ë¡œë“œ Key
-	void GoogleCloudLoad(std::string key){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); };
+	// ±¸±Û Å¬¶ó¿ìµå ·Îµå Key
+	void GoogleCloudLoad(std::string key); 
 
-	// ìœ ë‹ˆí‹° ì• ë“œ ë³´ìƒí˜• ê´‘ê³ 
-	void ShowRewardUnityAds(){
-		CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
+	// À¯´ÏÆ¼ ¾Öµå º¸»óÇü ±¤°í
+	void ShowRewardUnityAds(); 
 
-		Director::getInstance()->getScheduler()->schedule([](float delta){
-			CSDKUtil::Instance()->CallUnityAdsSavedFunction();
-		}, Director::getInstance(), 0.f, 0, 0.f, false, "CallUnityAdsSavedFunction");
+	// À¯´ÏÆ¼ ¾Öµå ÀÏ¹Ý ±¤°í
+	void ShowNormalUnityAds(); 
 
-		CSDKUtil::Instance()->setIsRewardUnityAdsReady(true);
-	}
+	// Åä½ºÆ®Ã¢
+	void Toast(std::string content);
 
-	// ìœ ë‹ˆí‹° ì• ë“œ ì¼ë°˜ ê´‘ê³ 
-	void ShowNormalUnityAds(){
-		CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
-
-		Director::getInstance()->getScheduler()->schedule([](float delta){
-			CSDKUtil::Instance()->CallUnityAdsSavedFunction();
-		}, Director::getInstance(), 0.f, 0, 0.f, false, "CallUnityAdsSavedFunction");
-
-		CSDKUtil::Instance()->setIsNormalUnityAdsReady(true);
-	}
-
-	// í† ìŠ¤íŠ¸ì°½
-	void Toast(std::string content){ CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); }
-    
-	void IsNetworkConnect(){ 
-		__NotificationCenter::getInstance()->postNotification(NOTICE::NETWORK_RESULT, NULL);
-		CSDKUtil::Instance()->setIsNetworkConnect(true);
-	};
+	void IsNetworkConnect(); 
 };
 
 #endif

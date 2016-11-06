@@ -3,28 +3,19 @@
 
 class CMyButton;
 class CUserCoinButton;
-class CResultPopup : public CSpecificPopupBase
+class CResultPopup : public CPopup
 {
 public:
 	static CResultPopup* create();
 
 protected:
-	virtual bool initVariable() override;
+	virtual bool init() override;
 
 private: 
-	void Reset(Node* sender);
-	void GoHome(Node* sender);
+	void Reset(cocos2d::Node* sender);
+	void GoHome(cocos2d::Node* sender);
 
-	CResultPopup()
-		: m_btnHome(nullptr)
-		, m_btnReset(nullptr)
-		, m_btnUserCoin(nullptr)
-		, m_BG(nullptr){};
+	CResultPopup(){};
 	virtual ~CResultPopup(){};
 
-private:
-	CMyButton* m_btnHome;
-	CMyButton* m_btnReset;
-	CUserCoinButton* m_btnUserCoin;
-	LayerColor* m_BG;
 };

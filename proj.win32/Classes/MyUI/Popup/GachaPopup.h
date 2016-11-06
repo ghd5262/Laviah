@@ -4,29 +4,18 @@
 class CMyButton;
 class CUserCoinButton;
 
-class CGachaPopup : public CSpecificPopupBase
+class CGachaPopup : public CPopup
 {
 public:
 	static CGachaPopup* create();
 
 protected:
-	virtual bool initVariable() override;
+	virtual bool init() override;
 
 private:
-	void PlayGacha(Node* sender);
-	void End(Node* sender);
+	void PlayGacha(cocos2d::Node* sender);
+	void End(cocos2d::Node* sender);
 
-	CGachaPopup() 
-		: m_BG(nullptr)
-		, m_GachaBG(nullptr)
-		, m_btnExit(nullptr)
-		, m_btnUserCoin(nullptr)
-	{};
+	CGachaPopup() {};
 	virtual ~CGachaPopup(){};
-
-private:
-	CUserCoinButton* m_btnUserCoin;
-	CMyButton* m_btnExit;
-	LayerColor* m_BG;
-	LayerColor* m_GachaBG;
 };
