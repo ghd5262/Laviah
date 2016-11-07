@@ -115,7 +115,7 @@ bool CMenuScene::initVariable()
 //            this->addChild(alien);
 //            
 //        }
-        
+		CAudioManager::Instance()->setEffectSoundVolume(1.0f);
         InitMenuSceneUI();
 	}
 	catch (...){
@@ -130,18 +130,36 @@ static const Color4B COLOR_BUTTON_RED = Color4B(255, 48, 48, 255 * 0.8f);
 
 void CMenuScene::InitMenuSceneUI()
 {
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	auto createTestButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos){
-		CMyButton::create()
-			->addEventListener(callback)
-			->setLayer(LayerColor::create(COLOR_BUTTON_RED, 430, 150))
-			->setContents(name)
-			->setFont(Color3B::WHITE, 40)
-			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-			->setButtonPosition(pos)
-			->show(this);
+	Vec2 testButtonPos[] = {
+		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.1f),
+		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.2f),
+		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.3f),
+		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.4f),
+		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.5f),
+		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.6f),
+		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.6f),
+		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.5f),
+		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.4f),
+		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.3f),
+		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.2f),
+		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.1f),
+	};
+
+	Size testButtonSize[] = {
+		Size(430, 150),
+		Size(150, 150)
+	};
+
+	typedef std::pair<std::string, std::string> SOUND_PAIR;
+	SOUND_PAIR sounds[] = {
+		SOUND_PAIR("Click_1-1.mp3", "Click_1-2.mp3"),
+		SOUND_PAIR("Click_2-1.mp3", "Click_2-2.mp3"),
+		SOUND_PAIR("Click_3.mp3", ""),
+		SOUND_PAIR("Click_4-1.mp3", "Click_4-2.mp3"),
+		SOUND_PAIR("Click_5.mp3", ""),
+		SOUND_PAIR("Click_6-1.mp3", "Click_6-2.mp3"),
 	};
 
 	auto createWidgetPopup = [=](CPopup* widget){
@@ -161,33 +179,52 @@ void CMenuScene::InitMenuSceneUI()
 			->show(this);
 	};
 
-	createTestButton([=](Node* sender){
-		this->createGameScene(sender);
-	}, "Start", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.1f));
-   
-	createTestButton([=](Node* sender){
-		createWidgetPopup(CCharacterSelectPopup::create());
-	}, "Select", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.2f));
+	auto createTestButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, Size size){
+		return CMyButton::create()
+			->addEventListener(callback)
+			->setLayer(LayerColor::create(COLOR_BUTTON_RED, size.width, size.height))
+			->setContents(name)
+			->setFont(Color3B::WHITE, 40)
+			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->setButtonPosition(pos)
+			->show(this);
+	};
 
-	createTestButton([=](Node* sender){
-		createWidgetPopup(CWorkshopPopup::create());
-	}, "Workshop", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.3f));
+	auto createSoundTestButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, Size size, SOUND_PAIR sound){
+		createTestButton(callback, name, pos, size)->setClickSound(sound.first, sound.second);
+	};
 
+	createTestButton([=](Node* sender){ this->createGameScene(sender); }, "Start", testButtonPos[0], testButtonSize[0]);
+	createTestButton([=](Node* sender){	createWidgetPopup(CCharacterSelectPopup::create());	}, "Select", testButtonPos[1], testButtonSize[0]);
+	createTestButton([=](Node* sender){	createWidgetPopup(CWorkshopPopup::create()); }, "Workshop", testButtonPos[2], testButtonSize[0]);
+	createTestButton([=](Node* sender){	createWidgetPopup(CGachaPopup::create()); }, "Gacha", testButtonPos[3], testButtonSize[0]);
 	createTestButton([=](Node* sender){
-		createWidgetPopup(CGachaPopup::create());
-	}, "Gacha", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.4f));
-
+		CSDKUtil::Instance()->ShowNormalUnityAds([=](){
+			createOneButtonPopup("Finished Normal Ads");
+		});
+	}, "NormalAds", testButtonPos[4], testButtonSize[0]);
 	createTestButton([=](Node* sender){
         CSDKUtil::Instance()->ShowRewardUnityAds([=](){
             createOneButtonPopup("Finished Reward Ads");
         });
-	}, "RewardAds", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.5f));
+	}, "RewardAds", testButtonPos[5], testButtonSize[0]);
 
-	createTestButton([=](Node* sender){
-        CSDKUtil::Instance()->ShowNormalUnityAds([=](){
-            createOneButtonPopup("Finished Normal Ads");
-        });
-	}, "NormalAds", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.6f));
+	CAudioManager::Instance()->PUBLIC_CLICK_SOUND = SOUND_PAIR("", "");
+	SOUND_PAIR temp1 = sounds[0];
+	SOUND_PAIR temp2 = sounds[1];
+	SOUND_PAIR temp3 = sounds[2];
+	SOUND_PAIR temp4 = sounds[3];
+	SOUND_PAIR temp5 = sounds[4];
+	SOUND_PAIR temp6 = sounds[5];
+	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp1; }, "1", testButtonPos[6], testButtonSize[1], sounds[0]);
+	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp2; }, "2", testButtonPos[7], testButtonSize[1], sounds[1]);
+	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp3; }, "3", testButtonPos[8], testButtonSize[1], sounds[2]);
+	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp4; }, "4", testButtonPos[9], testButtonSize[1], sounds[3]);
+	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp5; }, "5", testButtonPos[10], testButtonSize[1], sounds[4]);
+	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp6; }, "6", testButtonPos[11], testButtonSize[1], sounds[5]);
+
+
+
     
 	//createTestButton([=](Node* sender){
 	//	createWidgetPopup(CGoogleCloudTestPopup::create());

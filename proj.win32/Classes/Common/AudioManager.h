@@ -14,6 +14,8 @@ class CAudioManager
 			: _strPath(path)
 			, _nCount(count){}
 	};
+public:
+	std::pair<std::string, std::string> PUBLIC_CLICK_SOUND;
 
 public:
 	static CAudioManager* Instance();

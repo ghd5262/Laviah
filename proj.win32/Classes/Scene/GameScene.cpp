@@ -180,16 +180,18 @@ void CGameScene::InitGameSceneUI()
 
 	CMyButton::create()
 		->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -1.f), eMYBUTTON_STATE::EXECUTE)
-		->setButtonNormalImage("leftButton_1.png")
-		->setButtonClickedImage("leftButton_2.png")
+		->setButtonNormalImage("leftButton_2.png")
+		->setButtonClickedImage("leftButton_1.png")
+		->setDefaultClickedAnimation(eCLICKED_ANIMATION::TEXTURE | eCLICKED_ANIMATION::ALPHA)
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setButtonPosition(Vec2(visibleSize.width * 0.25f, visibleSize.height * 0.5f))
 		->show(m_GridWorld, 102);
 
 	CMyButton::create()
 		->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), 1.f), eMYBUTTON_STATE::EXECUTE)
-		->setButtonNormalImage("rightButton_1.png")
-		->setButtonClickedImage("rightButton_2.png")
+		->setButtonNormalImage("rightButton_2.png")
+		->setButtonClickedImage("rightButton_1.png")
+		->setDefaultClickedAnimation(eCLICKED_ANIMATION::TEXTURE | eCLICKED_ANIMATION::ALPHA)
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setButtonPosition(Vec2(visibleSize.width * 0.75f, visibleSize.height * 0.5f))
 		->show(m_GridWorld, 102);
@@ -382,10 +384,10 @@ void CGameScene::GamePause()
 {
 	//오디오 소리 작게
 	CAudioManager::Instance()->setBGMVolume(0.1f);
+	CAudioManager::Instance()->setEffectSoundVolume(0.1f);
 
     m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
-    
-	CAudioManager::Instance()->setEffectSoundVolume(0.1f);
+    	
 	CObjectManager::Instance()->setIsGamePause(true);
 	CObjectManager::Instance()->setIsAbleRotation(false);
 }
@@ -509,7 +511,6 @@ void CGameScene::OpenGamePausePopup()
 void CGameScene::backToMenuScene()
 {
 	CAudioManager::Instance()->AllPause();
-
     Director::getInstance()->getScheduler()->schedule([](float delta){
         
         auto tempScene = CEmptyScene::createScene();

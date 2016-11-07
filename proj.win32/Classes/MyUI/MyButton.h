@@ -39,6 +39,7 @@ public:
     CMyButton* setButtonNormalImage(std::string imgName);
     CMyButton* setButtonClickedImage(std::string imgName);
 	CMyButton* setDefaultClickedAnimation(int animationInfo);
+	CMyButton* setClickSound(std::string began, std::string ended = "");
 	CMyButton* setTouchEnable(bool able);
     CMyButton* setContents(std::string contents);
     CMyButton* setFont(Color3B fontColor, int fontSize);
@@ -76,6 +77,8 @@ private:
 	/* 버튼 떨어질 때 Effect 실행 */
 	void playButtonEndAnimation();
 
+	void playClickedSound(std::string name);
+
 	bool onEffect(eCLICKED_ANIMATION animation){ return (m_ClickedAnimationInfo & animation) == animation; }
 
     CMyButton();
@@ -92,6 +95,8 @@ private:
     std::string m_ButtonNormalImage;
     std::string m_ButtonClickedImage;
     std::string m_Contents;
+	std::string m_ClickBeganSound;
+	std::string m_ClickEndedSound;
     Color3B m_FontColor;
     int m_FontSize;
     Vec2 m_Position;

@@ -25,27 +25,20 @@ bool CScoreUI::init()
 
 bool CScoreUI::initVariable()
 {
-	try{
+	m_ValueLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
+	if (nullptr != m_ValueLabel)
+		addChild(m_ValueLabel);
 
-		m_ValueLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
-		if (nullptr != m_ValueLabel)
-			addChild(m_ValueLabel);
-
-		if (m_ValueImgName != "")
+	if (m_ValueImgName != "")
+	{
+		m_ValueImg = Sprite::create(m_ValueImgName);
+		if (m_ValueImg != nullptr)
 		{
-			m_ValueImg = Sprite::create(m_ValueImgName);
-			if (m_ValueImg != nullptr)
-			{
-				m_ValueImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				addChild(m_ValueImg);
-			}
+			m_ValueImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			addChild(m_ValueImg);
 		}
 	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+	
 	return true;
 }
 

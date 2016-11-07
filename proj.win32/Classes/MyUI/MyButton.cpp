@@ -1,4 +1,8 @@
 #include "MyButton.h"
+#include "../Common/AudioManager.h"
+#include "../Scene/MenuScene.h"
+
+static const std::string SOUND_PATH = "sounds/";
 
 CMyButton::CMyButton()
 : m_Layer(nullptr)
@@ -8,6 +12,8 @@ CMyButton::CMyButton()
 , m_ButtonNormalImage("")
 , m_ButtonClickedImage("")
 , m_Contents("")
+, m_ClickBeganSound("")
+, m_ClickEndedSound("")
 , m_FontColor(Color3B::WHITE)
 , m_FontSize(40)
 , m_Position(Vec2::ZERO)
@@ -146,6 +152,15 @@ CMyButton* CMyButton::setDefaultClickedAnimation(int animationInfo)
 	return this;
 }
 
+
+CMyButton* CMyButton::setClickSound(std::string began, std::string ended/* = "" */)
+{
+	m_ClickBeganSound = began;
+	m_ClickEndedSound = ended;
+
+	return this;
+}
+
 CMyButton* CMyButton::setTouchEnable(bool able)
 {
 	m_Touchable = able;
@@ -239,6 +254,12 @@ void CMyButton::playButtonEndAnimation()
 	}
 }
 
+void CMyButton::playClickedSound(std::string name)
+{
+	if (name == "") return;
+	CAudioManager::Instance()->PlayEffectSound(SOUND_PATH + name);
+}
+
 void CMyButton::onTouchEvent(Ref *pSender, Widget::TouchEventType type)
 {
 	// 터치불가 상태
@@ -261,10 +282,17 @@ bool CMyButton::onTouchBegan()
         
 		std::for_each(m_BeginFunctionList.begin(), m_BeginFunctionList.end(),
 			[=](const NODE_CALLBACK &func){
-			func(this);
+			if (func != nullptr)
+				func(this);
 		});
     }
+
 	this->playButtonStartAnimation();
+
+	//this->playClickedSound(m_ClickBeganSound);
+	if (CAudioManager::Instance())
+		this->playClickedSound(CAudioManager::Instance()->PUBLIC_CLICK_SOUND.first);
+
     m_IsSelect = true;
     
     return m_IsSelect;
@@ -278,12 +306,18 @@ void CMyButton::onTouchEnded()
         
         std::for_each(m_EndFunctionList.begin(), m_EndFunctionList.end(),
 			[=](const NODE_CALLBACK &func){
-			func(this);
+			if (func != nullptr)
+				func(this);
 		});
     }
-    // 종료 이펙트
-	this->playButtonEndAnimation();
     
+	// 종료 이펙트
+	this->playButtonEndAnimation();
+	
+	//this->playClickedSound(m_ClickEndedSound);
+	if (CAudioManager::Instance())
+		this->playClickedSound(CAudioManager::Instance()->PUBLIC_CLICK_SOUND.second);
+
     // 버튼 눌림 종료
     m_IsSelect = false;
 }
@@ -293,7 +327,11 @@ void CMyButton::onTouchCancelled()
 {
     // 종료 이펙트
 	this->playButtonEndAnimation();
-    
+	
+	//this->playClickedSound(m_ClickEndedSound);
+	if (CAudioManager::Instance())
+		this->playClickedSound(CAudioManager::Instance()->PUBLIC_CLICK_SOUND.second);
+
     // 버튼 눌림 종료
     m_IsSelect = false;
 }
@@ -307,31 +345,8 @@ void CMyButton::update(float delta/* = 0*/)
 		// EXECUTE 상태일때 호출해야할 함수가 있다면 호출
 		std::for_each(m_ExecuteFunctionList.begin(), m_ExecuteFunctionList.end(),
 			[=](const NODE_CALLBACK &func){
-			func(this);
+			if (func != nullptr)
+				func(this);
 		});
 	}
 }
-
-//{
-//	m_Unable = unable;
-//	if (m_Unable)
-//	{
-//		if (m_pNormalTexture != nullptr)
-//			m_pNormalTexture->setColor(Color3B::GRAY);
-//		if (m_pLabel != nullptr)
-//			m_pLabel->setColor(Color3B::GRAY);
-//        if (m_ButtonKind == BUTTON_LAYER){
-//			m_LayerBtn->setColor(Color3B::GRAY);
-//            m_LayerBtn->setOpacity(m_LayerColor.a);
-//        }
-//	}
-//	else
-//	{
-//		if (m_pNormalTexture != nullptr)
-//			m_pNormalTexture->setColor(Color3B::WHITE);
-//		if (m_pLabel != nullptr)
-//			m_pLabel->setColor(m_FontColor);
-//		if (m_ButtonKind == BUTTON_LAYER)
-//			m_LayerBtn->setColor(Color3B::WHITE);
-//	}
-//}

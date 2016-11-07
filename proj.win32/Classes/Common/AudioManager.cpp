@@ -5,6 +5,7 @@ CAudioManager::CAudioManager()
 	: m_BGMID(0)
 	, m_EffectSoundVolume(1.f)
 {
+	PUBLIC_CLICK_SOUND = std::pair<std::string, std::string>("", "");
 }
 
 CAudioManager::~CAudioManager()
