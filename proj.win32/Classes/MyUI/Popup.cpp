@@ -288,12 +288,7 @@ void CPopup::backgroundTouchDisable()
 {
 	auto touchDisable = Widget::create();
 	touchDisable->setTouchEnabled(true);
-	touchDisable->addTouchEventListener([](Ref* ref, Widget::TouchEventType type){
-		CCLOG("touch!!");
-	});
-	touchDisable->setContentSize(Director::getInstance()->getVisibleSize());
-	touchDisable->setColor(Color3B::WHITE);
-	touchDisable->setOpacity(255 * 0.4f);
+	touchDisable->setContentSize(_director->getVisibleSize());
 	touchDisable->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	touchDisable->setPosition(this->getContentSize() / 2);
 	addChild(touchDisable);
@@ -305,85 +300,3 @@ void CPopup::backgroundTouchDisable()
 	//	->setButtonPosition(this->getContentSize() / 2)
 	//	->show(this);
 }
-
-//void CPopup::playEffect(const CallBackTION_CALLBACK &CallBack)
-//{
-//	if (CallBack != nullptr){
-//		this->retain();
-//		CallBack(this);
-//		this->release();
-//	}
-//}
-//
-//void CPopup::popupOpenEffect()
-//{
-//	if (m_PopupOpenEffect == POPUPEFFECT_none)
-//		return;
-//
-//	switch (m_PopupOpenEffect) {
-//	case POPUPEFFECT_default_move:
-//	{
-//		popupOpenEffect_move(m_PopupOpenEffectCallBack);
-//	} break;
-//	case POPUPEFFECT_default_fade:
-//	{
-//		popupOpenEffect_fadeIn(m_PopupOpenEffectCallBack);
-//	} break;
-//	}
-//	if (m_PopupOpenEffectCallBack != nullptr)
-//		this->m_PopupOpenEffectCallBack(this);
-//}
-//
-//void CPopup::popupCloseEffect()
-//{
-//	if (m_PopupCloseEffect == POPUPEFFECT_none)
-//		return;
-//
-//	switch (m_PopupCloseEffect) {
-//	case POPUPEFFECT_default_move:
-//	{
-//		popupCloseEffect_move(m_PopupCloseEffectCallBack);
-//	} break;
-//	case POPUPEFFECT_default_fade:
-//	{
-//		popupCloseEffect_fadeOut(m_PopupCloseEffectCallBack);
-//	} break;
-//	}
-//	if (m_PopupCloseEffectCallBack != nullptr)
-//		this->m_PopupCloseEffectCallBack(this);
-//}
-//
-//
-//#pragma mark - DefaultPopupEffect
-//
-//void CPopup::popupOpenEffect_move(std::CallBacktion<void(CPopup*)>& popup)
-//{
-//	popup = [](CPopup* p){
-//		Size visibleSize = Director::getInstance()->getVisibleSize();
-//		Vec2 origin = Director::getInstance()->getVisibleOrigin();
-//		p->runAction(MoveTo::create(0.5f, Vec2(origin.x + visibleSize.width * 0.5f, origin.x + visibleSize.height * 0.5f)));
-//	};
-//}
-//
-//void CPopup::popupCloseEffect_move(std::CallBacktion<void(CPopup*)>& popup)
-//{
-//	popup = [this](CPopup* p){
-//		p->runAction(Sequence::create(MoveTo::create(0.5f, Vec2(m_OriginPos.x, m_OriginPos.y)),
-//			CallCallBack::create([p](){
-//			p->PopupRelease();
-//		}), nullptr));
-//	};
-//}
-//
-//
-//void CPopup::popupOpenEffect_fadeIn(std::CallBacktion<void(CPopup*)>& popup)
-//{
-//
-//}
-//
-//
-//
-//void CPopup::popupCloseEffect_fadeOut(std::CallBacktion<void(CPopup*)>& popup)
-//{
-//
-//}

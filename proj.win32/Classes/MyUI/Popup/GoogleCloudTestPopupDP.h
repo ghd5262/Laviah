@@ -18,12 +18,10 @@ private:
 	void Buy(Node* sender);
 
 	CGoogleCloudTestPopupDP(std::string key)
-        : m_UserKey(key)
-        , m_DPBack(nullptr){};
+        : m_UserKey(key){};
 	virtual ~CGoogleCloudTestPopupDP(){};
 
 private:
     std::string m_UserKey;
-    LayerColor* m_DPBack;
 };
 

@@ -10,142 +10,122 @@
 
 CGoogleCloudTestPopup* CGoogleCloudTestPopup::create()
 {
-	CGoogleCloudTestPopup *pRet = new(std::nothrow) CGoogleCloudTestPopup();
-	if (pRet)
-	{
-		return pRet;
-	}
-	else
-	{
-		delete pRet;
-		pRet = NULL;
-		return NULL;
-	}
+    CGoogleCloudTestPopup *pRet = new(std::nothrow) CGoogleCloudTestPopup();
+    if (pRet)
+    {
+        return pRet;
+    }
+    else
+    {
+        delete pRet;
+        pRet = NULL;
+        return NULL;
+    }
 }
 
-bool CGoogleCloudTestPopup::initVariable()
+bool CGoogleCloudTestPopup::init()
 {
-	try{
-		Size visibleSize = Director::getInstance()->getVisibleSize();
-		Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-		m_BG = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
-		if (m_BG != nullptr){
-			m_BG->setIgnoreAnchorPointForPosition(false);
-			m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_BG->setPosition(Vec2::ZERO);
-			m_Popup->addChild(m_BG);
-		}
-
-		m_ScrollBack = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 1500.f);
-		if (m_ScrollBack != nullptr){
-			m_ScrollBack->setIgnoreAnchorPointForPosition(false);
-			m_ScrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_ScrollBack->setPosition(Vec2(0, origin.x + visibleSize.height * 1.5f));
-			m_Popup->addChild(m_ScrollBack);
-		}
-
-		/* workShop label*/
-		auto workShopLabel = Label::createWithTTF("GoogleCloudTest", "fonts/malgunbd.ttf", 80);
-		if (workShopLabel != nullptr)
-		{
-			workShopLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			workShopLabel->setPosition(Vec2(m_ScrollBack->getContentSize().width * 0.5f, m_ScrollBack->getContentSize().height * 0.9f));
-			workShopLabel->setColor(g_labelColor1);
-			m_ScrollBack->addChild(workShopLabel);
-			workShopLabel->setOpacity(0);
-        }
+    if (!CPopup::init()) return false;
+    
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    
+    auto scrollBack = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 1500.f);
+    if (scrollBack != nullptr){
+        scrollBack->setIgnoreAnchorPointForPosition(false);
+        scrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        scrollBack->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f));
+        this->addChild(scrollBack);
+    }
+    
+    /* workShop label*/
+    auto workShopLabel = Label::createWithTTF("GoogleCloudTest", "fonts/malgunbd.ttf", 80);
+    if (workShopLabel != nullptr)
+    {
+        workShopLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        workShopLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.9f));
+        workShopLabel->setColor(g_labelColor1);
+        scrollBack->addChild(workShopLabel);
+        workShopLabel->setOpacity(0);
+    }
+    
+    
+    auto keyList = CUserDataManager::Instance()->getKeyList();
+    Size layerSize = scrollBack->getContentSize();
+    Size dpSize = Size(1080, 200);
+    size_t dpDistance = 15;
+    float spawnCount = 4;
+    
+    unsigned currentKeyIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_SELECT_KEY");
+    
+    // Create the list view
+    auto listView = ListView::create();
+    if (listView != nullptr){
+        listView->setDirection(cocos2d::ui::ScrollView::Direction::VERTICAL);
+        listView->setBounceEnabled(true);
+        listView->setBackGroundImageScale9Enabled(true);
+        listView->setContentSize(Size(scrollBack->getContentSize().width, (dpSize.height + dpDistance) * spawnCount));
+        listView->setScrollBarPositionFromCorner(Vec2(7, 7));
+        listView->setItemsMargin(dpDistance);
+        listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        listView->setPosition(layerSize / 2);
+        listView->setMagneticType(ListView::MagneticType::CENTER);
+        listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CGoogleCloudTestPopup::ScrollCallback, this, std::placeholders::_1, std::placeholders::_2));
+        scrollBack->addChild(listView);
         
+        unsigned dpIdx = 0;
+        unsigned currentItemDPIdx = 0;
         
-        auto keyList = CUserDataManager::Instance()->getKeyList();
-        Size layerSize = m_ScrollBack->getContentSize();
-        Size dpSize = Size(1080, 200);
-        size_t dpDistance = 15;
-        float spawnCount = 4;
-        
-        unsigned currentKeyIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_SELECT_KEY");
-        
-        // Create the list view
-        auto listView = ListView::create();
-        if (listView != nullptr){
-            listView->setDirection(cocos2d::ui::ScrollView::Direction::VERTICAL);
-            listView->setBounceEnabled(true);
-            listView->setBackGroundImageScale9Enabled(true);
-            listView->setContentSize(Size(m_ScrollBack->getContentSize().width, (dpSize.height + dpDistance) * spawnCount));
-            listView->setScrollBarPositionFromCorner(Vec2(7, 7));
-            listView->setItemsMargin(dpDistance);
-            listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            listView->setPosition(layerSize / 2);
-            listView->setMagneticType(ListView::MagneticType::CENTER);
-            listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CGoogleCloudTestPopup::ScrollCallback, this, std::placeholders::_1, std::placeholders::_2));
-            m_ScrollBack->addChild(listView);
+        for (auto key : keyList)
+        {
+            auto keyDP = CGoogleCloudTestPopupDP::create(key.first);
+            keyDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            listView->pushBackCustomItem(keyDP);
             
-            unsigned dpIdx = 0;
-            unsigned currentItemDPIdx = 0;
-            
-            for (auto key : keyList)
-            {
-                auto keyDP = CGoogleCloudTestPopupDP::create(key.first);
-                keyDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-                listView->pushBackCustomItem(keyDP);
-                
-                if( dpIdx == currentKeyIdx ){
-                    currentItemDPIdx = dpIdx;
-                }
-                dpIdx++;
+            if( dpIdx == currentKeyIdx ){
+                currentItemDPIdx = dpIdx;
             }
-            
-            // Scrolling to current character
-            Director::getInstance()->getScheduler()->schedule([listView, currentItemDPIdx](float delta){
-                listView->scrollToItem(currentItemDPIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
-            }, Director::getInstance(), 0.f, 0, 0.f, false, "ScrollToItem");
+            dpIdx++;
         }
- 
         
-		m_btnEnd = CMyButton::create("endIcon.png",
-			eMYBUTTON_STATE::END,
-			[=](Node* sender){this->End(sender); },
-			EFFECT_ALPHA)->show(m_BG);
-
-		if (m_btnEnd != nullptr)
-		{
-			m_btnEnd->setPosition(Vec2(m_BG->getContentSize().width * 0.92f,
-				m_BG->getContentSize().height * 0.05f));
-			m_btnEnd->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_btnEnd->setCascadeOpacityEnabled(true);
-			m_btnEnd->setOpacity(0);
-		}
-
-		m_Popup->setPopupOpenEffectFunc([this, workShopLabel](CPopup* pausePopup){
-			auto winSize = Director::getInstance()->getWinSize();
-
-			workShopLabel->runAction(FadeIn::create(0.5f));
-			m_ScrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(0, winSize.height * 0.12f))));
-			m_btnEnd->runAction(FadeIn::create(0.5f));
-		});
-
-		m_Popup->setPopupCloseEffectFunc([this, visibleSize, origin, workShopLabel](CPopup* pausePopup){
-
-			workShopLabel->runAction(FadeTo::create(0.5f, 0));
-			m_btnEnd->runAction(FadeTo::create(0.5f, 0));
-			m_Popup->scheduleOnce([this, visibleSize, origin](float delta){
-				m_ScrollBack->runAction(Sequence::create(EaseSineIn::create(MoveTo::create(0.4f, Vec2(0, origin.x + visibleSize.height * 1.5f))),
-					CallFunc::create([this](){
-					CSpecificPopupBase::PopupRelease();
-				}), nullptr));
-			}, 0.1f, "GoogleCloudTestPopupClose");
-		});
-	}
-	catch (...){
-		throw StringUtils::format("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		return false;
-	}
-	return true;
+        // Scrolling to current character
+        Director::getInstance()->getScheduler()->schedule([listView, currentItemDPIdx](float delta){
+            listView->scrollToItem(currentItemDPIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
+        }, Director::getInstance(), 0.f, 0, 0.f, false, "ScrollToItem");
+    }
+    
+    
+    auto btnEnd = CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        this->End(sender);
+    })
+    ->setButtonNormalImage("endIcon.png")
+    ->setButtonPosition(Vec2(this->getContentSize().width * 0.92f,
+                             this->getContentSize().height * 0.05f))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->show(this);
+    
+    btnEnd->setOpacity(0);
+    
+    
+    this->setOpenAnimation([=](Node* pausePopup){
+        
+        workShopLabel->runAction(FadeIn::create(0.5f));
+        scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.12f))));
+        btnEnd->runAction(FadeIn::create(0.5f));
+    });
+    
+    this->setCloseAnimation([=](Node* pausePopup){
+        workShopLabel->runAction(FadeTo::create(0.5f, 0));
+        btnEnd->runAction(FadeTo::create(0.5f, 0));
+        scrollBack->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f))));
+    });
+    
+    return true;
 }
 
 void CGoogleCloudTestPopup::End(Node* sender){
-	CCLOG("format popup End");
-	CSpecificPopupBase::PopupClose();
+    CCLOG("format popup End");
+    this->popupClose();
 }
 
 void CGoogleCloudTestPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)

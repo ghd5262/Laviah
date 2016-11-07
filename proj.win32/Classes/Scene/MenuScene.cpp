@@ -178,11 +178,15 @@ void CMenuScene::InitMenuSceneUI()
 	}, "Gacha", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.4f));
 
 	createTestButton([=](Node* sender){
-		createOneButtonPopup("Finished Reward Ads");
+        CSDKUtil::Instance()->ShowRewardUnityAds([=](){
+            createOneButtonPopup("Finished Reward Ads");
+        });
 	}, "RewardAds", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.5f));
 
 	createTestButton([=](Node* sender){
-		createOneButtonPopup("Finished Normal Ads");
+        CSDKUtil::Instance()->ShowNormalUnityAds([=](){
+            createOneButtonPopup("Finished Normal Ads");
+        });
 	}, "NormalAds", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.6f));
     
 	//createTestButton([=](Node* sender){

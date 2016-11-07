@@ -1,27 +1,23 @@
 #include "../Popup.h"
 
 class CMyButton;
-class CGoogleCloudDataInfoPopup : public CSpecificPopupBase
+class CGoogleCloudDataInfoPopup : public CPopup
 {
 public:
     static CGoogleCloudDataInfoPopup* create(std::string dataKey);
     
 protected:
-    virtual bool initVariable() override;
+    virtual bool init() override;
     
 private:
 	void Save(Node* sender);
 	void End(Node* sender);
-    void Select(cocos2d::Ref* dp);
+    void Select(Node* dp);
     
     CGoogleCloudDataInfoPopup(std::string dataKey)
-    : m_btnEnd(nullptr)
-    , m_BG(nullptr)
-    , m_UserDataKey(dataKey){}
+    : m_UserDataKey(dataKey){}
     virtual ~CGoogleCloudDataInfoPopup(){};
     
 private:
-    CMyButton* m_btnEnd;
-    LayerColor* m_BG;
     std::string m_UserDataKey;
 };
