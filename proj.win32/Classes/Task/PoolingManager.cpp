@@ -38,8 +38,8 @@ void CPoolingManager::CreateBulletList(size_t count, size_t size)
     this->createList(m_BulletList, m_BulletSize, count);
     
     // 오브젝트 매니저 리스트에 추가
-    for(auto block : m_BulletList)
-        CObjectManager::Instance()->AddBullet(block);
+    //for(auto block : m_BulletList)
+        //CObjectManager::Instance()->AddBullet(block);
 }
 
 void CPoolingManager::CreateShooterList(size_t count, size_t size)
@@ -76,7 +76,7 @@ void* CPoolingManager::BulletNew()
         newBlock = m_BulletList.back();
         
         /* 오브젝트 매니저 리스트에 추가한다. */
-        CObjectManager::Instance()->AddBullet(newBlock);
+        //CObjectManager::Instance()->AddBullet(newBlock);
         
         this->changeFreeMemoryToUsed(newBlock, m_BulletSize);
     }

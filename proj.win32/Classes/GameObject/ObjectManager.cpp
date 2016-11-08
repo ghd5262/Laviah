@@ -40,13 +40,15 @@ void CObjectManager::Clear()
 	m_IsAbleRotation = false;
 }
 
-void CObjectManager::AddBullet(void* bullet)
+void CObjectManager::AddBullet(CBullet* bullet)
 {
-	m_BulletList.emplace_back(static_cast<CBullet*>(bullet));
+	m_BulletList.emplace_back(bullet);
+	//m_BulletList.emplace_back(static_cast<CBullet*>(bullet));
 }
 
 void CObjectManager::AddShooter(void* shooter)
 {
+	//m_ShooterList.emplace_back(shooter);
 	m_ShooterList.emplace_back(static_cast<CShooter*>(shooter));
 }
 
@@ -126,12 +128,12 @@ void CObjectManager::ExecuteAllObject(float delta)
 	m_fStageTime += delta;
 	CreateShooterByTimer();
 	CItemManager::Instance()->Execute(delta);
-	for (auto bullet : m_BulletList)
-	{
-		if (bullet->IsAlive()) {
-			bullet->Execute(delta);
-		}
-	}
+	//for (auto bullet : m_BulletList)
+	//{
+	//	if (bullet->IsAlive()) {
+	//		bullet->Execute(delta);
+	//	}
+	//}
 
 	for (auto shooter : m_ShooterList)
 	{

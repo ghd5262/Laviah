@@ -106,8 +106,10 @@ public:
 	int getItemEffect(){ return m_nReceivingEffectItemTypes; }
 
 protected:
-	void* operator new (size_t size, const std::nothrow_t);
-	void operator delete(void* ptr){};
+	virtual void update(float delta) override;
+
+	//void* operator new (size_t size, const std::nothrow_t);
+	//void operator delete(void* ptr){};
 
 	CBullet(
 		sBULLET_PARAM bulletParam,

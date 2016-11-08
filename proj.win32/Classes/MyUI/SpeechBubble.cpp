@@ -41,7 +41,6 @@ bool CSpeechBubble::init()
 
 bool CSpeechBubble::initVariable()
 {
-
 	if (m_BubbleTextureName != "")
 	{
 		m_BubbleTexture = Sprite::create(m_BubbleTextureName);

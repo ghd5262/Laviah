@@ -31,7 +31,7 @@ public:
 	즉, 리스트를 사용하고 있는 중에 원하지 않는 변형을 가지고 올 수 있다.
 	
 	또한 Bullet에는 존재하지만 Shooter에는 존재하지 않는 함수들이 있다.*/
-	void AddBullet(void* bullet);											
+	void AddBullet(CBullet* bullet);											
 	void AddShooter(void* shooter);			
 	void RemoveAllObject();				// 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllShooter() 호출함
 	void Execute(float delta);

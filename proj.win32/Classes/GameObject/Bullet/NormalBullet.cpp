@@ -34,6 +34,7 @@ CNormalBullet* CNormalBullet::create(
 
 	if (pRet && pRet->init())
 	{
+		pRet->autorelease();
 		return pRet;
 	}
 	else
@@ -78,7 +79,7 @@ void CNormalBullet::Execute(float delta)
 
 void CNormalBullet::CollisionWithPlanet()
 {
-	ReturnToMemoryBlock();
+	
 
 	m_pParticleCrash = CParticle_Explosion::create(m_pPlayer->getCharacterParam()._normalBulletTextureName);
 	if (m_pParticleCrash != nullptr){
@@ -91,6 +92,7 @@ void CNormalBullet::CollisionWithPlanet()
 		m_pParticleCrash->setSpeedVar(50);
 		CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
 	}
+	ReturnToMemoryBlock();
 }
 
 void CNormalBullet::CollisionWithPlayer()
