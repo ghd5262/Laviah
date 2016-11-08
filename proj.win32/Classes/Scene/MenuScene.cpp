@@ -71,58 +71,52 @@ bool CMenuScene::init()
 
 bool CMenuScene::initVariable()
 {
-	try
-	{
-		clearData();
-		m_MenuScene = this;
 
-        Size visibleSize = Director::getInstance()->getVisibleSize();
-        Vec2 origin = Director::getInstance()->getVisibleOrigin();
-        
-        CStageDataManager::Instance();
-        CBulletPatternDataManager::Instance();
-        CBulletDataManager::Instance();
-		CWorkshopItemDataManager::Instance();
-		CCharacterDataManager::Instance();
-        CGradientDataManager::Instance();
-		
-		//int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
-		//sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+	clearData();
+	m_MenuScene = this;
 
-//		auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 290.f, 0.0f, 200.0f);
-//        if(planet != nullptr){
-//            planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.y + visibleSize.height * 0.5f));
-//            planet->setScale(1.5f);
-//            planet->runAction(RepeatForever::create(RotateBy::create(90, 360)));
-//            this->addChild(planet);
-//            CMenuSceneObjectManager::Instance()->setPlanet(planet);
-//        }
-//        auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM(), 40, 430);
-//        if(spaceship != nullptr)
-//        {
-//            this->addChild(spaceship);
-//            CMenuSceneObjectManager::Instance()->setSpaceShip(spaceship);
-//        }
-//        
-//        CPoolingManager::Instance()->CreateAlienList(100, 800);
-//       
-//        for(int i = 0 ;i < 10 ;i++ ){
-//            auto alien = CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200);
-//            auto button = CMyButton::createWithLayerColor(Size(80, 80), Color4B(255, 255, 255, 0), "", 0, Color3B::WHITE, eMYBUTTON_STATE::END, [alien](){
-//                
-//            });
-//            alien->addChild(button);
-//            this->addChild(alien);
-//            
-//        }
-		CAudioManager::Instance()->setEffectSoundVolume(1.0f);
-        InitMenuSceneUI();
-	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	CStageDataManager::Instance();
+	CBulletPatternDataManager::Instance();
+	CBulletDataManager::Instance();
+	CWorkshopItemDataManager::Instance();
+	CCharacterDataManager::Instance();
+	CGradientDataManager::Instance();
+
+	//int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
+	//sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+
+	//		auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 290.f, 0.0f, 200.0f);
+	//        if(planet != nullptr){
+	//            planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.y + visibleSize.height * 0.5f));
+	//            planet->setScale(1.5f);
+	//            planet->runAction(RepeatForever::create(RotateBy::create(90, 360)));
+	//            this->addChild(planet);
+	//            CMenuSceneObjectManager::Instance()->setPlanet(planet);
+	//        }
+	//        auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM(), 40, 430);
+	//        if(spaceship != nullptr)
+	//        {
+	//            this->addChild(spaceship);
+	//            CMenuSceneObjectManager::Instance()->setSpaceShip(spaceship);
+	//        }
+	//        
+	//        CPoolingManager::Instance()->CreateAlienList(100, 800);
+	//       
+	//        for(int i = 0 ;i < 10 ;i++ ){
+	//            auto alien = CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200);
+	//            auto button = CMyButton::createWithLayerColor(Size(80, 80), Color4B(255, 255, 255, 0), "", 0, Color3B::WHITE, eMYBUTTON_STATE::END, [alien](){
+	//                
+	//            });
+	//            alien->addChild(button);
+	//            this->addChild(alien);
+	//            
+	//        }
+	CAudioManager::Instance()->setEffectSoundVolume(1.0f);
+	InitMenuSceneUI();
+
 	return true;
 }
 

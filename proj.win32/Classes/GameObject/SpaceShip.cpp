@@ -60,38 +60,33 @@ bool CSpaceShip::init()
 
 bool CSpaceShip::initVariable()
 {
-	try{
-		setPositionX((cos(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ m_fDistance) + m_pPlanet->getPosition().x);
-		setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ m_fDistance) + m_pPlanet->getPosition().y);
 
-		auto texture = Sprite::create("spaceship_0.png");
-		texture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		addChild(texture);
+	setPositionX((cos(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ m_fDistance) + m_pPlanet->getPosition().x);
+	setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  /*m_BulletParam._fDistance*/ m_fDistance) + m_pPlanet->getPosition().y);
 
-		// ºÒ²É ÆÄÆ¼Å¬
-		m_pParticleFlame = CParticle_Flame::create("fire.png");
-		if (m_pParticleFlame != nullptr){
-			m_pParticleFlame->retain();
-			m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_pParticleFlame->setGravity(Vec2(90, 0));
-			m_pParticleFlame->setPosition(Vec2(texture->getContentSize().width * 1.1f, texture->getContentSize().height * 0.5f));
-			m_pParticleFlame->setStartSize(100);
-			m_pParticleFlame->setLife(0.8f);
-			m_pParticleFlame->setLifeVar(0.15f);
-			m_pParticleFlame->setStartColor(Color4F(1.f, 1.f, 0.5f, 1.f));
-			m_pParticleFlame->setStartColorVar(Color4F(0, 0, 0.8f, 0));
-			m_pParticleFlame->setEndColor(Color4F(1.f, 1.f, 1.f, 0.4f));
-			m_pParticleFlame->setEndColorVar(Color4F(0, 0, 0, 0));
-			m_pParticleFlame->setPosVar(Vec2(0, 10));
-			m_pParticleFlame->setTotalParticles(80);
-			texture->addChild(m_pParticleFlame);
-		}
+	auto texture = Sprite::create("spaceship_0.png");
+	texture->setAnchorPoint(Vec2(0.5f, 0.5f));
+	addChild(texture);
+
+	// ºÒ²É ÆÄÆ¼Å¬
+	m_pParticleFlame = CParticle_Flame::create("fire.png");
+	if (m_pParticleFlame != nullptr){
+		m_pParticleFlame->retain();
+		m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_pParticleFlame->setGravity(Vec2(90, 0));
+		m_pParticleFlame->setPosition(Vec2(texture->getContentSize().width * 1.1f, texture->getContentSize().height * 0.5f));
+		m_pParticleFlame->setStartSize(100);
+		m_pParticleFlame->setLife(0.8f);
+		m_pParticleFlame->setLifeVar(0.15f);
+		m_pParticleFlame->setStartColor(Color4F(1.f, 1.f, 0.5f, 1.f));
+		m_pParticleFlame->setStartColorVar(Color4F(0, 0, 0.8f, 0));
+		m_pParticleFlame->setEndColor(Color4F(1.f, 1.f, 1.f, 0.4f));
+		m_pParticleFlame->setEndColorVar(Color4F(0, 0, 0, 0));
+		m_pParticleFlame->setPosVar(Vec2(0, 10));
+		m_pParticleFlame->setTotalParticles(80);
+		texture->addChild(m_pParticleFlame);
 	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+
 	return true;
 }
 

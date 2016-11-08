@@ -60,74 +60,67 @@ bool CNormalMissile::init()
 
 bool CNormalMissile::initVariable()
 {
-	try{
-		setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
-        Size visibleSize = Director::getInstance()->getVisibleSize();
-        m_ScreenRect = Rect(-visibleSize.width, 0, visibleSize.width * 3, visibleSize.height);
-		
-		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
-		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
-		setRotation(-m_fAngle);
+	setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	m_ScreenRect = Rect(-visibleSize.width, 0, visibleSize.width * 3, visibleSize.height);
 
-		std::string missileTextureName = m_pPlayer->getCharacterParam()._normalMissileTextureName;
-		if (m_BulletParam._isAimingMissile)
-			missileTextureName = m_pPlayer->getCharacterParam()._aimingMissileTextureName;
+	setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
+	setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
+	setRotation(-m_fAngle);
 
-		m_pTexture = Sprite::createWithSpriteFrameName(missileTextureName);
-		if (m_pTexture != nullptr){
-			m_pTexture->setAnchorPoint(Vec2(0.2f, 0.5f));
-			addChild(m_pTexture);
-		}	
+	std::string missileTextureName = m_pPlayer->getCharacterParam()._normalMissileTextureName;
+	if (m_BulletParam._isAimingMissile)
+		missileTextureName = m_pPlayer->getCharacterParam()._aimingMissileTextureName;
 
-		Vec2 temp((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  1800.f) + m_pPlanet->getPosition().x,
-			(sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  1800.f) + m_pPlanet->getPosition().y);
-
-		float distance = getPosition().distance(temp);
-		float tempTime = (distance / m_fBulletSpeed);
-
-
-		// 불꽃 파티클
-		m_pParticleFlame = CParticle_Flame::create("missileFlame.png");
-		if (m_pParticleFlame != nullptr){
-			m_pParticleFlame->retain();
-			m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_pParticleFlame->setAngle(-90);
-			m_pParticleFlame->setGravity(Vec2(90, 0));
-			m_pParticleFlame->setPosition(Vec2(m_pTexture->getContentSize().width * 1.1f, m_pTexture->getContentSize().height * 0.5f));
-			m_pParticleFlame->setStartSpin(-90);
-			m_pParticleFlame->setEndSpin(270);
-			m_pParticleFlame->setLife(0.1f);
-			m_pParticleFlame->setLifeVar(0.15f);
-
-			m_pTexture->addChild(m_pParticleFlame);
-		}
-
-
-		this->scheduleOnce([&](float delta){
-			CGameScene::getGridWorld()->addChild(CTargetMark::create(
-				sBULLET_PARAM(
-				0.f, 0.f, 0.f,
-				false,									//FlyItem 여부
-				m_BulletParam._isAimingMissile),		//AimingMissile 여부
-				-getRotation(),							//초기 각도
-				this->getPosition(),					//미사일 좌표
-				m_fBulletSpeed,							//미사일 스피드
-				false,									//코인미사일여부
-				this), 100);
-
-			m_bIsTargetMarkCreate = true;
-
-		}, tempTime, MakeString("createTargetMark_%d", distance * 100));
-
-		m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-		m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
-
+	m_pTexture = Sprite::createWithSpriteFrameName(missileTextureName);
+	if (m_pTexture != nullptr){
+		m_pTexture->setAnchorPoint(Vec2(0.2f, 0.5f));
+		addChild(m_pTexture);
 	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
+
+	Vec2 temp((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  1800.f) + m_pPlanet->getPosition().x,
+		(sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  1800.f) + m_pPlanet->getPosition().y);
+
+	float distance = getPosition().distance(temp);
+	float tempTime = (distance / m_fBulletSpeed);
+
+
+	// 불꽃 파티클
+	m_pParticleFlame = CParticle_Flame::create("missileFlame.png");
+	if (m_pParticleFlame != nullptr){
+		m_pParticleFlame->retain();
+		m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_pParticleFlame->setAngle(-90);
+		m_pParticleFlame->setGravity(Vec2(90, 0));
+		m_pParticleFlame->setPosition(Vec2(m_pTexture->getContentSize().width * 1.1f, m_pTexture->getContentSize().height * 0.5f));
+		m_pParticleFlame->setStartSpin(-90);
+		m_pParticleFlame->setEndSpin(270);
+		m_pParticleFlame->setLife(0.1f);
+		m_pParticleFlame->setLifeVar(0.15f);
+
+		m_pTexture->addChild(m_pParticleFlame);
 	}
+
+
+	this->scheduleOnce([&](float delta){
+		CGameScene::getGridWorld()->addChild(CTargetMark::create(
+			sBULLET_PARAM(
+			0.f, 0.f, 0.f,
+			false,									//FlyItem 여부
+			m_BulletParam._isAimingMissile),		//AimingMissile 여부
+			-getRotation(),							//초기 각도
+			this->getPosition(),					//미사일 좌표
+			m_fBulletSpeed,							//미사일 스피드
+			false,									//코인미사일여부
+			this), 100);
+
+		m_bIsTargetMarkCreate = true;
+
+	}, tempTime, MakeString("createTargetMark_%d", distance * 100));
+
+	m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
+	m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
+
 	return true;
 }
 

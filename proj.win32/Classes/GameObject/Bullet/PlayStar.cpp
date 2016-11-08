@@ -54,37 +54,30 @@ bool CPlayStar::init()
 
 bool CPlayStar::initVariable()
 {
-	try{
-		setItemEffect(eITEM_FLAG_magnet);
+	setItemEffect(eITEM_FLAG_magnet);
 
-		if (!m_BulletParam._isFly){
-			m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
+	if (!m_BulletParam._isFly){
+		m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
 
-			this->scheduleOnce([this](float delta)
-			{
-				this->R_FadeOutWithCount(5, 3.f);
-			}, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
-		}
-		setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
-		setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
-		setRotation(-m_fAngle);
-
-		m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-
-		m_pTexture = Sprite::create(MakeString("star_%d.png", m_BulletParam._starType));
-		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		addChild(m_pTexture);
-
-		m_fStarValue = CItemManager::Instance()->getValueOfStar(m_BulletParam._starType);
-	
-		m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
-
+		this->scheduleOnce([this](float delta)
+		{
+			this->R_FadeOutWithCount(5, 3.f);
+		}, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
 	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+	setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
+	setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
+	setRotation(-m_fAngle);
+
+	m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
+
+	m_pTexture = Sprite::create(MakeString("star_%d.png", m_BulletParam._starType));
+	m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+	addChild(m_pTexture);
+
+	m_fStarValue = CItemManager::Instance()->getValueOfStar(m_BulletParam._starType);
+
+	m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
+
 	return true;
 }
 

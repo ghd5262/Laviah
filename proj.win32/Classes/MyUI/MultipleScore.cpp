@@ -41,23 +41,18 @@ bool CMultipleScore::init()
 
 bool CMultipleScore::initVariable()
 {
-	try{
-		m_StarScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-		
-		m_Player = CObjectManager::Instance()->getPlayer();
 
-		m_MultipleNumberLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 30);
-		m_MultipleNumberLabel->setColor(g_labelColor2);
-		m_MultipleNumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x, m_Player->getOriginPos().y + m_Player->getBRadius() + 50));
-		m_MultipleNumberLabel->setVisible(false);
-		CGameScene::getGridWorld()->addChild(m_MultipleNumberLabel);
-	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+	m_StarScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
+
+	m_Player = CObjectManager::Instance()->getPlayer();
+
+	m_MultipleNumberLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 30);
+	m_MultipleNumberLabel->setColor(g_labelColor2);
+	m_MultipleNumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x, m_Player->getOriginPos().y + m_Player->getBRadius() + 50));
+	m_MultipleNumberLabel->setVisible(false);
+	CGameScene::getGridWorld()->addChild(m_MultipleNumberLabel);
+
 	return true;
 }
 

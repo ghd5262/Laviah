@@ -79,97 +79,90 @@ bool CGameScene::init()
 
 bool CGameScene::initVariable()
 {
-	try
+	clearData();
+	m_GameScene = this;
+	m_KeyBoardL = false;
+	m_KeyBoardR = false;
+
+	CObjectManager::Instance()->Clear();
+	CUIManager::Instance()->Clear();
+	CAudioManager::Instance()->Clear();
+	CItemManager::Instance()->Clear();
+
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	m_GridWorld = NodeGrid::create();
+	addChild(m_GridWorld, 0, 1);
+
+	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
+	sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+
+	auto background = CBackGround::create();
+	m_GridWorld->addChild(background);
+	//background->setVisible(false);
+
+	auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 180, 0.0f, 100.f);
+	planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		origin.y + visibleSize.height * 0.35f));
+	m_GridWorld->addChild(planet, 100);
+
+	planet->setOriginPos(planet->getPosition());
+
+	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
+	auto player = CPlayer::create(currentCharacterInfo, 6.f, 0.0f, 400.0f);
+
+	player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
+		planet->getPosition().y + (planet->getBRadius() + 20)));
+	m_GridWorld->addChild(player, 100);
+
+	player->setOriginPos(player->getPosition());
+	player->setParticlePos(player->getPosition());
+
+	CObjectManager::Instance()->setBackground(background);
+	CObjectManager::Instance()->setPlayer(player);
+	CObjectManager::Instance()->setPlanet(planet);
+	CPoolingManager::Instance()->CreateBulletList(300, 900);
+	CPoolingManager::Instance()->CreateShooterList(30, 800);
+
+	EventListenerKeyboard * pListener = EventListenerKeyboard::create();
+	pListener->onKeyPressed = [this](EventKeyboard::KeyCode code, Event* pEvent)
 	{
-		clearData();
-		m_GameScene = this;
-		m_KeyBoardL = false;
-		m_KeyBoardR = false;
-
-		CObjectManager::Instance()->Clear();
-		CUIManager::Instance()->Clear();
-		CAudioManager::Instance()->Clear();
-		CItemManager::Instance()->Clear();
-
-		Size visibleSize = Director::getInstance()->getVisibleSize();
-		Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-		m_GridWorld = NodeGrid::create();
-		addChild(m_GridWorld, 0, 1);
-
-		int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
-		sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
-
-		auto background = CBackGround::create();
-		m_GridWorld->addChild(background);
-        //background->setVisible(false);
-        
-		auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 180, 0.0f, 100.f);
-		planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-			origin.y + visibleSize.height * 0.35f));
-		m_GridWorld->addChild(planet, 100);
-
-		planet->setOriginPos(planet->getPosition());
-
-		CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
-		auto player = CPlayer::create(currentCharacterInfo, 6.f, 0.0f, 400.0f);
-
-		player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-			planet->getPosition().y + (planet->getBRadius() + 20)));
-		m_GridWorld->addChild(player, 100);
-
-		player->setOriginPos(player->getPosition());
-		player->setParticlePos(player->getPosition());
-
-		CObjectManager::Instance()->setBackground(background);
-		CObjectManager::Instance()->setPlayer(player);
-		CObjectManager::Instance()->setPlanet(planet);
-		CPoolingManager::Instance()->CreateBulletList(300, 900);
-		CPoolingManager::Instance()->CreateShooterList(30, 800);
-
-		EventListenerKeyboard * pListener = EventListenerKeyboard::create();
-		pListener->onKeyPressed = [this](EventKeyboard::KeyCode code, Event* pEvent)
+		switch (code)
 		{
-			switch (code)
-			{
-			case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-			{
-				m_KeyBoardL = true;
-			}break;
-			case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-			{
-				m_KeyBoardR = true;
-			}break;
-			}
-		};
-
-		pListener->onKeyReleased = [this](EventKeyboard::KeyCode code, Event* pEvent)
+		case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 		{
-			switch (code)
-			{
-			case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-			{
-				m_KeyBoardL = false;
-			}break;
-			case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-			{
-				m_KeyBoardR = false;
-			}break;
-			}
-		};
+			m_KeyBoardL = true;
+		}break;
+		case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+		{
+			m_KeyBoardR = true;
+		}break;
+		}
+	};
 
-		Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
+	pListener->onKeyReleased = [this](EventKeyboard::KeyCode code, Event* pEvent)
+	{
+		switch (code)
+		{
+		case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+		{
+			m_KeyBoardL = false;
+		}break;
+		case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+		{
+			m_KeyBoardR = false;
+		}break;
+		}
+	};
 
-		InitGameSceneUI();
-		GameStart();
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
 
-		//CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
-	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+	InitGameSceneUI();
+	GameStart();
+
+	//CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
+
 	return true;
 }
 

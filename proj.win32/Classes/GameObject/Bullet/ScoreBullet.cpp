@@ -37,30 +37,24 @@ bool CScoreBullet::init()
 
 bool CScoreBullet::initVariable()
 {
-	try{
-		m_strScore = MakeString("%d", m_nScore);
-		m_labelScore = Label::createWithTTF(MakeString("+ %s", m_strScore.c_str()), "fonts/Number.ttf", 25);
-		if (m_labelScore != nullptr){
-			m_labelScore->setTextColor(Color4B(30, 255, 0, 255));
-			m_labelScore->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			addChild(m_labelScore);
-		}
-
-		this->scheduleOnce([this](float delta)
-		{
-			auto action = Sequence::create(
-				FadeTo::create(0.5f, 0.1f),
-				CallFunc::create([this](){
-				this->ReturnToMemoryBlock();
-			}), nullptr);
-			m_labelScore->runAction(action);
-
-		}, 0.5f, MakeString("ScoreBullet_%d", random<int>(0, 100)));
+	m_strScore = MakeString("%d", m_nScore);
+	m_labelScore = Label::createWithTTF(MakeString("+ %s", m_strScore.c_str()), "fonts/Number.ttf", 25);
+	if (m_labelScore != nullptr){
+		m_labelScore->setTextColor(Color4B(30, 255, 0, 255));
+		m_labelScore->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		addChild(m_labelScore);
 	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+
+	this->scheduleOnce([this](float delta)
+	{
+		auto action = Sequence::create(
+			FadeTo::create(0.5f, 0.1f),
+			CallFunc::create([this](){
+			this->ReturnToMemoryBlock();
+		}), nullptr);
+		m_labelScore->runAction(action);
+
+	}, 0.5f, MakeString("ScoreBullet_%d", random<int>(0, 100)));
+
 	return true;
 }

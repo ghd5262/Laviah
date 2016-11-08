@@ -56,32 +56,25 @@ bool CLoadingScene::init()
 
 bool CLoadingScene::initVariable()
 {
-	try
-	{
-		clearData();
-		m_LoadingScene = this;
+	clearData();
+	m_LoadingScene = this;
 
-		auto createNotice = [=](cocos2d::SEL_CallFuncO selector, std::string name){
-			__NotificationCenter::getInstance()->addObserver(this, selector, name, NULL);
-		};
+	auto createNotice = [=](cocos2d::SEL_CallFuncO selector, std::string name){
+		__NotificationCenter::getInstance()->addObserver(this, selector, name, NULL);
+	};
 
-		createNotice(callfuncO_selector(CLoadingScene::callbackNetworkResult), NOTICE::NETWORK_RESULT);
-		createNotice(callfuncO_selector(CLoadingScene::callbackLoginResult), NOTICE::LOGIN_RESULT);
-		createNotice(callfuncO_selector(CLoadingScene::callbackUserDataLoadFinish), NOTICE::USERDATA_LOAD_FINISH);
-		createNotice(callfuncO_selector(CLoadingScene::callbackDownloadFail), NOTICE::DOWN_ERROR);
-		createNotice(callfuncO_selector(CLoadingScene::callbackDownloadComplete), NOTICE::DOWN_COMPLETE);
+	createNotice(callfuncO_selector(CLoadingScene::callbackNetworkResult), NOTICE::NETWORK_RESULT);
+	createNotice(callfuncO_selector(CLoadingScene::callbackLoginResult), NOTICE::LOGIN_RESULT);
+	createNotice(callfuncO_selector(CLoadingScene::callbackUserDataLoadFinish), NOTICE::USERDATA_LOAD_FINISH);
+	createNotice(callfuncO_selector(CLoadingScene::callbackDownloadFail), NOTICE::DOWN_ERROR);
+	createNotice(callfuncO_selector(CLoadingScene::callbackDownloadComplete), NOTICE::DOWN_COMPLETE);
 
-		CUserDataManager::Instance();
-        CSDKUtil::Instance();
-		CSDKUtil::Instance()->IsNetworkConnect();
+	CUserDataManager::Instance();
+	CSDKUtil::Instance();
+	CSDKUtil::Instance()->IsNetworkConnect();
 
-		InitLoadingSceneUI();
-	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+	InitLoadingSceneUI();
+
 	return true;
 }
 

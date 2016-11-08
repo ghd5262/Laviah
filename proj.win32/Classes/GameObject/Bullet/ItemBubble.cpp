@@ -48,26 +48,20 @@ bool CItemBubble::init()
 
 bool CItemBubble::initVariable()
 {
-	try{
-		Size visibleSize = Director::getInstance()->getVisibleSize();
-		m_ScreenRect = Rect(0, 0, visibleSize.width, visibleSize.height);
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	m_ScreenRect = Rect(0, 0, visibleSize.width, visibleSize.height);
 
-		m_Bubble = CSpeechBubble::create("bubble_1.png", m_BubbleIconName.c_str());
-		if (m_Bubble != nullptr)
-		{
-			m_Bubble->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_Bubble->setPosition(Vec2::ZERO);
-			addChild(m_Bubble);
-		}
-		setRotation(-m_fAngle + 90);
-		m_PlanetPos = m_pPlanet->getOriginPos();
-		calculateIntersectPos();
+	m_Bubble = CSpeechBubble::create("bubble_1.png", m_BubbleIconName.c_str());
+	if (m_Bubble != nullptr)
+	{
+		m_Bubble->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_Bubble->setPosition(Vec2::ZERO);
+		addChild(m_Bubble);
 	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+	setRotation(-m_fAngle + 90);
+	m_PlanetPos = m_pPlanet->getOriginPos();
+	calculateIntersectPos();
+
 	return true;
 }
 

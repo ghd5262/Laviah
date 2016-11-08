@@ -36,28 +36,22 @@ bool CItemBarrier::init()
 
 bool CItemBarrier::initVariable()
 {
-    try{
-        m_pTexture = Sprite::create(m_TextureName);
-        if (m_pTexture != nullptr){
-            m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-            addChild(m_pTexture);
-        }
-        
-        /*m_pParticle = CParticle_Flame::create(m_TextureName);
-        if (m_pParticle != nullptr){
-            m_pParticle->retain();
-            m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            addChild(m_pParticle, 101);
-        }*/
-        
-		m_pTexture->setScale(0.f);
-		m_pTexture->setVisible(false);
-    }
-    catch (...){
-        CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-        assert(false);
-        return false;
-    }
+	m_pTexture = Sprite::create(m_TextureName);
+	if (m_pTexture != nullptr){
+		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+		addChild(m_pTexture);
+	}
+
+	/*m_pParticle = CParticle_Flame::create(m_TextureName);
+	if (m_pParticle != nullptr){
+	m_pParticle->retain();
+	m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	addChild(m_pParticle, 101);
+	}*/
+
+	m_pTexture->setScale(0.f);
+	m_pTexture->setVisible(false);
+
     return true;
 }
 

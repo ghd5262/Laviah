@@ -47,42 +47,36 @@ bool CPlayItem::init()
 
 bool CPlayItem::initVariable()
 {
-	try{
-        setItemEffect(eITEM_FLAG_magnet);
-        if (!m_BulletParam._isFly){
-            m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
-            
-            this->scheduleOnce([this](float delta)
-                               {
-                                   this->R_FadeOutWithCount(5, 3.f);
-                               }, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
-        }
-        setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
-        setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
-        setRotation(-m_fAngle);
-        
-		m_pTexture = Sprite::create(MakeString("playItem_%d.png", m_BulletParam._itemType));
-		if (m_pTexture != nullptr){
-			m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-			addChild(m_pTexture);
-		}
+	setItemEffect(eITEM_FLAG_magnet);
+	if (!m_BulletParam._isFly){
+		m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
 
-		if (m_BulletParam._isFly){
-			CGameScene::getGridWorld()->addChild(CItemBubble::create(
-				sBULLET_PARAM(
-				0.f, 0.f, 0.f,
-				false,									//FlyItem 여부
-				m_BulletParam._isAimingMissile),		//AimingMissile 여부
-				MakeString("itemBubbleIcon_%d.png", m_BulletParam._itemType).c_str(),
-				-getRotation(),							//초기 각도
-				this), 100);
-		}
-    }
-    catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
+		this->scheduleOnce([this](float delta)
+		{
+			this->R_FadeOutWithCount(5, 3.f);
+		}, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
 	}
+	setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
+	setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
+	setRotation(-m_fAngle);
+
+	m_pTexture = Sprite::create(MakeString("playItem_%d.png", m_BulletParam._itemType));
+	if (m_pTexture != nullptr){
+		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+		addChild(m_pTexture);
+	}
+
+	if (m_BulletParam._isFly){
+		CGameScene::getGridWorld()->addChild(CItemBubble::create(
+			sBULLET_PARAM(
+			0.f, 0.f, 0.f,
+			false,									//FlyItem 여부
+			m_BulletParam._isAimingMissile),		//AimingMissile 여부
+			MakeString("itemBubbleIcon_%d.png", m_BulletParam._itemType).c_str(),
+			-getRotation(),							//초기 각도
+			this), 100);
+	}
+  
 	return true;
 }
 

@@ -61,19 +61,13 @@ bool CAlien::init()
 
 bool CAlien::initVariable()
 {
-	try{
-		setPositionX((cos(CC_DEGREES_TO_RADIANS(90)) *  m_pPlanet->getBRadius()) + m_pPlanet->getPosition().x);
-		setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  m_pPlanet->getBRadius()) + m_pPlanet->getPosition().y);
+	setPositionX((cos(CC_DEGREES_TO_RADIANS(90)) *  m_pPlanet->getBRadius()) + m_pPlanet->getPosition().x);
+	setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  m_pPlanet->getBRadius()) + m_pPlanet->getPosition().y);
 
-		m_Texture = Sprite::createWithSpriteFrameName("player0.png");
-		m_Texture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		addChild(m_Texture);
-	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+	m_Texture = Sprite::createWithSpriteFrameName("player0.png");
+	m_Texture->setAnchorPoint(Vec2(0.5f, 0.5f));
+	addChild(m_Texture);
+
 	return true;
 }
 

@@ -79,22 +79,16 @@ bool CBonusTimeUI::init()
 
 bool CBonusTimeUI::initVariable()
 {
-	try{
-		for (int letterNum = 0; letterNum < eLETTER_MAX; letterNum++){
-			m_LetterList[letterNum] = CLetter::create(
-				MakeString("grayLetter_%d.png", letterNum),
-				MakeString("bonusLetter_%d.png", letterNum),
-				static_cast<eLETTER>(letterNum),
-				Vec2(static_cast<float>(letterNum)* 29.f, 0.f));
+	for (int letterNum = 0; letterNum < eLETTER_MAX; letterNum++){
+		m_LetterList[letterNum] = CLetter::create(
+			MakeString("grayLetter_%d.png", letterNum),
+			MakeString("bonusLetter_%d.png", letterNum),
+			static_cast<eLETTER>(letterNum),
+			Vec2(static_cast<float>(letterNum)* 29.f, 0.f));
 
-			this->addChild(m_LetterList[letterNum]);
-		}
+		this->addChild(m_LetterList[letterNum]);
 	}
-	catch (...){
-		CCLOG("FILE %s, FUNC %s, LINE %d", __FILE__, __FUNCTION__, __LINE__);
-		assert(false);
-		return false;
-	}
+
 	return true;
 }
 
