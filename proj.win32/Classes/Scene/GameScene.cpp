@@ -124,7 +124,7 @@ bool CGameScene::initVariable()
 		CObjectManager::Instance()->setBackground(background);
 		CObjectManager::Instance()->setPlayer(player);
 		CObjectManager::Instance()->setPlanet(planet);
-		CPoolingManager::Instance()->CreateBulletList(1000, 900);
+		CPoolingManager::Instance()->CreateBulletList(300, 900);
 		CPoolingManager::Instance()->CreateShooterList(30, 800);
 
 		EventListenerKeyboard * pListener = EventListenerKeyboard::create();

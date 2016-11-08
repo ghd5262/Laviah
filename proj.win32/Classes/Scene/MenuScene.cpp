@@ -145,7 +145,13 @@ void CMenuScene::InitMenuSceneUI()
 		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.3f),
 		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.2f),
 		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.1f),
-	};
+        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.6f),
+        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.5f),
+        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.4f),
+        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.3f),
+        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.2f),
+        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.1f),
+    };
 
 	Size testButtonSize[] = {
 		Size(430, 150),
@@ -154,12 +160,12 @@ void CMenuScene::InitMenuSceneUI()
 
 	typedef std::pair<std::string, std::string> SOUND_PAIR;
 	SOUND_PAIR sounds[] = {
-		SOUND_PAIR("Click_1-1.mp3", "Click_1-2.mp3"),
-		SOUND_PAIR("Click_2-1.mp3", "Click_2-2.mp3"),
-		SOUND_PAIR("Click_3.mp3", ""),
-		SOUND_PAIR("Click_4-1.mp3", "Click_4-2.mp3"),
-		SOUND_PAIR("Click_5.mp3", ""),
-		SOUND_PAIR("Click_6-1.mp3", "Click_6-2.mp3"),
+		SOUND_PAIR("Click_1-1.mp3", ""),
+        SOUND_PAIR("Click_1-2.mp3", ""),
+        SOUND_PAIR("Click_2-1.mp3", ""),
+        SOUND_PAIR("Click_3.mp3", ""),
+        SOUND_PAIR("Click_4-2.mp3", ""),
+        SOUND_PAIR("Click_6-2.mp3", ""),
 	};
 
 	auto createWidgetPopup = [=](CPopup* widget){
@@ -216,7 +222,8 @@ void CMenuScene::InitMenuSceneUI()
 	SOUND_PAIR temp4 = sounds[3];
 	SOUND_PAIR temp5 = sounds[4];
 	SOUND_PAIR temp6 = sounds[5];
-	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp1; }, "1", testButtonPos[6], testButtonSize[1], sounds[0]);
+    
+    createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp1; }, "1", testButtonPos[6], testButtonSize[1], sounds[0]);
 	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp2; }, "2", testButtonPos[7], testButtonSize[1], sounds[1]);
 	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp3; }, "3", testButtonPos[8], testButtonSize[1], sounds[2]);
 	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp4; }, "4", testButtonPos[9], testButtonSize[1], sounds[3]);
@@ -224,6 +231,9 @@ void CMenuScene::InitMenuSceneUI()
 	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp6; }, "6", testButtonPos[11], testButtonSize[1], sounds[5]);
 
 
+   
+    
+    
 
     
 	//createTestButton([=](Node* sender){

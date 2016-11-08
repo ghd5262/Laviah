@@ -19,9 +19,9 @@
 
 class CPoolingManager
 {
-
 	/* 메모리 블럭 타입 정의	*/
 	typedef char* MEMORYBLOCK;
+    typedef std::vector<MEMORYBLOCK> BLOCK_LIST;
 
 public:
 	static CPoolingManager* Instance();
@@ -31,42 +31,40 @@ public:
 	void CreateShooterList(size_t count, size_t size);
     void CreateAlienList(size_t count, size_t size);
 
-    
 	/* pool이 보유한 메모리 리스트가 생성하려는 것보다 적으면 새로 생성 */
 	void* BulletNew();
 	void* ShooterNew();
     void* AlienNew();
-    
 
 	/* Bullet을 메모리블럭으로 전환 (alive off) */
 	void Bullet_ReturnToFreeMemory(void* bullet);
 	void Shooter_ReturnToFreeMemory(void* shooter);
     void Alien_ReturnToFreeMemory(void* alien);
 
-	/* 모든 Bullet을 메모리 블럭으로 전환 (alive off) */
-	void Bullet_ReturnToFreeMemoryAll();
-	void Shooter_ReturnToFreeMemoryAll();
-    void Alien_ReturnToFreeMemoryAll();
-
 	/* 모든 메모리를 해제한다. (게임이 종료되거나 Scene이 변경될때 호출) */
 	void DeleteAllMemory();
 
-
 private:
-	/* size만큼의 메모리 블럭을 생성한다. */
-	MEMORYBLOCK NewMemoryBlock(size_t size) const;
+    MEMORYBLOCK newMemoryBlock(size_t size) const;
+    MEMORYBLOCK getFreeMemoryFromList(BLOCK_LIST& list, size_t size);
+
+    void addBlockToList(BLOCK_LIST& list, size_t size);
+    void createList(BLOCK_LIST& list, size_t size, size_t count);
+    void changeFreeMemoryToUsed(MEMORYBLOCK block, size_t size);
+    void changeUsedMemoryToFree(MEMORYBLOCK block, size_t size);
 
 
+    bool isFreeMemory(MEMORYBLOCK block, size_t size);
+    size_t increaseBlockSizeIf64bit(size_t size);
+    
 	CPoolingManager();
-	/* 메모리 블럭을 모두 해제한다. */
 	~CPoolingManager();
-
 
 private:
 	/* 메모리 블럭 리스트 */
-	std::vector<MEMORYBLOCK> m_BulletList;
-	std::vector<MEMORYBLOCK> m_ShooterList;
-    std::vector<MEMORYBLOCK> m_AlienList;
+	BLOCK_LIST m_BulletList;
+	BLOCK_LIST m_ShooterList;
+    BLOCK_LIST m_AlienList;
 	
     /* 메모리 블럭 하나 당 크기 */
 	size_t m_BulletSize;

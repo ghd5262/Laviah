@@ -190,6 +190,8 @@ void CCharacterSelectPopup::Select(Node* sender)
 		m_CenterDP->Buy();
 		m_btnSelect->changeContents("Select");
 	}
+    
+    this->End(nullptr);
 }
 
 void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
