@@ -8,16 +8,16 @@ public:
 	static CItemManager* Instance();
 	void Execute(float delta);
 
-	//ÇöÀç µ¹¾Æ°¡´Â Å¸ÀÌ¸Ó ¹İÈ¯(ÇÃ·¡±× Çü½Ä)
+	//í˜„ì¬ ëŒì•„ê°€ëŠ” íƒ€ì´ë¨¸ ë°˜í™˜(í”Œë˜ê·¸ í˜•ì‹)
 	int getCurrentItem(){ return m_CurrentItems; }
 
-	//À¯Àú°¡ ¾ÆÀÌÅÛÀ» È¹µæÇßÀ»¶§ È£ÃâµÊ
+	//ìœ ì €ê°€ ì•„ì´í…œì„ íšë“í–ˆì„ë•Œ í˜¸ì¶œë¨
 	void StartItemTimer(eITEM_TYPE itemType);
 
-	//¾ÆÀÌÅÛ Å¸ÀÌ¸Ó Á¾·á
+	//ì•„ì´í…œ íƒ€ì´ë¨¸ ì¢…ë£Œ
 	void FinishItemTimer(eITEM_FLAG itemType){ m_CurrentItems ^= itemType; }
 
-	// ÃÊ±âÈ­
+	// ì´ˆê¸°í™”
 	void Clear();
 
 	float getValueOfCoin(eCOIN_TYPE type) { return m_ValueOfCoin[type]; }
@@ -27,7 +27,7 @@ private:
 	~CItemManager(){};
 
 private:
-	// ÇöÀç ÇÃ·¹ÀÌ¾î°¡ È¹µæÇÏ¿© Àû¿ëµÇ°í ÀÖ´Â ¾ÆÀÌÅÛ
+	// í˜„ì¬ í”Œë ˆì´ì–´ê°€ íšë“í•˜ì—¬ ì ìš©ë˜ê³  ìˆëŠ” ì•„ì´í…œ
 	int m_CurrentItems;
 	float m_ValueOfCoin[eCOIN_TYPE_MAX];
 	float m_ValueOfStar[eSTAR_TYPE_MAX];

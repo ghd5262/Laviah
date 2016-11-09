@@ -37,7 +37,7 @@ void CGoogleCloudManager::GoogleCloudDataLoad(std::string key, std::string value
     
 	CUserDataManager::Instance()->googleCloudDataLoad(valueJson);
 
-	// µ¥ÀÌÅÍ ÇÑ¹ø¿¡ ÀúÀå ¹× ·Îµå¸¦ À§ÇØ ÁÖ¼®Ã³¸® - 2016. 9. 3
+	// ë°ì´í„° í•œë²ˆì— ì €ìž¥ ë° ë¡œë“œë¥¼ ìœ„í•´ ì£¼ì„ì²˜ë¦¬ - 2016. 9. 3
     /*CUserDataManager::Instance()->convertJsonToUserData(key, valueJson);
     CUserDataManager::Instance()->callbackFirstRevision();
     CUserDataManager::Instance()->overwriteXmlByGoogleCloud(key, valueJson);

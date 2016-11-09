@@ -6,13 +6,13 @@ class CSpeechBubble;
 
 class CItemBubble : public CBullet {
 public:
-	/*create¸¦ È£ÃâÇÏ¸é CObjectManager¿¡¼­ ¸Ş¸ğ¸®¸¦ ¹Ş´Â´Ù.
-	¹ŞÀº ¸Ş¸ğ¸®´Â ¸Ş¸ğ¸®Ç®¿¡ ¹Ì¸® »ı¼ºµÇ¾îÀÖ´ø ¸Ş¸ğ¸®ÀÌ´Ù.*/
+	/*createë¥¼ í˜¸ì¶œí•˜ë©´ CObjectManagerì—ì„œ ë©”ëª¨ë¦¬ë¥¼ ë°›ëŠ”ë‹¤.
+	ë°›ì€ ë©”ëª¨ë¦¬ëŠ” ë©”ëª¨ë¦¬í’€ì— ë¯¸ë¦¬ ìƒì„±ë˜ì–´ìˆë˜ ë©”ëª¨ë¦¬ì´ë‹¤.*/
 	static CItemBubble* create(
 		sBULLET_PARAM bulletParam,
 		std::string bubbleIconName,
-		float angle,				//TargetMark ÃÊ±â °¢µµ 
-		CBullet* owner = nullptr);	//owner missile (nullptr ÀÏ ¶§¿¡´Â µµÂø½Ã°£À¸·Î »èÁ¦ÇÑ´Ù.)
+		float angle,				//TargetMark ì´ˆê¸° ê°ë„ 
+		CBullet* owner = nullptr);	//owner missile (nullptr ì¼ ë•Œì—ëŠ” ë„ì°©ì‹œê°„ìœ¼ë¡œ ì‚­ì œí•œë‹¤.)
 	virtual void Execute(float delta = 0.f) override;
 	virtual void Rotation(float dir, float delta) override;
 

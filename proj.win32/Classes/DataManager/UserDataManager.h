@@ -51,7 +51,7 @@ private:
 
 	void addKey(std::string keyKind, std::string key);
 
-	// µ¥ÀÌÅÍ ÇÑ¹ø¿¡ ÀúÀå ¹× ·Îµå¸¦ À§ÇØ ÁÖ¼®Ã³¸® - 2016. 9. 3
+	// ë°ì´í„° í•œë²ˆì— ì €ì¥ ë° ë¡œë“œë¥¼ ìœ„í•´ ì£¼ì„ì²˜ë¦¬ - 2016. 9. 3
     /*void callbackFirstRevision();
     
     void dataLoad();
@@ -78,6 +78,6 @@ private:
 	std::string m_JsonUserDataFromXML;
 	std::string m_JsonUserDataFromGoogleCloud;
 	
-	// µ¥ÀÌÅÍ ÇÑ¹ø¿¡ ÀúÀå ¹× ·Îµå¸¦ À§ÇØ ÁÖ¼®Ã³¸® - 2016. 9. 3
+	// ë°ì´í„° í•œë²ˆì— ì €ì¥ ë° ë¡œë“œë¥¼ ìœ„í•´ ì£¼ì„ì²˜ë¦¬ - 2016. 9. 3
     //bool m_IsFirstRevisionCall;
 };

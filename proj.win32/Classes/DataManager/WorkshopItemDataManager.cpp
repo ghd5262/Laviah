@@ -10,13 +10,13 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 	Json::Value root;
 	Json::Reader reader;
 
-	// patternList.json ÆÄÀÏ ÀĞÀ½
+	// patternList.json íŒŒì¼ ì½ìŒ
 	std::string strWorkshopItemList = FileUtils::getInstance()->fullPathForFilename("workshopItemList.json");
 	std::string workshopItemListClearData = FileUtils::getInstance()->getStringFromFile(strWorkshopItemList);
 	size_t pos = workshopItemListClearData.rfind("}");
 	workshopItemListClearData = workshopItemListClearData.substr(0, pos + 1);
 
-	// patternList.json logÃâ·Â
+	// patternList.json logì¶œë ¥
 	bool parsingSuccessful = reader.parse(workshopItemListClearData, root);
 	if (!parsingSuccessful)
 	{
@@ -26,7 +26,7 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 	CCLOG("strWorkshopItemList JSON : \n %s\n", workshopItemListClearData.c_str());
 
 
-	// stage´Â ¹è¿­ÀÌ´Ù.
+	// stageëŠ” ë°°ì—´ì´ë‹¤.
 	const Json::Value itemArray = root["workshopitems"];
 
 	for (unsigned int itemCount = 0; itemCount < itemArray.size(); ++itemCount)

@@ -253,9 +253,9 @@ void CPopup::popupClose()
 
 	FiniteTimeAction* action = nullptr;
 
-	/* custom open animationÀÏ °æ¿ì 
-	 * ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ¿Ï·áµÉ ¶§±îÁö ±â´Ù¸²
-	 * ´ë·« 0.5ÃÊ
+	/* custom open animationì¼ ê²½ìš° 
+	 * ì• ë‹ˆë©”ì´ì…˜ì´ ì™„ë£Œë  ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¼
+	 * ëŒ€ëµ 0.5ì´ˆ
 	 */
 	float delayTime = 0.0f;
 	if (m_CloseAnimationCallBack != nullptr)

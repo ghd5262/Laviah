@@ -6,8 +6,8 @@
 CItemBubble::CItemBubble(
 	sBULLET_PARAM bulletParam,
 	std::string bubbleIconName,
-	float angle,					//ItemBubble ÃÊ±â °¢µµ 
-	CBullet* owner/* = nullptr*/)	//owner missile (nullptr ÀÏ ¶§¿¡´Â µµÂø½Ã°£À¸·Î »èÁ¦ÇÑ´Ù.)
+	float angle,					//ItemBubble ì´ˆê¸° ê°ë„ 
+	CBullet* owner/* = nullptr*/)	//owner missile (nullptr ì¼ ë•Œì—ëŠ” ë„ì°©ì‹œê°„ìœ¼ë¡œ ì‚­ì œí•œë‹¤.)
 	: CBullet(
 	bulletParam,
 	angle,
@@ -20,7 +20,7 @@ CItemBubble::CItemBubble(
 CItemBubble* CItemBubble::create(
 	sBULLET_PARAM bulletParam,
 	std::string bubbleIconName,
-	float angle,					//ItemBubble ÃÊ±â °¢µµ 
+	float angle,					//ItemBubble ì´ˆê¸° ê°ë„ 
 	CBullet* owner)					//owner missile
 {
 	CItemBubble* pRet =
@@ -94,13 +94,13 @@ void CItemBubble::calculateIntersectPos()
 
 void CItemBubble::Rotation(float dir, float delta)
 {
-	// ¿ÀºêÁ§Æ® ÀÚÃ¼µµ È¸Àü
+	// ì˜¤ë¸Œì íŠ¸ ìžì²´ë„ íšŒì „
 	setRotation(getRotation() - (dir *(m_fRotationSpeed * delta)));
 }
 
 void CItemBubble::Execute(float delta)
 {
-	// È­¸é ¾È¿¡ µé¾î¿ÔÀ»¶§¿¡´Â visible false
+	// í™”ë©´ ì•ˆì— ë“¤ì–´ì™”ì„ë•Œì—ëŠ” visible false
 	if (m_OwnerBullet->IsAlive() && m_ScreenRect.containsPoint(m_OwnerBullet->getPosition()))
 	{
 		this->setVisible(false);
@@ -111,7 +111,7 @@ void CItemBubble::Execute(float delta)
 		calculateIntersectPos();
 	}
 
-	// Item»èÁ¦½Ã ÇÔ²² »èÁ¦
-	if (!m_OwnerBullet->IsAlive())		// ÀÌ°Í ÀÌ¿ÜÀÇ OwnerBulletÀ» »ç¿ëÇÏ´Â °÷ÀÌ ÀÖÀ¸¸é ¾ÈµÈ´Ù.. »ç½Ç»ó ÀÌ ÄÚµåµµ ÀÌ¹Ì ¸Þ¸ð¸® ºí·°À¸·Î µÇµ¹¾Æ°£ bulletÀÇ AliveÀÌ´Ù.
-		ReturnToMemoryBlock();			// OwnerBulletÀº Ç×»ó Targetº¸´Ù ¸ÕÀú ¸Þ¸ð¸® ºí·°À¸·Î µÇµ¹¾Æ°¡±â ¶§¹®ÀÌ´Ù.
+	// Itemì‚­ì œì‹œ í•¨ê»˜ ì‚­ì œ
+	if (!m_OwnerBullet->IsAlive())		// ì´ê²ƒ ì´ì™¸ì˜ OwnerBulletì„ ì‚¬ìš©í•˜ëŠ” ê³³ì´ ìžˆìœ¼ë©´ ì•ˆëœë‹¤.. ì‚¬ì‹¤ìƒ ì´ ì½”ë“œë„ ì´ë¯¸ ë©”ëª¨ë¦¬ ë¸”ëŸ­ìœ¼ë¡œ ë˜ëŒì•„ê°„ bulletì˜ Aliveì´ë‹¤.
+		ReturnToMemoryBlock();			// OwnerBulletì€ í•­ìƒ Targetë³´ë‹¤ ë¨¼ì € ë©”ëª¨ë¦¬ ë¸”ëŸ­ìœ¼ë¡œ ë˜ëŒì•„ê°€ê¸° ë•Œë¬¸ì´ë‹¤.
 }

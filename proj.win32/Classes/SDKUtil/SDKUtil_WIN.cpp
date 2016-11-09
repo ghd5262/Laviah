@@ -4,27 +4,27 @@ CSDKUtil_WIN::CSDKUtil_WIN(){}
 
 CSDKUtil_WIN::~CSDKUtil_WIN(){}
 
-// ±¸±Û ·Î±×ÀÎ
+// êµ¬ê¸€ ë¡œê·¸ì¸
 void CSDKUtil_WIN::GoogleLogin()
 {
 	CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
 	__NotificationCenter::getInstance()->postNotification(NOTICE::LOGIN_RESULT, NULL);
 };
 
-// ±¸±Û Å¬¶ó¿ìµå ÀúÀå Key / Value
+// êµ¬ê¸€ í´ë¼ìš°ë“œ ì €ìž¥ Key / Value
 void CSDKUtil_WIN::GoogleCloudSave(std::string key, std::string value)
 { 
 	CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); 
 }
 
-// ±¸±Û Å¬¶ó¿ìµå ·Îµå Key
+// êµ¬ê¸€ í´ë¼ìš°ë“œ ë¡œë“œ Key
 void CSDKUtil_WIN::GoogleCloudLoad(std::string key)
 { 
 	CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); 
 };
 
 
-// À¯´ÏÆ¼ ¾Öµå º¸»óÇü ±¤°í
+// ìœ ë‹ˆí‹° ì• ë“œ ë³´ìƒí˜• ê´‘ê³ 
 void CSDKUtil_WIN::ShowRewardUnityAds()
 {
 	CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
@@ -36,7 +36,7 @@ void CSDKUtil_WIN::ShowRewardUnityAds()
 	CSDKUtil::Instance()->setIsRewardUnityAdsReady(true);
 }
 
-// À¯´ÏÆ¼ ¾Öµå ÀÏ¹Ý ±¤°í
+// ìœ ë‹ˆí‹° ì• ë“œ ì¼ë°˜ ê´‘ê³ 
 void CSDKUtil_WIN::ShowNormalUnityAds()
 {
 	CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
@@ -48,7 +48,7 @@ void CSDKUtil_WIN::ShowNormalUnityAds()
 	CSDKUtil::Instance()->setIsNormalUnityAdsReady(true);
 }
 
-// Åä½ºÆ®Ã¢
+// í† ìŠ¤íŠ¸ì°½
 void CSDKUtil_WIN::Toast(std::string content)
 { 
 	CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);

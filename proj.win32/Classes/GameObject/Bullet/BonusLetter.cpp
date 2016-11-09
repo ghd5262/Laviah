@@ -8,8 +8,8 @@
 
 CBonusLetter::CBonusLetter(
 	sBULLET_PARAM bulletParam,
-	float angle,				    //bullet ÃÊ±â °¢µµ 
-	float speed)				    //bullet ÃÊ±â ¼Óµµ
+	float angle,				    //bullet ì´ˆê¸° ê°ë„ 
+	float speed)				    //bullet ì´ˆê¸° ì†ë„
 	: CBullet(
 	bulletParam,
 	angle, 
@@ -19,8 +19,8 @@ CBonusLetter::CBonusLetter(
 
 CBonusLetter* CBonusLetter::create(
 	sBULLET_PARAM bulletParam,
-	float angle,					//bullet ÃÊ±â °¢µµ 
-	float speed)					//bullet ÃÊ±â ¼Óµµ
+	float angle,					//bullet ì´ˆê¸° ê°ë„ 
+	float speed)					//bullet ì´ˆê¸° ì†ë„
 {
 	CBonusLetter* pRet = 
 		(CBonusLetter*)new(std::nothrow)CBonusLetter(

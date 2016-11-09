@@ -11,8 +11,8 @@
 
 CPlayStar::CPlayStar(
 	sBULLET_PARAM bulletParam,
-	float angle,				    //star ÃÊ±â °¢µµ 
-	float speed,				    //star ÃÊ±â ¼Óµµ
+	float angle,				    //star ì´ˆê¸° ê°ë„ 
+	float speed,				    //star ì´ˆê¸° ì†ë„
 	Vec2 createPosition/* = Vec2(0, 0)*/)
 
 	: CBullet(
@@ -25,8 +25,8 @@ CPlayStar::CPlayStar(
 
 CPlayStar* CPlayStar::create(
 	sBULLET_PARAM bulletParam,
-	float angle,					//star ÃÊ±â °¢µµ 
-	float speed,					//star ÃÊ±â ¼Óµµ
+	float angle,					//star ì´ˆê¸° ê°ë„ 
+	float speed,					//star ì´ˆê¸° ì†ë„
 	Vec2 createPosition)
 {
 	CPlayStar* pRet =

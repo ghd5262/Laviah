@@ -8,8 +8,8 @@
 
 CPlayItem::CPlayItem(
 	sBULLET_PARAM bulletParam,
-	float angle,				    //item √ ±‚ ∞¢µµ 
-	float speed)				    //item √ ±‚ º”µµ)
+	float angle,				    //item Ï¥àÍ∏∞ Í∞ÅÎèÑ 
+	float speed)				    //item Ï¥àÍ∏∞ ÏÜçÎèÑ)
 	: CBullet(
 	bulletParam,
 	angle,
@@ -18,8 +18,8 @@ CPlayItem::CPlayItem(
 
 CPlayItem* CPlayItem::create(
 	sBULLET_PARAM bulletParam,
-	float angle,					//item √ ±‚ ∞¢µµ 
-	float speed)					//item √ ±‚ º”µµ
+	float angle,					//item Ï¥àÍ∏∞ Í∞ÅÎèÑ 
+	float speed)					//item Ï¥àÍ∏∞ ÏÜçÎèÑ
 
 {
 	CPlayItem* pRet = 
@@ -70,10 +70,10 @@ bool CPlayItem::initVariable()
 		CGameScene::getGridWorld()->addChild(CItemBubble::create(
 			sBULLET_PARAM(
 			0.f, 0.f, 0.f,
-			false,									//FlyItem ø©∫Œ
-			m_BulletParam._isAimingMissile),		//AimingMissile ø©∫Œ
+			false,									//FlyItem Ïó¨Î∂Ä
+			m_BulletParam._isAimingMissile),		//AimingMissile Ïó¨Î∂Ä
 			MakeString("itemBubbleIcon_%d.png", m_BulletParam._itemType).c_str(),
-			-getRotation(),							//√ ±‚ ∞¢µµ
+			-getRotation(),							//Ï¥àÍ∏∞ Í∞ÅÎèÑ
 			this), 100);
 	}
   

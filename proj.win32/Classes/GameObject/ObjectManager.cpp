@@ -118,8 +118,6 @@ void CObjectManager::CreateShooterByTimer()
 
 void CObjectManager::ExecuteAllObject(float delta)
 {
-	m_Background->Execute(delta);
-
 	if (m_IsGamePause)
 		return;
 

@@ -5,8 +5,8 @@ class CGameObject;
 
 class CScoreBullet : public CBullet {
 public:
-	/*create¸¦ È£ÃâÇÏ¸é CObjectManager¿¡¼­ ¸Ş¸ğ¸®¸¦ ¹Ş´Â´Ù.
-	¹ŞÀº ¸Ş¸ğ¸®´Â ¸Ş¸ğ¸®Ç®¿¡ ¹Ì¸® »ı¼ºµÇ¾îÀÖ´ø ¸Ş¸ğ¸®ÀÌ´Ù.*/
+	/*createë¥¼ í˜¸ì¶œí•˜ë©´ CObjectManagerì—ì„œ ë©”ëª¨ë¦¬ë¥¼ ë°›ëŠ”ë‹¤.
+	ë°›ì€ ë©”ëª¨ë¦¬ëŠ” ë©”ëª¨ë¦¬í’€ì— ë¯¸ë¦¬ ìƒì„±ë˜ì–´ìˆë˜ ë©”ëª¨ë¦¬ì´ë‹¤.*/
 	static CScoreBullet* create(int score = 0);
 	virtual void Execute(float delta = 0.f) override {};
 	virtual void Rotation(float dir, float delta) override {};

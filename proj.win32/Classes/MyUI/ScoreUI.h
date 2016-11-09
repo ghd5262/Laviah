@@ -36,7 +36,7 @@ private:
 	std::string m_FontName;
 	std::string m_ValueImgName;
 	Label* m_ValueLabel;	
-	Sprite* m_ValueImg;// ¼ıÀÚ ¿À¸¥ÂÊ¿¡ º¸¿©ÁÙ ÀÌ¹ÌÁö ¾ø´Ù¸é º¸¿©ÁÖÁö ¾Ê´Â´Ù.
+	Sprite* m_ValueImg;// ìˆ«ì ì˜¤ë¥¸ìª½ì— ë³´ì—¬ì¤„ ì´ë¯¸ì§€ ì—†ë‹¤ë©´ ë³´ì—¬ì£¼ì§€ ì•ŠëŠ”ë‹¤.
 	size_t m_FontSize;
 	std::string m_ValueString;
 };

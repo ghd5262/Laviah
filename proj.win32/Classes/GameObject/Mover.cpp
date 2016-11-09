@@ -6,7 +6,7 @@ CMover::CMover(float boundingRadius)
 {
 	this->setVisible(true);
 	this->m_bAlive = true;
-	this->m_bHasPointer = true; // false¸¦ ¸¸µé¾î ÁÖ´Â ºÎºĞÀº ¾ø´Ù. Á¾·á½Ã DeleteÀÇ ÇÃ·¡±×·Î ¾²±â ¶§¹®
+	this->m_bHasPointer = true; // falseë¥¼ ë§Œë“¤ì–´ ì£¼ëŠ” ë¶€ë¶„ì€ ì—†ë‹¤. ì¢…ë£Œì‹œ Deleteì˜ í”Œë˜ê·¸ë¡œ ì“°ê¸° ë•Œë¬¸
 }
 
 CMover::~CMover()
@@ -17,7 +17,7 @@ CMover::~CMover()
 void CMover::Delete()
 {
 	this->removeFromParent();
-	delete this; // operator deleteÈ£Ãâ ½ÇÁ¦ ¸Ş¸ğ¸®´Â PoolingManager¿¡¼­ Á¦°ÅµÈ´Ù.
+	delete this; // operator deleteí˜¸ì¶œ ì‹¤ì œ ë©”ëª¨ë¦¬ëŠ” PoolingManagerì—ì„œ ì œê±°ëœë‹¤.
 }
 
 bool CMover::IsHit(CGameObject* object) {

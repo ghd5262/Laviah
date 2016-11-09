@@ -18,7 +18,7 @@ void CPlayerNormal::Execute(CPlayer* player, float delta)
 	if (player->getIsDead() == true)
 		return;
 
-	// TODO: switch¹®ÀÌ¸é ÇÏ³ª¹Û¿¡ ½ÇÇà µÇÁö ¾ÊÀ» ÅÙµ¥ ÀÇµµÇÑ °ÍÀÎ°¡?
+	// TODO: switchë¬¸ì´ë©´ í•˜ë‚˜ë°–ì— ì‹¤í–‰ ë˜ì§€ ì•Šì„ í…ë° ì˜ë„í•œ ê²ƒì¸ê°€?
 	switch (player->getItemEffect() & CItemManager::Instance()->getCurrentItem())
 	{
 	case eITEM_FLAG_giant:

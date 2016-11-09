@@ -5,12 +5,12 @@ class CGameObject;
 
 class CNormalMissile : public CBullet {
 public:
-	/*create¸¦ È£ÃâÇÏ¸é CObjectManager¿¡¼­ ¸Ş¸ğ¸®¸¦ ¹Ş´Â´Ù.
-	¹ŞÀº ¸Ş¸ğ¸®´Â ¸Ş¸ğ¸®Ç®¿¡ ¹Ì¸® »ı¼ºµÇ¾îÀÖ´ø ¸Ş¸ğ¸®ÀÌ´Ù.*/
+	/*createë¥¼ í˜¸ì¶œí•˜ë©´ CObjectManagerì—ì„œ ë©”ëª¨ë¦¬ë¥¼ ë°›ëŠ”ë‹¤.
+	ë°›ì€ ë©”ëª¨ë¦¬ëŠ” ë©”ëª¨ë¦¬í’€ì— ë¯¸ë¦¬ ìƒì„±ë˜ì–´ìˆë˜ ë©”ëª¨ë¦¬ì´ë‹¤.*/
 	static CNormalMissile* create(
 		sBULLET_PARAM bulletParam,
-		float angle,				//bullet ÃÊ±â °¢µµ 
-		float speed);				//bullet ÃÊ±â ¼Óµµ
+		float angle,				//bullet ì´ˆê¸° ê°ë„ 
+		float speed);				//bullet ì´ˆê¸° ì†ë„
 
 	virtual void Execute(float delta = 0.f) override;
 	virtual void Rotation(float dir, float delta) override;
@@ -35,9 +35,9 @@ private:
 private:
 	Rect m_ScreenRect;
 
-	//ºÒ²É ÆÄÆ¼Å¬
+	//ë¶ˆê½ƒ íŒŒí‹°í´
 	ParticleSystemQuad* m_pParticleFlame;
 
-	//Ãæµ¹ ÆÄÆ¼Å¬
+	//ì¶©ëŒ íŒŒí‹°í´
 	ParticleSystemQuad* m_pParticleCrash;
 };

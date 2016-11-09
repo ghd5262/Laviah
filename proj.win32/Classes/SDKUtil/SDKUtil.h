@@ -8,28 +8,28 @@ class CSDKUtil{
 public:
 	static CSDKUtil* Instance();
 
-	// ±¸±Û ·Î±×ÀÎ
+	// êµ¬ê¸€ ë¡œê·¸ì¸
 	void GoogleLogin();
 
-	// ±¸±Û Å¬¶ó¿ìµå ÀúÀå Key / Value
+	// êµ¬ê¸€ í´ë¼ìš°ë“œ ì €ì¥ Key / Value
 	void GoogleCloudSave(std::string key, std::string value);
 
-	// ±¸±Û Å¬¶ó¿ìµå ·Îµå Key
+	// êµ¬ê¸€ í´ë¼ìš°ë“œ ë¡œë“œ Key
 	void GoogleCloudLoad(std::string key);
 
-	// À¯´ÏÆ¼ ¾Öµå º¸»óÇü ±¤°í
+	// ìœ ë‹ˆí‹° ì• ë“œ ë³´ìƒí˜• ê´‘ê³ 
 	void ShowRewardUnityAds(const std::function<void(void)> &func);
 
-	// À¯´ÏÆ¼ ¾Öµå ÀÏ¹İ ±¤°í
+	// ìœ ë‹ˆí‹° ì• ë“œ ì¼ë°˜ ê´‘ê³ 
 	void ShowNormalUnityAds(const std::function<void(void)> &func);
 
-	// Åä½ºÆ®Ã¢
+	// í† ìŠ¤íŠ¸ì°½
 	void Toast(std::string content);
 
-	// ³×Æ®¿öÅ© ¿¬°á ¿©ºÎ
+	// ë„¤íŠ¸ì›Œí¬ ì—°ê²° ì—¬ë¶€
 	void IsNetworkConnect();
 
-	// ÀúÀåµÈ ÇÔ¼ö È£Ãâ
+	// ì €ì¥ëœ í•¨ìˆ˜ í˜¸ì¶œ
 	void CallUnityAdsSavedFunction();
 
 private:

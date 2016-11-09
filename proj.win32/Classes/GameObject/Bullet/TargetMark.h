@@ -5,15 +5,15 @@ class CGameObject;
 
 class CTargetMark : public CBullet {
 public:
-	/*create¸¦ È£ÃâÇÏ¸é CObjectManager¿¡¼­ ¸Ş¸ğ¸®¸¦ ¹Ş´Â´Ù.
-	¹ŞÀº ¸Ş¸ğ¸®´Â ¸Ş¸ğ¸®Ç®¿¡ ¹Ì¸® »ı¼ºµÇ¾îÀÖ´ø ¸Ş¸ğ¸®ÀÌ´Ù.*/
+	/*createë¥¼ í˜¸ì¶œí•˜ë©´ CObjectManagerì—ì„œ ë©”ëª¨ë¦¬ë¥¼ ë°›ëŠ”ë‹¤.
+	ë°›ì€ ë©”ëª¨ë¦¬ëŠ” ë©”ëª¨ë¦¬í’€ì— ë¯¸ë¦¬ ìƒì„±ë˜ì–´ìˆë˜ ë©”ëª¨ë¦¬ì´ë‹¤.*/
 	static CTargetMark* create(
 		sBULLET_PARAM bulletParam,
-		float angle,				//TargetMark ÃÊ±â °¢µµ 
-		Vec2 missilePos,			//Missile ÇöÀç ÁÂÇ¥
-		float missileSpeed,			//Missile ¼Ó·Â
+		float angle,				//TargetMark ì´ˆê¸° ê°ë„ 
+		Vec2 missilePos,			//Missile í˜„ì¬ ì¢Œí‘œ
+		float missileSpeed,			//Missile ì†ë ¥
 		bool isMissileChangedToCoin = true,
-		CBullet* owner = nullptr);	//owner missile (nullptr ÀÏ ¶§¿¡´Â µµÂø½Ã°£À¸·Î »èÁ¦ÇÑ´Ù.)
+		CBullet* owner = nullptr);	//owner missile (nullptr ì¼ ë•Œì—ëŠ” ë„ì°©ì‹œê°„ìœ¼ë¡œ ì‚­ì œí•œë‹¤.)
 	virtual void Execute(float delta = 0.f) override;
 	virtual void Rotation(float dir, float delta) override;
 
@@ -36,10 +36,10 @@ private:
 	Vector<SpriteFrame*> m_AnimationFrames;
 	Sprite* m_SpriteFrame;
 	CBullet* m_OwnerBullet;			// owner missile
-	float m_fArriveTime;			// ¹Ì»çÀÏ µµÂø½Ã°£ =  target
+	float m_fArriveTime;			// ë¯¸ì‚¬ì¼ ë„ì°©ì‹œê°„ =  target
 	Rect m_ScreenRect;
 	bool m_bIsMissileChangedToCoin;
 	
-	//ÆÄÆ¼Å¬
+	//íŒŒí‹°í´
 	ParticleSystemQuad* m_pParticle;
 };

@@ -10,8 +10,8 @@
 
 CPlayCoin::CPlayCoin(
 	sBULLET_PARAM bulletParam,
-	float angle,				    //coin ÃÊ±â °¢µµ 
-	float speed,				    //coin ÃÊ±â ¼Óµµ
+	float angle,				    //coin ì´ˆê¸° ê°ë„ 
+	float speed,				    //coin ì´ˆê¸° ì†ë„
 	Vec2 createPosition /*= Vec2(0, 0)*/)
 	
 	: CBullet(
@@ -24,8 +24,8 @@ CPlayCoin::CPlayCoin(
 
 CPlayCoin* CPlayCoin::create(
 	sBULLET_PARAM bulletParam,
-	float angle,					//coin ÃÊ±â °¢µµ 
-	float speed,					//coin ÃÊ±â ¼Óµµ
+	float angle,					//coin ì´ˆê¸° ê°ë„ 
+	float speed,					//coin ì´ˆê¸° ì†ë„
 	Vec2 createPosition)
 {
 	CPlayCoin* pRet =
