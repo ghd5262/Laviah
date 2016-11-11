@@ -5,6 +5,7 @@
 #include "../Player.h"
 #include "../ItemManager.h"
 #include "../../Scene/GameScene.h"
+#include "../ObjectManager.h"
 
 CPlayItem::CPlayItem(
 	sBULLET_PARAM bulletParam,
@@ -28,6 +29,9 @@ CPlayItem* CPlayItem::create(
 
 	if (pRet && pRet->init())
 	{
+#if(!USE_MEMORY_POOLING)
+        pRet->autorelease();
+#endif
 		return pRet;
 	}
 	else
@@ -67,14 +71,19 @@ bool CPlayItem::initVariable()
 	}
 
 	if (m_BulletParam._isFly){
-		CGameScene::getGridWorld()->addChild(CItemBubble::create(
-			sBULLET_PARAM(
-			0.f, 0.f, 0.f,
-			false,									//FlyItem 여부
-			m_BulletParam._isAimingMissile),		//AimingMissile 여부
-			MakeString("itemBubbleIcon_%d.png", m_BulletParam._itemType).c_str(),
-			-getRotation(),							//초기 각도
-			this), 100);
+        
+        auto test = CItemBubble::create(
+                            sBULLET_PARAM( 0.f, 0.f, 0.f, false,		//FlyItem 여부
+                                        m_BulletParam._isAimingMissile),//AimingMissile 여부
+                                        MakeString("itemBubbleIcon_%d.png", m_BulletParam._itemType).c_str(),
+                                        -getRotation(),					//초기 각도
+                                        this);
+        
+		CGameScene::getGridWorld()->addChild(test, 100);
+        
+#if(!USE_MEMORY_POOLING)
+        CObjectManager::Instance()->AddBullet(test);
+#endif
 	}
   
 	return true;
@@ -95,7 +104,7 @@ void CPlayItem::CollisionWithPlanet()
 
 void CPlayItem::CollisionWithPlayer()
 {
-	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
+//	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	CItemManager::Instance()->StartItemTimer(m_BulletParam._itemType);
 }

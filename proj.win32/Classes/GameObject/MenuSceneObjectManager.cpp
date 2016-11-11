@@ -26,7 +26,7 @@ void CMenuSceneObjectManager::AddAlien(void* alien)
 }
 
 /* bullet->Delete() :
-* °ÔÀÓ Á¾·á½Ã °¡Áö°í ÀÖ´Â Non_Node°è¿­ÀÇ Æ÷ÀÎÅÍ¸¦ ÇØÁ¦ÇÏ±âÀ§ÇØ */
+* ê²Œì„ ì¢…ë£Œì‹œ ê°€ì§€ê³  ìˆëŠ” Non_Nodeê³„ì—´ì˜ í¬ì¸í„°ë¥¼ í•´ì œí•˜ê¸°ìœ„í•´ */
 void CMenuSceneObjectManager::RemoveAllAlien()
 {
 	for (auto alien : m_AlienList)

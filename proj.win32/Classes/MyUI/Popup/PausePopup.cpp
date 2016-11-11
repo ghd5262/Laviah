@@ -44,7 +44,7 @@ bool CPausePopup::init()
 		"restartButton.png",
 		"playButton.png",
 		"exitButton.png",
-		"helpButton.png"
+		"playIcon.png"
 	};
 
 	Vec2 btnPosArray[] = {
@@ -65,11 +65,11 @@ bool CPausePopup::init()
 	
 	auto btnHome = createButton([=](Node* sender){ this->GoHome(sender); }, btnImageName[0], btnPosArray[0])->show(pauseBG);
 	auto btnReset = createButton([=](Node* sender){ this->Reset(sender); }, btnImageName[1], btnPosArray[1])->show(pauseBG);
-	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[2], btnPosArray[2])->show(pauseBG);
+//	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[2], btnPosArray[2])->show(pauseBG);
 	auto btnExit = createButton([=](Node* sender){ this->GameExit(sender); }, btnImageName[3], btnPosArray[3])->show(this);
 	btnExit->setOpacity(0);
-	auto btnHelp = createButton([=](Node* sender){ this->Help(sender); }, btnImageName[4], btnPosArray[4])->show(this);
-	btnHelp->setOpacity(0);
+	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[4], btnPosArray[4])->show(this);
+	btnPlay->setOpacity(0);
 	
 	auto noticeLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 25);
 	noticeLabel->setColor(Color3B::BLACK);
@@ -100,13 +100,13 @@ bool CPausePopup::init()
 
 			action(btnHome, 0.85f);
 			action(btnReset, 0.7f);
-			action(btnPlay, 0.55f);
+//			action(btnPlay, 0.55f);
 
 		}, 0.1f, "PausePopupOpen");
 
 		pauseBG->runAction(EaseExponentialOut::create(MoveTo::create(0.5f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.86f))));
 		btnExit->runAction(FadeIn::create(0.5f));
-		btnHelp->runAction(FadeIn::create(0.5f));
+		btnPlay->runAction(FadeIn::create(0.5f));
 		btnUserCoin->runAction(FadeIn::create(0.5f));
 	});
 
@@ -122,12 +122,12 @@ bool CPausePopup::init()
 
 		action(btnHome, 0.85f);
 		action(btnReset, 0.7f);
-		action(btnPlay, 0.55f);
+//		action(btnPlay, 0.55f);
 
 		this->scheduleOnce([=](float delta){
 
 			btnExit->runAction(FadeTo::create(0.5f, 0));
-			btnHelp->runAction(FadeTo::create(0.5f, 0));
+			btnPlay->runAction(FadeTo::create(0.5f, 0));
 			btnUserCoin->runAction(FadeTo::create(0.5f, 0));
 			pauseBG->runAction(Sequence::create(
 				EaseSineIn::create(

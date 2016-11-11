@@ -29,6 +29,9 @@ CItemBubble* CItemBubble::create(
 
 	if (pRet && pRet->init())
 	{
+#if(!USE_MEMORY_POOLING)
+        pRet->autorelease();
+#endif
 		return pRet;
 	}
 	else
@@ -60,35 +63,33 @@ bool CItemBubble::initVariable()
 	}
 	setRotation(-m_fAngle + 90);
 	m_PlanetPos = m_pPlanet->getOriginPos();
-	calculateIntersectPos();
+	this->calculateIntersectPos();
 
 	return true;
 }
 
 void CItemBubble::calculateIntersectPos()
 {
+    float padding = 100;
+    float paddingW = m_ScreenRect.size.width - padding;
+    float paddingH = m_ScreenRect.size.height - padding;
 	Vec2 resultPoint = Vec2::ZERO;
-	Vec2 intersectPoint = Vec2::ZERO;
-	Vec2 screenLT = Vec2(m_ScreenRect.origin.x + 100, m_ScreenRect.size.height - 100);
-	Vec2 screenRT = Vec2(m_ScreenRect.size.width - 100, m_ScreenRect.size.height - 100);
-	Vec2 screenLB = Vec2(m_ScreenRect.origin.x + 100, m_ScreenRect.origin.y + 100);
-	Vec2 screenRB = Vec2(m_ScreenRect.size.width - 100, m_ScreenRect.origin.y + 100);
-	Vec2 OwnerBulletPos = m_OwnerBullet->getPosition();
-	// top
+	Vec2 screenLT = Vec2(padding, paddingH);
+	Vec2 screenRT = Vec2(paddingW, paddingH);
+	Vec2 screenRB = Vec2(paddingW, padding);
+    Vec2 screenLB = Vec2(padding, padding);
+    
+    auto getIntersect = [=](Vec2 pointA, Vec2 pointB)->Vec2{
+        if(Vec2::isSegmentIntersect(m_PlanetPos, m_OwnerBullet->getPosition(), pointA, pointB))
+            return Vec2::getIntersectPoint(m_PlanetPos, m_OwnerBullet->getPosition(), pointA, pointB);
+        return Vec2::ZERO;
+    };
 
-	if (Vec2::isSegmentIntersect(m_PlanetPos, OwnerBulletPos, screenLT, screenRT)){
-		resultPoint = Vec2::getIntersectPoint(m_PlanetPos, OwnerBulletPos, screenLT, screenRT);
-	}
-	if (Vec2::isSegmentIntersect(m_PlanetPos, OwnerBulletPos, screenRT, screenRB)){
-		resultPoint = Vec2::getIntersectPoint(m_PlanetPos, OwnerBulletPos, screenRT, screenRB);
-	}
-	if (Vec2::isSegmentIntersect(m_PlanetPos, OwnerBulletPos, screenLB, screenRB)){
-		resultPoint = Vec2::getIntersectPoint(m_PlanetPos, OwnerBulletPos, screenLB, screenRB);
-	}
-	if (Vec2::isSegmentIntersect(m_PlanetPos, OwnerBulletPos, screenLT, screenLB)){
-		resultPoint = Vec2::getIntersectPoint(m_PlanetPos, OwnerBulletPos, screenLT, screenLB);
-	}
-
+    resultPoint = getIntersect(screenLT, screenRT);
+    resultPoint = getIntersect(screenRT, screenRB);
+    resultPoint = getIntersect(screenLB, screenRB);
+    resultPoint = getIntersect(screenLT, screenLB);
+	
 	setPosition(resultPoint);
 }
 
@@ -100,8 +101,13 @@ void CItemBubble::Rotation(float dir, float delta)
 
 void CItemBubble::Execute(float delta)
 {
-	// 화면 안에 들어왔을때에는 visible false
-	if (m_OwnerBullet->IsAlive() && m_ScreenRect.containsPoint(m_OwnerBullet->getPosition()))
+    // Item삭제시 함께 삭제
+    if (!m_OwnerBullet->IsAlive()){		// 이것 이외의 OwnerBullet을 사용하는 곳이 있으면 안된다.. 사실상 이 코드도 이미 메모리 블럭으로 되돌아간 bullet의 Alive이다.
+        ReturnToMemoryBlock();			// OwnerBullet은 항상 Target보다 먼저 메모리 블럭으로 되돌아가기 때문이다.
+        return;
+    }
+    // 화면 안에 들어왔을때에는 visible false
+	if (m_ScreenRect.containsPoint(m_OwnerBullet->getPosition()))
 	{
 		this->setVisible(false);
 	}
@@ -111,7 +117,5 @@ void CItemBubble::Execute(float delta)
 		calculateIntersectPos();
 	}
 
-	// Item삭제시 함께 삭제
-	if (!m_OwnerBullet->IsAlive())		// 이것 이외의 OwnerBullet을 사용하는 곳이 있으면 안된다.. 사실상 이 코드도 이미 메모리 블럭으로 되돌아간 bullet의 Alive이다.
-		ReturnToMemoryBlock();			// OwnerBullet은 항상 Target보다 먼저 메모리 블럭으로 되돌아가기 때문이다.
+	
 }

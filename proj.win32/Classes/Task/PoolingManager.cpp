@@ -35,11 +35,16 @@ CPoolingManager* CPoolingManager::Instance()
 void CPoolingManager::CreateBulletList(size_t count, size_t size)
 {
     m_BulletSize = this->increaseBlockSizeIf64bit(size);
+    
+    CCLOG("%lu byte", m_BulletSize * count);
+    
     this->createList(m_BulletList, m_BulletSize, count);
     
     // 오브젝트 매니저 리스트에 추가
-    //for(auto block : m_BulletList)
-        //CObjectManager::Instance()->AddBullet(block);
+#if(USE_MEMORY_POOLING)
+    for(auto block : m_BulletList)
+        CObjectManager::Instance()->AddBullet(block);
+#endif
 }
 
 void CPoolingManager::CreateShooterList(size_t count, size_t size)
@@ -74,10 +79,10 @@ void* CPoolingManager::BulletNew()
         this->addBlockToList(m_BulletList, m_BulletSize);
         
         newBlock = m_BulletList.back();
-        
+#if(USE_MEMORY_POOLING)
         /* 오브젝트 매니저 리스트에 추가한다. */
-        //CObjectManager::Instance()->AddBullet(newBlock);
-        
+        CObjectManager::Instance()->AddBullet(newBlock);
+#endif
         this->changeFreeMemoryToUsed(newBlock, m_BulletSize);
     }
 

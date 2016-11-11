@@ -29,6 +29,9 @@ CStickBullet* CStickBullet::create(  sBULLET_PARAM bulletParam,
     
     if (pRet && pRet->init())
     {
+#if(!USE_MEMORY_POOLING)
+        pRet->autorelease();
+#endif
         return pRet;
     }
     else
@@ -113,26 +116,32 @@ void CStickBullet::ChangeToCoinOrStar()
 {
     float distance = m_TargetVec.distance(getPosition());
     
+    CBullet* test;
     if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star){
         float distance = m_TargetVec.distance(getPosition());
-        CGameScene::getGridWorld()->addChild(CPlayStar::create(
-                                                               sBULLET_PARAM(
-                                                                             25.f, distance, 0.f, true, false,
-                                                                             eCOIN_TYPE_none,
-                                                                             static_cast<eSTAR_TYPE>(5)),
-                                                               -getRotation(),
-                                                               m_fBulletSpeed,
-                                                               getPosition()));
+        test = CPlayStar::create(
+                                 sBULLET_PARAM(
+                                               25.f, distance, 0.f, true, false,
+                                               eCOIN_TYPE_none,
+                                               static_cast<eSTAR_TYPE>(5)),
+                                 -getRotation(),
+                                 m_fBulletSpeed,
+                                 getPosition());
+        CGameScene::getGridWorld()->addChild(test);
     }
     else{
-        CGameScene::getGridWorld()->addChild(CPlayCoin::create(
-                                                               sBULLET_PARAM(
-                                                                             25.f, distance, 0.f, true, false,
-                                                                             static_cast<eCOIN_TYPE>(5)),
-                                                               -getRotation(),
-                                                               m_fBulletSpeed,
-                                                               getPosition()));
+        test = CPlayCoin::create(
+                                 sBULLET_PARAM(
+                                               25.f, distance, 0.f, true, false,
+                                               static_cast<eCOIN_TYPE>(5)),
+                                 -getRotation(),
+                                 m_fBulletSpeed,
+                                 getPosition());
+        CGameScene::getGridWorld()->addChild(test);
     }
     
+#if(!USE_MEMORY_POOLING)
+    CObjectManager::Instance()->AddBullet(test);
+#endif
     ReturnToMemoryBlock();
 }

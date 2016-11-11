@@ -35,6 +35,9 @@ CPlayStar* CPlayStar::create(
 
 	if (pRet && pRet->init())
 	{
+#if(!USE_MEMORY_POOLING)
+        pRet->autorelease();
+#endif
 		return pRet;
 	}
 	else
@@ -90,8 +93,6 @@ void CPlayStar::CollisionWithPlanet()
 {
 	if (true == m_BulletParam._isFly)
 	{
-		ReturnToMemoryBlock();
-
 		m_pParticleCrash = CParticle_Explosion::create("coin_5.png");
 		if (m_pParticleCrash != nullptr){
 			m_pParticleCrash->retain();
@@ -103,12 +104,14 @@ void CPlayStar::CollisionWithPlanet()
 			m_pParticleCrash->setSpeedVar(50);
 			CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
 		}
+        
+        ReturnToMemoryBlock();
 	}
 }
 
 void CPlayStar::CollisionWithPlayer()
 {
-	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
+//	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	m_pMultipleScore->AddScore(m_fStarValue);
 }

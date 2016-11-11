@@ -8,6 +8,8 @@
 #include "../AI/States/StageStates.h"
 #include "../DataManager/StageDataManager.h"
 #include "../Scene/GameScene.h"
+#include <algorithm>
+
 CObjectManager::CObjectManager()
 	: m_fStageTime(0.f)
 	, m_IsGamePause(true)
@@ -40,11 +42,17 @@ void CObjectManager::Clear()
 	m_IsAbleRotation = false;
 }
 
+#if(USE_MEMORY_POOLING)
+void CObjectManager::AddBullet(void* bullet)
+{
+	m_BulletList.emplace_back(static_cast<CBullet*>(bullet));
+}
+#else
 void CObjectManager::AddBullet(CBullet* bullet)
 {
-	m_BulletList.emplace_back(bullet);
-	//m_BulletList.emplace_back(static_cast<CBullet*>(bullet));
+    m_BulletList.emplace_back(bullet);
 }
+#endif
 
 void CObjectManager::AddShooter(void* shooter)
 {
@@ -82,7 +90,9 @@ void CObjectManager::Auto_ReturnToMemoryBlock()
 
 void CObjectManager::RemoveAllObject()
 {
+#if(USE_MEMORY_POOLING)
 	RemoveAllBullet();
+#endif
 	RemoveAllShooter();
 	Clear();
 }
@@ -125,13 +135,14 @@ void CObjectManager::ExecuteAllObject(float delta)
 	m_fDelta = delta;
 	m_fStageTime += delta;
 	CreateShooterByTimer();
-	CItemManager::Instance()->Execute(delta);
-	//for (auto bullet : m_BulletList)
-	//{
-	//	if (bullet->IsAlive()) {
-	//		bullet->Execute(delta);
-	//	}
-	//}
+    CItemManager::Instance()->Execute(delta);
+    
+	for (auto bullet : m_BulletList)
+	{
+		if (bullet->IsAlive()) {
+			bullet->Execute(delta);
+		}
+	}
 
 	for (auto shooter : m_ShooterList)
 	{
@@ -139,11 +150,9 @@ void CObjectManager::ExecuteAllObject(float delta)
 			shooter->Execute(delta);
 		}
 	}
-
-
-	m_Planet->Execute();
-	m_Player->Execute(delta);
-
+    
+    m_Planet->Execute();
+    m_Player->Execute(delta);
 }
 
 void CObjectManager::Execute(float delta)
@@ -202,5 +211,19 @@ void CObjectManager::RotateAccelerationUpdate(float value){
             m_fRotateAcceleration += value;
         else
             m_fRotateAcceleration = ROTATE_ACCEL_MAX;
+    }
+}
+
+void CObjectManager::removeBulletFromList(CBullet* bullet)
+{
+    int idx = 0;
+    
+    for(auto it : m_BulletList)
+    {
+        if(it == bullet)
+        {
+            m_BulletList.erase(m_BulletList.begin() + idx);
+        }
+        idx++;
     }
 }

@@ -22,3 +22,15 @@ void* CShooter::operator new (size_t size, const std::nothrow_t)
 	// PoolingManager에서 메모리를 할당 받는다.
 	return CPoolingManager::Instance()->ShooterNew();
 }
+
+void CShooter::setRandomAngleIfRandom()
+{
+    // angle이 마이너스 이면 랜덤으로 사용한다.
+    if (m_ShooterParam._isAngleRandom){
+        if (random<int>(0, 100) < 80)
+            m_ShooterParam._fAngle = random<float>(0.f, 180.f);
+        else
+            m_ShooterParam._fAngle = random<float>(180.f, 360.f);
+        
+    }
+}

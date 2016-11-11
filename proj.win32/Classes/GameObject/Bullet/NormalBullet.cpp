@@ -34,7 +34,9 @@ CNormalBullet* CNormalBullet::create(
 
 	if (pRet && pRet->init())
 	{
-		pRet->autorelease();
+#if(!USE_MEMORY_POOLING)
+        pRet->autorelease();
+#endif
 		return pRet;
 	}
 	else
@@ -61,6 +63,7 @@ bool CNormalBullet::initVariable()
 	setRotation(-m_fAngle);
 
 	m_pTexture = Sprite::createWithSpriteFrameName(m_pPlayer->getCharacterParam()._normalBulletTextureName);
+    
 	if (m_pTexture != nullptr){
 		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		addChild(m_pTexture);
@@ -121,24 +124,33 @@ void CNormalBullet::ChangeToCoinOrStar()
 
 	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star){
 		float distance = m_TargetVec.distance(getPosition());
-		CGameScene::getGridWorld()->addChild(CPlayStar::create(
-			sBULLET_PARAM(
-			25.f, distance, 0.f, true, false,
-			eCOIN_TYPE_none,
-			static_cast<eSTAR_TYPE>(m_BulletParam._symbol - '0')),
-			-getRotation(),
-			m_fBulletSpeed,
-			getPosition()));
-	}
+        auto test = CPlayStar::create(
+                                      sBULLET_PARAM(
+                                                    25.f, distance, 0.f, true, false,
+                                                    eCOIN_TYPE_none,
+                                                    static_cast<eSTAR_TYPE>(m_BulletParam._symbol - '0')),
+                                      -getRotation(),
+                                      m_fBulletSpeed,
+                                      getPosition());
+        
+		CGameScene::getGridWorld()->addChild(test);
+#if(!USE_MEMORY_POOLING)
+        CObjectManager::Instance()->AddBullet(test);
+#endif	
+    }
 	else{
-		CGameScene::getGridWorld()->addChild(CPlayCoin::create(
-			sBULLET_PARAM(
-			25.f, distance, 0.f, true, false,
-			static_cast<eCOIN_TYPE>(m_BulletParam._symbol - '0')),
-			-getRotation(),
-			m_fBulletSpeed,
-			getPosition()));
-	}
+        auto test = CPlayCoin::create(
+                                      sBULLET_PARAM(
+                                                    25.f, distance, 0.f, true, false,
+                                                    static_cast<eCOIN_TYPE>(m_BulletParam._symbol - '0')),
+                                      -getRotation(),
+                                      m_fBulletSpeed,
+                                      getPosition());
+        CGameScene::getGridWorld()->addChild(test);
+#if(!USE_MEMORY_POOLING)
+        CObjectManager::Instance()->AddBullet(test);
+#endif	
+    }
 
 	ReturnToMemoryBlock();
 }

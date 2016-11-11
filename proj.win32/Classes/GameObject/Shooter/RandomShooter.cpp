@@ -32,14 +32,7 @@ void CRandomShooter::ShootOnce()
 
 	m_nBulletCountAtOnceRandom = random<int>(1, m_ShooterParam._nBulletCountAtOneShoot);
 
-	// angle이 마이너스 이면 랜덤으로 사용한다. 
-	if (m_ShooterParam._isAngleRandom){
-		if (random<int>(0, 100) < 80)
-			m_ShooterParam._fAngle = random<float>(0.f, 180.f);
-		else
-			m_ShooterParam._fAngle = random<float>(180.f, 360.f);
-		
-	}
+    this->setRandomAngleIfRandom();
 
 	char p = m_ShooterParam._randomShootSymbol;
 	sBULLET_PARAM bulletParam = CBulletDataManager::Instance()->getBulletInfo(p);
@@ -105,16 +98,19 @@ void CRandomShooter::ShootOnce()
 	}
 	else if (p == 'z')//랜덤 아이템
 	{
+        bulletParam._itemType = static_cast<eITEM_TYPE>(random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2));
+        bulletParam._isFly = random<int>(0, 1);
 		test = CPlayItem::create(
 			bulletParam,
 			m_ShooterParam._fAngle,
 			m_ShooterParam._fSpeed);
-		bulletParam._itemType = static_cast<eITEM_TYPE>(random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2));
-		bulletParam._isFly = random<int>(0, 1);
+
 		CGameScene::getGridWorld()->addChild(test);
 	}
+    
+#if(!USE_MEMORY_POOLING)
 	CObjectManager::Instance()->AddBullet(test);
-
+#endif
 }
 
 void CRandomShooter::Execute(float delta) {

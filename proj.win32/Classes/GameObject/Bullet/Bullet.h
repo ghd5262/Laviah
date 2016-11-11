@@ -106,11 +106,10 @@ public:
 	int getItemEffect(){ return m_nReceivingEffectItemTypes; }
 
 protected:
-	virtual void update(float delta) override;
-
-	//void* operator new (size_t size, const std::nothrow_t);
-	//void operator delete(void* ptr){};
-
+#if(USE_MEMORY_POOLING)
+	void* operator new (size_t size, const std::nothrow_t);
+	void operator delete(void* ptr){};
+#endif
 	CBullet(
 		sBULLET_PARAM bulletParam,
 		float angle,

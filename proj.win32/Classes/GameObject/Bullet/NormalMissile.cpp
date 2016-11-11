@@ -41,6 +41,9 @@ CNormalMissile* CNormalMissile::create(
 
 	if (pRet && pRet->init())
 	{
+#if(!USE_MEMORY_POOLING)
+        pRet->autorelease();
+#endif
 		return pRet;
 	}
 	else
@@ -103,17 +106,21 @@ bool CNormalMissile::initVariable()
 
 
 	this->scheduleOnce([&](float delta){
-		CGameScene::getGridWorld()->addChild(CTargetMark::create(
-			sBULLET_PARAM(
-			0.f, 0.f, 0.f,
-			false,									//FlyItem 여부
-			m_BulletParam._isAimingMissile),		//AimingMissile 여부
-			-getRotation(),							//초기 각도
-			this->getPosition(),					//미사일 좌표
-			m_fBulletSpeed,							//미사일 스피드
-			false,									//코인미사일여부
-			this), 100);
-
+        auto test = CTargetMark::create(
+                                        sBULLET_PARAM(
+                                                      0.f, 0.f, 0.f,
+                                                      false,									//FlyItem 여부
+                                                      m_BulletParam._isAimingMissile),		//AimingMissile 여부
+                                        -getRotation(),							//초기 각도
+                                        this->getPosition(),					//미사일 좌표
+                                        m_fBulletSpeed,							//미사일 스피드
+                                        false,									//코인미사일여부
+                                        this);
+        CGameScene::getGridWorld()->addChild(test, 100);
+        
+#if(!USE_MEMORY_POOLING)
+        CObjectManager::Instance()->AddBullet(test);
+#endif
 		m_bIsTargetMarkCreate = true;
 
 	}, tempTime, MakeString("createTargetMark_%d", distance * 100));
@@ -239,7 +246,7 @@ void CNormalMissile::ChangeToCoinOrStar()
 	float distance = m_TargetVec.distance(getPosition());
 	float speed = 600.f;
 
-	auto screwShooter = CPatternShooter::create(
+	CPatternShooter::create(
 		sSHOOTER_PARAM(
 		patternName
 		, 0.f
@@ -252,19 +259,20 @@ void CNormalMissile::ChangeToCoinOrStar()
 		, true
 		, true), distance);
 
-	CGameScene::getGridWorld()->addChild(CTargetMark::create(
-		sBULLET_PARAM(
-		0.f,
-		0.f,
-		0.f,
-		false,		// Fly Item 인지
-		false),		// AimingMissile 인지
-		-getRotation(),										//초기 각도
-		this->getPosition(),
-		speed
-	), 100);
-
-
+    auto test = CTargetMark::create(sBULLET_PARAM(
+                                                  0.f,
+                                                  0.f,
+                                                  0.f,
+                                                  false,		// Fly Item 인지
+                                                  false),		// AimingMissile 인지
+                                    -getRotation(),										//초기 각도
+                                    this->getPosition(),
+                                    speed);
+    CGameScene::getGridWorld()->addChild(test, 100);
+    
+#if(!USE_MEMORY_POOLING)
+    CObjectManager::Instance()->AddBullet(test);
+#endif
 	// 이부분 일단 작업하고 다음 리펙토링 때 autoReturnMemoryPool에 넣어야한다.
 	this->scheduleOnce([this](float delta){
 		ReturnToMemoryBlock();

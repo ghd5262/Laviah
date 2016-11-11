@@ -44,6 +44,9 @@ CTargetMark* CTargetMark::create(
 
 	if (pRet && pRet->init())
 	{
+#if(!USE_MEMORY_POOLING)
+        pRet->autorelease();
+#endif
 		return pRet;
 	}
 	else

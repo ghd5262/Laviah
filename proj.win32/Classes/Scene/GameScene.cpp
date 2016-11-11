@@ -122,8 +122,10 @@ bool CGameScene::initVariable()
 	CObjectManager::Instance()->setBackground(background);
 	CObjectManager::Instance()->setPlayer(player);
 	CObjectManager::Instance()->setPlanet(planet);
-//	CPoolingManager::Instance()->CreateBulletList(300, 900);
-	CPoolingManager::Instance()->CreateShooterList(30, 800);
+#if(USE_MEMORY_POOLING)
+	CPoolingManager::Instance()->CreateBulletList(300, 900);
+#endif
+    CPoolingManager::Instance()->CreateShooterList(30, 3000);
 
 	EventListenerKeyboard * pListener = EventListenerKeyboard::create();
 	pListener->onKeyPressed = [this](EventKeyboard::KeyCode code, Event* pEvent)

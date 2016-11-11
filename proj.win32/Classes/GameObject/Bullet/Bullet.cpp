@@ -28,8 +28,11 @@ CBullet::CBullet(
 	, m_fTime(0.f)
 	, m_pUIScore(nullptr)
 	, m_pMultipleScore(nullptr)
-	, m_FSM(nullptr)
 {
+#if(!USE_MEMORY_POOLING)
+    m_FSM = nullptr;
+#endif
+    
 	// bullet이 초기화 될때마다 매번 생성하지 않는다.
 	if (m_FSM == nullptr){
 		m_FSM = new CStateMachine<CBullet>(this);
@@ -38,7 +41,6 @@ CBullet::CBullet(
 		m_FSM->ChangeState(CBulletNormal::Instance());
 	}
     setCascadeOpacityEnabled(true);
-	this->scheduleUpdate();
 }
 
 CBullet::~CBullet(){
@@ -46,20 +48,14 @@ CBullet::~CBullet(){
 		delete m_FSM;
 }
 
-//test
-void CBullet::update(float delta)
-{
-	getFSM()->Execute(delta);
-}
-
-
+#if(USE_MEMORY_POOLING)
 /* poolingManager에서 FreeMemory Block을 하나 가져옴 */
-//void* CBullet::operator new(size_t size, const std::nothrow_t)
-//{
-//    // PoolingManager에서 메모리를 할당 받는다.
-//    return CPoolingManager::Instance()->BulletNew();
-//}
-
+void* CBullet::operator new(size_t size, const std::nothrow_t)
+{
+    // PoolingManager에서 메모리를 할당 받는다.
+    return CPoolingManager::Instance()->BulletNew();
+}
+#endif
 
 /* 오브젝트의 메모리를 FreeMemoryBlock으로 변환 == 오브젝트 삭제 */
 void CBullet::ReturnToMemoryBlock()
@@ -69,11 +65,17 @@ void CBullet::ReturnToMemoryBlock()
 	그로인해 실행 중 addChild시 같은 메모리를 여러번 addChild할 수 있다.
 	때문에 메모리 블럭으로 되돌릴때에는 부모관계를 제거하여야한다.
 	또 ReferenceCount를 1 낮춰야 하는 이유도 있다.*/
+#if(!USE_MEMORY_POOLING)
+    CObjectManager::Instance()->removeBulletFromList(this);
+    this->setAlive(false);
+    this->removeFromParent();
+#else
 	this->removeFromParent();
-	//this->removeAllChildren();
-	//this->setVisible(false);
-	//this->setAlive(false);	
-	//CPoolingManager::Instance()->Bullet_ReturnToFreeMemory(this);
+	this->removeAllChildren();
+	this->setVisible(false);
+	this->setAlive(false);
+	CPoolingManager::Instance()->Bullet_ReturnToFreeMemory(this);
+#endif
 }
 
 

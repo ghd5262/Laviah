@@ -38,38 +38,24 @@ void CItemManager::Clear()
 
 void CItemManager::StartItemTimer(eITEM_TYPE itemType)
 {
+    auto player = CObjectManager::Instance()->getPlayer();
+    auto setTimer = [=](eITEM_TYPE  type, float limitTime){
+        m_ItemTimersLimit[type] = m_ItemTimers[type] + limitTime;
+    };
+    
     switch (itemType) {
-        case eITEM_TYPE_health:
-            CObjectManager::Instance()->getPlayer()->GotSomeHealth(20);
+        case eITEM_TYPE_health: player->GotSomeHealth(20); break;
+        case eITEM_TYPE_shield: player->GotBarrierItem(); break;
+        case eITEM_TYPE_magnet: player->GotMagnetItem();
+            setTimer(itemType, player->getMagnetLimitTime());
             break;
             
-        case eITEM_TYPE_shield:
-            CObjectManager::Instance()->getPlayer()->GotBarrierItem();
-            break;
+        case eITEM_TYPE_coin: setTimer(itemType, player->getCoinLimitTime()); break;
+        case eITEM_TYPE_star: setTimer(itemType, player->getStarLimitTime()); break;
+        case eITEM_TYPE_giant: setTimer(itemType, player->getGiantLimitTime()); break;
+        case eITEM_TYPE_bonustime: setTimer(itemType, player->getBonusTimeLimitTime()); break;
             
-        case eITEM_TYPE_magnet:
-            CObjectManager::Instance()->getPlayer()->GotMagnetItem();
-			m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CObjectManager::Instance()->getPlayer()->getMagnetLimitTime();
-            break;
-            
-        case eITEM_TYPE_coin:
-			m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CObjectManager::Instance()->getPlayer()->getCoinLimitTime();
-            break;
-            
-        case eITEM_TYPE_star:
-			m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CObjectManager::Instance()->getPlayer()->getStarLimitTime();
-            break;
-            
-        case eITEM_TYPE_giant:
-			m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CObjectManager::Instance()->getPlayer()->getGiantLimitTime();
-            break;
-            
-        case eITEM_TYPE_bonustime:
-			m_ItemTimersLimit[itemType] = m_ItemTimers[itemType] + CObjectManager::Instance()->getPlayer()->getBonusTimeLimitTime();
-            break;
-            
-        default:
-            break;
+        default: break;
     }
     
     // 계산된 값이 0보다 작거나 같은 경우 CurrentItem에 연산하지 않는다.

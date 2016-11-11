@@ -3,7 +3,7 @@
 #include "../Common/HSHUtility.h"
 
 
-// °ÔÀÓ ¸ğµç ¿ÀºêÁ§Æ®ÀÇ ÃÖ»óÀ§ Å¬·¡½º
+// ê²Œì„ ëª¨ë“  ì˜¤ë¸Œì íŠ¸ì˜ ìµœìƒìœ„ í´ë˜ìŠ¤
 class CGameObject : public cocos2d::Node
 {
 public:
@@ -14,10 +14,10 @@ public:
 
 protected:
 	CGameObject() : m_fBoundingRadius(0.0f){}
-	virtual bool init() override { return true; }
+    virtual bool init() override { if(!cocos2d::Node::init())return false; return true; }
 	virtual bool initVariable(){ return true; }
 
-	void DrawDebugBinding();												// DEBUG¿ë BindingRound¸¦ ±×·ÁÁØ´Ù. 
+	void DrawDebugBinding();												// DEBUGìš© BindingRoundë¥¼ ê·¸ë ¤ì¤€ë‹¤. 
 	void DrawDebugRect(Point pos1, Point pos2, std::string text = "");
 	void DrawDebugLine(Point pos1, Point pos2, std::string text = "");
 
