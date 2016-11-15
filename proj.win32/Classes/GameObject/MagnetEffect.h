@@ -35,5 +35,5 @@ private:
     float m_limitTime;
     float m_Timer;
     float m_IntervalTimer;
-    ParticleSystemQuad* m_pParticle;
+    cocos2d::ParticleSystemQuad* m_pParticle;
 };

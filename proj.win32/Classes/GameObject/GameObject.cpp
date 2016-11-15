@@ -1,5 +1,7 @@
 #include "GameObject.h"
 
+using namespace cocos2d;
+
 void CGameObject::DrawDebugBinding()
 {
 	if (!DEBUG_DRAW)

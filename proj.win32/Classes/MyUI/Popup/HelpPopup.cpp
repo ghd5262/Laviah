@@ -5,6 +5,9 @@
 #include "ui/UIImageView.h"
 #include "ui/UIPageView.h"
 
+using namespace cocos2d;
+using namespace cocos2d::ui;
+
 CHelpPopup* CHelpPopup::create()
 {
 	CHelpPopup *pRet = new(std::nothrow) CHelpPopup();

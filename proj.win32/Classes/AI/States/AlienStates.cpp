@@ -1,6 +1,8 @@
 #include "AlienStates.h"
 #include "../../GameObject/Alien.h"
 
+using namespace cocos2d;
+
 CWanderingState* CWanderingState::Instance()
 {
 	static CWanderingState instance;

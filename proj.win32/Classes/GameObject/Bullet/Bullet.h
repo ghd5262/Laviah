@@ -122,12 +122,12 @@ protected:
 	CC_SYNTHESIZE(float, m_fBulletSpeed, BulletSpeed);
 	CC_SYNTHESIZE(float, m_fRotationSpeed, RotationSpeed);
 	CC_SYNTHESIZE(float, m_fTime, Time);
-	CC_SYNTHESIZE(Vec2, m_TargetVec, TargetVec);
-	CC_SYNTHESIZE(Vec2, m_RotationVec, RotationVec);
+	CC_SYNTHESIZE(cocos2d::Vec2, m_TargetVec, TargetVec);
+	CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
 	CC_SYNTHESIZE(CPlayer*, m_pPlayer, Player);
 	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
 	CC_SYNTHESIZE(CStateMachine<CBullet>*, m_FSM, FSM);
-	CC_SYNTHESIZE(Sprite*, m_pTexture, BulletTexture);
+	CC_SYNTHESIZE(cocos2d::Sprite*, m_pTexture, BulletTexture);
 	CC_SYNTHESIZE(bool, m_bIsPlayerGet, IsPlayerGet);
 	CC_SYNTHESIZE(sBULLET_PARAM, m_BulletParam, BulletParam);
 
@@ -136,18 +136,18 @@ protected:
 
 	// 목표지점으로 이동 후 커지면서 FadeOut 
 	void R_BezierWithScale(
-		Vec2 targetPos, 
-		Vec2 controlPoint_1, 
-		Vec2 controlPoint_2, 
+		cocos2d::Vec2 targetPos,
+		cocos2d::Vec2 controlPoint_1,
+		cocos2d::Vec2 controlPoint_2,
 		float time,
 		float scale);
 	
 
 	// 목표지점으로 이동 하면서 회전 
 	void R_BezierWithRotation(
-		Vec2 targetPos, 
-		Vec2 controlPoint_1, 
-		Vec2 controlPoint_2,
+		cocos2d::Vec2 targetPos,
+		cocos2d::Vec2 controlPoint_1,
+		cocos2d::Vec2 controlPoint_2,
 		float time);
 
 

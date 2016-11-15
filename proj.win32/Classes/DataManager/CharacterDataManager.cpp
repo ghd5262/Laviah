@@ -6,6 +6,8 @@
 #include "../json/json.h"
 #include "../SDKUtil/SDKUtil.h"
 
+using namespace cocos2d;
+
 CCharacterDataManager::CCharacterDataManager()
 {
 	Json::Value root;

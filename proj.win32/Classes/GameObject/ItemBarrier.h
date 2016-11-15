@@ -13,9 +13,9 @@ public:
         m_pTexture->setVisible(true);
 		m_bBarrierAlive = true;
 
-		auto action = Sequence::create(
-			ScaleTo::create(BARRIER_TIMER, BARRIER_SIZE),
-			CallFunc::create([&](){
+		auto action = cocos2d::Sequence::create(
+			cocos2d::ScaleTo::create(BARRIER_TIMER, BARRIER_SIZE),
+			cocos2d::CallFunc::create([&](){
 			FinishedBarrierItem();
 		}), nullptr);
 		m_pTexture->runAction(action);
@@ -43,6 +43,6 @@ private:
 private:
     float m_OriginBoundingRadius;
     std::string m_TextureName;
-    Sprite* m_pTexture;
+    cocos2d::Sprite* m_pTexture;
    // ParticleSystemQuad* m_pParticle;
 };

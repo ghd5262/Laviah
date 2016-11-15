@@ -4,8 +4,10 @@
 #include "../../DataManager/BulletDataManager.h"
 #include "../ObjectManager.h"
 
+using namespace cocos2d;
+
 CRandomShooter::CRandomShooter(sSHOOTER_PARAM param, float distance)
-	: CShooter(param, distance)
+	: CShooterLegacy(param, distance)
 {}
 
 CRandomShooter* CRandomShooter::create(sSHOOTER_PARAM param, float distance/* = -1.f */)				// Bullet 생성 간격

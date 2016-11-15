@@ -25,8 +25,8 @@ private:
 	virtual ~CUserCoinButton(){};
 
 private:
-	Label* m_CoinLabel;
-	Sprite* m_CoinIcon;
-	LayerColor* m_Back;
+	cocos2d::Label* m_CoinLabel;
+	cocos2d::Sprite* m_CoinIcon;
+	cocos2d::LayerColor* m_Back;
 	CUserDataManager* m_UserData;
 };

@@ -12,7 +12,7 @@ public:
 	virtual ~CMover() = 0;
 
 	bool IsHit(CGameObject* mover);
-	bool IsHit(Vec2 pos, float radius);
+	bool IsHit(cocos2d::Vec2 pos, float radius);
 
 	/* ReturnToMemoryBlock() - 각자 파생클래스는 반드시 재정의 해주어야한다.
 	 * 메모리 블럭으로 되돌리는 함수 이다. 

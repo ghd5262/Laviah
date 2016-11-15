@@ -9,6 +9,8 @@
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 
+using namespace cocos2d;
+
 CPlayStar::CPlayStar(sBULLET_PARAM bulletParam, float angle, Vec2 createPosition/* = Vec2(0, 0)*/)
 : CBullet(bulletParam, angle)
 , m_CreatePos(createPosition)

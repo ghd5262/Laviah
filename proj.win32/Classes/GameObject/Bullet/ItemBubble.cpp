@@ -3,6 +3,8 @@
 #include "../../MyUI/SpeechBubble.h"
 #include "../../Scene/GameScene.h"
 
+using namespace cocos2d;
+
 CItemBubble::CItemBubble(
 	sBULLET_PARAM bulletParam,
 	std::string bubbleIconName,

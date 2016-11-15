@@ -3,6 +3,8 @@
 #include "../GameObject/Shooter/ShooterHeaders.h"
 #include "../json/json.h"
 
+using namespace cocos2d;
+
 CBulletPatternDataManager::CBulletPatternDataManager()
 {
     Json::Value root;

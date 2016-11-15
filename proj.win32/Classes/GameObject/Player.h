@@ -60,7 +60,7 @@ public:
 	CStateMachine<CPlayer>* getFSM(){ return m_FSM.get(); }
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
 	cocos2d::Vec2 getOriginPos(){ return m_OriginPos; }
-    void setParticlePos(Vec2 pos);
+    void setParticlePos(cocos2d::Vec2 pos);
 
 protected:
 	virtual bool init() override;
@@ -95,10 +95,10 @@ private:
 private:
 	std::shared_ptr<CStateMachine<CPlayer>> m_FSM;
 	cocos2d::Vec2 m_OriginPos;
-	Sprite* m_pTexture;
-	ParticleSystemQuad* m_pParticle;
-	ParticleSystemQuad* m_pParticleDead;
-	ParticleSystemQuad* m_pParticleAlive;
+	cocos2d::Sprite* m_pTexture;
+	cocos2d::ParticleSystemQuad* m_pParticle;
+	cocos2d::ParticleSystemQuad* m_pParticleDead;
+	cocos2d::ParticleSystemQuad* m_pParticleAlive;
     CScoreUI* m_pUIRunScore;
     CMagnetEffect* m_MagnetEffect;
 	bool m_isRoatating;

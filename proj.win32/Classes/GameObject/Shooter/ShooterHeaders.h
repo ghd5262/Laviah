@@ -1,5 +1,5 @@
 #pragma once
-#include "Shooter.h"
+#include "ShooterLegacy.h"
 //#include "AimingMissileShooter.h"
 //#include "DoubleScrewShooter.h"
 //#include "RandomMissileShooter.h"

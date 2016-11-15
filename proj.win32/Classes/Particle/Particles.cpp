@@ -1,5 +1,6 @@
 #include "Particles.h"
 
+using namespace cocos2d;
 
 
 CParticle_Flame* CParticle_Flame::create(std::string textureName)

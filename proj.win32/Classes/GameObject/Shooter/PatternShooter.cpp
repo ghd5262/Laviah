@@ -6,8 +6,10 @@
 #include "../ObjectManager.h"
 #include "../Planet.h"
 
+using namespace cocos2d;
+
 CPatternShooter::CPatternShooter(sSHOOTER_PARAM param, float distance)
-: CShooter(param, distance)
+: CShooterLegacy(param, distance)
 , m_PatternHeightMax(0)
 , m_PatternCurrentHeight(0)
 , m_Angle(0.f)
@@ -40,8 +42,6 @@ bool CPatternShooter::init()
     m_Angle = m_ShooterParam._fAngle + 18.f;
     m_fIntervalTimer = m_ShooterParam._fInterval;
     
-    setPositionX((cos(CC_DEGREES_TO_RADIANS(m_Angle)) *  300) + CObjectManager::Instance()->getPlanet()->getPosition().x);
-    setPositionY((sin(CC_DEGREES_TO_RADIANS(m_Angle)) *  300) + CObjectManager::Instance()->getPlanet()->getPosition().y);
     setRotation(m_Angle);
     
     return true;

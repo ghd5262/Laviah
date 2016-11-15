@@ -1,5 +1,7 @@
 #include "TextField.h"
 
+using namespace cocos2d;
+
 CTextField* CTextField::create(const std::string& placeholder, const std::string& fontName, float fontSize, Vec2 pos)
 {
     CTextField *pRet = new(std::nothrow) CTextField(placeholder, fontName, fontSize, pos);

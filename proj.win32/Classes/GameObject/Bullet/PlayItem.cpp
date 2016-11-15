@@ -7,6 +7,8 @@
 #include "../../Scene/GameScene.h"
 #include "../ObjectManager.h"
 
+using namespace cocos2d;
+
 CPlayItem::CPlayItem(sBULLET_PARAM bulletParam, float angle)
 : CBullet(bulletParam, angle)
 {}

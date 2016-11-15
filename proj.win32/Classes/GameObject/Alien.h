@@ -42,11 +42,11 @@ protected:
 	CC_SYNTHESIZE(float, m_fActionTime, ActionTime);
 	CC_SYNTHESIZE(int, m_Direction, Direction);     // -1 : left     1 : right
 	CC_SYNTHESIZE(int, m_CurrentAction, CurrentAction);
-	CC_SYNTHESIZE(Vec2, m_RotationVec, RotationVec);
+	CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
 	CC_SYNTHESIZE(sALIEN_PARAM, m_AlienParam, AlienParam);
 	CC_SYNTHESIZE(CStateMachine<CAlien>*, m_FSM, FSM);
 	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
 
 private:
-	Sprite* m_Texture;
+	cocos2d::Sprite* m_Texture;
 };

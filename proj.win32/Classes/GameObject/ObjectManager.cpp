@@ -4,7 +4,7 @@
 #include "BackGround.h"
 #include "ItemManager.h"
 #include "Bullet/Bullet.h"
-#include "Shooter/Shooter.h"
+#include "Shooter/ShooterLegacy.h"
 #include "../AI/States/StageStates.h"
 #include "../DataManager/StageDataManager.h"
 #include "../Scene/GameScene.h"
@@ -57,7 +57,7 @@ void CObjectManager::AddBullet(CBullet* bullet)
 void CObjectManager::AddShooter(void* shooter)
 {
 	//m_ShooterList.emplace_back(shooter);
-	m_ShooterList.emplace_back(static_cast<CShooter*>(shooter));
+	m_ShooterList.emplace_back(static_cast<CShooterLegacy*>(shooter));
 }
 
 

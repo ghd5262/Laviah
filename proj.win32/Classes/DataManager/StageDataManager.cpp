@@ -7,6 +7,8 @@
 //#include "../../cocos2d/external/json/filestream.h"
 #include "../json/json.h"
 
+using namespace cocos2d;
+
 CStageDataManager::CStageDataManager()
 {
     Json::Value root;

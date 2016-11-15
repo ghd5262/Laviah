@@ -2,6 +2,8 @@
 #include "../Common/AudioManager.h"
 #include "../Scene/MenuScene.h"
 
+using namespace cocos2d;
+
 static const std::string SOUND_PATH = "sounds/";
 
 CMyButton::CMyButton()

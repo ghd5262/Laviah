@@ -31,6 +31,6 @@ private:
 private:
 	cocos2d::Vec2 m_OriginPos;
 	std::string m_TextureName;
-	Sprite* m_pTexture;
+	cocos2d::Sprite* m_pTexture;
 	float m_fElapsed;
 };

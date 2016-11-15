@@ -10,6 +10,8 @@
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/MultipleScore.h"
 
+using namespace cocos2d;
+
 CBullet::CBullet(sBULLET_PARAM bulletParam, float angle)
 	: CMover(bulletParam._fBouningRadius)
 	, m_BulletParam(bulletParam)

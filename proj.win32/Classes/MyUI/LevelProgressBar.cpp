@@ -1,5 +1,7 @@
 #include "LevelProgressBar.h"
 
+using namespace cocos2d;
+
 CLevelProgressBar* CLevelProgressBar::create(Size barSize, int maxLevel, int curLevel/* = 0 */)
 {
 	CLevelProgressBar *pRet = new(std::nothrow) CLevelProgressBar(barSize, maxLevel, curLevel);

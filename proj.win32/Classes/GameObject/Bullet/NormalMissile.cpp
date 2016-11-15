@@ -16,6 +16,8 @@
 #include "../../MyUI/MultipleScore.h"
 #include "../../DataManager/UserDataManager.h"
 
+using namespace cocos2d;
+
 CNormalMissile::CNormalMissile(sBULLET_PARAM bulletParam, float angle)
 : CBullet(bulletParam, angle)
 , m_bIsTargetMarkCreate(false)

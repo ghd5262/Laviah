@@ -34,8 +34,8 @@ private:
 	CBullet* m_OwnerBullet;			// owner missile
 	CSpeechBubble* m_Bubble;
 	std::string m_BubbleIconName;
-	Rect m_ScreenRect;
-	Vec2 m_IntersectionPos;
-	Vec2 m_PlanetPos;
+	cocos2d::Rect m_ScreenRect;
+	cocos2d::Vec2 m_IntersectionPos;
+	cocos2d::Vec2 m_PlanetPos;
 	
 };

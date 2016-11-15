@@ -8,6 +8,9 @@
 #include "ui/UIPageView.h"
 #include "../../DataManager/UserDataManager.h"
 
+using namespace cocos2d;
+using namespace cocos2d::ui;
+
 CGoogleCloudTestPopup* CGoogleCloudTestPopup::create()
 {
     CGoogleCloudTestPopup *pRet = new(std::nothrow) CGoogleCloudTestPopup();

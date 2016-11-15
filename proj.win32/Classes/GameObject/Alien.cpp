@@ -4,6 +4,7 @@
 #include "../Task/PoolingManager.h"
 #include "../AI/States/AlienStates.h"
 
+using namespace cocos2d;
 
 CAlien::CAlien(sALIEN_PARAM alienParam, float walkingSpeed, float distance)
 	: CMover(0.0f)

@@ -3,6 +3,8 @@
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/ObjectManager.h"
 
+using namespace cocos2d;
+
 CPlayerNormal* CPlayerNormal::Instance()
 {
 	static CPlayerNormal instance;

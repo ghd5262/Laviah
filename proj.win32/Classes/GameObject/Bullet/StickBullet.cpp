@@ -10,6 +10,10 @@
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
 #include "../../MyUI/MultipleScore.h"
+
+using namespace cocos2d;
+
+
 CStickBullet::CStickBullet(sBULLET_PARAM bulletParam, float angle)
 : CBullet(bulletParam, angle)
 , m_HitWithPlanet(false)

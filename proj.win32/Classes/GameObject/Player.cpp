@@ -11,6 +11,8 @@
 #include "../MyUI/UIManager.h"
 #include "../DataManager/UserDataManager.h"
 
+using namespace cocos2d;
+
 CPlayer* CPlayer::create(
 	sCHARACTER_PARAM characterParam,
 	float boundingRadius,

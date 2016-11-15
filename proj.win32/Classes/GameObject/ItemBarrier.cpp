@@ -1,6 +1,7 @@
 #include "ItemBarrier.h"
 #include "../Particle/Particles.h"
 
+using namespace cocos2d;
 
 CItemBarrier* CItemBarrier::create(std::string textureName, float boundingRadius)
 {

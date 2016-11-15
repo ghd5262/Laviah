@@ -27,7 +27,7 @@ private:
 
 private:
 	CScoreUI* m_StarScore;
-	Label* m_MultipleNumberLabel;
+	cocos2d::Label* m_MultipleNumberLabel;
 	CPlayer* m_Player;
 	unsigned m_MultipleNumber;		//현재 스코어 배수( MULTIPLE_TIME_LIMIT 동안 유지된 후 1로 변경됨 )
 	unsigned m_SavedScore;			//현재까지 저장된 점수( MULTIPLE_TIME_LIMIT 동안 유지된 후 0으로 변경됨 )

@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "ObjectManager.h"
 
+using namespace cocos2d;
+
 CPlanet* CPlanet::create(
 	std::string textureName,
 	float boundingRadius,

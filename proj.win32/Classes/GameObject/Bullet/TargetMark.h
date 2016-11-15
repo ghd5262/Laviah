@@ -10,7 +10,7 @@ public:
 	static CTargetMark* create(
 		sBULLET_PARAM bulletParam,
 		float angle,				//TargetMark 초기 각도 
-		Vec2 missilePos,			//Missile 현재 좌표
+		cocos2d::Vec2 missilePos,			//Missile 현재 좌표
 		float missileSpeed,			//Missile 속력
 		bool isMissileChangedToCoin = true,
 		CBullet* owner = nullptr);	//owner missile (nullptr 일 때에는 도착시간으로 삭제한다.)
@@ -24,7 +24,7 @@ private:
 	CTargetMark(
 		sBULLET_PARAM bulletParam,
 		float angle,
-		Vec2 missilePos,
+		cocos2d::Vec2 missilePos,
 		float missileSpeed,
 		bool isMissileChangedToCoin,
 		CBullet* owner);
@@ -32,13 +32,13 @@ private:
 	virtual ~CTargetMark();
 
 private:
-	Vector<SpriteFrame*> m_AnimationFrames;
-	Sprite* m_SpriteFrame;
+	cocos2d::Vector<cocos2d::SpriteFrame*> m_AnimationFrames;
+	cocos2d::Sprite* m_SpriteFrame;
 	CBullet* m_OwnerBullet;			// owner missile
 	float m_fArriveTime;			// 미사일 도착시간 =  target
-	Rect m_ScreenRect;
+	cocos2d::Rect m_ScreenRect;
 	bool m_bIsMissileChangedToCoin;
 	
 	//파티클
-	ParticleSystemQuad* m_pParticle;
+	cocos2d::ParticleSystemQuad* m_pParticle;
 };

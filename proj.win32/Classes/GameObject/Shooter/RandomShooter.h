@@ -1,8 +1,8 @@
 #pragma once
-#include "Shooter.h"
+#include "ShooterLegacy.h"
 
 /* RandomShooter : 360도 사방에서 랜덤으로 총알을 쏘는 패턴*/
-class CRandomShooter : public CShooter {
+class CRandomShooter : public CShooterLegacy {
 
 public:
 	/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.

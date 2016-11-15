@@ -5,6 +5,8 @@
 //#include "../../cocos2d/external/json/filestream.h"
 #include "../json/json.h"
 
+using namespace cocos2d;
+
 CWorkshopItemDataManager::CWorkshopItemDataManager()
 {
 	Json::Value root;

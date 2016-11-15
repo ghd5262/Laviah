@@ -26,11 +26,11 @@ private:
 	CC_SYNTHESIZE(bool, m_bIsTargetMarkCreate, IsTargetMarkCreate);
 
 private:
-	Rect m_ScreenRect;
+	cocos2d::Rect m_ScreenRect;
 
 	//불꽃 파티클
-	ParticleSystemQuad* m_pParticleFlame;
+	cocos2d::ParticleSystemQuad* m_pParticleFlame;
 
 	//충돌 파티클
-	ParticleSystemQuad* m_pParticleCrash;
+	cocos2d::ParticleSystemQuad* m_pParticleCrash;
 };

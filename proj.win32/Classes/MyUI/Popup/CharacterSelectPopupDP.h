@@ -4,7 +4,7 @@
 
 USING_NS_CC;
 
-class CCharacterSelectPopupDP : public Widget
+class CCharacterSelectPopupDP : public cocos2d::ui::Widget
 {
 public:
 	static CCharacterSelectPopupDP* create(const sCHARACTER_PARAM character);

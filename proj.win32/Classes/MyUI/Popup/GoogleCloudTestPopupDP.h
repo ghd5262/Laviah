@@ -4,7 +4,7 @@
 
 USING_NS_CC;
 
-class CGoogleCloudTestPopupDP : public Widget
+class CGoogleCloudTestPopupDP : public cocos2d::ui::Widget
 {
 public:
     static CGoogleCloudTestPopupDP* create(std::string key);

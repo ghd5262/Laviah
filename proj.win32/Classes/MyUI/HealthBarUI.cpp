@@ -1,5 +1,6 @@
 #include "HealthBarUI.h"
 
+using namespace cocos2d;
 
 CHealthBarUI* CHealthBarUI::create(HealthCalculatorFunc healthCalFunc)
 {

@@ -33,12 +33,12 @@ protected:
 	CC_SYNTHESIZE(float, m_fActionTime, ActionTime);
 	CC_SYNTHESIZE(int, m_Direction, Direction);     // -1 : left     1 : right
 	CC_SYNTHESIZE(int, m_CurrentAction, CurrentAction);
-	CC_SYNTHESIZE(Vec2, m_RotationVec, RotationVec);
+	CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
 	CC_SYNTHESIZE(sSPACESHIP_PARAM, m_SpaceshipParam, SpaceshipParam);
 	CC_SYNTHESIZE(CStateMachine<CSpaceShip>*, m_FSM, FSM);
 	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
 
 private:
 	//ºÒ²É ÆÄÆ¼Å¬
-	ParticleSystemQuad* m_pParticleFlame;
+	cocos2d::ParticleSystemQuad* m_pParticleFlame;
 };

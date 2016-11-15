@@ -7,7 +7,7 @@ public:
 	static CScoreUI* create(std::string fontName, size_t fontSize, std::string valueImgName = "");
 
 	virtual void Execute(float delta = 0.f) override;
-	void setLabelAnchor(Vec2 point);
+	void setLabelAnchor(cocos2d::Vec2 point);
 	void addValue(int value);
 	void setValue(int value);
 
@@ -35,8 +35,8 @@ private:
 private:
 	std::string m_FontName;
 	std::string m_ValueImgName;
-	Label* m_ValueLabel;	
-	Sprite* m_ValueImg;// 숫자 오른쪽에 보여줄 이미지 없다면 보여주지 않는다.
+	cocos2d::Label* m_ValueLabel;
+	cocos2d::Sprite* m_ValueImg;// 숫자 오른쪽에 보여줄 이미지 없다면 보여주지 않는다.
 	size_t m_FontSize;
 	std::string m_ValueString;
 };

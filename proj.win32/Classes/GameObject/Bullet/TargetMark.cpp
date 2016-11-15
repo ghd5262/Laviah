@@ -4,6 +4,8 @@
 #include "../Player.h"
 #include "../../Particle/Particles.h"
 
+using namespace cocos2d;
+
 CTargetMark::CTargetMark(sBULLET_PARAM bulletParam,
                          float angle,                       //TargetMark 초기 각도
                          Vec2 missilePos,                   //Missile 현재 좌표

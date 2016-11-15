@@ -1,5 +1,7 @@
 #include "ScoreUI.h"
 
+using namespace cocos2d;
+
 CScoreUI* CScoreUI::create(std::string fontName, size_t fontSize, std::string valueImgName/* = "" */)
 {
 	CScoreUI *pRet = new(std::nothrow) CScoreUI(fontName, fontSize, valueImgName);

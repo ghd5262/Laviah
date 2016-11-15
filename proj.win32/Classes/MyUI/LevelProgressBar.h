@@ -5,7 +5,7 @@
 class CLevelProgressBar : public CGameObject
 {
 public:
-	static CLevelProgressBar* create(Size barSize, int maxLevel, int curLevel = 0);
+	static CLevelProgressBar* create(cocos2d::Size barSize, int maxLevel, int curLevel = 0);
 	void UpdateProgress();
 
 protected:
@@ -13,7 +13,7 @@ protected:
 	virtual bool initVariable() override;
 
 private:
-	CLevelProgressBar(Size barSize, int maxLevel, int curLevel)
+	CLevelProgressBar(cocos2d::Size barSize, int maxLevel, int curLevel)
 		: m_BarSize(barSize)
 		, m_MaxLevel(maxLevel)
 		, m_CurrentLevel(curLevel){}
@@ -23,8 +23,8 @@ private:
 	CC_SYNTHESIZE(int, m_CurrentLevel, CurrentLevel);
 
 private:
-	std::vector<LayerColor*> m_LevelBarList;
-	Size m_BarSize;
+	std::vector<cocos2d::LayerColor*> m_LevelBarList;
+	cocos2d::Size m_BarSize;
 	int m_MaxLevel;
 };
 

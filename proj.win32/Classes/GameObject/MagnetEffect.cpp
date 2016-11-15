@@ -1,6 +1,8 @@
 #include "MagnetEffect.h"
 #include "../Particle/Particles.h"
 
+using namespace cocos2d;
+
 CMagnetEffect* CMagnetEffect::create(std::string textureName, float boundingRadius, float limitTime)
 {
     CMagnetEffect *pRet = new(std::nothrow) CMagnetEffect(textureName, boundingRadius, limitTime);

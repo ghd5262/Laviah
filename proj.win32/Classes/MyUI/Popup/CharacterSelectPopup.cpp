@@ -9,6 +9,9 @@
 #include "../../GameObject/Planet.h"
 #include "ui/UIListView.h"
 
+using namespace cocos2d;
+using namespace cocos2d::ui;
+
 CCharacterSelectPopup* CCharacterSelectPopup::create()
 {
 	CCharacterSelectPopup *pRet = new(std::nothrow) CCharacterSelectPopup();

@@ -1,6 +1,8 @@
 #include "Mover.h"
 #include "../Task/PoolingManager.h"
 
+using namespace cocos2d;
+
 CMover::CMover(float boundingRadius)
 	: CGameObject(boundingRadius)
 {

@@ -39,6 +39,6 @@ private:
 
 	CBonusTimeUI* m_pUIBonusTime;
 	CPlayer* m_Player;
-	Vec2 m_TargetPos;
+	cocos2d::Vec2 m_TargetPos;
 	eLETTER m_LetterNum;
 };

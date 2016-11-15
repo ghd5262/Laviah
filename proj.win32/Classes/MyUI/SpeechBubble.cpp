@@ -1,5 +1,7 @@
 #include "SpeechBubble.h"
 
+using namespace cocos2d;
+
 CSpeechBubble* CSpeechBubble::create(std::string bubbleTextureName, std::string iconTextureName)
 {
 	CSpeechBubble *pRet = new(std::nothrow) CSpeechBubble(bubbleTextureName, iconTextureName);

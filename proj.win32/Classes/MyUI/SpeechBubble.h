@@ -39,9 +39,9 @@ private:
 	std::string m_IconTextureName;
 	std::string m_BubbleMent;
 	std::string m_FontPath;
-	Sprite* m_BubbleTexture;
-	Sprite* m_IconTexture;
-	Label* m_BubbleMentLabel;
+	cocos2d::Sprite* m_BubbleTexture;
+	cocos2d::Sprite* m_IconTexture;
+	cocos2d::Label* m_BubbleMentLabel;
 	size_t m_FontSize;
 };
 

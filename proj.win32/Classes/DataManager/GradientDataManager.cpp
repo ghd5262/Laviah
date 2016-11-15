@@ -2,6 +2,8 @@
 #include "../Common/HSHUtility.h"
 #include "../json/json.h"
 
+using namespace cocos2d;
+
 CGradientDataManager::CGradientDataManager()
 {
     Json::Value root;

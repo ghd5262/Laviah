@@ -4,13 +4,13 @@
 
 struct sGRADIENT_PARAM{
     int _idx;
-    Color3B _leftColor;
-    Color3B _rightColor;
+    cocos2d::Color3B _leftColor;
+    cocos2d::Color3B _rightColor;
     
     sGRADIENT_PARAM()
     : _idx(0)
-    , _leftColor(Color3B(0, 0, 0))
-    , _rightColor(Color3B(0, 0, 0)){}
+    , _leftColor(cocos2d::Color3B(0, 0, 0))
+    , _rightColor(cocos2d::Color3B(0, 0, 0)){}
 };
 
 class CGradientDataManager

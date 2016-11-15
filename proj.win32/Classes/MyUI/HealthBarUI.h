@@ -42,8 +42,8 @@ private:
 
 private:
 	HealthCalculatorFunc m_HealthCalculatorFunction;
-	ProgressTimer* m_HealthBar;
-	Sprite* m_HealthBarBG;
-	Sprite* m_HealthBarImg;
+	cocos2d::ProgressTimer* m_HealthBar;
+	cocos2d::Sprite* m_HealthBarBG;
+	cocos2d::Sprite* m_HealthBarImg;
 };
 

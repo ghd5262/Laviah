@@ -1,5 +1,5 @@
 #pragma once
-#include "Shooter.h"
+#include "ShooterLegacy.h"
 
 struct sPATTERN_SHOOTER_PARAM
 {
@@ -13,10 +13,10 @@ struct sPATTERN_SHOOTER_PARAM
 };
 
 /* RandomShooter : 360도 사방에서 랜덤으로 총알을 쏘는 패턴*/
-class CPatternShooter : public CShooter {
+class CPatternShooter : public CShooterLegacy {
 
 public:
-    CPatternShooter() : CShooter(sSHOOTER_PARAM(), 0){};
+    CPatternShooter() : CShooterLegacy(sSHOOTER_PARAM(), 0){};
     virtual ~CPatternShooter(){}
     
 	/* create를 호출하면 operator new가 호출되면서 CObjectManager에서 메모리를 받는다.

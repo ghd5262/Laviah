@@ -24,5 +24,5 @@ private:
 
 private:
 	//충돌 파티클
-	ParticleSystemQuad* m_pParticleCrash;
+	cocos2d::ParticleSystemQuad* m_pParticleCrash;
 };

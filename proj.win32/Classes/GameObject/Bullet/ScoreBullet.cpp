@@ -4,6 +4,8 @@
 #include "../Player.h"
 #include "../../Particle/Particles.h"
 
+using namespace cocos2d;
+
 CScoreBullet::CScoreBullet(int score/* = 0 */)
 : CBullet(sBULLET_PARAM(0, 0, 0), 0.0f)
 , m_nScore(score)

@@ -18,8 +18,8 @@ protected:
 	virtual bool initVariable(){ return true; }
 
 	void DrawDebugBinding();												// DEBUG용 BindingRound를 그려준다. 
-	void DrawDebugRect(Point pos1, Point pos2, std::string text = "");
-	void DrawDebugLine(Point pos1, Point pos2, std::string text = "");
+	void DrawDebugRect(cocos2d::Point pos1, cocos2d::Point pos2, std::string text = "");
+	void DrawDebugLine(cocos2d::Point pos1, cocos2d::Point pos2, std::string text = "");
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fBoundingRadius, BRadius);

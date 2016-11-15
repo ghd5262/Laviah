@@ -2,7 +2,7 @@
 #include "../Common/HSHUtility.h"
 #include "2d/CCParticleSystemQuad.h"
 
-class CParticle_Flame : public ParticleSystemQuad
+class CParticle_Flame : public cocos2d::ParticleSystemQuad
 {
 public:
 	static CParticle_Flame* create(std::string textureName);
@@ -23,7 +23,7 @@ private:
 
 
 
-class CParticle_Explosion : public ParticleSystemQuad
+class CParticle_Explosion : public cocos2d::ParticleSystemQuad
 {
 public:
 	static CParticle_Explosion* create(std::string textureName);
@@ -44,7 +44,7 @@ private:
 
 
 
-class CParticle_Explosion_2 : public ParticleSystemQuad
+class CParticle_Explosion_2 : public cocos2d::ParticleSystemQuad
 {
 public:
 	static CParticle_Explosion_2* create(std::string textureName);
@@ -66,7 +66,7 @@ private:
 
 
 
-class CParticle_Line : public ParticleSystemQuad
+class CParticle_Line : public cocos2d::ParticleSystemQuad
 {
 public:
 	static CParticle_Line* create(std::string textureName);
@@ -87,7 +87,7 @@ private:
 
 
 
-class CParticle_BackGround : public ParticleSystemQuad
+class CParticle_BackGround : public cocos2d::ParticleSystemQuad
 {
 public:
     static CParticle_BackGround* create(std::string textureName);

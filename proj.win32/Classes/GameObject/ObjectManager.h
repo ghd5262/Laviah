@@ -12,7 +12,7 @@
 *
 *----------------------------------------------------------------------------------------*/
 
-class CShooter;
+class CShooterLegacy;
 class CBullet;
 class CPlanet;
 class CPlayer;
@@ -79,7 +79,7 @@ private:
 
 private:
 	std::vector<CBullet*> m_BulletList;
-	std::vector<CShooter*> m_ShooterList;
+	std::vector<CShooterLegacy*> m_ShooterList;
 	const std::vector<sSHOOTER_PARAM>* m_StageList;
 	int m_CurrentShooterIdx;
     float m_fRotateAcceleration;

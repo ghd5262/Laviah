@@ -12,6 +12,8 @@
 #include "../../MyUI/UIManager.h"
 #include "../../MyUI/MultipleScore.h"
 
+using namespace cocos2d;
+
 CNormalBullet::CNormalBullet(sBULLET_PARAM bulletParam, float angle)
 : CBullet(bulletParam, angle)
 , m_pParticleCrash(nullptr)

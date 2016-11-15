@@ -1,5 +1,8 @@
 #include "BonusTimeUI.h"
 #include "../GameObject/ItemManager.h"
+
+using namespace cocos2d;
+
 CLetter* CLetter::create(
 	std::string normalTextureName,
 	std::string bonusTextureName,

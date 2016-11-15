@@ -4,6 +4,8 @@
 #include "../AI/States/SpaceShipStates.h"
 #include "../Particle/Particles.h"
 
+using namespace cocos2d;
+
 CSpaceShip::CSpaceShip(sSPACESHIP_PARAM SpaceShipParam, float flySpeed, float distance)
 	: CGameObject(0.f)
 	, m_SpaceshipParam(SpaceShipParam)

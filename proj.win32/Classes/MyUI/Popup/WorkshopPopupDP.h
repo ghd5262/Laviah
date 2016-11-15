@@ -5,7 +5,7 @@ USING_NS_CC;
 
 class CMyButton;
 class CLevelProgressBar;
-class CWorkshopPopupDP : public Widget
+class CWorkshopPopupDP : public cocos2d::ui::Widget
 {
 public:
 	static CWorkshopPopupDP* create(sWORKSHOPITEM_PARAM workshopItem);

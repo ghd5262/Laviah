@@ -8,6 +8,8 @@
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 
+using namespace cocos2d;
+
 CPlayCoin::CPlayCoin(sBULLET_PARAM bulletParam, float angle, Vec2 createPosition)
 : CBullet(bulletParam, angle)
 , m_CreatePos(createPosition)

@@ -27,7 +27,7 @@ enum eCLICKED_ANIMATION{
 	TEXTURE = 0x0010
 };
 
-class CMyButton : public Widget
+class CMyButton : public cocos2d::ui::Widget
 {
 	typedef std::function<void(Node*)> NODE_CALLBACK;
 public:
@@ -35,20 +35,20 @@ public:
     
 	CMyButton* addEventListener(const NODE_CALLBACK &callback, eMYBUTTON_STATE state = eMYBUTTON_STATE::END);
 	CMyButton* setClickedAnimation(const NODE_CALLBACK &callback);
-    CMyButton* setLayer(LayerColor* layer);
+    CMyButton* setLayer(cocos2d::LayerColor* layer);
     CMyButton* setButtonNormalImage(std::string imgName);
     CMyButton* setButtonClickedImage(std::string imgName);
 	CMyButton* setDefaultClickedAnimation(int animationInfo);
 	CMyButton* setClickSound(std::string began, std::string ended = "");
 	CMyButton* setTouchEnable(bool able);
     CMyButton* setContents(std::string contents);
-    CMyButton* setFont(Color3B fontColor, int fontSize);
-    CMyButton* setButtonPosition(Vec2 position);
-    CMyButton* setButtonAnchorPoint(Vec2 anchorPoint);
-    CMyButton* show(Node* parent, int zOrder = 0);
+    CMyButton* setFont(cocos2d::Color3B fontColor, int fontSize);
+    CMyButton* setButtonPosition(cocos2d::Vec2 position);
+    CMyButton* setButtonAnchorPoint(cocos2d::Vec2 anchorPoint);
+    CMyButton* show(cocos2d::Node* parent, int zOrder = 0);
     
     void changeContents(std::string contents);
-    void changeFontColor(Color3B fontColor);
+    void changeFontColor(cocos2d::Color3B fontColor);
  
 	/* 버튼이 가지는 Execute callback함수 호출 */
 	virtual void update(float delta = 0.f) override;
@@ -89,18 +89,18 @@ private:
 	std::vector<NODE_CALLBACK> m_ExecuteFunctionList;
 	std::vector<NODE_CALLBACK> m_EndFunctionList;
 	NODE_CALLBACK m_ClickedAnimationCallBack;
-    LayerColor* m_Layer;
-	Sprite* m_ButtonImage;
-    Label* m_ContentsLabel;
+    cocos2d::LayerColor* m_Layer;
+	cocos2d::Sprite* m_ButtonImage;
+    cocos2d::Label* m_ContentsLabel;
     std::string m_ButtonNormalImage;
     std::string m_ButtonClickedImage;
     std::string m_Contents;
 	std::string m_ClickBeganSound;
 	std::string m_ClickEndedSound;
-    Color3B m_FontColor;
+    cocos2d::Color3B m_FontColor;
     int m_FontSize;
-    Vec2 m_Position;
-    Vec2 m_AnchorPoint;
+    cocos2d::Vec2 m_Position;
+    cocos2d::Vec2 m_AnchorPoint;
 	bool m_IsSelect;	//선택되었는지 (선택중이라도 true)
 	bool m_Touchable;	//버튼을 누를수 없는지 여부
 	int m_ClickedAnimationInfo;

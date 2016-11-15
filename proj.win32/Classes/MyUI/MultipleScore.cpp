@@ -5,6 +5,7 @@
 #include "../GameObject/Player.h"
 #include "../GameObject/ObjectManager.h"
 
+using namespace cocos2d;
 
 CMultipleScore::CMultipleScore() 
 	: m_StarScore(nullptr)

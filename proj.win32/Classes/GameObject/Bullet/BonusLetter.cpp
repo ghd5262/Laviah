@@ -6,6 +6,8 @@
 #include "../../MyUI/BonusTimeUI.h"
 #include "../../MyUI/UIManager.h"
 
+using namespace cocos2d;
+
 CBonusLetter::CBonusLetter(
 	sBULLET_PARAM bulletParam,
 	float angle)

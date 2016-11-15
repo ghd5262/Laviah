@@ -24,6 +24,6 @@ private:
 	virtual ~CPlayItem(){};
 
 private:
-	Vec2 m_TargetPos;		//player가 먹으면 플레이어 위치로 날아감
+	cocos2d::Vec2 m_TargetPos;		//player가 먹으면 플레이어 위치로 날아감
 };
 

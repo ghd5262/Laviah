@@ -21,5 +21,5 @@ private:
 private:
 	int m_nScore;
 	std::string m_strScore;
-	Label* m_labelScore;
+	cocos2d::Label* m_labelScore;
 };
