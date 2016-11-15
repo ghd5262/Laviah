@@ -31,7 +31,7 @@ bool CPausePopup::init()
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	auto pauseBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
+	auto pauseBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
 	if (pauseBG != nullptr){
 		pauseBG->setIgnoreAnchorPointForPosition(false);
 		pauseBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

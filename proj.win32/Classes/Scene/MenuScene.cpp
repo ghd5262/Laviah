@@ -107,7 +107,7 @@ bool CMenuScene::initVariable()
 	//       
 	//        for(int i = 0 ;i < 10 ;i++ ){
 	//            auto alien = CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200);
-	//            auto button = CMyButton::createWithLayerColor(Size(80, 80), Color4B(255, 255, 255, 0), "", 0, Color3B::WHITE, eMYBUTTON_STATE::END, [alien](){
+	//            auto button = CMyButton::createWithLayerColor(Size(80, 80), COLOR::TRANSPARENT, "", 0, Color3B::WHITE, eMYBUTTON_STATE::END, [alien](){
 	//                
 	//            });
 	//            alien->addChild(button);
@@ -120,7 +120,7 @@ bool CMenuScene::initVariable()
 	return true;
 }
 
-static const Color4B COLOR_BUTTON_RED = Color4B(255, 48, 48, 255 * 0.8f);
+static const Color4B COLOR_BUTTON_RED = COLOR::BRIGHTRED_ALPHA;
 
 void CMenuScene::InitMenuSceneUI()
 {

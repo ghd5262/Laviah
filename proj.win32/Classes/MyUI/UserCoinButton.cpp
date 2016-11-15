@@ -26,7 +26,7 @@ bool CUserCoinButton::init()
 
 	m_UserData = CUserDataManager::Instance();
 
-	m_Back = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), 0, 0);
+	m_Back = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 0, 0);
 	if (m_Back != nullptr)
 	{
 		m_Back->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -37,14 +37,14 @@ bool CUserCoinButton::init()
 	m_CoinLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 50);
 	if (m_CoinLabel != nullptr){
 		m_CoinLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-		m_CoinLabel->setColor(g_labelColor3);
+		m_CoinLabel->setColor(COLOR::GOLD);
 		m_Back->addChild(m_CoinLabel);
 	}
 
 	m_CoinIcon = Sprite::create("coinIcon_2.png");
 	if (m_CoinIcon != nullptr){
 		m_CoinIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_CoinIcon->setColor(g_labelColor3);
+		m_CoinIcon->setColor(COLOR::GOLD);
 		m_Back->addChild(m_CoinIcon);
 	}
 
@@ -55,7 +55,7 @@ bool CUserCoinButton::init()
 	//if (earnCoinBtn != nullptr){
 	//	earnCoinBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	//	earnCoinBtn->setPosition(Vec2(coinLabel->getContentSize().width + (coinIcon->getContentSize().width * 3.f), coinLabelLayer->getContentSize().height * 0.5f));
-	//	earnCoinBtn->setColor(g_labelColor3);
+	//	earnCoinBtn->setColor(COLOR::GOLD);
 	//	coinLabelLayer->addChild(earnCoinBtn);
 	//}		
 

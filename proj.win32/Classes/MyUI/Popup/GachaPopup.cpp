@@ -30,7 +30,7 @@ bool CGachaPopup::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto bg = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
+	auto bg = LayerColor::create(COLOR::TRANSPARENT, 1080.f, 1920.f);
 	if (bg != nullptr){
 		bg->setIgnoreAnchorPointForPosition(false);
 		bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -38,7 +38,7 @@ bool CGachaPopup::init()
 		this->addChild(bg);
 	}
 
-	auto gachaBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 1500.f);
+	auto gachaBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 1500.f);
 	if (gachaBG != nullptr){
 		gachaBG->setIgnoreAnchorPointForPosition(false);
 		gachaBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -60,7 +60,7 @@ bool CGachaPopup::init()
 		->addEventListener([=](Node* sender){
 		this->PlayGacha(sender);
 	})
-		->setLayer(LayerColor::create(Color4B(0, 0, 0, 255 * 0.8f), 250, 150))
+		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 250, 150))
 		->setContents(MakeString("Get -%d", g_coinToGacha))
 		->setButtonPosition(Vec2(gachaBG->getContentSize().width * 0.5f, gachaBG->getContentSize().height * 0.15f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

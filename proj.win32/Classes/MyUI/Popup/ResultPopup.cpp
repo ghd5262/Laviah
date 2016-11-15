@@ -26,7 +26,7 @@ bool CResultPopup::init()
 {
 	if (!CPopup::init()) return false;
 
-	auto bg = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
+	auto bg = LayerColor::create(COLOR::TRANSPARENT, 1080.f, 1920.f);
 	if (bg != nullptr){
 		bg->setIgnoreAnchorPointForPosition(false);
 		bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -43,7 +43,7 @@ bool CResultPopup::init()
 	{
 		resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		resultLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.8f));
-		resultLabel->setColor(g_labelColor2);
+		resultLabel->setColor(COLOR::BRIGHTGRAY);
 		bg->addChild(resultLabel);
 		resultLabel->setOpacity(0);
 	}
@@ -63,12 +63,12 @@ bool CResultPopup::init()
 			moveDistanceIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			moveDistanceIcon->setPosition(Vec2(moveDistanceBG->getContentSize().width * 0.1f, moveDistanceBG->getContentSize().height * 0.5f));
 			moveDistanceBG->addChild(moveDistanceIcon);
-			moveDistanceIcon->setColor(g_labelColor1);
+			moveDistanceIcon->setColor(COLOR::DARKGRAY);
 		}
 
 		auto moveDistanceLabel = Label::createWithTTF("Run", "fonts/malgunbd.ttf", 50);
 		if (moveDistanceLabel != nullptr){
-			moveDistanceLabel->setColor(g_labelColor1);
+			moveDistanceLabel->setColor(COLOR::DARKGRAY);
 			moveDistanceLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 			moveDistanceLabel->setPosition(Vec2(moveDistanceBG->getContentSize().width * 0.15f, moveDistanceBG->getContentSize().height * 0.5f));
 			moveDistanceBG->addChild(moveDistanceLabel);
@@ -78,7 +78,7 @@ bool CResultPopup::init()
 		totalScore->addValue(runScore->getScoreValue());
 		auto moveDistanceValueLabel = Label::createWithTTF(runScore->getValueString(), "fonts/malgunbd.ttf", 50);
 		if (moveDistanceValueLabel != nullptr){
-			moveDistanceValueLabel->setColor(g_labelColor1);
+			moveDistanceValueLabel->setColor(COLOR::DARKGRAY);
 			moveDistanceValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			moveDistanceValueLabel->setPosition(Vec2(moveDistanceBG->getContentSize().width * 0.9f, moveDistanceBG->getContentSize().height * 0.5f));
 			moveDistanceBG->addChild(moveDistanceValueLabel);
@@ -101,12 +101,12 @@ bool CResultPopup::init()
 			starScoreIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			starScoreIcon->setPosition(Vec2(starScoreBG->getContentSize().width * 0.1f, starScoreBG->getContentSize().height * 0.5f));
 			starScoreBG->addChild(starScoreIcon);
-			starScoreIcon->setColor(g_labelColor1);
+			starScoreIcon->setColor(COLOR::DARKGRAY);
 		}
 
 		auto starScoreLabel = Label::createWithTTF("Star", "fonts/malgunbd.ttf", 50);
 		if (starScoreLabel != nullptr){
-			starScoreLabel->setColor(g_labelColor1);
+			starScoreLabel->setColor(COLOR::DARKGRAY);
 			starScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 			starScoreLabel->setPosition(Vec2(starScoreBG->getContentSize().width * 0.15f, starScoreBG->getContentSize().height * 0.5f));
 			starScoreBG->addChild(starScoreLabel);
@@ -116,7 +116,7 @@ bool CResultPopup::init()
 		totalScore->addValue(starScore->getScoreValue());
 		auto starScoreValueLabel = Label::createWithTTF(starScore->getValueString(), "fonts/malgunbd.ttf", 50);
 		if (starScoreValueLabel != nullptr){
-			starScoreValueLabel->setColor(g_labelColor1);
+			starScoreValueLabel->setColor(COLOR::DARKGRAY);
 			starScoreValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			starScoreValueLabel->setPosition(Vec2(starScoreBG->getContentSize().width * 0.9f, starScoreBG->getContentSize().height * 0.5f));
 			starScoreBG->addChild(starScoreValueLabel);
@@ -138,12 +138,12 @@ bool CResultPopup::init()
 			coinScoreIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			coinScoreIcon->setPosition(Vec2(coinScoreBG->getContentSize().width * 0.1f, coinScoreBG->getContentSize().height * 0.5f));
 			coinScoreBG->addChild(coinScoreIcon);
-			coinScoreIcon->setColor(g_labelColor1);
+			coinScoreIcon->setColor(COLOR::DARKGRAY);
 		}
 
 		auto coinScoreLabel = Label::createWithTTF("Coin", "fonts/malgunbd.ttf", 50);
 		if (coinScoreLabel != nullptr){
-			coinScoreLabel->setColor(g_labelColor1);
+			coinScoreLabel->setColor(COLOR::DARKGRAY);
 			coinScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 			coinScoreLabel->setPosition(Vec2(coinScoreBG->getContentSize().width * 0.15f, coinScoreBG->getContentSize().height * 0.5f));
 			coinScoreBG->addChild(coinScoreLabel);
@@ -153,7 +153,7 @@ bool CResultPopup::init()
 		totalScore->addValue(coinScore->getScoreValue());
 		auto coinScoreValueLabel = Label::createWithTTF(coinScore->getValueString(), "fonts/malgunbd.ttf", 50);
 		if (coinScoreValueLabel != nullptr){
-			coinScoreValueLabel->setColor(g_labelColor1);
+			coinScoreValueLabel->setColor(COLOR::DARKGRAY);
 			coinScoreValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			coinScoreValueLabel->setPosition(Vec2(coinScoreBG->getContentSize().width * 0.9f, coinScoreBG->getContentSize().height * 0.5f));
 			coinScoreBG->addChild(coinScoreValueLabel);
@@ -177,12 +177,12 @@ bool CResultPopup::init()
 			bonusTimeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			bonusTimeIcon->setPosition(Vec2(bonusTimeBG->getContentSize().width * 0.1f, bonusTimeBG->getContentSize().height * 0.5f));
 			bonusTimeBG->addChild(bonusTimeIcon);
-			bonusTimeIcon->setColor(g_labelColor1);
+			bonusTimeIcon->setColor(COLOR::DARKGRAY);
 		}
 
 		auto bonusTimeLabel = Label::createWithTTF("BonusTime", "fonts/malgunbd.ttf", 50);
 		if (bonusTimeLabel != nullptr){
-			bonusTimeLabel->setColor(g_labelColor1);
+			bonusTimeLabel->setColor(COLOR::DARKGRAY);
 			bonusTimeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 			bonusTimeLabel->setPosition(Vec2(bonusTimeBG->getContentSize().width * 0.15f, bonusTimeBG->getContentSize().height * 0.5f));
 			bonusTimeBG->addChild(bonusTimeLabel);
@@ -192,14 +192,14 @@ bool CResultPopup::init()
 		totalScore->addValue(bonusTimeCount->getScoreValue() * 10000);
 		auto bonusTimeValueLabel = Label::createWithTTF(StringUtils::format("%d", bonusTimeCount->getScoreValue()), "fonts/malgunbd.ttf", 50);
 		if (bonusTimeValueLabel != nullptr){
-			bonusTimeValueLabel->setColor(g_labelColor1);
+			bonusTimeValueLabel->setColor(COLOR::DARKGRAY);
 			bonusTimeValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			bonusTimeValueLabel->setPosition(Vec2(bonusTimeBG->getContentSize().width * 0.9f, bonusTimeBG->getContentSize().height * 0.5f));
 			bonusTimeBG->addChild(bonusTimeValueLabel);
 		}
 		auto multipleScoreLabel = Label::createWithTTF(StringUtils::format("%d x ", 10000), "fonts/malgunbd.ttf", 25);
 		if (multipleScoreLabel != nullptr){
-			multipleScoreLabel->setColor(g_labelColor1);
+			multipleScoreLabel->setColor(COLOR::DARKGRAY);
 			multipleScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			multipleScoreLabel->setPosition(
 				Vec2(bonusTimeValueLabel->getPosition().x - bonusTimeValueLabel->getContentSize().width,
@@ -223,12 +223,12 @@ bool CResultPopup::init()
 			alienIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			alienIcon->setPosition(Vec2(alienBG->getContentSize().width * 0.1f, alienBG->getContentSize().height * 0.5f));
 			alienBG->addChild(alienIcon);
-			alienIcon->setColor(g_labelColor1);
+			alienIcon->setColor(COLOR::DARKGRAY);
 		}
 
 		auto alienLabel = Label::createWithTTF("AlienGet", "fonts/malgunbd.ttf", 50);
 		if (alienLabel != nullptr){
-			alienLabel->setColor(g_labelColor1);
+			alienLabel->setColor(COLOR::DARKGRAY);
 			alienLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 			alienLabel->setPosition(Vec2(alienBG->getContentSize().width * 0.15f, alienBG->getContentSize().height * 0.5f));
 			alienBG->addChild(alienLabel);
@@ -238,14 +238,14 @@ bool CResultPopup::init()
 		totalScore->addValue(alienGetCount->getScoreValue() * 10000);
 		auto alienValueLabel = Label::createWithTTF(StringUtils::format("%d", alienGetCount->getScoreValue()), "fonts/malgunbd.ttf", 50);
 		if (alienValueLabel != nullptr){
-			alienValueLabel->setColor(g_labelColor1);
+			alienValueLabel->setColor(COLOR::DARKGRAY);
 			alienValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			alienValueLabel->setPosition(Vec2(alienBG->getContentSize().width * 0.9f, alienBG->getContentSize().height * 0.5f));
 			alienBG->addChild(alienValueLabel);
 		}
 		auto multipleScoreLabel = Label::createWithTTF(StringUtils::format("%d x ", 10000), "fonts/malgunbd.ttf", 25);
 		if (multipleScoreLabel != nullptr){
-			multipleScoreLabel->setColor(g_labelColor1);
+			multipleScoreLabel->setColor(COLOR::DARKGRAY);
 			multipleScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			multipleScoreLabel->setPosition(
 				Vec2(alienValueLabel->getPosition().x - alienValueLabel->getContentSize().width,
@@ -269,12 +269,12 @@ bool CResultPopup::init()
 			challengeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			challengeIcon->setPosition(Vec2(challengeBG->getContentSize().width * 0.1f, challengeBG->getContentSize().height * 0.5f));
 			challengeBG->addChild(challengeIcon);
-			challengeIcon->setColor(g_labelColor1);
+			challengeIcon->setColor(COLOR::DARKGRAY);
 		}
 
 		auto challengeLabel = Label::createWithTTF("ChallengeClear", "fonts/malgunbd.ttf", 50);
 		if (challengeLabel != nullptr){
-			challengeLabel->setColor(g_labelColor1);
+			challengeLabel->setColor(COLOR::DARKGRAY);
 			challengeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 			challengeLabel->setPosition(Vec2(challengeBG->getContentSize().width * 0.15f, challengeBG->getContentSize().height * 0.5f));
 			challengeBG->addChild(challengeLabel);
@@ -284,14 +284,14 @@ bool CResultPopup::init()
 		totalScore->addValue(challengeClearCount->getScoreValue() * 10000);
 		auto challengeValueLabel = Label::createWithTTF(StringUtils::format("%d", challengeClearCount->getScoreValue()), "fonts/malgunbd.ttf", 50);
 		if (challengeValueLabel != nullptr){
-			challengeValueLabel->setColor(g_labelColor1);
+			challengeValueLabel->setColor(COLOR::DARKGRAY);
 			challengeValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			challengeValueLabel->setPosition(Vec2(challengeBG->getContentSize().width * 0.9f, challengeBG->getContentSize().height * 0.5f));
 			challengeBG->addChild(challengeValueLabel);
 		}
 		auto multipleScoreLabel = Label::createWithTTF(StringUtils::format("%d x ", 10000), "fonts/malgunbd.ttf", 25);
 		if (multipleScoreLabel != nullptr){
-			multipleScoreLabel->setColor(g_labelColor1);
+			multipleScoreLabel->setColor(COLOR::DARKGRAY);
 			multipleScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			multipleScoreLabel->setPosition(
 				Vec2(challengeValueLabel->getPosition().x - challengeValueLabel->getContentSize().width,
@@ -319,7 +319,7 @@ bool CResultPopup::init()
 
 		auto totalScoreLabel = Label::createWithTTF(bestScoreStr.c_str(), "fonts/malgunbd.ttf", 60);
 		if (totalScoreLabel != nullptr){
-			totalScoreLabel->setColor(g_labelColor2);
+			totalScoreLabel->setColor(COLOR::BRIGHTGRAY);
 			totalScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 			totalScoreLabel->setPosition(Vec2(totalScoreBG->getContentSize().width * 0.08f, totalScoreBG->getContentSize().height * 0.5f));
 			totalScoreBG->addChild(totalScoreLabel);
@@ -327,7 +327,7 @@ bool CResultPopup::init()
 
 		auto totalScoreValueLabel = Label::createWithTTF(totalScore->getValueString(), "fonts/malgunbd.ttf", 60);
 		if (totalScoreValueLabel != nullptr){
-			totalScoreValueLabel->setColor(g_labelColor2);
+			totalScoreValueLabel->setColor(COLOR::BRIGHTGRAY);
 			totalScoreValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			totalScoreValueLabel->setPosition(Vec2(totalScoreBG->getContentSize().width * 0.9f, totalScoreBG->getContentSize().height * 0.5f));
 			totalScoreBG->addChild(totalScoreValueLabel);
@@ -349,12 +349,12 @@ bool CResultPopup::init()
 			bestScoreIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			bestScoreIcon->setPosition(Vec2(bestScoreBG->getContentSize().width * 0.1f, bestScoreBG->getContentSize().height * 0.5f));
 			bestScoreBG->addChild(bestScoreIcon);
-			bestScoreIcon->setColor(g_labelColor1);
+			bestScoreIcon->setColor(COLOR::DARKGRAY);
 		}
 
 		auto bestScoreLabel = Label::createWithTTF("Best Score", "fonts/malgunbd.ttf", 50);
 		if (bestScoreLabel != nullptr){
-			bestScoreLabel->setColor(g_labelColor1);
+			bestScoreLabel->setColor(COLOR::DARKGRAY);
 			bestScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 			bestScoreLabel->setPosition(Vec2(bestScoreBG->getContentSize().width * 0.15f, bestScoreBG->getContentSize().height * 0.5f));
 			bestScoreBG->addChild(bestScoreLabel);
@@ -363,7 +363,7 @@ bool CResultPopup::init()
 		auto bestScore = CScoreUI::insertComma(CUserDataManager::Instance()->getUserData_Number("USER_BEST_TOTAL_SCORE"));
 		auto bestScoreValueLabel = Label::createWithTTF(bestScore, "fonts/malgunbd.ttf", 50);
 		if (bestScoreValueLabel != nullptr){
-			bestScoreValueLabel->setColor(g_labelColor1);
+			bestScoreValueLabel->setColor(COLOR::DARKGRAY);
 			bestScoreValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 			bestScoreValueLabel->setPosition(Vec2(bestScoreBG->getContentSize().width * 0.9f, bestScoreBG->getContentSize().height * 0.5f));
 			bestScoreBG->addChild(bestScoreValueLabel);

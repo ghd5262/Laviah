@@ -37,7 +37,7 @@ bool CGoogleCloudTestAddKeyDP::initVariable()
         this->addChild(dpBack);
     }
     
-    auto dpItemBack = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), 805.f, 200.f);
+    auto dpItemBack = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 805.f, 200.f);
     if (dpItemBack != nullptr){
         dpItemBack->setIgnoreAnchorPointForPosition(false);
         dpItemBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -67,9 +67,9 @@ bool CGoogleCloudTestAddKeyDP::initVariable()
     ->addEventListener([=](Node* sender){
         this->Buy(sender);
     })
-    ->setLayer(LayerColor::create(Color4B(0, 0, 0, 255 * 0.8f), 260, 200))
+    ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 260, 200))
     ->setContents("ADD KEY")
-    ->setFont(g_labelColor2, 40)
+    ->setFont(COLOR::BRIGHTGRAY, 40)
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(dpBack);
     

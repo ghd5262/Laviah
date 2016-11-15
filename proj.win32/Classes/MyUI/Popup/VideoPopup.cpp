@@ -38,7 +38,7 @@ bool CVideoPopup::init()
 	{
 		reviveLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		reviveLabel->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.8f));
-		reviveLabel->setColor(g_labelColor2);
+		reviveLabel->setColor(COLOR::BRIGHTGRAY);
 		this->addChild(reviveLabel);
 		reviveLabel->setOpacity(0);
 	}
@@ -68,12 +68,12 @@ bool CVideoPopup::init()
 		watchVideoIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		watchVideoIcon->setPosition(Vec2(btnVideo->getContentSize().width * 0.5 - btnVideo->getContentSize().width * 0.18f, btnVideo->getContentSize().height * 0.5));
 		btnVideo->addChild(watchVideoIcon);
-		watchVideoIcon->setColor(g_labelColor1);
+		watchVideoIcon->setColor(COLOR::DARKGRAY);
 	}
 
 	auto watchVideoLabel = Label::createWithTTF("Watch a Video", "fonts/malgunbd.ttf", 50);
 	if (watchVideoLabel != nullptr){
-		watchVideoLabel->setColor(g_labelColor1);
+		watchVideoLabel->setColor(COLOR::DARKGRAY);
 		watchVideoLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 		watchVideoLabel->setPosition(Vec2(btnVideo->getContentSize().width * 0.5f - btnVideo->getContentSize().width * 0.13f, btnVideo->getContentSize().height * 0.5));
 		btnVideo->addChild(watchVideoLabel);
@@ -91,12 +91,12 @@ bool CVideoPopup::init()
 		useCoinIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		useCoinIcon->setPosition(Vec2(btnUseCoin->getContentSize().width * 0.5f - btnUseCoin->getContentSize().width * 0.18f, btnUseCoin->getContentSize().height * 0.5f));
 		btnUseCoin->addChild(useCoinIcon);
-		useCoinIcon->setColor(g_labelColor3);
+		useCoinIcon->setColor(COLOR::GOLD);
 	}
 
 	auto useCoinLabel = Label::createWithTTF(StringUtils::format("Use %d Coin", g_coinToRevive).c_str(), "fonts/malgunbd.ttf", 50);
 	if (useCoinLabel != nullptr){
-		useCoinLabel->setColor(g_labelColor3);
+		useCoinLabel->setColor(COLOR::GOLD);
 		useCoinLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 		useCoinLabel->setPosition(Vec2(btnUseCoin->getContentSize().width * 0.5f - btnUseCoin->getContentSize().width * 0.13f, btnUseCoin->getContentSize().height * 0.5f));
 		btnUseCoin->addChild(useCoinLabel);

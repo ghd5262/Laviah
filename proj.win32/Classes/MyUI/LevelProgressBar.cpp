@@ -32,7 +32,7 @@ bool CLevelProgressBar::initVariable()
 
 	for (int barIdx = 0; barIdx < m_MaxLevel; barIdx++)
 	{
-		auto bar = LayerColor::create(Color4B(0, 0, 0, 255 * 0.8f), oneBarSize, m_BarSize.height);
+		auto bar = LayerColor::create(COLOR::DARKGRAY_ALPHA, oneBarSize, m_BarSize.height);
 		bar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		bar->setPosition(Vec2(((oneBarDistance + oneBarSize) * barIdx) - (m_BarSize.width * 0.5f), 0));
 		addChild(bar);
@@ -53,7 +53,7 @@ void CLevelProgressBar::UpdateProgress()
 
 	for (int barIdx = 0; barIdx < m_CurrentLevel; barIdx++)
 	{
-		m_LevelBarList[barIdx]->setColor(Color3B(255, 255, 255));
+        m_LevelBarList[barIdx]->setColor(Color3B::WHITE);
 		m_LevelBarList[barIdx]->setOpacity(255 * 0.8f);
 	}
 }

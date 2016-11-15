@@ -34,7 +34,7 @@ bool CCharacterSelectPopup::init()
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	auto bg = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
+	auto bg = LayerColor::create(COLOR::TRANSPARENT, 1080.f, 1920.f);
 	if (bg != nullptr){
 		bg->setIgnoreAnchorPointForPosition(false);
 		bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -42,7 +42,7 @@ bool CCharacterSelectPopup::init()
 		this->addChild(bg);
 	}
 
-	auto scrollBack = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 1500.f);
+	auto scrollBack = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 1500.f);
 	if (scrollBack != nullptr){
 		scrollBack->setIgnoreAnchorPointForPosition(false);
 		scrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -56,7 +56,7 @@ bool CCharacterSelectPopup::init()
 	//        {
 	//            selectLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	//            selectLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.9f));
-	//            selectLabel->setColor(g_labelColor1);
+	//            selectLabel->setColor(COLOR::DARKGRAY);
 	//            scrollBack->addChild(selectLabel);
 	//            selectLabel->setOpacity(0);
 	//        }
@@ -108,7 +108,7 @@ bool CCharacterSelectPopup::init()
 	if (m_CenterCharacterNameLabel != nullptr)
 	{
 		m_CenterCharacterNameLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.7f));
-		m_CenterCharacterNameLabel->setColor(g_labelColor1);
+		m_CenterCharacterNameLabel->setColor(COLOR::DARKGRAY);
 		scrollBack->addChild(m_CenterCharacterNameLabel);
 		m_CenterCharacterNameLabel->setOpacity(0);
 	}
@@ -128,7 +128,7 @@ bool CCharacterSelectPopup::init()
 		->addEventListener([=](Node* sender){
 		this->Select(sender);
 	})
-		->setLayer(LayerColor::create(Color4B(0, 0, 0, 255 * 0.8f), 250, 150))
+		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 250, 150))
 		->setContents("Select")
 		->setButtonPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.1f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

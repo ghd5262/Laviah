@@ -24,7 +24,7 @@ bool CEarnCoinPopup::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto bg = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
+	auto bg = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
 	if (bg != nullptr){
 		bg->setIgnoreAnchorPointForPosition(false);
 		bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -35,7 +35,7 @@ bool CEarnCoinPopup::init()
 	auto mentLabel = Label::createWithTTF(MakeString("Would you like to watch a video to earn %d more?", 500).c_str(), "fonts/malgunbd.ttf", 40);
 	if (mentLabel != nullptr)
 	{
-		mentLabel->setColor(g_labelColor1);
+		mentLabel->setColor(COLOR::DARKGRAY);
 		mentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		mentLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.6f));
 		bg->addChild(mentLabel);
@@ -45,7 +45,7 @@ bool CEarnCoinPopup::init()
 		->addEventListener([=](Node* sender){
 		this->Video(sender);
 	})
-		->setLayer(LayerColor::create(Color4B(0, 0, 0, 255 * 0.8f), 430, 150))
+		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 430, 150))
 		->setContents("Watch")
 		->setFont(Color3B::WHITE, 40)
 		->setButtonPosition(Vec2(bg->getContentSize().width * 0.275f, bg->getContentSize().height * 0.25f))
@@ -57,7 +57,7 @@ bool CEarnCoinPopup::init()
 		->addEventListener([=](Node* sender){
 		this->popupClose();
 	})
-		->setLayer(LayerColor::create(Color4B(255, 48, 48, 255 * 0.8f), 430, 150))
+		->setLayer(LayerColor::create(COLOR::BRIGHTRED_ALPHA, 430, 150))
 		->setContents("No")
 		->setFont(Color3B::WHITE, 40)
 		->setButtonPosition(Vec2(bg->getContentSize().width * 0.725f, bg->getContentSize().height * 0.25f))

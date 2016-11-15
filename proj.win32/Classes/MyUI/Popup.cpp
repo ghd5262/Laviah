@@ -53,7 +53,7 @@ bool CPopup::init()
 CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 {
 	if (m_PositiveButtonCallBack || m_NegativeButtonCallBack){
-		auto defaultBG = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 570.f);
+		auto defaultBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
 		defaultBG->setIgnoreAnchorPointForPosition(false);
 		defaultBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		defaultBG->setPosition(this->getContentSize() / 2);
@@ -82,7 +82,7 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 				m_PositiveButtonCallBack(this);
 				this->removeFromParent();
 				this->release();
-			}, Color4B(255, 48, 48, 255 * 0.8f), m_PositiveButtonName);
+			}, COLOR::BRIGHTRED_ALPHA, m_PositiveButtonName);
 		}
 
 		if (m_NegativeButtonCallBack != nullptr)
@@ -92,7 +92,7 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 				m_NegativeButtonCallBack(this);
 				this->removeFromParent();
 				this->release();
-			}, Color4B(0, 0, 0, 255 * 0.8f), m_NegativeButtonName);
+			}, COLOR::DARKGRAY_ALPHA, m_NegativeButtonName);
 		}
 
 		if (positiveButton && negativeButton)

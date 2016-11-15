@@ -32,7 +32,7 @@ bool CHelpPopup::init()
 
 	size_t helpImgCount = 2;
 
-	//auto bg = LayerColor::create(Color4B(255, 255, 255, 0), 1080.f, 1920.f);
+	//auto bg = LayerColor::create(COLOR::TRANSPARENT, 1080.f, 1920.f);
 	//if (bg != nullptr){
 	//	bg->setIgnoreAnchorPointForPosition(false);
 	//	bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

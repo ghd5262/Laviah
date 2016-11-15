@@ -32,7 +32,7 @@ bool CGoogleCloudTestPopup::init()
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
     
-    auto scrollBack = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 1080.f, 1500.f);
+    auto scrollBack = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 1500.f);
     if (scrollBack != nullptr){
         scrollBack->setIgnoreAnchorPointForPosition(false);
         scrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -46,7 +46,7 @@ bool CGoogleCloudTestPopup::init()
     {
         workShopLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         workShopLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.9f));
-        workShopLabel->setColor(g_labelColor1);
+        workShopLabel->setColor(COLOR::DARKGRAY);
         scrollBack->addChild(workShopLabel);
         workShopLabel->setOpacity(0);
     }

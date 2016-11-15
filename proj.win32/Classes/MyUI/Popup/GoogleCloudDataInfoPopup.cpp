@@ -22,7 +22,7 @@ bool CGoogleCloudDataInfoPopup::init()
 {
     if (!CPopup::init()) return false;
     
-    auto dpBack = LayerColor::create(Color4B(0, 0, 0, 255 * 0.8f), 900.f, 1500.f);
+    auto dpBack = LayerColor::create(COLOR::DARKGRAY_ALPHA, 900.f, 1500.f);
     if (dpBack != nullptr){
         dpBack->setIgnoreAnchorPointForPosition(false);
         dpBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -30,7 +30,7 @@ bool CGoogleCloudDataInfoPopup::init()
         this->addChild(dpBack);
     }
     
-    auto keyBack = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 800.f, 120.f);
+    auto keyBack = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 800.f, 120.f);
     if (keyBack != nullptr){
         keyBack->setIgnoreAnchorPointForPosition(false);
         keyBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -38,7 +38,7 @@ bool CGoogleCloudDataInfoPopup::init()
         dpBack->addChild(keyBack);
     }
     
-    auto valueBack = LayerColor::create(Color4B(255, 255, 255, 255 * 0.8f), 800.f, 1000.f);
+    auto valueBack = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 800.f, 1000.f);
     if (valueBack != nullptr){
         valueBack->setIgnoreAnchorPointForPosition(false);
         valueBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -50,7 +50,7 @@ bool CGoogleCloudDataInfoPopup::init()
     ->addEventListener([=](Node* sender){
         this->Save(sender);
     })
-    ->setLayer(LayerColor::create(Color4B(255, 48, 48, 255 * 0.8f), 200, 100))
+    ->setLayer(LayerColor::create(COLOR::BRIGHTRED_ALPHA, 200, 100))
     ->setContents("Save")
     ->setFont(Color3B::WHITE, 40)
     ->setButtonPosition(Vec2(dpBack->getContentSize().width * 0.5f,

@@ -48,7 +48,7 @@ bool CMultipleScore::initVariable()
 	m_Player = CObjectManager::Instance()->getPlayer();
 
 	m_MultipleNumberLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 30);
-	m_MultipleNumberLabel->setColor(g_labelColor2);
+	m_MultipleNumberLabel->setColor(COLOR::BRIGHTGRAY);
 	m_MultipleNumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x, m_Player->getOriginPos().y + m_Player->getBRadius() + 50));
 	m_MultipleNumberLabel->setVisible(false);

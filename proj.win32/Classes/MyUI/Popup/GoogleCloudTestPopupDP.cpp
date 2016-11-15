@@ -28,7 +28,7 @@ bool CGoogleCloudTestPopupDP::init()
 
 bool CGoogleCloudTestPopupDP::initVariable()
 {
-    auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
+    auto dpBack = LayerColor::create(COLOR::TRANSPARENT, 1080.f, 200.f);
     if (dpBack != nullptr){
         this->setContentSize(dpBack->getContentSize());
         
@@ -38,7 +38,7 @@ bool CGoogleCloudTestPopupDP::initVariable()
         this->addChild(dpBack);
     }
     
-    auto dpItemBack = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), 805.f, 200.f);
+    auto dpItemBack = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 805.f, 200.f);
     if (dpItemBack != nullptr){
         dpItemBack->setIgnoreAnchorPointForPosition(false);
         dpItemBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -50,9 +50,9 @@ bool CGoogleCloudTestPopupDP::initVariable()
     ->addEventListener([=](Node* sender){
         this->Buy(sender);
     })
-    ->setLayer(LayerColor::create(Color4B(0, 0, 0, 255 * 0.8f), 260, 200))
+    ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 260, 200))
     ->setContents("Info")
-    ->setFont(g_labelColor2, 40)
+    ->setFont(COLOR::BRIGHTGRAY, 40)
     ->show(dpBack);
     
     dpBuyBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -65,7 +65,7 @@ bool CGoogleCloudTestPopupDP::initVariable()
     {
         googleCloudKey->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
         googleCloudKey->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f, dpItemBack->getContentSize().height * 0.8f));
-        googleCloudKey->setColor(g_labelColor2);
+        googleCloudKey->setColor(COLOR::BRIGHTGRAY);
         dpItemBack->addChild(googleCloudKey);
     }
     
@@ -74,7 +74,7 @@ bool CGoogleCloudTestPopupDP::initVariable()
     {
         googleCloudValue->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
         googleCloudValue->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f, dpItemBack->getContentSize().height * 0.5f));
-        googleCloudValue->setColor(g_labelColor2);
+        googleCloudValue->setColor(COLOR::BRIGHTGRAY);
         dpItemBack->addChild(googleCloudValue);
     }
     

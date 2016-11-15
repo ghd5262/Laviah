@@ -30,7 +30,7 @@ bool CWorkshopPopupDP::initVariable()
 {
 	unsigned currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
 
-	auto dpBack = LayerColor::create(Color4B(0, 0, 0, 0), 1080.f, 200.f);
+	auto dpBack = LayerColor::create(COLOR::TRANSPARENT, 1080.f, 200.f);
 	if (dpBack != nullptr){
 		this->setContentSize(dpBack->getContentSize());
 
@@ -40,7 +40,7 @@ bool CWorkshopPopupDP::initVariable()
 		this->addChild(dpBack);
 	}
 
-	auto dpItemBack = LayerColor::create(Color4B(0, 0, 0, 255 * 0.4f), 805.f, 200.f);
+	auto dpItemBack = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 805.f, 200.f);
 	if (dpItemBack != nullptr){
 		dpItemBack->setIgnoreAnchorPointForPosition(false);
 		dpItemBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -52,7 +52,7 @@ bool CWorkshopPopupDP::initVariable()
 		->addEventListener([=](Node* sender){
 		this->Buy(sender);
 	})
-		->setLayer(LayerColor::create(Color4B(0, 0, 0, 255 * 0.8f), 260, 200))
+		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 260, 200))
 		->setContents("Buy")
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->show(dpBack);
@@ -75,7 +75,7 @@ bool CWorkshopPopupDP::initVariable()
 	{
 		workshopItemName->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 		workshopItemName->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f, dpItemBack->getContentSize().height * 0.8f));
-		workshopItemName->setColor(g_labelColor2);
+		workshopItemName->setColor(COLOR::BRIGHTGRAY);
 		dpItemBack->addChild(workshopItemName);
 	}
 
@@ -84,7 +84,7 @@ bool CWorkshopPopupDP::initVariable()
 	{
 		workshopItemExplain->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 		workshopItemExplain->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f, dpItemBack->getContentSize().height * 0.5f));
-		workshopItemExplain->setColor(g_labelColor2);
+		workshopItemExplain->setColor(COLOR::BRIGHTGRAY);
 		dpItemBack->addChild(workshopItemExplain);
 	}
 
