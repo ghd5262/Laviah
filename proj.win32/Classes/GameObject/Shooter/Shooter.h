@@ -40,12 +40,14 @@ struct sSHOOTER_PARAM{
 		, _randomShootSymbol('1')
 		, _isOneShoot(isOneShoot)
 		, _isAngleRandom(isAngleRandom){}
+    
 	sSHOOTER_PARAM(){}
 };
 
 class CShooter : public CMover {
 public:
-	virtual void ReturnToMemoryBlock() override;
+    virtual void Rotation(float dir, float delta);
+    virtual void ReturnToMemoryBlock() override;
 	
 protected:
 	// PoolingManager에서 메모리를 할당 받는다.
@@ -77,4 +79,5 @@ protected:
 	CC_SYNTHESIZE(int, m_nBulletCountAtOnceRandom, BulletCountAtOnceRandom);// 한번에 쏘는 총알의 수 1 ~ Max 사이 값
 	CC_SYNTHESIZE(sSHOOTER_PARAM, m_ShooterParam, ShooterParam);
 	CC_SYNTHESIZE(bool, m_isShooterPause, ShooterPause);
+    CC_SYNTHESIZE(Vec2, m_RotationVec, RotationVec);
 };

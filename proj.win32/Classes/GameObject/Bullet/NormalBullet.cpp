@@ -12,25 +12,16 @@
 #include "../../MyUI/UIManager.h"
 #include "../../MyUI/MultipleScore.h"
 
-CNormalBullet::CNormalBullet(
-	sBULLET_PARAM bulletParam,
-	float angle,				    //bullet 초기 각도 
-	float speed)				    //bullet 초기 속도
-	: CBullet(
-	bulletParam,
-	angle, 
-	speed)
-	, m_pParticleCrash(nullptr)
+CNormalBullet::CNormalBullet(sBULLET_PARAM bulletParam, float angle)
+: CBullet(bulletParam, angle)
+, m_pParticleCrash(nullptr)
 {}
 
-CNormalBullet* CNormalBullet::create(
-	sBULLET_PARAM bulletParam,
-	float angle,					//bullet 초기 각도 
-	float speed)					//bullet 초기 속도
+CNormalBullet* CNormalBullet::create(sBULLET_PARAM bulletParam, float angle)
 {
 	CNormalBullet* pRet = 
 		(CNormalBullet*)new(std::nothrow)CNormalBullet(
-		bulletParam, angle, speed);
+		bulletParam, angle);
 
 	if (pRet && pRet->init())
 	{
@@ -49,30 +40,20 @@ CNormalBullet* CNormalBullet::create(
 
 bool CNormalBullet::init()
 {
-	if (!initVariable())
-		return false;
-	return true;
-}
-
-bool CNormalBullet::initVariable()
-{
-	setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
-
-	setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
-	setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
-	setRotation(-m_fAngle);
-
-	m_pTexture = Sprite::createWithSpriteFrameName(m_pPlayer->getCharacterParam()._normalBulletTextureName);
+    if (!CBullet::init()) return false;
     
-	if (m_pTexture != nullptr){
-		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		addChild(m_pTexture);
-	}
-	m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
-
-	m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-
-	return true;
+    setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
+    
+    m_pTexture = Sprite::createWithSpriteFrameName(m_pPlayer->getCharacterParam()._normalBulletTextureName);
+    
+    if (m_pTexture != nullptr){
+        m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+        addChild(m_pTexture);
+    }
+    m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
+    m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
+    
+    return true;
 }
 
 void CNormalBullet::Execute(float delta)
@@ -82,8 +63,6 @@ void CNormalBullet::Execute(float delta)
 
 void CNormalBullet::CollisionWithPlanet()
 {
-	
-
 	m_pParticleCrash = CParticle_Explosion::create(m_pPlayer->getCharacterParam()._normalBulletTextureName);
 	if (m_pParticleCrash != nullptr){
 		m_pParticleCrash->retain();
@@ -122,35 +101,25 @@ void CNormalBullet::ChangeToCoinOrStar()
 {
 	float distance = m_TargetVec.distance(getPosition());
 
+    CBullet* test = nullptr;
 	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star){
-		float distance = m_TargetVec.distance(getPosition());
-        auto test = CPlayStar::create(
-                                      sBULLET_PARAM(
-                                                    25.f, distance, 0.f, true, false,
-                                                    eCOIN_TYPE_none,
-                                                    static_cast<eSTAR_TYPE>(m_BulletParam._symbol - '0')),
-                                      -getRotation(),
-                                      m_fBulletSpeed,
-                                      getPosition());
-        
-		CGameScene::getGridWorld()->addChild(test);
-#if(!USE_MEMORY_POOLING)
-        CObjectManager::Instance()->AddBullet(test);
-#endif	
+        test = CPlayStar::create(sBULLET_PARAM(25.f, distance, 0.f, true, false, eCOIN_TYPE_none,
+                                               static_cast<eSTAR_TYPE>(m_BulletParam._symbol - '0')),
+                                 -getRotation(),
+                                 getPosition());
     }
 	else{
-        auto test = CPlayCoin::create(
-                                      sBULLET_PARAM(
-                                                    25.f, distance, 0.f, true, false,
-                                                    static_cast<eCOIN_TYPE>(m_BulletParam._symbol - '0')),
-                                      -getRotation(),
-                                      m_fBulletSpeed,
-                                      getPosition());
-        CGameScene::getGridWorld()->addChild(test);
-#if(!USE_MEMORY_POOLING)
-        CObjectManager::Instance()->AddBullet(test);
-#endif	
+        test = CPlayCoin::create(sBULLET_PARAM(25.f, distance, 0.f, true, false,
+                                               static_cast<eCOIN_TYPE>(m_BulletParam._symbol - '0')),
+                                 -getRotation(),
+                                 getPosition());
+	
     }
+    test->setBulletSpeed(m_fBulletSpeed);
+    CGameScene::getGridWorld()->addChild(test);
+#if(!USE_MEMORY_POOLING)
+    CObjectManager::Instance()->AddBullet(test);
+#endif
 
 	ReturnToMemoryBlock();
 }

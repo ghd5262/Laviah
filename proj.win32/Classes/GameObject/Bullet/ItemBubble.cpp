@@ -10,8 +10,7 @@ CItemBubble::CItemBubble(
 	CBullet* owner/* = nullptr*/)	//owner missile (nullptr 일 때에는 도착시간으로 삭제한다.)
 	: CBullet(
 	bulletParam,
-	angle,
-	0.0f)
+	angle)
 	, m_OwnerBullet(owner)
 	, m_BubbleIconName(bubbleIconName)
 	, m_Bubble(nullptr)
@@ -44,28 +43,21 @@ CItemBubble* CItemBubble::create(
 
 bool CItemBubble::init()
 {
-	if (!initVariable())
-		return false;
-	return true;
-}
-
-bool CItemBubble::initVariable()
-{
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-	m_ScreenRect = Rect(0, 0, visibleSize.width, visibleSize.height);
-
-	m_Bubble = CSpeechBubble::create("bubble_1.png", m_BubbleIconName.c_str());
-	if (m_Bubble != nullptr)
-	{
-		m_Bubble->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_Bubble->setPosition(Vec2::ZERO);
-		addChild(m_Bubble);
-	}
-	setRotation(-m_fAngle + 90);
-	m_PlanetPos = m_pPlanet->getOriginPos();
-	this->calculateIntersectPos();
-
-	return true;
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    m_ScreenRect = Rect(0, 0, visibleSize.width, visibleSize.height);
+    
+    m_Bubble = CSpeechBubble::create("bubble_1.png", m_BubbleIconName.c_str());
+    if (m_Bubble != nullptr)
+    {
+        m_Bubble->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_Bubble->setPosition(Vec2::ZERO);
+        addChild(m_Bubble);
+    }
+    setRotation(-m_fAngle + 90);
+    m_PlanetPos = m_pPlanet->getOriginPos();
+    this->calculateIntersectPos();
+    
+    return true;
 }
 
 void CItemBubble::calculateIntersectPos()
@@ -79,16 +71,15 @@ void CItemBubble::calculateIntersectPos()
 	Vec2 screenRB = Vec2(paddingW, padding);
     Vec2 screenLB = Vec2(padding, padding);
     
-    auto getIntersect = [=](Vec2 pointA, Vec2 pointB)->Vec2{
+    auto getIntersect = [=, &resultPoint](Vec2 pointA, Vec2 pointB){
         if(Vec2::isSegmentIntersect(m_PlanetPos, m_OwnerBullet->getPosition(), pointA, pointB))
-            return Vec2::getIntersectPoint(m_PlanetPos, m_OwnerBullet->getPosition(), pointA, pointB);
-        return Vec2::ZERO;
+            resultPoint = Vec2::getIntersectPoint(m_PlanetPos, m_OwnerBullet->getPosition(), pointA, pointB);
     };
 
-    resultPoint = getIntersect(screenLT, screenRT);
-    resultPoint = getIntersect(screenRT, screenRB);
-    resultPoint = getIntersect(screenLB, screenRB);
-    resultPoint = getIntersect(screenLT, screenLB);
+    getIntersect(screenLT, screenRT);
+    getIntersect(screenRT, screenRB);
+    getIntersect(screenLB, screenRB);
+    getIntersect(screenLT, screenLB);
 	
 	setPosition(resultPoint);
 }

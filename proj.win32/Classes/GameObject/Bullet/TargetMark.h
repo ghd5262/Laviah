@@ -19,7 +19,6 @@ public:
 
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
 
 private:
 	CTargetMark(

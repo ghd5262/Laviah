@@ -171,7 +171,14 @@ void CObjectManager::RotationObject(float dir)
 			bullet->Rotation(dir + (dir * m_fRotateAcceleration), m_fDelta);
 		}
 	}
-	m_Planet->Rotation(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
+    
+    for (auto shooter : m_ShooterList)
+    {
+        if (shooter->IsAlive()) {
+            shooter->Rotation(dir + (dir * m_fRotateAcceleration), m_fDelta);
+        }
+    }
+    m_Planet->Rotation(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
 	m_Player->Rotation(dir, m_fDelta);
 }
 

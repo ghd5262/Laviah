@@ -10,14 +10,11 @@
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/MultipleScore.h"
 
-CBullet::CBullet(
-	sBULLET_PARAM bulletParam,
-	float angle,				    //bullet 초기 각도 
-	float speed)				    //bullet 초기 속도
+CBullet::CBullet(sBULLET_PARAM bulletParam, float angle)
 	: CMover(bulletParam._fBouningRadius)
 	, m_BulletParam(bulletParam)
 	, m_fAngle(angle)
-	, m_fBulletSpeed(speed)
+	, m_fBulletSpeed(0.f)
 	, m_pTexture(nullptr)
 	, m_fRotationSpeed(100.f)
 	, m_nReceivingEffectItemTypes(eITEM_FLAG_none)
@@ -46,6 +43,17 @@ CBullet::CBullet(
 CBullet::~CBullet(){
 	if (m_FSM != nullptr)
 		delete m_FSM;
+}
+
+bool CBullet::init()
+{
+    if(!CMover::init()) return false;
+    
+    setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
+    setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
+    setRotation(-m_fAngle);
+    
+    return true;
 }
 
 #if(USE_MEMORY_POOLING)

@@ -41,73 +41,28 @@ void CRandomShooter::ShootOnce()
 	CBullet* test = nullptr;
 
 	if (p >= '1' && p <= '3') //일반 bullet
-	{
-		test = CNormalBullet::create(
-			bulletParam,
-			m_ShooterParam._fAngle,
-			m_ShooterParam._fSpeed);
-		CGameScene::getGridWorld()->addChild(test);
-	}
+		test = CNormalBullet::create(bulletParam, m_ShooterParam._fAngle);
 	else if (p >= '4' && p <= '5')//미사일과 조준미사일
-	{
-		test = CNormalMissile::create(
-			bulletParam,
-			m_ShooterParam._fAngle,
-			m_ShooterParam._fSpeed);
-		CGameScene::getGridWorld()->addChild(test, 101);
-	}
+		test = CNormalMissile::create(bulletParam, m_ShooterParam._fAngle);
     else if (p == '6')
-    {
-		test = CStickBullet::create(
-			bulletParam,
-			m_ShooterParam._fAngle,
-			m_ShooterParam._fSpeed);
-        CGameScene::getGridWorld()->addChild(test);
-    }
+		test = CStickBullet::create(bulletParam, m_ShooterParam._fAngle);
 	else if (p >= 'A' && p <= 'G')//아이템
-	{
-		test = CPlayItem::create(
-			bulletParam,
-			m_ShooterParam._fAngle,
-			m_ShooterParam._fSpeed);
-		CGameScene::getGridWorld()->addChild(test);
-	}
+		test = CPlayItem::create(bulletParam, m_ShooterParam._fAngle);
 	else if (p >= 'P' && p <= 'T')//코인
-	{
-		test = CPlayCoin::create(
-			bulletParam,
-			m_ShooterParam._fAngle,
-			m_ShooterParam._fSpeed);
-		CGameScene::getGridWorld()->addChild(test);
-	}
+		test = CPlayCoin::create(bulletParam, m_ShooterParam._fAngle);
 	else if (p >= 'U' && p <= 'Y')//별
-	{
-		test = CPlayStar::create(
-			bulletParam,
-			m_ShooterParam._fAngle,
-			m_ShooterParam._fSpeed);
-		CGameScene::getGridWorld()->addChild(test);
-	}
+		test = CPlayStar::create(bulletParam, m_ShooterParam._fAngle);
 	else if (p == 'Z')//보너스 아이템
-	{
-		test = CBonusLetter::create(
-			bulletParam,
-			m_ShooterParam._fAngle,
-			m_ShooterParam._fSpeed);
-		CGameScene::getGridWorld()->addChild(test);
-	}
+		test = CBonusLetter::create(bulletParam, m_ShooterParam._fAngle);
 	else if (p == 'z')//랜덤 아이템
 	{
         bulletParam._itemType = static_cast<eITEM_TYPE>(random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2));
         bulletParam._isFly = random<int>(0, 1);
-		test = CPlayItem::create(
-			bulletParam,
-			m_ShooterParam._fAngle,
-			m_ShooterParam._fSpeed);
-
-		CGameScene::getGridWorld()->addChild(test);
+		test = CPlayItem::create(bulletParam, m_ShooterParam._fAngle);
 	}
     
+    CGameScene::getGridWorld()->addChild(test);
+    test->setBulletSpeed(m_ShooterParam._fSpeed);
 #if(!USE_MEMORY_POOLING)
 	CObjectManager::Instance()->AddBullet(test);
 #endif

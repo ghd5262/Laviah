@@ -24,24 +24,17 @@ class CBonusLetter : public CBullet {
 public:
 	/*create를 호출하면 CObjectManager에서 메모리를 받는다.
 	받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다.*/
-	static CBonusLetter* create(
-		sBULLET_PARAM bulletParam,
-		float angle,				//bullet 초기 각도 
-		float speed);				//bullet 초기 속도
+	static CBonusLetter* create(sBULLET_PARAM bulletParam, float angle);
 
 	virtual void Execute(float delta = 0.f) override;
-	virtual void CollisionWithPlayer();
-	virtual void CollisionWithPlanet();
+	virtual void CollisionWithPlayer() override;
+	virtual void CollisionWithPlanet() override;
 
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
 
 private:
-	CBonusLetter(
-		sBULLET_PARAM bulletParam,
-		float angle,
-		float speed);
+	CBonusLetter(sBULLET_PARAM bulletParam, float angle);
 	virtual ~CBonusLetter(){};
 
 	CBonusTimeUI* m_pUIBonusTime;

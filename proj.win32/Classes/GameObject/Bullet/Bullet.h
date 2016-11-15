@@ -106,14 +106,13 @@ public:
 	int getItemEffect(){ return m_nReceivingEffectItemTypes; }
 
 protected:
+    virtual bool init() override;
+    
 #if(USE_MEMORY_POOLING)
 	void* operator new (size_t size, const std::nothrow_t);
 	void operator delete(void* ptr){};
 #endif
-	CBullet(
-		sBULLET_PARAM bulletParam,
-		float angle,
-		float speed);
+	CBullet(sBULLET_PARAM bulletParam, float angle);
 	virtual ~CBullet();
 
 	//getter & setter

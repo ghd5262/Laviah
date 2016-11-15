@@ -10,22 +10,15 @@
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
 #include "../../MyUI/MultipleScore.h"
-CStickBullet::CStickBullet(  sBULLET_PARAM bulletParam,
-                             float angle,				    //bullet 초기 각도
-                             float speed)				    //bullet 초기 속도
-: CBullet(
-          bulletParam,
-          angle,
-          speed)
+CStickBullet::CStickBullet(sBULLET_PARAM bulletParam, float angle)
+: CBullet(bulletParam, angle)
 , m_HitWithPlanet(false)
 {}
 
-CStickBullet* CStickBullet::create(  sBULLET_PARAM bulletParam,
-                                     float angle,					//bullet 초기 각도
-                                     float speed)					//bullet 초기 속도
+CStickBullet* CStickBullet::create(sBULLET_PARAM bulletParam, float angle)
 {
     CStickBullet* pRet =
-    (CStickBullet*)new(std::nothrow)CStickBullet(bulletParam, angle, speed);
+    (CStickBullet*)new(std::nothrow)CStickBullet(bulletParam, angle);
     
     if (pRet && pRet->init())
     {
@@ -44,31 +37,22 @@ CStickBullet* CStickBullet::create(  sBULLET_PARAM bulletParam,
 
 bool CStickBullet::init()
 {
-    if (!initVariable())
-        return false;
-    return true;
-}
+    if (!CBullet::init()) return false;
 
-bool CStickBullet::initVariable()
-{
-	setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
-
-	setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
-	setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
-	setRotation(-m_fAngle);
-
-	m_pTexture = Sprite::createWithSpriteFrameName(m_pPlayer->getCharacterParam()._stickBulletTextureName);
-	m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-	addChild(m_pTexture);
-
-	m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-	m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
-
-	float bulletSpeedAccel = m_fBulletSpeed * 0.15f;
-	this->schedule([this, bulletSpeedAccel](float delta){
-		m_fBulletSpeed += bulletSpeedAccel;
-	}, 0.1f, 10, 0.3f, "AccelerationUP");
-
+    setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
+    
+    m_pTexture = Sprite::createWithSpriteFrameName(m_pPlayer->getCharacterParam()._stickBulletTextureName);
+    m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+    addChild(m_pTexture);
+    
+    m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
+    m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
+    
+    float bulletSpeedAccel = m_fBulletSpeed * 0.15f;
+    this->schedule([this, bulletSpeedAccel](float delta){
+        m_fBulletSpeed += bulletSpeedAccel;
+    }, 0.1f, 10, 0.3f, "AccelerationUP");
+    
     return true;
 }
 
@@ -125,9 +109,7 @@ void CStickBullet::ChangeToCoinOrStar()
                                                eCOIN_TYPE_none,
                                                static_cast<eSTAR_TYPE>(5)),
                                  -getRotation(),
-                                 m_fBulletSpeed,
                                  getPosition());
-        CGameScene::getGridWorld()->addChild(test);
     }
     else{
         test = CPlayCoin::create(
@@ -135,10 +117,10 @@ void CStickBullet::ChangeToCoinOrStar()
                                                25.f, distance, 0.f, true, false,
                                                static_cast<eCOIN_TYPE>(5)),
                                  -getRotation(),
-                                 m_fBulletSpeed,
                                  getPosition());
-        CGameScene::getGridWorld()->addChild(test);
     }
+    test->setBulletSpeed(getBulletSpeed());
+    CGameScene::getGridWorld()->addChild(test);
     
 #if(!USE_MEMORY_POOLING)
     CObjectManager::Instance()->AddBullet(test);
