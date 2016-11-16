@@ -30,7 +30,7 @@ bool CWorkshopPopupDP::initVariable()
 {
 	unsigned currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
 
-	auto dpBack = LayerColor::create(COLOR::TRANSPARENT, 1080.f, 200.f);
+	auto dpBack = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 200.f);
 	if (dpBack != nullptr){
 		this->setContentSize(dpBack->getContentSize());
 

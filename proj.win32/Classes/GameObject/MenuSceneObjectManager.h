@@ -24,7 +24,6 @@ public:
 	void RemoveAllObject();
 	void Execute(float delta);
 
-	// 초기화
 	void Clear();
 
 protected:
@@ -32,8 +31,8 @@ protected:
 	CC_SYNTHESIZE(CSpaceShip*, m_SpaceShip, SpaceShip);
 
 private:
-	void Auto_ReturnToMemoryBlock();	// Alive가 false인 오브젝트를 모두 메모리 블럭으로 되돌린다.
-	void RemoveAllAlien();				// Delete함수 호출! 이유는 구현부에~
+	void Auto_ReturnToMemoryBlock();
+	void RemoveAllAlien();
 	CMenuSceneObjectManager();
 	~CMenuSceneObjectManager(){};
 

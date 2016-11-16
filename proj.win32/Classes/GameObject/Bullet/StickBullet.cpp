@@ -10,7 +10,7 @@
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
 #include "../../MyUI/MultipleScore.h"
-#include "../BulletCreator.hpp"
+#include "../BulletCreator.h"
 
 using namespace cocos2d;
 

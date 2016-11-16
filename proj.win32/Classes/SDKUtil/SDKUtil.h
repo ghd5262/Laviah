@@ -8,28 +8,20 @@ class CSDKUtil{
 public:
 	static CSDKUtil* Instance();
 
-	// 구글 로그인
 	void GoogleLogin();
 
-	// 구글 클라우드 저장 Key / Value
 	void GoogleCloudSave(std::string key, std::string value);
 
-	// 구글 클라우드 로드 Key
 	void GoogleCloudLoad(std::string key);
 
-	// 유니티 애드 보상형 광고
 	void ShowRewardUnityAds(const std::function<void(void)> &func);
 
-	// 유니티 애드 일반 광고
 	void ShowNormalUnityAds(const std::function<void(void)> &func);
 
-	// 토스트창
 	void Toast(std::string content);
 
-	// 네트워크 연결 여부
 	void IsNetworkConnect();
 
-	// 저장된 함수 호출
 	void CallUnityAdsSavedFunction();
 
 private:

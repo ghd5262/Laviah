@@ -1,4 +1,4 @@
-#include "BulletCreator.hpp"
+#include "BulletCreator.h"
 #include "Bullet/BulletHeaders.h"
 #include "../DataManager/BulletDataManager.h"
 #include "../Scene/GameScene.h"
@@ -58,10 +58,10 @@ void CBulletCreator::createOneLine(const sBULLET_PATTERN* data, int currentHeigh
         auto symbol = data->_pattern[index];
         if(symbol == ' ') continue;
         
-        // ê° ì´ì•Œì˜ ê°ë„
-        // widthë²ˆì§¸ ì´ì•Œ = (padding * width) - í”„ë ˆì„ ê°„ íšŒì „ ì •ë„
+        // °¢ ÃÑ¾ËÀÇ °¢µµ
+        // width¹øÂ° ÃÑ¾Ë = (padding * width) - ÇÁ·¹ÀÓ °£ È¸Àü Á¤µµ
         float angle = (data->_widthPadding * width) - m_RotationAngle;
-        angle -= 108.f; // ê°ë„ ë³´ì •
+        angle -= 108.f; // °¢µµ º¸Á¤
 
         
         auto bullet = m_BulletDataManager->getBulletInfo(symbol);
@@ -74,11 +74,12 @@ CBullet* CBulletCreator::createBullet(sBULLET_PARAM data, float angle, float dis
 {
     CBullet* bullet = nullptr;
     char symbol = data._symbol;
+	data._fDistance = distance;
 
-    float speed = 300.f;
+    float speed = 500.f;
 
     // bullet create
-    if      (symbol == 'z') /* ëœë¤ ì•„ì´í…œ*/       symbol = random<char>('A', 'G');
+    if      (symbol == 'z') /* ·£´ı ¾ÆÀÌÅÛ*/     symbol = cocos2d::random<int>('A', 'G');
     if      (symbol >= '1' && symbol <= '3')    bullet = CNormalBullet::create  (data, angle);
     else if (symbol >= '4' && symbol <= '5')    bullet = CNormalMissile::create (data, angle);
     else if (symbol == '6')                     bullet = CStickBullet::create   (data, angle);

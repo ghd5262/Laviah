@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "BackGround.h"
 #include "ItemManager.h"
-#include "BulletCreator.hpp"
+#include "BulletCreator.h"
 #include "Bullet/Bullet.h"
 #include "Shooter/ShooterLegacy.h"
 #include "../AI/States/StageStates.h"

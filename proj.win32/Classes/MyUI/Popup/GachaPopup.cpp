@@ -30,7 +30,7 @@ bool CGachaPopup::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto bg = LayerColor::create(COLOR::TRANSPARENT, 1080.f, 1920.f);
+	auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1920.f);
 	if (bg != nullptr){
 		bg->setIgnoreAnchorPointForPosition(false);
 		bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

@@ -63,7 +63,7 @@ struct sBULLET_PARAM{
     : _fBouningRadius(0)
     , _fDistance(0)
     , _fPower(0)
-    , _isFly(false)
+    , _isFly(true)
     , _isAimingMissile(false)
     , _coinType(eCOIN_TYPE::eCOIN_TYPE_none)
     , _starType(eSTAR_TYPE::eSTAR_TYPE_none)

@@ -27,11 +27,10 @@ protected:
 	CSpaceShip(sSPACESHIP_PARAM SpaceshipParam, float walkingSpeed, float distance);
 	virtual ~CSpaceShip();
 
-	//getter & setter
 	CC_SYNTHESIZE(float, m_fFlySpeed, FlySpeed);
-	CC_SYNTHESIZE(float, m_fDistance, Distance);    // 0 > Distance 이면 bullet의 원래 distance값을 사용함
+	CC_SYNTHESIZE(float, m_fDistance, Distance);   
 	CC_SYNTHESIZE(float, m_fActionTime, ActionTime);
-	CC_SYNTHESIZE(int, m_Direction, Direction);     // -1 : left     1 : right
+	CC_SYNTHESIZE(int, m_Direction, Direction);    
 	CC_SYNTHESIZE(int, m_CurrentAction, CurrentAction);
 	CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
 	CC_SYNTHESIZE(sSPACESHIP_PARAM, m_SpaceshipParam, SpaceshipParam);
@@ -39,6 +38,5 @@ protected:
 	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
 
 private:
-	//불꽃 파티클
 	cocos2d::ParticleSystemQuad* m_pParticleFlame;
 };

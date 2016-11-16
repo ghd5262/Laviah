@@ -186,7 +186,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\GameObject\Player.cpp" />
     <ClCompile Include="Classes\GameObject\Shooter\PatternShooter.cpp" />
     <ClCompile Include="Classes\GameObject\Shooter\RandomShooter.cpp" />
-    <ClCompile Include="Classes\GameObject\Shooter\Shooter.cpp" />
+    <ClCompile Include="Classes\GameObject\Shooter\ShooterLegacy.cpp" />
+    <ClCompile Include="Classes\GameObject\BulletCreator.cpp" />
     <ClCompile Include="Classes\GoogleCloud\GoogleCloudManager.cpp" />
     <ClCompile Include="Classes\json\json_reader.cpp" />
     <ClCompile Include="Classes\json\json_value.cpp" />
@@ -265,6 +266,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\GameObject\Bullet\StickBullet.h" />
     <ClInclude Include="Classes\GameObject\Bullet\TargetMark.h" />
     <ClInclude Include="Classes\GameObject\GameObject.h" />
+    <ClInclude Include="Classes\GameObject\BulletCreator.h" />
     <ClInclude Include="Classes\GameObject\ItemBarrier.h" />
     <ClInclude Include="Classes\GameObject\ItemManager.h" />
     <ClInclude Include="Classes\GameObject\MagnetEffect.h" />
@@ -274,8 +276,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\GameObject\Player.h" />
     <ClInclude Include="Classes\GameObject\Shooter\PatternShooter.h" />
     <ClInclude Include="Classes\GameObject\Shooter\RandomShooter.h" />
-    <ClInclude Include="Classes\GameObject\Shooter\Shooter.h" />
     <ClInclude Include="Classes\GameObject\Shooter\ShooterHeaders.h" />
+    <ClInclude Include="Classes\GameObject\Shooter\ShooterLegacy.h" />
     <ClInclude Include="Classes\GoogleCloud\GoogleCloudManager.h" />
     <ClInclude Include="Classes\json\autolink.h" />
     <ClInclude Include="Classes\json\config.h" />

@@ -1,5 +1,7 @@
 #include "SDKUtil_WIN.h"
 
+using namespace cocos2d;
+
 CSDKUtil_WIN::CSDKUtil_WIN(){}
 
 CSDKUtil_WIN::~CSDKUtil_WIN(){}

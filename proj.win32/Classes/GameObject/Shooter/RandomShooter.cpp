@@ -71,7 +71,7 @@ void CRandomShooter::ShootOnce()
 }
 
 void CRandomShooter::Execute(float delta) {
-
+	return;
 	if (m_isShooterPause)
 		return;
 

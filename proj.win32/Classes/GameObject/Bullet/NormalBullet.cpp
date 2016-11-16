@@ -6,7 +6,7 @@
 #include "../Planet.h"
 #include "../Player.h"
 #include "../ItemManager.h"
-#include "../BulletCreator.hpp"
+#include "../BulletCreator.h"
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/ScoreUI.h"

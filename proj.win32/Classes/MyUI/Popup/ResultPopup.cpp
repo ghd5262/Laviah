@@ -26,7 +26,7 @@ bool CResultPopup::init()
 {
 	if (!CPopup::init()) return false;
 
-	auto bg = LayerColor::create(COLOR::TRANSPARENT, 1080.f, 1920.f);
+	auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1920.f);
 	if (bg != nullptr){
 		bg->setIgnoreAnchorPointForPosition(false);
 		bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

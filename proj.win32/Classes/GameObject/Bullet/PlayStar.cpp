@@ -40,19 +40,16 @@ CPlayStar* CPlayStar::create(sBULLET_PARAM bulletParam, float angle, Vec2 create
 
 bool CPlayStar::init()
 {
-    if (!m_BulletParam._isFly){
-        m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
-        
-    if (!CBullet::init()) return false;
+	if (!CBullet::init()) return false;
     
     setItemEffect(eITEM_FLAG_magnet);
 
-        
-    this->scheduleOnce([this](float delta)
-                           {
-                               this->R_FadeOutWithCount(5, 3.f);
-                           }, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
-    }
+	if (!m_BulletParam._isFly){
+		this->scheduleOnce([this](float delta)
+		{
+			this->R_FadeOutWithCount(5, 3.f);
+		}, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
+	}
     m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
     
     m_pTexture = Sprite::create(MakeString("star_%d.png", m_BulletParam._starType));

@@ -51,6 +51,9 @@ bool CBullet::init()
 {
     if(!CMover::init()) return false;
     
+	if (!m_BulletParam._isFly)
+		m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
+
     setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
     setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
     setRotation(-m_fAngle);

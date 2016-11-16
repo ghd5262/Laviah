@@ -15,7 +15,6 @@ CSpaceShip::CSpaceShip(sSPACESHIP_PARAM SpaceShipParam, float flySpeed, float di
 	, m_FSM(nullptr)
 	, m_pPlanet(CMenuSceneObjectManager::Instance()->getPlanet())
 {
-	// bullet이 초기화 될때마다 매번 생성하지 않는다.
 	if (m_FSM == nullptr){
 		m_FSM = new CStateMachine<CSpaceShip>(this);
 	}
@@ -70,7 +69,6 @@ bool CSpaceShip::initVariable()
 	texture->setAnchorPoint(Vec2(0.5f, 0.5f));
 	addChild(texture);
 
-	// 불꽃 파티클
 	m_pParticleFlame = CParticle_Flame::create("fire.png");
 	if (m_pParticleFlame != nullptr){
 		m_pParticleFlame->retain();
@@ -93,32 +91,22 @@ bool CSpaceShip::initVariable()
 }
 
 
-/* 회전행렬을 이용하여 오브젝트 회전 및 이동 */
 void CSpaceShip::FlyAround(float delta)
 {
-	// 회전 속도와 방향을 이용하여 각도를 구하고 라디안으로 변환
 	float radian = CC_DEGREES_TO_RADIANS(m_Direction * (m_fFlySpeed * delta));
 
-	// 현재의 Direction Vector를 저장한다.
 	Vec2 beforeRotation = getPosition() - m_pPlanet->getPosition();
 
-	// 거리도 저장
 	float length = beforeRotation.length();
 
-	/* 회전행렬을 구함
-	* rotate x = ((x_ * cos(angle)) - (y_ * sin(angle)))
-	* rotate y = ((x_ * sin(angle)) + (y_ * cos(angle))) */
 	m_RotationVec = Vec2((float)((beforeRotation.x * cos(radian)) - (beforeRotation.y * sin(radian))),
 		(float)((beforeRotation.x * sin(radian)) + (beforeRotation.y * cos(radian))));
 
-	// 노말라이즈
 	m_RotationVec.normalize();
 	m_RotationVec *= length;
 
-	// 기존의 좌표에 새로운 좌표를 더해준다.
 	setPosition(m_pPlanet->getPosition() + m_RotationVec);
 
-	// 오브젝트 자체도 회전
 	setRotation(getRotation() - (m_Direction *(m_fFlySpeed * delta)));
 }
 

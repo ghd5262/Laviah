@@ -14,6 +14,7 @@ public:
 
 protected:
 	CGameObject() : m_fBoundingRadius(0.0f){}
+
     virtual bool init() override { if(!cocos2d::Node::init())return false; return true; }
 	virtual bool initVariable(){ return true; }
 
