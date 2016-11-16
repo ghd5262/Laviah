@@ -90,7 +90,7 @@
 		9373117C1D5849C800D5EB5C /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310EC1D5849C700D5EB5C /* Player.cpp */; };
 		9373117D1D5849C800D5EB5C /* PatternShooter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310EF1D5849C700D5EB5C /* PatternShooter.cpp */; };
 		9373117E1D5849C800D5EB5C /* RandomShooter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F11D5849C700D5EB5C /* RandomShooter.cpp */; };
-		9373117F1D5849C800D5EB5C /* Shooter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F31D5849C700D5EB5C /* Shooter.cpp */; };
+		9373117F1D5849C800D5EB5C /* ShooterLegacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F31D5849C700D5EB5C /* ShooterLegacy.cpp */; };
 		937311801D5849C800D5EB5C /* SpaceShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F61D5849C700D5EB5C /* SpaceShip.cpp */; };
 		937311811D5849C800D5EB5C /* GoogleCloudManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F91D5849C700D5EB5C /* GoogleCloudManager.cpp */; };
 		937311821D5849C800D5EB5C /* json_internalarray.inl in Resources */ = {isa = PBXBuildFile; fileRef = 937311021D5849C700D5EB5C /* json_internalarray.inl */; };
@@ -108,7 +108,6 @@
 		9373118E1D5849C800D5EB5C /* CharacterSelectPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937311181D5849C700D5EB5C /* CharacterSelectPopup.cpp */; };
 		9373118F1D5849C800D5EB5C /* CharacterSelectPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373111A1D5849C700D5EB5C /* CharacterSelectPopupDP.cpp */; };
 		937311901D5849C800D5EB5C /* EarnCoinPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373111C1D5849C700D5EB5C /* EarnCoinPopup.cpp */; };
-		937311911D5849C800D5EB5C /* ExitPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373111E1D5849C700D5EB5C /* ExitPopup.cpp */; };
 		937311921D5849C800D5EB5C /* GachaPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937311201D5849C700D5EB5C /* GachaPopup.cpp */; };
 		937311931D5849C800D5EB5C /* GoogleCloudDataInfoPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937311221D5849C700D5EB5C /* GoogleCloudDataInfoPopup.cpp */; };
 		937311941D5849C800D5EB5C /* GoogleCloudTestAddKeyDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937311241D5849C700D5EB5C /* GoogleCloudTestAddKeyDP.cpp */; };
@@ -141,6 +140,10 @@
 		937311B51D5849D500D5EB5C /* jsonRes in Resources */ = {isa = PBXBuildFile; fileRef = 937311AF1D5849D500D5EB5C /* jsonRes */; };
 		937311B61D5849D500D5EB5C /* res in Resources */ = {isa = PBXBuildFile; fileRef = 937311B01D5849D500D5EB5C /* res */; };
 		937311B71D5849D500D5EB5C /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 937311B11D5849D500D5EB5C /* sounds */; };
+		93E231791DDAA77800899F4A /* BulletCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E231771DDAA77800899F4A /* BulletCreator.cpp */; };
+		93E2317A1DDAA77800899F4A /* BulletCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E231771DDAA77800899F4A /* BulletCreator.cpp */; };
+		93E2317E1DDC344600899F4A /* StringUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E2317C1DDC344600899F4A /* StringUtility.cpp */; };
+		93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E2317C1DDC344600899F4A /* StringUtility.cpp */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -320,8 +323,8 @@
 		937310F01D5849C700D5EB5C /* PatternShooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PatternShooter.h; sourceTree = "<group>"; };
 		937310F11D5849C700D5EB5C /* RandomShooter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandomShooter.cpp; sourceTree = "<group>"; };
 		937310F21D5849C700D5EB5C /* RandomShooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomShooter.h; sourceTree = "<group>"; };
-		937310F31D5849C700D5EB5C /* Shooter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shooter.cpp; sourceTree = "<group>"; };
-		937310F41D5849C700D5EB5C /* Shooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shooter.h; sourceTree = "<group>"; };
+		937310F31D5849C700D5EB5C /* ShooterLegacy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShooterLegacy.cpp; sourceTree = "<group>"; };
+		937310F41D5849C700D5EB5C /* ShooterLegacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShooterLegacy.h; sourceTree = "<group>"; };
 		937310F51D5849C700D5EB5C /* ShooterHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShooterHeaders.h; sourceTree = "<group>"; };
 		937310F61D5849C700D5EB5C /* SpaceShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceShip.cpp; sourceTree = "<group>"; };
 		937310F71D5849C700D5EB5C /* SpaceShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceShip.h; sourceTree = "<group>"; };
@@ -359,8 +362,6 @@
 		9373111B1D5849C700D5EB5C /* CharacterSelectPopupDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterSelectPopupDP.h; sourceTree = "<group>"; };
 		9373111C1D5849C700D5EB5C /* EarnCoinPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EarnCoinPopup.cpp; sourceTree = "<group>"; };
 		9373111D1D5849C700D5EB5C /* EarnCoinPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EarnCoinPopup.h; sourceTree = "<group>"; };
-		9373111E1D5849C700D5EB5C /* ExitPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExitPopup.cpp; sourceTree = "<group>"; };
-		9373111F1D5849C700D5EB5C /* ExitPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExitPopup.h; sourceTree = "<group>"; };
 		937311201D5849C700D5EB5C /* GachaPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GachaPopup.cpp; sourceTree = "<group>"; };
 		937311211D5849C700D5EB5C /* GachaPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GachaPopup.h; sourceTree = "<group>"; };
 		937311221D5849C700D5EB5C /* GoogleCloudDataInfoPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleCloudDataInfoPopup.cpp; sourceTree = "<group>"; };
@@ -422,6 +423,10 @@
 		93865F3E1D588C39007ECE5A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
 		939694091DC990EF008B2CD2 /* SDKUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKUtil.h; sourceTree = "<group>"; };
 		9396940A1DC9CE17008B2CD2 /* NoticeDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoticeDefine.h; sourceTree = "<group>"; };
+		93E231771DDAA77800899F4A /* BulletCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BulletCreator.cpp; sourceTree = "<group>"; };
+		93E231781DDAA77800899F4A /* BulletCreator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BulletCreator.hpp; sourceTree = "<group>"; };
+		93E2317C1DDC344600899F4A /* StringUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtility.cpp; sourceTree = "<group>"; };
+		93E2317D1DDC344600899F4A /* StringUtility.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringUtility.hpp; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -677,6 +682,8 @@
 				937310B01D5849C700D5EB5C /* HSHUitlity.cpp */,
 				937310B11D5849C700D5EB5C /* HSHUtility.h */,
 				9396940A1DC9CE17008B2CD2 /* NoticeDefine.h */,
+				93E2317C1DDC344600899F4A /* StringUtility.cpp */,
+				93E2317D1DDC344600899F4A /* StringUtility.hpp */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -731,6 +738,8 @@
 				937310EE1D5849C700D5EB5C /* Shooter */,
 				937310F61D5849C700D5EB5C /* SpaceShip.cpp */,
 				937310F71D5849C700D5EB5C /* SpaceShip.h */,
+				93E231771DDAA77800899F4A /* BulletCreator.cpp */,
+				93E231781DDAA77800899F4A /* BulletCreator.hpp */,
 			);
 			path = GameObject;
 			sourceTree = "<group>";
@@ -772,8 +781,8 @@
 				937310F01D5849C700D5EB5C /* PatternShooter.h */,
 				937310F11D5849C700D5EB5C /* RandomShooter.cpp */,
 				937310F21D5849C700D5EB5C /* RandomShooter.h */,
-				937310F31D5849C700D5EB5C /* Shooter.cpp */,
-				937310F41D5849C700D5EB5C /* Shooter.h */,
+				937310F31D5849C700D5EB5C /* ShooterLegacy.cpp */,
+				937310F41D5849C700D5EB5C /* ShooterLegacy.h */,
 				937310F51D5849C700D5EB5C /* ShooterHeaders.h */,
 			);
 			path = Shooter;
@@ -850,8 +859,6 @@
 				9373111B1D5849C700D5EB5C /* CharacterSelectPopupDP.h */,
 				9373111C1D5849C700D5EB5C /* EarnCoinPopup.cpp */,
 				9373111D1D5849C700D5EB5C /* EarnCoinPopup.h */,
-				9373111E1D5849C700D5EB5C /* ExitPopup.cpp */,
-				9373111F1D5849C700D5EB5C /* ExitPopup.h */,
 				937311201D5849C700D5EB5C /* GachaPopup.cpp */,
 				937311211D5849C700D5EB5C /* GachaPopup.h */,
 				937311221D5849C700D5EB5C /* GoogleCloudDataInfoPopup.cpp */,
@@ -1100,7 +1107,7 @@
 				9373115D1D5849C800D5EB5C /* StageStates.cpp in Sources */,
 				9373119C1D5849C800D5EB5C /* WorkshopPopupDP.cpp in Sources */,
 				931D9DB11DB0FEBC008BA5AC /* DownloadManager.cpp in Sources */,
-				9373117F1D5849C800D5EB5C /* Shooter.cpp in Sources */,
+				9373117F1D5849C800D5EB5C /* ShooterLegacy.cpp in Sources */,
 				937311AA1D5849C800D5EB5C /* SDKUtil_IOS.cpp in Sources */,
 				937311A11D5849C800D5EB5C /* UIManager.cpp in Sources */,
 				9373118F1D5849C800D5EB5C /* CharacterSelectPopupDP.cpp in Sources */,
@@ -1129,7 +1136,6 @@
 				937311941D5849C800D5EB5C /* GoogleCloudTestAddKeyDP.cpp in Sources */,
 				9373118A1D5849C800D5EB5C /* HealthBarUI.cpp in Sources */,
 				937311AB1D5849C800D5EB5C /* PoolingManager.cpp in Sources */,
-				937311911D5849C800D5EB5C /* ExitPopup.cpp in Sources */,
 				937311741D5849C800D5EB5C /* GameObject.cpp in Sources */,
 				937311971D5849C800D5EB5C /* HelpPopup.cpp in Sources */,
 				9373119F1D5849C800D5EB5C /* SpeechBubble.cpp in Sources */,
@@ -1140,6 +1146,7 @@
 				937311621D5849C800D5EB5C /* BulletPatternDataManager.cpp in Sources */,
 				9373117E1D5849C800D5EB5C /* RandomShooter.cpp in Sources */,
 				937311811D5849C800D5EB5C /* GoogleCloudManager.cpp in Sources */,
+				93E2317E1DDC344600899F4A /* StringUtility.cpp in Sources */,
 				9373115A1D5849C800D5EB5C /* BulletStates.cpp in Sources */,
 				937311A71D5849C800D5EB5C /* SceneTransition.cpp in Sources */,
 				937311801D5849C800D5EB5C /* SpaceShip.cpp in Sources */,
@@ -1158,6 +1165,7 @@
 				9373119A1D5849C800D5EB5C /* VideoPopup.cpp in Sources */,
 				9373116A1D5849C800D5EB5C /* Bullet.cpp in Sources */,
 				937311681D5849C800D5EB5C /* BackGround.cpp in Sources */,
+				93E231791DDAA77800899F4A /* BulletCreator.cpp in Sources */,
 				9373118B1D5849C800D5EB5C /* LevelProgressBar.cpp in Sources */,
 				9373119B1D5849C800D5EB5C /* WorkshopPopup.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
@@ -1174,7 +1182,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
+				93E2317A1DDAA77800899F4A /* BulletCreator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
