@@ -44,7 +44,7 @@ struct sSHOOTER_PARAM{
 	sSHOOTER_PARAM(){}
 };
 
-class CShooter : public CMover {
+class CShooterLegacy : public CMover {
 public:
     virtual void Rotation(float dir, float delta);
     virtual void ReturnToMemoryBlock() override;
@@ -59,7 +59,7 @@ protected:
     
     void setRandomAngleIfRandom();
 
-	CShooter(sSHOOTER_PARAM param, float distance)
+	CShooterLegacy(sSHOOTER_PARAM param, float distance)
 		: CMover(0.0f)
 		, m_ShooterParam(param)
 		, m_fIntervalTimer(0.0f)
@@ -69,7 +69,7 @@ protected:
 		, m_isShooterPause(false){
 		m_fTime = m_ShooterParam._fStartTime;
 	}
-	virtual ~CShooter();
+	virtual ~CShooterLegacy();
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_fTime, Time);//생성 후 부터 시간
@@ -79,5 +79,4 @@ protected:
 	CC_SYNTHESIZE(int, m_nBulletCountAtOnceRandom, BulletCountAtOnceRandom);// 한번에 쏘는 총알의 수 1 ~ Max 사이 값
 	CC_SYNTHESIZE(sSHOOTER_PARAM, m_ShooterParam, ShooterParam);
 	CC_SYNTHESIZE(bool, m_isShooterPause, ShooterPause);
-    CC_SYNTHESIZE(Vec2, m_RotationVec, RotationVec);
 };

@@ -5,102 +5,83 @@
 
 using namespace cocos2d;
 
+const static std::string FILE_NAME = "patternListIndex.json";
+
 CBulletPatternDataManager::CBulletPatternDataManager()
 {
     Json::Value root;
     Json::Reader reader;
     
-    // stageListIndex.json 파일 읽음
-    std::string strPatternListIndex = FileUtils::getInstance()->fullPathForFilename("patternListIndex.json");
-    std::string patternListIdxClearData = FileUtils::getInstance()->getStringFromFile(strPatternListIndex);
-    size_t pos = patternListIdxClearData.rfind("}");
-    patternListIdxClearData = patternListIdxClearData.substr(0, pos + 1);
+    std::string fileList = FileUtils::getInstance()->fullPathForFilename(FILE_NAME);
+    std::string fileListData = FileUtils::getInstance()->getStringFromFile(fileList);
+    size_t pos = fileListData.rfind("}");
+    fileListData = fileListData.substr(0, pos + 1);
     
     
-    bool parsingSuccessful = reader.parse(patternListIdxClearData, root);
-    if (! parsingSuccessful)
+    bool succeed = reader.parse(fileListData, root);
+    if (!succeed)
     {
-        CCASSERT(false, MakeString("parser failed : \n %s", patternListIdxClearData.c_str()).c_str());
+        CCASSERT(false, StringUtils::format("parser failed : \n %s", FILE_NAME.c_str()).c_str());
         return ;
     }
-    // stageListIndex.json log출력
-    CCLOG("strPatternListIndex JSON : \n %s\n", patternListIdxClearData.c_str());
+    CCLOG("fileList JSON : \n %s\n", fileListData.c_str());
     
     //array
-    Json::Value patternListArray = root["patternListIndex"];
-    for (unsigned int patternListCount = 0; patternListCount < patternListArray.size(); ++patternListCount)
+    Json::Value fileArray = root["patternListIndex"];
+    for (unsigned int index = 0; index < fileArray.size(); ++index)
     {
-        std::string patternListFileName = patternListArray[patternListCount].asString();
-        CCLOG("%s ", patternListFileName.c_str());
+        std::string file = fileArray[index].asString();
         
         // patternList.json 파일 읽음
-        std::string strPatternList = FileUtils::getInstance()->fullPathForFilename(MakeString("%s.json", patternListFileName.c_str()));
-        std::string patternListClearData = FileUtils::getInstance()->getStringFromFile(strPatternList);
-        pos = patternListClearData.rfind("}");
-        patternListClearData = patternListClearData.substr(0, pos + 1);
+        std::string fileName = FileUtils::getInstance()->fullPathForFilename(StringUtils::format("%s.json", file.c_str()));
+        std::string patternFileData = FileUtils::getInstance()->getStringFromFile(fileName);
+        pos = patternFileData.rfind("}");
+        patternFileData = patternFileData.substr(0, pos + 1);
         
         // patternList.json log출력
-        parsingSuccessful = reader.parse(patternListClearData, patternListArray[patternListCount]);
-        if (! parsingSuccessful)
+        succeed = reader.parse(patternFileData, fileArray[index]);
+        if (! succeed)
         {
-            CCASSERT(false, MakeString("parser failed : \n %s", patternListClearData.c_str()).c_str());
+            CCASSERT(false, StringUtils::format("parser failed : \n %s", fileName.c_str()).c_str());
             return ;
         }
-        CCLOG("strPatternList JSON : \n %s\n", patternListClearData.c_str());
+        CCLOG("Pattern List JSON : \n %s\n", patternFileData.c_str());
         
         
         // stage는 배열이다.
-        const Json::Value patternArray = patternListArray[patternListCount]["patterns"];
+        const Json::Value patternArray = fileArray[index]["patterns"];
         
         for (unsigned int patternCount = 0; patternCount < patternArray.size(); ++patternCount)
         {
             const Json::Value valuePattern = patternArray[patternCount];
             
-            sPATTERN_SHOOTER_PARAM patternInfo;
+            sBULLET_PATTERN patternInfo;
             
-            // index 저장
             patternInfo._index = patternCount;
-            
-            // name 저장
             patternInfo._patternName = valuePattern["name"].asString();
+            patternInfo._widthPadding = valuePattern["widthAngleDistance"].asDouble();
+            patternInfo._heightPadding = valuePattern["heightDistance"].asDouble();
             
-            // widthAngleDistance 저장 = 패턴의 width 간격
-            patternInfo._widthAngleDistance = valuePattern["widthAngleDistance"].asDouble();
-            
-            // heightDistance 저장 = 패턴의 height 간격
-            patternInfo._heightDistance = valuePattern["heightDistance"].asDouble();
-            
-            // pattern 저장
             const Json::Value pattern = valuePattern["pattern"];
             
-            // pattern을 sPATTERN_SHOOTER_PARAM의 int형 배열에 2차원 형태로 넣는다.
-            for (unsigned int patternHeightCount = 0; patternHeightCount < pattern.size(); patternHeightCount++)
+            for (unsigned int height = 0; height < pattern.size(); height++)
             {
-                std::string patternStr = pattern[patternHeightCount].asString();
-                CCLOG("pattern[%d] = %s\n", patternHeightCount, patternStr.c_str());
+                std::string patternStr = pattern[height].asString();
     
-                // pattern의 height 저장
                 patternInfo._height = pattern.size();
-        
-                // pattern의 width 저장
                 patternInfo._width = static_cast<int>(patternStr.length());
     
-    
-                for (int charCount = 0; charCount < patternInfo._width; charCount++)
+                for (int width = 0; width < patternInfo._width; width++)
                 {
-                    patternInfo._pattern
-                    [(patternInfo._width * patternHeightCount) + charCount]
-                    = patternStr[charCount];
+                    patternInfo._pattern[(patternInfo._width * height) + width] = patternStr[width];
                 }
             }
-			this->AddPattern(patternInfo._patternName, patternInfo);
+			this->AddPattern(patternInfo);
         }
     }
 }
 
-CBulletPatternDataManager::~CBulletPatternDataManager()
-{
-}
+CBulletPatternDataManager::~CBulletPatternDataManager(){}
 
 CBulletPatternDataManager* CBulletPatternDataManager::Instance()
 {
@@ -108,18 +89,32 @@ CBulletPatternDataManager* CBulletPatternDataManager::Instance()
 	return &instance;
 }
 
-sPATTERN_SHOOTER_PARAM CBulletPatternDataManager::getPatternInfo(std::string patternName) const
+const sBULLET_PATTERN* CBulletPatternDataManager::getDataByName(std::string name) const
 {
-    if (m_PatternList.find(patternName) == m_PatternList.end()){
-		CCASSERT(false, MakeString("PATTERN KEY IS WRONG : %s", patternName.c_str()).c_str());
+    if (m_PatternList.find(name) == m_PatternList.end()){
+		CCASSERT(false, StringUtils::format("It is not a pattern key : %s", name.c_str()).c_str());
     }
-	return m_PatternList.find(patternName)->second;
+	return m_PatternList.find(name)->second;
 }
 
-bool CBulletPatternDataManager::AddPattern(std::string patternName, const sPATTERN_SHOOTER_PARAM& pattern){
-	bool addSuccess = m_PatternList.emplace(std::pair<std::string, sPATTERN_SHOOTER_PARAM>(patternName, pattern)).second;
+void CBulletPatternDataManager::AddPattern(const sBULLET_PATTERN& data){
+	bool addSuccess = m_PatternList.emplace(std::pair<std::string, sBULLET_PATTERN*>
+                                            (data._patternName, new sBULLET_PATTERN(data))).second;
+    
     if (!addSuccess){
-		CCASSERT(addSuccess, MakeString("PATTERN KEY WAS DUPLICATED : %s", patternName.c_str()).c_str());
+        CCLOG("Pattern key was duplicated : %s", data._patternName.c_str());
+		CCASSERT(false, StringUtils::format("Pattern key was duplicated : %s",
+                                            data._patternName.c_str()).c_str());
     }
-	return addSuccess;
+}
+
+const sBULLET_PATTERN* CBulletPatternDataManager::getRandomPattern() const
+{
+    auto item = m_PatternList.begin();
+    std::advance( item, random<unsigned long>(0, m_PatternList.size()) );
+    auto picked = (*item).second;
+    
+    CCLOG("Pick a pattern :: idx %d name %s", picked->_index, picked->_patternName.c_str());
+    
+    return picked;
 }

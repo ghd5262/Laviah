@@ -17,6 +17,7 @@ class CBullet;
 class CPlanet;
 class CPlayer;
 class CBackGround;
+class CBulletCreator;
 
 class CObjectManager
 {
@@ -83,4 +84,5 @@ private:
 	const std::vector<sSHOOTER_PARAM>* m_StageList;
 	int m_CurrentShooterIdx;
     float m_fRotateAcceleration;
+    CBulletCreator* m_BulletCreator;
 };

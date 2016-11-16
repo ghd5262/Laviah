@@ -40,14 +40,15 @@ CPlayStar* CPlayStar::create(sBULLET_PARAM bulletParam, float angle, Vec2 create
 
 bool CPlayStar::init()
 {
-    if (!CBullet::init()) return false;
-    
-    setItemEffect(eITEM_FLAG_magnet);
-    
     if (!m_BulletParam._isFly){
         m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
         
-        this->scheduleOnce([this](float delta)
+    if (!CBullet::init()) return false;
+    
+    setItemEffect(eITEM_FLAG_magnet);
+
+        
+    this->scheduleOnce([this](float delta)
                            {
                                this->R_FadeOutWithCount(5, 3.f);
                            }, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));

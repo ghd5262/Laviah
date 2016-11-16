@@ -130,7 +130,7 @@ bool CGameScene::initVariable()
 #if(USE_MEMORY_POOLING)
 	CPoolingManager::Instance()->CreateBulletList(3000, 900);
 #endif
-    CPoolingManager::Instance()->CreateShooterList(1, 80000);
+//    CPoolingManager::Instance()->CreateShooterList(1, 80000);
 
 	EventListenerKeyboard * pListener = EventListenerKeyboard::create();
 	pListener->onKeyPressed = [this](EventKeyboard::KeyCode code, Event* pEvent)

@@ -4,18 +4,19 @@
 
 class CBulletDataManager
 {
+    typedef std::map<const char, const sBULLET_PARAM*> BULLET_LIST;
 public:
 	static CBulletDataManager* Instance();
-	bool AddBulletData(const char bulletSymbol, const sBULLET_PARAM& bullet);
+	void AddBulletData(const sBULLET_PARAM& data);
 
 	//getter & setter
-	sBULLET_PARAM getBulletInfo(const char bulletSymbol) const;
+	const sBULLET_PARAM* getBulletInfo(const char key) const;
 
 private:
 	CBulletDataManager();
 	virtual ~CBulletDataManager();
 
 private:
-	std::map<const char, sBULLET_PARAM> m_BulletDataList;
+	BULLET_LIST m_BulletDataList;
 };
 

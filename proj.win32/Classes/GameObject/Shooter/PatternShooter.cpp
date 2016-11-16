@@ -35,7 +35,7 @@ bool CPatternShooter::init()
 {
     if(!CGameObject::init()) return false;
     
-    m_PatternParam = CBulletPatternDataManager::Instance()->getPatternInfo(m_ShooterParam._PatternName);
+//    m_PatternParam = CBulletPatternDataManager::Instance()->getPatternInfo(m_ShooterParam._PatternName);
     m_PatternHeightMax = m_PatternParam._height;
     this->setRandomAngleIfRandom();
     

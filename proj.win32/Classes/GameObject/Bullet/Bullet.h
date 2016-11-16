@@ -59,24 +59,38 @@ struct sBULLET_PARAM{
 	eITEM_TYPE _itemType;
 	char _symbol;
 
-	sBULLET_PARAM(
-		float boundingRadius,
-		float distance,
-		float power,
-		bool isFly = 1,
-		bool isAimingMissile = 0,
-		eCOIN_TYPE coinType = eCOIN_TYPE_none,
-		eSTAR_TYPE starType = eSTAR_TYPE_none,
-		eITEM_TYPE itemType = eITEM_TYPE_none)
-		: _fBouningRadius(boundingRadius)
-		, _fDistance(distance)
-		, _fPower(power)
-		, _isFly(isFly)
-		, _isAimingMissile(isAimingMissile)
-		, _coinType(coinType)
-		, _starType(starType)
-		, _itemType(itemType){}
-	sBULLET_PARAM(){}
+	sBULLET_PARAM()
+    : _fBouningRadius(0)
+    , _fDistance(0)
+    , _fPower(0)
+    , _isFly(false)
+    , _isAimingMissile(false)
+    , _coinType(eCOIN_TYPE::eCOIN_TYPE_none)
+    , _starType(eSTAR_TYPE::eSTAR_TYPE_none)
+    , _itemType(eITEM_TYPE::eITEM_TYPE_none)
+    , _symbol(0){}
+    
+    sBULLET_PARAM(const sBULLET_PARAM& data)
+    : _fBouningRadius(data._fBouningRadius)
+    , _fDistance(data._fDistance)
+    , _fPower(data._fPower)
+    , _isFly(data._isFly)
+    , _isAimingMissile(data._isAimingMissile)
+    , _coinType(data._coinType)
+    , _starType(data._starType)
+    , _itemType(data._itemType)
+    , _symbol(data._symbol){}
+    
+    sBULLET_PARAM(const sBULLET_PARAM* data)
+    : _fBouningRadius(data->_fBouningRadius)
+    , _fDistance(data->_fDistance)
+    , _fPower(data->_fPower)
+    , _isFly(data->_isFly)
+    , _isAimingMissile(data->_isAimingMissile)
+    , _coinType(data->_coinType)
+    , _starType(data->_starType)
+    , _itemType(data->_itemType)
+    , _symbol(data->_symbol){}
 };
 
 class CScoreUI;

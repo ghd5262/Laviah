@@ -19,6 +19,8 @@ protected:
 	virtual bool init() override;
 
 private:
+    void setParticle();
+    
 	CNormalBullet(sBULLET_PARAM bulletParam, float angle);
 	virtual ~CNormalBullet(){};
 

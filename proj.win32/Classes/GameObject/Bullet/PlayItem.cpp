@@ -54,20 +54,19 @@ bool CPlayItem::init()
         addChild(m_pTexture);
     }
     
-    if (m_BulletParam._isFly){
-        
-        auto test = CItemBubble::create(sBULLET_PARAM( 0.f, 0.f, 0.f, false,//FlyItem 여부
-                                                      m_BulletParam._isAimingMissile),//AimingMissile 여부
-                                        MakeString("itemBubbleIcon_%d.png", m_BulletParam._itemType).c_str(),
-                                        -getRotation(),					//초기 각도
-                                        this);
-        
-        CGameScene::getGridWorld()->addChild(test, 100);
-        
-#if(!USE_MEMORY_POOLING)
-        CObjectManager::Instance()->AddBullet(test);
-#endif
-    }
+//    if (m_BulletParam._isFly){
+//        
+//        auto test = CItemBubble::create(sBULLET_PARAM()),//AimingMissile 여부
+//                                        MakeString("itemBubbleIcon_%d.png", m_BulletParam._itemType).c_str(),
+//                                        -getRotation(),					//초기 각도
+//                                        this);
+//        
+//        CGameScene::getGridWorld()->addChild(test, 100);
+//        
+//#if(!USE_MEMORY_POOLING)
+//        CObjectManager::Instance()->AddBullet(test);
+//#endif
+//    }
     
     return true;
 }

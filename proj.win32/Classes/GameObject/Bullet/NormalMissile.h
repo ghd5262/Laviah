@@ -20,6 +20,10 @@ protected:
 	virtual bool init() override;
 
 private:
+    void createTargetLine();
+    void createParticle_Flame();
+    void createParticle_Explosion();
+
 	CNormalMissile(sBULLET_PARAM bulletParam, float angle);
 	virtual ~CNormalMissile(){};
 

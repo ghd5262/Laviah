@@ -10,6 +10,7 @@
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
 #include "../../MyUI/MultipleScore.h"
+#include "../BulletCreator.hpp"
 
 using namespace cocos2d;
 
@@ -103,31 +104,14 @@ void CStickBullet::CollisionWithBarrier()
 void CStickBullet::ChangeToCoinOrStar()
 {
     float distance = m_TargetVec.distance(getPosition());
+    auto bullet = sBULLET_PARAM();
     
-    CBullet* test;
-    if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star){
-        float distance = m_TargetVec.distance(getPosition());
-        test = CPlayStar::create(
-                                 sBULLET_PARAM(
-                                               25.f, distance, 0.f, true, false,
-                                               eCOIN_TYPE_none,
-                                               static_cast<eSTAR_TYPE>(5)),
-                                 -getRotation(),
-                                 getPosition());
-    }
-    else{
-        test = CPlayCoin::create(
-                                 sBULLET_PARAM(
-                                               25.f, distance, 0.f, true, false,
-                                               static_cast<eCOIN_TYPE>(5)),
-                                 -getRotation(),
-                                 getPosition());
-    }
-    test->setBulletSpeed(getBulletSpeed());
-    CGameScene::getGridWorld()->addChild(test);
+    if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star)
+        bullet._symbol = 'Y';
+    else
+        bullet._symbol = 'T';
     
-#if(!USE_MEMORY_POOLING)
-    CObjectManager::Instance()->AddBullet(test);
-#endif
+    CBulletCreator::createBullet(bullet, -getRotation(), distance);
+    
     ReturnToMemoryBlock();
 }
