@@ -53,7 +53,7 @@ CCharacterDataManager::CCharacterDataManager()
 		param._giantTextureName = valueItem["giant"].asString();
 		param._planetTextureName = valueItem["planet"].asString();
 		param._normalBulletTextureName = valueItem["normalBullet"].asString();
-		param._stickBulletTextureName = valueItem["stickBullet"].asString();\
+		param._stickBulletTextureName = valueItem["stickBullet"].asString();
 		param._normalMissileTextureName = valueItem["normalMissile"].asString();
 		param._aimingMissileTextureName = valueItem["aimingMissile"].asString();
 		param._normalMissilePattern = valueItem["normalMissilePattern"].asString();
@@ -135,11 +135,6 @@ CCharacterDataManager::CCharacterDataManager()
  //       
  //       m_CharacterList.emplace_back(character);
 	//}
-}
-
-void CCharacterDataManager::InitWithCharacter()
-{
-    
 }
 
 CCharacterDataManager::~CCharacterDataManager()

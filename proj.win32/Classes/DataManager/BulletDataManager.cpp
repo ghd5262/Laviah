@@ -4,6 +4,11 @@
 
 using namespace cocos2d;
 
+namespace BULLET_DEFAULT_PACK {
+    const std::string PNG   = "defaultBulletTexturePack.png";
+    const std::string PLIST = "defaultBulletTexturePack.plist";
+}
+
 CBulletDataManager::CBulletDataManager()
 {
     Json::Value root;
@@ -34,16 +39,24 @@ CBulletDataManager::CBulletDataManager()
         
         sBULLET_PARAM param;
         
-        param._fBouningRadius = bullet["bindingRadius"].asDouble();
-        param._fPower = bullet["power"].asDouble();
-        param._fDistance = bullet["distance"].asDouble();
-        param._symbol = (bullet["symbol"].asString())[0];
-        param._isAimingMissile = bullet["isAimingMissile"].asBool();
-        param._coinType = static_cast<eCOIN_TYPE>(bullet["coinType"].asInt());
-        param._starType = static_cast<eSTAR_TYPE>(bullet["starType"].asInt());
-        param._itemType = static_cast<eITEM_TYPE>(bullet["itemType"].asInt());
+        param._boundingRadius   = bullet["bindingRadius"].asDouble();
+        param._power            = bullet["power"].asDouble();
+        param._symbol           = (bullet["symbol"].asString())[0];
+        param._isAiming         = bullet["isAimingMissile"].asBool();
         
-        AddBulletData(param);//(bullet["symbol"].asString())[0],
+        AddBulletData(param);
+    }
+    
+    auto util = FileUtils::getInstance();
+    auto spriteFrameCache = SpriteFrameCache::getInstance();
+    
+    if (util->isFileExist(BULLET_DEFAULT_PACK::PNG) &&
+        util->isFileExist(BULLET_DEFAULT_PACK::PLIST))
+    {
+        if (!spriteFrameCache->isSpriteFramesWithFileLoaded(BULLET_DEFAULT_PACK::PLIST)){
+            spriteFrameCache->addSpriteFramesWithFile(BULLET_DEFAULT_PACK::PLIST,
+                                                      BULLET_DEFAULT_PACK::PNG);
+        }
     }
 }
 

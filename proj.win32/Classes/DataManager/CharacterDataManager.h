@@ -38,9 +38,7 @@ class CCharacterDataManager
 {
 public:
     static CCharacterDataManager* Instance();
-    
-    void InitWithCharacter();
-    
+        
     //getter & setter
     sCHARACTER_PARAM getCharacterInfoByIndex(int index) const;
     std::vector<sCHARACTER_PARAM> getCharacterList(){ return m_CharacterList; };
@@ -52,5 +50,4 @@ private:
     
 private:
     std::vector<sCHARACTER_PARAM> m_CharacterList;
-	std::unique_ptr<cocos2d::network::Downloader> m_Downloader;
 };

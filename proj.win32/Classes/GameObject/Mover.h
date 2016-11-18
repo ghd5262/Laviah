@@ -8,7 +8,7 @@
 class CMover : public CGameObject
 {
 public:
-	CMover(float boundingRadius);
+	CMover();
 	virtual ~CMover() = 0;
 
 	bool IsHit(CGameObject* mover);

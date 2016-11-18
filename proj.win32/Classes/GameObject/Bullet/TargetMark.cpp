@@ -7,18 +7,17 @@
 
 using namespace cocos2d;
 
-CTargetMark::CTargetMark(sBULLET_PARAM data, float angle)
-: CBullet(data, angle)
-, m_Bullet(nullptr)
+CTargetMark::CTargetMark()
+: m_Bullet(nullptr)
 , m_pParticle(nullptr)
 , m_DeleteTime(0.f)
 , m_isItemTime(false){}
 
 CTargetMark::~CTargetMark(){}
 
-CTargetMark* CTargetMark::create(sBULLET_PARAM data, float angle)
+CTargetMark* CTargetMark::create()
 {
-	CTargetMark* pRet = (CTargetMark*)new(std::nothrow)CTargetMark(data, angle);
+	CTargetMark* pRet = (CTargetMark*)new(std::nothrow)CTargetMark();
 
 	if (pRet && pRet->init())
 	{
@@ -39,23 +38,29 @@ CTargetMark* CTargetMark::build()
 {
     if(m_Bullet == nullptr) return nullptr;
     
-    float distance = m_pPlanet->getPosition().distance(m_Bullet->getPosition());
-    m_DeleteTime = distance / m_Bullet->getBulletSpeed();
+    float distance = m_Planet->getPosition().distance(m_Bullet->getPosition());
+    m_DeleteTime = distance / m_Bullet->getSpeed();
+    
     auto item = CItemManager::Instance()->getCurrentItem();
     m_isItemTime = (eITEM_FLAG_coin & item || eITEM_FLAG_star & item);
     
-    if(m_isItemTime)
-    {
-        this->setParticle();
-    }
-
-    auto line = Sprite::create("test.png");
-    if (line != nullptr)
-    {
-        line->setAnchorPoint(Vec2(0.025f, 0.5f));
-        line->setOpacity(255 * 0.4f);
-        this->addChild(line);
-    }
+    if(m_isItemTime) this->setParticle();
+    
+    // sprite init
+    auto sprite = Sprite::createWithSpriteFrameName("test.png");
+    this->setContentSize(sprite->getContentSize());
+    sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    sprite->setPosition(this->getContentSize() / 2);
+    this->addChild(sprite);
+    
+    // position init
+    auto pos = CBullet::getCirclePosition(getAngle(),
+                                          getDistance(),
+                                          m_Planet->getPosition());
+    this->setPosition(pos);
+    
+    // rotation init
+    this->setRotation(-getAngle());
     
     return this;
 }
@@ -75,20 +80,12 @@ bool CTargetMark::init()
     
     m_ScreenRect = Rect(-visibleSize.width, 0, visibleSize.width * 3, visibleSize.height);
     
-    
-    setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20))
-                 + m_pPlanet->getPosition().x);
-    setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) * (m_pPlanet->getBRadius() + 20))
-                 + m_pPlanet->getPosition().y);
-    setRotation(-m_fAngle);
-    
     return true;
 }
 
 void CTargetMark::setParticle()
 {
-    m_pParticle = CParticle_Line::create(MakeString("particle_star%d.png",
-                                                    m_BulletParam._isAimingMissile + 1));
+    m_pParticle = CParticle_Line::create(MakeString("particle_star%d.png", this->getIsAiming() + 1));
     if (m_pParticle != nullptr){
         m_pParticle->retain();
         m_pParticle->setAnchorPoint(Vec2::ZERO);
@@ -100,7 +97,7 @@ void CTargetMark::setParticle()
 void CTargetMark::Rotation(float dir, float delta)
 {
 	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
-	if (true == m_BulletParam._isAimingMissile && !m_isItemTime){
+	if (this->getIsAiming() && !m_isItemTime){
 		if (m_Bullet->IsAlive() && !m_ScreenRect.containsPoint(m_Bullet->getPosition()))
 		{
 			return;
@@ -112,6 +109,8 @@ void CTargetMark::Rotation(float dir, float delta)
 
 void CTargetMark::Execute(float delta)
 {
+    m_Time += delta;
+    
     auto item = CItemManager::Instance()->getCurrentItem();
     if(eITEM_FLAG_coin & item || eITEM_FLAG_star & item)
     {
@@ -119,7 +118,6 @@ void CTargetMark::Execute(float delta)
             this->setParticle();
     }
     
-    m_fTime += delta;
-    if (m_fTime > m_DeleteTime)
-        ReturnToMemoryBlock();
+    if (m_Time > m_DeleteTime)
+        this->ReturnToMemoryBlock();
 }

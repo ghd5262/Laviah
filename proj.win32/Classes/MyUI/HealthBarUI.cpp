@@ -20,38 +20,31 @@ CHealthBarUI* CHealthBarUI::create(HealthCalculatorFunc healthCalFunc)
 
 bool CHealthBarUI::init()
 {
-	if (!initVariable())
-		return false;
-	return true;
-}
-
-bool CHealthBarUI::initVariable()
-{
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-
-	m_HealthBarImg = Sprite::create("healthBar2.png");
-	if (m_HealthBarImg != nullptr){
-		m_HealthBar = ProgressTimer::create(m_HealthBarImg);
-
-		if (m_HealthBar != nullptr){
-			m_HealthBar->setType(ProgressTimer::Type::BAR);
-			m_HealthBar->setMidpoint(Vec2(0, 0));
-			m_HealthBar->setBarChangeRate(Vec2(1, 0));
-			this->addChild(m_HealthBar);
-			auto HealthBarUIAction = ProgressFromTo::create(100, 100, 0);
-			m_HealthBar->runAction(HealthBarUIAction);
-
-		}
-	}
-
-	m_HealthBarBG = Sprite::create("healthBarBG2.png");
-	if (m_HealthBarBG != nullptr)
-	{
-		m_HealthBarBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		this->addChild(m_HealthBarBG);
-	}
-
-	return true;
+    if (!Node::init()) return false;
+        
+    m_HealthBarImg = Sprite::create("healthBar2.png");
+    if (m_HealthBarImg != nullptr){
+        m_HealthBar = ProgressTimer::create(m_HealthBarImg);
+        
+        if (m_HealthBar != nullptr){
+            m_HealthBar->setType(ProgressTimer::Type::BAR);
+            m_HealthBar->setMidpoint(Vec2(0, 0));
+            m_HealthBar->setBarChangeRate(Vec2(1, 0));
+            this->addChild(m_HealthBar);
+            auto HealthBarUIAction = ProgressFromTo::create(100, 100, 0);
+            m_HealthBar->runAction(HealthBarUIAction);
+            
+        }
+    }
+    
+    m_HealthBarBG = Sprite::create("healthBarBG2.png");
+    if (m_HealthBarBG != nullptr)
+    {
+        m_HealthBarBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        this->addChild(m_HealthBarBG);
+    }
+    
+    return true;
 }
 
 void CHealthBarUI::Execute(float delta)

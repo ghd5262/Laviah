@@ -10,7 +10,6 @@ public:
 
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
 
 private:
 	CLevelProgressBar(cocos2d::Size barSize, int maxLevel, int curLevel)

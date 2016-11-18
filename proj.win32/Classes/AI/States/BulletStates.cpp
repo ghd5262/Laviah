@@ -20,7 +20,7 @@ void CBulletNormal::Enter(CBullet* bullet)
 
 void CBulletNormal::Execute(CBullet* bullet, float delta)
 {
-	if (true == bullet->getBulletParam()._isFly)
+	if (bullet->getIsFly())
 		bullet->Seek(delta);
 
 	if (bullet->IsHit(bullet->getPlayer()))
@@ -29,29 +29,29 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 		return;
 	}
 
-	if (bullet->isEffectWithItem(eITEM_FLAG_shield) && 
+	if (bullet->IsEffectWithItem(eITEM_FLAG_shield) && 
 		bullet->getPlayer()->getItemBarrier()->getBarrierAlive() && 
 		bullet->IsHit(bullet->getPlayer()->getPosition(),
-		bullet->getPlayer()->getItemBarrier()->getBRadius()))
+		bullet->getPlayer()->getItemBarrier()->getBoundingRadius()))
 	{
 		bullet->CollisionWithBarrier();
 		return;
 	}
 
-	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
+	if (bullet->IsEffectWithItem(static_cast<eITEM_FLAG>
 		(eITEM_FLAG_magnet & CItemManager::Instance()->getCurrentItem())))
 	{
 		bullet->getFSM()->ChangeState(CBulletMagnetItem::Instance());
 	}
 
-	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
+	if (bullet->IsEffectWithItem(static_cast<eITEM_FLAG>
 		(eITEM_FLAG_coin & CItemManager::Instance()->getCurrentItem())))
 	{
 		bullet->ChangeToCoinOrStar();
 		return;
 	}
 	
-	if (bullet->isEffectWithItem(static_cast<eITEM_FLAG>
+	if (bullet->IsEffectWithItem(static_cast<eITEM_FLAG>
 		(eITEM_FLAG_star & CItemManager::Instance()->getCurrentItem())))
 	{
 		bullet->ChangeToCoinOrStar();
@@ -111,7 +111,7 @@ void CBulletMagnetItem::Enter(CBullet* bullet)
 
 void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 {
-	if (true == bullet->getBulletParam()._isFly || bullet->getIsPlayerGet())
+	if (bullet->getIsFly() || bullet->getIsPlayerGet())
 		bullet->Seek(delta);
 
 	auto player = bullet->getPlayer();
@@ -126,7 +126,7 @@ void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 	{
 		bullet->setIsPlayerGet(true);
 		bullet->setTargetVec(bullet->getPlayer()->getPosition());
-		bullet->setBulletSpeed(bullet->getBulletSpeed() + 50);
+		bullet->setSpeed(bullet->getSpeed() + 50);
 	}
 	else if (bullet->IsHit(bullet->getPlanet()))
 	{

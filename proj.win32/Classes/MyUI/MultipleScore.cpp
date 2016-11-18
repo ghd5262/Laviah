@@ -14,7 +14,7 @@ CMultipleScore::CMultipleScore()
 	, m_MultipleNumber(0)
 	, m_SavedScore(0)
 	, m_isAbleToMultiple(false)
-	, m_fTime(0.f)
+	, m_Time(0.f)
 {}
 
 CMultipleScore* CMultipleScore::create()
@@ -35,32 +35,26 @@ CMultipleScore* CMultipleScore::create()
 
 bool CMultipleScore::init()
 {
-	if (!initVariable())
-		return false;
-	return true;
-}
-
-bool CMultipleScore::initVariable()
-{
-
-	m_StarScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-
-	m_Player = CObjectManager::Instance()->getPlayer();
-
-	m_MultipleNumberLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 30);
-	m_MultipleNumberLabel->setColor(COLOR::BRIGHTGRAY);
-	m_MultipleNumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x, m_Player->getOriginPos().y + m_Player->getBRadius() + 50));
-	m_MultipleNumberLabel->setVisible(false);
-	CGameScene::getGridWorld()->addChild(m_MultipleNumberLabel);
-
-	return true;
+    if (!CGameObject::init()) return false;
+    
+    m_StarScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
+    
+    m_Player = CObjectManager::Instance()->getPlayer();
+    
+    m_MultipleNumberLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 30);
+    m_MultipleNumberLabel->setColor(COLOR::BRIGHTGRAY);
+    m_MultipleNumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x, m_Player->getOriginPos().y + m_Player->getBoundingRadius() + 50));
+    m_MultipleNumberLabel->setVisible(false);
+    CGameScene::getGridWorld()->addChild(m_MultipleNumberLabel);
+   
+    return true;
 }
 
 void CMultipleScore::AddScore(unsigned score)
 {
 	// 타이머 초기화
-	m_fTime = 0.f;
+	m_Time = 0.f;
 
 	// 현재 스코어 배수 +1
 	m_MultipleNumber += 1;
@@ -96,13 +90,13 @@ void CMultipleScore::Execute(float delta)
 {
 	if (m_isAbleToMultiple == true)
 	{
-		m_fTime += delta;
+		m_Time += delta;
 
 		// UI 좌표 수정
-		m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x, m_Player->getOriginPos().y + m_Player->getBRadius() + 50));
+		m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x, m_Player->getOriginPos().y + m_Player->getBoundingRadius() + 50));
 
 		// 배수 유지 시간이 지나면 점수 반영 후 배수 초기화
-		if (m_fTime > MULTIPLE_TIME_LIMIT)
+		if (m_Time > MULTIPLE_TIME_LIMIT)
 		{
 			calculateScore();
 			multipleScoreReset();

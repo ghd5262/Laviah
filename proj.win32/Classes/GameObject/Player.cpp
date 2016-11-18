@@ -42,93 +42,85 @@ CPlayer::CPlayer(
 	float boundingRadius,
 	float angle,
 	float rotateSpeed)
-	: CGameObject(boundingRadius)
-	, m_CharacterParam(characterParam)
-	, m_fAngle(angle)
-	, m_fRotateSpeed(rotateSpeed)
-	, m_fMaxLife(characterParam._health)
-	, m_fLife(characterParam._health)
-	, m_fMagnetLimitTime(0)
-	, m_fMagnetLimitRadius(0)
-	, m_EffectItemTypes(eITEM_FLAG_none)
-	, m_pParticle(nullptr)
-	, m_pParticleDead(nullptr)
-	, m_pParticleAlive(nullptr)
-	, m_isRoatating(false)
-	, m_pUIRunScore(nullptr)
-	, m_pItemBarrier(nullptr)
-	, m_isPlayerDead(true)
-    , m_MagnetEffect(nullptr)
-	, m_Invincibility(false)
+: m_CharacterParam(characterParam)
+, m_Angle(angle)
+, m_fRotateSpeed(rotateSpeed)
+, m_fMaxLife(characterParam._health)
+, m_fLife(characterParam._health)
+, m_fMagnetLimitTime(0)
+, m_fMagnetLimitRadius(0)
+, m_EffectItemTypes(eITEM_FLAG_none)
+, m_pParticle(nullptr)
+, m_pParticleDead(nullptr)
+, m_pParticleAlive(nullptr)
+, m_isRoatating(false)
+, m_pUIRunScore(nullptr)
+, m_pItemBarrier(nullptr)
+, m_isPlayerDead(true)
+, m_MagnetEffect(nullptr)
+, m_Invincibility(false)
 {
 }
 
 bool CPlayer::init()
 {
 	//this->DrawDebugBinding();
-	if (!initVariable())
-		return false;
-	return true;
-}
-
-bool CPlayer::initVariable()
-{
-
-	m_fMagnetLimitTime = m_CharacterParam._magnetItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_TIME_IDX");
-	m_fMagnetLimitRadius = m_CharacterParam._magnetItemSize + CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_SIZE_IDX");
-	m_fCoinLimitTime = m_CharacterParam._coinItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_COIN_LIMIT_TIME_IDX");
-	m_fStarLimitTime = m_CharacterParam._starItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_STAR_LIMIT_TIME_IDX");
-	m_fBonusTimeLimitTime = m_CharacterParam._bonusItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_BONUS_LIMIT_TIME_IDX");
-	m_fGiantLimitTime = m_CharacterParam._giantItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_GIANT_LIMIT_TIME_IDX");
-
-	setItemEffect(eITEM_FLAG_giant);
-	setCascadeOpacityEnabled(true);
-	m_FSM = std::shared_ptr<CStateMachine<CPlayer>>(
-		new CStateMachine<CPlayer>(this), [](CStateMachine<CPlayer>* fsm)
-	{
-		delete fsm;
-	});
-
-	if (m_FSM.get() != nullptr){
-		m_FSM.get()->ChangeState(CPlayerNormal::Instance());
-	}
-
-	m_pItemBarrier = CItemBarrier::create("barrier2.png", 800.f);
-	if (m_pItemBarrier != nullptr){
-		m_pItemBarrier->setPosition(Vec2(0, 0));
-		m_pItemBarrier->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		addChild(m_pItemBarrier);
-	}
-
-	m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam._normalTextureName);
-	if (m_pTexture != nullptr){
-		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		m_pTexture->setScale(0.9f);
-		addChild(m_pTexture);
-		m_pTexture->setVisible(false);
-	}
-
-	m_pParticle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
-	if (m_pParticle != nullptr){
-		m_pParticle->retain();
-		m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_pParticle->setAngle(90);
-		m_pParticle->setGravity(Vec2(0, -270));
-		m_pParticle->setStartSize(40.f);
-		m_pParticle->setEndSize(4.f);
-		CGameScene::getGridWorld()->addChild(m_pParticle, 10);
-		m_pParticle->setVisible(false);
-	}
-
-
-	m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, m_fMagnetLimitTime);
-	if (m_MagnetEffect != nullptr)
-	{
-		m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		CGameScene::getGridWorld()->addChild(m_MagnetEffect);
-	}
-
-	return true;
+    if (!CGameObject::init()) return false;
+    
+    m_fMagnetLimitTime = m_CharacterParam._magnetItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_TIME_IDX");
+    m_fMagnetLimitRadius = m_CharacterParam._magnetItemSize + CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_SIZE_IDX");
+    m_fCoinLimitTime = m_CharacterParam._coinItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_COIN_LIMIT_TIME_IDX");
+    m_fStarLimitTime = m_CharacterParam._starItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_STAR_LIMIT_TIME_IDX");
+    m_fBonusTimeLimitTime = m_CharacterParam._bonusItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_BONUS_LIMIT_TIME_IDX");
+    m_fGiantLimitTime = m_CharacterParam._giantItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_GIANT_LIMIT_TIME_IDX");
+    
+    setItemEffect(eITEM_FLAG_giant);
+    setCascadeOpacityEnabled(true);
+    m_FSM = std::shared_ptr<CStateMachine<CPlayer>>(
+                                                    new CStateMachine<CPlayer>(this), [](CStateMachine<CPlayer>* fsm)
+                                                    {
+                                                        delete fsm;
+                                                    });
+    
+    if (m_FSM.get() != nullptr){
+        m_FSM.get()->ChangeState(CPlayerNormal::Instance());
+    }
+    
+    m_pItemBarrier = CItemBarrier::create("barrier2.png", 800.f);
+    if (m_pItemBarrier != nullptr){
+        m_pItemBarrier->setPosition(Vec2(0, 0));
+        m_pItemBarrier->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        addChild(m_pItemBarrier);
+    }
+    
+    m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam._normalTextureName);
+    if (m_pTexture != nullptr){
+        m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+        m_pTexture->setScale(0.9f);
+        addChild(m_pTexture);
+        m_pTexture->setVisible(false);
+    }
+    
+    m_pParticle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
+    if (m_pParticle != nullptr){
+        m_pParticle->retain();
+        m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_pParticle->setAngle(90);
+        m_pParticle->setGravity(Vec2(0, -270));
+        m_pParticle->setStartSize(40.f);
+        m_pParticle->setEndSize(4.f);
+        CGameScene::getGridWorld()->addChild(m_pParticle, 10);
+        m_pParticle->setVisible(false);
+    }
+    
+    
+    m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, m_fMagnetLimitTime);
+    if (m_MagnetEffect != nullptr)
+    {
+        m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        CGameScene::getGridWorld()->addChild(m_MagnetEffect);
+    }
+    return true;
 }
 
 void CPlayer::Execute(float delta)
@@ -221,13 +213,13 @@ void CPlayer::LostSomeHealth(float loseHealth)
 void CPlayer::Rotation(float dir, float delta)
 {
 	m_isRoatating = true;
-	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed * delta);
-//	m_fAngle = static_cast<int>(m_fAngle) % 360;
-	m_pParticle->setStartSpin(m_fAngle);
-	m_pParticle->setEndSpin(m_fAngle);
+	m_Angle = this->getRotation() + (dir * m_fRotateSpeed * delta);
+//	m_Angle = static_cast<int>(m_Angle) % 360;
+	m_pParticle->setStartSpin(m_Angle);
+	m_pParticle->setEndSpin(m_Angle);
 	m_pParticle->setAngle(dir == 1 ? 180 : 0);
 	m_pParticle->setGravity(Vec2(-90 * dir, 0));
-	this->setRotation(m_fAngle);
+	this->setRotation(m_Angle);
 
 	// 플레이어가 생성되는 시점에는 m_pUIRunScore가 없다.
     if(m_pUIRunScore == nullptr)
@@ -242,7 +234,7 @@ void CPlayer::GiantMode()
 		CallFunc::create([&](){
         this->m_pTexture->setSpriteFrame(m_CharacterParam._giantTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		this->setBRadius(100.f);
+		this->setBoundingRadius(100.f);
 		m_pParticle->setStartSize(120.f);
 		m_pParticle->setEndSize(40.f);
 	}), nullptr);
@@ -258,7 +250,7 @@ void CPlayer::NormalMode()
 		CallFunc::create([&](){
         this->m_pTexture->setSpriteFrame(m_CharacterParam._normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		this->setBRadius(6.f);
+		this->setBoundingRadius(6.f);
 		m_pParticle->setStartSize(40.f);
         m_pParticle->setEndSize(4.f);
 	}), nullptr);

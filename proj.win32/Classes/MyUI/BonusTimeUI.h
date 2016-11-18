@@ -12,8 +12,6 @@ public:
 		eLETTER letterNum,
 		cocos2d::Vec2 position);
 
-	virtual void Execute(float delta = 0.f);
-
 	//setter & getter
 	cocos2d::Vec2 getLetterWorldPosition() const { return _parent->convertToWorldSpace(m_OriginPos); }
 	bool getIsCollected(){ return m_bIsCollected; }
@@ -28,7 +26,6 @@ public:
 	}
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
 
 private:
 	CLetter(std::string normalTextureName,
@@ -60,20 +57,19 @@ public:
 	void CollectLetter(eLETTER letter);
 	void LetsBonusTime();
 	void BonusTimeIsFinish();
-	eLETTER NonCollectedLetterNum() const;			// 만약 모두 가지고 있다면 max값 반환
-	cocos2d::Vec2 NonCollectedLetterWorldPos() const;		// 아직 모으지 않은 문자의 월드좌표 반환
-	virtual void Execute(float delta = 0.f);
+	eLETTER NonCollectedLetterNum() const;
+	cocos2d::Vec2 NonCollectedLetterWorldPos() const;	
+	virtual void Execute(float delta = 0.f) override;
 
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
 
 private:
-	CBonusTimeUI() : m_fTime(0.0f){};
+	CBonusTimeUI() : m_Time(0.0f){};
 	virtual ~CBonusTimeUI(){};
 
 private:
 	CLetter* m_LetterList[eLETTER_MAX];
-	float m_fTime;
+	float m_Time;
 };
 

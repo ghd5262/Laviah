@@ -35,7 +35,7 @@ public:
 	void setItemEffect(int item){ m_EffectItemTypes |= item; }
 
 	//인자로 전달된 아이템의 영향을 받는 bullet인지 검사한다.
-	bool isEffectWithItem(eITEM_FLAG itemType){ return on(itemType); }
+	bool IsEffectWithItem(eITEM_FLAG itemType){ return on(itemType); }
 
 	//현재 bullet이 영향을 받는 모든 플래그를 반환함
 	int getItemEffect(){ return m_EffectItemTypes; }
@@ -64,10 +64,9 @@ public:
 
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
 
 	//getter & setter
-	CC_SYNTHESIZE(float, m_fAngle, Angle);
+	CC_SYNTHESIZE(float, m_Angle, Angle);
 	CC_SYNTHESIZE(float, m_fRotateSpeed, RotateSpeed);
 	CC_SYNTHESIZE(float, m_fMaxLife, MaxLife);
 	CC_SYNTHESIZE(float, m_fLife, Life);

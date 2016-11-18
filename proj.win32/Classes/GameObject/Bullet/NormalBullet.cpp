@@ -15,14 +15,12 @@
 
 using namespace cocos2d;
 
-CNormalBullet::CNormalBullet(sBULLET_PARAM bulletParam, float angle)
-: CBullet(bulletParam, angle)
-, m_pParticleCrash(nullptr)
-{}
+CNormalBullet::CNormalBullet()
+: m_pParticleCrash(nullptr){}
 
-CNormalBullet* CNormalBullet::create(sBULLET_PARAM bulletParam, float angle)
+CNormalBullet* CNormalBullet::create()
 {
-	CNormalBullet* pRet = (CNormalBullet*)new(std::nothrow)CNormalBullet(bulletParam, angle);
+	CNormalBullet* pRet = (CNormalBullet*)new(std::nothrow)CNormalBullet();
 
 	if (pRet && pRet->init())
 	{
@@ -46,21 +44,10 @@ bool CNormalBullet::init()
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin |
                         eITEM_FLAG_star | eITEM_FLAG_shield);
     
-    m_pTexture = Sprite::createWithSpriteFrameName(m_pPlayer->getCharacterParam()._normalBulletTextureName);
-    if (m_pTexture != nullptr){
-        m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-        addChild(m_pTexture);
-    }
-    
-    m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
-    m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
+    m_MultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
+    m_UIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
     
     return true;
-}
-
-void CNormalBullet::Execute(float delta)
-{
-	getFSM()->Execute(delta);
 }
 
 void CNormalBullet::CollisionWithPlanet()
@@ -76,9 +63,9 @@ void CNormalBullet::CollisionWithPlayer()
 		this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	}
 	else{
-		m_pPlayer->StackedRL(0.1f, 10, 10, 5);
-		CCLOG("Bullet Power %f", m_BulletParam._fPower);
-		m_pPlayer->LostSomeHealth(m_BulletParam._fPower);
+		m_Player->StackedRL(0.1f, 10, 10, 5);
+		CCLOG("Bullet Power %f", this->getPower());
+		m_Player->LostSomeHealth(this->getPower());
         this->ReturnToMemoryBlock();
 	}
 }
@@ -92,22 +79,19 @@ void CNormalBullet::CollisionWithBarrier()
 void CNormalBullet::ChangeToCoinOrStar()
 {
 	float distance = m_TargetVec.distance(getPosition());
-
-    auto bullet = sBULLET_PARAM();
+    char symbol = 0;
     
-    if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star)
-        bullet._symbol = 'P';
-    else
-        bullet._symbol = 'U';
+    if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star) symbol = 'P';
+    else symbol = 'U';
     
-    CBulletCreator::createBullet(bullet, -getRotation(), distance);
+    CBulletCreator::createBullet(symbol, -getRotation(), distance, getSpeed());
     
     this->ReturnToMemoryBlock();
 }
 
 void CNormalBullet::setParticle()
 {
-    m_pParticleCrash = CParticle_Explosion::create(m_pPlayer->getCharacterParam()._normalBulletTextureName);
+    m_pParticleCrash = CParticle_Explosion::create(m_Player->getCharacterParam()._normalBulletTextureName);
     if (m_pParticleCrash != nullptr){
         m_pParticleCrash->retain();
         m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

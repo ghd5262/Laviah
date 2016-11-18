@@ -29,32 +29,27 @@ CPlanet* CPlanet::create(
 }
 
 CPlanet::CPlanet(std::string textureName, float boundingRadius, float angle, float rotateSpeed)
-	: CGameObject(boundingRadius)
-	, m_TextureName(textureName)
-	, m_fAngle(angle)
-	, m_fRotateSpeed(rotateSpeed)
-	, m_fElapsed(0.0f)
+: m_TextureName(textureName)
+, m_Angle(angle)
+, m_fRotateSpeed(rotateSpeed)
+, m_fElapsed(0.0f)
 {
+    this->setBoundingRadius(boundingRadius);
 }
 
 bool CPlanet::init()
 {
 	//this->DrawDebugBinding();   //for debug
-	if (!initVariable())
-		return false;
-	return true;
-}
-
-bool CPlanet::initVariable()
-{
-	m_pTexture = Sprite::createWithSpriteFrameName(m_TextureName);
-	if (m_pTexture != nullptr){
-		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		m_pTexture->setCascadeColorEnabled(true);
-		addChild(m_pTexture);
-	}
-
-	return true;
+    if (!Node::init()) return false;
+    
+    m_pTexture = Sprite::createWithSpriteFrameName(m_TextureName);
+    if (m_pTexture != nullptr){
+        m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+        m_pTexture->setCascadeColorEnabled(true);
+        addChild(m_pTexture);
+    }
+    
+    return true;
 }
 
 float CPlanet::noise(int x, int y) {
@@ -110,9 +105,9 @@ void CPlanet::Execute(float delta)
 // Dir -1 == Left, 1 == Right
 void CPlanet::Rotation(float dir, float delta)
 {
-	m_fAngle = this->getRotation() + (dir * m_fRotateSpeed * delta);
-//	m_fAngle = static_cast<int>(m_fAngle) % 360;
-	this->setRotation(m_fAngle);
+	m_Angle = this->getRotation() + (dir * m_fRotateSpeed * delta);
+//	m_Angle = static_cast<int>(m_Angle) % 360;
+	this->setRotation(m_Angle);
 }
 
 void CPlanet::setPlanetTexture(std::string textureName)

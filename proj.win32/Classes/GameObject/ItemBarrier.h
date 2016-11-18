@@ -24,7 +24,6 @@ public:
     
 protected:
     virtual bool init() override;
-    virtual bool initVariable() override;
     
     //getter & setter
 	CC_SYNTHESIZE(bool, m_bBarrierAlive, BarrierAlive);
@@ -34,7 +33,7 @@ private:
 	{
 		m_pTexture->setScale(0.f);
 		m_pTexture->setVisible(false);
-		setBRadius(0);
+		setBoundingRadius(0);
 		m_bBarrierAlive = false;
 	}
     CItemBarrier(std::string textureName, float boundingRadius);

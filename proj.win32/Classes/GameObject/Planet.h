@@ -17,10 +17,9 @@ public:
 
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
 
 	//getter & setter
-	CC_SYNTHESIZE(float, m_fAngle, Angle);
+	CC_SYNTHESIZE(float, m_Angle, Angle);
 	CC_SYNTHESIZE(float, m_fRotateSpeed, RotateSpeed);
 
 private:

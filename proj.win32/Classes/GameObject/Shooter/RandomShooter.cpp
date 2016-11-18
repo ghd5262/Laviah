@@ -43,28 +43,28 @@ void CRandomShooter::ShootOnce()
 	CBullet* test = nullptr;
 
 	if (p >= '1' && p <= '3') //일반 bullet
-		test = CNormalBullet::create(bulletParam, m_ShooterParam._fAngle);
+		test = CNormalBullet::create();
 	else if (p >= '4' && p <= '5')//미사일과 조준미사일
-		test = CNormalMissile::create(bulletParam, m_ShooterParam._fAngle);
+		test = CNormalMissile::create();
     else if (p == '6')
-		test = CStickBullet::create(bulletParam, m_ShooterParam._fAngle);
+		test = CStickBullet::create();
 	else if (p >= 'A' && p <= 'G')//아이템
-		test = CPlayItem::create(bulletParam, m_ShooterParam._fAngle);
+		test = CPlayItem::create();
 	else if (p >= 'P' && p <= 'T')//코인
-		test = CPlayCoin::create(bulletParam, m_ShooterParam._fAngle);
+		test = CPlayCoin::create();
 	else if (p >= 'U' && p <= 'Y')//별
-		test = CPlayStar::create(bulletParam, m_ShooterParam._fAngle);
+		test = CPlayStar::create();
 	else if (p == 'Z')//보너스 아이템
-		test = CBonusLetter::create(bulletParam, m_ShooterParam._fAngle);
+		test = CBonusLetter::create();
 	else if (p == 'z')//랜덤 아이템
 	{
-        bulletParam._itemType = static_cast<eITEM_TYPE>(random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2));
+//        bulletParam._itemType = static_cast<eITEM_TYPE>(random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2));
         bulletParam._isFly = random<int>(0, 1);
-		test = CPlayItem::create(bulletParam, m_ShooterParam._fAngle);
+		test = CPlayItem::create();
 	}
     
     CGameScene::getGridWorld()->addChild(test);
-    test->setBulletSpeed(m_ShooterParam._fSpeed);
+    test->setSpeed(m_ShooterParam._fSpeed);
 #if(!USE_MEMORY_POOLING)
 	CObjectManager::Instance()->AddBullet(test);
 #endif
@@ -76,7 +76,7 @@ void CRandomShooter::Execute(float delta) {
 		return;
 
 	m_fIntervalTimer += delta;
-	m_fTime += delta;
+	m_Time += delta;
 	if (m_fIntervalTimer >= m_fIntervalRandom)
 	{
 		for (int count = 0; count < m_nBulletCountAtOnceRandom; count++)
@@ -85,7 +85,7 @@ void CRandomShooter::Execute(float delta) {
 			m_fIntervalTimer = 0.f;
 		}
 	}
-	if (m_ShooterParam._isOneShoot || m_fTime >= m_ShooterParam._fEndTime)
+	if (m_ShooterParam._isOneShoot || m_Time >= m_ShooterParam._fEndTime)
 	{
 		ReturnToMemoryBlock();
 	}

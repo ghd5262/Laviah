@@ -62,41 +62,41 @@ void CPatternShooter::shootOnceByHeight(int height)
             float initDistance = 0.f;
             
             // 0보다 작으면(default -1) bullet에 설정된 distance로 사용한다.
-            if (m_fDistance < 0.0f)
-                initDistance = bulletParam._fDistance;
-            else
-                initDistance = m_fDistance;
+//            if (m_fDistance < 0.0f)
+//                initDistance = bulletParam._fDistance;
+//            else
+//                initDistance = m_fDistance;
             
             
-            bulletParam._fDistance = initDistance + (height * m_PatternParam._heightDistance + 80);
+//            bulletParam._fDistance = initDistance + (height * m_PatternParam._heightDistance + 80);
             bulletParam._isFly = m_ShooterParam._isFly;
             
-            bulletParam._fDistance = 500;
+//            bulletParam._fDistance = 500;
             
             float bulletAngle = ((j * -m_PatternParam._widthAngleDistance) + m_ShooterParam._fAngle + 18.f) + anglePlus;
 //            float bulletAngle = ((j * -m_PatternParam._widthAngleDistance) + anglePlus);
             
             CBullet* test = nullptr;
             if (p >= '1' && p <= '3') //일반 bullet
-                test = CNormalBullet::create(bulletParam, bulletAngle);
+                test = CNormalBullet::create();
             else if (p >= '4' && p <= '5')//미사일과 조준미사일
-                test = CNormalMissile::create(bulletParam, bulletAngle);
+                test = CNormalMissile::create();
             else if (p == '6')
-                test = CStickBullet::create(bulletParam, bulletAngle);
+                test = CStickBullet::create();
             else if (p >= 'A' && p <= 'G')//아이템
-                test = CPlayItem::create(bulletParam, bulletAngle);
+                test = CPlayItem::create();
             else if (p >= 'P' && p <= 'T')//코인
-                test = CPlayCoin::create(bulletParam, bulletAngle);
+                test = CPlayCoin::create();
             else if (p >= 'U' && p <= 'Y')//별
-                test = CPlayStar::create(bulletParam, bulletAngle);
+                test = CPlayStar::create();
             else if (p == 'Z')//보너스 아이템
-                test = CBonusLetter::create(bulletParam, bulletAngle);
+                test = CBonusLetter::create();
             else if (p == 'z')//랜덤 아이템
             {
-                bulletParam._itemType = (eITEM_TYPE)random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2);
-                test = CPlayItem::create(bulletParam, bulletAngle);
+//                bulletParam._itemType = (eITEM_TYPE)random<int>(eITEM_TYPE_health, eITEM_TYPE_MAX - 2);
+                test = CPlayItem::create();
             }
-            test->setBulletSpeed(m_ShooterParam._fSpeed);
+            test->setSpeed(m_ShooterParam._fSpeed);
             CGameScene::getGridWorld()->addChild(test);
 #if(!USE_MEMORY_POOLING)
             CObjectManager::Instance()->AddBullet(test);
@@ -110,7 +110,7 @@ void CPatternShooter::Execute(float delta) {
         return;
     
     m_fIntervalTimer += delta;
-    m_fTime += delta;
+    m_Time += delta;
     
     if (m_fIntervalTimer < m_ShooterParam._fInterval)
         return;
@@ -124,7 +124,7 @@ void CPatternShooter::Execute(float delta) {
         
         this->setRandomAngleIfRandom();
         
-        if(m_ShooterParam._isOneShoot || m_fTime >= m_ShooterParam._fEndTime)
+        if(m_ShooterParam._isOneShoot || m_Time >= m_ShooterParam._fEndTime)
         {
             this->ReturnToMemoryBlock();
         }

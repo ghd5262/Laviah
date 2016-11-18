@@ -60,19 +60,18 @@ protected:
     void setRandomAngleIfRandom();
 
 	CShooterLegacy(sSHOOTER_PARAM param, float distance)
-		: CMover(0.0f)
-		, m_ShooterParam(param)
-		, m_fIntervalTimer(0.0f)
-		, m_fIntervalRandom(0.0f)
-		, m_nBulletCountAtOnceRandom(1)
-		, m_fDistance(distance)
-		, m_isShooterPause(false){
-		m_fTime = m_ShooterParam._fStartTime;
-	}
-	virtual ~CShooterLegacy();
+    : m_ShooterParam(param)
+    , m_fIntervalTimer(0.0f)
+    , m_fIntervalRandom(0.0f)
+    , m_nBulletCountAtOnceRandom(1)
+    , m_fDistance(distance)
+    , m_isShooterPause(false){
+        m_Time = m_ShooterParam._fStartTime;
+    }
+    virtual ~CShooterLegacy();
 
 	//getter & setter
-	CC_SYNTHESIZE(float, m_fTime, Time);//생성 후 부터 시간
+	CC_SYNTHESIZE(float, m_Time, Time);//생성 후 부터 시간
 	CC_SYNTHESIZE(float, m_fIntervalTimer, IntervalTimer)//Interval용 시간
 	CC_SYNTHESIZE(float, m_fIntervalRandom, IntervalRandom);//총알을 쏘는 간격 0.1 ~ Max 사이 값
 	CC_SYNTHESIZE(float, m_fDistance, Distance);// 0 > Distance 이면 bullet의 원래 distance값을 사용함

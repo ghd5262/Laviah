@@ -20,28 +20,23 @@ CScoreUI* CScoreUI::create(std::string fontName, size_t fontSize, std::string va
 
 bool CScoreUI::init()
 {
-	if (!initVariable())
-		return false;
-	return true;
-}
-
-bool CScoreUI::initVariable()
-{
-	m_ValueLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
-	if (nullptr != m_ValueLabel)
-		addChild(m_ValueLabel);
-
-	if (m_ValueImgName != "")
-	{
-		m_ValueImg = Sprite::create(m_ValueImgName);
-		if (m_ValueImg != nullptr)
-		{
-			m_ValueImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			addChild(m_ValueImg);
-		}
-	}
+    if (!CGameObject::init()) return false;
 	
-	return true;
+    m_ValueLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
+    if (nullptr != m_ValueLabel)
+        addChild(m_ValueLabel);
+    
+    if (m_ValueImgName != "")
+    {
+        m_ValueImg = Sprite::create(m_ValueImgName);
+        if (m_ValueImg != nullptr)
+        {
+            m_ValueImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            addChild(m_ValueImg);
+        }
+    }
+    
+    return true;
 }
 
 std::string CScoreUI::insertComma(unsigned value)

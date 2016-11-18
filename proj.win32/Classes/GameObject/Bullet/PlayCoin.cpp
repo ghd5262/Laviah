@@ -10,17 +10,12 @@
 
 using namespace cocos2d;
 
-CPlayCoin::CPlayCoin(sBULLET_PARAM bulletParam, float angle, Vec2 createPosition)
-: CBullet(bulletParam, angle)
-, m_CreatePos(createPosition)
-, m_pParticleCrash(nullptr)
-{}
+CPlayCoin::CPlayCoin()
+: m_pParticleCrash(nullptr){}
 
-CPlayCoin* CPlayCoin::create(sBULLET_PARAM bulletParam, float angle, Vec2 createPosition)
+CPlayCoin* CPlayCoin::create()
 {
-	CPlayCoin* pRet =
-		(CPlayCoin*)new(std::nothrow)CPlayCoin(
-		bulletParam, angle, createPosition);
+	CPlayCoin* pRet = (CPlayCoin*)new(std::nothrow)CPlayCoin();
 
 	if (pRet && pRet->init())
 	{
@@ -41,37 +36,19 @@ bool CPlayCoin::init()
 {
     if (!CBullet::init()) return false;
 
-    setItemEffect(eITEM_FLAG_magnet);
+    m_UIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("CoinScoreUI"));
     
-    if (!m_BulletParam._isFly){
-        m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
-        
-        this->scheduleOnce([this](float delta)
-                           {
-                               this->R_FadeOutWithCount(5, 3.f);
-                           }, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
-        
-    }
+    this->setItemEffect(eITEM_FLAG_magnet);
     
-    m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("CoinScoreUI"));
-    
-    m_pTexture = Sprite::create(MakeString("coin_%d.png", m_BulletParam._coinType));
-    m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-    addChild(m_pTexture);
-    
-    m_fCoinValue = CItemManager::Instance()->getValueOfCoin(m_BulletParam._coinType);
+
+//    m_fCoinValue = CItemManager::Instance()->getValueOfCoin(getBulletInfo()._coinType);
     
     return true;
 }
 
-void CPlayCoin::Execute(float delta)
-{
-	getFSM()->Execute(delta);
-}
-
 void CPlayCoin::CollisionWithPlanet()
 {
-	if (true == m_BulletParam._isFly)
+	if (this->getIsFly())
 	{
 		m_pParticleCrash = CParticle_Explosion::create("coin_5.png");
 		if (m_pParticleCrash != nullptr){
@@ -85,13 +62,13 @@ void CPlayCoin::CollisionWithPlanet()
 			CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
 		}
         
-        ReturnToMemoryBlock();
+        this->ReturnToMemoryBlock();
 	}
 }
 
 void CPlayCoin::CollisionWithPlayer()
 {
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
-	R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
-	m_pUIScore->addValue(m_fCoinValue);
+	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
+	m_UIScore->addValue(m_fCoinValue);
 }

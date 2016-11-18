@@ -7,7 +7,7 @@ class CTargetMark : public CBullet {
 public:
 	/*create를 호출하면 CObjectManager에서 메모리를 받는다.
 	받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다.*/
-    static CTargetMark* create(sBULLET_PARAM data, float angle);
+    static CTargetMark* create();
     
     CTargetMark* setBullet(CBullet* bullet);
     CTargetMark* build();
@@ -21,7 +21,7 @@ protected:
 private:
     void setParticle();
     
-	CTargetMark(sBULLET_PARAM data, float angle);
+	CTargetMark();
 	virtual ~CTargetMark();
 
 private:

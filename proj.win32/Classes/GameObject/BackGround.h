@@ -22,7 +22,7 @@ private:
     , m_Gradient(nullptr)
     , m_tempStartGradient(nullptr)
     , m_tempEndGradient(nullptr)
-    , m_fTime(0.f)
+    , m_Time(0.f)
     , m_fLimitTime(20.f){}
 
     virtual ~CBackGround(){}
@@ -33,6 +33,6 @@ private:
     LayerGradient* m_Gradient;
     Sprite* m_tempStartGradient;
     Sprite* m_tempEndGradient;
-    float m_fTime;
+    float m_Time;
     float m_fLimitTime;
 };

@@ -2,10 +2,7 @@
 
 #include "cocos2d.h"
 
-class CUIManager;
 class CMyButton;
-class CPlanet;
-class CPlayer;
 class CGameScene : public cocos2d::Layer
 {
 public:

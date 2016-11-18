@@ -10,12 +10,9 @@ CItemBubble::CItemBubble(
 	std::string bubbleIconName,
 	float angle,					//ItemBubble 초기 각도 
 	CBullet* owner/* = nullptr*/)	//owner missile (nullptr 일 때에는 도착시간으로 삭제한다.)
-	: CBullet(
-	bulletParam,
-	angle)
-	, m_OwnerBullet(owner)
-	, m_BubbleIconName(bubbleIconName)
-	, m_Bubble(nullptr)
+: m_OwnerBullet(owner)
+, m_BubbleIconName(bubbleIconName)
+, m_Bubble(nullptr)
 {}
 
 CItemBubble* CItemBubble::create(
@@ -55,8 +52,8 @@ bool CItemBubble::init()
         m_Bubble->setPosition(Vec2::ZERO);
         addChild(m_Bubble);
     }
-    setRotation(-m_fAngle + 90);
-    m_PlanetPos = m_pPlanet->getOriginPos();
+    setRotation(-getAngle() + 90);
+    m_PlanetPos = m_Planet->getOriginPos();
     this->calculateIntersectPos();
     
     return true;
@@ -89,7 +86,7 @@ void CItemBubble::calculateIntersectPos()
 void CItemBubble::Rotation(float dir, float delta)
 {
 	// 오브젝트 자체도 회전
-	setRotation(getRotation() - (dir *(m_fRotationSpeed * delta)));
+	setRotation(getRotation() - (dir *(m_RotationSpeed * delta)));
 }
 
 void CItemBubble::Execute(float delta)

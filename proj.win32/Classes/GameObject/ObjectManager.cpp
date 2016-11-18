@@ -16,7 +16,7 @@ CObjectManager::CObjectManager()
 , m_IsGamePause(true)
 , m_IsAbleRotation(false)
 , m_fRotateAcceleration(0.f)
-, m_BulletCreator(CBulletCreator::Instance())
+, m_BulletCreator(nullptr)
 {
     m_FSM = new CStateMachine<CObjectManager>(this);
 
@@ -115,7 +115,7 @@ void CObjectManager::CreateShooterByTimer()
 //			CGameScene::getGameScene()->addChild(
 //				CPatternShooter::create(m_StageList->at(m_CurrentShooterIdx)));
             
-            m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getDataByName(m_StageList->at(m_CurrentShooterIdx)._PatternName), 500);
+            m_BulletCreator->setPattern(m_StageList->at(m_CurrentShooterIdx)._PatternName, 500);
 		}
         else if (name == "all pause")
         {

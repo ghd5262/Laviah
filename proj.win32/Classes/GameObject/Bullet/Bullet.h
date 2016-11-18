@@ -49,48 +49,48 @@ enum eSTAR_TYPE{
 };
 
 struct sBULLET_PARAM{
-	float _fBouningRadius;
-	float _fDistance;
-	float _fPower;
-	bool  _isFly;
-	bool  _isAimingMissile;
-	eCOIN_TYPE _coinType;
-	eSTAR_TYPE _starType;
-	eITEM_TYPE _itemType;
-	char _symbol;
+    std::string _spriteName;
+	float _boundingRadius;
+	float _power;
+    float _speed;
+    float _angle;
+    float _distance;
+    char  _symbol;
+    bool  _isFly;
+	bool  _isAiming;
 
 	sBULLET_PARAM()
-    : _fBouningRadius(0)
-    , _fDistance(0)
-    , _fPower(0)
+    : _spriteName("")
+    , _boundingRadius(0)
+    , _power(0)
+    , _speed(0)
+    , _angle(0)
+    , _distance(0)
+    , _symbol(-1)
     , _isFly(true)
-    , _isAimingMissile(false)
-    , _coinType(eCOIN_TYPE::eCOIN_TYPE_none)
-    , _starType(eSTAR_TYPE::eSTAR_TYPE_none)
-    , _itemType(eITEM_TYPE::eITEM_TYPE_none)
-    , _symbol(0){}
+    , _isAiming(false){}
     
     sBULLET_PARAM(const sBULLET_PARAM& data)
-    : _fBouningRadius(data._fBouningRadius)
-    , _fDistance(data._fDistance)
-    , _fPower(data._fPower)
+    : _spriteName(data._spriteName)
+    , _boundingRadius(data._boundingRadius)
+    , _power(data._power)
+    , _speed(data._speed)
+    , _angle(data._angle)
+    , _distance(data._distance)
+    , _symbol(data._symbol)
     , _isFly(data._isFly)
-    , _isAimingMissile(data._isAimingMissile)
-    , _coinType(data._coinType)
-    , _starType(data._starType)
-    , _itemType(data._itemType)
-    , _symbol(data._symbol){}
+    , _isAiming(data._isAiming){}
     
     sBULLET_PARAM(const sBULLET_PARAM* data)
-    : _fBouningRadius(data->_fBouningRadius)
-    , _fDistance(data->_fDistance)
-    , _fPower(data->_fPower)
+    : _spriteName(data->_spriteName)
+    , _boundingRadius(data->_boundingRadius)
+    , _power(data->_power)
+    , _speed(data->_speed)
+    , _angle(data->_angle)
+    , _distance(data->_distance)
+    , _symbol(data->_symbol)
     , _isFly(data->_isFly)
-    , _isAimingMissile(data->_isAimingMissile)
-    , _coinType(data->_coinType)
-    , _starType(data->_starType)
-    , _itemType(data->_itemType)
-    , _symbol(data->_symbol){}
+    , _isAiming(data->_isAiming){}
 };
 
 class CScoreUI;
@@ -99,25 +99,51 @@ class CPlanet;
 class CMultipleScore;
 class CBullet : public CMover {
 public:
-	virtual void ReturnToMemoryBlock() override;
 	virtual void Rotation(float dir, float delta);
 	virtual void CollisionWithPlayer(){}
 	virtual void CollisionWithPlanet(){}
 	virtual void CollisionWithBarrier(){}
 	virtual void ChangeToCoinOrStar(){}
+    virtual void ReturnToMemoryBlock() override;
+    virtual void setBoundingRadius(float data) override;
+    virtual float getBoundingRadius() const override;
 
-	//인자로 전달된 아이템의 영향을 받는다
-	void setItemEffect(int item){ m_nReceivingEffectItemTypes  |= item; }
+    virtual void Execute(float delta) override;
 
-	//인자로 전달된 아이템의 영향을 받는 bullet인지 검사한다.
-	bool isEffectWithItem(eITEM_FLAG itemType){
-		if (itemType == eITEM_FLAG_none)
-			return false;
-		return on(itemType); 
-	}
-
-	//현재 bullet이 영향을 받는 모든 플래그를 반환함
-	int getItemEffect(){ return m_nReceivingEffectItemTypes; }
+    CBullet* setBulletInfo(sBULLET_PARAM data);
+    CBullet* build(); //TODO: 빌드가 하위클래스들의 init보다 시점이 늦기 때문에 하위 클래스들역시 빌드를 해야한다.
+    
+    void  setSpeed          (float data);
+    void  setAngle          (float data);
+    void  setDistance       (float data);
+    void  setPower          (float data);
+    void  setSymbol         (float data);
+    void  setIsFly          (float data);
+    void  setIsAiming       (float data);
+    
+    sBULLET_PARAM getInfo()   const;
+    float getSpeed()          const;
+    float getAngle()          const;
+    float getDistance()       const;
+    float getPower()          const;
+    char  getSymbol()         const;
+    bool  getIsFly()          const;
+    bool  getIsAiming()       const;
+    
+    //현재 bullet이 영향을 받는 모든 플래그를 반환함
+    int getItemEffect(){ return m_ItemFlag; }
+    
+    //인자로 전달된 아이템의 영향을 받는다
+    void setItemEffect(int item){ m_ItemFlag |= item; }
+    
+    //인자로 전달된 아이템의 영향을 받는 bullet인지 검사한다.
+    bool IsEffectWithItem(eITEM_FLAG itemType){
+        if (itemType == eITEM_FLAG_none)
+            return false;
+        return on(itemType);
+    }
+    
+    static cocos2d::Vec2 getCirclePosition(float angle, float distance, cocos2d::Vec2 center);
 
 protected:
     virtual bool init() override;
@@ -126,25 +152,18 @@ protected:
 	void* operator new (size_t size, const std::nothrow_t);
 	void operator delete(void* ptr){};
 #endif
-	CBullet(sBULLET_PARAM bulletParam, float angle);
-	virtual ~CBullet();
 
 	//getter & setter
 	//중요 - 멤버변수로 포인터를 넣을때는 꼭 초기화 및 nullptr을 이용하자 (크래시 유발)
-	CC_SYNTHESIZE(int, m_nReceivingEffectItemTypes, ReceivingEffectItemTypes)
-	CC_SYNTHESIZE(float, m_fAngle, Angle);
-	CC_SYNTHESIZE(float, m_fBulletSpeed, BulletSpeed);
-	CC_SYNTHESIZE(float, m_fRotationSpeed, RotationSpeed);
-	CC_SYNTHESIZE(float, m_fTime, Time);
-	CC_SYNTHESIZE(cocos2d::Vec2, m_TargetVec, TargetVec);
-	CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
-	CC_SYNTHESIZE(CPlayer*, m_pPlayer, Player);
-	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
-	CC_SYNTHESIZE(CStateMachine<CBullet>*, m_FSM, FSM);
-	CC_SYNTHESIZE(cocos2d::Sprite*, m_pTexture, BulletTexture);
+    CC_SYNTHESIZE(CStateMachine<CBullet>*, m_FSM, FSM);
+    CC_SYNTHESIZE(CPlayer*, m_Player, Player);
+    CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
+    CC_SYNTHESIZE(cocos2d::Vec2, m_TargetVec, TargetVec);
+    CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
+    CC_SYNTHESIZE(float, m_RotationSpeed, RotationSpeed);
+	CC_SYNTHESIZE(float, m_Time, Time);
+    CC_SYNTHESIZE(int, m_ItemFlag, ItemFlag);
 	CC_SYNTHESIZE(bool, m_bIsPlayerGet, IsPlayerGet);
-	CC_SYNTHESIZE(sBULLET_PARAM, m_BulletParam, BulletParam);
-
 
 	/* "R_"로 시작하는 함수는 이펙트가 끝나면 ReturnToMemoryBlock 호출됨*/
 
@@ -185,13 +204,18 @@ protected:
 
 	// 점수bullet 생성 및 점수 반영
 	void createScoreCurrentPos(int score);
+    
+    CBullet();
+    virtual ~CBullet();
 
 private:
-	bool on(eITEM_FLAG itemType){ return (m_nReceivingEffectItemTypes & itemType) == itemType; }
+	bool on(eITEM_FLAG itemType){ return (m_ItemFlag & itemType) == itemType; }
 
 protected:
 	//중요 - 멤버변수로 포인터를 넣을때는 꼭 초기화 및 nullptr을 이용하자 (크래시 유발)
-	CScoreUI* m_pUIScore;
-
-	CMultipleScore* m_pMultipleScore;
+	CScoreUI* m_UIScore;
+	CMultipleScore* m_MultipleScore;
+    
+private:
+    sBULLET_PARAM m_BulletInfo;
 };

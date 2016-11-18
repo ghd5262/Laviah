@@ -7,14 +7,13 @@
 using namespace cocos2d;
 
 CAlien::CAlien(sALIEN_PARAM alienParam, float walkingSpeed, float distance)
-	: CMover(0.0f)
-	, m_AlienParam(alienParam)
-	, m_fWalkingSpeed(walkingSpeed)
-	, m_fDistance(distance)
-	, m_Direction(1)
-	, m_FSM(nullptr)
-	, m_pPlanet(CMenuSceneObjectManager::Instance()->getPlanet())
-	, m_Texture(nullptr)
+: m_AlienParam(alienParam)
+, m_fWalkingSpeed(walkingSpeed)
+, m_fDistance(distance)
+, m_Direction(1)
+, m_FSM(nullptr)
+, m_Planet(CMenuSceneObjectManager::Instance()->getPlanet())
+, m_Texture(nullptr)
 {
 	// bullet이 초기화 될때마다 매번 생성하지 않는다.
 	if (m_FSM == nullptr){
@@ -54,24 +53,17 @@ CAlien* CAlien::create(sALIEN_PARAM alienParam,
 
 bool CAlien::init()
 {
-	if (!initVariable())
-		return false;
+    if (!CMover::init()) return false;
+    
+    setPositionX((cos(CC_DEGREES_TO_RADIANS(90)) *  m_Planet->getBoundingRadius()) + m_Planet->getPosition().x);
+    setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  m_Planet->getBoundingRadius()) + m_Planet->getPosition().y);
+    
+    m_Texture = Sprite::createWithSpriteFrameName("player0.png");
+    m_Texture->setAnchorPoint(Vec2(0.5f, 0.5f));
+    addChild(m_Texture);
+    
 	return true;
 }
-
-
-bool CAlien::initVariable()
-{
-	setPositionX((cos(CC_DEGREES_TO_RADIANS(90)) *  m_pPlanet->getBRadius()) + m_pPlanet->getPosition().x);
-	setPositionY((sin(CC_DEGREES_TO_RADIANS(90)) *  m_pPlanet->getBRadius()) + m_pPlanet->getPosition().y);
-
-	m_Texture = Sprite::createWithSpriteFrameName("player0.png");
-	m_Texture->setAnchorPoint(Vec2(0.5f, 0.5f));
-	addChild(m_Texture);
-
-	return true;
-}
-
 
 /* 회전행렬을 이용하여 오브젝트 회전 및 이동 */
 void CAlien::Walk(float delta)
@@ -80,7 +72,7 @@ void CAlien::Walk(float delta)
 	float radian = CC_DEGREES_TO_RADIANS(m_Direction * (m_fWalkingSpeed * delta));
 
 	// 현재의 Direction Vector를 저장한다.
-	Vec2 beforeRotation = getPosition() - m_pPlanet->getPosition();
+	Vec2 beforeRotation = getPosition() - m_Planet->getPosition();
 
 	// 거리도 저장
 	float length = beforeRotation.length();
@@ -96,7 +88,7 @@ void CAlien::Walk(float delta)
 	m_RotationVec *= length;
 
 	// 기존의 좌표에 새로운 좌표를 더해준다.
-	setPosition(m_pPlanet->getPosition() + m_RotationVec);
+	setPosition(m_Planet->getPosition() + m_RotationVec);
 
 	// 오브젝트 자체도 회전
 	//	setRotation(getRotation() - (m_Direction *(m_fWalkingSpeed * delta)));

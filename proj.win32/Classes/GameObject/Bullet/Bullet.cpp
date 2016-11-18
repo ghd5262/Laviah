@@ -12,21 +12,16 @@
 
 using namespace cocos2d;
 
-CBullet::CBullet(sBULLET_PARAM bulletParam, float angle)
-	: CMover(bulletParam._fBouningRadius)
-	, m_BulletParam(bulletParam)
-	, m_fAngle(angle)
-	, m_fBulletSpeed(0.f)
-	, m_pTexture(nullptr)
-	, m_fRotationSpeed(100.f)
-	, m_nReceivingEffectItemTypes(eITEM_FLAG_none)
-	, m_pPlayer(CObjectManager::Instance()->getPlayer())
-	, m_pPlanet(CObjectManager::Instance()->getPlanet())
-	, m_TargetVec(CObjectManager::Instance()->getPlanet()->getPosition())
-	, m_bIsPlayerGet(false)
-	, m_fTime(0.f)
-	, m_pUIScore(nullptr)
-	, m_pMultipleScore(nullptr)
+CBullet::CBullet()
+: m_bIsPlayerGet(false)
+, m_Time(0.f)
+, m_RotationSpeed(100.f)
+, m_ItemFlag(eITEM_FLAG_none)
+, m_UIScore(nullptr)
+, m_MultipleScore(nullptr)
+, m_TargetVec(CObjectManager::Instance()->getPlanet()->getPosition())
+, m_Player(CObjectManager::Instance()->getPlayer())
+, m_Planet(CObjectManager::Instance()->getPlanet())
 {
 #if(!USE_MEMORY_POOLING)
     m_FSM = nullptr;
@@ -47,19 +42,65 @@ CBullet::~CBullet(){
 		delete m_FSM;
 }
 
+CBullet* CBullet::build()
+{
+    if(m_BulletInfo._symbol == -1) return nullptr;
+    
+    // sprite init
+    if(m_BulletInfo._spriteName != "")
+    {
+        auto sprite = Sprite::createWithSpriteFrameName(m_BulletInfo._spriteName);
+        this->setContentSize(sprite->getContentSize());
+        sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        sprite->setPosition(this->getContentSize() / 2);
+        this->addChild(sprite);
+    }
+    
+    // if it is nonfly bullet
+    if(!m_BulletInfo._isFly){
+        this->scheduleOnce([this](float delta){
+            this->R_FadeOutWithCount(5, 3.f);
+        }, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
+    }
+    
+    // position init
+    auto pos = CBullet::getCirclePosition(m_BulletInfo._angle,
+                                          m_BulletInfo._distance,
+                                          m_Planet->getPosition());
+    this->setPosition(pos);
+    
+    // rotation init
+    this->setRotation(-m_BulletInfo._angle);
+    
+    return this;
+}
+
+CBullet* CBullet::setBulletInfo(sBULLET_PARAM data)
+{
+    m_BulletInfo = data;
+    return this;
+}
+
 bool CBullet::init()
 {
     if(!CMover::init()) return false;
-    
-	if (!m_BulletParam._isFly)
-		m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
-
-    setPositionX((cos(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().x);
-    setPositionY((sin(CC_DEGREES_TO_RADIANS(m_fAngle)) *  m_BulletParam._fDistance) + m_pPlanet->getPosition().y);
-    setRotation(-m_fAngle);
-    
     return true;
 }
+
+void CBullet::Execute(float delta)
+{
+    m_FSM->Execute(delta);
+}
+
+Vec2 CBullet::getCirclePosition(float angle, float distance, Vec2 center)
+{
+    Vec2 result = Vec2::ZERO;
+    result.x = (cos(CC_DEGREES_TO_RADIANS(angle)) *  distance) + center.x;
+    result.y = (sin(CC_DEGREES_TO_RADIANS(angle)) *  distance) + center.y;
+    
+    return result;
+}
+
 
 #if(USE_MEMORY_POOLING)
 /* poolingManager에서 FreeMemory Block을 하나 가져옴 */
@@ -97,10 +138,10 @@ void CBullet::Rotation(float dir, float delta)
 {
     
     // 회전 속도와 방향을 이용하여 각도를 구하고 라디안으로 변환
-    float radian = CC_DEGREES_TO_RADIANS(dir * (m_fRotationSpeed * delta));
+    float radian = CC_DEGREES_TO_RADIANS(dir * (m_RotationSpeed * delta));
     
     // 현재의 Direction Vector를 저장한다.
-    Vec2 beforeRotation = getPosition() - m_pPlanet->getPosition();
+    Vec2 beforeRotation = getPosition() - m_Planet->getPosition();
     
     // 거리도 저장
     float length = beforeRotation.length();
@@ -116,10 +157,10 @@ void CBullet::Rotation(float dir, float delta)
     m_RotationVec *= length;
     
     // 기존의 좌표에 새로운 좌표를 더해준다.
-    setPosition(m_pPlanet->getPosition() + m_RotationVec);
+    setPosition(m_Planet->getPosition() + m_RotationVec);
     
     // 오브젝트 자체도 회전
-    setRotation(getRotation() - (dir *( m_fRotationSpeed * delta)));
+    setRotation(getRotation() - (dir *( m_RotationSpeed * delta)));
 }
 
 
@@ -162,7 +203,6 @@ void CBullet::R_BezierWithRotation(Vec2 targetPos, Vec2 controlPoint_1, Vec2 con
 
 	// 이전의 Action들을 cancel
 	this->stopAllActions();
-	this->m_pTexture->stopAllActions();
 
 	ccBezierConfig bezier;
 	bezier.controlPoint_1 = Vec2(controlPoint_1);
@@ -228,7 +268,6 @@ void CBullet::StackedRL(float duration, float stackSize, int stackCount)
 		MoveBy::create(duration / stackCount, Vec2(stackSize, 0)),
 		MoveBy::create(duration / stackCount, Vec2(-stackSize, 0)),
 		nullptr), stackCount));
-
 }
 
 
@@ -240,7 +279,7 @@ void CBullet::Seek(float delta)
     dir.normalize();
     
     // 속력벡터 계산
-    dir *= (m_fBulletSpeed * delta);
+    dir *= (getSpeed() * delta);
     
     // 현재 좌표에 적용
     setPosition(getPosition() + dir);
@@ -249,11 +288,35 @@ void CBullet::Seek(float delta)
 
 void CBullet::createScoreCurrentPos(int score)
 {
-	if (m_pMultipleScore != nullptr){
-		m_pMultipleScore->AddScore(score);
+	if (m_MultipleScore != nullptr){
+		m_MultipleScore->AddScore(score);
 		auto scoreBullet = CScoreBullet::create(score);
 		scoreBullet->setPosition(getPosition());
 		scoreBullet->setAnchorPoint(Vec2::ZERO);
 		CGameScene::getGridWorld()->addChild(scoreBullet);
 	}
 }
+
+void CBullet::setBoundingRadius (float data)
+{
+    CGameObject::setBoundingRadius(data);
+    m_BulletInfo._boundingRadius = data;
+}
+
+void CBullet::setSpeed          (float data) { m_BulletInfo._speed            = data; }
+void CBullet::setAngle          (float data) { m_BulletInfo._angle            = data; }
+void CBullet::setDistance       (float data) { m_BulletInfo._distance         = data; }
+void CBullet::setPower          (float data) { m_BulletInfo._power            = data; }
+void CBullet::setSymbol         (float data) { m_BulletInfo._symbol           = data; }
+void CBullet::setIsFly          (float data) { m_BulletInfo._isFly            = data; }
+void CBullet::setIsAiming       (float data) { m_BulletInfo._isAiming         = data; }
+
+sBULLET_PARAM CBullet::getInfo()   const { return m_BulletInfo;                 }
+float CBullet::getBoundingRadius() const { return m_BulletInfo._boundingRadius; }
+float CBullet::getSpeed()          const { return m_BulletInfo._speed;          }
+float CBullet::getAngle()          const { return m_BulletInfo._angle;          }
+float CBullet::getDistance()       const { return m_BulletInfo._distance;       }
+float CBullet::getPower()          const { return m_BulletInfo._power;          }
+char  CBullet::getSymbol()         const { return m_BulletInfo._symbol;         }
+bool  CBullet::getIsFly()          const { return m_BulletInfo._isFly;          }
+bool  CBullet::getIsAiming()       const { return m_BulletInfo._isAiming;       }

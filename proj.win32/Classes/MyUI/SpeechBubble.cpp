@@ -36,44 +36,39 @@ CSpeechBubble* CSpeechBubble::create(std::string bubbleTextureName, std::string 
 
 bool CSpeechBubble::init()
 {
-	if (!initVariable())
-		return false;
-	return true;
-}
-
-bool CSpeechBubble::initVariable()
-{
-	if (m_BubbleTextureName != "")
-	{
-		m_BubbleTexture = Sprite::create(m_BubbleTextureName);
-		if (m_BubbleTexture != nullptr)
-		{
-			m_BubbleTexture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_BubbleTexture->setPosition(Vec2::ZERO);
-			addChild(m_BubbleTexture);
-		}
-	}
-	if (m_IconTextureName != "")
-	{
-		m_IconTexture = Sprite::create(m_IconTextureName);
-		if (m_IconTexture != nullptr)
-		{
-			m_IconTexture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_IconTexture->setPosition(m_BubbleTexture->getContentSize().width * 0.5f, m_BubbleTexture->getContentSize().height * 0.5f);
-			m_BubbleTexture->addChild(m_IconTexture);
-		}
-	}
-	if (m_BubbleMent != "")
-	{
-		m_BubbleMentLabel = Label::createWithTTF(m_BubbleMent.c_str(), m_FontPath, m_FontSize);
-		if (m_BubbleMentLabel != nullptr)
-		{
-			m_BubbleMentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_BubbleMentLabel->setPosition(Vec2::ZERO);
-			m_BubbleTexture->addChild(m_BubbleMentLabel);
-		}
-	}
-
-	return true;
+    if (!CGameObject::init()) return false;
+    
+    if (m_BubbleTextureName != "")
+    {
+        m_BubbleTexture = Sprite::create(m_BubbleTextureName);
+        if (m_BubbleTexture != nullptr)
+        {
+            m_BubbleTexture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_BubbleTexture->setPosition(Vec2::ZERO);
+            addChild(m_BubbleTexture);
+        }
+    }
+    if (m_IconTextureName != "")
+    {
+        m_IconTexture = Sprite::create(m_IconTextureName);
+        if (m_IconTexture != nullptr)
+        {
+            m_IconTexture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_IconTexture->setPosition(m_BubbleTexture->getContentSize().width * 0.5f, m_BubbleTexture->getContentSize().height * 0.5f);
+            m_BubbleTexture->addChild(m_IconTexture);
+        }
+    }
+    if (m_BubbleMent != "")
+    {
+        m_BubbleMentLabel = Label::createWithTTF(m_BubbleMent.c_str(), m_FontPath, m_FontSize);
+        if (m_BubbleMentLabel != nullptr)
+        {
+            m_BubbleMentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            m_BubbleMentLabel->setPosition(Vec2::ZERO);
+            m_BubbleTexture->addChild(m_BubbleMentLabel);
+        }
+    }
+    
+    return true;
 }
 

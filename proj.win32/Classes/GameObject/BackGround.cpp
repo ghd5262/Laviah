@@ -96,11 +96,11 @@ void CBackGround::setParticlePause(bool isPause)
 
 void CBackGround::update(float delta)
 {
-	m_fTime += delta;
-	if (m_fTime > m_fLimitTime)
+	m_Time += delta;
+	if (m_Time > m_fLimitTime)
 	{
 		ChangeBackground();
-		m_fTime = 0.f;
+		m_Time = 0.f;
 	}
 
 	if (m_Gradient != nullptr){

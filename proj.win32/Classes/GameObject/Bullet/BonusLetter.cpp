@@ -8,20 +8,12 @@
 
 using namespace cocos2d;
 
-CBonusLetter::CBonusLetter(
-	sBULLET_PARAM bulletParam,
-	float angle)
-	: CBullet(bulletParam,angle)
-	, m_pUIBonusTime(nullptr)
-{}
+CBonusLetter::CBonusLetter()
+: m_pUIBonusTime(nullptr){}
 
-CBonusLetter* CBonusLetter::create(
-	sBULLET_PARAM bulletParam,
-	float angle)					//bullet 초기 각도
+CBonusLetter* CBonusLetter::create()
 {
-	CBonusLetter* pRet = 
-		(CBonusLetter*)new(std::nothrow)CBonusLetter(
-		bulletParam, angle);
+	CBonusLetter* pRet = (CBonusLetter*)new(std::nothrow)CBonusLetter();
 
 	if (pRet && pRet->init())
 	{
@@ -42,38 +34,19 @@ bool CBonusLetter::init()
 {
     if (!CBullet::init()) return false;
 
-    setItemEffect(eITEM_FLAG_magnet);
-    
-    if (!m_BulletParam._isFly){
-        m_BulletParam._fDistance = m_pPlanet->getBRadius() + 20;
-        
-        this->scheduleOnce([this](float delta)
-                           {
-                               this->R_FadeOutWithCount(5, 3.f);
-                           }, 5.f, MakeString("AutoRemove_%d", random<int>(1, 100)));
-    }
-    
     m_pUIBonusTime = static_cast<CBonusTimeUI*>(CUIManager::Instance()->FindUIWithName("BonusTime"));
+    
+    this->setItemEffect(eITEM_FLAG_magnet);
+    
     m_TargetPos = m_pUIBonusTime->NonCollectedLetterWorldPos();
     m_LetterNum = m_pUIBonusTime->NonCollectedLetterNum();
-    
-    m_Player = CObjectManager::Instance()->getPlayer();
-    
-    m_pTexture = Sprite::create(MakeString("bonusLetter_%d.png", static_cast<int>(m_LetterNum)));
-    m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-    addChild(m_pTexture);
-    
-    return true;
-}
 
-void CBonusLetter::Execute(float delta)
-{
-	getFSM()->Execute(delta);
+    return true;
 }
 
 void CBonusLetter::CollisionWithPlanet()
 {
-	if (true == m_BulletParam._isFly)
+	if (this->getIsFly())
 	{
 		ReturnToMemoryBlock();
 	}

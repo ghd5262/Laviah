@@ -9,7 +9,6 @@ public:
 
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
 
 private:
 	CSpeechBubble(std::string bubbleTextureName, std::string iconTextureName)

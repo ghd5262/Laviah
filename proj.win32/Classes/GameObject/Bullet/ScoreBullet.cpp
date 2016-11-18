@@ -7,8 +7,7 @@
 using namespace cocos2d;
 
 CScoreBullet::CScoreBullet(int score/* = 0 */)
-: CBullet(sBULLET_PARAM(), 0.0f)
-, m_nScore(score)
+: m_nScore(score)
 , m_strScore("")
 , m_labelScore(nullptr)
 {}
@@ -45,16 +44,17 @@ bool CScoreBullet::init()
         addChild(m_labelScore);
     }
     
-    this->scheduleOnce([this](float delta)
-                       {
-                           auto action = Sequence::create(
-                                                          FadeTo::create(0.5f, 0.1f),
-                                                          CallFunc::create([this](){
-                               this->ReturnToMemoryBlock();
-                           }), nullptr);
-                           m_labelScore->runAction(action);
-                           
-                       }, 0.5f, MakeString("ScoreBullet_%d", random<int>(0, 100)));
+    this->scheduleOnce([=](float delta){
+        
+        auto action = Sequence::create(FadeTo::create(0.5f, 0.1f), CallFunc::create([=](){
+            
+            this->ReturnToMemoryBlock();
+            
+        }), nullptr);
+        
+        m_labelScore->runAction(action);
+        
+    }, 0.5f, MakeString("ScoreBullet_%d", random<int>(0, 100)));
     
     return true;
 }

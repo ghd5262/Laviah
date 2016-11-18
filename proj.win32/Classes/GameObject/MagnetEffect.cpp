@@ -32,24 +32,19 @@ CMagnetEffect::CMagnetEffect(std::string textureName, float boundingRadius, floa
 
 bool CMagnetEffect::init()
 {
-    if (!initVariable())
-        return false;
-    return true;
-}
-
-bool CMagnetEffect::initVariable()
-{ 
-	scheduleUpdate();
-
-	m_pTexture = Sprite::create(m_TextureName);
-	if (m_pTexture != nullptr){
-		m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		addChild(m_pTexture);
-	}
-
-	m_BoundingSizeByPercent = (m_OriginBoundingRadius / m_pTexture->getContentSize().width) * 2;
-	m_pTexture->setScale(0);
-
+    if (!Node::init()) return false;
+    
+    scheduleUpdate();
+    
+    m_pTexture = Sprite::create(m_TextureName);
+    if (m_pTexture != nullptr){
+        m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+        addChild(m_pTexture);
+    }
+    
+    m_BoundingSizeByPercent = (m_OriginBoundingRadius / m_pTexture->getContentSize().width) * 2;
+    m_pTexture->setScale(0);
+    
     return true;
 }
 
@@ -82,7 +77,6 @@ void CMagnetEffect::Execute(float delta)
         }
     }
 }
-
 
 void CMagnetEffect::GotMagnetItem(){
     m_Timer = 0.f;

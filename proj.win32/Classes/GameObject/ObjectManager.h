@@ -63,6 +63,7 @@ public:
 	//getter & setter
 	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
 	CC_SYNTHESIZE(CPlayer*, m_Player, Player);
+    CC_SYNTHESIZE(CBulletCreator*, m_BulletCreator, BulletCreator);
 	CC_SYNTHESIZE(CBackGround*, m_Background, Background);
 	CC_SYNTHESIZE(CStateMachine<CObjectManager>*, m_FSM, FSM);
 	CC_SYNTHESIZE(float, m_fStageTime, StageTime);
@@ -84,5 +85,4 @@ private:
 	const std::vector<sSHOOTER_PARAM>* m_StageList;
 	int m_CurrentShooterIdx;
     float m_fRotateAcceleration;
-    CBulletCreator* m_BulletCreator;
 };

@@ -3,8 +3,7 @@
 
 using namespace cocos2d;
 
-CMover::CMover(float boundingRadius)
-	: CGameObject(boundingRadius)
+CMover::CMover()
 {
 	this->setVisible(true);
 	this->m_bAlive = true;
@@ -26,7 +25,7 @@ bool CMover::IsHit(CGameObject* object) {
 	float
 		dx = object->getPosition().x - getPosition().x,
 		dy = object->getPosition().y - getPosition().y,
-		hit = object->getBRadius() + m_fBoundingRadius;
+		hit = object->getBoundingRadius() + m_BoundingRadius;
 	return dx * dx + dy * dy < hit * hit;
 }
 
@@ -35,6 +34,6 @@ bool CMover::IsHit(Vec2 pos, float radius)
 	float
 		dx = pos.x - getPosition().x,
 		dy = pos.y - getPosition().y,
-		hit = radius + m_fBoundingRadius;
+		hit = radius + m_BoundingRadius;
 	return dx * dx + dy * dy < hit * hit;
 }

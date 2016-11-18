@@ -10,6 +10,7 @@
 #include "../GameObject/Shooter/ShooterHeaders.h"
 #include "../GameObject/Bullet/Bullet.h"
 #include "../GameObject/BackGround.h"
+#include "../GameObject/BulletCreator.h"
 #include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/HealthBarUI.h"
@@ -113,15 +114,21 @@ bool CGameScene::initVariable()
 	auto player = CPlayer::create(currentCharacterInfo, 6.f, 0.0f, 400.0f);
 
 	player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-		planet->getPosition().y + (planet->getBRadius() + 20)));
+		planet->getPosition().y + (planet->getBoundingRadius() + 20)));
 	m_GridWorld->addChild(player, 100);
 
 	player->setOriginPos(player->getPosition());
 	player->setParticlePos(player->getPosition());
 
+    auto bulletCreator = CBulletCreator::create();
+    m_GridWorld->addChild(bulletCreator);
+    
 	CObjectManager::Instance()->setBackground(background);
 	CObjectManager::Instance()->setPlayer(player);
 	CObjectManager::Instance()->setPlanet(planet);
+    CObjectManager::Instance()->setBulletCreator(bulletCreator);
+    
+
     
     CPatternShooter pattern;
     

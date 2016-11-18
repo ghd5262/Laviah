@@ -14,7 +14,6 @@ public:
     
 protected:
     virtual bool init() override;
-    virtual bool initVariable() override;
     
     //getter & setter
     CC_SYNTHESIZE(bool, m_bMagnetAlive, MagnetAlive);

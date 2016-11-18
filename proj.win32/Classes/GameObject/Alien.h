@@ -24,7 +24,6 @@ public:
 	void Break(){};
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
 
 	// PoolingManager에서 메모리를 할당 받는다.
 	void* operator new (size_t size, const std::nothrow_t);
@@ -45,7 +44,7 @@ protected:
 	CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
 	CC_SYNTHESIZE(sALIEN_PARAM, m_AlienParam, AlienParam);
 	CC_SYNTHESIZE(CStateMachine<CAlien>*, m_FSM, FSM);
-	CC_SYNTHESIZE(CPlanet*, m_pPlanet, Planet);
+	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
 
 private:
 	cocos2d::Sprite* m_Texture;

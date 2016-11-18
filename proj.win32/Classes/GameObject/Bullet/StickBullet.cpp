@@ -15,15 +15,13 @@
 using namespace cocos2d;
 
 
-CStickBullet::CStickBullet(sBULLET_PARAM bulletParam, float angle)
-: CBullet(bulletParam, angle)
-, m_HitWithPlanet(false)
+CStickBullet::CStickBullet()
+: m_HitWithPlanet(false)
 {}
 
-CStickBullet* CStickBullet::create(sBULLET_PARAM bulletParam, float angle)
+CStickBullet* CStickBullet::create()
 {
-    CStickBullet* pRet =
-    (CStickBullet*)new(std::nothrow)CStickBullet(bulletParam, angle);
+    CStickBullet* pRet = (CStickBullet*)new(std::nothrow)CStickBullet();
     
     if (pRet && pRet->init())
     {
@@ -44,26 +42,20 @@ bool CStickBullet::init()
 {
     if (!CBullet::init()) return false;
 
-    setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
+    this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
+
+    m_UIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
+    m_MultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
     
-    m_pTexture = Sprite::createWithSpriteFrameName(m_pPlayer->getCharacterParam()._stickBulletTextureName);
-    m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-    addChild(m_pTexture);
+    float bulletSpeedAccel = this->getSpeed() * 0.15f;
     
-    m_pUIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-    m_pMultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
-    
-    float bulletSpeedAccel = m_fBulletSpeed * 0.15f;
-    this->schedule([this, bulletSpeedAccel](float delta){
-        m_fBulletSpeed += bulletSpeedAccel;
+    this->schedule([=](float delta){
+        
+        this->setSpeed(this->getSpeed() + bulletSpeedAccel);
+        
     }, 0.1f, 10, 0.3f, "AccelerationUP");
     
     return true;
-}
-
-void CStickBullet::Execute(float delta)
-{
-    getFSM()->Execute(delta);
 }
 
 void CStickBullet::CollisionWithPlanet()
@@ -71,13 +63,20 @@ void CStickBullet::CollisionWithPlanet()
     if(m_HitWithPlanet == false)
     {
         m_HitWithPlanet = true;
-        m_BulletParam._isFly = false;
-        scheduleOnce([this](float delta){
-            m_fBulletSpeed = 300;
-            m_BulletParam._isFly = true;
-            scheduleOnce([this](float delta){
-                ReturnToMemoryBlock();
+        
+        this->setIsFly(false);
+        
+        scheduleOnce([=](float delta){
+            
+            this->setSpeed(300);
+            this->setIsFly(true);
+            
+            scheduleOnce([=](float delta){
+                
+                this->ReturnToMemoryBlock();
+                
             }, 0.2f, MakeString("StickBulletStayFinish_%d", random<int>(1, 100)));
+            
         }, 2.f, MakeString("StickBulletStay_%d", random<int>(1, 100)));
     }
 }
@@ -85,33 +84,29 @@ void CStickBullet::CollisionWithPlanet()
 void CStickBullet::CollisionWithPlayer()
 {
     if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
-        createScoreCurrentPos(30);
-        R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
+        this->createScoreCurrentPos(30);
+        this->R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
     }
     else{
-        m_pPlayer->StackedRL(0.1f, 10, 10, 5);
-        m_pPlayer->LostSomeHealth(m_BulletParam._fPower);
-        ReturnToMemoryBlock();
+        m_Player->StackedRL(0.1f, 10, 10, 5);
+        m_Player->LostSomeHealth(this->getPower());
+        this->ReturnToMemoryBlock();
     }
 }
 
 void CStickBullet::CollisionWithBarrier()
 {
-    createScoreCurrentPos(30);
-    R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
+    this->createScoreCurrentPos(30);
+    this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 }
 
 void CStickBullet::ChangeToCoinOrStar()
 {
     float distance = m_TargetVec.distance(getPosition());
-    auto bullet = sBULLET_PARAM();
+    char symbol = 'T';
+    if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star) symbol = 'Y';
     
-    if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star)
-        bullet._symbol = 'Y';
-    else
-        bullet._symbol = 'T';
+    CBulletCreator::createBullet(symbol, -getRotation(), distance, getSpeed() * 0.5f);
     
-    CBulletCreator::createBullet(bullet, -getRotation(), distance);
-    
-    ReturnToMemoryBlock();
+    this->ReturnToMemoryBlock();
 }

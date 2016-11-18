@@ -26,7 +26,6 @@ public:
 
 protected:
 	virtual bool init() override;
-	virtual bool initVariable() override;
 
 private:
 	// ProgressBar Update
