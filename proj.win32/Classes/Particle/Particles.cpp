@@ -71,11 +71,11 @@ bool CParticle_Flame::initWithTotalParticles(int numberOfParticles)
 		_startColor.r = 1.0f;
 		_startColor.g = 1.0f;
 		_startColor.b = 1.0f;
-		_startColor.a = 0.8f;
+		_startColor.a = 0.5f;
 		_startColorVar.r = 0.8f;
 		_startColorVar.g = 0.8f;
 		_startColorVar.b = 0.8f;
-		_startColorVar.a = 0.5f;
+		_startColorVar.a = 0.2f;
 		_endColor.r = 0.8f;
 		_endColor.g = 0.8f;
 		_endColor.b = 0.8f;

@@ -20,6 +20,7 @@ CPopup::CPopup()
 , m_Position(Vec2::ZERO)
 , m_PopupOpenAnimation(ePOPUP_ANIMATION::NONE)
 , m_PopupCloseAnimation(ePOPUP_ANIMATION::NONE)
+, m_BackgroundColor(COLOR::BRIGHT_WHITEGRAY_ALPHA)
 {
 	this->setContentSize(Director::getInstance()->getVisibleSize());
 }
@@ -45,13 +46,15 @@ bool CPopup::init()
 	if (!Node::init())
 		return false;
 
-	backgroundTouchDisable();
+	
 
 	return true;
 }
 
 CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 {
+	this->backgroundTouchDisable();
+
 	if (m_PositiveButtonCallBack || m_NegativeButtonCallBack){
 		auto defaultBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
 		defaultBG->setIgnoreAnchorPointForPosition(false);
@@ -193,6 +196,14 @@ CPopup* CPopup::setPopupAnchorPoint(cocos2d::Vec2 anchorPoint)
     return this;
 }
 
+CPopup* CPopup::setBackgroundColor(Color4B color)
+{
+	m_BackgroundColor = color;
+
+	return this;
+}
+
+
 void CPopup::popupOpenAnimation()
 {
 	Vec2 OriginPosition = this->getPosition();
@@ -286,17 +297,17 @@ void CPopup::popupClose()
 
 void CPopup::backgroundTouchDisable()
 {
-	auto touchDisable = Widget::create();
-	touchDisable->setTouchEnabled(true);
-	touchDisable->setContentSize(_director->getVisibleSize());
-	touchDisable->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	touchDisable->setPosition(this->getContentSize() / 2);
-	addChild(touchDisable);
-	//auto emptyBtnBG = CMyButton::create()
-	//	->addEventListener([](Node* sender){})
-	//	->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-	//	->setLayer(LayerColor::create(Color4B(255, 255, 255, 255 * 0.4f), 1080, 1920))
-	//	->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-	//	->setButtonPosition(this->getContentSize() / 2)
-	//	->show(this);
+	//auto touchDisable = Widget::create();
+	//touchDisable->setTouchEnabled(true);
+	//touchDisable->setContentSize(_director->getVisibleSize());
+	//touchDisable->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	//touchDisable->setPosition(this->getContentSize() / 2);
+	//addChild(touchDisable);
+	auto emptyBtnBG = CMyButton::create()
+		->addEventListener([](Node* sender){})
+		->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+		->setLayer(LayerColor::create(m_BackgroundColor, 1080, 1920))
+		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setButtonPosition(this->getContentSize() / 2)
+		->show(this, -1);
 }

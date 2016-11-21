@@ -55,6 +55,13 @@ CBullet* CBullet::build()
         sprite->setPosition(this->getContentSize() / 2);
         this->addChild(sprite);
     }
+
+	//auto debug = LayerColor::create(Color4B::MAGENTA, this->getContentSize().width, this->getContentSize().height);
+	//debug->setOpacity(255 * 0.5f);
+	//debug->ignoreAnchorPointForPosition(false);
+	//debug->setPosition(this->getContentSize() / 2);
+	//debug->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	//addChild(debug);
     
     // if it is nonfly bullet
     if(!m_BulletInfo._isFly){
@@ -64,13 +71,16 @@ CBullet* CBullet::build()
     }
     
     // position init
-    auto pos = CBullet::getCirclePosition(m_BulletInfo._angle,
-                                          m_BulletInfo._distance,
+    auto pos = CBullet::getCirclePosition(getAngle(),
+                                          getDistance(),
                                           m_Planet->getPosition());
     this->setPosition(pos);
-    
+	this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+
     // rotation init
-    this->setRotation(-m_BulletInfo._angle);
+    this->setRotation(-getAngle());
+	this->setScale(1.5f);
+	this->setBoundingRadius(this->getBoundingRadius() * 1.5f);
     
     return this;
 }
@@ -89,6 +99,9 @@ bool CBullet::init()
 
 void CBullet::Execute(float delta)
 {
+	m_Time += delta;
+	if (m_Time < m_BulletInfo._delayTime) return;
+
     m_FSM->Execute(delta);
 }
 
@@ -160,7 +173,8 @@ void CBullet::Rotation(float dir, float delta)
     setPosition(m_Planet->getPosition() + m_RotationVec);
     
     // 오브젝트 자체도 회전
-    setRotation(getRotation() - (dir *( m_RotationSpeed * delta)));
+	setAngle(-(getRotation() - (dir *(m_RotationSpeed * delta))));
+    setRotation(-getAngle());
 }
 
 
@@ -235,8 +249,7 @@ void CBullet::R_ScaleWithFadeOut(float scale, float scaleTime, float fadeOutTime
 
 	auto action = Sequence::create(
         Spawn::create(FadeTo::create(fadeOutTime, 1), ScaleBy::create(scaleTime, scale), NULL),
-		CallFunc::create([&](){
-
+		CallFunc::create([=](){
 		this->scheduleOnce([=](float dt){
 			this->ReturnToMemoryBlock();
 		}, 1.0f, MakeString("ScaleWithFadeOut_%d", random<int>(1, 100)));
@@ -306,6 +319,7 @@ void CBullet::setBoundingRadius (float data)
 void CBullet::setSpeed          (float data) { m_BulletInfo._speed            = data; }
 void CBullet::setAngle          (float data) { m_BulletInfo._angle            = data; }
 void CBullet::setDistance       (float data) { m_BulletInfo._distance         = data; }
+void CBullet::setDelayTime		(float data) { m_BulletInfo._delayTime		  = data; }
 void CBullet::setPower          (float data) { m_BulletInfo._power            = data; }
 void CBullet::setSymbol         (float data) { m_BulletInfo._symbol           = data; }
 void CBullet::setIsFly          (float data) { m_BulletInfo._isFly            = data; }
@@ -315,7 +329,8 @@ sBULLET_PARAM CBullet::getInfo()   const { return m_BulletInfo;                 
 float CBullet::getBoundingRadius() const { return m_BulletInfo._boundingRadius; }
 float CBullet::getSpeed()          const { return m_BulletInfo._speed;          }
 float CBullet::getAngle()          const { return m_BulletInfo._angle;          }
-float CBullet::getDistance()       const { return m_BulletInfo._distance;       }
+float CBullet::getDistance()       const { return m_BulletInfo._distance;		}
+float CBullet::getDelayTime()      const { return m_BulletInfo._delayTime;		}
 float CBullet::getPower()          const { return m_BulletInfo._power;          }
 char  CBullet::getSymbol()         const { return m_BulletInfo._symbol;         }
 bool  CBullet::getIsFly()          const { return m_BulletInfo._isFly;          }

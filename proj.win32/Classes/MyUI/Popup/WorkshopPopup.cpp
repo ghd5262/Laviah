@@ -120,11 +120,9 @@ bool CWorkshopPopup::init()
 	this->setOpenAnimation([=](Node* sender){
 		scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.62f))));
 
-		this->scheduleOnce([=](float delta){
-			workShopLabel->runAction(FadeIn::create(0.5f));
-			btnEnd->runAction(FadeIn::create(0.5f));
-			btnUserCoin->runAction(FadeIn::create(0.5f));
-		}, 0.5f, "WorkshopPopupOpen");
+		workShopLabel->runAction(FadeIn::create(0.5f));
+		btnEnd->runAction(FadeIn::create(0.5f));
+		btnUserCoin->runAction(FadeIn::create(0.5f));
 	});
 
 	this->setCloseAnimation([=](Node* sender){

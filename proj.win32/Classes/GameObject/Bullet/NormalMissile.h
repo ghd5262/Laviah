@@ -12,6 +12,8 @@ public:
 	virtual void CollisionWithPlanet() override;
 	virtual void CollisionWithBarrier() override;
 	virtual void ChangeToCoinOrStar() override;
+	virtual void Execute(float delta) override;
+	virtual CBullet* build() override;
 
 protected:
 	virtual bool init() override;

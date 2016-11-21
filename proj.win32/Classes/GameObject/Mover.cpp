@@ -25,7 +25,7 @@ bool CMover::IsHit(CGameObject* object) {
 	float
 		dx = object->getPosition().x - getPosition().x,
 		dy = object->getPosition().y - getPosition().y,
-		hit = object->getBoundingRadius() + m_BoundingRadius;
+		hit = object->getBoundingRadius() + this->getBoundingRadius();
 	return dx * dx + dy * dy < hit * hit;
 }
 
@@ -34,6 +34,6 @@ bool CMover::IsHit(Vec2 pos, float radius)
 	float
 		dx = pos.x - getPosition().x,
 		dy = pos.y - getPosition().y,
-		hit = radius + m_BoundingRadius;
+		hit = radius + this->getBoundingRadius();
 	return dx * dx + dy * dy < hit * hit;
 }

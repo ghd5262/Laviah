@@ -38,10 +38,11 @@ CBulletDataManager::CBulletDataManager()
         const Json::Value bullet = bulletArray[index];
         
         sBULLET_PARAM param;
-        
+
+		param._symbol			= (bullet["symbol"].asString())[0];
         param._boundingRadius   = bullet["bindingRadius"].asDouble();
         param._power            = bullet["power"].asDouble();
-        param._symbol           = (bullet["symbol"].asString())[0];
+		param._speed			= bullet["speed"].asDouble();
         param._isAiming         = bullet["isAimingMissile"].asBool();
         
         AddBulletData(param);
@@ -62,6 +63,12 @@ CBulletDataManager::CBulletDataManager()
 
 CBulletDataManager::~CBulletDataManager()
 {
+	for (auto data : m_BulletDataList)
+	{
+		delete data.second;
+		data.second = nullptr;
+	}
+	m_BulletDataList.clear();
 }
 
 CBulletDataManager* CBulletDataManager::Instance()

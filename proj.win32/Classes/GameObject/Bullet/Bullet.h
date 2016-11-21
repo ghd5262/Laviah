@@ -55,6 +55,7 @@ struct sBULLET_PARAM{
     float _speed;
     float _angle;
     float _distance;
+	float _delayTime;
     char  _symbol;
     bool  _isFly;
 	bool  _isAiming;
@@ -66,6 +67,7 @@ struct sBULLET_PARAM{
     , _speed(0)
     , _angle(0)
     , _distance(0)
+	, _delayTime(0)
     , _symbol(-1)
     , _isFly(true)
     , _isAiming(false){}
@@ -77,6 +79,7 @@ struct sBULLET_PARAM{
     , _speed(data._speed)
     , _angle(data._angle)
     , _distance(data._distance)
+	, _delayTime(data._delayTime)
     , _symbol(data._symbol)
     , _isFly(data._isFly)
     , _isAiming(data._isAiming){}
@@ -88,6 +91,7 @@ struct sBULLET_PARAM{
     , _speed(data->_speed)
     , _angle(data->_angle)
     , _distance(data->_distance)
+	, _delayTime(data->_delayTime)
     , _symbol(data->_symbol)
     , _isFly(data->_isFly)
     , _isAiming(data->_isAiming){}
@@ -111,11 +115,12 @@ public:
     virtual void Execute(float delta) override;
 
     CBullet* setBulletInfo(sBULLET_PARAM data);
-    CBullet* build(); //TODO: 빌드가 하위클래스들의 init보다 시점이 늦기 때문에 하위 클래스들역시 빌드를 해야한다.
+    virtual CBullet* build(); //TODO: 빌드가 하위클래스들의 init보다 시점이 늦기 때문에 하위 클래스들역시 빌드를 해야한다.
     
     void  setSpeed          (float data);
     void  setAngle          (float data);
     void  setDistance       (float data);
+	void  setDelayTime		(float data);
     void  setPower          (float data);
     void  setSymbol         (float data);
     void  setIsFly          (float data);
@@ -125,6 +130,7 @@ public:
     float getSpeed()          const;
     float getAngle()          const;
     float getDistance()       const;
+	float getDelayTime()      const;
     float getPower()          const;
     char  getSymbol()         const;
     bool  getIsFly()          const;

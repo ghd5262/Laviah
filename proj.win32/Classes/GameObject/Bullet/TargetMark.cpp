@@ -41,26 +41,27 @@ CTargetMark* CTargetMark::build()
     float distance = m_Planet->getPosition().distance(m_Bullet->getPosition());
     m_DeleteTime = distance / m_Bullet->getSpeed();
     
-    auto item = CItemManager::Instance()->getCurrentItem();
-    m_isItemTime = (eITEM_FLAG_coin & item || eITEM_FLAG_star & item);
-    
-    if(m_isItemTime) this->setParticle();
-    
     // sprite init
     auto sprite = Sprite::createWithSpriteFrameName("test.png");
     this->setContentSize(sprite->getContentSize());
     sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     sprite->setPosition(this->getContentSize() / 2);
+	sprite->setOpacity(255 * 0.4f);
     this->addChild(sprite);
-    
+
     // position init
     auto pos = CBullet::getCirclePosition(getAngle(),
                                           getDistance(),
                                           m_Planet->getPosition());
     this->setPosition(pos);
-    
+	this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+
     // rotation init
     this->setRotation(-getAngle());
+
+	auto item = CItemManager::Instance()->getCurrentItem();
+	m_isItemTime = (eITEM_FLAG_coin & item || eITEM_FLAG_star & item);
+	if (m_isItemTime) this->setParticle();
     
     return this;
 }
@@ -88,8 +89,9 @@ void CTargetMark::setParticle()
     m_pParticle = CParticle_Line::create(MakeString("particle_star%d.png", this->getIsAiming() + 1));
     if (m_pParticle != nullptr){
         m_pParticle->retain();
-        m_pParticle->setAnchorPoint(Vec2::ZERO);
-        m_pParticle->setPosition(Vec2(1300 * 0.32f, 0));
+		m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_pParticle->setPosVar(Vec2(this->getContentSize().width * 0.7f, 20));
+        m_pParticle->setPosition(Vec2(this->getContentSize().width, this->getContentSize().height /2));
         this->addChild(m_pParticle, 10);
     }
 }
@@ -110,7 +112,7 @@ void CTargetMark::Rotation(float dir, float delta)
 void CTargetMark::Execute(float delta)
 {
     m_Time += delta;
-    
+
     auto item = CItemManager::Instance()->getCurrentItem();
     if(eITEM_FLAG_coin & item || eITEM_FLAG_star & item)
     {
@@ -118,6 +120,6 @@ void CTargetMark::Execute(float delta)
             this->setParticle();
     }
     
-    if (m_Time > m_DeleteTime)
-        this->ReturnToMemoryBlock();
+	if (m_Time > m_DeleteTime)
+		this->ReturnToMemoryBlock();
 }

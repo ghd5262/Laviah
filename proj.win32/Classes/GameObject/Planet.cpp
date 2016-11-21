@@ -49,6 +49,8 @@ bool CPlanet::init()
         addChild(m_pTexture);
     }
     
+	this->setScale(1.5f);
+
     return true;
 }
 

@@ -148,6 +148,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Classes\Common\StringUtility.cpp" />
     <ClCompile Include="Classes\DataManager\GradientDataManager.cpp" />
     <ClCompile Include="Classes\Download\DownloadManager.cpp" />
     <ClCompile Include="Classes\GameObject\Alien.cpp" />
@@ -204,6 +205,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\MyUI\Popup\HelpPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\ResultPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\PausePopup.cpp" />
+    <ClCompile Include="Classes\MyUI\Popup\PatternTestPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\VideoPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\WorkshopPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\WorkshopPopupDP.cpp" />
@@ -232,6 +234,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes\Common\NoticeDefine.h" />
+    <ClInclude Include="Classes\Common\StringUtility.hpp" />
     <ClInclude Include="Classes\DataManager\GradientDataManager.h" />
     <ClInclude Include="Classes\Download\DownloadManager.h" />
     <ClInclude Include="Classes\GameObject\Alien.h" />
@@ -297,6 +300,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\MyUI\Popup\CharacterSelectPopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\CharacterSelectPopupDP.h" />
     <ClInclude Include="Classes\MyUI\Popup\EarnCoinPopup.h" />
+    <ClInclude Include="Classes\MyUI\Popup\PatternTestPopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\PausePopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\HelpPopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\ResultPopup.h" />

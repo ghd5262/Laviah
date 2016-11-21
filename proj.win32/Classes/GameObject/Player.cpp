@@ -11,17 +11,26 @@
 #include "../MyUI/UIManager.h"
 #include "../DataManager/UserDataManager.h"
 
+namespace PLAYER{
+	static const float SCALE_SIZE = 1.5f;
+	static const float NORMAL_BOUNDING_RADIUS = 25.f * SCALE_SIZE;
+	static const float GIANT_BOUNDING_RADIUS = NORMAL_BOUNDING_RADIUS * 3.f;
+	static const float GIANT_SIZE_PERCENT = 2.f;
+	static const float INVINCIVILITY_TIME = 5.f;
+};
+
 using namespace cocos2d;
+using namespace PLAYER;
+
+
 
 CPlayer* CPlayer::create(
 	sCHARACTER_PARAM characterParam,
-	float boundingRadius,
 	float angle,
 	float rotateSpeed)
 {
 	CPlayer *pRet = new(std::nothrow) CPlayer(
 		characterParam
-		, boundingRadius
 		, angle
 		, rotateSpeed);
 	if (pRet && pRet->init())
@@ -39,7 +48,6 @@ CPlayer* CPlayer::create(
 
 CPlayer::CPlayer(
 	sCHARACTER_PARAM characterParam,
-	float boundingRadius,
 	float angle,
 	float rotateSpeed)
 : m_CharacterParam(characterParam)
@@ -59,12 +67,10 @@ CPlayer::CPlayer(
 , m_isPlayerDead(true)
 , m_MagnetEffect(nullptr)
 , m_Invincibility(false)
-{
-}
+{}
 
 bool CPlayer::init()
 {
-	//this->DrawDebugBinding();
     if (!CGameObject::init()) return false;
     
     m_fMagnetLimitTime = m_CharacterParam._magnetItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_TIME_IDX");
@@ -96,8 +102,7 @@ bool CPlayer::init()
     m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam._normalTextureName);
     if (m_pTexture != nullptr){
         m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-        m_pTexture->setScale(0.9f);
-        addChild(m_pTexture);
+		addChild(m_pTexture);
         m_pTexture->setVisible(false);
     }
     
@@ -107,7 +112,7 @@ bool CPlayer::init()
         m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticle->setAngle(90);
         m_pParticle->setGravity(Vec2(0, -270));
-        m_pParticle->setStartSize(40.f);
+		m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_pParticle->setEndSize(4.f);
         CGameScene::getGridWorld()->addChild(m_pParticle, 10);
         m_pParticle->setVisible(false);
@@ -120,6 +125,9 @@ bool CPlayer::init()
         m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         CGameScene::getGridWorld()->addChild(m_MagnetEffect);
     }
+
+	this->setScale(SCALE_SIZE);
+	this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
     return true;
 }
 
@@ -154,13 +162,13 @@ void CPlayer::PlayerAlive(){
     
     m_pTexture->setSpriteFrame(m_CharacterParam._aliveTextureName);
 
-	this->scheduleOnce([this](float delta){
+	this->scheduleOnce([=](float delta){
 		m_isPlayerDead = false;
 		m_pParticle->setVisible(true);
 		m_pTexture->setVisible(true);
         m_pTexture->setSpriteFrame(m_CharacterParam._normalTextureName);
 		// 1초간 무적 
-		InvincibilityMode(4.f); //카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
+		this->InvincibilityMode(INVINCIVILITY_TIME); //카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
 	}, 1.5f, "PlayerAlive");
 
 }
@@ -198,11 +206,9 @@ void CPlayer::LostSomeHealth(float loseHealth)
     CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
 	if (0.f < (m_fLife - loseHealth))
 	{
-		CCLOG("Lost health %f/%f", loseHealth, m_fLife);
 		m_fLife -= loseHealth;
 	}
 	else{
-		CCLOG("Dead");
 		PlayerDead();
 		CGameScene::getGameScene()->watchVideo();
 		m_fLife = 0.f;
@@ -230,12 +236,12 @@ void CPlayer::Rotation(float dir, float delta)
 void CPlayer::GiantMode()
 {
 	auto action = Sequence::create(
-		ScaleTo::create(0.5f, 2.f),
-		CallFunc::create([&](){
+		ScaleTo::create(0.5f, GIANT_SIZE_PERCENT),
+		CallFunc::create([=](){
         this->m_pTexture->setSpriteFrame(m_CharacterParam._giantTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		this->setBoundingRadius(100.f);
-		m_pParticle->setStartSize(120.f);
+		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
+		m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 4.f);
 		m_pParticle->setEndSize(40.f);
 	}), nullptr);
 	this->runAction(action);
@@ -246,12 +252,12 @@ void CPlayer::NormalMode()
     //1초간 무적
     InvincibilityMode(2.f);
 	auto action = Sequence::create(
-		ScaleTo::create(0.5f, 1.0f),
-		CallFunc::create([&](){
+		ScaleTo::create(0.5f, SCALE_SIZE),
+		CallFunc::create([=](){
         this->m_pTexture->setSpriteFrame(m_CharacterParam._normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-		this->setBoundingRadius(6.f);
-		m_pParticle->setStartSize(40.f);
+		this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
+		m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_pParticle->setEndSize(4.f);
 	}), nullptr);
 	this->runAction(action);
@@ -289,7 +295,7 @@ void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, in
         Sequence::create(
 		MoveBy::create(duration / stackCount, Vec2(stackSizeLR, -stackSizeTB)),
 		MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB)), nullptr), stackCount),
-        CallFunc::create([this](){this->setPosition(m_OriginPos);}), nullptr));
+        CallFunc::create([=](){this->setPosition(m_OriginPos);}), nullptr));
 }
 
 void CPlayer::GotBarrierItem()

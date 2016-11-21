@@ -6,16 +6,17 @@
 #include "../GameObject/ObjectManager.h"
 
 using namespace cocos2d;
+using namespace BULLETCREATOR;
 
 CBulletCreator::CBulletCreator()
 : m_CurrentPattern(nullptr)
 , m_BulletDataManager(CBulletDataManager::Instance())
 , m_RotationAngle(0)
 , m_CurrentHeight(0)
-, m_RotationSpeed(100)
-, m_CreateDistance(500)
-, m_BulletSpeed(0)
-, m_Running(true)
+, m_Time(0)
+, m_LineIntervalLimit(0.0f)
+, m_Running(false)
+, m_Pause(false)
 {}
 
 CBulletCreator::~CBulletCreator(){}
@@ -51,60 +52,83 @@ bool CBulletCreator::init()
 
 void CBulletCreator::Update(float delta)
 {
-    if(!m_Running) return;
+	m_Time += delta;
+	if (m_Time < m_LineIntervalLimit) return; 
     if(m_CurrentHeight <= 0) this->clear();
     if(m_CurrentPattern == nullptr) return;
     
-    this->createOneLine(m_CurrentPattern, --m_CurrentHeight, m_CreateDistance, m_BulletSpeed);
+	this->createOneLine(m_CurrentPattern, --m_CurrentHeight, CREATE_DISTANCE, m_RotationAngle);
+	m_Time = 0.0f;
 }
 
 void CBulletCreator::setRotationAngle(float dir, float delta)
 {
-    m_RotationAngle -= (dir * (m_RotationSpeed * delta));
+	m_RotationAngle -= (dir * (ROTATION_SPEED * delta));
 }
 
-void CBulletCreator::setPattern(std::string patternName, float speed)
-{
-    auto data = CBulletPatternDataManager::Instance()->getDataByName(patternName);
+void CBulletCreator::setPattern(std::string patternName)
+{	
+	auto data = CBulletPatternDataManager::Instance()->getDataByName(patternName);
+	this->setData(data);
+}
 
-    m_CurrentPattern = data;
-    m_CurrentHeight = data->_height;
-    m_BulletSpeed = speed;
+void CBulletCreator::setPattern(const sBULLET_PATTERN* data)
+{
+	this->setData(data);
+}
+
+void CBulletCreator::setData(const sBULLET_PATTERN* data)
+{
+	m_CurrentPattern = data;
+	m_CurrentHeight = data->_height;
+	m_LineIntervalLimit = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;
+	m_Running = true;
 }
 
 void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
                                    int currentHeight,
                                    float distance,
-                                   float speed)
+								   float angle)
 {
-    for(int width = 0; width < data->_width; width++)
+    //for(int width = 0; width < data->_width; width++)
+	for (int width = data->_width-1; width >= 0; width--)
     {
-        int index = (data->_width * currentHeight) + width;
+		int index = (data->_width * currentHeight) + ((data->_width - 1) - width);
         auto symbol = data->_pattern[index];
         if(symbol == ' ') continue;
         
         // 각 총알의 각도
         // width번째 총알 = (padding * width) - 프레임 간 회전 정도
-        float angle = (data->_widthPadding * width) - m_RotationAngle;
-        angle -= 108.f; // 각도 보정
+        float bulletAngle = (data->_widthPadding * width) - angle;
+		bulletAngle += data->_widthPadding / 2;									 // 각도 보정
+		bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정
         
-        this->createBullet(symbol, angle, distance, speed);
+		this->createBullet(symbol, bulletAngle, distance);
     }
 }
 
-void CBulletCreator::createImmediately(std::string patternName,
+void CBulletCreator::CreateImmediately(std::string patternName,
                                        float angle,
-                                       float distance,
-                                       float speed)
+                                       float distance)
 {
-    auto data = CBulletPatternDataManager::Instance()->getDataByName(patternName);
-    for(int height = data->_height; height >= 0; --height)
-    {
-        CObjectManager::Instance()->getBulletCreator()->createOneLine(data, height, distance, speed);
-    }
+	/*auto delay = random<float>(0.0f, 2);
+	auto key = StringUtils::format("CreateImmediately_%d", (int)(delay * 1000));
+	this->scheduleOnce([=](float delta){*/
+	auto data = CBulletPatternDataManager::Instance()->getDataByName(patternName);
+	for (int height = data->_height - 1; height >= 0; height--)
+	{
+		auto distanceH = distance - (height * BULLET_STANDARD_PADDING);
+		this->createOneLine(data, height, distanceH, 90 - angle);
+	}
+	/*}, delay, key);
+
+	auto data = CBulletPatternDataManager::Instance()->getDataByName(patternName);
+	this->schedule([=](float){
+		
+	}, 0, data->_height, 0.f, key);*/
 }
 
-CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance, float speed)
+CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance)
 {
     CBullet* bullet = nullptr;
 
@@ -119,13 +143,13 @@ CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance, 
     else if (symbol == 'Z')                     bullet = CBonusLetter::create();
     
     auto data = *(CBulletDataManager::Instance()->getBulletInfo(symbol));
-    data._speed = speed;
     data._distance = distance;
     data._angle = angle;
     data._isFly = true;
-    
+	if (data._speed > BULLET_STANDARD_SPEED) data._delayTime = (BULLET_STANDARD_DELAY - (CREATE_DISTANCE / data._speed)-0.5f);   
+
     CObjectManager::Instance()->getBulletCreator()->setBulletDataByUserData(data, symbol);
-    
+
     bullet
     ->setBulletInfo(data)
     ->build();
@@ -176,6 +200,7 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
 void CBulletCreator::clear()
 {
     m_CurrentHeight = 0;
-    m_BulletSpeed = 0.f;
+	m_RotationAngle = 0.f;
     m_CurrentPattern = nullptr;
+	m_Running = false;
 }

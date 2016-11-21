@@ -456,6 +456,8 @@ bool CUserDataManager::CoinUpdate(int value)
 			CEarnCoinPopup::create()
 				->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 				->setPopupPosition(visibleSize / 2)
+				->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::NONE)
+				->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
 				->show(Director::getInstance()->getRunningScene(), 102);
         }
         else

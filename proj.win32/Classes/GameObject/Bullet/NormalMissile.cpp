@@ -44,26 +44,43 @@ CNormalMissile* CNormalMissile::create()
 	}
 }
 
+CBullet* CNormalMissile::build()
+{
+	CBullet::build();
+
+	this->createParticle_Flame();
+	//this->createTargetLine();
+
+	return this;
+}
+
 bool CNormalMissile::init()
 {
     if (!CBullet::init()) return false;
     
-    m_bIsTargetMarkCreate = true;
     m_MultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
     m_UIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
     
+	this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
+
     Size visibleSize = Director::getInstance()->getVisibleSize();
     m_ScreenRect = Rect(-visibleSize.width, 0, visibleSize.width * 3, visibleSize.height);
-    
-    this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
-    this->createParticle_Flame();
-    this->createTargetLine();
-    
+
     return true;
+}
+
+void CNormalMissile::Execute(float delta)
+{
+	m_Time += delta;
+	if (m_Time < getDelayTime()) return;
+	if (!m_bIsTargetMarkCreate) this->createTargetLine();
+
+	m_FSM->Execute(delta);
 }
 
 void CNormalMissile::Rotation(float dir, float delta)
 {
+
 	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
 	if (this->getIsAiming()){
 		if (!m_ScreenRect.containsPoint(getPosition()))
@@ -128,10 +145,9 @@ void CNormalMissile::ChangeToCoinOrStar()
         patternName = m_Player->getCharacterParam()._aimingMissilePattern;
 
 	float distance = m_TargetVec.distance(getPosition());
-	float speed = 600.f;
-    
+
     // TODO: 패턴 안에 있는 bullet의 데이터를 셋팅해야한다.
-    CObjectManager::Instance()->getBulletCreator()->createImmediately(patternName, -getRotation(), distance, getSpeed() * 0.5f);
+	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(patternName, getAngle(), distance);
     
 	// 이부분 일단 작업하고 다음 리펙토링 때 autoReturnMemoryPool에 넣어야한다.
 	this->scheduleOnce([this](float delta){
@@ -142,32 +158,59 @@ void CNormalMissile::ChangeToCoinOrStar()
 
 void CNormalMissile::createTargetLine()
 {
-    auto bullet = CTargetMark::create();
-    bullet->setAngle(-getRotation());
-    bullet->setDistance(m_Planet->getBoundingRadius());
-    bullet->setBullet(this);
-    bullet->setIsFly(false);
-    bullet->build();
+	m_bIsTargetMarkCreate = true;
+
+	auto bullet = CTargetMark::create();
+	bullet->setAngle(getAngle());
+	bullet->setDistance(m_Planet->getBoundingRadius() * 0.9f);
+	bullet->setBullet(this);
+	bullet->setIsFly(false);
+	bullet->setIsAiming(getIsAiming());
+	bullet->build();
+
+	CGameScene::getGridWorld()->addChild(bullet);
+
+#if(!USE_MEMORY_POOLING)
+	CObjectManager::Instance()->AddBullet(bullet);
+#endif
 }
 
 void CNormalMissile::createParticle_Flame()
 {
     // 불꽃 파티클
-    m_pParticleFlame = CParticle_Flame::create("missileFlame.png");
-    if (m_pParticleFlame != nullptr){
-        m_pParticleFlame->retain();
-        m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_pParticleFlame->setAngle(-90);
-        m_pParticleFlame->setGravity(Vec2(90, 0));
-        m_pParticleFlame->setPosition(Vec2(this->getContentSize().width * 1.1f,
-                                           this->getContentSize().height * 0.5f));
-        m_pParticleFlame->setStartSpin(-90);
-        m_pParticleFlame->setEndSpin(270);
-        m_pParticleFlame->setLife(0.1f);
-        m_pParticleFlame->setLifeVar(0.15f);
-        
-        this->addChild(m_pParticleFlame);
-    }
+    //m_pParticleFlame = CParticle_Flame::create("missileFlame.png");
+    //if (m_pParticleFlame != nullptr){
+    //    m_pParticleFlame->retain();
+    //    m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    //    m_pParticleFlame->setAngle(-90);
+    //    m_pParticleFlame->setGravity(Vec2(90, 0));
+    //    m_pParticleFlame->setPosition(Vec2(this->getContentSize().width * 1.1f, this->getContentSize().height * 0.5f));
+    //    m_pParticleFlame->setStartSpin(-90);
+    //    m_pParticleFlame->setEndSpin(270);
+    //    m_pParticleFlame->setLife(0.1f);
+    //    m_pParticleFlame->setLifeVar(0.15f);
+    //    
+    //    this->addChild(m_pParticleFlame);
+    //}
+
+	m_pParticleFlame = CParticle_Flame::create("fire.png");
+	if (m_pParticleFlame != nullptr){
+		m_pParticleFlame->retain();
+		m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_pParticleFlame->setAngle(0);
+		m_pParticleFlame->setGravity(Vec2(90, 0));
+		m_pParticleFlame->setPosition(Vec2(this->getContentSize().width * 1.2f,	this->getContentSize().height * 0.5f));
+		m_pParticleFlame->setStartSize(50);
+		m_pParticleFlame->setLife(0.3f);
+		m_pParticleFlame->setLifeVar(0.15f);
+		m_pParticleFlame->setStartColor(Color4F(1.f, 1.f, 0.5f, 1.f));
+		m_pParticleFlame->setStartColorVar(Color4F(0, 0, 0.8f, 0));
+		m_pParticleFlame->setEndColor(Color4F(1.f, 1.f, 1.f, 0.4f));
+		m_pParticleFlame->setEndColorVar(Color4F(0, 0, 0, 0));
+		m_pParticleFlame->setPosVar(Vec2(0, 10));
+		m_pParticleFlame->setTotalParticles(80);
+		this->addChild(m_pParticleFlame);
+	}
 }
 
 void CNormalMissile::createParticle_Explosion()

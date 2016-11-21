@@ -16,6 +16,7 @@
 #include "../MyUI/Popup/CharacterSelectPopup.h"
 #include "../MyUI/Popup/WorkshopPopup.h"
 #include "../MyUI/Popup/GachaPopup.h"
+#include "../MyUI/Popup/PatternTestPopup.h"
 #include "../SDKUtil/SDKUtil.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
@@ -139,12 +140,7 @@ void CMenuScene::InitMenuSceneUI()
 		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.3f),
 		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.2f),
 		Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.1f),
-        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.6f),
-        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.5f),
-        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.4f),
-        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.3f),
-        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.2f),
-        Vec2(visibleSize.width * 0.3f, visibleSize.height * 0.1f),
+		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.7f),
     };
 
 	Size testButtonSize[] = {
@@ -209,6 +205,8 @@ void CMenuScene::InitMenuSceneUI()
         });
 	}, "RewardAds", testButtonPos[5], testButtonSize[0]);
 
+	createTestButton([=](Node* sender){	createWidgetPopup(CPatternTestPopup::create()); }, "Pattern", testButtonPos[12], testButtonSize[0]);
+
 	CAudioManager::Instance()->PUBLIC_CLICK_SOUND = SOUND_PAIR("", "");
 	SOUND_PAIR temp1 = sounds[0];
 	SOUND_PAIR temp2 = sounds[1];
@@ -223,8 +221,6 @@ void CMenuScene::InitMenuSceneUI()
 	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp4; }, "4", testButtonPos[9], testButtonSize[1], sounds[3]);
 	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp5; }, "5", testButtonPos[10], testButtonSize[1], sounds[4]);
 	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp6; }, "6", testButtonPos[11], testButtonSize[1], sounds[5]);
-
-
    
     
     

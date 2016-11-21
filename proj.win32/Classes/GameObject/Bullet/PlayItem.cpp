@@ -52,5 +52,5 @@ void CPlayItem::CollisionWithPlayer()
 {
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
-//	CItemManager::Instance()->StartItemTimer(getBulletInfo()._itemType);
+	CItemManager::Instance()->StartItemTimer((eITEM_TYPE)(this->getSymbol() - 'A' + 1));
 }

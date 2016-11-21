@@ -17,7 +17,6 @@ class CPlayer : public CGameObject {
 public:
 	static CPlayer* create(
 		sCHARACTER_PARAM characterParam,
-		float boundingRadius, 
 		float angle, 
 		float rotateSpeed);
 
@@ -86,7 +85,6 @@ private:
 
 	CPlayer(
 		sCHARACTER_PARAM characterParam,
-		float boundingRadius,
 		float rotate,
 		float rotateSpeed);
 	virtual ~CPlayer(){}

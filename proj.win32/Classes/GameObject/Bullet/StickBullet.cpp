@@ -14,9 +14,13 @@
 
 using namespace cocos2d;
 
+namespace STICKBULLET{
+	const static float STAY_LIMIT_TIME = 2.f;
+};
 
 CStickBullet::CStickBullet()
-: m_HitWithPlanet(false)
+	: m_StayLimitTime(0)
+	, m_HitWithPlanet(false)
 {}
 
 CStickBullet* CStickBullet::create()
@@ -58,27 +62,34 @@ bool CStickBullet::init()
     return true;
 }
 
+void CStickBullet::Execute(float delta)
+{
+	m_Time += delta;
+	if (m_Time < getDelayTime()) return;
+	if (m_HitWithPlanet) m_StayLimitTime += delta;
+
+	if (m_StayLimitTime > STICKBULLET::STAY_LIMIT_TIME)
+	{
+		this->setIsFly(true);
+
+		if (IsHit(m_Planet->getPosition(), m_Planet->getBoundingRadius() * 0.3f))
+		{
+			this->ReturnToMemoryBlock();
+			return;
+		}
+	}
+
+	m_FSM->Execute(delta);
+}
+
 void CStickBullet::CollisionWithPlanet()
 {
-    if(m_HitWithPlanet == false)
-    {
-        m_HitWithPlanet = true;
-        
-        this->setIsFly(false);
-        
-        scheduleOnce([=](float delta){
-            
-            this->setSpeed(300);
-            this->setIsFly(true);
-            
-            scheduleOnce([=](float delta){
-                
-                this->ReturnToMemoryBlock();
-                
-            }, 0.2f, MakeString("StickBulletStayFinish_%d", random<int>(1, 100)));
-            
-        }, 2.f, MakeString("StickBulletStay_%d", random<int>(1, 100)));
-    }
+	if (m_HitWithPlanet == false)
+	{
+		m_HitWithPlanet = true;
+		this->setIsFly(false);
+		this->setSpeed(300.f);
+	}
 }
 
 void CStickBullet::CollisionWithPlayer()
@@ -106,7 +117,8 @@ void CStickBullet::ChangeToCoinOrStar()
     char symbol = 'T';
     if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star) symbol = 'Y';
     
-    CBulletCreator::createBullet(symbol, -getRotation(), distance, getSpeed() * 0.5f);
-    
+    auto bullet = CBulletCreator::createBullet(symbol, -getRotation(), distance);
+	if (m_HitWithPlanet) bullet->setIsFly(false);
+
     this->ReturnToMemoryBlock();
 }

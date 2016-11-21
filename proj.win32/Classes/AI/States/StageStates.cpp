@@ -44,7 +44,7 @@ CBonusTimeStageState* CBonusTimeStageState::Instance(){
 
 void CBonusTimeStageState::Enter(CObjectManager* objectMng){
 
-	auto screwShooter = CPatternShooter::create(
+	CPatternShooter::create(
 		sSHOOTER_PARAM(
 		MakeString("bonusTime%d_Pattern", 1)
 		, 0.f

@@ -103,7 +103,7 @@ bool CGameScene::initVariable()
 	m_GridWorld->addChild(background);
 	//background->setVisible(false);
 
-	auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 180, 0.0f, 100.f);
+	auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 270.f, 0.0f, 100.f);
 	planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		origin.y + visibleSize.height * 0.35f));
 	m_GridWorld->addChild(planet, 100);
@@ -111,7 +111,7 @@ bool CGameScene::initVariable()
 	planet->setOriginPos(planet->getPosition());
 
 	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
-	auto player = CPlayer::create(currentCharacterInfo, 6.f, 0.0f, 400.0f);
+	auto player = CPlayer::create(currentCharacterInfo, 0.0f, 400.0f);
 
 	player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		planet->getPosition().y + (planet->getBoundingRadius() + 20)));
@@ -186,22 +186,12 @@ void CGameScene::InitGameSceneUI()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	CMyButton::create()
-		->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -1.f), eMYBUTTON_STATE::EXECUTE)
-		->setButtonNormalImage("leftButton_2.png")
-		->setButtonClickedImage("leftButton_1.png")
-		->setDefaultClickedAnimation(eCLICKED_ANIMATION::TEXTURE | eCLICKED_ANIMATION::ALPHA)
+		->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -2.f), eMYBUTTON_STATE::EXECUTE)
+		->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, visibleSize.width, visibleSize.height))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setButtonPosition(Vec2(visibleSize.width * 0.25f, visibleSize.height * 0.5f))
+		->setButtonPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f))
 		->show(m_GridWorld, 102);
 
-	CMyButton::create()
-		->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), 1.f), eMYBUTTON_STATE::EXECUTE)
-		->setButtonNormalImage("rightButton_2.png")
-		->setButtonClickedImage("rightButton_1.png")
-		->setDefaultClickedAnimation(eCLICKED_ANIMATION::TEXTURE | eCLICKED_ANIMATION::ALPHA)
-		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setButtonPosition(Vec2(visibleSize.width * 0.75f, visibleSize.height * 0.5f))
-		->show(m_GridWorld, 102);
 
 	// player의 HealthCalFunc callback 등록 
 	//auto healthBar = CHealthBarUI::create(
@@ -229,14 +219,14 @@ void CGameScene::InitGameSceneUI()
 	m_GridWorld->addChild(coinScoreUI, 102);
 	if (!CUIManager::Instance()->AddUIWithName(coinScoreUI, "CoinScoreUI"))
 		CCASSERT(false, "CoinScoreUI CAN NOT INIT");
-    
+
 	auto runScoreUI = CScoreUI::create("fonts/Number.ttf", 38, "run.png");
-    runScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    runScoreUI->setLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-    runScoreUI->setPosition(Vec2(visibleSize.width * 0.96f, visibleSize.height * 0.925f));
+	runScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	runScoreUI->setLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
+	runScoreUI->setPosition(Vec2(visibleSize.width * 0.96f, visibleSize.height * 0.925f));
 	m_GridWorld->addChild(runScoreUI, 102);
-    if (!CUIManager::Instance()->AddUIWithName(runScoreUI, "RunScoreUI"))
-        CCASSERT(false, "RunScoreUI CAN NOT INIT");
+	if (!CUIManager::Instance()->AddUIWithName(runScoreUI, "RunScoreUI"))
+		CCASSERT(false, "RunScoreUI CAN NOT INIT");
 
 	auto multipleScoreUI = CMultipleScore::create();
 	m_GridWorld->addChild(multipleScoreUI); // referenceCount를 위하여 addChild
@@ -251,15 +241,6 @@ void CGameScene::InitGameSceneUI()
 	if (!CUIManager::Instance()->AddUIWithName(bonusTime, "BonusTime"))
 		CCASSERT(false, "BonusTime CAN NOT INIT");
 
-	auto createScoreUI = [=](std::string name){
-		auto scoreUI = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-		m_GridWorld->addChild(scoreUI, 102);// referenceCount를 위하여 addChild
-		scoreUI->setVisible(false);
-		if (!CUIManager::Instance()->AddUIWithName(scoreUI, name))
-			CCASSERT(false, StringUtils::format("%s CAN NOT INIT", name.c_str()).c_str());
-		return scoreUI;
-	};
-
 	m_PauseBtn = CMyButton::create()
 		->addEventListener([=](Node* sender){
 		this->OpenGamePausePopup();
@@ -269,16 +250,40 @@ void CGameScene::InitGameSceneUI()
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->show(m_GridWorld, 102);
 	m_PauseBtn->setCascadeOpacityEnabled(true);
-    
-	CMyButton::create()
-		->addEventListener([=](Node* sender){
-		CItemManager::Instance()->StartItemTimer(eITEM_TYPE_giant);
-	})
-		->setButtonNormalImage("bonusLetter_0.png")
-		->setButtonPosition(Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.5f))
-		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->show(m_GridWorld, 102);
 
+	auto createItemTest = [=](eITEM_TYPE type, Vec2 pos){
+		CMyButton::create()
+			->addEventListener([=](Node* sender){
+			CItemManager::Instance()->StartItemTimer(type);
+		})
+			->setButtonNormalImage(StringUtils::format("playItem_%d.png", type))
+			->setButtonPosition(pos)
+			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->show(m_GridWorld, 102);
+	};
+
+	Vec2 itemPosArray[] = {
+		Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.5f),
+		Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.475f),
+		Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.45f),
+		Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.425f),
+		Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.4f),
+		Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.375f)
+	};
+
+	for (int idx = 0; idx < 6; idx++)
+	{
+		createItemTest((eITEM_TYPE)(eITEM_TYPE::eITEM_TYPE_health + idx), itemPosArray[idx]);
+	}
+
+	auto createScoreUI = [=](std::string name){
+		auto scoreUI = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
+		m_GridWorld->addChild(scoreUI, 102);// referenceCount를 위하여 addChild
+		scoreUI->setVisible(false);
+		if (!CUIManager::Instance()->AddUIWithName(scoreUI, name))
+			CCASSERT(false, StringUtils::format("%s CAN NOT INIT", name.c_str()).c_str());
+		return scoreUI;
+	};
 	createScoreUI("BonusTimeCount");
 	createScoreUI("AlienGetCount");
 	createScoreUI("ChallengeClearCount");
