@@ -192,7 +192,7 @@ void CBullet::R_BezierWithScale(Vec2 targetPos, Vec2 controlPoint_1, Vec2 contro
     
     // 베지어 액션 및 다른 액션 순서대로 실행
     auto bezierTo1 = BezierTo::create(time, bezier);
-    this->setZOrder(101);
+    this->setLocalZOrder(101);
     auto action = Sequence::create(bezierTo1,
         Spawn::create(ScaleBy::create(0.5f, scale), FadeTo::create(2.0f, 1), NULL),
         // 두 액션이 끝난후 스케줄을 걸어 오브젝트 삭제

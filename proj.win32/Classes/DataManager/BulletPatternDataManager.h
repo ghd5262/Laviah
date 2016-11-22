@@ -17,7 +17,7 @@ struct sBULLET_PATTERN
     , _width(-1)
     , _widthPadding(-1)
     , _patternName(""){
-        std::memset(_pattern, 0, sizeof(_pattern));
+        memset(_pattern, 0, sizeof(_pattern));
     }
     
     sBULLET_PATTERN(const sBULLET_PATTERN& data)

@@ -146,7 +146,8 @@ CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance)
     data._distance = distance;
     data._angle = angle;
     data._isFly = true;
-	if (data._speed > BULLET_STANDARD_SPEED) data._delayTime = (BULLET_STANDARD_DELAY - (CREATE_DISTANCE / data._speed)-0.5f);   
+	if (data._speed > BULLET_STANDARD_SPEED)
+        data._delayTime = (BULLET_STANDARD_DELAY - ((CREATE_DISTANCE - PLANET::BOUNDING_RADIUS) / data._speed));
 
     CObjectManager::Instance()->getBulletCreator()->setBulletDataByUserData(data, symbol);
 

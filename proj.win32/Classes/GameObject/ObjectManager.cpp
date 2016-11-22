@@ -112,6 +112,16 @@ void CObjectManager::CreateShooterByTimer()
 		else
 		{
 			auto testPattern = CBulletPatternDataManager::Instance()->getTestPattern();
+            auto patternData = const_cast<sBULLET_PATTERN*>(testPattern);
+            std::string pattern = "                 65211";
+            
+            std::copy(std::begin(pattern), std::end(pattern), patternData->_pattern);
+            patternData->_width = pattern.size();
+            patternData->_height = 1;
+            patternData->_index = 10000;
+            patternData->_patternName = "testPattern";
+            patternData->_widthPadding = 5.f;
+            
 			if (testPattern != nullptr){
 				m_BulletCreator->setPattern(testPattern);
 			}
@@ -178,7 +188,7 @@ void CObjectManager::ExecuteAllObject(float delta)
     m_BulletCreator->Update(delta);
     m_Planet->Execute();
     m_Player->Execute(delta);
-	this->RotationObject(1);
+	//this->RotationObject(1);
 }
 
 void CObjectManager::Execute(float delta)

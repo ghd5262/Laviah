@@ -103,18 +103,18 @@ bool CGameScene::initVariable()
 	m_GridWorld->addChild(background);
 	//background->setVisible(false);
 
-	auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 270.f, 0.0f, 100.f);
-	planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-		origin.y + visibleSize.height * 0.35f));
+    auto planet = CPlanet::create(currentCharacterInfo._planetTextureName);
+    
+	planet->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.35f));
 	m_GridWorld->addChild(planet, 100);
 
 	planet->setOriginPos(planet->getPosition());
 
 	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
-	auto player = CPlayer::create(currentCharacterInfo, 0.0f, 400.0f);
+	auto player = CPlayer::create(currentCharacterInfo);
+    player->setRotateSpeed((planet->getContentSize().width / player->getContentSize().width) * PLANET::NORMAL_ROTATION_SPEED);
 
-	player->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
-		planet->getPosition().y + (planet->getBoundingRadius() + 20)));
+	player->setPosition(Vec2(visibleSize.width * 0.5f, planet->getPosition().y + (planet->getBoundingRadius() + 20)));
 	m_GridWorld->addChild(player, 100);
 
 	player->setOriginPos(player->getPosition());

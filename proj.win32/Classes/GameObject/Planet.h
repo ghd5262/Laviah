@@ -1,9 +1,15 @@
 ﻿#pragma once
 #include "GameObject.h"
 
+namespace PLANET {
+    static const float BOUNDING_RADIUS = 270.f;
+    static const float NORMAL_ROTATION_SPEED  = 100.f;
+    static const float FAST_ROTATION_SPEED = NORMAL_ROTATION_SPEED * 2.f;
+}
+
 class CPlanet : public CGameObject {
 public:
-	static CPlanet* create(std::string textureName, float boundingRadius, float angle, float rotateSpeed);
+	static CPlanet* create(std::string textureName);
 	
 	void CrushShake(float interval, float duration, float speed, float magnitude);
 	virtual void Execute(float delta = 0.f) override;
@@ -24,7 +30,7 @@ protected:
 
 private:
 	float noise(int x, int y);
-	CPlanet(std::string textureName, float boundingRadius, float rotate, float rotateSpeed);
+	CPlanet(std::string textureName);
 	virtual ~CPlanet(){}
 
 private:

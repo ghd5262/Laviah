@@ -3,18 +3,11 @@
 #include "ObjectManager.h"
 
 using namespace cocos2d;
+using namespace PLANET;
 
-CPlanet* CPlanet::create(
-	std::string textureName,
-	float boundingRadius,
-	float angle,
-	float rotateSpeed)
+CPlanet* CPlanet::create(std::string textureName)
 {
-	CPlanet *pRet = new(std::nothrow) CPlanet(
-		 textureName
-		, boundingRadius
-		, angle
-		, rotateSpeed);
+	CPlanet *pRet = new(std::nothrow) CPlanet(textureName);
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -28,13 +21,13 @@ CPlanet* CPlanet::create(
 	}
 }
 
-CPlanet::CPlanet(std::string textureName, float boundingRadius, float angle, float rotateSpeed)
+CPlanet::CPlanet(std::string textureName)
 : m_TextureName(textureName)
-, m_Angle(angle)
-, m_fRotateSpeed(rotateSpeed)
+, m_Angle(0.f)
+, m_fRotateSpeed(NORMAL_ROTATION_SPEED)
 , m_fElapsed(0.0f)
 {
-    this->setBoundingRadius(boundingRadius);
+    this->setBoundingRadius(BOUNDING_RADIUS);
 }
 
 bool CPlanet::init()

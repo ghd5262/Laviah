@@ -73,7 +73,10 @@ void CNormalMissile::Execute(float delta)
 {
 	m_Time += delta;
 	if (m_Time < getDelayTime()) return;
-	if (!m_bIsTargetMarkCreate) this->createTargetLine();
+    if (!m_bIsTargetMarkCreate) {
+        CCLOG("Delay : %f Time : %f", getDelayTime(), m_Time);
+        this->createTargetLine();
+    }
 
 	m_FSM->Execute(delta);
 }
@@ -95,7 +98,8 @@ void CNormalMissile::Rotation(float dir, float delta)
 void CNormalMissile::CollisionWithPlanet()
 {
     //CAudioManager::Instance()->PlayEffectSound(MakeString("sounds/explosion_%d.mp3", getIsAiming() + 1), false);
-    
+    //CCLOG("Arrive Time : %f Real Time : %f speed : %f", BULLETCREATOR::CREATE_DISTANCE / getSpeed(), m_Time, getSpeed());
+
 	if (this->getIsAiming())
 		m_Planet->CrushShake(0.01f, 0.5f, 0.1f, 5.0f);
 	else

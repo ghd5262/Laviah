@@ -1,8 +1,10 @@
 #pragma once
+#include "Planet.h"
 #include "Bullet/Bullet.h"
 #include "../Common/HSHUtility.h"
 #include "../DataManager/BulletPatternDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
+
 
 namespace BULLETCREATOR{
 	const static float PATTERN_PADDING_LIMIT	= 3.f; 
@@ -10,7 +12,7 @@ namespace BULLETCREATOR{
 	const static float ROTATION_SPEED			= 100.f;
 	const static float BULLET_STANDARD_SPEED	= 400.f;
 	const static float BULLET_STANDARD_PADDING  = 80.f;
-	const static float BULLET_STANDARD_DELAY	= CREATE_DISTANCE / BULLET_STANDARD_SPEED;
+	const static float BULLET_STANDARD_DELAY	= (CREATE_DISTANCE - PLANET::BOUNDING_RADIUS) / BULLET_STANDARD_SPEED;
 };
 
 class CBulletDataManager;

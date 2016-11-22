@@ -15,10 +15,7 @@ class CItemBarrier;
 class CMagnetEffect;
 class CPlayer : public CGameObject {
 public:
-	static CPlayer* create(
-		sCHARACTER_PARAM characterParam,
-		float angle, 
-		float rotateSpeed);
+	static CPlayer* create(sCHARACTER_PARAM characterParam);
 
 	virtual void Execute(float delta = 0.f) override;
 
@@ -83,10 +80,7 @@ protected:
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
 
-	CPlayer(
-		sCHARACTER_PARAM characterParam,
-		float rotate,
-		float rotateSpeed);
+	CPlayer(sCHARACTER_PARAM characterParam);
 	virtual ~CPlayer(){}
 
 private:

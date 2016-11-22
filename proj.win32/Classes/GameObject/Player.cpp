@@ -24,15 +24,9 @@ using namespace PLAYER;
 
 
 
-CPlayer* CPlayer::create(
-	sCHARACTER_PARAM characterParam,
-	float angle,
-	float rotateSpeed)
+CPlayer* CPlayer::create(sCHARACTER_PARAM characterParam)
 {
-	CPlayer *pRet = new(std::nothrow) CPlayer(
-		characterParam
-		, angle
-		, rotateSpeed);
+	CPlayer *pRet = new(std::nothrow) CPlayer(characterParam);
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -46,13 +40,10 @@ CPlayer* CPlayer::create(
 	}
 }
 
-CPlayer::CPlayer(
-	sCHARACTER_PARAM characterParam,
-	float angle,
-	float rotateSpeed)
+CPlayer::CPlayer(sCHARACTER_PARAM characterParam)
 : m_CharacterParam(characterParam)
-, m_Angle(angle)
-, m_fRotateSpeed(rotateSpeed)
+, m_Angle(0.f)
+, m_fRotateSpeed(0.f)
 , m_fMaxLife(characterParam._health)
 , m_fLife(characterParam._health)
 , m_fMagnetLimitTime(0)
@@ -82,11 +73,9 @@ bool CPlayer::init()
     
     setItemEffect(eITEM_FLAG_giant);
     setCascadeOpacityEnabled(true);
-    m_FSM = std::shared_ptr<CStateMachine<CPlayer>>(
-                                                    new CStateMachine<CPlayer>(this), [](CStateMachine<CPlayer>* fsm)
-                                                    {
-                                                        delete fsm;
-                                                    });
+    m_FSM = std::shared_ptr<CStateMachine<CPlayer>>( new CStateMachine<CPlayer>(this), [](CStateMachine<CPlayer>* fsm){
+        delete fsm;
+    });
     
     if (m_FSM.get() != nullptr){
         m_FSM.get()->ChangeState(CPlayerNormal::Instance());
@@ -101,7 +90,9 @@ bool CPlayer::init()
     
     m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam._normalTextureName);
     if (m_pTexture != nullptr){
-        m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+        this->setContentSize(m_pTexture->getContentSize());
+        m_pTexture->setPosition(this->getContentSize() / 2);
+        m_pTexture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		addChild(m_pTexture);
         m_pTexture->setVisible(false);
     }
