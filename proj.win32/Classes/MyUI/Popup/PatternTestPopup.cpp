@@ -3,7 +3,7 @@
 #include "../TextField.h"
 #include "../../DataManager/BulletPatternDataManager.h"
 #include "../../Scene/GameScene.h"
-#include "../../Common/StringUtility.hpp"
+#include "../../Common/StringUtility.h"
 #include <vector>
 
 CPatternTestPopup* CPatternTestPopup::create()
