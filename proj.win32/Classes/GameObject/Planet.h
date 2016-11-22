@@ -4,7 +4,7 @@
 namespace PLANET {
     static const float BOUNDING_RADIUS = 270.f;
     static const float NORMAL_ROTATION_SPEED  = 100.f;
-    static const float FAST_ROTATION_SPEED = NORMAL_ROTATION_SPEED * 2.f;
+    static const float FAST_ROTATION_SPEED = NORMAL_ROTATION_SPEED * 1.5f;
 }
 
 class CPlanet : public CGameObject {

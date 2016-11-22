@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Planet.h"
 #include "ItemManager.h"
 #include "ItemBarrier.h"
 #include "ObjectManager.h"
@@ -17,6 +18,8 @@ namespace PLAYER{
 	static const float GIANT_BOUNDING_RADIUS = NORMAL_BOUNDING_RADIUS * 3.f;
 	static const float GIANT_SIZE_PERCENT = 2.f;
 	static const float INVINCIVILITY_TIME = 5.f;
+	static const float NORMAL_ROTATION_SPEED = ((PLANET::BOUNDING_RADIUS / NORMAL_BOUNDING_RADIUS) * PLANET::NORMAL_ROTATION_SPEED);
+	static const float GIANT_ROTATION_SPEED = NORMAL_ROTATION_SPEED * 0.7f;
 };
 
 using namespace cocos2d;
@@ -232,6 +235,7 @@ void CPlayer::GiantMode()
         this->m_pTexture->setSpriteFrame(m_CharacterParam._giantTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
+		this->setRotateSpeed(PLAYER::GIANT_ROTATION_SPEED);
 		m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 4.f);
 		m_pParticle->setEndSize(40.f);
 	}), nullptr);
@@ -241,13 +245,14 @@ void CPlayer::GiantMode()
 void CPlayer::NormalMode()
 {
     //1초간 무적
-    InvincibilityMode(2.f);
+    InvincibilityMode(3.f);
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, SCALE_SIZE),
 		CallFunc::create([=](){
         this->m_pTexture->setSpriteFrame(m_CharacterParam._normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
+		this->setRotateSpeed(PLAYER::NORMAL_ROTATION_SPEED);
 		m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_pParticle->setEndSize(4.f);
 	}), nullptr);

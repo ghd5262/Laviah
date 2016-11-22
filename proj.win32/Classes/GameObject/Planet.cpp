@@ -37,6 +37,8 @@ bool CPlanet::init()
     
     m_pTexture = Sprite::createWithSpriteFrameName(m_TextureName);
     if (m_pTexture != nullptr){
+		this->setContentSize(m_pTexture->getContentSize());
+		m_pTexture->setPosition(this->getContentSize() / 2);
         m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
         m_pTexture->setCascadeColorEnabled(true);
         addChild(m_pTexture);

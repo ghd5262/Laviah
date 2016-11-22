@@ -106,14 +106,15 @@ bool CGameScene::initVariable()
     auto planet = CPlanet::create(currentCharacterInfo._planetTextureName);
     
 	planet->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.35f));
+	planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	m_GridWorld->addChild(planet, 100);
 
 	planet->setOriginPos(planet->getPosition());
 
 	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
 	auto player = CPlayer::create(currentCharacterInfo);
-    player->setRotateSpeed((planet->getContentSize().width / player->getContentSize().width) * PLANET::NORMAL_ROTATION_SPEED);
-
+    player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * PLANET::NORMAL_ROTATION_SPEED));
+	player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	player->setPosition(Vec2(visibleSize.width * 0.5f, planet->getPosition().y + (planet->getBoundingRadius() + 20)));
 	m_GridWorld->addChild(player, 100);
 

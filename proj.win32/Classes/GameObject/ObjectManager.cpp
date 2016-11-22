@@ -126,39 +126,9 @@ void CObjectManager::CreateShooterByTimer()
 				m_BulletCreator->setPattern(testPattern);
 			}
 		}
-	}//
+	}
 
 	m_fStageTime = 0.f;
-//{
-//	if (m_CurrentShooterIdx < m_StageList->size() && m_StageList->at(m_CurrentShooterIdx)._fStartTime < m_fStageTime)
-//	{
-//        auto name = m_StageList->at(m_CurrentShooterIdx)._ShooterName;
-//        
-//		if (name == "RandomShooter")
-//		{
-////			CGameScene::getGameScene()->addChild(
-////				CRandomShooter::create(m_StageList->at(m_CurrentShooterIdx)));
-//		}
-//		else if (name == "PatternShooter")
-//		{
-////			CGameScene::getGameScene()->addChild(
-////				CPatternShooter::create(m_StageList->at(m_CurrentShooterIdx)));
-//            
-//            m_BulletCreator->setPattern(m_StageList->at(m_CurrentShooterIdx)._PatternName, 500);
-//		}
-//        else if (name == "all pause")
-//        {
-////            ShooterPause();
-//        }
-//        else if (name == "all resume")
-//        {
-////            ShooterResume();
-//        }
-//        
-//		CCLOG("StageSize : %d Index : %d Shooter : %s Pattern : %s",static_cast<int>(m_StageList->size()), m_CurrentShooterIdx, m_StageList->at(m_CurrentShooterIdx)._ShooterName.c_str(), m_StageList->at(m_CurrentShooterIdx)._PatternName.c_str());
-//
-//		m_CurrentShooterIdx++;
-//	}
 }
 
 void CObjectManager::ExecuteAllObject(float delta)
@@ -188,7 +158,7 @@ void CObjectManager::ExecuteAllObject(float delta)
     m_BulletCreator->Update(delta);
     m_Planet->Execute();
     m_Player->Execute(delta);
-	//this->RotationObject(1);
+	this->RotationObject(1);
 }
 
 void CObjectManager::Execute(float delta)

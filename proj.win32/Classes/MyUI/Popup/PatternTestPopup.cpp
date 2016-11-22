@@ -6,6 +6,10 @@
 #include "../../Common/StringUtility.h"
 #include <vector>
 
+using namespace std;
+using namespace cocos2d;
+using namespace cocos2d::ui;
+
 CPatternTestPopup* CPatternTestPopup::create()
 {
 	CPatternTestPopup *pRet = new(std::nothrow) CPatternTestPopup();
@@ -25,6 +29,34 @@ CPatternTestPopup* CPatternTestPopup::create()
 bool CPatternTestPopup::init()
 {
 	if (!CPopup::init()) return false;
+
+	m_BulletTypeList = " 1456ABCDEFPTUYZz";
+	for (auto symbol : m_BulletTypeList)
+	{
+		std::string name;
+		if (symbol == ' ')							name = "coin_4.png";
+		else if (symbol == '1')						name = "bullet_normal_0.png";
+		else if (symbol == '4')                     name = "missile_normal_0.png";
+		else if (symbol == '5')                     name = "missile_aiming_0.png";
+		else if (symbol == '6')                     name = "bullet_stick_0.png";
+
+		else if (symbol == 'A')                     name = "playItem_1.png";
+		else if (symbol == 'B')                     name = "playItem_2.png";
+		else if (symbol == 'C')                     name = "playItem_3.png";
+		else if (symbol == 'D')                     name = "playItem_4.png";
+		else if (symbol == 'E')                     name = "playItem_5.png";
+		else if (symbol == 'F')                     name = "playItem_6.png";
+
+		else if (symbol == 'P')                     name = "star_1.png";
+		else if (symbol == 'T')                     name = "star_5.png";
+
+		else if (symbol == 'U')                     name = "coin_1.png";
+		else if (symbol == 'Y')                     name = "coin_5.png";
+
+		else if (symbol == 'Z')                     name = "bonusLetter_0.png";
+
+		m_TextureList.push_back(name);
+	}
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
@@ -56,7 +88,18 @@ bool CPatternTestPopup::init()
 		->show(this);
 	btnExit->setOpacity(0);
 
-	auto patternBack = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, bg->getContentSize().width * 0.9f, bg->getContentSize().height * 0.65f);
+	m_SelectButton = Button::create(m_TextureList.at(0), "", "", Widget::TextureResType::PLIST);
+	m_SelectButton->addClickEventListener([=](Ref* sender){
+		this->BulletSelect(static_cast<Node*>(sender));
+	});
+	m_SelectButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	m_SelectButton->setPosition(Vec2(this->getContentSize().width * 0.08f, this->getContentSize().height * 0.05f));
+	m_SelectButton->setOpacity(0);
+	m_SelectButton->setScale(2.5f);
+	m_SelectButton->setRotation(-90);
+	this->addChild(m_SelectButton);
+
+	/*auto patternBack = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, bg->getContentSize().width * 0.9f, bg->getContentSize().height * 0.65f);
 	if (patternBack != nullptr){
 		patternBack->setIgnoreAnchorPointForPosition(false);
 		patternBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -86,26 +129,36 @@ bool CPatternTestPopup::init()
 		m_TextFieldWidth->setDimensions(Size(widthBack->getContentSize().width * 0.9f, widthBack->getContentSize().height * 0.9f));
 		m_TextFieldWidth->setTextColor(Color4B::BLACK);
 		widthBack->addChild(m_TextFieldWidth);
-	}
+	}*/
 
 	this->setOpenAnimation([=](Node* sender){
 		workShopLabel->runAction(FadeIn::create(0.5f));
 		btnExit->runAction(FadeIn::create(0.5f));
+		m_SelectButton->runAction(FadeIn::create(0.5f));
+
 		bg->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.62f))));
 	});
 
 	this->setCloseAnimation([=](Node* sender){
 		workShopLabel->runAction(FadeTo::create(0.5f, 0));
 		btnExit->runAction(FadeTo::create(0.5f, 0));
+		m_SelectButton->runAction(FadeTo::create(0.5f, 0));
+
 		bg->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f))));
 	});
 
 	return true;
 }
 
+void CPatternTestPopup::BulletSelect(Node* sender){
+	m_CurrentBullet++;
+	m_CurrentBullet = m_CurrentBullet % m_BulletTypeList.size();
+	m_SelectButton->loadTextureNormal(m_TextureList.at(m_CurrentBullet), Widget::TextureResType::PLIST);
+}
+
 void CPatternTestPopup::End(Node* sender){
 
-	if (m_TextFieldWidth->getText().size() && m_TextFieldPattern->getText().size()){
+	/*if (m_TextFieldWidth->getText().size() && m_TextFieldPattern->getText().size()){
 		
 		auto strVec = StringUtility::split(m_TextFieldPattern->getText().c_str(), ',');
 		auto lineVec = StringUtility::split(strVec.at(0).c_str(), '"');
@@ -135,6 +188,6 @@ void CPatternTestPopup::End(Node* sender){
 
 		CBulletPatternDataManager::Instance()->setTestPattern(pattern);
 	}
-
+*/
 	this->popupClose();
 }
