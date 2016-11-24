@@ -50,6 +50,8 @@
 		931D9DB11DB0FEBC008BA5AC /* DownloadManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */; };
 		9329BAB61D75C50100878CEF /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9329BAB41D75C50100878CEF /* LoadingScene.cpp */; };
 		9329BABC1D75E47500878CEF /* AMTestScene1 in Resources */ = {isa = PBXBuildFile; fileRef = 9329BABB1D75E47500878CEF /* AMTestScene1 */; };
+		933F79D91DDECEE6005F1DAF /* BulletCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F79D71DDECEE6005F1DAF /* BulletCreator.cpp */; };
+		933F79DD1DE3E4E1005F1DAF /* PatternTestPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F79DB1DE3E4E1005F1DAF /* PatternTestPopup.cpp */; };
 		9348C5AF1D868481000E8D1B /* update in Resources */ = {isa = PBXBuildFile; fileRef = 9348C5AE1D868481000E8D1B /* update */; };
 		9348E4C61D9D62B1007DF5D9 /* GradientDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9348E4C41D9D62B1007DF5D9 /* GradientDataManager.cpp */; };
 		937311591D5849C800D5EB5C /* AlienStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373109E1D5849C700D5EB5C /* AlienStates.cpp */; };
@@ -140,8 +142,6 @@
 		937311B51D5849D500D5EB5C /* jsonRes in Resources */ = {isa = PBXBuildFile; fileRef = 937311AF1D5849D500D5EB5C /* jsonRes */; };
 		937311B61D5849D500D5EB5C /* res in Resources */ = {isa = PBXBuildFile; fileRef = 937311B01D5849D500D5EB5C /* res */; };
 		937311B71D5849D500D5EB5C /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 937311B11D5849D500D5EB5C /* sounds */; };
-		93E231791DDAA77800899F4A /* BulletCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E231771DDAA77800899F4A /* BulletCreator.cpp */; };
-		93E2317A1DDAA77800899F4A /* BulletCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E231771DDAA77800899F4A /* BulletCreator.cpp */; };
 		93E2317E1DDC344600899F4A /* StringUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E2317C1DDC344600899F4A /* StringUtility.cpp */; };
 		93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E2317C1DDC344600899F4A /* StringUtility.cpp */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
@@ -240,6 +240,10 @@
 		9329BAB41D75C50100878CEF /* LoadingScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadingScene.cpp; sourceTree = "<group>"; };
 		9329BAB51D75C50100878CEF /* LoadingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingScene.h; sourceTree = "<group>"; };
 		9329BABB1D75E47500878CEF /* AMTestScene1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AMTestScene1; sourceTree = "<group>"; };
+		933F79D71DDECEE6005F1DAF /* BulletCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BulletCreator.cpp; sourceTree = "<group>"; };
+		933F79D81DDECEE6005F1DAF /* BulletCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletCreator.h; sourceTree = "<group>"; };
+		933F79DB1DE3E4E1005F1DAF /* PatternTestPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PatternTestPopup.cpp; sourceTree = "<group>"; };
+		933F79DC1DE3E4E1005F1DAF /* PatternTestPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PatternTestPopup.h; sourceTree = "<group>"; };
 		9348C5AE1D868481000E8D1B /* update */ = {isa = PBXFileReference; lastKnownFileType = folder; path = update; sourceTree = "<group>"; };
 		9348E4C41D9D62B1007DF5D9 /* GradientDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GradientDataManager.cpp; sourceTree = "<group>"; };
 		9348E4C51D9D62B1007DF5D9 /* GradientDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientDataManager.h; sourceTree = "<group>"; };
@@ -423,8 +427,6 @@
 		93865F3E1D588C39007ECE5A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
 		939694091DC990EF008B2CD2 /* SDKUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKUtil.h; sourceTree = "<group>"; };
 		9396940A1DC9CE17008B2CD2 /* NoticeDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoticeDefine.h; sourceTree = "<group>"; };
-		93E231771DDAA77800899F4A /* BulletCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BulletCreator.cpp; sourceTree = "<group>"; };
-		93E231781DDAA77800899F4A /* BulletCreator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BulletCreator.hpp; sourceTree = "<group>"; };
 		93E2317C1DDC344600899F4A /* StringUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtility.cpp; sourceTree = "<group>"; };
 		93E2317D1DDC344600899F4A /* StringUtility.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringUtility.hpp; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -712,6 +714,8 @@
 		937310BF1D5849C700D5EB5C /* GameObject */ = {
 			isa = PBXGroup;
 			children = (
+				933F79D71DDECEE6005F1DAF /* BulletCreator.cpp */,
+				933F79D81DDECEE6005F1DAF /* BulletCreator.h */,
 				937310C01D5849C700D5EB5C /* Alien.cpp */,
 				937310C11D5849C700D5EB5C /* Alien.h */,
 				937310C21D5849C700D5EB5C /* BackGround.cpp */,
@@ -738,8 +742,6 @@
 				937310EE1D5849C700D5EB5C /* Shooter */,
 				937310F61D5849C700D5EB5C /* SpaceShip.cpp */,
 				937310F71D5849C700D5EB5C /* SpaceShip.h */,
-				93E231771DDAA77800899F4A /* BulletCreator.cpp */,
-				93E231781DDAA77800899F4A /* BulletCreator.hpp */,
 			);
 			path = GameObject;
 			sourceTree = "<group>";
@@ -853,6 +855,8 @@
 		937311171D5849C700D5EB5C /* Popup */ = {
 			isa = PBXGroup;
 			children = (
+				933F79DB1DE3E4E1005F1DAF /* PatternTestPopup.cpp */,
+				933F79DC1DE3E4E1005F1DAF /* PatternTestPopup.h */,
 				937311181D5849C700D5EB5C /* CharacterSelectPopup.cpp */,
 				937311191D5849C700D5EB5C /* CharacterSelectPopup.h */,
 				9373111A1D5849C700D5EB5C /* CharacterSelectPopupDP.cpp */,
@@ -1133,6 +1137,7 @@
 				937311671D5849C800D5EB5C /* Alien.cpp in Sources */,
 				937311981D5849C800D5EB5C /* PausePopup.cpp in Sources */,
 				9373116E1D5849C800D5EB5C /* PlayCoin.cpp in Sources */,
+				933F79DD1DE3E4E1005F1DAF /* PatternTestPopup.cpp in Sources */,
 				937311941D5849C800D5EB5C /* GoogleCloudTestAddKeyDP.cpp in Sources */,
 				9373118A1D5849C800D5EB5C /* HealthBarUI.cpp in Sources */,
 				937311AB1D5849C800D5EB5C /* PoolingManager.cpp in Sources */,
@@ -1165,11 +1170,11 @@
 				9373119A1D5849C800D5EB5C /* VideoPopup.cpp in Sources */,
 				9373116A1D5849C800D5EB5C /* Bullet.cpp in Sources */,
 				937311681D5849C800D5EB5C /* BackGround.cpp in Sources */,
-				93E231791DDAA77800899F4A /* BulletCreator.cpp in Sources */,
 				9373118B1D5849C800D5EB5C /* LevelProgressBar.cpp in Sources */,
 				9373119B1D5849C800D5EB5C /* WorkshopPopup.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				937311611D5849C800D5EB5C /* BulletDataManager.cpp in Sources */,
+				933F79D91DDECEE6005F1DAF /* BulletCreator.cpp in Sources */,
 				937311931D5849C800D5EB5C /* GoogleCloudDataInfoPopup.cpp in Sources */,
 				937311961D5849C800D5EB5C /* GoogleCloudTestPopupDP.cpp in Sources */,
 				9373117A1D5849C800D5EB5C /* ObjectManager.cpp in Sources */,
@@ -1184,7 +1189,6 @@
 			files = (
 				93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
-				93E2317A1DDAA77800899F4A /* BulletCreator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

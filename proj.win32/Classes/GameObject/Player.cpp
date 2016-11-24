@@ -4,6 +4,7 @@
 #include "ItemBarrier.h"
 #include "ObjectManager.h"
 #include "MagnetEffect.h"
+#include "BulletCreator.h"
 #include "../AI/States/PlayerStates.h"
 #include "../AI/States/StageStates.h"
 #include "../Particle/Particles.h"
@@ -18,7 +19,7 @@ namespace PLAYER{
 	static const float GIANT_BOUNDING_RADIUS = NORMAL_BOUNDING_RADIUS * 3.f;
 	static const float GIANT_SIZE_PERCENT = 2.f;
 	static const float INVINCIVILITY_TIME = 5.f;
-	static const float NORMAL_ROTATION_SPEED = ((PLANET::BOUNDING_RADIUS / NORMAL_BOUNDING_RADIUS) * PLANET::NORMAL_ROTATION_SPEED);
+	static const float NORMAL_ROTATION_SPEED = ((PLANET::BOUNDING_RADIUS / NORMAL_BOUNDING_RADIUS) * BULLETCREATOR::ROTATION_SPEED);
 	static const float GIANT_ROTATION_SPEED = NORMAL_ROTATION_SPEED * 0.7f;
 };
 

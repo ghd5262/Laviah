@@ -90,9 +90,9 @@ bool CWorkshopPopup::init()
 		}
 
 		// Scrolling to current character
-		Director::getInstance()->getScheduler()->schedule([=](float delta){
+		this->scheduleOnce([=](float delta){
 			listView->scrollToItem(currentItemDPIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
-		}, Director::getInstance(), 0.f, 0, 0.f, false, "ScrollToItem");
+		}, 0.f, "ScrollToItem");
 	}
 
 	auto btnEnd = CMyButton::create()

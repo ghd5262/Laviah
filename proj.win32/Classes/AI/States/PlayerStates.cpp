@@ -51,9 +51,9 @@ CPlayerGiant* CPlayerGiant::Instance()
 
 void CPlayerGiant::Enter(CPlayer* player)
 {
-    Director::getInstance()->getScheduler()->schedule([](float delta){
+    player->schedule([=](float delta){
         CObjectManager::Instance()->RotateAccelerationUpdate(0.1f);
-    }, Director::getInstance(), 0.1f, 5, 0.f, false, "AccelerationUP");
+    }, 0.1f, 5, 0.f, "AccelerationUP");
     
     // change player to GiantMode
 	player->GiantMode();
@@ -69,9 +69,9 @@ void CPlayerGiant::Execute(CPlayer* player, float delta)
 
 void CPlayerGiant::Exit(CPlayer* player)
 {
-    Director::getInstance()->getScheduler()->schedule([](float delta){
+    player->schedule([=](float delta){
         CObjectManager::Instance()->RotateAccelerationUpdate(-0.1f);
-    }, Director::getInstance(), 0.1f, 5, 0.f, false, "AccelerationDOWN");
+    }, 0.1f, 5, 0.f, "AccelerationDOWN");
     
     // change player to NormalMode
 	player->NormalMode();

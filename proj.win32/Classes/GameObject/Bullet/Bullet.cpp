@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "../BulletCreator.h"
 #include "../ItemManager.h"
 #include "../../Task/PoolingManager.h"
 #include "../../GameObject/ObjectManager.h"
@@ -15,7 +16,7 @@ using namespace cocos2d;
 CBullet::CBullet()
 : m_bIsPlayerGet(false)
 , m_Time(0.f)
-, m_RotationSpeed(100.f)
+, m_RotationSpeed(BULLETCREATOR::ROTATION_SPEED)
 , m_ItemFlag(eITEM_FLAG_none)
 , m_UIScore(nullptr)
 , m_MultipleScore(nullptr)

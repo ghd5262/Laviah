@@ -2,6 +2,11 @@
 #include "../Popup.h"
 #include <vector>
 
+namespace PATTERN_TEST {
+    static const int CELL_WIDTH = 30;
+    static const int CELL_HEIGHT = 60;
+}
+using namespace PATTERN_TEST;
 class CTextField;
 class CPatternTestPopup : public CPopup
 {
@@ -14,19 +19,22 @@ protected:
 private:
 	void End(cocos2d::Node* sender);
 	void BulletSelect(cocos2d::Node* sender);
+    void CreateBullet(cocos2d::Node* sender);
 	CPatternTestPopup() 
 		: m_SelectButton(nullptr)
 		, m_BulletTypeList("")
-		, m_CurrentBullet(0){}
+		, m_CurrentBullet(0)
 		//: m_TextFieldPattern(nullptr)
-		//, m_TextFieldWidth(nullptr){};
+		, m_TextFieldWidth(nullptr){};
 	virtual ~CPatternTestPopup(){};
 
 private:
 	//CTextField* m_TextFieldPattern;
-	//CTextField* m_TextFieldWidth;
+	CTextField* m_TextFieldWidth;
 	cocos2d::ui::Button* m_SelectButton;
-	int m_CurrentBullet;
+    cocos2d::ui::Button* m_Cell[CELL_WIDTH * CELL_HEIGHT];
+    std::string m_Pattern[CELL_HEIGHT];
 	std::string m_BulletTypeList;
 	std::vector<std::string> m_TextureList;
+    int m_CurrentBullet;
 };

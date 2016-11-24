@@ -1,6 +1,7 @@
 #include "Planet.h"
 #include "Player.h"
 #include "ObjectManager.h"
+#include "BulletCreator.h"
 
 using namespace cocos2d;
 using namespace PLANET;
@@ -24,7 +25,7 @@ CPlanet* CPlanet::create(std::string textureName)
 CPlanet::CPlanet(std::string textureName)
 : m_TextureName(textureName)
 , m_Angle(0.f)
-, m_fRotateSpeed(NORMAL_ROTATION_SPEED)
+, m_fRotateSpeed(BULLETCREATOR::ROTATION_SPEED)
 , m_fElapsed(0.0f)
 {
     this->setBoundingRadius(BOUNDING_RADIUS);

@@ -113,7 +113,7 @@ bool CGameScene::initVariable()
 
 	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
 	auto player = CPlayer::create(currentCharacterInfo);
-    player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * PLANET::NORMAL_ROTATION_SPEED));
+    player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * BULLETCREATOR::ROTATION_SPEED));
 	player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	player->setPosition(Vec2(visibleSize.width * 0.5f, planet->getPosition().y + (planet->getBoundingRadius() + 20)));
 	m_GridWorld->addChild(player, 100);
@@ -346,23 +346,24 @@ void CGameScene::GameExit()
 */
 	
 	GamePause();
-
-	CPopup::create()
-		->setPositiveButton([=](Node* sender){
-		Director::getInstance()->end();
+    
+    CPopup::create()
+    ->setPositiveButton([=](Node* sender){
+        Director::getInstance()->end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-		exit(0);
+        exit(0);
 #endif
-	}, "Yes")
-		->setNegativeButton([=](Node* sender){
-		this->GameResume();
-	}, "No")
-		->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-		->setMessage("Are you sure you want to exit StarStarStar?")
-		->setMessageFont(Color3B::BLACK, 40)
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(visibleSize / 2)
-		->show(this);
+    }, "Yes")
+    ->setNegativeButton([=](Node* sender){
+        this->GameResume();
+    }, "No")
+    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setMessage("Are you sure you want to exit StarStarStar?")
+    ->setMessageFont(Color3B::BLACK, 40)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(visibleSize / 2)
+    ->show(this);
 }
 
 void CGameScene::update(float delta)

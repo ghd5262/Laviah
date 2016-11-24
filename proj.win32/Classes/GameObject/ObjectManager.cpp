@@ -104,23 +104,23 @@ void CObjectManager::CreateShooterByTimer()
 	if (m_fStageTime < BULLETCREATOR::PATTERN_PADDING_LIMIT) return;
 
 	if (!m_BulletCreator->getIsRunning())	{
-		if (0)
+		if (1)
 		{
-			//m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPattern()->_patternName);
-			m_BulletCreator->setPattern("delayTest_Pattern");
+			m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPattern()->_patternName);
+//			m_BulletCreator->setPattern("pattern_7");
 		}
 		else
 		{
 			auto testPattern = CBulletPatternDataManager::Instance()->getTestPattern();
-            auto patternData = const_cast<sBULLET_PATTERN*>(testPattern);
-            std::string pattern = "                 65211";
+//            auto patternData = const_cast<sBULLET_PATTERN*>(testPattern);
+//            std::string pattern = "                 65211";
             
-            std::copy(std::begin(pattern), std::end(pattern), patternData->_pattern);
-            patternData->_width = pattern.size();
-            patternData->_height = 1;
-            patternData->_index = 10000;
-            patternData->_patternName = "testPattern";
-            patternData->_widthPadding = 5.f;
+//            std::copy(std::begin(pattern), std::end(pattern), std::begin(patternData->_pattern));
+//            patternData->_width = pattern.size();
+//            patternData->_height = 1;
+//            patternData->_index = 10000;
+//            patternData->_patternName = "testPattern";
+//            patternData->_widthPadding = 5.f;
             
 			if (testPattern != nullptr){
 				m_BulletCreator->setPattern(testPattern);

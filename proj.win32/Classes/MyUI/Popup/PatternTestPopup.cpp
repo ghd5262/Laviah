@@ -4,6 +4,7 @@
 #include "../../DataManager/BulletPatternDataManager.h"
 #include "../../Scene/GameScene.h"
 #include "../../Common/StringUtility.h"
+#include "ui/UIListView.h"
 #include <vector>
 
 using namespace std;
@@ -34,29 +35,36 @@ bool CPatternTestPopup::init()
 	for (auto symbol : m_BulletTypeList)
 	{
 		std::string name;
-		if (symbol == ' ')							name = "coin_4.png";
-		else if (symbol == '1')						name = "bullet_normal_0.png";
-		else if (symbol == '4')                     name = "missile_normal_0.png";
-		else if (symbol == '5')                     name = "missile_aiming_0.png";
-		else if (symbol == '6')                     name = "bullet_stick_0.png";
+		if (symbol == ' ')							name = "b_0.png";
+		else if (symbol == '1')						name = "b_1.png";
+		else if (symbol == '4')                     name = "b_2.png";
+		else if (symbol == '5')                     name = "b_3.png";
+		else if (symbol == '6')                     name = "b_4.png";
 
-		else if (symbol == 'A')                     name = "playItem_1.png";
-		else if (symbol == 'B')                     name = "playItem_2.png";
-		else if (symbol == 'C')                     name = "playItem_3.png";
-		else if (symbol == 'D')                     name = "playItem_4.png";
-		else if (symbol == 'E')                     name = "playItem_5.png";
-		else if (symbol == 'F')                     name = "playItem_6.png";
+		else if (symbol == 'A')                     name = "b_5.png";
+		else if (symbol == 'B')                     name = "b_6.png";
+		else if (symbol == 'C')                     name = "b_7.png";
+		else if (symbol == 'D')                     name = "b_8.png";
+		else if (symbol == 'E')                     name = "b_9.png";
+		else if (symbol == 'F')                     name = "b_10.png";
 
-		else if (symbol == 'P')                     name = "star_1.png";
-		else if (symbol == 'T')                     name = "star_5.png";
+		else if (symbol == 'P')                     name = "b_11.png";
+		else if (symbol == 'T')                     name = "b_12.png";
 
-		else if (symbol == 'U')                     name = "coin_1.png";
-		else if (symbol == 'Y')                     name = "coin_5.png";
+		else if (symbol == 'U')                     name = "b_13.png";
+		else if (symbol == 'Y')                     name = "b_14.png";
 
-		else if (symbol == 'Z')                     name = "bonusLetter_0.png";
+		else if (symbol == 'Z')                     name = "b_15.png";
+        else if (symbol == 'z')                     name = "b_16.png";
+        
 
 		m_TextureList.push_back(name);
 	}
+    
+    for( int h = 0; h < CELL_HEIGHT; h++ )
+    {
+        m_Pattern[h] = "00000000000000000000000000000000000000000000";
+    }
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
@@ -99,7 +107,55 @@ bool CPatternTestPopup::init()
 	m_SelectButton->setRotation(-90);
 	this->addChild(m_SelectButton);
 
-	/*auto patternBack = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, bg->getContentSize().width * 0.9f, bg->getContentSize().height * 0.65f);
+    // Create the list view
+    auto listViewH = ListView::create();
+    listViewH->setDirection(ScrollView::Direction::VERTICAL);
+    listViewH->setBounceEnabled(true);
+    listViewH->setBackGroundImageScale9Enabled(true);
+    listViewH->setContentSize(Size(bg->getContentSize().width, bg->getContentSize().height * 0.7f));
+    listViewH->setScrollBarPositionFromCorner(Vec2(7, 7));
+    listViewH->setItemsMargin(0);
+    listViewH->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    listViewH->setPosition(bg->getContentSize() / 2);
+    listViewH->setMagneticType(ListView::MagneticType::CENTER);
+    bg->addChild(listViewH);
+    
+    int idx = 0;
+    for(int h = 0; h < CELL_HEIGHT; h++)
+    {
+        auto listViewW = ListView::create();
+        listViewW->setDirection(ScrollView::Direction::HORIZONTAL);
+        listViewW->setBounceEnabled(true);
+        listViewW->setBackGroundImageScale9Enabled(true);
+        listViewW->setContentSize(Size(bg->getContentSize().width, bg->getContentSize().height * 0.05f));
+        listViewW->setScrollBarPositionFromCorner(Vec2(7, 7));
+        listViewW->setItemsMargin(0);
+        listViewW->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        listViewW->setMagneticType(ListView::MagneticType::CENTER);
+        
+        auto node = Widget::create();
+        node->setContentSize(Size(bg->getContentSize().width, bg->getContentSize().height * 0.03f));
+        node->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        auto nodeW = node->getContentSize().width;
+        auto nodeH = node->getContentSize().height;
+        for(int w = 0; w < CELL_WIDTH; w++)
+        {
+            auto button = Button::create(m_TextureList.at(0), "", "", Widget::TextureResType::PLIST);
+            button->addClickEventListener([=](Ref* sender){
+                this->CreateBullet(static_cast<Node*>(sender));
+            });
+            button->setPosition(Vec2(((nodeW / CELL_WIDTH) * w), nodeH * 0.5f));
+            button->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            node->addChild(button);
+            
+            m_Cell[idx++] = button;
+        }
+        
+        listViewH->pushBackCustomItem(node);
+    }
+    
+    
+    /*auto patternBack = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, bg->getContentSize().width * 0.9f, bg->getContentSize().height * 0.65f);
 	if (patternBack != nullptr){
 		patternBack->setIgnoreAnchorPointForPosition(false);
 		patternBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -113,7 +169,7 @@ bool CPatternTestPopup::init()
 		m_TextFieldPattern->setDimensions(Size(patternBack->getContentSize().width * 0.9f, patternBack->getContentSize().height * 0.9f));
 		m_TextFieldPattern->setTextColor(Color4B::BLACK);
 		patternBack->addChild(m_TextFieldPattern);
-	}
+	}*/
 
 	auto widthBack = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, bg->getContentSize().width * 0.9f, bg->getContentSize().height * 0.075f);
 	if (widthBack != nullptr){
@@ -129,7 +185,7 @@ bool CPatternTestPopup::init()
 		m_TextFieldWidth->setDimensions(Size(widthBack->getContentSize().width * 0.9f, widthBack->getContentSize().height * 0.9f));
 		m_TextFieldWidth->setTextColor(Color4B::BLACK);
 		widthBack->addChild(m_TextFieldWidth);
-	}*/
+	}
 
 	this->setOpenAnimation([=](Node* sender){
 		workShopLabel->runAction(FadeIn::create(0.5f));
@@ -150,18 +206,35 @@ bool CPatternTestPopup::init()
 	return true;
 }
 
-void CPatternTestPopup::BulletSelect(Node* sender){
+void CPatternTestPopup::BulletSelect(Node* sender)
+{
 	m_CurrentBullet++;
 	m_CurrentBullet = m_CurrentBullet % m_BulletTypeList.size();
 	m_SelectButton->loadTextureNormal(m_TextureList.at(m_CurrentBullet), Widget::TextureResType::PLIST);
 }
 
-void CPatternTestPopup::End(Node* sender){
+void CPatternTestPopup::CreateBullet(cocos2d::Node* sender)
+{
+    auto button = static_cast<Button*>(sender);
+    auto iter = std::find(std::begin(m_Cell), std::end(m_Cell), button);
+    auto index = std::distance(std::begin(m_Cell), iter);
+    
+    int height = (int)((int)index / CELL_WIDTH);
+    int width =  (int)((int)index % CELL_WIDTH);
+    
+    (m_Pattern[height])[width] = m_BulletTypeList[m_CurrentBullet];
+    
+    //버튼 이미지 변경
+    button->loadTextureNormal(m_TextureList.at(m_CurrentBullet), Widget::TextureResType::PLIST);
+}
 
-	/*if (m_TextFieldWidth->getText().size() && m_TextFieldPattern->getText().size()){
+void CPatternTestPopup::End(Node* sender)
+{
+
+    if (m_TextFieldWidth->getText().size()){// && m_TextFieldPattern->getText().size()){
 		
-		auto strVec = StringUtility::split(m_TextFieldPattern->getText().c_str(), ',');
-		auto lineVec = StringUtility::split(strVec.at(0).c_str(), '"');
+//		auto strVec = StringUtility::split(m_TextFieldPattern->getText().c_str(), ',');
+//		auto lineVec = StringUtility::split(strVec.at(0).c_str(), '"');
 		std::string patternString = "";
 
 		sBULLET_PATTERN pattern;
@@ -169,25 +242,19 @@ void CPatternTestPopup::End(Node* sender){
 		pattern._index = 10000;
 		pattern._patternName = "test_Pattern";
 		pattern._widthPadding = atol(m_TextFieldWidth->getText().c_str());
-		pattern._height = strVec.size();
-		pattern._width = lineVec.at(1).size();
-
-		for (auto line : strVec)
-		{
-			auto lineStr = StringUtility::split(line.c_str(), '"');
-			patternString += lineStr.at(1);
-		}
-		int idx = 0;
-		for (int height = 0; height < pattern._height; height++)
+		pattern._height = CELL_HEIGHT;
+		pattern._width = CELL_WIDTH;
+        
+        for (int height = 0; height < pattern._height; height++)
 		{
 			for (int width = 0; width < pattern._width; width++)
 			{
-				pattern._pattern[(pattern._width * height) + width] = patternString[idx++];
+				pattern._pattern[(pattern._width * height) + width] = (m_Pattern[height])[width];
 			}
 		}
 
 		CBulletPatternDataManager::Instance()->setTestPattern(pattern);
 	}
-*/
+    
 	this->popupClose();
 }

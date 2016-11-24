@@ -5,8 +5,10 @@
 using namespace cocos2d;
 
 namespace BULLET_DEFAULT_PACK {
-    const std::string PNG   = "defaultBulletTexturePack.png";
-    const std::string PLIST = "defaultBulletTexturePack.plist";
+    const std::string DEFAULT_PNG           = "defaultBulletTexturePack.png";
+    const std::string DEFAULT_PLIST         = "defaultBulletTexturePack.plist";
+    const std::string PATTERN_TEST_PNG      = "patternTestBullet.png";
+    const std::string PATTERN_TEST_PLIST    = "patternTestBullet.plist";
 }
 
 CBulletDataManager::CBulletDataManager()
@@ -51,12 +53,21 @@ CBulletDataManager::CBulletDataManager()
     auto util = FileUtils::getInstance();
     auto spriteFrameCache = SpriteFrameCache::getInstance();
     
-    if (util->isFileExist(BULLET_DEFAULT_PACK::PNG) &&
-        util->isFileExist(BULLET_DEFAULT_PACK::PLIST))
+    if (util->isFileExist(BULLET_DEFAULT_PACK::DEFAULT_PNG) &&
+        util->isFileExist(BULLET_DEFAULT_PACK::DEFAULT_PLIST))
     {
-        if (!spriteFrameCache->isSpriteFramesWithFileLoaded(BULLET_DEFAULT_PACK::PLIST)){
-            spriteFrameCache->addSpriteFramesWithFile(BULLET_DEFAULT_PACK::PLIST,
-                                                      BULLET_DEFAULT_PACK::PNG);
+        if (!spriteFrameCache->isSpriteFramesWithFileLoaded(BULLET_DEFAULT_PACK::DEFAULT_PLIST)){
+            spriteFrameCache->addSpriteFramesWithFile(BULLET_DEFAULT_PACK::DEFAULT_PLIST,
+                                                      BULLET_DEFAULT_PACK::DEFAULT_PNG);
+        }
+    }
+    
+    if (util->isFileExist(BULLET_DEFAULT_PACK::PATTERN_TEST_PNG) &&
+        util->isFileExist(BULLET_DEFAULT_PACK::PATTERN_TEST_PLIST))
+    {
+        if (!spriteFrameCache->isSpriteFramesWithFileLoaded(BULLET_DEFAULT_PACK::PATTERN_TEST_PLIST)){
+            spriteFrameCache->addSpriteFramesWithFile(BULLET_DEFAULT_PACK::PATTERN_TEST_PLIST,
+                                                      BULLET_DEFAULT_PACK::PATTERN_TEST_PNG);
         }
     }
 }

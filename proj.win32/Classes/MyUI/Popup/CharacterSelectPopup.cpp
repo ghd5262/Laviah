@@ -98,9 +98,9 @@ bool CCharacterSelectPopup::init()
 		}
 
 		// Scrolling to current character
-		Director::getInstance()->getScheduler()->schedule([listView, currentCharacterDPIdx](float delta){
+		this->scheduleOnce([=](float delta){
 			listView->scrollToItem(currentCharacterDPIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 1.5f);
-		}, Director::getInstance(), 0.f, 0, 0.3f, false, "ScrollToItem");
+		}, 0.3f, "ScrollToItem");
 	}
 
 	auto currentCharacterParam = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);

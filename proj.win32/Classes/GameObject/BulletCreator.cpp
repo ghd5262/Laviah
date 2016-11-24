@@ -100,7 +100,7 @@ void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
         // 각 총알의 각도
         // width번째 총알 = (padding * width) - 프레임 간 회전 정도
         float bulletAngle = (data->_widthPadding * width) - angle;
-		bulletAngle += data->_widthPadding / 2;									 // 각도 보정
+		bulletAngle += data->_widthPadding / 2;									 // 각도 보정 (패턴이 중앙에 오도록)
 		bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정
         
 		this->createBullet(symbol, bulletAngle, distance);
@@ -133,14 +133,15 @@ CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance)
     CBullet* bullet = nullptr;
 
     // bullet create
-    if      (symbol == 'z')                     symbol = cocos2d::random<int>('A', 'G');
+    if      (symbol == 'z')                     symbol = cocos2d::random<int>('A', 'F');
     if      (symbol >= '1' && symbol <= '3')    bullet = CNormalBullet::create();
     else if (symbol >= '4' && symbol <= '5')    bullet = CNormalMissile::create();
     else if (symbol == '6')                     bullet = CStickBullet::create();
-    else if (symbol >= 'A' && symbol <= 'G')    bullet = CPlayItem::create();
+    else if (symbol >= 'A' && symbol <= 'F')    bullet = CPlayItem::create();
     else if (symbol >= 'P' && symbol <= 'T')    bullet = CPlayCoin::create();
     else if (symbol >= 'U' && symbol <= 'Y')    bullet = CPlayStar::create();
     else if (symbol == 'Z')                     bullet = CBonusLetter::create();
+    else                                        return nullptr;
     
     auto data = *(CBulletDataManager::Instance()->getBulletInfo(symbol));
     data._distance = distance;
@@ -179,7 +180,7 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
     else if (symbol == 'D')                     name = "playItem_4.png";
     else if (symbol == 'E')                     name = "playItem_5.png";
     else if (symbol == 'F')                     name = "playItem_6.png";
-    else if (symbol == 'G')                     name = "playItem_7.png";
+//    else if (symbol == 'G')                     name = "playItem_7.png";
     
     else if (symbol == 'P')                     name = "star_1.png";
     else if (symbol == 'Q')                     name = "star_2.png";
