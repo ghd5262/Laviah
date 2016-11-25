@@ -53,7 +53,7 @@ bool CBulletCreator::init()
 void CBulletCreator::Update(float delta)
 {
 	m_Time += delta;
-	if (m_Time < m_LineIntervalLimit) return; 
+	if (m_Time < m_LineIntervalLimit) return;
     if(m_CurrentHeight <= 0) this->clear();
     if(m_CurrentPattern == nullptr) return;
     
@@ -101,7 +101,7 @@ void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
         // width번째 총알 = (padding * width) - 프레임 간 회전 정도
         float bulletAngle = (data->_widthPadding * width) - angle;
 		bulletAngle += data->_widthPadding / 2;									 // 각도 보정 (패턴이 중앙에 오도록)
-		bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정
+//		bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정 
         
 		this->createBullet(symbol, bulletAngle, distance);
     }
@@ -111,21 +111,12 @@ void CBulletCreator::CreateImmediately(std::string patternName,
                                        float angle,
                                        float distance)
 {
-	/*auto delay = random<float>(0.0f, 2);
-	auto key = StringUtils::format("CreateImmediately_%d", (int)(delay * 1000));
-	this->scheduleOnce([=](float delta){*/
 	auto data = CBulletPatternDataManager::Instance()->getDataByName(patternName);
 	for (int height = data->_height - 1; height >= 0; height--)
 	{
 		auto distanceH = distance - (height * BULLET_STANDARD_PADDING);
 		this->createOneLine(data, height, distanceH, 90 - angle);
 	}
-	/*}, delay, key);
-
-	auto data = CBulletPatternDataManager::Instance()->getDataByName(patternName);
-	this->schedule([=](float){
-		
-	}, 0, data->_height, 0.f, key);*/
 }
 
 CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance)
@@ -169,7 +160,7 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
 {
     std::string name = "hello.png";
     
-    if      (symbol >= '1' && symbol <= '3')    name = m_CharacterInfo._normalBulletTextureName;
+    if      (symbol == '1')                     name = m_CharacterInfo._normalBulletTextureName;
     else if (symbol == '4')                     name = m_CharacterInfo._normalMissileTextureName;
     else if (symbol == '5')                     name = m_CharacterInfo._aimingMissileTextureName;
     else if (symbol == '6')                     name = m_CharacterInfo._stickBulletTextureName;

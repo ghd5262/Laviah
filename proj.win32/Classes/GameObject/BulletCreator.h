@@ -11,7 +11,7 @@ namespace BULLETCREATOR{
 	const static float CREATE_DISTANCE			= 2700.f;
 	const static float ROTATION_SPEED			= 90.f;
 	const static float BULLET_STANDARD_SPEED	= 590.f;
-	const static float BULLET_STANDARD_PADDING  = 80.f;
+	const static float BULLET_STANDARD_PADDING  = 60.f;
 	const static float BULLET_STANDARD_DELAY	= (CREATE_DISTANCE - PLANET::BOUNDING_RADIUS) / BULLET_STANDARD_SPEED;
 };
 
