@@ -52,7 +52,8 @@ class CBulletPatternDataManager
     typedef std::map<std::string, const sBULLET_PATTERN*> PATTERN_LIST;
 public:
 	static CBulletPatternDataManager* Instance();
-	void AddPattern(const sBULLET_PATTERN& data);
+	void InitWithJson(PATTERN_LIST &list, std::string fileName);
+	void AddPatternToList(PATTERN_LIST &list, const sBULLET_PATTERN& data);
 
 	//getter & setter
 	const sBULLET_PATTERN* getDataByName(std::string name) const;
@@ -77,6 +78,7 @@ private:
 
 private:
 	PATTERN_LIST m_PatternList;
+	PATTERN_LIST m_MissilePatternList;
 	sBULLET_PATTERN* m_TestPattern;
 };
 

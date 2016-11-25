@@ -202,7 +202,7 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
 void CBulletCreator::clear()
 {
     m_CurrentHeight = 0;
-	m_RotationAngle = 0.f;
+	//m_RotationAngle = 0.f;
     m_CurrentPattern = nullptr;
 	m_Running = false;
 }
