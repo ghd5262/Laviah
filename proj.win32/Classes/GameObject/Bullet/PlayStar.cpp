@@ -42,8 +42,6 @@ bool CPlayStar::init()
     m_MultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
     this->setItemEffect(eITEM_FLAG_magnet);
     
-//    m_fStarValue = CItemManager::Instance()->getValueOfStar(getBulletInfo()._starType);
-
     return true;
 }
 
@@ -71,5 +69,7 @@ void CPlayStar::CollisionWithPlayer()
 {
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
-	m_MultipleScore->AddScore(m_fStarValue);
+
+	auto value = CItemManager::Instance()->getValueOfStar((eSTAR_TYPE)(this->getSymbol() - 'P' + 1));
+	m_MultipleScore->AddScore(value);
 }

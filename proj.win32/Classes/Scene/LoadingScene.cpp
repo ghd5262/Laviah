@@ -70,8 +70,9 @@ bool CLoadingScene::initVariable()
 	createNotice(callfuncO_selector(CLoadingScene::callbackDownloadComplete), NOTICE::DOWN_COMPLETE);
 
 	CUserDataManager::Instance();
-	CSDKUtil::Instance();
 	CSDKUtil::Instance()->IsNetworkConnect();
+
+	this->setContentSize(Director::getInstance()->getVisibleSize());
 
 	InitLoadingSceneUI();
 
@@ -95,6 +96,8 @@ void CLoadingScene::callbackNetworkResult(Ref* object)
 		if (CSDKUtil::Instance()->getIsNetworkConnect()){
 			// 인터넷 연결되어 있다면 패키지 버전 비교 후 정상 실행
 			m_Downlaoder = CDownloadManager::create();
+			m_Downlaoder->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_Downlaoder->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.45f));
 			addChild(m_Downlaoder);
 		}
 		else{
@@ -110,9 +113,12 @@ void CLoadingScene::callbackDownloadFail(Ref* object)
 
 void CLoadingScene::callbackDownloadComplete(Ref* object)
 {
-	// 로그인
-	//CSDKUtil::Instance()->GoogleLogin();
-	callbackLoginResult(object);
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
+		CSDKUtil::Instance()->GoogleLogin();
+	}
+	else{
+		callbackLoginResult(object);
+	}
 }
 
 void CLoadingScene::callbackLoginResult(Ref* object)

@@ -117,7 +117,7 @@ void CStickBullet::ChangeToCoinOrStar()
     char symbol = 'T';
     if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star) symbol = 'Y';
     
-    auto bullet = CBulletCreator::createBullet(symbol, -getRotation(), distance);
+	auto bullet = CBulletCreator::createBullet(symbol, -getRotation(), distance, false);
 	if (m_HitWithPlanet) bullet->setIsFly(false);
 
     this->ReturnToMemoryBlock();

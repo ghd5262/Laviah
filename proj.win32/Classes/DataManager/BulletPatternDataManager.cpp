@@ -116,7 +116,7 @@ void CBulletPatternDataManager::AddPatternToList(PATTERN_LIST &list, const sBULL
     }
 }
 
-const sBULLET_PATTERN* CBulletPatternDataManager::getRandomPattern() const
+const sBULLET_PATTERN* CBulletPatternDataManager::getRandomPattern() const 
 {
     auto item = m_PatternList.begin();
     std::advance( item, random<int>(0, m_PatternList.size()-1) );

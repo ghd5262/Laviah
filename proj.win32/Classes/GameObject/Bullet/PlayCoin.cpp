@@ -39,10 +39,7 @@ bool CPlayCoin::init()
     m_UIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("CoinScoreUI"));
     
     this->setItemEffect(eITEM_FLAG_magnet);
-    
-
-//    m_fCoinValue = CItemManager::Instance()->getValueOfCoin(getBulletInfo()._coinType);
-    
+      
     return true;
 }
 
@@ -70,5 +67,6 @@ void CPlayCoin::CollisionWithPlayer()
 {
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
-	m_UIScore->addValue(m_fCoinValue);
+	auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
+	m_UIScore->addValue(value);
 }

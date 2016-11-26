@@ -136,7 +136,7 @@ bool CGameScene::initVariable()
     CCLOG("shooter Size : %lu", sizeof(pattern));
     
 #if(USE_MEMORY_POOLING)
-	CPoolingManager::Instance()->CreateBulletList(3000, 900);
+	CPoolingManager::Instance()->CreateBulletList(900, 900);
 #endif
 //    CPoolingManager::Instance()->CreateShooterList(1, 80000);
 

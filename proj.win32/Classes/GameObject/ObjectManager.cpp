@@ -107,7 +107,7 @@ void CObjectManager::CreateShooterByTimer()
 		if (1)
 		{
 			m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPattern()->_patternName);
-//			m_BulletCreator->setPattern("pattern_7");
+	//		m_BulletCreator->setPattern("pattern_0");
 		}
 		else
 		{

@@ -17,6 +17,7 @@ CBulletCreator::CBulletCreator()
 , m_LineIntervalLimit(0.0f)
 , m_Running(false)
 , m_Pause(false)
+, m_IsFlip(false)
 {}
 
 CBulletCreator::~CBulletCreator(){}
@@ -54,10 +55,10 @@ void CBulletCreator::Update(float delta)
 {
 	m_Time += delta;
 	if (m_Time < m_LineIntervalLimit) return;
-    if(m_CurrentHeight <= 0) this->clear();
+	if (m_CurrentHeight <= 0) this->clear();
     if(m_CurrentPattern == nullptr) return;
     
-	this->createOneLine(m_CurrentPattern, --m_CurrentHeight, CREATE_DISTANCE, m_RotationAngle);
+	this->createOneLine(m_CurrentPattern, --m_CurrentHeight, CREATE_DISTANCE, m_RotationAngle, true);
 	m_Time = 0.0f;
 }
 
@@ -83,27 +84,35 @@ void CBulletCreator::setData(const sBULLET_PATTERN* data)
 	m_CurrentHeight = data->_height;
 	m_LineIntervalLimit = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;
 	m_Running = true;
+	m_IsFlip = random<int>(0, 1);
+	if (m_IsFlip)
+		CCLOG("Flip");
 }
 
 void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
                                    int currentHeight,
                                    float distance,
-								   float angle)
+								   float angle,
+								   bool isDelay)
 {
     //for(int width = 0; width < data->_width; width++)
 	for (int width = data->_width-1; width >= 0; width--)
     {
 		int index = (data->_width * currentHeight) + ((data->_width - 1) - width);
         auto symbol = data->_pattern[index];
+		int w = width;
         if(symbol == ' ') continue;
         
         // 각 총알의 각도
         // width번째 총알 = (padding * width) - 프레임 간 회전 정도
-        float bulletAngle = (data->_widthPadding * width) - angle;
+		if (m_IsFlip) 
+			w = ((data->_width - 1) - width);
+
+		float bulletAngle = (data->_widthPadding * w) - angle;
 		bulletAngle += data->_widthPadding / 2;									 // 각도 보정 (패턴이 중앙에 오도록)
 //		bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정 
         
-		this->createBullet(symbol, bulletAngle, distance);
+		this->createBullet(symbol, bulletAngle, distance, isDelay);
     }
 }
 
@@ -115,11 +124,11 @@ void CBulletCreator::CreateImmediately(std::string patternName,
 	for (int height = data->_height - 1; height >= 0; height--)
 	{
 		auto distanceH = distance - (height * BULLET_STANDARD_PADDING);
-		this->createOneLine(data, height, distanceH, 90 - angle);
+		this->createOneLine(data, height, distanceH, 90 - angle, false);
 	}
 }
 
-CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance)
+CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance, bool isDelay/* = true*/)
 {
     CBullet* bullet = nullptr;
 
@@ -129,8 +138,8 @@ CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance)
     else if (symbol >= '4' && symbol <= '5')    bullet = CNormalMissile::create();
     else if (symbol == '6')                     bullet = CStickBullet::create();
     else if (symbol >= 'A' && symbol <= 'F')    bullet = CPlayItem::create();
-    else if (symbol >= 'P' && symbol <= 'T')    bullet = CPlayCoin::create();
-    else if (symbol >= 'U' && symbol <= 'Y')    bullet = CPlayStar::create();
+	else if (symbol >= 'P' && symbol <= 'T')    bullet = CPlayStar::create();
+	else if (symbol >= 'U' && symbol <= 'Y')    bullet = CPlayCoin::create();
     else if (symbol == 'Z')                     bullet = CBonusLetter::create();
     else                                        return nullptr;
     
@@ -138,7 +147,7 @@ CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance)
     data._distance = distance;
     data._angle = angle;
     data._isFly = true;
-	if (data._speed > BULLET_STANDARD_SPEED)
+	if (isDelay && data._speed > BULLET_STANDARD_SPEED)
         data._delayTime = (BULLET_STANDARD_DELAY - ((CREATE_DISTANCE - PLANET::BOUNDING_RADIUS) / data._speed));
 
     CObjectManager::Instance()->getBulletCreator()->setBulletDataByUserData(data, symbol);

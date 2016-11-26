@@ -20,10 +20,10 @@ private:
 
 	//getter & setter
 	CC_SYNTHESIZE(int, m_CurrentLevel, CurrentLevel);
+	CC_SYNTHESIZE_READONLY(int, m_MaxLevel, MaxLevel);
 
 private:
 	std::vector<cocos2d::LayerColor*> m_LevelBarList;
 	cocos2d::Size m_BarSize;
-	int m_MaxLevel;
 };
 

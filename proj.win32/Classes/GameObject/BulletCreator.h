@@ -10,7 +10,7 @@ namespace BULLETCREATOR{
 	const static float PATTERN_PADDING_LIMIT	= 2.f; 
 	const static float CREATE_DISTANCE			= 2700.f;
 	const static float ROTATION_SPEED			= 90.f;
-	const static float BULLET_STANDARD_SPEED	= 590.f;
+	const static float BULLET_STANDARD_SPEED	= 400.f;
 	const static float BULLET_STANDARD_PADDING  = 60.f;
 	const static float BULLET_STANDARD_DELAY	= (CREATE_DISTANCE - PLANET::BOUNDING_RADIUS) / BULLET_STANDARD_SPEED;
 };
@@ -41,14 +41,16 @@ public:
     
     static CBullet* createBullet(char symbol,
                                  float angle,
-                                 float distance);
+                                 float distance,
+								 bool isDelay = true);
         
 private:
 	void setData(const sBULLET_PATTERN* data);
     void createOneLine(const sBULLET_PATTERN* data,
                        int currentHeight,
                        float distance,
-					   float angle);
+					   float angle,
+					   bool isDalay);
     
     void setBulletDataByUserData(sBULLET_PARAM& data, char symbol);
     void clear();
@@ -66,4 +68,5 @@ private:
     int m_CurrentHeight;
     bool m_Running;
 	bool m_Pause;
+	bool m_IsFlip;
 };
