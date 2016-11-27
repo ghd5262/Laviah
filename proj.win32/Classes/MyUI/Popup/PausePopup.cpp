@@ -43,8 +43,8 @@ bool CPausePopup::init()
 		"homeButton.png",
 		"restartButton.png",
 		"playButton.png",
-		"exitButton.png",
-		"playIcon.png"
+		"playIcon.png",
+		"exitButton.png"
 	};
 
 	Vec2 btnPosArray[] = {
@@ -66,10 +66,10 @@ bool CPausePopup::init()
 	auto btnHome = createButton([=](Node* sender){ this->GoHome(sender); }, btnImageName[0], btnPosArray[0])->show(pauseBG);
 	auto btnReset = createButton([=](Node* sender){ this->Reset(sender); }, btnImageName[1], btnPosArray[1])->show(pauseBG);
 //	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[2], btnPosArray[2])->show(pauseBG);
-	auto btnExit = createButton([=](Node* sender){ this->GameExit(sender); }, btnImageName[3], btnPosArray[3])->show(this);
-	btnExit->setOpacity(0);
-	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[4], btnPosArray[4])->show(this);
+	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[3], btnPosArray[3])->show(this);
 	btnPlay->setOpacity(0);
+	auto btnExit = createButton([=](Node* sender){ this->GameExit(sender); }, btnImageName[4], btnPosArray[4])->show(this);
+	btnExit->setOpacity(0);
 	
 	auto noticeLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 25);
 	noticeLabel->setColor(Color3B::BLACK);

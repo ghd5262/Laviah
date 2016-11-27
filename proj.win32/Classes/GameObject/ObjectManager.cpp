@@ -24,6 +24,7 @@ CObjectManager::CObjectManager()
 		m_FSM->ChangeState(CGameCountDownState::Instance());
 	}
 
+
 	m_StageList = CStageDataManager::Instance()->getStageList();
 }
 
@@ -107,7 +108,7 @@ void CObjectManager::CreateShooterByTimer()
 		if (1)
 		{
 			m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPattern()->_patternName);
-	//		m_BulletCreator->setPattern("pattern_0");
+	//		m_BulletCreator->setPattern("pattern_test");
 		}
 		else
 		{
@@ -141,7 +142,8 @@ void CObjectManager::ExecuteAllObject(float delta)
 	m_fStageTime += delta;
 	CreateShooterByTimer();
     CItemManager::Instance()->Execute(delta);
-    
+	m_Player->Execute(delta);
+
 	for (auto bullet : m_BulletList)
 	{
 		if (bullet->IsAlive()) {
@@ -157,7 +159,6 @@ void CObjectManager::ExecuteAllObject(float delta)
 //	}
     m_BulletCreator->Update(delta);
     m_Planet->Execute();
-    m_Player->Execute(delta);
 	this->RotationObject(1);
 }
 

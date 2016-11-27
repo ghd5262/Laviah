@@ -129,14 +129,12 @@ bool CGameScene::initVariable()
 	CObjectManager::Instance()->setPlanet(planet);
     CObjectManager::Instance()->setBulletCreator(bulletCreator);
     
-
-    
     CPatternShooter pattern;
     
     CCLOG("shooter Size : %lu", sizeof(pattern));
     
 #if(USE_MEMORY_POOLING)
-	CPoolingManager::Instance()->CreateBulletList(900, 900);
+	CPoolingManager::Instance()->CreateBulletList(500, 900);
 #endif
 //    CPoolingManager::Instance()->CreateShooterList(1, 80000);
 
@@ -247,7 +245,7 @@ void CGameScene::InitGameSceneUI()
 		this->OpenGamePausePopup();
 	})
 		->setButtonNormalImage("pauseIcon.png")
-		->setButtonPosition(Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.05f))
+		->setButtonPosition(Vec2(visibleSize.width * 0.92f, visibleSize.height * 0.05f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->show(m_GridWorld, 102);
 	m_PauseBtn->setCascadeOpacityEnabled(true);

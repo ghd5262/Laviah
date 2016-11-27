@@ -110,7 +110,7 @@ void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
 
 		float bulletAngle = (data->_widthPadding * w) - angle;
 		bulletAngle += data->_widthPadding / 2;									 // 각도 보정 (패턴이 중앙에 오도록)
-//		bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정 
+		bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정 
         
 		this->createBullet(symbol, bulletAngle, distance, isDelay);
     }
@@ -121,10 +121,11 @@ void CBulletCreator::CreateImmediately(std::string patternName,
                                        float distance)
 {
 	auto data = CBulletPatternDataManager::Instance()->getDataByName(patternName);
+	m_IsFlip = false;
 	for (int height = data->_height - 1; height >= 0; height--)
 	{
 		auto distanceH = distance - (height * BULLET_STANDARD_PADDING);
-		this->createOneLine(data, height, distanceH, 90 - angle, false);
+		this->createOneLine(data, height, distanceH, 90-angle, false);
 	}
 }
 

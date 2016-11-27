@@ -1,5 +1,5 @@
 #include "ScoreUI.h"
-
+#include "../Common/StringUtility.h"
 using namespace cocos2d;
 
 CScoreUI* CScoreUI::create(std::string fontName, size_t fontSize, std::string valueImgName/* = "" */)
@@ -50,8 +50,10 @@ std::string CScoreUI::insertComma(unsigned value)
 	int idx = 0;
 	while (len) {
 		resultStr += valueStr[idx++];
+
 		if ((len % 4) == 0)
 			resultStr += ',';
+
 		len--;
 	}
 
@@ -77,7 +79,7 @@ void CScoreUI::addValue(int value)
 
 void CScoreUI::setValue(int value)
 {
-	m_ValueString = insertComma(value);
+	m_ValueString = StringUtility::toCommaString(value);
 	m_ValueLabel->setString(m_ValueString);
 	if (m_ValueImg != nullptr)
 		m_ValueImg->setPosition(

@@ -246,7 +246,7 @@ void CPlayer::GiantMode()
 void CPlayer::NormalMode()
 {
     //1초간 무적
-    InvincibilityMode(3.f);
+    InvincibilityMode(1.f);
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, SCALE_SIZE),
 		CallFunc::create([=](){
@@ -310,7 +310,7 @@ void CPlayer::InvincibilityMode(float time)
 {
 	this->m_pTexture->setOpacity(100);
 	m_Invincibility = true;
-	this->scheduleOnce([this](float delta){
+	this->scheduleOnce([=](float delta){
 		this->m_pTexture->setOpacity(255);
 		m_Invincibility = false;
 	}, time, "SetPlayerNormalMode");
