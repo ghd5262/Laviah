@@ -13,6 +13,7 @@
 class CScoreUI;
 class CItemBarrier;
 class CMagnetEffect;
+class CMultipleScore;
 class CPlayer : public CGameObject {
 public:
 	static CPlayer* create(sCHARACTER_PARAM characterParam);
@@ -85,6 +86,7 @@ private:
 
 private:
 	std::shared_ptr<CStateMachine<CPlayer>> m_FSM;
+	CMultipleScore* m_MultipleScore;
 	cocos2d::Vec2 m_OriginPos;
 	cocos2d::Sprite* m_pTexture;
 	cocos2d::ParticleSystemQuad* m_pParticle;

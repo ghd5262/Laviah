@@ -69,6 +69,12 @@ void CMultipleScore::AddScore(unsigned score)
 	m_MultipleNumberLabel->setString(MakeString("X %d", m_MultipleNumber).c_str()); //1부터 시작해서 -1해준다.
 }
 
+void CMultipleScore::Update()
+{
+	calculateScore();
+	multipleScoreReset();
+}
+
 void CMultipleScore::calculateScore()
 {
 	// 현재 점수 계산 (배수 * 저장된 점수)
@@ -98,8 +104,7 @@ void CMultipleScore::Execute(float delta)
 		// 배수 유지 시간이 지나면 점수 반영 후 배수 초기화
 		if (m_Time > MULTIPLE_TIME_LIMIT)
 		{
-			calculateScore();
-			multipleScoreReset();
+			Update();
 		}
 	}
 }

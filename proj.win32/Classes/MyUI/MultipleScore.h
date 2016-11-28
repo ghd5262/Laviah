@@ -11,6 +11,7 @@ class CMultipleScore : public CGameObject
 public:
 	static CMultipleScore* create();
 	void AddScore(unsigned score);
+	void Update();
 	virtual void Execute(float delta = 0.f);
 
 

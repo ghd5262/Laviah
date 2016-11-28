@@ -12,6 +12,7 @@
 #include "../MyUI/ScoreUI.h"
 #include "../MyUI/UIManager.h"
 #include "../DataManager/UserDataManager.h"
+#include "../MyUI/MultipleScore.h"
 
 namespace PLAYER{
 	static const float SCALE_SIZE = 1.5f;
@@ -62,6 +63,7 @@ CPlayer::CPlayer(sCHARACTER_PARAM characterParam)
 , m_isPlayerDead(true)
 , m_MagnetEffect(nullptr)
 , m_Invincibility(false)
+, m_MultipleScore(nullptr)
 {}
 
 bool CPlayer::init()
@@ -119,7 +121,7 @@ bool CPlayer::init()
         m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         CGameScene::getGridWorld()->addChild(m_MagnetEffect);
     }
-
+	
 	this->setScale(SCALE_SIZE);
 	this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
     return true;
@@ -142,6 +144,8 @@ void CPlayer::Execute(float delta)
 
 
 void CPlayer::PlayerAlive(){
+
+	m_MultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
 
 	m_pParticleAlive = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
 	if (m_pParticleAlive != nullptr){
@@ -202,6 +206,7 @@ void CPlayer::LostSomeHealth(float loseHealth)
 	}
 	else{
 		PlayerDead();
+		m_MultipleScore->Update();
 		CGameScene::getGameScene()->watchVideo();
 		m_fLife = 0.f;
 	}
@@ -243,7 +248,7 @@ void CPlayer::GiantMode()
 void CPlayer::NormalMode()
 {
     //1초간 무적
-    InvincibilityMode(1.f);
+    InvincibilityMode(1.5f);
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, SCALE_SIZE),
 		CallFunc::create([=](){
@@ -283,13 +288,15 @@ void CPlayer::setParticlePos(Vec2 pos){
 
 void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount)
 {
-	this->runAction(
-        Sequence::create(
-        Repeat::create(
-        Sequence::create(
-		MoveBy::create(duration / stackCount, Vec2(stackSizeLR, -stackSizeTB)),
-		MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB)), nullptr), stackCount),
-        CallFunc::create([=](){this->setPosition(m_OriginPos);}), nullptr));
+	if (!m_Invincibility){
+		this->runAction(
+			Sequence::create(
+			Repeat::create(
+			Sequence::create(
+			MoveBy::create(duration / stackCount, Vec2(stackSizeLR, -stackSizeTB)),
+			MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB)), nullptr), stackCount),
+			CallFunc::create([=](){this->setPosition(m_OriginPos); }), nullptr));
+	}
 }
 
 void CPlayer::GotBarrierItem()
