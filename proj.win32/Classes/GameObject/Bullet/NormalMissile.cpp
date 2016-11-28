@@ -199,7 +199,6 @@ void CNormalMissile::createParticle_Flame()
 
 	m_pParticleFlame = CParticle_Flame::create("fire.png");
 	if (m_pParticleFlame != nullptr){
-		m_pParticleFlame->retain();
 		m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_pParticleFlame->setAngle(0);
 		m_pParticleFlame->setGravity(Vec2(90, 0));
@@ -222,7 +221,6 @@ void CNormalMissile::createParticle_Explosion()
     m_pParticleCrash = CParticle_Explosion::create(MakeString("explosion_%d.png",
                                                               getIsAiming() + 1));
     if (m_pParticleCrash != nullptr){
-        m_pParticleCrash->retain();
         m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleCrash->setAngle(-getRotation());
         m_pParticleCrash->setPosition(getPosition());

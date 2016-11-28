@@ -103,7 +103,6 @@ bool CPlayer::init()
     
     m_pParticle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
     if (m_pParticle != nullptr){
-        m_pParticle->retain();
         m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticle->setAngle(90);
         m_pParticle->setGravity(Vec2(0, -270));
@@ -146,7 +145,6 @@ void CPlayer::PlayerAlive(){
 
 	m_pParticleAlive = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
 	if (m_pParticleAlive != nullptr){
-		m_pParticleAlive->retain();
 		m_pParticleAlive->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_pParticleAlive->setPosition(getPosition());
 		m_pParticleAlive->setStartRadius(160);
@@ -171,7 +169,6 @@ void CPlayer::PlayerAlive(){
 void CPlayer::PlayerDead(){
 	m_pParticleDead = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
 	if (m_pParticleDead != nullptr){
-		m_pParticleDead->retain();
 		m_pParticleDead->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_pParticleDead->setPosition(getPosition());
 		CGameScene::getGridWorld()->addChild(m_pParticleDead, 100);

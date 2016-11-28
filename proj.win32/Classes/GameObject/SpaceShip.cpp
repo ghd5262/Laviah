@@ -64,7 +64,6 @@ bool CSpaceShip::init()
     
     m_pParticleFlame = CParticle_Flame::create("fire.png");
     if (m_pParticleFlame != nullptr){
-        m_pParticleFlame->retain();
         m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleFlame->setGravity(Vec2(90, 0));
         m_pParticleFlame->setPosition(Vec2(texture->getContentSize().width * 1.1f, texture->getContentSize().height * 0.5f));

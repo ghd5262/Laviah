@@ -182,7 +182,6 @@ void CPoolingManager::addBlockToList(BLOCK_LIST& list, size_t size)
 
 void CPoolingManager::createList( BLOCK_LIST& list, size_t size, size_t count)
 {
-    list.reserve(count);
     while (count--) addBlockToList(list, size);
 }
 

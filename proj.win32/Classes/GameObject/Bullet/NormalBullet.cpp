@@ -93,7 +93,6 @@ void CNormalBullet::setParticle()
 {
     m_pParticleCrash = CParticle_Explosion::create(m_Player->getCharacterParam()._normalBulletTextureName);
     if (m_pParticleCrash != nullptr){
-        m_pParticleCrash->retain();
         m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleCrash->setAngle(-getRotation());
         m_pParticleCrash->setPosition(getPosition());

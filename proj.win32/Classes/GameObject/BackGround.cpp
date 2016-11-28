@@ -49,7 +49,6 @@ bool CBackGround::init()
     
     m_pParticleBG1 = CParticle_BackGround::create("whiteSquare.png");
     if (m_pParticleBG1 != nullptr){
-        m_pParticleBG1->retain();
         m_pParticleBG1->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.75f));
         m_pParticleBG1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleBG1->setTotalParticles(15);
@@ -58,7 +57,6 @@ bool CBackGround::init()
     
     m_pParticleBG2 = CParticle_BackGround::create("whiteSquare.png");
     if (m_pParticleBG2 != nullptr){
-        m_pParticleBG2->retain();
         m_pParticleBG2->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * -0.05f));
         m_pParticleBG2->setPosVar(Vec2(visibleSize.width, 0));
         m_pParticleBG2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

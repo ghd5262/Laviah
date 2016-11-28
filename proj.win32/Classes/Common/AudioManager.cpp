@@ -67,11 +67,10 @@ void CAudioManager::setBGMVolume(float volume)
 
 void CAudioManager::EmptyCurrentPlayingList()
 {
-	std::for_each(m_CurrentPlayingList.begin(), m_CurrentPlayingList.end(), 
-		[=](std::pair<std::string, sAUDIO_INFO*> audio)
-	{
-		delete audio.second;
-	});
+    for(auto audio : m_CurrentPlayingList)
+    {
+        delete audio.second;
+    }
 
 	m_CurrentPlayingList.clear();
 }

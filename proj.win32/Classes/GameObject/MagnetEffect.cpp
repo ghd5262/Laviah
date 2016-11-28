@@ -62,7 +62,7 @@ void CMagnetEffect::Execute(float delta)
         {
 			m_pParticle = CParticle_Explosion_2::create("fire.png");
 			if (m_pParticle != nullptr){
-				m_pParticle->retain();
+//				m_pParticle->retain();
 				m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				m_pParticle->setPosition(Vec2::ZERO);
 				m_pParticle->setStartRadius(m_OriginBoundingRadius);
