@@ -17,7 +17,7 @@ namespace DOWNLOAD_NOTICE {
 
 namespace DOWNLOAD_DEFINE {
 	const static std::string PACKAGE_FILE_PATH		= "update/package.json";
-	const static std::string PACKAGE_INFO_FILE_PATH = std::string("http://www.nowtrade.co.kr/Resources/") + PACKAGE_FILE_PATH;
+	const static std::string PACKAGE_INFO_FILE_PATH = std::string("http://www.hshgames.com/game/project_s/") + PACKAGE_FILE_PATH;
 	const static int TAG_ACTION_DOWNLOADING			= 100;
 }
 
