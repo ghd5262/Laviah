@@ -22,6 +22,7 @@ CMyButton::CMyButton()
 , m_AnchorPoint(Vec2::ZERO)
 , m_Touchable(true) //TODO : 뺼지 생각해봄
 , m_IsSelect(false) //TODO : 마찬가지
+, m_Sound(true)
 , m_ClickedAnimationInfo(eCLICKED_ANIMATION::ALPHA | eCLICKED_ANIMATION::SIZEDOWN)
 {
 }
@@ -163,6 +164,13 @@ CMyButton* CMyButton::setClickSound(std::string began, std::string ended/* = "" 
 	return this;
 }
 
+CMyButton* CMyButton::setEnableSound(bool able)
+{
+    m_Sound = able;
+    
+    return this;
+}
+
 CMyButton* CMyButton::setTouchEnable(bool able)
 {
 	m_Touchable = able;
@@ -258,7 +266,8 @@ void CMyButton::playButtonEndAnimation()
 
 void CMyButton::playClickedSound(std::string name)
 {
-	if (name == "") return;
+	if (name == "" || !m_Sound) return;
+    
 	CAudioManager::Instance()->PlayEffectSound(SOUND_PATH + name);
 }
 

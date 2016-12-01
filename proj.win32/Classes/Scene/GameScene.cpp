@@ -185,12 +185,13 @@ void CGameScene::InitGameSceneUI()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	CMyButton::create()
-		->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -2.f), eMYBUTTON_STATE::EXECUTE)
-		->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, visibleSize.width, visibleSize.height))
-		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setButtonPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f))
-		->show(m_GridWorld, 102);
-
+    ->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -2.f), eMYBUTTON_STATE::EXECUTE)
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, visibleSize.width, visibleSize.height))
+    ->setEnableSound(false)
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f))
+    ->show(m_GridWorld, 102);
+    
 
 	// player의 HealthCalFunc callback 등록 
 	//auto healthBar = CHealthBarUI::create(

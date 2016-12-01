@@ -89,7 +89,7 @@ void CDownloadManager::downloadCompletePackageInfoFile(HttpClient *client, HttpR
 	CCLOG("%s", __FUNCTION__);
 
 	// 리소스 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
-	if (response == NULL) { this->packageLoadFailed(); return; }
+	if (response == NULL || !response->isSucceed()) { this->packageLoadFailed(); return; }
 
 	auto data = response->getResponseData();
 
@@ -177,7 +177,7 @@ void CDownloadManager::downloadCompletePackageFile(HttpClient *client, HttpRespo
 	CCLOG("%s", __FUNCTION__);
 
 	// 애셋 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
-	if (response == NULL) { this->packageLoadFailed(); return; }
+	if (response == NULL || !response->isSucceed()) { this->packageLoadFailed(); return; }
 
 	if (m_DownloadList.size() > m_DownloadCurrentIndex){
 		auto downloadedFile = m_DownloadList.at(m_DownloadCurrentIndex);

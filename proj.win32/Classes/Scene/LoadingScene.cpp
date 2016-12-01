@@ -108,7 +108,16 @@ void CLoadingScene::callbackNetworkResult(Ref* object)
 
 void CLoadingScene::callbackDownloadFail(Ref* object)
 {
-
+    CPopup::create()
+    ->setPositiveButton([=](Node* sender){
+        CCLOG("Download Faild");
+    }, "OK")
+    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+    ->setMessage("Download Failed")
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(this->getContentSize() / 2)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->show(this);
 }
 
 void CLoadingScene::callbackDownloadComplete(Ref* object)
