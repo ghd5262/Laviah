@@ -1,6 +1,5 @@
 #include "BulletPatternDataManager.h"
 #include "../Common/HSHUtility.h"
-#include "../GameObject/Shooter/ShooterHeaders.h"
 #include "../json/json.h"
 
 using namespace cocos2d;

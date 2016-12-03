@@ -2,7 +2,6 @@
 #include <vector>
 #include "../Common/HSHUtility.h"
 #include "../AI/StateMachine.h"
-#include "../GameObject/Shooter/ShooterHeaders.h"
 
 /*------------------------------ObjectManager 클래스설명----------------------------------
 *
@@ -12,7 +11,6 @@
 *
 *----------------------------------------------------------------------------------------*/
 
-class CShooterLegacy;
 class CBullet;
 class CPlanet;
 class CPlayer;
@@ -38,7 +36,6 @@ public:
 #else
     void AddBullet(CBullet* bullet);
 #endif
-    void AddShooter(void* shooter);
     
     // 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllShooter() 호출함
 	void RemoveAllObject();
@@ -75,14 +72,11 @@ private:
 	void CreateShooterByTimer();
 	void Auto_ReturnToMemoryBlock();	// Alive가 false인 오브젝트를 모두 메모리 블럭으로 되돌린다.
 	void RemoveAllBullet();				// Delete함수 호출! 이유는 구현부에~
-	void RemoveAllShooter();			// Delete함수 호출! 이유는 구현부에~
 	CObjectManager();
 	~CObjectManager(){};
 
 private:
 	std::vector<CBullet*> m_BulletList;
-	std::vector<CShooterLegacy*> m_ShooterList;
-	const std::vector<sSHOOTER_PARAM>* m_StageList;
 	int m_CurrentShooterIdx;
     float m_fRotateAcceleration;
 };

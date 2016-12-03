@@ -12,15 +12,14 @@
 *
 *-----------------------------------------------------------------------------------*/
 
-class CAlien;
 class CPlanet;
+class CPlayer;
 class CSpaceShip;
 class CMenuSceneObjectManager
 {
 public:
 	static CMenuSceneObjectManager* Instance();
 
-	void AddAlien(void* alien);
 	void RemoveAllObject();
 	void Execute(float delta);
 
@@ -28,14 +27,10 @@ public:
 
 protected:
 	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
+	CC_SYNTHESIZE(CPlayer*, m_Player, Player);
 	CC_SYNTHESIZE(CSpaceShip*, m_SpaceShip, SpaceShip);
 
 private:
-	void Auto_ReturnToMemoryBlock();
-	void RemoveAllAlien();
 	CMenuSceneObjectManager();
 	~CMenuSceneObjectManager(){};
-
-private:
-	std::vector<CAlien*> m_AlienList;
 };

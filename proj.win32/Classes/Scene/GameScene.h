@@ -34,10 +34,12 @@ protected:
 	virtual bool init() override;
 
 private:
+	CGameScene();
+
 	void clearData();
     void GamePause();
-	bool initVariable();
 	void InitGameSceneUI();
+	void initKeyboardListener();
 
 private:
 	static CGameScene* m_GameScene;

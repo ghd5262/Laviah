@@ -54,6 +54,7 @@ public:
 	void InvincibilityMode(float time);
 
 	//getter & setter
+	void setPlayerTexture(std::string textureName);
 	CStateMachine<CPlayer>* getFSM(){ return m_FSM.get(); }
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
 	cocos2d::Vec2 getOriginPos(){ return m_OriginPos; }

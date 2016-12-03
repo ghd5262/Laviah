@@ -21,9 +21,7 @@ void CPoolingManager::DeleteAllMemory()
         list.clear();
     };
     
-    clearList(m_ShooterList);
-    clearList(m_BulletList);
-    clearList(m_AlienList);
+	clearList(m_BulletList);
 }
 
 CPoolingManager* CPoolingManager::Instance()
@@ -45,26 +43,6 @@ void CPoolingManager::CreateBulletList(size_t count, size_t size)
     for(auto block : m_BulletList)
         CObjectManager::Instance()->AddBullet(block);
 #endif
-}
-
-void CPoolingManager::CreateShooterList(size_t count, size_t size)
-{
-    m_ShooterSize = this->increaseBlockSizeIf64bit(size);
-    this->createList(m_ShooterList, m_ShooterSize, count);
-    
-    // 오브젝트 매니저 리스트에 추가
-    for(auto block : m_ShooterList)
-        CObjectManager::Instance()->AddShooter(block);
-}
-
-void CPoolingManager::CreateAlienList(size_t count, size_t size)
-{
-    m_AlienSize = this->increaseBlockSizeIf64bit(size);
-    this->createList(m_AlienList, m_AlienSize, count);
-    
-    // 오브젝트 매니저 리스트에 추가
-    for(auto block : m_AlienList)
-        CMenuSceneObjectManager::Instance()->AddAlien(block);
 }
 
 void* CPoolingManager::BulletNew()
@@ -89,66 +67,10 @@ void* CPoolingManager::BulletNew()
 	return newBlock;
 }
 
-void* CPoolingManager::ShooterNew()
-{
-    MEMORYBLOCK newBlock = nullptr;
-    
-    newBlock = this->getFreeMemoryFromList(m_ShooterList, m_ShooterSize);
-    
-    if(newBlock == nullptr)
-    {
-        CCLOG("SHOOTER LIST OVERFLOWED");
-        this->addBlockToList(m_ShooterList, m_ShooterSize);
-        
-        newBlock = m_ShooterList.back();
-        
-        /* 오브젝트 매니저 리스트에 추가한다. */
-        CObjectManager::Instance()->AddShooter(newBlock);
-        
-        this->changeFreeMemoryToUsed(newBlock, m_ShooterSize);
-    }
-    
-    return newBlock;
-}
-
-void* CPoolingManager::AlienNew()
-{
-    MEMORYBLOCK newBlock = nullptr;
-    
-    newBlock = this->getFreeMemoryFromList(m_AlienList, m_AlienSize);
-    
-    if(newBlock == nullptr)
-    {
-        CCLOG("ALIEN LIST OVERFLOWED");
-        this->addBlockToList(m_AlienList, m_AlienSize);
-        
-        newBlock = m_AlienList.back();
-        
-        /* 오브젝트 매니저 리스트에 추가한다. */
-        CMenuSceneObjectManager::Instance()->AddAlien(newBlock);
-        
-        this->changeFreeMemoryToUsed(newBlock, m_AlienSize);
-    }
-    
-    return newBlock;
-}
-
 void CPoolingManager::Bullet_ReturnToFreeMemory(void* bullet)
 {
     this->changeUsedMemoryToFree(static_cast<char*>(bullet), m_BulletSize);
 	//memset(bullet, 0, m_BulletSize + 1);
-}
-
-void CPoolingManager::Shooter_ReturnToFreeMemory(void* shooter)
-{
-    this->changeUsedMemoryToFree(static_cast<char*>(shooter), m_ShooterSize);
-	//memset(shooter, 0, m_ShooterSize + 1);
-}
-
-void CPoolingManager::Alien_ReturnToFreeMemory(void* alien)
-{
-    this->changeUsedMemoryToFree(static_cast<char*>(alien), m_AlienSize);
-    //memset(shooter, 0, m_ShooterSize + 1);
 }
 
 CPoolingManager::MEMORYBLOCK CPoolingManager::newMemoryBlock(size_t size) const

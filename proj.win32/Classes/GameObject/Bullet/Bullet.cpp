@@ -307,7 +307,7 @@ void CBullet::createScoreCurrentPos(int score)
 		auto scoreBullet = CScoreBullet::create(score);
 		scoreBullet->setPosition(getPosition());
 		scoreBullet->setAnchorPoint(Vec2::ZERO);
-		CGameScene::getGridWorld()->addChild(scoreBullet);
+		CGameScene::getGameScene()->addChild(scoreBullet);
 	}
 }
 

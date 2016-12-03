@@ -8,12 +8,10 @@
 #include "../Player.h"
 #include "../ItemManager.h"
 #include "../BulletCreator.h"
-#include "../Shooter/PatternShooter.h"
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/UIManager.h"
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
-#include "../../DataManager/StageDataManager.h"
 #include "../../MyUI/MultipleScore.h"
 #include "../../DataManager/UserDataManager.h"
 
@@ -172,7 +170,7 @@ void CNormalMissile::createTargetLine()
 	bullet->setIsAiming(getIsAiming());
 	bullet->build();
 
-	CGameScene::getGridWorld()->addChild(bullet);
+	CGameScene::getGameScene()->addChild(bullet);
 
 #if(!USE_MEMORY_POOLING)
 	CObjectManager::Instance()->AddBullet(bullet);
@@ -225,6 +223,6 @@ void CNormalMissile::createParticle_Explosion()
         m_pParticleCrash->setAngle(-getRotation());
         m_pParticleCrash->setPosition(getPosition());
         m_pParticleCrash->setGravity(m_RotationVec);
-        CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
+        CGameScene::getGameScene()->addChild(m_pParticleCrash, 100);
     }
 }

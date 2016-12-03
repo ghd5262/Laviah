@@ -2,14 +2,13 @@
 #include "GameScene.h"
 #include "EmptyScene.h"
 #include "../GameObject/Planet.h"
-#include "../GameObject/Alien.h"
 #include "../GameObject/SpaceShip.h"
+#include "../GameObject/Player.h"
 #include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
 #include "../Task/PoolingManager.h"
 #include "../GameObject/MenuSceneObjectManager.h"
 #include "../DataManager/BulletPatternDataManager.h"
-#include "../DataManager/StageDataManager.h"
 #include "../DataManager/BulletDataManager.h"
 #include "../DataManager/WorkshopItemDataManager.h"
 #include "../DataManager/UserDataManager.h"
@@ -72,50 +71,41 @@ bool CMenuScene::init()
 
 bool CMenuScene::initVariable()
 {
-
 	clearData();
 	m_MenuScene = this;
 
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	CStageDataManager::Instance();
 	CBulletPatternDataManager::Instance();
 	CBulletDataManager::Instance();
 	CWorkshopItemDataManager::Instance();
 	CCharacterDataManager::Instance();
 	CGradientDataManager::Instance();
 
-	//int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
-	//sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	//		auto planet = CPlanet::create(currentCharacterInfo._planetTextureName, 290.f, 0.0f, 200.0f);
-	//        if(planet != nullptr){
-	//            planet->setPosition(Vec2(origin.x + visibleSize.width * 0.5f, origin.y + visibleSize.height * 0.5f));
-	//            planet->setScale(1.5f);
-	//            planet->runAction(RepeatForever::create(RotateBy::create(90, 360)));
-	//            this->addChild(planet);
-	//            CMenuSceneObjectManager::Instance()->setPlanet(planet);
-	//        }
-	//        auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM(), 40, 430);
-	//        if(spaceship != nullptr)
-	//        {
-	//            this->addChild(spaceship);
-	//            CMenuSceneObjectManager::Instance()->setSpaceShip(spaceship);
-	//        }
-	//        
-	//        CPoolingManager::Instance()->CreateAlienList(100, 800);
-	//       
-	//        for(int i = 0 ;i < 10 ;i++ ){
-	//            auto alien = CAlien::create(sALIEN_PARAM(), random<int>(10, 30), 200);
-	//            auto button = CMyButton::createWithLayerColor(Size(80, 80), COLOR::TRANSPARENT, "", 0, Color3B::WHITE, eMYBUTTON_STATE::END, [alien](){
-	//                
-	//            });
-	//            alien->addChild(button);
-	//            this->addChild(alien);
-	//            
-	//        }
-	CAudioManager::Instance()->setEffectSoundVolume(1.0f);
+	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
+	sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+
+	auto planet = CPlanet::create(currentCharacterInfo._planetTextureName);
+	planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	planet->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f));
+	planet->setScale(2.f);
+	this->addChild(planet);
+	CMenuSceneObjectManager::Instance()->setPlanet(planet);
+
+	auto player = CPlayer::create(currentCharacterInfo);
+	player->setScale(2.f);
+	player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	player->setPosition(Vec2(visibleSize.width * 0.5f, planet->getPosition().y + (((planet->getContentSize().width * planet->getScale()) / 2) + 20)));
+	this->addChild(player);
+	CMenuSceneObjectManager::Instance()->setPlayer(player);
+
+	auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM(), 40, 500);
+	if (spaceship != nullptr)
+	{
+		this->addChild(spaceship);
+		CMenuSceneObjectManager::Instance()->setSpaceShip(spaceship);
+	}
+
 	InitMenuSceneUI();
 
 	return true;
@@ -126,8 +116,67 @@ static const Color4B COLOR_BUTTON_RED = COLOR::BRIGHTRED_ALPHA;
 void CMenuScene::InitMenuSceneUI()
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
+	auto createOneButtonPopup = [=](std::string message){
+		CPopup::create()
+			->setPositiveButton([=](Node* sender){}, "OK")
+			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+			->setMessage(message)
+			->setMessageFont(Color3B::WHITE, 40)
+			->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+			->setPopupPosition(visibleSize / 2)
+			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->show(this);
+	};
+
+	auto createWidgetPopup = [=](CPopup* widget){
+		widget->setPopupPosition(visibleSize / 2)
+			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->show(this);
+	};
+
+	auto createTestButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, Size size){
+		return CMyButton::create()
+			->addEventListener(callback)
+			->setLayer(LayerColor::create(COLOR_BUTTON_RED, size.width, size.height))
+			->setContents(name)
+			->setFont(Color3B::WHITE, 40)
+			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->setButtonPosition(pos)
+			->show(this);
+	};
 
 	Vec2 testButtonPos[] = {
+		Vec2(visibleSize.width * 0.2f, visibleSize.height * 0.25f),
+		Vec2(visibleSize.width * 0.4f, visibleSize.height * 0.25f),
+		Vec2(visibleSize.width * 0.6f, visibleSize.height * 0.25f),
+		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.25f),
+	};
+
+	createTestButton([=](Node* sender){ createOneButtonPopup("Share is comming soon"); }, "Share", testButtonPos[0], Size(200, 150));
+	createTestButton([=](Node* sender){	createWidgetPopup(CCharacterSelectPopup::create());	}, "Select", testButtonPos[1], Size(200, 150));
+	createTestButton([=](Node* sender){	this->createGameScene(sender); }, "Start", testButtonPos[2], Size(200, 150));
+	createTestButton([=](Node* sender){	createWidgetPopup(CWorkshopPopup::create()); }, "Work", testButtonPos[3], Size(200, 150));
+
+		/*createTestButton([=](Node* sender){ this->createGameScene(sender); }, "Start", testButtonPos[0], testButtonSize[0]);
+		createTestButton([=](Node* sender){	createWidgetPopup(CCharacterSelectPopup::create());	}, "Select", testButtonPos[1], testButtonSize[0]);
+		createTestButton([=](Node* sender){	createWidgetPopup(CWorkshopPopup::create()); }, "Workshop", testButtonPos[2], testButtonSize[0]);
+		createTestButton([=](Node* sender){	createWidgetPopup(CGachaPopup::create()); }, "Gacha", testButtonPos[3], testButtonSize[0]);
+		createTestButton([=](Node* sender){
+		CSDKUtil::Instance()->ShowNormalUnityAds([=](){
+		createOneButtonPopup("Finished Normal Ads");
+		});
+		}, "NormalAds", testButtonPos[4], testButtonSize[0]);
+		createTestButton([=](Node* sender){
+		CSDKUtil::Instance()->ShowRewardUnityAds([=](){
+		createOneButtonPopup("Finished Reward Ads");
+		});
+		}, "RewardAds", testButtonPos[5], testButtonSize[0]);
+
+		createTestButton([=](Node* sender){	createWidgetPopup(CPatternTestPopup::create()); }, "Pattern", testButtonPos[12], testButtonSize[0]);
+
+
+
+	/*Vec2 testButtonPos[] = {
 		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.1f),
 		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.2f),
 		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.3f),
@@ -188,9 +237,9 @@ void CMenuScene::InitMenuSceneUI()
 
 	auto createSoundTestButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, Size size, SOUND_PAIR sound){
 		createTestButton(callback, name, pos, size)->setClickSound(sound.first, sound.second);
-	};
+	};*/
 
-	createTestButton([=](Node* sender){ this->createGameScene(sender); }, "Start", testButtonPos[0], testButtonSize[0]);
+	/*createTestButton([=](Node* sender){ this->createGameScene(sender); }, "Start", testButtonPos[0], testButtonSize[0]);
 	createTestButton([=](Node* sender){	createWidgetPopup(CCharacterSelectPopup::create());	}, "Select", testButtonPos[1], testButtonSize[0]);
 	createTestButton([=](Node* sender){	createWidgetPopup(CWorkshopPopup::create()); }, "Workshop", testButtonPos[2], testButtonSize[0]);
 	createTestButton([=](Node* sender){	createWidgetPopup(CGachaPopup::create()); }, "Gacha", testButtonPos[3], testButtonSize[0]);
@@ -222,13 +271,9 @@ void CMenuScene::InitMenuSceneUI()
 	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp5; }, "5", testButtonPos[10], testButtonSize[1], sounds[4]);
 	createSoundTestButton([=](Node* sender){CAudioManager::Instance()->PUBLIC_CLICK_SOUND = temp6; }, "6", testButtonPos[11], testButtonSize[1], sounds[5]);
    
-    
-    
-
-    
-	//createTestButton([=](Node* sender){
-	//	createWidgetPopup(CGoogleCloudTestPopup::create());
-	//}, "CloudSave", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.7f));
+	createTestButton([=](Node* sender){
+		createWidgetPopup(CGoogleCloudTestPopup::create());
+	}, "CloudSave", Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.7f));*/
 }
 
 void CMenuScene::createGameScene(Node* sender)

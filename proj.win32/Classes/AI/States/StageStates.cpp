@@ -2,7 +2,6 @@
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
-#include "../../DataManager/StageDataManager.h"
 #include "../../DataManager/BulletPatternDataManager.h"
 #include "../../MyUI/UIManager.h"
 #include "../../MyUI/BonusTimeUI.h"
@@ -43,19 +42,6 @@ CBonusTimeStageState* CBonusTimeStageState::Instance(){
 }
 
 void CBonusTimeStageState::Enter(CObjectManager* objectMng){
-
-	CPatternShooter::create(
-		sSHOOTER_PARAM(
-		MakeString("bonusTime%d_Pattern", 1)
-		, 0.f
-		, 0.f
-		, 200.f
-		, 90.f
-		, 0.f
-		, 1
-		, 1
-		, true
-		, true));
 }
 
 void CBonusTimeStageState::Execute(CObjectManager* objectMng, float delta){

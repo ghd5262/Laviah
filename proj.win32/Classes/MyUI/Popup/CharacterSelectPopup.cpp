@@ -7,6 +7,7 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../GameObject/MenuSceneObjectManager.h"
 #include "../../GameObject/Planet.h"
+#include "../../GameObject/Player.h"
 #include "ui/UIListView.h"
 
 using namespace cocos2d;
@@ -184,6 +185,10 @@ void CCharacterSelectPopup::Select(Node* sender)
 	auto planet = CMenuSceneObjectManager::Instance()->getPlanet();
 	if (planet != nullptr)
 		planet->setPlanetTexture(centerCharacterParam._planetTextureName);
+
+	auto player = CMenuSceneObjectManager::Instance()->getPlayer();
+	if (player != nullptr)
+		player->setPlayerTexture(centerCharacterParam._normalTextureName);
 
 	if (CUserDataManager::Instance()->getUserData_IsItemHave("USER_CHARACTER_LIST", centerCharacterParam._idx))
 	{

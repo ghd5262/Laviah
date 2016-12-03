@@ -1,5 +1,4 @@
 #pragma once
-#include "../GameObject/Shooter/ShooterHeaders.h"
 #include <map>
 
 struct sBULLET_PATTERN

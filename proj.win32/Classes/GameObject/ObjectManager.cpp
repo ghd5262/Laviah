@@ -5,9 +5,7 @@
 #include "ItemManager.h"
 #include "BulletCreator.h"
 #include "Bullet/Bullet.h"
-#include "Shooter/ShooterLegacy.h"
 #include "../AI/States/StageStates.h"
-#include "../DataManager/StageDataManager.h"
 #include "../Scene/GameScene.h"
 #include <algorithm>
 
@@ -23,9 +21,6 @@ CObjectManager::CObjectManager()
 	if (m_FSM != nullptr){
 		m_FSM->ChangeState(CGameCountDownState::Instance());
 	}
-
-
-	m_StageList = CStageDataManager::Instance()->getStageList();
 }
 
 CObjectManager* CObjectManager::Instance()
@@ -37,7 +32,6 @@ CObjectManager* CObjectManager::Instance()
 void CObjectManager::Clear()
 {
 	m_BulletList.clear();
-	m_ShooterList.clear();
 	m_CurrentShooterIdx = 0;
     m_fRotateAcceleration = 0.f;
 	m_fStageTime = 0.f;
@@ -57,13 +51,6 @@ void CObjectManager::AddBullet(CBullet* bullet)
 }
 #endif
 
-void CObjectManager::AddShooter(void* shooter)
-{
-	//m_ShooterList.emplace_back(shooter);
-	m_ShooterList.emplace_back(static_cast<CShooterLegacy*>(shooter));
-}
-
-
 /* bullet->Delete() :
  * 게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해 */
 void CObjectManager::RemoveAllBullet()
@@ -72,17 +59,6 @@ void CObjectManager::RemoveAllBullet()
 	{
 		if (bullet->HasPointer()) 
 			bullet->Delete();
-	}
-}
-
-/* shooter->Delete() :
- * 게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해*/
-void CObjectManager::RemoveAllShooter()
-{
-	for (auto shooter : m_ShooterList)
-	{						
-		if (shooter->HasPointer())
-			shooter->Delete();
 	}
 }
 
@@ -96,7 +72,6 @@ void CObjectManager::RemoveAllObject()
 #if(USE_MEMORY_POOLING)
 	RemoveAllBullet();
 #endif
-	RemoveAllShooter();
 	Clear();
 }
 
@@ -108,7 +83,7 @@ void CObjectManager::CreateShooterByTimer()
 		if (1)
 		{
 			m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPattern()->_patternName);
-	//		m_BulletCreator->setPattern("pattern_test");
+			//m_BulletCreator->setPattern("pattern_32");
 		}
 		else
 		{
@@ -151,12 +126,6 @@ void CObjectManager::ExecuteAllObject(float delta)
 		}
 	}
 
-//	for (auto shooter : m_ShooterList)
-//	{
-//		if (shooter->IsAlive()) {
-//			shooter->Execute(delta);
-//		}
-//	}
     m_BulletCreator->Update(delta);
     m_Planet->Execute();
 	this->RotationObject(1);
@@ -179,13 +148,6 @@ void CObjectManager::RotationObject(float dir)
 		}
 	}
     
-//    for (auto shooter : m_ShooterList)
-//    {
-//        if (shooter->IsAlive()) {
-//            shooter->Rotation(dir + (dir * m_fRotateAcceleration), m_fDelta);
-//        }
-//    }
-    
     m_BulletCreator->setRotationAngle(dir + (dir * m_fRotateAcceleration), m_fDelta);
     m_Planet->Rotation(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
 	m_Player->Rotation(dir, m_fDelta);
@@ -194,25 +156,11 @@ void CObjectManager::RotationObject(float dir)
 void CObjectManager::ShooterPause()
 {
 	m_BulletCreator->Pause();
-	//for (auto shooter : m_ShooterList)
-	//{
-	//	if (shooter->IsAlive()) {
-	//		//shooter->setAlive(false);
-	//		shooter->setShooterPause(true);
-	//	}
-	//}
 }
 
 void CObjectManager::ShooterResume()
 {
 	m_BulletCreator->Resume();
-	//for (auto shooter : m_ShooterList)
-	//{
-	//	if (shooter->IsAlive()) {
-	//		//shooter->setAlive(true);
-	//		shooter->setShooterPause(false);
-	//	}
-	//}
 }
 
 void CObjectManager::RotateAccelerationUpdate(float value){

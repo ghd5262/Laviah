@@ -99,6 +99,6 @@ void CNormalBullet::setParticle()
         m_pParticleCrash->setGravity(m_RotationVec);
         m_pParticleCrash->setSpeed(100);
         m_pParticleCrash->setSpeedVar(50);
-        CGameScene::getGridWorld()->addChild(m_pParticleCrash, 100);
+        CGameScene::getGameScene()->addChild(m_pParticleCrash, 100);
     }
 }

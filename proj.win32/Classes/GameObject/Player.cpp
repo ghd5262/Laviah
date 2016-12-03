@@ -89,7 +89,7 @@ bool CPlayer::init()
     
     m_pItemBarrier = CItemBarrier::create("barrier2.png", 800.f);
     if (m_pItemBarrier != nullptr){
-        m_pItemBarrier->setPosition(Vec2(0, 0));
+        m_pItemBarrier->setPosition(this->getContentSize() / 2);
         m_pItemBarrier->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         addChild(m_pItemBarrier);
     }
@@ -100,27 +100,30 @@ bool CPlayer::init()
         m_pTexture->setPosition(this->getContentSize() / 2);
         m_pTexture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		addChild(m_pTexture);
-        m_pTexture->setVisible(false);
     }
     
-    m_pParticle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
-    if (m_pParticle != nullptr){
-        m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_pParticle->setAngle(90);
-        m_pParticle->setGravity(Vec2(0, -270));
-		m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
-        m_pParticle->setEndSize(4.f);
-        CGameScene::getGridWorld()->addChild(m_pParticle, 10);
-        m_pParticle->setVisible(false);
-    }
-    
-    
-    m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, m_fMagnetLimitTime);
-    if (m_MagnetEffect != nullptr)
-    {
-        m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        CGameScene::getGridWorld()->addChild(m_MagnetEffect);
-    }
+	if (CGameScene::getGridWorld()){
+
+		m_pParticle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
+		if (m_pParticle != nullptr){
+			m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			m_pParticle->setAngle(90);
+			m_pParticle->setGravity(Vec2(0, -270));
+			m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
+			m_pParticle->setEndSize(4.f);
+			CGameScene::getGridWorld()->addChild(m_pParticle, 10);
+			m_pParticle->setVisible(false);
+		}
+
+		m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, m_fMagnetLimitTime);
+		if (m_MagnetEffect != nullptr)
+		{
+			m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			CGameScene::getGridWorld()->addChild(m_MagnetEffect);
+		}
+
+		this->setVisible(false);
+	}
 	
 	this->setScale(SCALE_SIZE);
 	this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
@@ -157,13 +160,13 @@ void CPlayer::PlayerAlive(){
 		CGameScene::getGridWorld()->addChild(m_pParticleAlive, 100);
 	}
     
-    m_pTexture->setSpriteFrame(m_CharacterParam._aliveTextureName);
+	setPlayerTexture(m_CharacterParam._aliveTextureName);
 
 	this->scheduleOnce([=](float delta){
 		m_isPlayerDead = false;
 		m_pParticle->setVisible(true);
-		m_pTexture->setVisible(true);
-        m_pTexture->setSpriteFrame(m_CharacterParam._normalTextureName);
+		this->setVisible(true);
+		setPlayerTexture(m_CharacterParam._normalTextureName);
 		// 1초간 무적 
 		this->InvincibilityMode(INVINCIVILITY_TIME); //카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
 	}, 1.5f, "PlayerAlive");
@@ -179,7 +182,7 @@ void CPlayer::PlayerDead(){
 	}
     m_isPlayerDead = true;
 	m_pParticle->setVisible(false);
-	m_pTexture->setVisible(false);
+	this->setVisible(false);
 }
 
 void CPlayer::GotSomeHealth(float health)
@@ -235,7 +238,7 @@ void CPlayer::GiantMode()
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, GIANT_SIZE_PERCENT),
 		CallFunc::create([=](){
-        this->m_pTexture->setSpriteFrame(m_CharacterParam._giantTextureName);
+		this->setPlayerTexture(m_CharacterParam._giantTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
 		this->setRotateSpeed(PLAYER::GIANT_ROTATION_SPEED);
@@ -252,7 +255,7 @@ void CPlayer::NormalMode()
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, SCALE_SIZE),
 		CallFunc::create([=](){
-        this->m_pTexture->setSpriteFrame(m_CharacterParam._normalTextureName);
+        this->setPlayerTexture(m_CharacterParam._normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
 		this->setRotateSpeed(PLAYER::NORMAL_ROTATION_SPEED);
@@ -318,4 +321,11 @@ void CPlayer::InvincibilityMode(float time)
 		this->m_pTexture->setOpacity(255);
 		m_Invincibility = false;
 	}, time, "SetPlayerNormalMode");
+}
+
+void CPlayer::setPlayerTexture(std::string textureName)
+{
+	if (m_pTexture != nullptr){
+		this->m_pTexture->setSpriteFrame(textureName);
+	}
 }

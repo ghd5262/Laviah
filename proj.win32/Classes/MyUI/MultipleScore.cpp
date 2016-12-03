@@ -46,7 +46,7 @@ bool CMultipleScore::init()
     m_MultipleNumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x, m_Player->getOriginPos().y + m_Player->getBoundingRadius() + 50));
     m_MultipleNumberLabel->setVisible(false);
-    CGameScene::getGridWorld()->addChild(m_MultipleNumberLabel);
+    CGameScene::getGameScene()->addChild(m_MultipleNumberLabel);
    
     return true;
 }

@@ -7,7 +7,6 @@
 #include "../GameObject/Player.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/ItemManager.h"
-#include "../GameObject/Shooter/ShooterHeaders.h"
 #include "../GameObject/Bullet/Bullet.h"
 #include "../GameObject/BackGround.h"
 #include "../GameObject/BulletCreator.h"
@@ -46,6 +45,14 @@ Scene* CGameScene::createScene()
 	return scene;
 }
 
+CGameScene::CGameScene()
+	: m_PauseBtn(nullptr)
+	, m_CountDownLabel(nullptr)
+	, m_KeyBoardL(false)
+	, m_KeyBoardR(false)
+	, m_Count(0)
+{}
+
 CGameScene::~CGameScene()
 {
 	CObjectManager::Instance()->RemoveAllObject();
@@ -56,120 +63,57 @@ CGameScene::~CGameScene()
 
 void CGameScene::clearData()
 {
-	m_GameScene = nullptr;
-	m_GridWorld = nullptr;
-	m_PauseBtn = nullptr;
-	m_CountDownLabel = nullptr;
-	m_KeyBoardL = false;
-	m_KeyBoardR = false;
-	m_Count = 0;
-}
-
-bool CGameScene::init()
-{
-	scheduleUpdate();
-	if (!Layer::init())
-	{
-		return false;
-	}
-
-	if (!initVariable())
-		return false;
-	return true;
-}
-
-bool CGameScene::initVariable()
-{
-	clearData();
-	m_GameScene = this;
-	m_KeyBoardL = false;
-	m_KeyBoardR = false;
-
 	CObjectManager::Instance()->Clear();
 	CUIManager::Instance()->Clear();
 	CAudioManager::Instance()->Clear();
 	CItemManager::Instance()->Clear();
+}
+
+bool CGameScene::init()
+{
+	if (!Layer::init()) return false;
+	
+	m_GameScene = this;
+	this->scheduleUpdate();
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	m_GridWorld = NodeGrid::create();
 	addChild(m_GridWorld, 0, 1);
 
 	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
 	sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
 
 	auto background = CBackGround::create();
-	m_GridWorld->addChild(background);
-	//background->setVisible(false);
+	this->addChild(background, -1);
 
-    auto planet = CPlanet::create(currentCharacterInfo._planetTextureName);
-    
+	auto planet = CPlanet::create(currentCharacterInfo._planetTextureName);
 	planet->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.35f));
 	planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	m_GridWorld->addChild(planet, 100);
+	this->addChild(planet, 100);
 
 	planet->setOriginPos(planet->getPosition());
-
-	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
 	auto player = CPlayer::create(currentCharacterInfo);
-    player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * BULLETCREATOR::ROTATION_SPEED));
+	player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * BULLETCREATOR::ROTATION_SPEED));
 	player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	player->setPosition(Vec2(visibleSize.width * 0.5f, planet->getPosition().y + (planet->getBoundingRadius() + 20)));
-	m_GridWorld->addChild(player, 100);
-
 	player->setOriginPos(player->getPosition());
 	player->setParticlePos(player->getPosition());
+	this->addChild(player, 100);
 
-    auto bulletCreator = CBulletCreator::create();
-    m_GridWorld->addChild(bulletCreator);
-    
+	auto bulletCreator = CBulletCreator::create();
+	this->addChild(bulletCreator);
+
 	CObjectManager::Instance()->setBackground(background);
 	CObjectManager::Instance()->setPlayer(player);
 	CObjectManager::Instance()->setPlanet(planet);
-    CObjectManager::Instance()->setBulletCreator(bulletCreator);
-    
-    CPatternShooter pattern;
-    
-    CCLOG("shooter Size : %lu", sizeof(pattern));
-    
+	CObjectManager::Instance()->setBulletCreator(bulletCreator);
+
 #if(USE_MEMORY_POOLING)
 	CPoolingManager::Instance()->CreateBulletList(500, 900);
 #endif
-//    CPoolingManager::Instance()->CreateShooterList(1, 80000);
 
-	EventListenerKeyboard * pListener = EventListenerKeyboard::create();
-	pListener->onKeyPressed = [this](EventKeyboard::KeyCode code, Event* pEvent)
-	{
-		switch (code)
-		{
-		case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-		{
-			m_KeyBoardL = true;
-		}break;
-		case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-		{
-			m_KeyBoardR = true;
-		}break;
-		}
-	};
-
-	pListener->onKeyReleased = [this](EventKeyboard::KeyCode code, Event* pEvent)
-	{
-		switch (code)
-		{
-		case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-		{
-			m_KeyBoardL = false;
-		}break;
-		case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-		{
-			m_KeyBoardR = false;
-		}break;
-		}
-	};
-
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
 
 	InitGameSceneUI();
 	GameStart();
@@ -190,7 +134,7 @@ void CGameScene::InitGameSceneUI()
     ->setEnableSound(false)
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f))
-    ->show(m_GridWorld, 102);
+    ->show(this, 102);
     
 
 	// player의 HealthCalFunc callback 등록 
@@ -200,7 +144,7 @@ void CGameScene::InitGameSceneUI()
 	//healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	//healthBar->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 	//	origin.x + visibleSize.height * 0.945f));
-	//m_GridWorld->addChild(healthBar, 102);
+	//this->addChild(healthBar, 102);
 	//if (!CUIManager::Instance()->AddUIWithName(healthBar, "HealthBar"))
 	//	CCASSERT(false, "HealthBar CAN NOT INIT");
 
@@ -208,7 +152,7 @@ void CGameScene::InitGameSceneUI()
 	starScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	starScoreUI->setLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
 	starScoreUI->setPosition(Vec2(visibleSize.width * 0.96f, visibleSize.height * 0.96f));
-	m_GridWorld->addChild(starScoreUI, 102);
+	this->addChild(starScoreUI, 102);
 	if (!CUIManager::Instance()->AddUIWithName(starScoreUI, "StarScoreUI"))
 		CCASSERT(false, "StarScoreUI CAN NOT INIT");
 
@@ -216,7 +160,7 @@ void CGameScene::InitGameSceneUI()
 	coinScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	coinScoreUI->setLabelAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
 	coinScoreUI->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.96f));
-	m_GridWorld->addChild(coinScoreUI, 102);
+	this->addChild(coinScoreUI, 102);
 	if (!CUIManager::Instance()->AddUIWithName(coinScoreUI, "CoinScoreUI"))
 		CCASSERT(false, "CoinScoreUI CAN NOT INIT");
 
@@ -224,12 +168,12 @@ void CGameScene::InitGameSceneUI()
 	runScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	runScoreUI->setLabelAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
 	runScoreUI->setPosition(Vec2(visibleSize.width * 0.96f, visibleSize.height * 0.925f));
-	m_GridWorld->addChild(runScoreUI, 102);
+	this->addChild(runScoreUI, 102);
 	if (!CUIManager::Instance()->AddUIWithName(runScoreUI, "RunScoreUI"))
 		CCASSERT(false, "RunScoreUI CAN NOT INIT");
 
 	auto multipleScoreUI = CMultipleScore::create();
-	m_GridWorld->addChild(multipleScoreUI); // referenceCount를 위하여 addChild
+	this->addChild(multipleScoreUI); // referenceCount를 위하여 addChild
 	multipleScoreUI->setVisible(false);
 	if (!CUIManager::Instance()->AddUIWithName(multipleScoreUI, "MultipleScoreUI"))
 		CCASSERT(false, "MultipleScoreUI CAN NOT INIT");
@@ -237,7 +181,7 @@ void CGameScene::InitGameSceneUI()
 	auto bonusTime = CBonusTimeUI::create();
 	bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 	bonusTime->setPosition(Vec2(visibleSize.width * 0.06f, visibleSize.height * 0.925f));
-	m_GridWorld->addChild(bonusTime, 102);
+	this->addChild(bonusTime, 102);
 	if (!CUIManager::Instance()->AddUIWithName(bonusTime, "BonusTime"))
 		CCASSERT(false, "BonusTime CAN NOT INIT");
 
@@ -248,7 +192,7 @@ void CGameScene::InitGameSceneUI()
 		->setButtonNormalImage("pauseIcon.png")
 		->setButtonPosition(Vec2(visibleSize.width * 0.92f, visibleSize.height * 0.05f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->show(m_GridWorld, 102);
+		->show(this, 102);
 	m_PauseBtn->setCascadeOpacityEnabled(true);
 
 	auto createItemTest = [=](eITEM_TYPE type, Vec2 pos){
@@ -259,7 +203,7 @@ void CGameScene::InitGameSceneUI()
 			->setButtonNormalImage(StringUtils::format("playItem_%d.png", type))
 			->setButtonPosition(pos)
 			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-			->show(m_GridWorld, 102);
+			->show(this, 102);
 	};
 
 	Vec2 itemPosArray[] = {
@@ -278,7 +222,7 @@ void CGameScene::InitGameSceneUI()
 
 	auto createScoreUI = [=](std::string name){
 		auto scoreUI = CScoreUI::create("fonts/Number.ttf", 25, "run.png");
-		m_GridWorld->addChild(scoreUI, 102);// referenceCount를 위하여 addChild
+		this->addChild(scoreUI, 102);// referenceCount를 위하여 addChild
 		scoreUI->setVisible(false);
 		if (!CUIManager::Instance()->AddUIWithName(scoreUI, name))
 			CCASSERT(false, StringUtils::format("%s CAN NOT INIT", name.c_str()).c_str());
@@ -293,21 +237,21 @@ void CGameScene::InitGameSceneUI()
 //		END,
 //		[this]()
 //	{
-//		m_GridWorld->runAction(CSplitCircle::create(10, 9));
+//		this->runAction(CSplitCircle::create(10, 9));
 //	}, EFFECT_SIZEDOWN);
 //
 //	gridTest->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 //		origin.x + visibleSize.height * 0.05f));
 //	gridTest->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 //	gridTest->setCascadeOpacityEnabled(true);
-//	m_GridWorld->addChild(gridTest, 102);
+//	this->addChild(gridTest, 102);
 
 	m_CountDownLabel = nullptr;
 	m_CountDownLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 50);
 	m_CountDownLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	m_CountDownLabel->setPosition(Vec2(origin.x + visibleSize.width * 0.5f,
 		origin.x + visibleSize.height * 0.7f));
-	m_GridWorld->addChild(m_CountDownLabel, 102);
+	this->addChild(m_CountDownLabel, 102);
 	m_CountDownLabel->setVisible(false);
 }
 
@@ -427,7 +371,7 @@ void CGameScene::GameEnd()
 	CResultPopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(visibleSize / 2)
-		->show(m_GridWorld, 102);
+		->show(this, 102);
 
 	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
 	GamePause();
@@ -440,7 +384,7 @@ void CGameScene::GameHelp()
 	CHelpPopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(visibleSize / 2)
-		->show(m_GridWorld, 102);
+		->show(this, 102);
 }
 
 void CGameScene::CountDownCancel()
@@ -497,7 +441,7 @@ void CGameScene::watchVideo()
 	CVideoPopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(visibleSize / 2)
-		->show(m_GridWorld, 102);
+		->show(this, 102);
 
 	m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
 	GamePause();
@@ -518,7 +462,7 @@ void CGameScene::OpenGamePausePopup()
 	CPausePopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(visibleSize / 2)
-		->show(m_GridWorld, 102);
+		->show(this, 102);
 }
 
 void CGameScene::backToMenuScene()
@@ -535,4 +479,40 @@ void CGameScene::backToMenuScene()
         }, Director::getInstance(), 1.f, 0, 0.f, false, "createMenuScene");
         
     }, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
+}
+
+void CGameScene::initKeyboardListener()
+{
+	EventListenerKeyboard * pListener = EventListenerKeyboard::create();
+	pListener->onKeyPressed = [this](EventKeyboard::KeyCode code, Event* pEvent)
+	{
+		switch (code)
+		{
+		case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+		{
+			m_KeyBoardL = true;
+		}break;
+		case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+		{
+			m_KeyBoardR = true;
+		}break;
+		}
+	};
+
+	pListener->onKeyReleased = [this](EventKeyboard::KeyCode code, Event* pEvent)
+	{
+		switch (code)
+		{
+		case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+		{
+			m_KeyBoardL = false;
+		}break;
+		case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+		{
+			m_KeyBoardR = false;
+		}break;
+		}
+	};
+
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
 }
