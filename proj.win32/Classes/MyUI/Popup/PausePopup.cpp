@@ -146,12 +146,12 @@ void CPausePopup::Play(Node* sender){
 
 void CPausePopup::Reset(Node* sender){
 	CCLOG("format popup Replay");
-	CGameScene::getGameScene()->resetGameScene();
+	CGameScene::getGameScene()->ResetGameScene();
 }
 
 void CPausePopup::GoHome(Node* sender){
 	CCLOG("format popup GoHome");
-	CGameScene::getGameScene()->backToMenuScene();
+	CGameScene::getGameScene()->BackToMenuScene();
 	this->popupClose();
 }
 

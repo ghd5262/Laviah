@@ -32,7 +32,6 @@ CObjectManager* CObjectManager::Instance()
 void CObjectManager::Clear()
 {
 	m_BulletList.clear();
-	m_CurrentShooterIdx = 0;
     m_fRotateAcceleration = 0.f;
 	m_fStageTime = 0.f;
 	m_IsGamePause = true;

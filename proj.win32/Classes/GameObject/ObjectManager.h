@@ -77,6 +77,5 @@ private:
 
 private:
 	std::vector<CBullet*> m_BulletList;
-	int m_CurrentShooterIdx;
     float m_fRotateAcceleration;
 };

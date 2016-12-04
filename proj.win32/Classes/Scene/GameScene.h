@@ -2,27 +2,30 @@
 
 #include "cocos2d.h"
 
+namespace GLOBAL{
+	static int BONUSTIME;
+	static int ALIENGET;
+	static int CHALLENGECLEAR;
+	static int TOTALSCORE;
+}
+
 class CMyButton;
 class CGameScene : public cocos2d::Layer
 {
 public:
 	CREATE_FUNC(CGameScene);
 	static cocos2d::Scene* createScene();
-	virtual ~CGameScene();
-
 	virtual void update(float delta) override;
 
-	void resetGameScene();
-	void backToMenuScene();
-	void EnableTouch();
-	void AbleTouch();
+	void ResetGameScene();
+	void BackToMenuScene();
+	void OpenGamePausePopup();
 	void GameStart();
-    void OpenGamePausePopup();
 	void GameResume();
 	void GameEnd();
     void GameExit();
     void GameHelp();
-	void watchVideo();
+	void WatchVideo();
     void CountDown(int count, std::string finMent = "0", const std::function<void(void)> &func = nullptr);
     void CountDownCancel();
     
@@ -35,20 +38,28 @@ protected:
 
 private:
 	CGameScene();
+	virtual ~CGameScene();
 
+	void initGameSceneUI();
+	void gamePause();
 	void clearData();
-    void GamePause();
-	void InitGameSceneUI();
+	void createPausePopup();
+	void createVideoPopup();
+	void createExitPopup();
+	void createResultPopup();
+	void createHelpPopup();
+	void onPauseButton();
+	void offPauseButton();
+	void createTestItemButton();
 	void initKeyboardListener();
 
 private:
 	static CGameScene* m_GameScene;
 	static cocos2d::NodeGrid* m_GridWorld;
 
-	CMyButton* m_PauseBtn;
 	cocos2d::Label* m_CountDownLabel;
-	
-	bool m_KeyBoardL;
-	bool m_KeyBoardR;
+	cocos2d::Size m_VisibleSize;
+
+	bool m_KeyBoardSpace;
 	int m_Count;
 };

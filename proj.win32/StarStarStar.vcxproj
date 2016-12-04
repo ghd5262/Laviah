@@ -220,10 +220,12 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\MyUI\Popup\GachaPopup.cpp" />
     <ClCompile Include="Classes\AI\States\SpaceShipStates.cpp" />
     <ClCompile Include="Classes\Scene\LoadingScene.cpp" />
+    <ClCompile Include="Classes\MyUI\Popup\GameSceneUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Classes\SDKUtil\SDKUtil_IOS.cpp" />
     <ClCompile Include="Classes\GameObject\SpaceShip.cpp" />
     <ClCompile Include="Classes\GameObject\MenuSceneObjectManager.cpp" />
+    <ClCompile Include="Classes\MyUI\Popup\MenuPopup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes\Common\NoticeDefine.h" />
@@ -312,9 +314,11 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\MyUI\Popup\GachaPopup.h" />
     <ClInclude Include="Classes\AI\States\SpaceShipStates.h" />
     <ClInclude Include="Classes\Scene\LoadingScene.h" />
+    <ClInclude Include="Classes\MyUI\Popup\GameSceneUI.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Classes\GameObject\SpaceShip.h" />
     <ClInclude Include="Classes\GameObject\MenuSceneObjectManager.h" />
+    <ClInclude Include="Classes\MyUI\Popup\MenuPopup.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cocos2d\cocos\2d\libcocos2d.vcxproj">

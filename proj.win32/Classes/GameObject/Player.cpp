@@ -210,7 +210,7 @@ void CPlayer::LostSomeHealth(float loseHealth)
 	else{
 		PlayerDead();
 		m_MultipleScore->Update();
-		CGameScene::getGameScene()->watchVideo();
+		CGameScene::getGameScene()->WatchVideo();
 		m_fLife = 0.f;
 	}
 }

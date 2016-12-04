@@ -1,6 +1,7 @@
 #include "LoadingScene.h"
 #include "MenuScene.h"
 #include "EmptyScene.h"
+#include "GameScene.h"
 #include "../GameObject/Player.h"
 #include "../MyUI/MyButton.h"
 #include "../Download/DownloadManager.h"
@@ -150,9 +151,9 @@ void CLoadingScene::createMenuScene()
 		Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
 
 		Director::getInstance()->getScheduler()->schedule([=](float delta){
-			auto Scene = CMenuScene::createScene();
+			auto Scene = CGameScene::createScene();
 			Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
-		}, Director::getInstance(), 0.f, 0, 1.f, false, "createMenuScene");
+		}, Director::getInstance(), 0.f, 0, 1.f, false, "createGameScene");
 
 	}, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
 }
