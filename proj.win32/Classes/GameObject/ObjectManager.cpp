@@ -12,7 +12,6 @@
 CObjectManager::CObjectManager()
 : m_fStageTime(0.f)
 , m_IsGamePause(true)
-, m_IsAbleRotation(false)
 , m_fRotateAcceleration(0.f)
 , m_BulletCreator(nullptr)
 {
@@ -35,7 +34,6 @@ void CObjectManager::Clear()
     m_fRotateAcceleration = 0.f;
 	m_fStageTime = 0.f;
 	m_IsGamePause = true;
-	m_IsAbleRotation = false;
 }
 
 #if(USE_MEMORY_POOLING)
@@ -108,15 +106,19 @@ void CObjectManager::CreateShooterByTimer()
 
 void CObjectManager::ExecuteAllObject(float delta)
 {
-	if (m_IsGamePause)
-		return;
+    if (m_IsGamePause) return;
 
-	m_IsAbleRotation = true;
 	m_fDelta = delta;
 	m_fStageTime += delta;
-	CreateShooterByTimer();
+    
+    this->RotationObject(1);
+    this->CreateShooterByTimer();
+    m_BulletCreator->Update(delta);
+    
     CItemManager::Instance()->Execute(delta);
-	m_Player->Execute(delta);
+    
+    m_Player->Execute(delta);
+    
 
 	for (auto bullet : m_BulletList)
 	{
@@ -125,9 +127,6 @@ void CObjectManager::ExecuteAllObject(float delta)
 		}
 	}
 
-    m_BulletCreator->Update(delta);
-    m_Planet->Execute();
-	this->RotationObject(1);
 }
 
 void CObjectManager::Execute(float delta)
@@ -137,9 +136,8 @@ void CObjectManager::Execute(float delta)
 
 void CObjectManager::RotationObject(float dir)
 {
-	if (!m_IsAbleRotation)
-		return;
-
+    if (m_IsGamePause) return;
+    
 	for (auto bullet : m_BulletList)
 	{
 		if (bullet->IsAlive()) {

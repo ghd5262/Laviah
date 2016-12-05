@@ -17,8 +17,8 @@
 #include "../MyUI/Popup/ResultPopup.h"
 #include "../MyUI/Popup/VideoPopup.h"
 #include "../MyUI/Popup/HelpPopup.h"
-#include "../MyUI/Popup/MenuPopup.h"
-#include "../MyUI/Popup/GameSceneUI.h"
+//#include "../MyUI/Popup/MenuPopup.h"
+//#include "../MyUI/Popup/GameSceneUI.h"
 #include "../AI/States/StageStates.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
@@ -94,7 +94,7 @@ bool CGameScene::init()
 	planet->setPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.35f));
 	planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	planet->setOriginPos(planet->getPosition());
-	this->addChild(planet, 100);
+	this->addChild(planet);
 
 	auto player = CPlayer::create(currentCharacterInfo);
 	player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * BULLETCREATOR::ROTATION_SPEED));
@@ -102,7 +102,7 @@ bool CGameScene::init()
 	player->setPosition(Vec2(m_VisibleSize.width * 0.5f, planet->getPosition().y + (planet->getBoundingRadius() + 20)));
 	player->setOriginPos(player->getPosition());
 	player->setParticlePos(player->getPosition());
-	this->addChild(player, 100);
+	this->addChild(player);
 
 	CObjectManager::Instance()->setBackground(background);
 	CObjectManager::Instance()->setPlayer(player);
@@ -113,26 +113,26 @@ bool CGameScene::init()
 	CPoolingManager::Instance()->CreateBulletList(500, 900);
 #endif
 
-	this->initGameSceneUI();
+//	this->initGameSceneUI();
 	this->initKeyboardListener();
 	//this->createTestItemButton();
 
 	return true;
 }
 
-void CGameScene::initGameSceneUI()
-{
-	m_CountDownLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 50);
-	m_CountDownLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	m_CountDownLabel->setPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.7f));
-	m_CountDownLabel->setVisible(false);
-	this->addChild(m_CountDownLabel, 102);
+//void CGameScene::initGameSceneUI()
+//{
+//	m_CountDownLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 50);
+//	m_CountDownLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//	m_CountDownLabel->setPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.7f));
+//	m_CountDownLabel->setVisible(false);
+//	this->addChild(m_CountDownLabel);
 
-	CMenuPopup::create()
-		->setPopupPosition(m_VisibleSize / 2)
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-		->show(this, 102);
+//	CMenuPopup::create()
+//		->setPopupPosition(m_VisibleSize / 2)
+//		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//		->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+//		->show(this);
 
 	// player의 HealthCalFunc callback 등록 
 	//auto healthBar = CHealthBarUI::create(
@@ -140,7 +140,7 @@ void CGameScene::initGameSceneUI()
 	//healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	//healthBar->setPosition(Vec2(origin.x + m_VisibleSize.width * 0.5f,
 	//	origin.x + m_VisibleSize.height * 0.945f));
-	//this->addChild(healthBar, 102);
+	//this->addChild(healthBar);
 	//if (!CUIManager::Instance()->AddUIWithName(healthBar, "HealthBar"))
 	//	CCASSERT(false, "HealthBar CAN NOT INIT");
 	//	auto gridTest = CMyButton::create("pauseIcon.png",
@@ -154,8 +154,8 @@ void CGameScene::initGameSceneUI()
 	//		origin.x + m_VisibleSize.height * 0.05f));
 	//	gridTest->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	//	gridTest->setCascadeOpacityEnabled(true);
-	//	this->addChild(gridTest, 102);
-}
+	//	this->addChild(gridTest);
+//}
 
 void CGameScene::GameExit()
 {
@@ -163,11 +163,9 @@ void CGameScene::GameExit()
 	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
 	return;
 #endif
-	this->gamePause();
+//	this->gamePause();
 	this->createExitPopup();
 }
-
-
 
 void CGameScene::GameStart()
 {
@@ -178,22 +176,30 @@ void CGameScene::GameStart()
 
 void CGameScene::GameResume()
 {
-    this->CountDown(3, "GO!", [](){
-        CObjectManager::Instance()->getFSM()->ChangeState(CNormalStageState::Instance());
-    });
+//    this->CountDown(3, "GO!", [](){
+//        CObjectManager::Instance()->getFSM()->ChangeState(CNormalStageState::Instance());
+//    });
 
-	//오디오 소리 크게
-	CAudioManager::Instance()->setBGMVolume(1.f);
-	CAudioManager::Instance()->setEffectSoundVolume(1.f);
 	CObjectManager::Instance()->setIsGamePause(false);
-	this->onPauseButton();
+    this->turnUpSound();
 }
 
-void CGameScene::GameEnd()
+void CGameScene::GamePause()
 {
-	this->gamePause();
+    auto objectMng = CObjectManager::Instance();
+    if(objectMng->getPlayer()->getIsDead() || objectMng->getIsGamePause()) return;
+
+    CObjectManager::Instance()->setIsGamePause(true);
+    this->createPausePopup();
+    this->turnDownSound();
+}
+
+void CGameScene::ShowResult()
+{
+//	this->gamePause();
+    
 	this->createResultPopup();
-	this->offPauseButton();
+//	this->offPauseButton();
 }
 
 void CGameScene::GameHelp()
@@ -201,34 +207,34 @@ void CGameScene::GameHelp()
 	this->createHelpPopup();
 }
 
-void CGameScene::CountDownCancel()
-{
-    this->unschedule("countDown");
-    m_CountDownLabel->setVisible(false);
-}
+//void CGameScene::CountDownCancel()
+//{
+//    this->unschedule("countDown");
+//    m_CountDownLabel->setVisible(false);
+//}
 
-void CGameScene::CountDown(int count, std::string finMent/* = "0"*/, const std::function<void(void)> &func/* = nullptr*/)
-{
-    this->CountDownCancel();
-	CObjectManager::Instance()->getFSM()->ChangeState(CGameCountDownState::Instance());
-    m_Count = count;
-	m_CountDownLabel->setVisible(true);
-    m_CountDownLabel->setString(StringUtils::format("%d", m_Count));
-	this->schedule([=](float delta)
-	{
-        m_Count -= 1;
-		if (m_Count > 0)
-			m_CountDownLabel->setString(StringUtils::format("%d", m_Count));
-        else if (m_Count == 0){
-			m_CountDownLabel->setString(finMent.c_str());
-        }
-		else{
-            m_CountDownLabel->setVisible(false);
-            if(func != nullptr)
-                func();
-		}
-	}, 1.f, count, 0.f, "countDown");
-}
+//void CGameScene::CountDown(int count, std::string finMent/* = "0"*/, const std::function<void(void)> &func/* = nullptr*/)
+//{
+//    this->CountDownCancel();
+//	CObjectManager::Instance()->getFSM()->ChangeState(CGameCountDownState::Instance());
+//    m_Count = count;
+//	m_CountDownLabel->setVisible(true);
+//    m_CountDownLabel->setString(StringUtils::format("%d", m_Count));
+//	this->schedule([=](float delta)
+//	{
+//        m_Count -= 1;
+//		if (m_Count > 0)
+//			m_CountDownLabel->setString(StringUtils::format("%d", m_Count));
+//        else if (m_Count == 0){
+//			m_CountDownLabel->setString(finMent.c_str());
+//        }
+//		else{
+//            m_CountDownLabel->setVisible(false);
+//            if(func != nullptr)
+//                func();
+//		}
+//	}, 1.f, count, 0.f, "countDown");
+//}
 
 void CGameScene::ResetGameScene()
 {
@@ -248,8 +254,8 @@ void CGameScene::ResetGameScene()
 void CGameScene::WatchVideo()
 {
 	this->createVideoPopup();
-	this->offPauseButton();
-	this->gamePause();
+//	this->offPauseButton();
+//	this->gamePause();
 }
 
 void CGameScene::OpenGamePausePopup()
@@ -259,7 +265,7 @@ void CGameScene::OpenGamePausePopup()
     || CObjectManager::Instance()->getIsGamePause())
         return;
     
-    this->gamePause();
+//    this->gamePause();
 	this->createPausePopup();
 }
 
@@ -279,15 +285,15 @@ void CGameScene::BackToMenuScene()
     }, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");*/
 }
 
-void CGameScene::gamePause()
-{
-	//오디오 소리 작게
-	CAudioManager::Instance()->setBGMVolume(0.1f);
-	CAudioManager::Instance()->setEffectSoundVolume(0.1f);
-	CObjectManager::Instance()->setIsGamePause(true);
-	CObjectManager::Instance()->setIsAbleRotation(false);
-	this->offPauseButton();
-}
+//void CGameScene::gamePause()
+//{
+//	//오디오 소리 작게
+//	CAudioManager::Instance()->setBGMVolume(0.1f);
+//	CAudioManager::Instance()->setEffectSoundVolume(0.1f);
+//	CObjectManager::Instance()->setIsGamePause(true);
+//	CObjectManager::Instance()->setIsAbleRotation(false);
+//	this->offPauseButton();
+//}
 
 void CGameScene::clearData()
 {
@@ -306,33 +312,12 @@ void CGameScene::createPausePopup()
 	CPausePopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(m_VisibleSize / 2)
-		->show(this, 102);
+		->show(this);
 }
 
 void CGameScene::createVideoPopup()
 {
 	CVideoPopup::create()
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(m_VisibleSize / 2)
-		->show(this, 102);
-}
-
-void CGameScene::createExitPopup()
-{
-	CPopup::create()
-		->setPositiveButton([=](Node* sender){
-		Director::getInstance()->end();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-		exit(0);
-#endif
-	}, "Yes")
-		->setNegativeButton([=](Node* sender){
-		this->GameResume();
-	}, "No")
-		->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-		->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-		->setMessage("Are you sure you want to exit StarStarStar?")
-		->setMessageFont(Color3B::BLACK, 40)
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(m_VisibleSize / 2)
 		->show(this);
@@ -343,7 +328,7 @@ void CGameScene::createResultPopup()
 	CResultPopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(m_VisibleSize / 2)
-		->show(this, 102);
+		->show(this);
 }
 
 void CGameScene::createHelpPopup()
@@ -351,46 +336,79 @@ void CGameScene::createHelpPopup()
 	CHelpPopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(m_VisibleSize / 2)
-		->show(this, 102);
+		->show(this);
 }
 
-void CGameScene::onPauseButton()
+void CGameScene::createExitPopup()
 {
-	//m_PauseBtn->runAction(FadeIn::create(0.5f));
+    CPopup::create()
+    ->setPositiveButton([=](Node* sender){
+        Director::getInstance()->end();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+        exit(0);
+#endif
+    }, "Yes")
+    ->setNegativeButton([=](Node* sender){
+        this->GameResume();
+    }, "No")
+    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setMessage("Are you sure you want to exit StarStarStar?")
+    ->setMessageFont(Color3B::BLACK, 40)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this);
 }
 
-void CGameScene::offPauseButton()
+void CGameScene::turnDownSound()
 {
-	//m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
+    CAudioManager::Instance()->setBGMVolume(0.1f);
+    CAudioManager::Instance()->setEffectSoundVolume(0.1f);
 }
 
-void CGameScene::createTestItemButton()
+void CGameScene::turnUpSound()
 {
-	auto createItemTest = [=](eITEM_TYPE type, Vec2 pos){
-		CMyButton::create()
-			->addEventListener([=](Node* sender){
-			CItemManager::Instance()->StartItemTimer(type);
-		})
-			->setButtonNormalImage(StringUtils::format("playItem_%d.png", type))
-			->setButtonPosition(pos)
-			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-			->show(this, 102);
-	};
-
-	Vec2 itemPosArray[] = {
-		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.5f),
-		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.475f),
-		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.45f),
-		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.425f),
-		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.4f),
-		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.375f)
-	};
-
-	for (int idx = 0; idx < 6; idx++)
-	{
-		createItemTest((eITEM_TYPE)(eITEM_TYPE::eITEM_TYPE_health + idx), itemPosArray[idx]);
-	}
+    CAudioManager::Instance()->setBGMVolume(1.f);
+    CAudioManager::Instance()->setEffectSoundVolume(1.f);
 }
+
+//void CGameScene::onPauseButton()
+//{
+//	//m_PauseBtn->runAction(FadeIn::create(0.5f));
+//}
+//
+//void CGameScene::offPauseButton()
+//{
+//	//m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
+//}
+//
+//void CGameScene::createTestItemButton()
+//{
+//	auto createItemTest = [=](eITEM_TYPE type, Vec2 pos){
+//		CMyButton::create()
+//			->addEventListener([=](Node* sender){
+//			CItemManager::Instance()->StartItemTimer(type);
+//		})
+//			->setButtonNormalImage(StringUtils::format("playItem_%d.png", type))
+//			->setButtonPosition(pos)
+//			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//			->show(this);
+//	};
+//
+//	Vec2 itemPosArray[] = {
+//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.5f),
+//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.475f),
+//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.45f),
+//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.425f),
+//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.4f),
+//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.375f)
+//	};
+//
+//	for (int idx = 0; idx < 6; idx++)
+//	{
+//		createItemTest((eITEM_TYPE)(eITEM_TYPE::eITEM_TYPE_health + idx), itemPosArray[idx]);
+//	}
+//}
 
 void CGameScene::initKeyboardListener()
 {

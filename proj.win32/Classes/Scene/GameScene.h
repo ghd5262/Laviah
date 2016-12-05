@@ -21,13 +21,14 @@ public:
 	void BackToMenuScene();
 	void OpenGamePausePopup();
 	void GameStart();
+    void GamePause();
 	void GameResume();
-	void GameEnd();
-    void GameExit();
+	void ShowResult();
     void GameHelp();
 	void WatchVideo();
-    void CountDown(int count, std::string finMent = "0", const std::function<void(void)> &func = nullptr);
-    void CountDownCancel();
+    void GameExit();
+//    void CountDown(int count, std::string finMent = "0", const std::function<void(void)> &func = nullptr);
+//    void CountDownCancel();
     
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
@@ -40,17 +41,18 @@ private:
 	CGameScene();
 	virtual ~CGameScene();
 
-	void initGameSceneUI();
-	void gamePause();
+//	void initGameSceneUI();
 	void clearData();
 	void createPausePopup();
 	void createVideoPopup();
-	void createExitPopup();
 	void createResultPopup();
 	void createHelpPopup();
-	void onPauseButton();
-	void offPauseButton();
-	void createTestItemButton();
+    void createExitPopup();
+    void turnDownSound();
+    void turnUpSound();
+//	void onPauseButton();
+//	void offPauseButton();
+//	void createTestItemButton();
 	void initKeyboardListener();
 
 private:

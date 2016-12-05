@@ -66,7 +66,6 @@ public:
 	CC_SYNTHESIZE(float, m_fStageTime, StageTime);
 	CC_SYNTHESIZE(float, m_fDelta, Delta);
 	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
-	CC_SYNTHESIZE(bool, m_IsAbleRotation, IsAbleRotation);
 
 private:
 	void CreateShooterByTimer();
