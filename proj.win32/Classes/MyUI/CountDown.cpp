@@ -117,7 +117,7 @@ void CCountDown::Reset()
     
     m_Time = m_Interval;
     this->Resume();
-    this->setIsVisible(true);
+    this->setVisible(true);
 }
 
 void CCountDown::updateContent()
@@ -130,7 +130,7 @@ void CCountDown::updateContent()
         this->retain();
         
         this->Pause();
-        this->setIsVisible(false);
+        this->setVisible(false);
         this->processEventListner();
         if(m_CleanUP) this->removeFromParent();
         
