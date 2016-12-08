@@ -3,6 +3,8 @@
 
 class CMyButton;
 class CCountDown;
+class CScoreUI;
+class CGameScene;
 class CUILayer : public CPopup
 {
 public:
@@ -21,11 +23,19 @@ private:
     CUILayer()
     : m_CountDown(nullptr)
     , m_PauseBtn(nullptr)
+    , m_StarScoreUI(nullptr)
+    , m_CoinScoreUI(nullptr)
+    , m_RunScoreUI(nullptr)
+    , m_GameScene(nullptr)
     , m_Pause(false){};
     virtual ~CUILayer(){};
     
 private:
     CCountDown* m_CountDown;
     CMyButton* m_PauseBtn;
+    CScoreUI* m_StarScoreUI;
+    CScoreUI* m_CoinScoreUI;
+    CScoreUI* m_RunScoreUI;
+    CGameScene* m_GameScene;
     bool m_Pause;
 };

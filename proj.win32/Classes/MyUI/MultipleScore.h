@@ -10,7 +10,8 @@ class CMultipleScore : public cocos2d::Node
 public:
 	static CMultipleScore* Instance();
 	void AddScore(unsigned score);
-	virtual void update(float delta) override;
+    void UpdateScore();
+    virtual void update(float delta) override;
 
 
 protected:
@@ -21,7 +22,7 @@ private:
 	void multipleScoreReset();
 
 	CMultipleScore();
-	virtual ~CMultipleScore(){};
+	virtual ~CMultipleScore();
 
 private:
     static CMultipleScore* m_Instance;

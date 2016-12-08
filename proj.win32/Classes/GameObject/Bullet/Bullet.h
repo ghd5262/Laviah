@@ -100,7 +100,6 @@ struct sBULLET_PARAM{
 class CScoreUI;
 class CPlayer;
 class CPlanet;
-class CMultipleScore;
 class CBullet : public CMover {
 public:
 	virtual void Rotation(float dir, float delta);

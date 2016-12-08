@@ -5,7 +5,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/CharacterDataManager.h"
 #include "../../DataManager/UserDataManager.h"
-#include "../../GameObject/MenuSceneObjectManager.h"
+#include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Planet.h"
 #include "../../GameObject/Player.h"
 #include "ui/UIListView.h"
@@ -182,11 +182,11 @@ void CCharacterSelectPopup::Select(Node* sender)
 
 	auto centerCharacterParam = m_CenterDP->getCharacterParam();
 
-	auto planet = CMenuSceneObjectManager::Instance()->getPlanet();
+	auto planet = CObjectManager::Instance()->getPlanet();
 	if (planet != nullptr)
 		planet->setPlanetTexture(centerCharacterParam._planetTextureName);
 
-	auto player = CMenuSceneObjectManager::Instance()->getPlayer();
+	auto player = CObjectManager::Instance()->getPlayer();
 	if (player != nullptr)
 		player->setPlayerTexture(centerCharacterParam._normalTextureName);
 

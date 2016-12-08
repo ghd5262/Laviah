@@ -7,6 +7,7 @@
 
 using namespace cocos2d;
 using namespace BULLETCREATOR;
+using namespace PLANET_DEFINE;
 
 CBulletCreator::CBulletCreator()
 : m_CurrentPattern(nullptr)
@@ -42,7 +43,7 @@ bool CBulletCreator::init()
 {
     if(!Node::init()) return false;
     
-    this->clear();
+    this->Clear();
     
     auto index = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
     m_CharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(index);
@@ -54,7 +55,7 @@ void CBulletCreator::Update(float delta)
 {
 	m_Time += delta;
 	if (m_Time < m_LineIntervalLimit) return;
-	if (m_CurrentHeight <= 0) this->clear();
+	if (m_CurrentHeight <= 0) this->Clear();
     if (m_CurrentPattern == nullptr) return;
     
 	this->createOneLine(m_CurrentPattern, --m_CurrentHeight, CREATE_DISTANCE, m_RotationAngle, true);
@@ -148,7 +149,7 @@ CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance, 
     data._angle = angle;
     data._isFly = true;
 	if (isDelay && data._speed > BULLET_STANDARD_SPEED)
-        data._delayTime = (BULLET_STANDARD_DELAY - ((CREATE_DISTANCE - PLANET::BOUNDING_RADIUS) / data._speed));
+        data._delayTime = (BULLET_STANDARD_DELAY - ((CREATE_DISTANCE - BOUNDING_RADIUS) / data._speed));
 
     CObjectManager::Instance()->getBulletCreator()->setBulletDataByUserData(data, symbol);
 
@@ -156,7 +157,7 @@ CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance, 
     ->setBulletInfo(data)
     ->build();
     
-    CGameScene::getGridWorld()->addChild(bullet);
+    CGameScene::getGameScene()->addChild(bullet, ZORDER::BULLET);
     
 #if(!USE_MEMORY_POOLING)
     CObjectManager::Instance()->AddBullet(bullet);
@@ -199,7 +200,7 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
     data._spriteName = name;
 }
 
-void CBulletCreator::clear()
+void CBulletCreator::Clear()
 {
     m_CurrentHeight = 0;
 	//m_RotationAngle = 0.f;

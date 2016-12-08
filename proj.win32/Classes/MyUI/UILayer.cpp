@@ -39,6 +39,7 @@ bool CUILayer::init()
     this->scheduleUpdate();
     Size popupSize = this->getContentSize();
     this->setCascadeOpacityEnabled(true);
+    m_GameScene = CGameScene::getGameScene();
     
     auto createScoreUI = [=](string iconImg, Vec2 labelAnchor, Vec2 pos){
         auto scoreUI = CScoreUI::create("fonts/Number.ttf", 38, iconImg);
@@ -46,6 +47,7 @@ bool CUILayer::init()
         scoreUI->setLabelAnchor(labelAnchor);
         scoreUI->setPosition(pos);
         this->addChild(scoreUI);
+        return scoreUI;
     };
     
     array<Vec2, 3> scoreUIPos = {
@@ -54,9 +56,9 @@ bool CUILayer::init()
         Vec2(popupSize.width * 0.96f, popupSize.height * 0.925f)
     };
     
-    createScoreUI("score.png",      Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
-    createScoreUI("coinIcon_2.png", Vec2::ANCHOR_MIDDLE_LEFT,  scoreUIPos[1]);
-    createScoreUI("run.png",        Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
+    m_StarScoreUI = createScoreUI("score.png",      Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
+    m_CoinScoreUI = createScoreUI("coinIcon_2.png", Vec2::ANCHOR_MIDDLE_LEFT,  scoreUIPos[1]);
+    m_RunScoreUI  = createScoreUI("run.png",        Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
     
 //    auto bonusTime = CBonusTimeUI::create();
 //    bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -84,31 +86,7 @@ bool CUILayer::init()
     m_PauseBtn->setCascadeOpacityEnabled(true);
     m_PauseBtn->setOpacity(0);
     
-    m_CountDown = CCountDown::create()
-    ->addLastEventListner([=](Node* sender){
-        CGameScene::getGameScene()->GameResume();
-    })
-    ->setFont(COLOR::WHITEGRAY_ALPHA, 50)
-    ->setMaxNumber(3)
-    ->setMinNumber(0)
-    ->setLastContent("GO!")
-    ->setInterval(0.8f)
-    ->setLabelPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.65f))
-    ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(this);
-    
-    auto multipleScoreUI = CMultipleScore::create();
-    multipleScoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    multipleScoreUI->setPosition(popupSize / 2);
-    this->addChild(multipleScoreUI);
-    
-    this->setOpenAnimation([=](Node* sender){
-        m_PauseBtn->runAction(FadeIn::create(0.5f));
-    });
-    
-    this->setCloseAnimation([=](Node* sender){
-        m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
-    });
+    CGameScene::getGameScene()->GameResume();
     
     return true;
 }
@@ -119,6 +97,10 @@ void CUILayer::update(float delta)
         this->Pause();
     else if(!CObjectManager::Instance()->getIsGamePause() && m_Pause)
         this->Resume();
+    
+    m_StarScoreUI->setValue(m_GameScene->getGlobalValue(GLOBAL::STARSCORE));
+    m_CoinScoreUI->setValue(m_GameScene->getGlobalValue(GLOBAL::COINSCORE));
+    m_RunScoreUI->setValue(m_GameScene->getGlobalValue(GLOBAL::RUNSCORE));
 }
 
 void CUILayer::onPauseButton(cocos2d::Node* sender)

@@ -4,7 +4,7 @@
 #include "BulletCreator.h"
 
 using namespace cocos2d;
-using namespace PLANET;
+using namespace PLANET_DEFINE;
 
 CPlanet* CPlanet::create(std::string textureName)
 {
@@ -28,7 +28,7 @@ CPlanet::CPlanet(std::string textureName)
 , m_fRotateSpeed(BULLETCREATOR::ROTATION_SPEED)
 , m_fElapsed(0.0f)
 {
-    this->setBoundingRadius(BOUNDING_RADIUS);
+    this->setBoundingRadius(PLANET_DEFINE::BOUNDING_RADIUS);
 }
 
 bool CPlanet::init()
@@ -48,6 +48,11 @@ bool CPlanet::init()
 	this->setScale(1.5f);
 
     return true;
+}
+
+void CPlanet::Clear()
+{
+    this->setRotation(0);
 }
 
 float CPlanet::noise(int x, int y) {

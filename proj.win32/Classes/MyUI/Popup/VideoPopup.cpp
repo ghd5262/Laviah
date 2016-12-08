@@ -43,7 +43,7 @@ bool CVideoPopup::init()
 		reviveLabel->setOpacity(0);
 	}
 
-    auto createButton = [=](const std::function<void(Node*)> &callback, std::string iconName, std::string content, Vec2 pos)->CMyButton*{
+    auto createButton = [=](const std::function<void(Node*)> &callback, std::string iconName, std::string content, Vec2 pos, Color3B color)->CMyButton*{
 		auto button = CMyButton::create()
 			->addEventListener(callback)
 			->setButtonNormalImage("resultPopup_1.png")
@@ -58,12 +58,12 @@ bool CVideoPopup::init()
         auto icon = Sprite::create(iconName);
         icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         icon->setPosition(Vec2(btnSize.width * 0.5f - btnSize.width * 0.18f, btnSize.height * 0.5f));
-        icon->setColor(COLOR::DARKGRAY);
+        icon->setColor(color);
         button->addChild(icon);
         
         
         auto contentLabel = Label::createWithTTF(content, "fonts/malgunbd.ttf", 50);
-        contentLabel->setColor(COLOR::DARKGRAY);
+        contentLabel->setColor(color);
         contentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
         contentLabel->setPosition(Vec2(btnSize.width * 0.5f - btnSize.width * 0.13f, btnSize.height * 0.5));
         button->addChild(contentLabel);
@@ -89,12 +89,12 @@ bool CVideoPopup::init()
 	/* Video */
 	auto btnVideo = createButton([=](Node* sender){
 		this->Video(sender);
-	}, iconArray[0], contentArray[0], posArray[0]);
+    }, iconArray[0], contentArray[0], posArray[0], COLOR::DARKGRAY);
 
 	/* Use Coin */
 	auto btnCoin = createButton([=](Node* sender){
 		this->UseCoin(sender);
-	}, iconArray[1], contentArray[1], posArray[1]);
+	}, iconArray[1], contentArray[1], posArray[1], COLOR::GOLD);
     
 	if (CUserDataManager::Instance()->getUserData_Number("USER_COIN") < g_coinToRevive)
 		btnCoin->setTouchEnable(false);
@@ -115,7 +115,7 @@ bool CVideoPopup::init()
     ->addLastEventListner([=](Node* sender){
         this->End(sender);
     })
-    ->setFont(COLOR::BRIGHT_WHITEGRAY_ALPHA, 50)
+    ->setFont(Color4B::WHITE, 50)
     ->setMaxNumber(10)
     ->setMinNumber(0)
     ->setInterval(0.8f)

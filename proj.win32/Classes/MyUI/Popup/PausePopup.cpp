@@ -2,6 +2,9 @@
 #include "../MyButton.h"
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
+#include "../../GameObject/ObjectManager.h"
+#include "../../GameObject/Player.h"
+#include "../CountDown.hpp"
 
 CPausePopup::CPausePopup()
 {}
@@ -139,7 +142,7 @@ bool CPausePopup::init()
 }
 
 void CPausePopup::Play(Node* sender){
-	CGameScene::getGameScene()->GameResume();
+    CGameScene::getGameScene()->GameResume();
 	this->popupClose();
 }
 

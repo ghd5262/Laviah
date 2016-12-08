@@ -13,6 +13,8 @@
 #include "../MyUI/MyButton.h"
 #include "../MyUI/MenuLayer.hpp"
 #include "../MyUI/UILayer.hpp"
+#include "../MyUI/MultipleScore.h"
+#include "../MyUI/CountDown.hpp"
 #include "../MyUI/Popup.h"
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
@@ -20,6 +22,8 @@
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
+
+#include <array>
 
 USING_NS_CC;
 using namespace GLOBAL;
@@ -44,14 +48,29 @@ Scene* CGameScene::createScene()
 
 CGameScene::CGameScene()
 : m_UILayer(nullptr)
-, m_KeyBoardSpace(false){}
+, m_KeyBoardSpace(false){
+    std::array<std::string, 7> keyArray = {
+        BONUSTIME,
+        ALIENGET,
+        CHALLENGECLEAR,
+        TOTALSCORE,
+        STARSCORE,
+        COINSCORE,
+        RUNSCORE
+    };
+    
+    for(auto var : keyArray)
+    {
+        m_GlobalVariable.emplace(std::pair<std::string, int>(var, 0));
+    }
+}
 
 CGameScene::~CGameScene()
 {
 	CObjectManager::Instance()->RemoveAllObject();
 	removeAllChildrenWithCleanup(true); // 이부분 검토
 	CPoolingManager::Instance()->DeleteAllMemory();
-	this->clearData();
+    CAudioManager::Instance()->Clear();
 }
 
 void CGameScene::update(float delta)
@@ -69,7 +88,6 @@ bool CGameScene::init()
 	m_VisibleSize = Director::getInstance()->getVisibleSize();
 
 	this->scheduleUpdate();
-	this->clearData();
 	//CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 
 	m_GridWorld = NodeGrid::create();
@@ -77,9 +95,13 @@ bool CGameScene::init()
 
 	auto bulletCreator = CBulletCreator::create();
 	this->addChild(bulletCreator);
+    CObjectManager::Instance()->setBulletCreator(bulletCreator);
+    
 
 	auto background = CBackGround::create();
-	this->addChild(background, -1);
+    this->addChild(background, ZORDER::BACKGROUND);
+    CObjectManager::Instance()->setBackground(background);
+    
 
 	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
 	sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
@@ -89,7 +111,9 @@ bool CGameScene::init()
 	planet->setPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.35f));
 	planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	planet->setOriginPos(planet->getPosition());
-	this->addChild(planet);
+    this->addChild(planet, ZORDER::PLANET);
+    CObjectManager::Instance()->setPlanet(planet);
+    
 
 	auto player = CPlayer::create(currentCharacterInfo);
 	player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * BULLETCREATOR::ROTATION_SPEED));
@@ -98,19 +122,20 @@ bool CGameScene::init()
                              planet->getPosition().y + (planet->getBoundingRadius() + 20)));
 	player->setOriginPos(player->getPosition());
 	player->setParticlePos(player->getPosition());
-	this->addChild(player);
+    this->addChild(player, ZORDER::PLAYER);
+    CObjectManager::Instance()->setPlayer(player);
+    
 
-	CObjectManager::Instance()->setBackground(background);
-	CObjectManager::Instance()->setPlayer(player);
-	CObjectManager::Instance()->setPlanet(planet);
-	CObjectManager::Instance()->setBulletCreator(bulletCreator);
+    auto multipleScoreUI = CMultipleScore::Instance();
+    this->addChild(multipleScoreUI, ZORDER::PLAYER);
+    
 
 #if(USE_MEMORY_POOLING)
 	CPoolingManager::Instance()->CreateBulletList(500, 900);
 #endif
 	this->initKeyboardListener();
     this->OpenGameMenuLayer();
-
+    
 	return true;
 }
 
@@ -126,14 +151,27 @@ void CGameScene::GameExit()
 
 void CGameScene::GameStart()
 {
-    this->cleanGlobalData();
+    this->clearData();
     this->createUILayer();
 	CObjectManager::Instance()->getPlayer()->PlayerAlive();
 }
 
 void CGameScene::GameResume()
 {
-	CObjectManager::Instance()->setIsGamePause(false);
+    CCountDown::create()
+    ->addLastEventListner([=](Node* sender){
+        CObjectManager::Instance()->setIsGamePause(false);
+    })
+    ->setFont(Color4B::WHITE, 50)
+    ->setMaxNumber(3)
+    ->setMinNumber(0)
+    ->setLastContent("GO!")
+    ->setInterval(0.8f)
+    ->setCleanUpAtTheLast(true)
+    ->setLabelPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.65f))
+    ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->show(this);
+    
     this->turnUpSound();
 }
 
@@ -171,27 +209,34 @@ void CGameScene::OpenGamePausePopup()
 
 void CGameScene::OpenGameMenuLayer()
 {
-    if(m_UILayer) m_UILayer->popupClose();
+    this->clearData();
     this->createMenuLayer();
 }
 
 void CGameScene::clearData()
 {
     CObjectManager::Instance()->Clear();
-    CAudioManager::Instance()->Clear();
     CItemManager::Instance()->Clear();
     this->cleanGlobalData();
+    this->removeUILayer();
 }
 
 void CGameScene::cleanGlobalData()
 {
-    BONUSTIME           = 0;
-    ALIENGET            = 0;
-    CHALLENGECLEAR      = 0;
-    TOTALSCORE          = 0;
-    STARSCORE           = 0;
-    COINSCORE           = 0;
-    RUNSCORE            = 0;
+    std::array<std::string, 7> keyArray = {
+        BONUSTIME,
+        ALIENGET,
+        CHALLENGECLEAR,
+        TOTALSCORE,
+        STARSCORE,
+        COINSCORE,
+        RUNSCORE
+    };
+    
+    for(auto var : keyArray)
+    {
+        this->setGlobalValue(var, 0);
+    }
 }
 
 void CGameScene::createPausePopup()
@@ -199,7 +244,7 @@ void CGameScene::createPausePopup()
 	CPausePopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(m_VisibleSize / 2)
-		->show(this);
+        ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createVideoPopup()
@@ -207,7 +252,7 @@ void CGameScene::createVideoPopup()
 	CVideoPopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(m_VisibleSize / 2)
-		->show(this);
+		->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createResultPopup()
@@ -215,7 +260,7 @@ void CGameScene::createResultPopup()
 	CResultPopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(m_VisibleSize / 2)
-		->show(this);
+		->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createHelpPopup()
@@ -223,7 +268,7 @@ void CGameScene::createHelpPopup()
 	CHelpPopup::create()
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(m_VisibleSize / 2)
-		->show(this);
+		->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createExitPopup()
@@ -244,7 +289,7 @@ void CGameScene::createExitPopup()
     ->setMessageFont(Color3B::BLACK, 40)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this);
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createMenuLayer()
@@ -253,7 +298,7 @@ void CGameScene::createMenuLayer()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this);
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createUILayer()
@@ -262,8 +307,17 @@ void CGameScene::createUILayer()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this);
+    ->show(this, ZORDER::POPUP);
 }
+
+void CGameScene::removeUILayer()
+{
+    if(m_UILayer) {
+        m_UILayer->popupClose();
+        m_UILayer = nullptr;
+    }
+}
+
 void CGameScene::turnDownSound()
 {
     CAudioManager::Instance()->setBGMVolume(0.1f);
@@ -290,6 +344,28 @@ void CGameScene::initKeyboardListener()
 	};
 
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
+}
+
+int  CGameScene::getGlobalValue(std::string key)
+{
+    auto result = m_GlobalVariable.find(key);
+    if(result != m_GlobalVariable.end())
+        return result->second;
+    return 0;
+}
+
+void CGameScene::setGlobalValue(std::string key, int value)
+{
+    auto result = m_GlobalVariable.find(key);
+    if(result != m_GlobalVariable.end())
+        result->second = value;
+}
+
+void CGameScene::addGlobalValue(std::string key, int value)
+{
+    auto result = m_GlobalVariable.find(key);
+    if(result != m_GlobalVariable.end())
+        result->second += value;
 }
 
 //void CGameScene::ResetGameScene()

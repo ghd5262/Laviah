@@ -5,6 +5,9 @@
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../Common/StringUtility.h"
+#include "../../Scene/GameScene.h"
+#include "../../GameObject/ObjectManager.h"
+#include "../../GameObject/Player.h"
 #include <array>
 
 CResultPopup* CResultPopup::create()
@@ -36,8 +39,6 @@ bool CResultPopup::init()
 	}
 
 	// 총 점수 = 달린 총거리 + 별 + 코인 + (보너스타임횟수 * 10000) + (외계주민 * 10000) + (도전과제 * 10000)
-	int &totalScore = GLOBAL::TOTALSCORE;
-
 	/* result label*/
 	auto resultLabel = Label::createWithTTF("Result", "fonts/malgunbd.ttf", 80);
 	if (resultLabel != nullptr)
@@ -83,16 +84,20 @@ bool CResultPopup::init()
 		return layerBG;
 	};
 
-	auto createNormalLayer = [=](std::string iconImg, std::string content, int score, Vec2 pos){
-		GLOBAL::TOTALSCORE += score;
+    auto createNormalLayer = [=](std::string iconImg, std::string content, std::string key, Vec2 pos){
+        auto score = CGameScene::getGameScene()->getGlobalValue(key);
+        CGameScene::getGameScene()->addGlobalValue(GLOBAL::TOTALSCORE, score);
+
 		auto layerBG = createResultLayer(iconImg, content, score, pos);
-		auto scoreLabel = createScoreLabel(layerBG, score);
+		createScoreLabel(layerBG, score);
 		return layerBG;
 	};
 
-	auto createMultipleLayer = [=](std::string iconImg, std::string content, int score, Vec2 pos){
-		GLOBAL::TOTALSCORE += (score * 10000);
-		auto layerBG = createResultLayer(iconImg, content, score, pos);
+	auto createMultipleLayer = [=](std::string iconImg, std::string content, std::string key, Vec2 pos){
+        auto score = CGameScene::getGameScene()->getGlobalValue(key);
+        CGameScene::getGameScene()->addGlobalValue(GLOBAL::TOTALSCORE, score * 10000);
+        
+        auto layerBG = createResultLayer(iconImg, content, score, pos);
 		auto scoreLabel = createScoreLabel(layerBG, score);
 		auto multipleScoreLabel = Label::createWithTTF(StringUtils::format("%d x ", 10000), "fonts/malgunbd.ttf", 25);
 		if (multipleScoreLabel != nullptr){
@@ -133,12 +138,15 @@ bool CResultPopup::init()
 	auto starScoreBG = createNormalLayer("starIcon.png", "Star", GLOBAL::STARSCORE, startPosArray[1]);
 	auto coinScoreBG = createNormalLayer("coinIcon.png", "Coin", GLOBAL::COINSCORE, startPosArray[2]);
 	auto bonusTimeBG = createMultipleLayer("bonustimeIcon.png", "BonusTime", GLOBAL::BONUSTIME, startPosArray[3]);
-	auto alienBG = createMultipleLayer("alienIcon.png", "AlienGet", GLOBAL::ALIENGET, startPosArray[4]);
+	auto alienBG     = createMultipleLayer("alienIcon.png", "AlienGet", GLOBAL::ALIENGET, startPosArray[4]);
 	auto challengeBG = createMultipleLayer("challengeIcon.png", "ChallengeClear", GLOBAL::CHALLENGECLEAR, startPosArray[5]);
 	auto bestScore = CUserDataManager::Instance()->getUserData_Number("USER_BEST_TOTAL_SCORE");
 	auto bestScoreBG = createResultLayer("bestScoreIcon.png", "Best Score", bestScore, startPosArray[7]);
     createScoreLabel(bestScoreBG, bestScore);
-    CUserDataManager::Instance()->CoinUpdate(GLOBAL::COINSCORE);
+    
+    auto coinScore = CGameScene::getGameScene()->getGlobalValue(GLOBAL::COINSCORE);
+    auto totalScore = CGameScene::getGameScene()->getGlobalValue(GLOBAL::TOTALSCORE);
+    CUserDataManager::Instance()->CoinUpdate(coinScore);
     
 	/* total score */
 	auto totalScoreBG = Sprite::create("resultPopup_1.png");

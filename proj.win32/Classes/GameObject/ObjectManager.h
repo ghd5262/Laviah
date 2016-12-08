@@ -39,7 +39,7 @@ public:
     
     // 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllShooter() 호출함
 	void RemoveAllObject();
-    void removeBulletFromList(CBullet* bullet);
+    void ReturnToMemoryBlockAll();
 
 	//callback
 	void RotationObject(float dir);

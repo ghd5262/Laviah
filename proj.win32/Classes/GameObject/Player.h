@@ -19,7 +19,8 @@ public:
 	static CPlayer* create(sCHARACTER_PARAM characterParam);
 
 	virtual void Execute(float delta = 0.f) override;
-
+    void Clear();
+    
 	void GotSomeHealth(float health);
 	void LostSomeHealth(float loseHealth);
     void GotBarrierItem();
@@ -81,6 +82,10 @@ protected:
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
 
+    void createAliveParticle();
+    void createDeadParticle();
+    void createRunParticle();
+    
 	CPlayer(sCHARACTER_PARAM characterParam);
 	virtual ~CPlayer(){}
 
@@ -90,10 +95,7 @@ private:
 	cocos2d::Vec2 m_OriginPos;
 	cocos2d::Sprite* m_pTexture;
 	cocos2d::ParticleSystemQuad* m_pParticle;
-	cocos2d::ParticleSystemQuad* m_pParticleDead;
-	cocos2d::ParticleSystemQuad* m_pParticleAlive;
     CMagnetEffect* m_MagnetEffect;
-	bool m_isRoatating;
 	bool m_Invincibility;
 
 	// 영향을 받는 아이템 타입 

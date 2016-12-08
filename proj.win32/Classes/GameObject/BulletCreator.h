@@ -12,7 +12,7 @@ namespace BULLETCREATOR{
 	const static float ROTATION_SPEED			= 90.f;
 	const static float BULLET_STANDARD_SPEED	= 400.f;
 	const static float BULLET_STANDARD_PADDING  = 60.f;
-	const static float BULLET_STANDARD_DELAY	= (CREATE_DISTANCE - PLANET::BOUNDING_RADIUS) / BULLET_STANDARD_SPEED;
+	const static float BULLET_STANDARD_DELAY	= (CREATE_DISTANCE - PLANET_DEFINE::BOUNDING_RADIUS) / BULLET_STANDARD_SPEED;
 };
 
 class CBulletDataManager;
@@ -23,6 +23,8 @@ public:
     virtual bool init() override;
     
     void Update(float delta);
+    
+    void Clear();
     
     void setRotationAngle(float dir, float delta);
     
@@ -50,7 +52,6 @@ private:
 					   bool isDalay);
     
     void setBulletDataByUserData(sBULLET_PARAM& data, char symbol);
-    void clear();
     
     CBulletCreator();
     virtual ~CBulletCreator();

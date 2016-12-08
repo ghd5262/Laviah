@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "GameObject.h"
 
-namespace PLANET {
+namespace PLANET_DEFINE {
     static const float BOUNDING_RADIUS = 270.f;
 }
 
@@ -9,6 +9,8 @@ class CPlanet : public CGameObject {
 public:
 	static CPlanet* create(std::string textureName);
 	
+    void Clear();
+    
 	void CrushShake(float interval, float duration, float speed, float magnitude);
 	virtual void Execute(float delta = 0.f) override;
 

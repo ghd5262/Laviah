@@ -64,5 +64,5 @@ void CPlayCoin::CollisionWithPlayer()
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
-    GLOBAL::COINSCORE += value;
+    CGameScene::getGameScene()->addGlobalValue(GLOBAL::COINSCORE, value);
 }

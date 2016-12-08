@@ -27,6 +27,10 @@ void CObjectManager::Clear()
     m_fRotateAcceleration = 0.f;
 	m_fStageTime = 0.f;
 	m_IsGamePause = true;
+    m_BulletCreator->Clear();
+    m_Planet->Clear();
+    m_Player->Clear();
+    this->ReturnToMemoryBlockAll();
 }
 
 #if(USE_MEMORY_POOLING)
@@ -139,16 +143,11 @@ void CObjectManager::RotateAccelerationUpdate(float value){
     }
 }
 
-void CObjectManager::removeBulletFromList(CBullet* bullet)
+void CObjectManager::ReturnToMemoryBlockAll()
 {
-    int idx = 0;
-    
     for(auto it : m_BulletList)
     {
-        if(it == bullet)
-        {
-            m_BulletList.erase(m_BulletList.begin() + idx);
-        }
-        idx++;
+        if(it->IsAlive())
+            it->ReturnToMemoryBlock();
     }
 }

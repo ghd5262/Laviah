@@ -89,12 +89,12 @@ bool CMenuLayer::init()
     
     this->setOpenAnimation([=](Node* sender){
         for(auto btn : btnArray)
-            btn->runAction(FadeIn::create(0.5f));
+            btn->runAction(FadeIn::create(0.2f));
     });
     
     this->setCloseAnimation([=](Node* sender){
         for(auto btn : btnArray)
-            btn->runAction(FadeTo::create(0.5f, 0));
+            btn->runAction(FadeTo::create(0.2f, 0));
     });
     
     return true;
