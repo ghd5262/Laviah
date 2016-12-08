@@ -45,6 +45,12 @@
 		521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6219F0C34300D177D7 /* Default-667h@2x.png */; };
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
+		930C445A1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930C44581DF501BA0011CFA3 /* MenuLayer.cpp */; };
+		930C445B1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930C44581DF501BA0011CFA3 /* MenuLayer.cpp */; };
+		930C445E1DF501D10011CFA3 /* UILayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930C445C1DF501D10011CFA3 /* UILayer.cpp */; };
+		930C445F1DF501D10011CFA3 /* UILayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930C445C1DF501D10011CFA3 /* UILayer.cpp */; };
+		930C44631DF54BD90011CFA3 /* CountDown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930C44611DF54BD90011CFA3 /* CountDown.cpp */; };
+		930C44641DF54BD90011CFA3 /* CountDown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930C44611DF54BD90011CFA3 /* CountDown.cpp */; };
 		9312B4781D58A0A800FE954C /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9312B4771D58A0A800FE954C /* CoreText.framework */; };
 		9312B47C1D58A12600FE954C /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93865F3E1D588C39007ECE5A /* libiconv.tbd */; };
 		931D9DB11DB0FEBC008BA5AC /* DownloadManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */; };
@@ -54,7 +60,6 @@
 		933F79DD1DE3E4E1005F1DAF /* PatternTestPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F79DB1DE3E4E1005F1DAF /* PatternTestPopup.cpp */; };
 		9348C5AF1D868481000E8D1B /* update in Resources */ = {isa = PBXBuildFile; fileRef = 9348C5AE1D868481000E8D1B /* update */; };
 		9348E4C61D9D62B1007DF5D9 /* GradientDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9348E4C41D9D62B1007DF5D9 /* GradientDataManager.cpp */; };
-		937311591D5849C800D5EB5C /* AlienStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373109E1D5849C700D5EB5C /* AlienStates.cpp */; };
 		9373115A1D5849C800D5EB5C /* BulletStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A01D5849C700D5EB5C /* BulletStates.cpp */; };
 		9373115B1D5849C800D5EB5C /* PlayerStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A21D5849C700D5EB5C /* PlayerStates.cpp */; };
 		9373115C1D5849C800D5EB5C /* SpaceShipStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A41D5849C700D5EB5C /* SpaceShipStates.cpp */; };
@@ -65,10 +70,8 @@
 		937311611D5849C800D5EB5C /* BulletDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310B31D5849C700D5EB5C /* BulletDataManager.cpp */; };
 		937311621D5849C800D5EB5C /* BulletPatternDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310B51D5849C700D5EB5C /* BulletPatternDataManager.cpp */; };
 		937311631D5849C800D5EB5C /* CharacterDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310B71D5849C700D5EB5C /* CharacterDataManager.cpp */; };
-		937311641D5849C800D5EB5C /* StageDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310B91D5849C700D5EB5C /* StageDataManager.cpp */; };
 		937311651D5849C800D5EB5C /* UserDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310BB1D5849C700D5EB5C /* UserDataManager.cpp */; };
 		937311661D5849C800D5EB5C /* WorkshopItemDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310BD1D5849C700D5EB5C /* WorkshopItemDataManager.cpp */; };
-		937311671D5849C800D5EB5C /* Alien.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310C01D5849C700D5EB5C /* Alien.cpp */; };
 		937311681D5849C800D5EB5C /* BackGround.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310C21D5849C700D5EB5C /* BackGround.cpp */; };
 		937311691D5849C800D5EB5C /* BonusLetter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310C51D5849C700D5EB5C /* BonusLetter.cpp */; };
 		9373116A1D5849C800D5EB5C /* Bullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310C71D5849C700D5EB5C /* Bullet.cpp */; };
@@ -90,9 +93,6 @@
 		9373117A1D5849C800D5EB5C /* ObjectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310E81D5849C700D5EB5C /* ObjectManager.cpp */; };
 		9373117B1D5849C800D5EB5C /* Planet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310EA1D5849C700D5EB5C /* Planet.cpp */; };
 		9373117C1D5849C800D5EB5C /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310EC1D5849C700D5EB5C /* Player.cpp */; };
-		9373117D1D5849C800D5EB5C /* PatternShooter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310EF1D5849C700D5EB5C /* PatternShooter.cpp */; };
-		9373117E1D5849C800D5EB5C /* RandomShooter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F11D5849C700D5EB5C /* RandomShooter.cpp */; };
-		9373117F1D5849C800D5EB5C /* ShooterLegacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F31D5849C700D5EB5C /* ShooterLegacy.cpp */; };
 		937311801D5849C800D5EB5C /* SpaceShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F61D5849C700D5EB5C /* SpaceShip.cpp */; };
 		937311811D5849C800D5EB5C /* GoogleCloudManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F91D5849C700D5EB5C /* GoogleCloudManager.cpp */; };
 		937311821D5849C800D5EB5C /* json_internalarray.inl in Resources */ = {isa = PBXBuildFile; fileRef = 937311021D5849C700D5EB5C /* json_internalarray.inl */; };
@@ -111,10 +111,6 @@
 		9373118F1D5849C800D5EB5C /* CharacterSelectPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373111A1D5849C700D5EB5C /* CharacterSelectPopupDP.cpp */; };
 		937311901D5849C800D5EB5C /* EarnCoinPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373111C1D5849C700D5EB5C /* EarnCoinPopup.cpp */; };
 		937311921D5849C800D5EB5C /* GachaPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937311201D5849C700D5EB5C /* GachaPopup.cpp */; };
-		937311931D5849C800D5EB5C /* GoogleCloudDataInfoPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937311221D5849C700D5EB5C /* GoogleCloudDataInfoPopup.cpp */; };
-		937311941D5849C800D5EB5C /* GoogleCloudTestAddKeyDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937311241D5849C700D5EB5C /* GoogleCloudTestAddKeyDP.cpp */; };
-		937311951D5849C800D5EB5C /* GoogleCloudTestPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937311261D5849C700D5EB5C /* GoogleCloudTestPopup.cpp */; };
-		937311961D5849C800D5EB5C /* GoogleCloudTestPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937311281D5849C700D5EB5C /* GoogleCloudTestPopupDP.cpp */; };
 		937311971D5849C800D5EB5C /* HelpPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373112A1D5849C700D5EB5C /* HelpPopup.cpp */; };
 		937311981D5849C800D5EB5C /* PausePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373112C1D5849C700D5EB5C /* PausePopup.cpp */; };
 		937311991D5849C800D5EB5C /* ResultPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373112E1D5849C700D5EB5C /* ResultPopup.cpp */; };
@@ -233,6 +229,12 @@
 		521A8E6219F0C34300D177D7 /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h@2x.png"; sourceTree = "<group>"; };
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		930C44581DF501BA0011CFA3 /* MenuLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuLayer.cpp; sourceTree = "<group>"; };
+		930C44591DF501BA0011CFA3 /* MenuLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MenuLayer.hpp; sourceTree = "<group>"; };
+		930C445C1DF501D10011CFA3 /* UILayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UILayer.cpp; sourceTree = "<group>"; };
+		930C445D1DF501D10011CFA3 /* UILayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UILayer.hpp; sourceTree = "<group>"; };
+		930C44611DF54BD90011CFA3 /* CountDown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CountDown.cpp; sourceTree = "<group>"; };
+		930C44621DF54BD90011CFA3 /* CountDown.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CountDown.hpp; sourceTree = "<group>"; };
 		9312B4771D58A0A800FE954C /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
 		9312B47A1D58A10100FE954C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DownloadManager.cpp; sourceTree = "<group>"; };
@@ -248,8 +250,6 @@
 		9348E4C41D9D62B1007DF5D9 /* GradientDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GradientDataManager.cpp; sourceTree = "<group>"; };
 		9348E4C51D9D62B1007DF5D9 /* GradientDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientDataManager.h; sourceTree = "<group>"; };
 		9373109C1D5849C700D5EB5C /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
-		9373109E1D5849C700D5EB5C /* AlienStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AlienStates.cpp; sourceTree = "<group>"; };
-		9373109F1D5849C700D5EB5C /* AlienStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlienStates.h; sourceTree = "<group>"; };
 		937310A01D5849C700D5EB5C /* BulletStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BulletStates.cpp; sourceTree = "<group>"; };
 		937310A11D5849C700D5EB5C /* BulletStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletStates.h; sourceTree = "<group>"; };
 		937310A21D5849C700D5EB5C /* PlayerStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerStates.cpp; sourceTree = "<group>"; };
@@ -272,14 +272,10 @@
 		937310B61D5849C700D5EB5C /* BulletPatternDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletPatternDataManager.h; sourceTree = "<group>"; };
 		937310B71D5849C700D5EB5C /* CharacterDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterDataManager.cpp; sourceTree = "<group>"; };
 		937310B81D5849C700D5EB5C /* CharacterDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterDataManager.h; sourceTree = "<group>"; };
-		937310B91D5849C700D5EB5C /* StageDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StageDataManager.cpp; sourceTree = "<group>"; };
-		937310BA1D5849C700D5EB5C /* StageDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StageDataManager.h; sourceTree = "<group>"; };
 		937310BB1D5849C700D5EB5C /* UserDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UserDataManager.cpp; sourceTree = "<group>"; };
 		937310BC1D5849C700D5EB5C /* UserDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataManager.h; sourceTree = "<group>"; };
 		937310BD1D5849C700D5EB5C /* WorkshopItemDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkshopItemDataManager.cpp; sourceTree = "<group>"; };
 		937310BE1D5849C700D5EB5C /* WorkshopItemDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkshopItemDataManager.h; sourceTree = "<group>"; };
-		937310C01D5849C700D5EB5C /* Alien.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Alien.cpp; sourceTree = "<group>"; };
-		937310C11D5849C700D5EB5C /* Alien.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Alien.h; sourceTree = "<group>"; };
 		937310C21D5849C700D5EB5C /* BackGround.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackGround.cpp; sourceTree = "<group>"; };
 		937310C31D5849C700D5EB5C /* BackGround.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackGround.h; sourceTree = "<group>"; };
 		937310C51D5849C700D5EB5C /* BonusLetter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BonusLetter.cpp; sourceTree = "<group>"; };
@@ -323,13 +319,6 @@
 		937310EB1D5849C700D5EB5C /* Planet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Planet.h; sourceTree = "<group>"; };
 		937310EC1D5849C700D5EB5C /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		937310ED1D5849C700D5EB5C /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		937310EF1D5849C700D5EB5C /* PatternShooter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PatternShooter.cpp; sourceTree = "<group>"; };
-		937310F01D5849C700D5EB5C /* PatternShooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PatternShooter.h; sourceTree = "<group>"; };
-		937310F11D5849C700D5EB5C /* RandomShooter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandomShooter.cpp; sourceTree = "<group>"; };
-		937310F21D5849C700D5EB5C /* RandomShooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomShooter.h; sourceTree = "<group>"; };
-		937310F31D5849C700D5EB5C /* ShooterLegacy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShooterLegacy.cpp; sourceTree = "<group>"; };
-		937310F41D5849C700D5EB5C /* ShooterLegacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShooterLegacy.h; sourceTree = "<group>"; };
-		937310F51D5849C700D5EB5C /* ShooterHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShooterHeaders.h; sourceTree = "<group>"; };
 		937310F61D5849C700D5EB5C /* SpaceShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceShip.cpp; sourceTree = "<group>"; };
 		937310F71D5849C700D5EB5C /* SpaceShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceShip.h; sourceTree = "<group>"; };
 		937310F91D5849C700D5EB5C /* GoogleCloudManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleCloudManager.cpp; sourceTree = "<group>"; };
@@ -368,14 +357,6 @@
 		9373111D1D5849C700D5EB5C /* EarnCoinPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EarnCoinPopup.h; sourceTree = "<group>"; };
 		937311201D5849C700D5EB5C /* GachaPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GachaPopup.cpp; sourceTree = "<group>"; };
 		937311211D5849C700D5EB5C /* GachaPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GachaPopup.h; sourceTree = "<group>"; };
-		937311221D5849C700D5EB5C /* GoogleCloudDataInfoPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleCloudDataInfoPopup.cpp; sourceTree = "<group>"; };
-		937311231D5849C700D5EB5C /* GoogleCloudDataInfoPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleCloudDataInfoPopup.h; sourceTree = "<group>"; };
-		937311241D5849C700D5EB5C /* GoogleCloudTestAddKeyDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleCloudTestAddKeyDP.cpp; sourceTree = "<group>"; };
-		937311251D5849C700D5EB5C /* GoogleCloudTestAddKeyDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleCloudTestAddKeyDP.h; sourceTree = "<group>"; };
-		937311261D5849C700D5EB5C /* GoogleCloudTestPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleCloudTestPopup.cpp; sourceTree = "<group>"; };
-		937311271D5849C700D5EB5C /* GoogleCloudTestPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleCloudTestPopup.h; sourceTree = "<group>"; };
-		937311281D5849C700D5EB5C /* GoogleCloudTestPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleCloudTestPopupDP.cpp; sourceTree = "<group>"; };
-		937311291D5849C700D5EB5C /* GoogleCloudTestPopupDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleCloudTestPopupDP.h; sourceTree = "<group>"; };
 		9373112A1D5849C700D5EB5C /* HelpPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelpPopup.cpp; sourceTree = "<group>"; };
 		9373112B1D5849C700D5EB5C /* HelpPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpPopup.h; sourceTree = "<group>"; };
 		9373112C1D5849C700D5EB5C /* PausePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PausePopup.cpp; sourceTree = "<group>"; };
@@ -660,8 +641,6 @@
 		9373109D1D5849C700D5EB5C /* States */ = {
 			isa = PBXGroup;
 			children = (
-				9373109E1D5849C700D5EB5C /* AlienStates.cpp */,
-				9373109F1D5849C700D5EB5C /* AlienStates.h */,
 				937310A01D5849C700D5EB5C /* BulletStates.cpp */,
 				937310A11D5849C700D5EB5C /* BulletStates.h */,
 				937310A21D5849C700D5EB5C /* PlayerStates.cpp */,
@@ -699,8 +678,6 @@
 				937310B61D5849C700D5EB5C /* BulletPatternDataManager.h */,
 				937310B71D5849C700D5EB5C /* CharacterDataManager.cpp */,
 				937310B81D5849C700D5EB5C /* CharacterDataManager.h */,
-				937310B91D5849C700D5EB5C /* StageDataManager.cpp */,
-				937310BA1D5849C700D5EB5C /* StageDataManager.h */,
 				937310BB1D5849C700D5EB5C /* UserDataManager.cpp */,
 				937310BC1D5849C700D5EB5C /* UserDataManager.h */,
 				937310BD1D5849C700D5EB5C /* WorkshopItemDataManager.cpp */,
@@ -716,8 +693,6 @@
 			children = (
 				933F79D71DDECEE6005F1DAF /* BulletCreator.cpp */,
 				933F79D81DDECEE6005F1DAF /* BulletCreator.h */,
-				937310C01D5849C700D5EB5C /* Alien.cpp */,
-				937310C11D5849C700D5EB5C /* Alien.h */,
 				937310C21D5849C700D5EB5C /* BackGround.cpp */,
 				937310C31D5849C700D5EB5C /* BackGround.h */,
 				937310C41D5849C700D5EB5C /* Bullet */,
@@ -739,7 +714,6 @@
 				937310EB1D5849C700D5EB5C /* Planet.h */,
 				937310EC1D5849C700D5EB5C /* Player.cpp */,
 				937310ED1D5849C700D5EB5C /* Player.h */,
-				937310EE1D5849C700D5EB5C /* Shooter */,
 				937310F61D5849C700D5EB5C /* SpaceShip.cpp */,
 				937310F71D5849C700D5EB5C /* SpaceShip.h */,
 			);
@@ -774,20 +748,6 @@
 				937310DB1D5849C700D5EB5C /* TargetMark.h */,
 			);
 			path = Bullet;
-			sourceTree = "<group>";
-		};
-		937310EE1D5849C700D5EB5C /* Shooter */ = {
-			isa = PBXGroup;
-			children = (
-				937310EF1D5849C700D5EB5C /* PatternShooter.cpp */,
-				937310F01D5849C700D5EB5C /* PatternShooter.h */,
-				937310F11D5849C700D5EB5C /* RandomShooter.cpp */,
-				937310F21D5849C700D5EB5C /* RandomShooter.h */,
-				937310F31D5849C700D5EB5C /* ShooterLegacy.cpp */,
-				937310F41D5849C700D5EB5C /* ShooterLegacy.h */,
-				937310F51D5849C700D5EB5C /* ShooterHeaders.h */,
-			);
-			path = Shooter;
 			sourceTree = "<group>";
 		};
 		937310F81D5849C700D5EB5C /* GoogleCloud */ = {
@@ -848,6 +808,12 @@
 				9373113F1D5849C800D5EB5C /* UIManager.h */,
 				937311401D5849C800D5EB5C /* UserCoinButton.cpp */,
 				937311411D5849C800D5EB5C /* UserCoinButton.h */,
+				930C44581DF501BA0011CFA3 /* MenuLayer.cpp */,
+				930C44591DF501BA0011CFA3 /* MenuLayer.hpp */,
+				930C445C1DF501D10011CFA3 /* UILayer.cpp */,
+				930C445D1DF501D10011CFA3 /* UILayer.hpp */,
+				930C44611DF54BD90011CFA3 /* CountDown.cpp */,
+				930C44621DF54BD90011CFA3 /* CountDown.hpp */,
 			);
 			path = MyUI;
 			sourceTree = "<group>";
@@ -865,14 +831,6 @@
 				9373111D1D5849C700D5EB5C /* EarnCoinPopup.h */,
 				937311201D5849C700D5EB5C /* GachaPopup.cpp */,
 				937311211D5849C700D5EB5C /* GachaPopup.h */,
-				937311221D5849C700D5EB5C /* GoogleCloudDataInfoPopup.cpp */,
-				937311231D5849C700D5EB5C /* GoogleCloudDataInfoPopup.h */,
-				937311241D5849C700D5EB5C /* GoogleCloudTestAddKeyDP.cpp */,
-				937311251D5849C700D5EB5C /* GoogleCloudTestAddKeyDP.h */,
-				937311261D5849C700D5EB5C /* GoogleCloudTestPopup.cpp */,
-				937311271D5849C700D5EB5C /* GoogleCloudTestPopup.h */,
-				937311281D5849C700D5EB5C /* GoogleCloudTestPopupDP.cpp */,
-				937311291D5849C700D5EB5C /* GoogleCloudTestPopupDP.h */,
 				9373112A1D5849C700D5EB5C /* HelpPopup.cpp */,
 				9373112B1D5849C700D5EB5C /* HelpPopup.h */,
 				9373112C1D5849C700D5EB5C /* PausePopup.cpp */,
@@ -1098,20 +1056,17 @@
 				937311A01D5849C800D5EB5C /* TextField.cpp in Sources */,
 				937311871D5849C800D5EB5C /* json_writer.cpp in Sources */,
 				937311721D5849C800D5EB5C /* StickBullet.cpp in Sources */,
-				937311641D5849C800D5EB5C /* StageDataManager.cpp in Sources */,
 				937311A51D5849C800D5EB5C /* GameScene.cpp in Sources */,
 				937311891D5849C800D5EB5C /* BonusTimeUI.cpp in Sources */,
 				937311731D5849C800D5EB5C /* TargetMark.cpp in Sources */,
 				9373116D1D5849C800D5EB5C /* NormalMissile.cpp in Sources */,
 				9373118D1D5849C800D5EB5C /* MyButton.cpp in Sources */,
-				9373117D1D5849C800D5EB5C /* PatternShooter.cpp in Sources */,
 				937311601D5849C800D5EB5C /* HSHUitlity.cpp in Sources */,
 				9348E4C61D9D62B1007DF5D9 /* GradientDataManager.cpp in Sources */,
 				937311A61D5849C800D5EB5C /* MenuScene.cpp in Sources */,
 				9373115D1D5849C800D5EB5C /* StageStates.cpp in Sources */,
 				9373119C1D5849C800D5EB5C /* WorkshopPopupDP.cpp in Sources */,
 				931D9DB11DB0FEBC008BA5AC /* DownloadManager.cpp in Sources */,
-				9373117F1D5849C800D5EB5C /* ShooterLegacy.cpp in Sources */,
 				937311AA1D5849C800D5EB5C /* SDKUtil_IOS.cpp in Sources */,
 				937311A11D5849C800D5EB5C /* UIManager.cpp in Sources */,
 				9373118F1D5849C800D5EB5C /* CharacterSelectPopupDP.cpp in Sources */,
@@ -1126,19 +1081,16 @@
 				937311A81D5849C800D5EB5C /* SDKUtil.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				937311781D5849C800D5EB5C /* MenuSceneObjectManager.cpp in Sources */,
-				937311951D5849C800D5EB5C /* GoogleCloudTestPopup.cpp in Sources */,
 				937311A21D5849C800D5EB5C /* UserCoinButton.cpp in Sources */,
+				930C44631DF54BD90011CFA3 /* CountDown.cpp in Sources */,
 				937311711D5849C800D5EB5C /* ScoreBullet.cpp in Sources */,
 				9373116B1D5849C800D5EB5C /* ItemBubble.cpp in Sources */,
 				937311A91D5849C800D5EB5C /* SDKUtil_AOS.cpp in Sources */,
-				937311591D5849C800D5EB5C /* AlienStates.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				937311651D5849C800D5EB5C /* UserDataManager.cpp in Sources */,
-				937311671D5849C800D5EB5C /* Alien.cpp in Sources */,
 				937311981D5849C800D5EB5C /* PausePopup.cpp in Sources */,
 				9373116E1D5849C800D5EB5C /* PlayCoin.cpp in Sources */,
 				933F79DD1DE3E4E1005F1DAF /* PatternTestPopup.cpp in Sources */,
-				937311941D5849C800D5EB5C /* GoogleCloudTestAddKeyDP.cpp in Sources */,
 				9373118A1D5849C800D5EB5C /* HealthBarUI.cpp in Sources */,
 				937311AB1D5849C800D5EB5C /* PoolingManager.cpp in Sources */,
 				937311741D5849C800D5EB5C /* GameObject.cpp in Sources */,
@@ -1149,7 +1101,6 @@
 				9373116F1D5849C800D5EB5C /* PlayItem.cpp in Sources */,
 				9373119E1D5849C800D5EB5C /* ScoreUI.cpp in Sources */,
 				937311621D5849C800D5EB5C /* BulletPatternDataManager.cpp in Sources */,
-				9373117E1D5849C800D5EB5C /* RandomShooter.cpp in Sources */,
 				937311811D5849C800D5EB5C /* GoogleCloudManager.cpp in Sources */,
 				93E2317E1DDC344600899F4A /* StringUtility.cpp in Sources */,
 				9373115A1D5849C800D5EB5C /* BulletStates.cpp in Sources */,
@@ -1162,6 +1113,7 @@
 				9373115C1D5849C800D5EB5C /* SpaceShipStates.cpp in Sources */,
 				9373116C1D5849C800D5EB5C /* NormalBullet.cpp in Sources */,
 				937311791D5849C800D5EB5C /* Mover.cpp in Sources */,
+				930C445A1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */,
 				937311901D5849C800D5EB5C /* EarnCoinPopup.cpp in Sources */,
 				937311771D5849C800D5EB5C /* MagnetEffect.cpp in Sources */,
 				937311661D5849C800D5EB5C /* WorkshopItemDataManager.cpp in Sources */,
@@ -1170,13 +1122,12 @@
 				9373119A1D5849C800D5EB5C /* VideoPopup.cpp in Sources */,
 				9373116A1D5849C800D5EB5C /* Bullet.cpp in Sources */,
 				937311681D5849C800D5EB5C /* BackGround.cpp in Sources */,
+				930C445E1DF501D10011CFA3 /* UILayer.cpp in Sources */,
 				9373118B1D5849C800D5EB5C /* LevelProgressBar.cpp in Sources */,
 				9373119B1D5849C800D5EB5C /* WorkshopPopup.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				937311611D5849C800D5EB5C /* BulletDataManager.cpp in Sources */,
 				933F79D91DDECEE6005F1DAF /* BulletCreator.cpp in Sources */,
-				937311931D5849C800D5EB5C /* GoogleCloudDataInfoPopup.cpp in Sources */,
-				937311961D5849C800D5EB5C /* GoogleCloudTestPopupDP.cpp in Sources */,
 				9373117A1D5849C800D5EB5C /* ObjectManager.cpp in Sources */,
 				937311691D5849C800D5EB5C /* BonusLetter.cpp in Sources */,
 				9329BAB61D75C50100878CEF /* LoadingScene.cpp in Sources */,
@@ -1188,7 +1139,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */,
+				930C44641DF54BD90011CFA3 /* CountDown.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
+				930C445B1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */,
+				930C445F1DF501D10011CFA3 /* UILayer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
