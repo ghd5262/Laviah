@@ -134,8 +134,8 @@ void CBullet::ReturnToMemoryBlock()
     this->setAlive(false);
     this->removeFromParent();
 #else
+    this->removeAllChildren();
 	this->removeFromParent();
-	this->removeAllChildren();
 	this->setVisible(false);
 	this->setAlive(false);
 	CPoolingManager::Instance()->Bullet_ReturnToFreeMemory(this);
