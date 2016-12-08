@@ -1,7 +1,6 @@
 #include "ResultPopup.h"
 #include "../MyButton.h"
 #include "../ScoreUI.h"
-#include "../UIManager.h"
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
@@ -54,7 +53,8 @@ bool CResultPopup::init()
 		auto scoreLabel = Label::createWithTTF(StringUtility::toCommaString(score), "fonts/malgunbd.ttf", 50);
 		scoreLabel->setColor(COLOR::DARKGRAY);
 		scoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-		scoreLabel->setPosition(Vec2(parent->getContentSize().width * 0.9f, parent->getContentSize().height * 0.5f));
+		scoreLabel->setPosition(Vec2(parent->getContentSize().width * 0.9f,
+                                     parent->getContentSize().height * 0.5f));
 		parent->addChild(scoreLabel);
 
 		return scoreLabel;
@@ -83,14 +83,14 @@ bool CResultPopup::init()
 		return layerBG;
 	};
 
-	auto createResultLayerWithNomalValue = [=](std::string iconImg, std::string content, int score, Vec2 pos){
+	auto createNormalLayer = [=](std::string iconImg, std::string content, int score, Vec2 pos){
 		GLOBAL::TOTALSCORE += score;
 		auto layerBG = createResultLayer(iconImg, content, score, pos);
 		auto scoreLabel = createScoreLabel(layerBG, score);
 		return layerBG;
 	};
 
-	auto createResultLayerWithMultipleValue = [=](std::string iconImg, std::string content, int score, Vec2 pos){
+	auto createMultipleLayer = [=](std::string iconImg, std::string content, int score, Vec2 pos){
 		GLOBAL::TOTALSCORE += (score * 10000);
 		auto layerBG = createResultLayer(iconImg, content, score, pos);
 		auto scoreLabel = createScoreLabel(layerBG, score);
@@ -107,7 +107,7 @@ bool CResultPopup::init()
 		return layerBG;
 	};
 	
-	std::array<Vec2, 8> resultStartPosArray = {
+	std::array<Vec2, 8> startPosArray = {
 		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f),
 		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.4f),
 		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.3f),
@@ -117,26 +117,29 @@ bool CResultPopup::init()
 		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * -0.1f),
 		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * -0.2f)
 	};
-
-	auto moveScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("RunScoreUI"));
-	auto moveDistanceBG = createResultLayerWithNomalValue("runIcon.png", "Run", moveScore->getScoreValue(), resultStartPosArray[0]);
-
-	auto starScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-	auto starScoreBG = createResultLayerWithNomalValue("starIcon.png", "Star", starScore->getScoreValue(), resultStartPosArray[1]);
-	
-	auto coinScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("CoinScoreUI"));
-	auto coinScoreBG = createResultLayerWithNomalValue("coinIcon.png", "Coin", coinScore->getScoreValue(), resultStartPosArray[2]);
-	CUserDataManager::Instance()->CoinUpdate(coinScore->getScoreValue());
-
-	auto bonusTimeBG = createResultLayerWithMultipleValue("bonustimeIcon.png", "BonusTime", GLOBAL::BONUSTIME, resultStartPosArray[3]);
-	auto alienBG = createResultLayerWithMultipleValue("alienIcon.png", "AlienGet", GLOBAL::ALIENGET, resultStartPosArray[4]);
-	auto challengeBG = createResultLayerWithMultipleValue("challengeIcon.png", "ChallengeClear", GLOBAL::CHALLENGECLEAR, resultStartPosArray[5]);
-
+    
+    std::array<Vec2, 8> targetPosArray = {
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.7f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.65f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.6f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.55f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.45f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.4f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.35f)
+    };
+    
+    auto moveDistanceBG = createNormalLayer("runIcon.png", "Run", GLOBAL::RUNSCORE,  startPosArray[0]);
+	auto starScoreBG = createNormalLayer("starIcon.png", "Star", GLOBAL::STARSCORE, startPosArray[1]);
+	auto coinScoreBG = createNormalLayer("coinIcon.png", "Coin", GLOBAL::COINSCORE, startPosArray[2]);
+	auto bonusTimeBG = createMultipleLayer("bonustimeIcon.png", "BonusTime", GLOBAL::BONUSTIME, startPosArray[3]);
+	auto alienBG = createMultipleLayer("alienIcon.png", "AlienGet", GLOBAL::ALIENGET, startPosArray[4]);
+	auto challengeBG = createMultipleLayer("challengeIcon.png", "ChallengeClear", GLOBAL::CHALLENGECLEAR, startPosArray[5]);
 	auto bestScore = CUserDataManager::Instance()->getUserData_Number("USER_BEST_TOTAL_SCORE");
-	auto bestScoreBG = createResultLayer("bestScoreIcon.png", "Best Score", bestScore, resultStartPosArray[7]);
-	auto scoreLabel = createScoreLabel(bestScoreBG, bestScore);
-
-
+	auto bestScoreBG = createResultLayer("bestScoreIcon.png", "Best Score", bestScore, startPosArray[7]);
+    createScoreLabel(bestScoreBG, bestScore);
+    CUserDataManager::Instance()->CoinUpdate(GLOBAL::COINSCORE);
+    
 	/* total score */
 	auto totalScoreBG = Sprite::create("resultPopup_1.png");
 	if (totalScoreBG != nullptr){
@@ -217,25 +220,14 @@ bool CResultPopup::init()
 				FadeIn::create(1.f)));
 		};
 
-		Vec2 posArray[] = {
-			Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.7f),
-			Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.65f),
-			Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.6f),
-			Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.55f),
-			Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f),
-			Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.45f),
-			Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.4f),
-			Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.35f)
-		};
-
-		action(moveDistanceBG, posArray[0]);
-		action(starScoreBG, posArray[1]);
-		action(coinScoreBG, posArray[2]);
-		action(bonusTimeBG, posArray[3]);
-		action(alienBG, posArray[4]);
-		action(challengeBG, posArray[5]);
-		action(totalScoreBG, posArray[6]);
-		action(bestScoreBG, posArray[7]);
+		action(moveDistanceBG,  targetPosArray[0]);
+		action(starScoreBG,     targetPosArray[1]);
+		action(coinScoreBG,     targetPosArray[2]);
+		action(bonusTimeBG,     targetPosArray[3]);
+		action(alienBG,         targetPosArray[4]);
+		action(challengeBG,     targetPosArray[5]);
+		action(totalScoreBG,    targetPosArray[6]);
+		action(bestScoreBG,     targetPosArray[7]);
 
 		resultLabel->runAction(FadeIn::create(0.5f));
 		btnHome->runAction(FadeIn::create(0.5f));
@@ -253,14 +245,14 @@ bool CResultPopup::init()
 				FadeTo::create(0.2f, 0)));
 		};
 
-		action(moveDistanceBG,	resultStartPosArray[0]);
-		action(starScoreBG,		resultStartPosArray[1]);
-		action(coinScoreBG,		resultStartPosArray[2]);
-		action(bonusTimeBG,		resultStartPosArray[3]);
-		action(alienBG,			resultStartPosArray[4]);
-		action(challengeBG,		resultStartPosArray[5]);
-		action(totalScoreBG,	resultStartPosArray[6]);
-		action(bestScoreBG,		resultStartPosArray[7]);
+		action(moveDistanceBG,	startPosArray[0]);
+		action(starScoreBG,		startPosArray[1]);
+		action(coinScoreBG,		startPosArray[2]);
+		action(bonusTimeBG,		startPosArray[3]);
+		action(alienBG,			startPosArray[4]);
+		action(challengeBG,		startPosArray[5]);
+		action(totalScoreBG,	startPosArray[6]);
+		action(bestScoreBG,		startPosArray[7]);
 
 		resultLabel->runAction(FadeTo::create(0.5f, 0));
 		btnHome->runAction(FadeTo::create(0.5f, 0));
@@ -272,12 +264,11 @@ bool CResultPopup::init()
 }
 
 void CResultPopup::Reset(Node* sender){
-	CCLOG("format popup Replay");
-	CGameScene::getGameScene()->ResetGameScene();
+	CGameScene::getGameScene()->GameStart();
+    this->popupClose();
 }
 
 void CResultPopup::GoHome(Node* sender){
-	CCLOG("format popup GoHome");
-	CGameScene::getGameScene()->BackToMenuScene();
+	CGameScene::getGameScene()->OpenGameMenuLayer();
 	this->popupClose();
 }

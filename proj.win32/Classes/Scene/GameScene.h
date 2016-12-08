@@ -7,9 +7,13 @@ namespace GLOBAL{
 	static int ALIENGET;
 	static int CHALLENGECLEAR;
 	static int TOTALSCORE;
+    static int STARSCORE;
+    static int COINSCORE;
+    static int RUNSCORE;
 }
 
 class CMyButton;
+class CPopup;
 class CGameScene : public cocos2d::Layer
 {
 public:
@@ -17,18 +21,17 @@ public:
 	static cocos2d::Scene* createScene();
 	virtual void update(float delta) override;
 
-	void ResetGameScene();
-	void BackToMenuScene();
+//	void ResetGameScene();
+//	void BackToMenuScene();
 	void OpenGamePausePopup();
+    void OpenGameMenuLayer();
 	void GameStart();
     void GamePause();
 	void GameResume();
-	void ShowResult();
+	void GameResult();
     void GameHelp();
 	void WatchVideo();
     void GameExit();
-//    void CountDown(int count, std::string finMent = "0", const std::function<void(void)> &func = nullptr);
-//    void CountDownCancel();
     
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
@@ -41,27 +44,23 @@ private:
 	CGameScene();
 	virtual ~CGameScene();
 
-//	void initGameSceneUI();
 	void clearData();
+    void cleanGlobalData();
 	void createPausePopup();
 	void createVideoPopup();
 	void createResultPopup();
 	void createHelpPopup();
     void createExitPopup();
+    void createMenuLayer();
+    void createUILayer();
     void turnDownSound();
     void turnUpSound();
-//	void onPauseButton();
-//	void offPauseButton();
-//	void createTestItemButton();
 	void initKeyboardListener();
 
 private:
 	static CGameScene* m_GameScene;
 	static cocos2d::NodeGrid* m_GridWorld;
-
-	cocos2d::Label* m_CountDownLabel;
+    CPopup* m_UILayer;
 	cocos2d::Size m_VisibleSize;
-
 	bool m_KeyBoardSpace;
-	int m_Count;
 };

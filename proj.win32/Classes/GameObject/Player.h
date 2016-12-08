@@ -77,7 +77,6 @@ protected:
 	CC_SYNTHESIZE(float, m_fBonusTimeLimitTime, BonusTimeLimitTime);
 	CC_SYNTHESIZE(CItemBarrier*, m_pItemBarrier, ItemBarrier);
 	CC_SYNTHESIZE(sCHARACTER_PARAM, m_CharacterParam, CharacterParam);
-	CC_SYNTHESIZE(bool, m_isPlayerDead, IsDead);
     
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
@@ -93,7 +92,6 @@ private:
 	cocos2d::ParticleSystemQuad* m_pParticle;
 	cocos2d::ParticleSystemQuad* m_pParticleDead;
 	cocos2d::ParticleSystemQuad* m_pParticleAlive;
-    CScoreUI* m_pUIRunScore;
     CMagnetEffect* m_MagnetEffect;
 	bool m_isRoatating;
 	bool m_Invincibility;

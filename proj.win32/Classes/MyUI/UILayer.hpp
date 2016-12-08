@@ -2,11 +2,14 @@
 #include "Popup.h"
 
 class CMyButton;
+class CCountDown;
 class CUILayer : public CPopup
 {
 public:
     static CUILayer* create();
-    void CountDown(int count, std::string finMent = "0", const std::function<void(void)> &func = nullptr);
+    virtual void update(float delta) override;
+    void Resume();
+    void Pause();
     
 protected:
     virtual bool init() override;
@@ -16,11 +19,13 @@ private:
     void initItemTestButton();
     
     CUILayer()
-    : m_PauseBtn(nullptr)
-    , m_CountDownLabel(nullptr){};
+    : m_CountDown(nullptr)
+    , m_PauseBtn(nullptr)
+    , m_Pause(false){};
     virtual ~CUILayer(){};
     
 private:
+    CCountDown* m_CountDown;
     CMyButton* m_PauseBtn;
-    cocos2d::Label* m_CountDownLabel;
+    bool m_Pause;
 };

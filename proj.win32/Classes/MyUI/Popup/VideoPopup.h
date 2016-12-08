@@ -3,6 +3,7 @@
 
 class CMyButton;
 class CUserCoinButton;
+class CCountDown;
 
 class CVideoPopup : public CPopup
 {
@@ -20,4 +21,7 @@ private:
 
 	CVideoPopup(){};
 	virtual ~CVideoPopup(){};
+    
+private:
+    CCountDown* m_CountDown;
 };

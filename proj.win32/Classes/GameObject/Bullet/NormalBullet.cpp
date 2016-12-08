@@ -10,7 +10,6 @@
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/ScoreUI.h"
-#include "../../MyUI/UIManager.h"
 #include "../../MyUI/MultipleScore.h"
 
 using namespace cocos2d;
@@ -43,9 +42,6 @@ bool CNormalBullet::init()
     
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin |
                         eITEM_FLAG_star | eITEM_FLAG_shield);
-    
-    m_MultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
-    m_UIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
     
     return true;
 }

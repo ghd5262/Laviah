@@ -1,7 +1,6 @@
 #pragma once
 #include "../Common/HSHUtility.h"
 
-class CScoreUI;
 class CMyButton;
 class CUserDataManager;
 

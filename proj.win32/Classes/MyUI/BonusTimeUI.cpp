@@ -39,8 +39,12 @@ bool CLetter::init()
     return true;
 }
 
-CBonusTimeUI* CBonusTimeUI::create()
+CBonusTimeUI* CBonusTimeUI::m_Instance = nullptr;
+
+CBonusTimeUI* CBonusTimeUI::Instance()
 {
+    if(m_Instance != nullptr) return m_Instance;
+    
 	CBonusTimeUI *pRet = new(std::nothrow) CBonusTimeUI();
 	if (pRet && pRet->init())
 	{
@@ -58,6 +62,9 @@ CBonusTimeUI* CBonusTimeUI::create()
 bool CBonusTimeUI::init()
 {
     if (!Node::init()) return false;
+    
+    m_Instance = this;
+    this->scheduleUpdate();
     
     for (int letterNum = 0; letterNum < eLETTER_MAX; letterNum++){
         m_LetterList[letterNum]
@@ -121,14 +128,15 @@ Vec2 CBonusTimeUI::NonCollectedLetterWorldPos() const
 	return worldPos;
 }
 
-void CBonusTimeUI::Execute(float delta)
+void CBonusTimeUI::update(float delta)
 {
 	m_Time += delta;
 	for (int letterNum = 0; letterNum < eLETTER_MAX; letterNum++){
 		if (m_LetterList[letterNum]->getIsCollected())  
 		{
 			auto oldPosition = m_LetterList[letterNum]->getPosition();
-			m_LetterList[letterNum]->setPosition(Vec2(oldPosition.x, sinf(m_Time * 15 + letterNum * 1.5f) * 5));
+			m_LetterList[letterNum]->setPosition(Vec2(oldPosition.x,
+                                                      sinf(m_Time * 15 + letterNum * 1.5f) * 5));
 		}
 	}
 }

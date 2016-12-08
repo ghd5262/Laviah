@@ -33,8 +33,6 @@ protected:
 private:
 	CBonusLetter();
 	virtual ~CBonusLetter(){};
-
-	CBonusTimeUI* m_pUIBonusTime;
 	cocos2d::Vec2 m_TargetPos;
 	eLETTER m_LetterNum;
 };

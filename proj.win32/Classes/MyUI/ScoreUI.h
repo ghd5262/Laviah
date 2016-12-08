@@ -1,12 +1,13 @@
 #pragma once
-#include "../GameObject/GameObject.h"
 
-class CScoreUI : public CGameObject
+#include "cocos2d.h"
+
+class CScoreUI : public cocos2d::Node
 {
 public:
 	static CScoreUI* create(std::string fontName, size_t fontSize, std::string valueImgName = "");
 
-	virtual void Execute(float delta = 0.f) override;
+	virtual void update(float delta) override;
 	void setLabelAnchor(cocos2d::Vec2 point);
 	void addValue(int value);
 	void setValue(int value);

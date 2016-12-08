@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../GameObject/GameObject.h"
-#include "../GameObject/Bullet/BulletHeaders.h"
+#include "cocos2d.h"
+#include "../GameObject/Bullet/BonusLetter.h"
 
-class CLetter : public CGameObject
+class CLetter : public cocos2d::Node
 {
 public:
 	static CLetter* create(
@@ -49,17 +49,18 @@ private:
 	bool m_bIsCollected;
 };
 
-class CBonusTimeUI : public CGameObject
+class CBonusTimeUI : public cocos2d::Node
 {
 public:
-	static CBonusTimeUI* create();
+	static CBonusTimeUI* Instance();
 
+    virtual void update(float delta) override;
+    
 	void CollectLetter(eLETTER letter);
 	void LetsBonusTime();
 	void BonusTimeIsFinish();
 	eLETTER NonCollectedLetterNum() const;
 	cocos2d::Vec2 NonCollectedLetterWorldPos() const;	
-	virtual void Execute(float delta = 0.f) override;
 
 protected:
 	virtual bool init() override;
@@ -69,6 +70,7 @@ private:
 	virtual ~CBonusTimeUI(){};
 
 private:
+    static CBonusTimeUI* m_Instance;
 	CLetter* m_LetterList[eLETTER_MAX];
 	float m_Time;
 };

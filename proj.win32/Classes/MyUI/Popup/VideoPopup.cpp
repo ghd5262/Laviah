@@ -1,9 +1,12 @@
 #include "VideoPopup.h"
 #include "../MyButton.h"
 #include "../UserCoinButton.h"
+#include "../CountDown.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../SDKUtil/SDKUtil.h"
+#include "../../GameObject/ObjectManager.h"
+#include "../../GameObject/Player.h"
 
 const int g_coinToRevive = 1500;
 
@@ -27,117 +30,123 @@ bool CVideoPopup::init()
 {
 	if (!CPopup::init()) return false;
 
-	CGameScene::getGameScene()->CountDown(10, "0", [=](){
-		CGameScene::getGameScene()->GameEnd();
-		this->popupClose();
-	});
-
+    auto popupSize = this->getContentSize();
+    
 	/* revive label*/
 	auto reviveLabel = Label::createWithTTF("Revive", "fonts/malgunbd.ttf", 80);
 	if (reviveLabel != nullptr)
 	{
 		reviveLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		reviveLabel->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.8f));
+		reviveLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f));
 		reviveLabel->setColor(COLOR::BRIGHTGRAY);
 		this->addChild(reviveLabel);
 		reviveLabel->setOpacity(0);
 	}
 
-	auto createButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos)->CMyButton*{
+    auto createButton = [=](const std::function<void(Node*)> &callback, std::string iconName, std::string content, Vec2 pos)->CMyButton*{
 		auto button = CMyButton::create()
 			->addEventListener(callback)
-			->setButtonNormalImage(name)
+			->setButtonNormalImage("resultPopup_1.png")
 			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 			->setButtonPosition(pos)
 			->show(this);
 
 		button->setOpacity(0);
 		button->setCascadeOpacityEnabled(true);
-		return button;
+        auto btnSize = button->getContentSize();
+        
+        auto icon = Sprite::create(iconName);
+        icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        icon->setPosition(Vec2(btnSize.width * 0.5f - btnSize.width * 0.18f, btnSize.height * 0.5f));
+        icon->setColor(COLOR::DARKGRAY);
+        button->addChild(icon);
+        
+        
+        auto contentLabel = Label::createWithTTF(content, "fonts/malgunbd.ttf", 50);
+        contentLabel->setColor(COLOR::DARKGRAY);
+        contentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+        contentLabel->setPosition(Vec2(btnSize.width * 0.5f - btnSize.width * 0.13f, btnSize.height * 0.5));
+        button->addChild(contentLabel);
+        
+        return button;
 	};
 
+    Vec2 posArray[] = {
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.3f),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f)
+    };
+    
+    std::string contentArray[] = {
+        "Watch a Video",
+        StringUtils::format("Use %d Coin", g_coinToRevive)
+    };
+    
+    std::string iconArray[] = {
+        "videoIcon.png",
+        "coin_5.png"
+    };
+    
 	/* Video */
 	auto btnVideo = createButton([=](Node* sender){
 		this->Video(sender);
-	}, "resultPopup_1.png", Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.3f));
-
-
-	auto watchVideoIcon = Sprite::create("videoIcon.png");
-	if (watchVideoIcon != nullptr)
-	{
-		watchVideoIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		watchVideoIcon->setPosition(Vec2(btnVideo->getContentSize().width * 0.5 - btnVideo->getContentSize().width * 0.18f, btnVideo->getContentSize().height * 0.5));
-		btnVideo->addChild(watchVideoIcon);
-		watchVideoIcon->setColor(COLOR::DARKGRAY);
-	}
-
-	auto watchVideoLabel = Label::createWithTTF("Watch a Video", "fonts/malgunbd.ttf", 50);
-	if (watchVideoLabel != nullptr){
-		watchVideoLabel->setColor(COLOR::DARKGRAY);
-		watchVideoLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-		watchVideoLabel->setPosition(Vec2(btnVideo->getContentSize().width * 0.5f - btnVideo->getContentSize().width * 0.13f, btnVideo->getContentSize().height * 0.5));
-		btnVideo->addChild(watchVideoLabel);
-	}
+	}, iconArray[0], contentArray[0], posArray[0]);
 
 	/* Use Coin */
-	auto btnUseCoin = createButton([=](Node* sender){
+	auto btnCoin = createButton([=](Node* sender){
 		this->UseCoin(sender);
-	}, "resultPopup_1.png", Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.2f));
-
-
-	auto useCoinIcon = Sprite::create("coin_5.png");
-	if (useCoinIcon != nullptr)
-	{
-		useCoinIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		useCoinIcon->setPosition(Vec2(btnUseCoin->getContentSize().width * 0.5f - btnUseCoin->getContentSize().width * 0.18f, btnUseCoin->getContentSize().height * 0.5f));
-		btnUseCoin->addChild(useCoinIcon);
-		useCoinIcon->setColor(COLOR::GOLD);
-	}
-
-	auto useCoinLabel = Label::createWithTTF(StringUtils::format("Use %d Coin", g_coinToRevive).c_str(), "fonts/malgunbd.ttf", 50);
-	if (useCoinLabel != nullptr){
-		useCoinLabel->setColor(COLOR::GOLD);
-		useCoinLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-		useCoinLabel->setPosition(Vec2(btnUseCoin->getContentSize().width * 0.5f - btnUseCoin->getContentSize().width * 0.13f, btnUseCoin->getContentSize().height * 0.5f));
-		btnUseCoin->addChild(useCoinLabel);
-	}
-
-	// 돈이 모자르면 버튼 불가처리
+	}, iconArray[1], contentArray[1], posArray[1]);
+    
 	if (CUserDataManager::Instance()->getUserData_Number("USER_COIN") < g_coinToRevive)
-		btnUseCoin->setTouchEnable(false);
+		btnCoin->setTouchEnable(false);
 
-	auto btnEnd = createButton([=](Node* sender){
-		this->End(sender);
-	}, "endIcon.png", Vec2(this->getContentSize().width * 0.92f, this->getContentSize().height * 0.05f));
-
-
+    auto btnEnd = CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        this->End(sender);
+    })
+    ->setButtonNormalImage("endIcon.png")
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.05f))
+    ->show(this);
+    
+    btnEnd->setOpacity(0);
+    btnEnd->setCascadeOpacityEnabled(true);
+    
+    m_CountDown = CCountDown::create()
+    ->addLastEventListner([=](Node* sender){
+        this->End(sender);
+    })
+    ->setFont(COLOR::BRIGHT_WHITEGRAY_ALPHA, 50)
+    ->setMaxNumber(10)
+    ->setMinNumber(0)
+    ->setInterval(0.8f)
+    ->setLabelPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.65f))
+    ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->show(this);
+    
 	auto btnUserCoin = CUserCoinButton::create();
 	if (btnUserCoin != nullptr)
 	{
-		btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f,
-			this->getContentSize().height * 0.05f));
+		btnUserCoin->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.05f));
 		btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		this->addChild(btnUserCoin);
 		btnUserCoin->setCascadeOpacityEnabled(true);
 		btnUserCoin->setOpacity(0);
-	}
-
+        this->addChild(btnUserCoin);
+    }
 
 	this->setOpenAnimation([=](Node* sender){
 		auto action = [=](Node* sender, float height){
 			sender->runAction(
 				Spawn::createWithTwoActions(
 				EaseExponentialOut::create(
-				MoveTo::create(1.3f, Vec2(this->getContentSize().width * 0.5f,
-				this->getContentSize().height * height))),
+				MoveTo::create(1.3f, Vec2(popupSize.width * 0.5f, popupSize.height * height))),
 				FadeIn::create(1.f)));
 		};
 
 		action(btnVideo, 0.6f);
-		action(btnUseCoin, 0.55f);
-
-		reviveLabel->runAction(FadeIn::create(0.5f));
-		btnEnd->runAction(FadeIn::create(0.5f));
+		action(btnCoin, 0.55f);
+        
+        btnEnd->runAction(FadeIn::create(0.5f));
+        reviveLabel->runAction(FadeIn::create(0.5f));
 		btnUserCoin->runAction(FadeIn::create(0.5f));
 	});
 
@@ -147,16 +156,15 @@ bool CVideoPopup::init()
 			sender->runAction(
 				Spawn::createWithTwoActions(
 				EaseSineIn::create(
-				MoveTo::create(0.35f, Vec2(this->getContentSize().width * 0.5f,
-				this->getContentSize().height * height))),
+				MoveTo::create(0.35f, Vec2(popupSize.width * 0.5f, popupSize.height * height))),
 				FadeTo::create(0.2f, 0)));
 		};
 
 		action(btnVideo, 0.3f);
-		action(btnUseCoin, 0.2f);
-
-		reviveLabel->runAction(FadeTo::create(0.5f, 0));
-		btnEnd->runAction(FadeTo::create(0.5f, 0));
+		action(btnCoin, 0.2f);
+        
+        btnEnd->runAction(FadeTo::create(0.5f, 0));
+        reviveLabel->runAction(FadeTo::create(0.5f, 0));
 		btnUserCoin->runAction(FadeTo::create(0.5f, 0));
 	});
 
@@ -164,19 +172,16 @@ bool CVideoPopup::init()
 }
 
 void CVideoPopup::End(Node* sender){
-	CCLOG("format popup End");
-    CGameScene::getGameScene()->CountDownCancel();
-	CGameScene::getGameScene()->GameEnd();
+    m_CountDown->Pause();
+    CGameScene::getGameScene()->GameResult();
 	this->popupClose();
 }
 
 void CVideoPopup::Video(Node* sender){
-	CCLOG("format popup Video");
 	CSDKUtil::Instance()->ShowRewardUnityAds([=](){this->Resume(); });
 }
 
 void CVideoPopup::UseCoin(Node* sender){
-	CCLOG("format popup UseCoin");
 	if (CUserDataManager::Instance()->CoinUpdate(-g_coinToRevive)){
 		this->Resume();
 	}
@@ -184,7 +189,8 @@ void CVideoPopup::UseCoin(Node* sender){
 
 void CVideoPopup::Resume()
 {
-	CGameScene::getGameScene()->CountDownCancel();
-	CGameScene::getGameScene()->GameStart();
+    m_CountDown->Pause();
+    CObjectManager::Instance()->getPlayer()->PlayerAlive();
+    CGameScene::getGameScene()->GameResume();
 	this->popupClose();
 }

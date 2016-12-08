@@ -8,7 +8,7 @@
 
 namespace BULLETCREATOR{
 	const static float PATTERN_PADDING_LIMIT	= 2.f; 
-	const static float CREATE_DISTANCE			= 1500.f;
+	const static float CREATE_DISTANCE			= 2700.f;
 	const static float ROTATION_SPEED			= 90.f;
 	const static float BULLET_STANDARD_SPEED	= 400.f;
 	const static float BULLET_STANDARD_PADDING  = 60.f;
@@ -31,9 +31,6 @@ public:
 	void setPattern(const sBULLET_PATTERN* data);
 
 	bool getIsRunning() const { return m_Running; }
-
-	void Pause() { m_Pause = false; this->pause(); };
-	void Resume() { m_Pause = true; this->resume(); };
     
     void CreateImmediately(std::string patternName,
                                   float angle,
@@ -67,6 +64,5 @@ private:
 	float m_LineIntervalLimit;
     int m_CurrentHeight;
     bool m_Running;
-	bool m_Pause;
 	bool m_IsFlip;
 };

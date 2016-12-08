@@ -3,105 +3,59 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
 #include "../../DataManager/BulletPatternDataManager.h"
-#include "../../MyUI/UIManager.h"
 #include "../../MyUI/BonusTimeUI.h"
 #include "../../Scene/GameScene.h"
 //------------------------------------------------------------------------
 
 CNormalStageState* CNormalStageState::Instance(){
 	static CNormalStageState instance;
-
 	return &instance;
 }
 
-void CNormalStageState::Enter(CObjectManager* objectMng){
-}
+void CNormalStageState::Enter(CObjectManager* objectMng){}
 
-void CNormalStageState::Execute(CObjectManager* objectMng, float delta){
+void CNormalStageState::Execute(CObjectManager* objectMng, float delta){}
 
-	objectMng->ExecuteAllObject(delta);
-
-	// 보너스타임을 다모았다면 보너스타임 상태로 변경
-	if (eITEM_FLAG_bonustime & CItemManager::Instance()->getCurrentItem())
-	{
-		objectMng->getFSM()->ChangeState(CBonusTimeStageState::Instance());
-	}
-}
-
-void CNormalStageState::Exit(CObjectManager* objectMng){
-
-}
+void CNormalStageState::Exit(CObjectManager* objectMng){}
 
 
 //------------------------------------------------------------------------
 
 CBonusTimeStageState* CBonusTimeStageState::Instance(){
 	static CBonusTimeStageState instance;
-
 	return &instance;
 }
 
-void CBonusTimeStageState::Enter(CObjectManager* objectMng){
-}
+void CBonusTimeStageState::Enter(CObjectManager* objectMng){}
 
-void CBonusTimeStageState::Execute(CObjectManager* objectMng, float delta){
-    
-    objectMng->ExecuteAllObject(delta);
-    
-    CItemManager::Instance()->StartItemTimer(eITEM_TYPE_star);
-    
-	if (!(eITEM_FLAG_bonustime & CItemManager::Instance()->getCurrentItem()))
-	{
-		objectMng->getFSM()->ChangeState(CNormalStageState::Instance());
-	}
-}
+void CBonusTimeStageState::Execute(CObjectManager* objectMng, float delta){}
 
-void CBonusTimeStageState::Exit(CObjectManager* objectMng){
-
-	// BonusTimeUI 포인터 획득
-	CBonusTimeUI* bonusTimeUI
-		= static_cast<CBonusTimeUI*>(CUIManager::Instance()->FindUIWithName("BonusTime"));
-	bonusTimeUI->BonusTimeIsFinish();
-}
+void CBonusTimeStageState::Exit(CObjectManager* objectMng){}
 
 
 //------------------------------------------------------------------------
 
 CCrazyStageState* CCrazyStageState::Instance(){
 	static CCrazyStageState instance;
-
 	return &instance;
 }
 
-void CCrazyStageState::Enter(CObjectManager* objectMng){
+void CCrazyStageState::Enter(CObjectManager* objectMng){}
 
-}
+void CCrazyStageState::Execute(CObjectManager* objectMng, float delta){}
 
-void CCrazyStageState::Execute(CObjectManager* objectMng, float delta){
-
-}
-
-void CCrazyStageState::Exit(CObjectManager* objectMng){
-
-}
+void CCrazyStageState::Exit(CObjectManager* objectMng){}
 
 
 //------------------------------------------------------------------------
 
 CGameCountDownState* CGameCountDownState::Instance(){
 	static CGameCountDownState instance;
-
 	return &instance;
 }
 
-void CGameCountDownState::Enter(CObjectManager* objectMng){
+void CGameCountDownState::Enter(CObjectManager* objectMng){}
 
-}
+void CGameCountDownState::Execute(CObjectManager* objectMng, float delta){}
 
-void CGameCountDownState::Execute(CObjectManager* objectMng, float delta){
-
-}
-
-void CGameCountDownState::Exit(CObjectManager* objectMng){
-
-}
+void CGameCountDownState::Exit(CObjectManager* objectMng){}

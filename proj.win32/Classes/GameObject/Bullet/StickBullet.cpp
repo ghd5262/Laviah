@@ -8,7 +8,6 @@
 #include "../ItemManager.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/ScoreUI.h"
-#include "../../MyUI/UIManager.h"
 #include "../../MyUI/MultipleScore.h"
 #include "../BulletCreator.h"
 
@@ -47,9 +46,6 @@ bool CStickBullet::init()
     if (!CBullet::init()) return false;
 
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
-
-    m_UIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-    m_MultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
     
     float bulletSpeedAccel = this->getSpeed() * 0.15f;
     

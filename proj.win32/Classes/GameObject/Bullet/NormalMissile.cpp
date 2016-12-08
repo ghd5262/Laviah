@@ -9,7 +9,6 @@
 #include "../ItemManager.h"
 #include "../BulletCreator.h"
 #include "../../MyUI/ScoreUI.h"
-#include "../../MyUI/UIManager.h"
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/MultipleScore.h"
@@ -55,9 +54,6 @@ CBullet* CNormalMissile::build()
 bool CNormalMissile::init()
 {
     if (!CBullet::init()) return false;
-    
-    m_MultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
-    m_UIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
     
 	this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
 

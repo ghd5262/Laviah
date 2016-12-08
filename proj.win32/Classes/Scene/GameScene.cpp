@@ -10,16 +10,14 @@
 #include "../GameObject/Bullet/Bullet.h"
 #include "../GameObject/BackGround.h"
 #include "../GameObject/BulletCreator.h"
-#include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
+#include "../MyUI/MenuLayer.hpp"
+#include "../MyUI/UILayer.hpp"
 #include "../MyUI/Popup.h"
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
 #include "../MyUI/Popup/VideoPopup.h"
 #include "../MyUI/Popup/HelpPopup.h"
-//#include "../MyUI/Popup/MenuPopup.h"
-//#include "../MyUI/Popup/GameSceneUI.h"
-#include "../AI/States/StageStates.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 
@@ -45,10 +43,8 @@ Scene* CGameScene::createScene()
 }
 
 CGameScene::CGameScene()
-	: m_CountDownLabel(nullptr)
-	, m_KeyBoardSpace(false)
-	, m_Count(0)
-{}
+: m_UILayer(nullptr)
+, m_KeyBoardSpace(false){}
 
 CGameScene::~CGameScene()
 {
@@ -62,7 +58,6 @@ void CGameScene::update(float delta)
 {
 	if (m_KeyBoardSpace) CObjectManager::Instance()->RotationObject(-2.f);
 
-	CUIManager::Instance()->Execute(delta);
 	CObjectManager::Instance()->Execute(delta);
 }
 
@@ -99,7 +94,8 @@ bool CGameScene::init()
 	auto player = CPlayer::create(currentCharacterInfo);
 	player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * BULLETCREATOR::ROTATION_SPEED));
 	player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	player->setPosition(Vec2(m_VisibleSize.width * 0.5f, planet->getPosition().y + (planet->getBoundingRadius() + 20)));
+	player->setPosition(Vec2(m_VisibleSize.width * 0.5f,
+                             planet->getPosition().y + (planet->getBoundingRadius() + 20)));
 	player->setOriginPos(player->getPosition());
 	player->setParticlePos(player->getPosition());
 	this->addChild(player);
@@ -112,50 +108,11 @@ bool CGameScene::init()
 #if(USE_MEMORY_POOLING)
 	CPoolingManager::Instance()->CreateBulletList(500, 900);
 #endif
-
-//	this->initGameSceneUI();
 	this->initKeyboardListener();
-	//this->createTestItemButton();
+    this->OpenGameMenuLayer();
 
 	return true;
 }
-
-//void CGameScene::initGameSceneUI()
-//{
-//	m_CountDownLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 50);
-//	m_CountDownLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-//	m_CountDownLabel->setPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.7f));
-//	m_CountDownLabel->setVisible(false);
-//	this->addChild(m_CountDownLabel);
-
-//	CMenuPopup::create()
-//		->setPopupPosition(m_VisibleSize / 2)
-//		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-//		->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-//		->show(this);
-
-	// player의 HealthCalFunc callback 등록 
-	//auto healthBar = CHealthBarUI::create(
-	//	std::bind(&CPlayer::HealthCalculatorInNormal, CObjectManager::Instance()->getPlayer(), std::placeholders::_1/*= 호출하는 곳의 인자를 사용한다.*/));
-	//healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	//healthBar->setPosition(Vec2(origin.x + m_VisibleSize.width * 0.5f,
-	//	origin.x + m_VisibleSize.height * 0.945f));
-	//this->addChild(healthBar);
-	//if (!CUIManager::Instance()->AddUIWithName(healthBar, "HealthBar"))
-	//	CCASSERT(false, "HealthBar CAN NOT INIT");
-	//	auto gridTest = CMyButton::create("pauseIcon.png",
-	//		END,
-	//		[this]()
-	//	{
-	//		this->runAction(CSplitCircle::create(10, 9));
-	//	}, EFFECT_SIZEDOWN);
-	//
-	//	gridTest->setPosition(Vec2(origin.x + m_VisibleSize.width * 0.5f,
-	//		origin.x + m_VisibleSize.height * 0.05f));
-	//	gridTest->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	//	gridTest->setCascadeOpacityEnabled(true);
-	//	this->addChild(gridTest);
-//}
 
 void CGameScene::GameExit()
 {
@@ -163,43 +120,32 @@ void CGameScene::GameExit()
 	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
 	return;
 #endif
-//	this->gamePause();
+	this->GamePause();
 	this->createExitPopup();
 }
 
 void CGameScene::GameStart()
 {
-	this->GameResume();
-	CObjectManager::Instance()->getFSM()->ChangeState(CGameCountDownState::Instance());
+    this->cleanGlobalData();
+    this->createUILayer();
 	CObjectManager::Instance()->getPlayer()->PlayerAlive();
 }
 
 void CGameScene::GameResume()
 {
-//    this->CountDown(3, "GO!", [](){
-//        CObjectManager::Instance()->getFSM()->ChangeState(CNormalStageState::Instance());
-//    });
-
 	CObjectManager::Instance()->setIsGamePause(false);
     this->turnUpSound();
 }
 
 void CGameScene::GamePause()
 {
-    auto objectMng = CObjectManager::Instance();
-    if(objectMng->getPlayer()->getIsDead() || objectMng->getIsGamePause()) return;
-
     CObjectManager::Instance()->setIsGamePause(true);
-    this->createPausePopup();
     this->turnDownSound();
 }
 
-void CGameScene::ShowResult()
+void CGameScene::GameResult()
 {
-//	this->gamePause();
-    
 	this->createResultPopup();
-//	this->offPauseButton();
 }
 
 void CGameScene::GameHelp()
@@ -207,104 +153,45 @@ void CGameScene::GameHelp()
 	this->createHelpPopup();
 }
 
-//void CGameScene::CountDownCancel()
-//{
-//    this->unschedule("countDown");
-//    m_CountDownLabel->setVisible(false);
-//}
-
-//void CGameScene::CountDown(int count, std::string finMent/* = "0"*/, const std::function<void(void)> &func/* = nullptr*/)
-//{
-//    this->CountDownCancel();
-//	CObjectManager::Instance()->getFSM()->ChangeState(CGameCountDownState::Instance());
-//    m_Count = count;
-//	m_CountDownLabel->setVisible(true);
-//    m_CountDownLabel->setString(StringUtils::format("%d", m_Count));
-//	this->schedule([=](float delta)
-//	{
-//        m_Count -= 1;
-//		if (m_Count > 0)
-//			m_CountDownLabel->setString(StringUtils::format("%d", m_Count));
-//        else if (m_Count == 0){
-//			m_CountDownLabel->setString(finMent.c_str());
-//        }
-//		else{
-//            m_CountDownLabel->setVisible(false);
-//            if(func != nullptr)
-//                func();
-//		}
-//	}, 1.f, count, 0.f, "countDown");
-//}
-
-void CGameScene::ResetGameScene()
-{
-	//Director::getInstance()->getScheduler()->schedule([](float delta){
-	//	
-	//	auto tempScene = CEmptyScene::createScene();
-	//	Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
-
-	//	Director::getInstance()->getScheduler()->schedule([](float delta){
-	//		auto Scene = CGameScene::createScene();
-	//		Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
-	//	}, Director::getInstance(), 1.f, 0, 0.f, false, "createGameScene");
-
-	//}, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
-}
-
 void CGameScene::WatchVideo()
 {
 	this->createVideoPopup();
-//	this->offPauseButton();
-//	this->gamePause();
+	this->GamePause();
 }
 
 void CGameScene::OpenGamePausePopup()
 {
     // 이미 Pause인 상태면 리턴한다.
-    if(CObjectManager::Instance()->getPlayer()->getIsDead()
-    || CObjectManager::Instance()->getIsGamePause())
+    if(CObjectManager::Instance()->getIsGamePause())
         return;
     
-//    this->gamePause();
+    this->GamePause();
 	this->createPausePopup();
 }
 
-void CGameScene::BackToMenuScene()
+void CGameScene::OpenGameMenuLayer()
 {
-	/*CAudioManager::Instance()->AllPause();
-    Director::getInstance()->getScheduler()->schedule([](float delta){
-        
-        auto tempScene = CEmptyScene::createScene();
-        Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
-        
-        Director::getInstance()->getScheduler()->schedule([](float delta){
-            auto Scene = CMenuScene::createScene();
-            Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
-        }, Director::getInstance(), 1.f, 0, 0.f, false, "createMenuScene");
-        
-    }, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");*/
+    if(m_UILayer) m_UILayer->popupClose();
+    this->createMenuLayer();
 }
-
-//void CGameScene::gamePause()
-//{
-//	//오디오 소리 작게
-//	CAudioManager::Instance()->setBGMVolume(0.1f);
-//	CAudioManager::Instance()->setEffectSoundVolume(0.1f);
-//	CObjectManager::Instance()->setIsGamePause(true);
-//	CObjectManager::Instance()->setIsAbleRotation(false);
-//	this->offPauseButton();
-//}
 
 void CGameScene::clearData()
 {
-	BONUSTIME = 0;
-	ALIENGET = 0;
-	CHALLENGECLEAR = 0;
-	TOTALSCORE = 0;
-	CObjectManager::Instance()->Clear();
-	CUIManager::Instance()->Clear();
-	CAudioManager::Instance()->Clear();
-	CItemManager::Instance()->Clear();
+    CObjectManager::Instance()->Clear();
+    CAudioManager::Instance()->Clear();
+    CItemManager::Instance()->Clear();
+    this->cleanGlobalData();
+}
+
+void CGameScene::cleanGlobalData()
+{
+    BONUSTIME           = 0;
+    ALIENGET            = 0;
+    CHALLENGECLEAR      = 0;
+    TOTALSCORE          = 0;
+    STARSCORE           = 0;
+    COINSCORE           = 0;
+    RUNSCORE            = 0;
 }
 
 void CGameScene::createPausePopup()
@@ -360,6 +247,23 @@ void CGameScene::createExitPopup()
     ->show(this);
 }
 
+void CGameScene::createMenuLayer()
+{
+    CMenuLayer::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this);
+}
+
+void CGameScene::createUILayer()
+{
+    m_UILayer = CUILayer::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this);
+}
 void CGameScene::turnDownSound()
 {
     CAudioManager::Instance()->setBGMVolume(0.1f);
@@ -372,62 +276,49 @@ void CGameScene::turnUpSound()
     CAudioManager::Instance()->setEffectSoundVolume(1.f);
 }
 
-//void CGameScene::onPauseButton()
-//{
-//	//m_PauseBtn->runAction(FadeIn::create(0.5f));
-//}
-//
-//void CGameScene::offPauseButton()
-//{
-//	//m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
-//}
-//
-//void CGameScene::createTestItemButton()
-//{
-//	auto createItemTest = [=](eITEM_TYPE type, Vec2 pos){
-//		CMyButton::create()
-//			->addEventListener([=](Node* sender){
-//			CItemManager::Instance()->StartItemTimer(type);
-//		})
-//			->setButtonNormalImage(StringUtils::format("playItem_%d.png", type))
-//			->setButtonPosition(pos)
-//			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-//			->show(this);
-//	};
-//
-//	Vec2 itemPosArray[] = {
-//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.5f),
-//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.475f),
-//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.45f),
-//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.425f),
-//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.4f),
-//		Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.375f)
-//	};
-//
-//	for (int idx = 0; idx < 6; idx++)
-//	{
-//		createItemTest((eITEM_TYPE)(eITEM_TYPE::eITEM_TYPE_health + idx), itemPosArray[idx]);
-//	}
-//}
-
 void CGameScene::initKeyboardListener()
 {
 	EventListenerKeyboard * pListener = EventListenerKeyboard::create();
 	pListener->onKeyPressed = [=](EventKeyboard::KeyCode code, Event* pEvent)
 	{
-		switch (code)
-		{
-			case EventKeyboard::KeyCode::KEY_SPACE: m_KeyBoardSpace = true; break;
-		}
+        if(code == EventKeyboard::KeyCode::KEY_SPACE) m_KeyBoardSpace = true;
 	};
 
 	pListener->onKeyReleased = [=](EventKeyboard::KeyCode code, Event* pEvent)
 	{
-		switch (code)
-		{
-			case EventKeyboard::KeyCode::KEY_SPACE: m_KeyBoardSpace = false; break;
-		}
+        if(code == EventKeyboard::KeyCode::KEY_SPACE) m_KeyBoardSpace = false;
 	};
 
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
 }
+
+//void CGameScene::ResetGameScene()
+//{
+//	Director::getInstance()->getScheduler()->schedule([](float delta){
+//
+//		auto tempScene = CEmptyScene::createScene();
+//		Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
+//
+//		Director::getInstance()->getScheduler()->schedule([](float delta){
+//			auto Scene = CGameScene::createScene();
+//			Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
+//		}, Director::getInstance(), 1.f, 0, 0.f, false, "createGameScene");
+//
+//	}, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
+//}
+
+//void CGameScene::BackToMenuScene()
+//{
+//	CAudioManager::Instance()->AllPause();
+//    Director::getInstance()->getScheduler()->schedule([](float delta){
+//
+//        auto tempScene = CEmptyScene::createScene();
+//        Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
+//
+//        Director::getInstance()->getScheduler()->schedule([](float delta){
+//            auto Scene = CMenuScene::createScene();
+//            Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
+//        }, Director::getInstance(), 1.f, 0, 0.f, false, "createMenuScene");
+//
+//    }, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
+//}

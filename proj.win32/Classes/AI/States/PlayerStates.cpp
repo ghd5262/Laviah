@@ -17,9 +17,6 @@ void CPlayerNormal::Enter(CPlayer* player)
 
 void CPlayerNormal::Execute(CPlayer* player, float delta)
 {
-	if (player->getIsDead() == true)
-		return;
-
 	// TODO: switch문이면 하나밖에 실행 되지 않을 텐데 의도한 것인가?
 	switch (player->getItemEffect() & CItemManager::Instance()->getCurrentItem())
 	{

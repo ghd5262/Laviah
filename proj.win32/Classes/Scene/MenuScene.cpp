@@ -4,7 +4,6 @@
 #include "../GameObject/Planet.h"
 #include "../GameObject/SpaceShip.h"
 #include "../GameObject/Player.h"
-#include "../MyUI/UIManager.h"
 #include "../MyUI/MyButton.h"
 #include "../Task/PoolingManager.h"
 #include "../GameObject/MenuSceneObjectManager.h"

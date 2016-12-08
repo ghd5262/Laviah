@@ -216,11 +216,6 @@ protected:
 
 private:
 	bool on(eITEM_FLAG itemType){ return (m_ItemFlag & itemType) == itemType; }
-
-protected:
-	//중요 - 멤버변수로 포인터를 넣을때는 꼭 초기화 및 nullptr을 이용하자 (크래시 유발)
-	CScoreUI* m_UIScore;
-	CMultipleScore* m_MultipleScore;
     
 private:
     sBULLET_PARAM m_BulletInfo;

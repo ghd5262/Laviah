@@ -14,13 +14,7 @@ CObjectManager::CObjectManager()
 , m_IsGamePause(true)
 , m_fRotateAcceleration(0.f)
 , m_BulletCreator(nullptr)
-{
-    m_FSM = new CStateMachine<CObjectManager>(this);
-
-	if (m_FSM != nullptr){
-		m_FSM->ChangeState(CGameCountDownState::Instance());
-	}
-}
+{}
 
 CObjectManager* CObjectManager::Instance()
 {
@@ -30,7 +24,6 @@ CObjectManager* CObjectManager::Instance()
 
 void CObjectManager::Clear()
 {
-	m_BulletList.clear();
     m_fRotateAcceleration = 0.f;
 	m_fStageTime = 0.f;
 	m_IsGamePause = true;
@@ -50,30 +43,26 @@ void CObjectManager::AddBullet(CBullet* bullet)
 
 /* bullet->Delete() :
  * 게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해 */
-void CObjectManager::RemoveAllBullet()
+void CObjectManager::removeAllBullet()
 {											
 	for (auto bullet : m_BulletList)
 	{
 		if (bullet->HasPointer()) 
 			bullet->Delete();
 	}
-}
-
-void CObjectManager::Auto_ReturnToMemoryBlock()
-{
-
+    m_BulletList.clear();
 }
 
 void CObjectManager::RemoveAllObject()
 {
 #if(USE_MEMORY_POOLING)
-	RemoveAllBullet();
+	removeAllBullet();
 #endif
-	Clear();
 }
 
-void CObjectManager::CreateShooterByTimer()
+void CObjectManager::createBulletByTimer(float delta)
 {
+    m_fStageTime += delta;
 	if (m_fStageTime < BULLETCREATOR::PATTERN_PADDING_LIMIT) return;
 
 	if (!m_BulletCreator->getIsRunning())	{
@@ -84,17 +73,7 @@ void CObjectManager::CreateShooterByTimer()
 		}
 		else
 		{
-			auto testPattern = CBulletPatternDataManager::Instance()->getTestPattern();
-//            auto patternData = const_cast<sBULLET_PATTERN*>(testPattern);
-//            std::string pattern = "                 65211";
-            
-//            std::copy(std::begin(pattern), std::end(pattern), std::begin(patternData->_pattern));
-//            patternData->_width = pattern.size();
-//            patternData->_height = 1;
-//            patternData->_index = 10000;
-//            patternData->_patternName = "testPattern";
-//            patternData->_widthPadding = 5.f;
-            
+            auto testPattern = CBulletPatternDataManager::Instance()->getTestPattern();            
 			if (testPattern != nullptr){
 				m_BulletCreator->setPattern(testPattern);
 			}
@@ -104,34 +83,27 @@ void CObjectManager::CreateShooterByTimer()
 	m_fStageTime = 0.f;
 }
 
-void CObjectManager::ExecuteAllObject(float delta)
+void CObjectManager::Execute(float delta)
 {
     if (m_IsGamePause) return;
-
-	m_fDelta = delta;
-	m_fStageTime += delta;
+    
+    m_fDelta = delta;
     
     this->RotationObject(1);
-    this->CreateShooterByTimer();
+    this->createBulletByTimer(delta);
     m_BulletCreator->Update(delta);
     
     CItemManager::Instance()->Execute(delta);
     
     m_Player->Execute(delta);
     
-
-	for (auto bullet : m_BulletList)
-	{
-		if (bullet->IsAlive()) {
-			bullet->Execute(delta);
-		}
-	}
-
-}
-
-void CObjectManager::Execute(float delta)
-{
-	m_FSM->Execute(delta);
+    
+    for (auto bullet : m_BulletList)
+    {
+        if (bullet->IsAlive()) {
+            bullet->Execute(delta);
+        }
+    }
 }
 
 void CObjectManager::RotationObject(float dir)
@@ -148,16 +120,6 @@ void CObjectManager::RotationObject(float dir)
     m_BulletCreator->setRotationAngle(dir + (dir * m_fRotateAcceleration), m_fDelta);
     m_Planet->Rotation(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
 	m_Player->Rotation(dir, m_fDelta);
-}
-
-void CObjectManager::ShooterPause()
-{
-	m_BulletCreator->Pause();
-}
-
-void CObjectManager::ShooterResume()
-{
-	m_BulletCreator->Resume();
 }
 
 void CObjectManager::RotateAccelerationUpdate(float value){

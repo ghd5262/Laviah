@@ -20,7 +20,7 @@ CScoreUI* CScoreUI::create(std::string fontName, size_t fontSize, std::string va
 
 bool CScoreUI::init()
 {
-    if (!CGameObject::init()) return false;
+    if (!Node::init()) return false;
 	
     m_ValueLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
     if (nullptr != m_ValueLabel)
@@ -87,6 +87,6 @@ void CScoreUI::setValue(int value)
 		m_ValueLabel->getContentSize().height * 0.05f));
 }
 
-void CScoreUI::Execute(float delta)
+void CScoreUI::update(float delta)
 {
 }

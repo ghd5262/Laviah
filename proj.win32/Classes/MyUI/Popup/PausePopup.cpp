@@ -139,24 +139,21 @@ bool CPausePopup::init()
 }
 
 void CPausePopup::Play(Node* sender){
-	CCLOG("format popup Play");
 	CGameScene::getGameScene()->GameResume();
 	this->popupClose();
 }
 
 void CPausePopup::Reset(Node* sender){
-	CCLOG("format popup Replay");
-	CGameScene::getGameScene()->ResetGameScene();
+	CGameScene::getGameScene()->GameStart();
+    this->popupClose();
 }
 
 void CPausePopup::GoHome(Node* sender){
-	CCLOG("format popup GoHome");
-	CGameScene::getGameScene()->BackToMenuScene();
+    CGameScene::getGameScene()->OpenGameMenuLayer();
 	this->popupClose();
 }
 
 void CPausePopup::GameExit(Node* sender){
-	CCLOG("format popup GameExit");
 	CGameScene::getGameScene()->GameExit();
 	this->popupClose();
 }

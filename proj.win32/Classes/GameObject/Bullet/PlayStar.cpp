@@ -4,7 +4,6 @@
 #include "../Player.h"
 #include "../ItemManager.h"
 #include "../../MyUI/ScoreUI.h"
-#include "../../MyUI/UIManager.h"
 #include "../../MyUI/MultipleScore.h"
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
@@ -37,9 +36,7 @@ CPlayStar* CPlayStar::create()
 bool CPlayStar::init()
 {
 	if (!CBullet::init()) return false;
-    
-    m_UIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("StarScoreUI"));
-    m_MultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
+
     this->setItemEffect(eITEM_FLAG_magnet);
     
     return true;
@@ -70,5 +67,5 @@ void CPlayStar::CollisionWithPlayer()
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 
 	auto value = CItemManager::Instance()->getValueOfStar((eSTAR_TYPE)(this->getSymbol() - 'P' + 1));
-	m_MultipleScore->AddScore(value);
+    CMultipleScore::Instance()->AddScore(value);
 }

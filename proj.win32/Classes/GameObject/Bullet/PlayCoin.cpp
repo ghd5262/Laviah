@@ -4,7 +4,6 @@
 #include "../Player.h"
 #include "../ItemManager.h"
 #include "../../MyUI/ScoreUI.h"
-#include "../../MyUI/UIManager.h"
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 
@@ -35,8 +34,6 @@ CPlayCoin* CPlayCoin::create()
 bool CPlayCoin::init()
 {
     if (!CBullet::init()) return false;
-
-    m_UIScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("CoinScoreUI"));
     
     this->setItemEffect(eITEM_FLAG_magnet);
       
@@ -67,5 +64,5 @@ void CPlayCoin::CollisionWithPlayer()
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
-	m_UIScore->addValue(value);
+    GLOBAL::COINSCORE += value;
 }

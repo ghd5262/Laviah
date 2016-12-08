@@ -41,13 +41,6 @@ public:
 	void RemoveAllObject();
     void removeBulletFromList(CBullet* bullet);
 
-	//현재 실행중인 shooter들의 alive를 false로 하여 정지시킨다.
-	void ShooterPause();
-    void ShooterResume();
-
-	//모든 오브젝트를 Execute한다.
-	void ExecuteAllObject(float delta);
-
 	//callback
 	void RotationObject(float dir);
     void RotateAccelerationUpdate(float value);
@@ -62,15 +55,13 @@ public:
 	CC_SYNTHESIZE(CPlayer*, m_Player, Player);
     CC_SYNTHESIZE(CBulletCreator*, m_BulletCreator, BulletCreator);
 	CC_SYNTHESIZE(CBackGround*, m_Background, Background);
-	CC_SYNTHESIZE(CStateMachine<CObjectManager>*, m_FSM, FSM);
 	CC_SYNTHESIZE(float, m_fStageTime, StageTime);
 	CC_SYNTHESIZE(float, m_fDelta, Delta);
 	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
 
 private:
-	void CreateShooterByTimer();
-	void Auto_ReturnToMemoryBlock();	// Alive가 false인 오브젝트를 모두 메모리 블럭으로 되돌린다.
-	void RemoveAllBullet();				// Delete함수 호출! 이유는 구현부에~
+	void createBulletByTimer(float delta);
+	void removeAllBullet();				// Delete함수 호출! 이유는 구현부에~
 	CObjectManager();
 	~CObjectManager(){};
 

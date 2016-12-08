@@ -10,7 +10,6 @@
 #include "../Particle/Particles.h"
 #include "../Scene/GameScene.h"
 #include "../MyUI/ScoreUI.h"
-#include "../MyUI/UIManager.h"
 #include "../DataManager/UserDataManager.h"
 #include "../MyUI/MultipleScore.h"
 
@@ -58,9 +57,7 @@ CPlayer::CPlayer(sCHARACTER_PARAM characterParam)
 , m_pParticleDead(nullptr)
 , m_pParticleAlive(nullptr)
 , m_isRoatating(false)
-, m_pUIRunScore(nullptr)
 , m_pItemBarrier(nullptr)
-, m_isPlayerDead(true)
 , m_MagnetEffect(nullptr)
 , m_Invincibility(false)
 , m_MultipleScore(nullptr)
@@ -132,8 +129,6 @@ bool CPlayer::init()
 
 void CPlayer::Execute(float delta)
 {
-	if (m_isPlayerDead == true)
-		return;
 	m_FSM->Execute(delta);
     m_pItemBarrier->Execute(delta);
     m_MagnetEffect->Execute(delta);
@@ -148,8 +143,6 @@ void CPlayer::Execute(float delta)
 
 void CPlayer::PlayerAlive(){
 
-	m_MultipleScore = static_cast<CMultipleScore*>(CUIManager::Instance()->FindUIWithName("MultipleScoreUI"));
-
 	m_pParticleAlive = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
 	if (m_pParticleAlive != nullptr){
 		m_pParticleAlive->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -163,7 +156,6 @@ void CPlayer::PlayerAlive(){
 	setPlayerTexture(m_CharacterParam._aliveTextureName);
 
 	this->scheduleOnce([=](float delta){
-		m_isPlayerDead = false;
 		m_pParticle->setVisible(true);
 		this->setVisible(true);
 		setPlayerTexture(m_CharacterParam._normalTextureName);
@@ -180,15 +172,14 @@ void CPlayer::PlayerDead(){
 		m_pParticleDead->setPosition(getPosition());
 		CGameScene::getGridWorld()->addChild(m_pParticleDead, 100);
 	}
-    m_isPlayerDead = true;
 	m_pParticle->setVisible(false);
 	this->setVisible(false);
 }
 
 void CPlayer::GotSomeHealth(float health)
 {
-	if (m_isPlayerDead == true)
-		return;
+	if (0.f < m_fLife) return;
+    
 	if (m_fMaxLife > (m_fLife + health))
 	{
 		m_fLife += health;
@@ -200,16 +191,16 @@ void CPlayer::GotSomeHealth(float health)
 
 void CPlayer::LostSomeHealth(float loseHealth)
 {
-	if (m_isPlayerDead == true || m_Invincibility == true)
-		return;
+	if (m_Invincibility) return;
+    
     CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
 	if (0.f < (m_fLife - loseHealth))
 	{
 		m_fLife -= loseHealth;
 	}
 	else{
-		PlayerDead();
-		m_MultipleScore->Update();
+		this->PlayerDead();
+//        CMultipleScore::Instance()->Update();
 		CGameScene::getGameScene()->WatchVideo();
 		m_fLife = 0.f;
 	}
@@ -227,10 +218,7 @@ void CPlayer::Rotation(float dir, float delta)
 	m_pParticle->setGravity(Vec2(-90 * dir, 0));
 	this->setRotation(m_Angle);
 
-	// 플레이어가 생성되는 시점에는 m_pUIRunScore가 없다.
-    if(m_pUIRunScore == nullptr)
-        m_pUIRunScore = static_cast<CScoreUI*>(CUIManager::Instance()->FindUIWithName("RunScoreUI"));
-    m_pUIRunScore->addValue(1);
+    GLOBAL::RUNSCORE += 1;
 }
 
 void CPlayer::GiantMode()

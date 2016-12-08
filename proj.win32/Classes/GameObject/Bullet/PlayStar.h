@@ -1,7 +1,6 @@
 #pragma once
 #include "Bullet.h"
 
-class CScoreUI;
 enum eSTAR_TYPE;
 class CPlayStar : public CBullet
 {

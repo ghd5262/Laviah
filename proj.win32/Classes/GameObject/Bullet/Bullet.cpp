@@ -6,8 +6,6 @@
 #include "../../GameObject/Planet.h"
 #include "../../GameObject/Player.h"
 #include "../../AI/States/BulletStates.h"
-#include "../../MyUI/ScoreUI.h"
-#include "../../MyUI/UIManager.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/MultipleScore.h"
 
@@ -18,8 +16,6 @@ CBullet::CBullet()
 , m_Time(0.f)
 , m_RotationSpeed(BULLETCREATOR::ROTATION_SPEED)
 , m_ItemFlag(eITEM_FLAG_none)
-, m_UIScore(nullptr)
-, m_MultipleScore(nullptr)
 , m_TargetVec(CObjectManager::Instance()->getPlanet()->getPosition())
 , m_Player(CObjectManager::Instance()->getPlayer())
 , m_Planet(CObjectManager::Instance()->getPlanet())
@@ -302,13 +298,11 @@ void CBullet::Seek(float delta)
 
 void CBullet::createScoreCurrentPos(int score)
 {
-	if (m_MultipleScore != nullptr){
-		m_MultipleScore->AddScore(score);
-		auto scoreBullet = CScoreBullet::create(score);
-		scoreBullet->setPosition(getPosition());
-		scoreBullet->setAnchorPoint(Vec2::ZERO);
-		CGameScene::getGameScene()->addChild(scoreBullet);
-	}
+    auto scoreBullet = CScoreBullet::create(score);
+    scoreBullet->setPosition(getPosition());
+    scoreBullet->setAnchorPoint(Vec2::ZERO);
+    CGameScene::getGameScene()->addChild(scoreBullet);
+    CMultipleScore::Instance()->AddScore(score);
 }
 
 void CBullet::setBoundingRadius (float data)

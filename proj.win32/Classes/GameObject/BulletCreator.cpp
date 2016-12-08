@@ -16,7 +16,6 @@ CBulletCreator::CBulletCreator()
 , m_Time(0)
 , m_LineIntervalLimit(0.0f)
 , m_Running(false)
-, m_Pause(false)
 , m_IsFlip(false)
 {}
 
@@ -56,7 +55,7 @@ void CBulletCreator::Update(float delta)
 	m_Time += delta;
 	if (m_Time < m_LineIntervalLimit) return;
 	if (m_CurrentHeight <= 0) this->clear();
-    if(m_CurrentPattern == nullptr) return;
+    if (m_CurrentPattern == nullptr) return;
     
 	this->createOneLine(m_CurrentPattern, --m_CurrentHeight, CREATE_DISTANCE, m_RotationAngle, true);
 	m_Time = 0.0f;

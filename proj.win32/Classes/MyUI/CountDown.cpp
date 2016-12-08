@@ -45,12 +45,14 @@ CCountDown* CCountDown::show(cocos2d::Node* parent, int zOrder/* = 0*/)
     this->Reset();
     
     m_NumberLabel = Label::createWithTTF("", m_FontName, m_FontSize);
-    m_NumberLabel->setColor(m_FontColor);
+    m_NumberLabel->setTextColor(m_FontColor);
     m_NumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_NumberLabel->setPosition(this->getContentSize() / 2);
     this->addChild(m_NumberLabel);
     
     parent->addChild(this, zOrder);
+    this->setPosition(m_Position);
+    this->setAnchorPoint(m_AnchorPoint);
     
     return this;
 }
@@ -91,7 +93,7 @@ CCountDown* CCountDown::setCountUp(bool up)
     return this;
 }
 
-CCountDown* CCountDown::setFont(cocos2d::Color3B fontColor, int fontSize)
+CCountDown* CCountDown::setFont(cocos2d::Color4B fontColor, int fontSize)
 {
     m_FontColor = fontColor;
     m_FontSize = fontSize;
@@ -110,6 +112,18 @@ CCountDown* CCountDown::setCleanUpAtTheLast(bool clean)
     return this;
 }
 
+CCountDown* CCountDown::setLabelPosition(Vec2 pos)
+{
+    m_Position = pos;
+    return this;
+}
+
+CCountDown* CCountDown::setLabelAnchorPoint(Vec2 anchorPoint)
+{
+    m_AnchorPoint = anchorPoint;
+    return this;
+}
+
 void CCountDown::Reset()
 {
     if(m_MaxNumber >= 0 && m_MinNumber >= 0)
@@ -123,7 +137,8 @@ void CCountDown::Reset()
 void CCountDown::updateContent()
 {
     auto currentNumber = m_CurrentNumber;
-    if(m_IsCountUP) currentNumber = m_MaxNumber - m_CurrentNumber;
+    if(m_IsCountUP)
+        currentNumber = m_MaxNumber - m_CurrentNumber;
     
     if(m_CurrentNumber < 0)
     {
@@ -139,7 +154,8 @@ void CCountDown::updateContent()
     }
     
     auto content = StringUtils::format("%d", currentNumber);
-    if(m_CurrentNumber == 0) content = m_LastContent;
+    if(m_CurrentNumber == 0)
+        content = m_LastContent;
     
     m_NumberLabel->setString(content);
     m_CurrentNumber--;
@@ -149,6 +165,6 @@ void CCountDown::processEventListner()
 {
     for(auto callback : m_EventList)
     {
-        callback();
+        callback(this);
     }
 }
