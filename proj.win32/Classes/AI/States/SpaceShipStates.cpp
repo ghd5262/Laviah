@@ -1,41 +1,46 @@
 #include "SpaceShipStates.h"
 #include "../../GameObject/SpaceShip.h"
 
-CSpaceShipFlyingState* CSpaceShipFlyingState::Instance()
+using namespace cocos2d;
+
+CFlyAround* CFlyAround::Instance()
 {
-	static CSpaceShipFlyingState instance;
+	static CFlyAround instance;
 
 	return &instance;
 }
 
-void CSpaceShipFlyingState::Enter(CSpaceShip* spaceship)
+void CFlyAround::Enter(CSpaceShip* spaceship)
 {
-//	spaceship->setDirection(random<int>(0, 1) == 0 ? -1 : 1);
+	spaceship->setDirection(random<int>(0, 1) == 0 ? -1 : 1);
 //	spaceship->setCurrentAction(random<int>(0, 1));
 }
 
-void CSpaceShipFlyingState::Execute(CSpaceShip* spaceship, float delta)
+void CFlyAround::Execute(CSpaceShip* spaceship, float delta)
 {
-//	spaceship->setActionTime(spaceship->getActionTime() + delta);
-//	if (spaceship->getActionTime() > 2.f)
-//	{
-//		spaceship->setActionTime(0.f);
-//		if (random<int>(0, 100) > 70 ? true : false)
-//			spaceship->getFSM()->ChangeState(CSpaceShipFlyingState::Instance());
-//	}
-//
-//	switch (spaceship->getCurrentAction()) {
-//	case 0:
-		spaceship->FlyAround(delta);
-//		break;
-//
-//	case 1:
-//		spaceship->Break();
-//		break;
-//	}
+    spaceship->FlyAround(delta);
 }
 
-void CSpaceShipFlyingState::Exit(CSpaceShip* spaceship)
+void CFlyAround::Exit(CSpaceShip* spaceship)
 {
 }
 
+CFlyAway* CFlyAway::Instance()
+{
+    static CFlyAway instance;
+    
+    return &instance;
+}
+
+void CFlyAway::Enter(CSpaceShip* spaceship)
+{
+    spaceship->setTargetPos(Vec2(50, 50));
+}
+
+void CFlyAway::Execute(CSpaceShip* spaceship, float delta)
+{
+}
+
+void CFlyAway::Exit(CSpaceShip* spaceship)
+{
+}

@@ -22,6 +22,7 @@ enum ZORDER{
 
 class CMyButton;
 class CPopup;
+class CCountDown;
 class CGameScene : public cocos2d::Layer
 {
 public:
@@ -74,6 +75,7 @@ private:
 	static CGameScene* m_GameScene;
 	static cocos2d::NodeGrid* m_GridWorld;
     CPopup* m_UILayer;
+    CCountDown* m_CountDown;
 	cocos2d::Size m_VisibleSize;
     std::map<std::string, int> m_GlobalVariable;
 	bool m_KeyBoardSpace;

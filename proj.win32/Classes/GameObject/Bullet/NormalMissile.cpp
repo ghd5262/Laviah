@@ -166,7 +166,7 @@ void CNormalMissile::createTargetLine()
 	bullet->setIsAiming(getIsAiming());
 	bullet->build();
 
-	CGameScene::getGameScene()->addChild(bullet);
+    CGameScene::getGameScene()->addChild(bullet, ZORDER::BACKGROUND);
 
 #if(!USE_MEMORY_POOLING)
 	CObjectManager::Instance()->AddBullet(bullet);

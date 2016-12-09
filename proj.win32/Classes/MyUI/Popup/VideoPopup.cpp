@@ -172,7 +172,6 @@ bool CVideoPopup::init()
 }
 
 void CVideoPopup::End(Node* sender){
-    m_CountDown->Pause();
     CGameScene::getGameScene()->GameResult();
 	this->popupClose();
 }
@@ -190,6 +189,7 @@ void CVideoPopup::UseCoin(Node* sender){
 void CVideoPopup::Resume()
 {
     m_CountDown->Pause();
+    m_CountDown->setVisible(false);
     CObjectManager::Instance()->getPlayer()->PlayerAlive();
     CGameScene::getGameScene()->GameResume();
 	this->popupClose();

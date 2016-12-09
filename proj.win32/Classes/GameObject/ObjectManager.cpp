@@ -4,6 +4,7 @@
 #include "BackGround.h"
 #include "ItemManager.h"
 #include "BulletCreator.h"
+#include "SpaceShip.h"
 #include "Bullet/Bullet.h"
 #include "../AI/States/StageStates.h"
 #include "../Scene/GameScene.h"
@@ -14,6 +15,11 @@ CObjectManager::CObjectManager()
 , m_IsGamePause(true)
 , m_fRotateAcceleration(0.f)
 , m_BulletCreator(nullptr)
+, m_Planet(nullptr)
+, m_Player(nullptr)
+, m_SpaceShip(nullptr)
+, m_Background(nullptr)
+, m_fDelta(0.f)
 {}
 
 CObjectManager* CObjectManager::Instance()
@@ -89,18 +95,19 @@ void CObjectManager::createBulletByTimer(float delta)
 
 void CObjectManager::Execute(float delta)
 {
+    m_SpaceShip->Execute(delta);
+    
     if (m_IsGamePause) return;
     
     m_fDelta = delta;
     
     this->RotationObject(1);
     this->createBulletByTimer(delta);
-    m_BulletCreator->Update(delta);
     
     CItemManager::Instance()->Execute(delta);
     
+    m_BulletCreator->Update(delta);
     m_Player->Execute(delta);
-    
     
     for (auto bullet : m_BulletList)
     {

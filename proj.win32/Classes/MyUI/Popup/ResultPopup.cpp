@@ -140,9 +140,6 @@ bool CResultPopup::init()
 	auto bonusTimeBG = createMultipleLayer("bonustimeIcon.png", "BonusTime", GLOBAL::BONUSTIME, startPosArray[3]);
 	auto alienBG     = createMultipleLayer("alienIcon.png", "AlienGet", GLOBAL::ALIENGET, startPosArray[4]);
 	auto challengeBG = createMultipleLayer("challengeIcon.png", "ChallengeClear", GLOBAL::CHALLENGECLEAR, startPosArray[5]);
-	auto bestScore = CUserDataManager::Instance()->getUserData_Number("USER_BEST_TOTAL_SCORE");
-	auto bestScoreBG = createResultLayer("bestScoreIcon.png", "Best Score", bestScore, startPosArray[7]);
-    createScoreLabel(bestScoreBG, bestScore);
     
     auto coinScore = CGameScene::getGameScene()->getGlobalValue(GLOBAL::COINSCORE);
     auto totalScore = CGameScene::getGameScene()->getGlobalValue(GLOBAL::TOTALSCORE);
@@ -182,6 +179,10 @@ bool CResultPopup::init()
 		}
 	}
 
+    auto bestScore = CUserDataManager::Instance()->getUserData_Number("USER_BEST_TOTAL_SCORE");
+    auto bestScoreBG = createResultLayer("bestScoreIcon.png", "Best Score", bestScore, startPosArray[7]);
+    createScoreLabel(bestScoreBG, bestScore);
+    
 	auto createButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos){
 		auto button = CMyButton::create()
 			->addEventListener(callback)

@@ -14,6 +14,7 @@
 class CBullet;
 class CPlanet;
 class CPlayer;
+class CSpaceShip;
 class CBackGround;
 class CBulletCreator;
 
@@ -53,6 +54,7 @@ public:
 	//getter & setter
 	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
 	CC_SYNTHESIZE(CPlayer*, m_Player, Player);
+    CC_SYNTHESIZE(CSpaceShip*, m_SpaceShip, SpaceShip);
     CC_SYNTHESIZE(CBulletCreator*, m_BulletCreator, BulletCreator);
 	CC_SYNTHESIZE(CBackGround*, m_Background, Background);
 	CC_SYNTHESIZE(float, m_fStageTime, StageTime);

@@ -3,12 +3,12 @@
 
 class CSpaceShip;
 //------------------------------------------------------------------------
-class CSpaceShipFlyingState : public CState<CSpaceShip>
+class CFlyAround : public CState<CSpaceShip>
 {
 public:
 
 	//this is a singleton
-	static CSpaceShipFlyingState* Instance();
+	static CFlyAround* Instance();
 
 	void Enter(CSpaceShip* spaceship) override;
 
@@ -17,6 +17,24 @@ public:
 	void Exit(CSpaceShip* spaceship) override;
 
 private:
-	CSpaceShipFlyingState(){}
-	virtual ~CSpaceShipFlyingState(){}
+	CFlyAround(){}
+	virtual ~CFlyAround(){}
+};
+
+class CFlyAway : public CState<CSpaceShip>
+{
+public:
+    
+    //this is a singleton
+    static CFlyAway* Instance();
+    
+    void Enter(CSpaceShip* spaceship) override;
+    
+    void Execute(CSpaceShip* spaceship, float delta) override;
+    
+    void Exit(CSpaceShip* spaceship) override;
+    
+private:
+    CFlyAway(){}
+    virtual ~CFlyAway(){}
 };

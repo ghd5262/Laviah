@@ -3,6 +3,7 @@
 #include "Popup/CharacterSelectPopup.h"
 #include "Popup/WorkshopPopup.h"
 #include "../Scene/GameScene.h"
+#include "../DataManager/UserDataManager.h"
 #include <array>
 
 using namespace cocos2d;
@@ -30,17 +31,30 @@ bool CMenuLayer::init()
 	Size popupSize = this->getContentSize();
     this->setCascadeColorEnabled(true);
 
-	auto createOneButtonPopup = [=](std::string message){
-		CPopup::create()
-			->setPositiveButton([=](Node* sender){}, "OK")
-			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-			->setMessage(message)
-			->setMessageFont(Color3B::WHITE, 40)
-			->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-			->setPopupPosition(popupSize / 2)
-			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-			->show(this);
+	auto createOneButtonPopup = [=](const std::function<void(Node*)> &callback, std::string message){
+        CPopup::create()
+        ->setPositiveButton(callback, "OK")
+        ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+        ->setMessage(message)
+        ->setMessageFont(Color3B::WHITE, 40)
+        ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+        ->setPopupPosition(popupSize / 2)
+        ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->show(this);
 	};
+    
+    auto createTwoButtonPopup = [=](const std::function<void(Node*)> &callback, std::string message){
+        CPopup::create()
+        ->setPositiveButton(callback, "YES")
+        ->setNegativeButton([](Node* sender){}, "NO")
+        ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+        ->setMessage(message)
+        ->setMessageFont(Color3B::WHITE, 40)
+        ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+        ->setPopupPosition(popupSize / 2)
+        ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->show(this);
+    };
 
 	auto createWidgetPopup = [=](CPopup* widget){
 		widget->setPopupPosition(popupSize / 2)
@@ -66,11 +80,12 @@ bool CMenuLayer::init()
 		Vec2(popupSize.width * 0.4f, popupSize.height * 0.25f),
 		Vec2(popupSize.width * 0.6f, popupSize.height * 0.25f),
 		Vec2(popupSize.width * 0.8f, popupSize.height * 0.25f),
+        Vec2(popupSize.width * 0.1f, popupSize.height * 0.95f)
 	};
     
-    std::array<CMyButton*, 4> btnArray = {
+    std::array<CMyButton*, 5> btnArray = {
         createTestButton([=](Node* sender){
-            createOneButtonPopup("Share is comming soon");
+            createOneButtonPopup([](Node* sender){}, "Share is comming soon");
         }, "Share", testButtonPos[0], Size(200, 150)),
         
         createTestButton([=](Node* sender){
@@ -85,6 +100,12 @@ bool CMenuLayer::init()
         createTestButton([=](Node* sender){
             createWidgetPopup(CWorkshopPopup::create());
         }, "Work", testButtonPos[3], Size(200, 150)),
+        
+        createTestButton([=](Node* sender){
+            createTwoButtonPopup([](Node* sender){
+                
+            }, "Are you sure want reset user data?");
+        }, "R", testButtonPos[4], Size(30, 30)),
     };
     
     this->setOpenAnimation([=](Node* sender){

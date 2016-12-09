@@ -10,6 +10,7 @@
 #include "../GameObject/Bullet/Bullet.h"
 #include "../GameObject/BackGround.h"
 #include "../GameObject/BulletCreator.h"
+#include "../GameObject/SpaceShip.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/MenuLayer.hpp"
 #include "../MyUI/UILayer.hpp"
@@ -48,7 +49,9 @@ Scene* CGameScene::createScene()
 
 CGameScene::CGameScene()
 : m_UILayer(nullptr)
+, m_CountDown(nullptr)
 , m_KeyBoardSpace(false){
+    
     std::array<std::string, 7> keyArray = {
         BONUSTIME,
         ALIENGET,
@@ -125,11 +128,31 @@ bool CGameScene::init()
     this->addChild(player, ZORDER::PLAYER);
     CObjectManager::Instance()->setPlayer(player);
     
-
+    
+    auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM());
+    spaceship->setSpeed(100.f);
+    spaceship->setDistance(500.f);
+    this->addChild(spaceship, ZORDER::PLAYER);
+    CObjectManager::Instance()->setSpaceShip(spaceship);
+    
+    
     auto multipleScoreUI = CMultipleScore::Instance();
     this->addChild(multipleScoreUI, ZORDER::PLAYER);
     
-
+    m_CountDown = CCountDown::create()
+    ->addLastEventListner([=](Node* sender){
+        CObjectManager::Instance()->setIsGamePause(false);
+    })
+    ->setFont(Color4B::WHITE, 50)
+    ->setMaxNumber(3)
+    ->setMinNumber(0)
+    ->setLastContent("GO!")
+    ->setInterval(0.8f)
+    ->setLabelPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.65f))
+    ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->show(this);
+    m_CountDown->Pause();
+    
 #if(USE_MEMORY_POOLING)
 	CPoolingManager::Instance()->CreateBulletList(500, 900);
 #endif
@@ -158,20 +181,7 @@ void CGameScene::GameStart()
 
 void CGameScene::GameResume()
 {
-    CCountDown::create()
-    ->addLastEventListner([=](Node* sender){
-        CObjectManager::Instance()->setIsGamePause(false);
-    })
-    ->setFont(Color4B::WHITE, 50)
-    ->setMaxNumber(3)
-    ->setMinNumber(0)
-    ->setLastContent("GO!")
-    ->setInterval(0.8f)
-    ->setCleanUpAtTheLast(true)
-    ->setLabelPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.65f))
-    ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(this);
-    
+    m_CountDown->Reset();
     this->turnUpSound();
 }
 

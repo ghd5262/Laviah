@@ -98,7 +98,7 @@ bool CMenuScene::initVariable()
 	this->addChild(player);
 	CMenuSceneObjectManager::Instance()->setPlayer(player);
 
-	auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM(), 40, 500);
+	auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM());
 	if (spaceship != nullptr)
 	{
 		this->addChild(spaceship);

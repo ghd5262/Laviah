@@ -2,6 +2,7 @@
 #include "../DataManager/GradientDataManager.h"
 #include "../Particle/Particles.h"
 #include "../Scene/GameScene.h"
+#include "../GameObject/ObjectManager.h"
 
 CBackGround* CBackGround::create()
 {
@@ -94,6 +95,8 @@ void CBackGround::setParticlePause(bool isPause)
 
 void CBackGround::update(float delta)
 {
+    if(CObjectManager::Instance()->getIsGamePause()) return;
+    
 	m_Time += delta;
 	if (m_Time > m_fLimitTime)
 	{
