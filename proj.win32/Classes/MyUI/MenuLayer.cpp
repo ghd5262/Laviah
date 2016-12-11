@@ -4,6 +4,9 @@
 #include "Popup/WorkshopPopup.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
+#include "../GameObject/ObjectManager.h"
+#include "../GameObject/SpaceShip.h"
+#include "../AI/States/SpaceShipStates.h"
 #include <array>
 
 using namespace cocos2d;
@@ -30,6 +33,11 @@ bool CMenuLayer::init()
     
 	Size popupSize = this->getContentSize();
     this->setCascadeColorEnabled(true);
+
+	auto touchListener = EventListenerTouchOneByOne::create();
+	touchListener->setSwallowTouches(false);
+	touchListener->onTouchBegan = CC_CALLBACK_2(CMenuLayer::TouchScreen, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
 	auto createOneButtonPopup = [=](const std::function<void(Node*)> &callback, std::string message){
         CPopup::create()
@@ -93,6 +101,7 @@ bool CMenuLayer::init()
         }, "Select", testButtonPos[1], Size(200, 150)),
         
         createTestButton([=](Node* sender){
+			CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyAway::Instance());
             CGameScene::getGameScene()->GameStart();
             this->popupClose();
         }, "Start", testButtonPos[2], Size(200, 150)),
@@ -103,7 +112,7 @@ bool CMenuLayer::init()
         
         createTestButton([=](Node* sender){
             createTwoButtonPopup([](Node* sender){
-                
+				CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyAway::Instance());
             }, "Are you sure want reset user data?");
         }, "R", testButtonPos[4], Size(30, 30)),
     };
@@ -119,4 +128,14 @@ bool CMenuLayer::init()
     });
     
     return true;
+}
+
+bool CMenuLayer::TouchScreen(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
+{
+	CCPoint touchLocation = pTouch->getLocationInView();
+	touchLocation = CCDirector::sharedDirector()->convertToGL(touchLocation);
+	CGameScene::getGameScene()->setTouchPos(convertToNodeSpace(touchLocation));
+	CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyToTouchArea::Instance());
+
+	return true;
 }

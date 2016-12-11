@@ -51,6 +51,8 @@ public:
 	// 초기화
 	void Clear();
 
+	std::vector<CBullet*>* getBulletList(){ return &m_BulletList; }
+
 	//getter & setter
 	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
 	CC_SYNTHESIZE(CPlayer*, m_Player, Player);

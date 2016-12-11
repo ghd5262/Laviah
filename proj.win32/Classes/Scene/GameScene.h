@@ -45,10 +45,12 @@ public:
     int  getGlobalValue(std::string key);
     void setGlobalValue(std::string key, int value);
     void addGlobalValue(std::string key, int value);
-    
+
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
 	static cocos2d::NodeGrid* getGridWorld(){ return m_GridWorld; }
+
+	CC_SYNTHESIZE(cocos2d::Vec2, m_TouchPos, TouchPos);
 
 protected:
 	virtual bool init() override;
@@ -66,6 +68,7 @@ private:
     void createExitPopup();
     void createMenuLayer();
     void createUILayer();
+	void createRandomCoin();
     void removeUILayer();
     void turnDownSound();
     void turnUpSound();

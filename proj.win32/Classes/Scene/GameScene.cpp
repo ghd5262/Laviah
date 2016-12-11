@@ -23,7 +23,7 @@
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
-
+#include "../AI/States/SpaceShipStates.h"
 #include <array>
 
 USING_NS_CC;
@@ -89,7 +89,7 @@ bool CGameScene::init()
 	
 	m_GameScene = this;
 	m_VisibleSize = Director::getInstance()->getVisibleSize();
-
+	m_TouchPos = m_VisibleSize / 2;
 	this->scheduleUpdate();
 	//CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 
@@ -130,12 +130,14 @@ bool CGameScene::init()
     
     
     auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM());
-    spaceship->setSpeed(100.f);
+    spaceship->setSpeed(350.f);
     spaceship->setDistance(500.f);
+	spaceship->setPosition(CBullet::getCirclePosition(random<int>(0, 360), SPACESHIP::FLYAWAY_DISTANCE, planet->getPosition()));
     this->addChild(spaceship, ZORDER::PLAYER);
     CObjectManager::Instance()->setSpaceShip(spaceship);
-    
-    
+   	spaceship->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), spaceship->getDistance(), planet->getPosition()));
+	spaceship->ChangeState(CFlyToTouchArea::Instance());
+
     auto multipleScoreUI = CMultipleScore::Instance();
     this->addChild(multipleScoreUI, ZORDER::PLAYER);
     
@@ -156,9 +158,11 @@ bool CGameScene::init()
 #if(USE_MEMORY_POOLING)
 	CPoolingManager::Instance()->CreateBulletList(500, 900);
 #endif
+
 	this->initKeyboardListener();
     this->OpenGameMenuLayer();
-    
+	this->createRandomCoin();
+
 	return true;
 }
 
@@ -219,8 +223,14 @@ void CGameScene::OpenGamePausePopup()
 
 void CGameScene::OpenGameMenuLayer()
 {
+	auto centerPos = Director::getInstance()->getVisibleSize() / 2;
+	auto spaceShip = CObjectManager::Instance()->getSpaceShip();
+	spaceShip->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), spaceShip->getDistance(), centerPos));
+	spaceShip->ChangeState(CFlyToTouchArea::Instance());
+
     this->clearData();
     this->createMenuLayer();
+	this->createRandomCoin();
 }
 
 void CGameScene::clearData()
@@ -378,6 +388,12 @@ void CGameScene::addGlobalValue(std::string key, int value)
         result->second += value;
 }
 
+void CGameScene::createRandomCoin()
+{
+	auto bullet = CBulletCreator::createBullet('U', random<int>(0, 360), 400, false);
+	bullet->setPosition(Vec2(random<int>(0, m_VisibleSize.width), random<int>(0, m_VisibleSize.height)));
+	bullet->setLocalZOrder(ZORDER::PLAYER);
+}
 //void CGameScene::ResetGameScene()
 //{
 //	Director::getInstance()->getScheduler()->schedule([](float delta){
