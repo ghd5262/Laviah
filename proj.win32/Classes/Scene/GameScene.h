@@ -2,15 +2,6 @@
 
 #include "cocos2d.h"
 #include <map>
-namespace GLOBAL{
-    static std::string BONUSTIME        = "BONUSTIME";
-	static std::string ALIENGET         = "ALIENGET";
-	static std::string CHALLENGECLEAR   = "CHALLENGECLEAR";
-	static std::string TOTALSCORE       = "TOTALSCORE";
-    static std::string STARSCORE        = "STARSCORE";
-    static std::string COINSCORE        = "COINSCORE";
-    static std::string RUNSCORE         = "RUNSCORE";
-}
 
 enum ZORDER{
     BACKGROUND = -1,
@@ -41,10 +32,6 @@ public:
     void GameHelp();
 	void WatchVideo();
     void GameExit();
-    
-    int  getGlobalValue(std::string key);
-    void setGlobalValue(std::string key, int value);
-    void addGlobalValue(std::string key, int value);
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }

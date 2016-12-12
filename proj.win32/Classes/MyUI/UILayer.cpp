@@ -98,9 +98,9 @@ void CUILayer::update(float delta)
     else if(!CObjectManager::Instance()->getIsGamePause() && m_Pause)
         this->Resume();
     
-    m_StarScoreUI->setValue(m_GameScene->getGlobalValue(GLOBAL::STARSCORE));
-    m_CoinScoreUI->setValue(m_GameScene->getGlobalValue(GLOBAL::COINSCORE));
-    m_RunScoreUI->setValue(m_GameScene->getGlobalValue(GLOBAL::RUNSCORE));
+    m_StarScoreUI->setValue(GLOBAL->STARSCORE);
+    m_CoinScoreUI->setValue(GLOBAL->COINSCORE);
+    m_RunScoreUI->setValue(GLOBAL->RUNSCORE);
 }
 
 void CUILayer::onPauseButton(cocos2d::Node* sender)

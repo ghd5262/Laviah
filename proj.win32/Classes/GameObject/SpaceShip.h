@@ -25,9 +25,10 @@ public:
 	void FlyAround(float delta);
 	void FlyAway(float delta);
 	void FlyToTouchArea(float delta);
-	void ChangeState(CState<CSpaceShip>* newState){ m_FSM->ChangeState(newState); };
 	void Collision();
-
+	void ChangeState(CState<CSpaceShip>* newState)
+    { m_FSM->ChangeState(newState); };
+    
 	CC_SYNTHESIZE(float, m_Speed, Speed);
 	CC_SYNTHESIZE(float, m_ActionTime, ActionTime);
 	CC_SYNTHESIZE(float, m_Distance, Distance);
@@ -40,11 +41,12 @@ public:
 
 private:
 	virtual bool init() override;
-    void createFlameParticle();
-	void rotateToHead();
 	void arrive(float delta);
 	void seek(float delta);
-
+    void rotateToHead();
+    void arriveCheck();
+    void createFlameParticle();
+    
 	CSpaceShip(sSPACESHIP_PARAM SpaceshipParam);
 	virtual ~CSpaceShip();
 

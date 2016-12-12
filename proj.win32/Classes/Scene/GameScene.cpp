@@ -27,7 +27,6 @@
 #include <array>
 
 USING_NS_CC;
-using namespace GLOBAL;
 
 CGameScene* CGameScene::m_GameScene = nullptr;
 cocos2d::NodeGrid* CGameScene::m_GridWorld = nullptr;
@@ -50,23 +49,7 @@ Scene* CGameScene::createScene()
 CGameScene::CGameScene()
 : m_UILayer(nullptr)
 , m_CountDown(nullptr)
-, m_KeyBoardSpace(false){
-    
-    std::array<std::string, 7> keyArray = {
-        BONUSTIME,
-        ALIENGET,
-        CHALLENGECLEAR,
-        TOTALSCORE,
-        STARSCORE,
-        COINSCORE,
-        RUNSCORE
-    };
-    
-    for(auto var : keyArray)
-    {
-        m_GlobalVariable.emplace(std::pair<std::string, int>(var, 0));
-    }
-}
+, m_KeyBoardSpace(false){}
 
 CGameScene::~CGameScene()
 {
@@ -243,20 +226,7 @@ void CGameScene::clearData()
 
 void CGameScene::cleanGlobalData()
 {
-    std::array<std::string, 7> keyArray = {
-        BONUSTIME,
-        ALIENGET,
-        CHALLENGECLEAR,
-        TOTALSCORE,
-        STARSCORE,
-        COINSCORE,
-        RUNSCORE
-    };
-    
-    for(auto var : keyArray)
-    {
-        this->setGlobalValue(var, 0);
-    }
+    GLOBAL->Clear();
 }
 
 void CGameScene::createPausePopup()
@@ -364,28 +334,6 @@ void CGameScene::initKeyboardListener()
 	};
 
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
-}
-
-int  CGameScene::getGlobalValue(std::string key)
-{
-    auto result = m_GlobalVariable.find(key);
-    if(result != m_GlobalVariable.end())
-        return result->second;
-    return 0;
-}
-
-void CGameScene::setGlobalValue(std::string key, int value)
-{
-    auto result = m_GlobalVariable.find(key);
-    if(result != m_GlobalVariable.end())
-        result->second = value;
-}
-
-void CGameScene::addGlobalValue(std::string key, int value)
-{
-    auto result = m_GlobalVariable.find(key);
-    if(result != m_GlobalVariable.end())
-        result->second += value;
 }
 
 void CGameScene::createRandomCoin()

@@ -89,7 +89,7 @@ void CMultipleScore::calculateScore()
 	unsigned calculatedScore = m_MultipleNumber * m_SavedScore;
 	
 	// 점수 반영
-    CGameScene::getGameScene()->addGlobalValue(GLOBAL::STARSCORE, calculatedScore);
+    GLOBAL->STARSCORE += calculatedScore;
 }
 
 void CMultipleScore::multipleScoreReset()

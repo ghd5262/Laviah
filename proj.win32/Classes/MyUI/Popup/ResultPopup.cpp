@@ -38,92 +38,18 @@ bool CResultPopup::init()
 		this->addChild(bg);
 	}
 
-	// 총 점수 = 달린 총거리 + 별 + 코인 + (보너스타임횟수 * 10000) + (외계주민 * 10000) + (도전과제 * 10000)
-	/* result label*/
-	auto resultLabel = Label::createWithTTF("Result", "fonts/malgunbd.ttf", 80);
-	if (resultLabel != nullptr)
-	{
-		resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		resultLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.8f));
-		resultLabel->setColor(COLOR::BRIGHTGRAY);
-		bg->addChild(resultLabel);
-		resultLabel->setOpacity(0);
-	}
-
-	auto createScoreLabel = [=](Node* parent, int score){
-		auto scoreLabel = Label::createWithTTF(StringUtility::toCommaString(score), "fonts/malgunbd.ttf", 50);
-		scoreLabel->setColor(COLOR::DARKGRAY);
-		scoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-		scoreLabel->setPosition(Vec2(parent->getContentSize().width * 0.9f,
-                                     parent->getContentSize().height * 0.5f));
-		parent->addChild(scoreLabel);
-
-		return scoreLabel;
-	};
-
-	auto createResultLayer = [=](std::string iconImg, std::string content, int score, Vec2 pos){
-		auto layerBG = Sprite::create("resultPopup_2.png");
-		layerBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		layerBG->setPosition(pos);
-		layerBG->setOpacity(0);
-		layerBG->setCascadeOpacityEnabled(true);
-		bg->addChild(layerBG);
-
-		auto icon = Sprite::create(iconImg);
-		icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		icon->setPosition(Vec2(layerBG->getContentSize().width * 0.1f, layerBG->getContentSize().height * 0.5f));
-		icon->setColor(COLOR::DARKGRAY);
-		layerBG->addChild(icon);
-
-		auto contentLabel = Label::createWithTTF(content, "fonts/malgunbd.ttf", 50);
-		contentLabel->setColor(COLOR::DARKGRAY);
-		contentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-		contentLabel->setPosition(Vec2(layerBG->getContentSize().width * 0.15f, layerBG->getContentSize().height * 0.5f));
-		layerBG->addChild(contentLabel);
-
-		return layerBG;
-	};
-
-    auto createNormalLayer = [=](std::string iconImg, std::string content, std::string key, Vec2 pos){
-        auto score = CGameScene::getGameScene()->getGlobalValue(key);
-        CGameScene::getGameScene()->addGlobalValue(GLOBAL::TOTALSCORE, score);
-
-		auto layerBG = createResultLayer(iconImg, content, score, pos);
-		createScoreLabel(layerBG, score);
-		return layerBG;
-	};
-
-	auto createMultipleLayer = [=](std::string iconImg, std::string content, std::string key, Vec2 pos){
-        auto score = CGameScene::getGameScene()->getGlobalValue(key);
-        CGameScene::getGameScene()->addGlobalValue(GLOBAL::TOTALSCORE, score * 10000);
-        
-        auto layerBG = createResultLayer(iconImg, content, score, pos);
-		auto scoreLabel = createScoreLabel(layerBG, score);
-		auto multipleScoreLabel = Label::createWithTTF(StringUtils::format("%d x ", 10000), "fonts/malgunbd.ttf", 25);
-		if (multipleScoreLabel != nullptr){
-			multipleScoreLabel->setColor(COLOR::DARKGRAY);
-			multipleScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-			multipleScoreLabel->setPosition(
-				Vec2(scoreLabel->getPosition().x - scoreLabel->getContentSize().width,
-				layerBG->getContentSize().height * 0.4f));
-			layerBG->addChild(multipleScoreLabel);
-		}
-
-		return layerBG;
-	};
-	
-	std::array<Vec2, 8> startPosArray = {
-		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f),
-		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.4f),
-		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.3f),
-		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.2f),
-		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.1f),
-		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.0f),
-		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * -0.1f),
-		Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * -0.2f)
-	};
+    std::array<Vec2, 8> startPos = {
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.4f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.3f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.2f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.1f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.0f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * -0.1f),
+        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * -0.2f)
+    };
     
-    std::array<Vec2, 8> targetPosArray = {
+    std::array<Vec2, 8> targetPos = {
         Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.7f),
         Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.65f),
         Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.6f),
@@ -134,68 +60,174 @@ bool CResultPopup::init()
         Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.35f)
     };
     
-    auto moveDistanceBG = createNormalLayer("runIcon.png", "Run", GLOBAL::RUNSCORE,  startPosArray[0]);
-	auto starScoreBG = createNormalLayer("starIcon.png", "Star", GLOBAL::STARSCORE, startPosArray[1]);
-	auto coinScoreBG = createNormalLayer("coinIcon.png", "Coin", GLOBAL::COINSCORE, startPosArray[2]);
-	auto bonusTimeBG = createMultipleLayer("bonustimeIcon.png", "BonusTime", GLOBAL::BONUSTIME, startPosArray[3]);
-	auto alienBG     = createMultipleLayer("alienIcon.png", "AlienGet", GLOBAL::ALIENGET, startPosArray[4]);
-	auto challengeBG = createMultipleLayer("challengeIcon.png", "ChallengeClear", GLOBAL::CHALLENGECLEAR, startPosArray[5]);
+    std::array<std::string, 8> resultIcon = {
+        "runIcon.png",
+        "starIcon.png",
+        "coinIcon.png",
+        "bonustimeIcon.png",
+        "alienIcon.png",
+        "challengeIcon.png",
+        "",
+        "bestScoreIcon.png"
+    };
     
-    auto coinScore = CGameScene::getGameScene()->getGlobalValue(GLOBAL::COINSCORE);
-    auto totalScore = CGameScene::getGameScene()->getGlobalValue(GLOBAL::TOTALSCORE);
-    CUserDataManager::Instance()->CoinUpdate(coinScore);
+    std::array<std::string, 8> resultContent = {
+        "Run",
+        "Star",
+        "Coin",
+        "BonusTime",
+        "Alien",
+        "Challenge",
+        "",
+        "Best Score"
+    };
     
-	/* total score */
-	auto totalScoreBG = Sprite::create("resultPopup_1.png");
-	if (totalScoreBG != nullptr){
-		totalScoreBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		totalScoreBG->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * -0.1f));
-		bg->addChild(totalScoreBG);
-		totalScoreBG->setOpacity(0);
-		totalScoreBG->setCascadeOpacityEnabled(true);
-
-		std::string bestScoreStr = "Total Score";
-
-		// total score가 best score면 저장한다.
-		if (totalScore > CUserDataManager::Instance()->getUserData_Number("USER_BEST_TOTAL_SCORE")){
-			bestScoreStr = "Best Score";
-			CUserDataManager::Instance()->setUserData_Number("USER_BEST_TOTAL_SCORE", totalScore);
-		}
-
-		auto totalScoreLabel = Label::createWithTTF(bestScoreStr.c_str(), "fonts/malgunbd.ttf", 60);
-		if (totalScoreLabel != nullptr){
-			totalScoreLabel->setColor(COLOR::BRIGHTGRAY);
-			totalScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-			totalScoreLabel->setPosition(Vec2(totalScoreBG->getContentSize().width * 0.08f, totalScoreBG->getContentSize().height * 0.5f));
-			totalScoreBG->addChild(totalScoreLabel);
-		}
-
-		auto totalScoreValueLabel = Label::createWithTTF(StringUtility::toCommaString(totalScore), "fonts/malgunbd.ttf", 60);
-		if (totalScoreValueLabel != nullptr){
-			totalScoreValueLabel->setColor(COLOR::BRIGHTGRAY);
-			totalScoreValueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-			totalScoreValueLabel->setPosition(Vec2(totalScoreBG->getContentSize().width * 0.9f, totalScoreBG->getContentSize().height * 0.5f));
-			totalScoreBG->addChild(totalScoreValueLabel);
-		}
-	}
-
-    auto bestScore = CUserDataManager::Instance()->getUserData_Number("USER_BEST_TOTAL_SCORE");
-    auto bestScoreBG = createResultLayer("bestScoreIcon.png", "Best Score", bestScore, startPosArray[7]);
-    createScoreLabel(bestScoreBG, bestScore);
     
-	auto createButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos){
-		auto button = CMyButton::create()
-			->addEventListener(callback)
-			->setButtonNormalImage(name)
-			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-			->setButtonPosition(pos)
-			->show(bg);
-		button->setOpacity(0);
+    // 총 점수 = 달린 총거리 + 별 + 코인 + (보너스타임횟수 * 10000) + (외계주민 * 10000) + (도전과제 * 10000)
+    
+    auto createLayerBG = [=](Vec2 pos){
+        auto layerBG = Sprite::create("resultPopup_2.png");
+        layerBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        layerBG->setPosition(pos);
+        layerBG->setOpacity(0);
+        layerBG->setCascadeOpacityEnabled(true);
+        bg->addChild(layerBG);
+        
+        return layerBG;
+    };
+    
+    auto createIcon = [=](Node* parent, Vec2 pos, std::string iconImg){
+        auto icon = Sprite::create(iconImg);
+        icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        icon->setPosition(pos);
+        icon->setColor(COLOR::DARKGRAY);
+        parent->addChild(icon);
+        
+        return icon;
+    };
+    
+    auto createContent = [=](Node* parent, Vec2 pos, std::string content, int fontSize){
+        auto contentLabel = Label::createWithTTF(content, "fonts/malgunbd.ttf", fontSize);
+        contentLabel->setColor(COLOR::DARKGRAY);
+        contentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+        contentLabel->setPosition(pos);
+        parent->addChild(contentLabel);
+        
+        return contentLabel;
+    };
+    
+    auto createScoreLabel = [=](Node* parent, Vec2 pos, int score, int fontSize){
+        auto scoreLabel = Label::createWithTTF(StringUtility::toCommaString(score), "fonts/malgunbd.ttf", fontSize);
+        scoreLabel->setColor(COLOR::DARKGRAY);
+        scoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+        scoreLabel->setPosition(pos);
+        parent->addChild(scoreLabel);
+        
+        return scoreLabel;
+    };
+    
+    auto createMultipleLabel = [=](Node* parent, Vec2 pos){
+        auto multipleLabel = Label::createWithTTF(StringUtils::format("%d x ", 10000), "fonts/malgunbd.ttf", 25);
+        multipleLabel->setColor(COLOR::DARKGRAY);
+        multipleLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+        multipleLabel->setPosition(pos);
+        parent->addChild(multipleLabel);
+    };
+    
 
-		return button;
+    auto createNormalLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize){
+        GLOBAL->TOTALSCORE += score;
+
+		auto layerBG = createLayerBG(layerPos);
+        createIcon(layerBG, Vec2(layerBG->getContentSize().width * 0.1f,
+                                 layerBG->getContentSize().height * 0.5f), iconImg);
+        createContent(layerBG, Vec2(layerBG->getContentSize().width * 0.15f,
+                                    layerBG->getContentSize().height * 0.5f), content, fontSize);
+        createScoreLabel(layerBG, Vec2(layerBG->getContentSize().width * 0.9f,
+                                       layerBG->getContentSize().height * 0.5f), score, fontSize);
+        
+		return layerBG;
 	};
 
-	auto btnHome = createButton([=](Node* sender)
+	auto createMultipleLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize){
+        GLOBAL->TOTALSCORE += score * 10000;
+        
+        auto layerBG = createLayerBG(layerPos);
+        createIcon(layerBG, Vec2(layerBG->getContentSize().width * 0.1f,
+                                 layerBG->getContentSize().height * 0.5f), iconImg);
+        createContent(layerBG, Vec2(layerBG->getContentSize().width * 0.15f,
+                                    layerBG->getContentSize().height * 0.5f), content, fontSize);
+        auto scoreLabel = createScoreLabel(layerBG,
+                                           Vec2(layerBG->getContentSize().width * 0.9f,
+                                                layerBG->getContentSize().height * 0.5f), score, fontSize);
+        createMultipleLabel(layerBG, Vec2(scoreLabel->getPosition().x - scoreLabel->getContentSize().width,
+                                          layerBG->getContentSize().height * 0.4f));
+
+		return layerBG;
+	};
+	
+    auto createButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos){
+        auto button = CMyButton::create()
+        ->addEventListener(callback)
+        ->setButtonNormalImage(name)
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setButtonPosition(pos)
+        ->show(bg);
+        button->setOpacity(0);
+        
+        return button;
+    };
+    
+    auto moveDistanceBG = createNormalLayer(resultIcon[0], resultContent[0], GLOBAL->RUNSCORE,  startPos[0], 50);
+	auto starScoreBG    = createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->STARSCORE, startPos[1], 50);
+	auto coinScoreBG    = createNormalLayer(resultIcon[2], resultContent[2], GLOBAL->COINSCORE, startPos[2], 50);
+	auto bonusTimeBG  = createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->BONUSTIME, startPos[3], 50);
+	auto alienBG      = createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->ALIENGET,  startPos[4], 50);
+	auto challengeBG  = createMultipleLayer(resultIcon[5], resultContent[5], GLOBAL->CHALLENGECLEAR, startPos[5], 50);
+    
+    auto totalScoreBG = createLayerBG(startPos[6]);
+    totalScoreBG->setTexture("resultPopup_1.png");
+    
+    auto bestScore = CUserDataManager::Instance()->getUserData_Number("USER_BEST_TOTAL_SCORE");
+    std::string totalContent = "Total Score";
+    
+    // total score가 best score면 저장한다.
+    if (GLOBAL->TOTALSCORE > bestScore){
+        totalContent = "Best Score";
+        bestScore = GLOBAL->TOTALSCORE;
+        CUserDataManager::Instance()->setUserData_Number("USER_BEST_TOTAL_SCORE", GLOBAL->TOTALSCORE);
+    }
+    auto totalLabel = createContent(totalScoreBG,
+                                    Vec2(totalScoreBG->getContentSize().width * 0.08f,
+                                         totalScoreBG->getContentSize().height * 0.5f),
+                                    totalContent,
+                                    60);
+    totalLabel->setColor(COLOR::BRIGHTGRAY);
+    
+    auto totalScoreLabel = createScoreLabel(totalScoreBG,
+                                            Vec2(totalScoreBG->getContentSize().width * 0.9f,
+                                                 totalScoreBG->getContentSize().height * 0.5f),
+                                            GLOBAL->TOTALSCORE,
+                                            60);
+    totalScoreLabel->setColor(COLOR::BRIGHTGRAY);
+    
+    
+    auto bestScoreBG = createNormalLayer(resultIcon[7], resultContent[7], bestScore,  startPos[7], 50);
+    CUserDataManager::Instance()->CoinUpdate(GLOBAL->COINSCORE);
+    
+    
+    /* result label*/
+    auto resultLabel = Label::createWithTTF("Result", "fonts/malgunbd.ttf", 80);
+    if (resultLabel != nullptr)
+    {
+        resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        resultLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.8f));
+        resultLabel->setColor(COLOR::BRIGHTGRAY);
+        bg->addChild(resultLabel);
+        resultLabel->setOpacity(0);
+    }
+    
+    auto btnHome = createButton([=](Node* sender)
 	{
 		this->GoHome(sender);
 	}, "homeIcon.png",
@@ -229,14 +261,14 @@ bool CResultPopup::init()
 				FadeIn::create(1.f)));
 		};
 
-		action(moveDistanceBG,  targetPosArray[0]);
-		action(starScoreBG,     targetPosArray[1]);
-		action(coinScoreBG,     targetPosArray[2]);
-		action(bonusTimeBG,     targetPosArray[3]);
-		action(alienBG,         targetPosArray[4]);
-		action(challengeBG,     targetPosArray[5]);
-		action(totalScoreBG,    targetPosArray[6]);
-		action(bestScoreBG,     targetPosArray[7]);
+		action(moveDistanceBG,  targetPos[0]);
+		action(starScoreBG,     targetPos[1]);
+		action(coinScoreBG,     targetPos[2]);
+		action(bonusTimeBG,     targetPos[3]);
+		action(alienBG,         targetPos[4]);
+		action(challengeBG,     targetPos[5]);
+		action(totalScoreBG,    targetPos[6]);
+		action(bestScoreBG,     targetPos[7]);
 
 		resultLabel->runAction(FadeIn::create(0.5f));
 		btnHome->runAction(FadeIn::create(0.5f));
@@ -254,14 +286,14 @@ bool CResultPopup::init()
 				FadeTo::create(0.2f, 0)));
 		};
 
-		action(moveDistanceBG,	startPosArray[0]);
-		action(starScoreBG,		startPosArray[1]);
-		action(coinScoreBG,		startPosArray[2]);
-		action(bonusTimeBG,		startPosArray[3]);
-		action(alienBG,			startPosArray[4]);
-		action(challengeBG,		startPosArray[5]);
-		action(totalScoreBG,	startPosArray[6]);
-		action(bestScoreBG,		startPosArray[7]);
+		action(moveDistanceBG,	startPos[0]);
+		action(starScoreBG,		startPos[1]);
+		action(coinScoreBG,		startPos[2]);
+		action(bonusTimeBG,		startPos[3]);
+		action(alienBG,			startPos[4]);
+		action(challengeBG,		startPos[5]);
+		action(totalScoreBG,	startPos[6]);
+		action(bestScoreBG,		startPos[7]);
 
 		resultLabel->runAction(FadeTo::create(0.5f, 0));
 		btnHome->runAction(FadeTo::create(0.5f, 0));

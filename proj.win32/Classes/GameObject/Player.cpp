@@ -191,7 +191,7 @@ void CPlayer::Rotation(float dir, float delta)
 	m_pParticle->setGravity(Vec2(-90 * dir, 0));
 	this->setRotation(m_Angle);
 
-    CGameScene::getGameScene()->addGlobalValue(GLOBAL::RUNSCORE, 1);
+    GLOBAL->RUNSCORE += 1;
 }
 
 void CPlayer::GiantMode()
