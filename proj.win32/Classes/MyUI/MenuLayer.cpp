@@ -36,7 +36,8 @@ bool CMenuLayer::init()
 
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->setSwallowTouches(false);
-	touchListener->onTouchBegan = CC_CALLBACK_2(CMenuLayer::TouchScreen, this);
+	touchListener->onTouchBegan = CC_CALLBACK_2(CMenuLayer::TouchBegan, this);
+	touchListener->onTouchMoved = CC_CALLBACK_2(CMenuLayer::TouchScreen, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
 	auto createOneButtonPopup = [=](const std::function<void(Node*)> &callback, std::string message){
@@ -130,7 +131,7 @@ bool CMenuLayer::init()
     return true;
 }
 
-bool CMenuLayer::TouchScreen(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
+bool CMenuLayer::TouchBegan(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
 {
 	CCPoint touchLocation = pTouch->getLocationInView();
 	touchLocation = CCDirector::sharedDirector()->convertToGL(touchLocation);
@@ -138,4 +139,14 @@ bool CMenuLayer::TouchScreen(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
 	CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyToTouchArea::Instance());
 
 	return true;
+}
+
+void CMenuLayer::TouchScreen(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
+{
+	CCPoint touchLocation = pTouch->getLocationInView();
+	touchLocation = CCDirector::sharedDirector()->convertToGL(touchLocation);
+	CGameScene::getGameScene()->setTouchPos(convertToNodeSpace(touchLocation));
+	CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyToTouchArea::Instance());
+
+	//return true;
 }
