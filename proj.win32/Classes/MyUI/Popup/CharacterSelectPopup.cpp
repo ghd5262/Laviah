@@ -66,7 +66,7 @@ bool CCharacterSelectPopup::init()
 	auto characterList = CCharacterDataManager::Instance()->getCharacterList();
 	Size layerSize = scrollBack->getContentSize();
 	size_t dpDistance = 15;
-	unsigned currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
+	unsigned currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
 
 	// Create the list view
 	auto listView = ListView::create();
@@ -190,7 +190,7 @@ void CCharacterSelectPopup::Select(Node* sender)
 	if (player != nullptr)
 		player->setPlayerTexture(centerCharacterParam._normalTextureName);
 
-	if (CUserDataManager::Instance()->getUserData_IsItemHave("USER_CHARACTER_LIST", centerCharacterParam._idx))
+	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam._idx))
 	{
 		m_CenterDP->Select();
 	}
@@ -225,7 +225,7 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
 	auto centerCharacterParam = m_CenterDP->getCharacterParam();
 
 	// If already have the Center Character, Change the Button String to "Select"
-	if (CUserDataManager::Instance()->getUserData_IsItemHave("USER_CHARACTER_LIST", centerCharacterParam._idx))
+	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam._idx))
 		m_btnSelect->changeContents("Select");
 	else// If do not have, Change the Button String to "buy cost"
 		m_btnSelect->changeContents(MakeString("$ %d", centerCharacterParam._cost));

@@ -294,6 +294,8 @@ void CDownloadManager::loadLocalPackageInfoFile()
 	string writableData = FileUtils::getInstance()->getStringFromFile(localPath);
 	string localData = FileUtils::getInstance()->getStringFromFile(PACKAGE_FILE_PATH);
 	string packageInfo = "";
+    
+    CCLOG("Local path : %s", localPath.c_str());
 
 	if		(writableData.size() != 0)	packageInfo = writableData;
 	else if (localData.size() != 0)		packageInfo = localData;

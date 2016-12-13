@@ -7,7 +7,6 @@ public:
 	받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다.*/
 	static CNormalMissile* create();
 
-	virtual void Rotation(float dir, float delta) override;
 	virtual void CollisionWithPlayer() override;
 	virtual void CollisionWithPlanet() override;
 	virtual void CollisionWithBarrier() override;

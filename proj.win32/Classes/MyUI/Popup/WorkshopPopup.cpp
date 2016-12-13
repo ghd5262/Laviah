@@ -57,7 +57,7 @@ bool CWorkshopPopup::init()
 	size_t dpDistance = 15;
 	float spawnCount = 4;
 
-	unsigned currentItemIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_SELECT_ITEM");
+	unsigned currentItemIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::SELECT_ITEM);
 
 	// Create the list view
 	auto listView = ListView::create();

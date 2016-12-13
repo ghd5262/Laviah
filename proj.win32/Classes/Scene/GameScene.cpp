@@ -89,7 +89,7 @@ bool CGameScene::init()
     CObjectManager::Instance()->setBackground(background);
     
 
-	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
+	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
 	sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
 	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
 
@@ -144,7 +144,6 @@ bool CGameScene::init()
 
 	this->initKeyboardListener();
     this->OpenGameMenuLayer();
-	this->createRandomCoin();
 
 	return true;
 }

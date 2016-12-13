@@ -96,7 +96,7 @@ bool CVideoPopup::init()
 		this->UseCoin(sender);
 	}, iconArray[1], contentArray[1], posArray[1], COLOR::GOLD);
     
-	if (CUserDataManager::Instance()->getUserData_Number("USER_COIN") < g_coinToRevive)
+	if (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) < g_coinToRevive)
 		btnCoin->setTouchEnable(false);
 
     auto btnEnd = CMyButton::create()

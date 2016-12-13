@@ -46,7 +46,6 @@ CBullet* CNormalMissile::build()
 	CBullet::build();
 
 	this->createParticle_Flame();
-	//this->createTargetLine();
 
 	return this;
 }
@@ -75,29 +74,11 @@ void CNormalMissile::Execute(float delta)
 	m_FSM->Execute(delta);
 }
 
-void CNormalMissile::Rotation(float dir, float delta)
-{
-
-	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
-	if (this->getIsAiming()){
-		if (!m_ScreenRect.containsPoint(getPosition()))
-		{
-			return;
-		}
-	}
-
-	CBullet::Rotation(dir, delta);
-}
-
 void CNormalMissile::CollisionWithPlanet()
 {
-    //CAudioManager::Instance()->PlayEffectSound(MakeString("sounds/explosion_%d.mp3", getIsAiming() + 1), false);
-    //CCLOG("Arrive Time : %f Real Time : %f speed : %f", BULLETCREATOR::CREATE_DISTANCE / getSpeed(), m_Time, getSpeed());
-
-	if (this->getIsAiming())
-		m_Planet->CrushShake(0.01f, 0.5f, 0.1f, 5.0f);
-	else
-		m_Planet->CrushShake(0.01f, 0.3f, 0.1f, 3.0f);
+    //		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_0.mp3", false);
+    
+	m_Planet->CrushShake(0.01f, 0.3f, 0.1f, 3.0f);
 	
     this->createParticle_Explosion();
 	this->ReturnToMemoryBlock();
@@ -105,7 +86,7 @@ void CNormalMissile::CollisionWithPlanet()
 
 void CNormalMissile::CollisionWithPlayer()
 {
-    //		CAudioManager::Instance()->PlayEffectSound(MakeString("sounds/explosion_%d.mp3", getIsAiming() + 1), false);
+    //		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_0.mp3", false);
     
 	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
 		createScoreCurrentPos(50);
@@ -114,12 +95,7 @@ void CNormalMissile::CollisionWithPlayer()
 	else{
 		m_Player->StackedRL(0.1f, 10, 10, 5);
 		m_Player->LostSomeHealth(this->getPower());
-        
-		if (this->getIsAiming())
-			m_Planet->CrushShake(0.01f, 0.5f, 0.1f, 5.0f);
-		else
-			m_Planet->CrushShake(0.01f, 0.2f, 0.1f, 3.0f);
-		
+		m_Planet->CrushShake(0.01f, 0.2f, 0.1f, 3.0f);
 
 		this->ReturnToMemoryBlock();
 	}
@@ -139,8 +115,6 @@ void CNormalMissile::ChangeToCoinOrStar()
 	this->setAlive(false);
 
 	std::string patternName = m_Player->getCharacterParam()._normalMissilePattern;
-	if (getIsAiming())
-        patternName = m_Player->getCharacterParam()._aimingMissilePattern;
 
 	float distance = m_TargetVec.distance(getPosition());
 
@@ -163,7 +137,6 @@ void CNormalMissile::createTargetLine()
 	bullet->setDistance(m_Planet->getBoundingRadius() * 0.9f);
 	bullet->setBullet(this);
 	bullet->setIsFly(false);
-	bullet->setIsAiming(getIsAiming());
 	bullet->build();
 
     CGameScene::getGameScene()->addChild(bullet, ZORDER::BACKGROUND);
@@ -212,8 +185,7 @@ void CNormalMissile::createParticle_Flame()
 
 void CNormalMissile::createParticle_Explosion()
 {
-    m_pParticleCrash = CParticle_Explosion::create(MakeString("explosion_%d.png",
-                                                              getIsAiming() + 1));
+    m_pParticleCrash = CParticle_Explosion::create("explosion_0.png");
     if (m_pParticleCrash != nullptr){
         m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleCrash->setAngle(-getRotation());

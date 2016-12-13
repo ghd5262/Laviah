@@ -133,6 +133,6 @@ void CWorkshopPopupDP::Buy(Node* sender)
         m_LevelProgressBar->UpdateProgress();
         
         // set current selected item idx
-        CUserDataManager::Instance()->setUserData_Number("USER_CUR_SELECT_ITEM", m_WorkshopItem._idx);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::SELECT_ITEM, m_WorkshopItem._idx);
     }
 }

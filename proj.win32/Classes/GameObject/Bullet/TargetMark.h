@@ -13,7 +13,6 @@ public:
     CTargetMark* build();
     
 	virtual void Execute(float delta = 0.f) override;
-	virtual void Rotation(float dir, float delta) override;
 
 protected:
 	virtual bool init() override;

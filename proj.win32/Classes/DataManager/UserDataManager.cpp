@@ -252,7 +252,7 @@ bool CUserDataManager::isGoogleRevisionHigher()
 {
 	unsigned googleRevision = 0;
 	unsigned xmlRevision = 0;
-	std::string key = "USER_DATA_SAVE_REVISION";
+	std::string key = USERDATA_KEY::DATA_REVISION;
 	if (m_JsonUserDataFromGoogleCloud != "")
 	{
 		Json::Value googleJsonRoot;
@@ -361,7 +361,7 @@ float CUserDataManager::getItemCurrentValue(std::string key)
 
 void CUserDataManager::convertUserDataToJson()
 {
-	setSaveRevision(getUserData_Number("USER_DATA_SAVE_REVISION") + 1);
+	setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
 
 	JSONWRITER_CREATE
 		
@@ -407,8 +407,8 @@ void CUserDataManager::convertUserDataToJson()
 #pragma mark [ interface function setter ]
 void CUserDataManager::setSaveRevision(unsigned value)
 {
-    if(m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION") != m_UserData->_userDataUnsignedMap.end())
-        m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION")->second = value;
+    if(m_UserData->_userDataUnsignedMap.find(USERDATA_KEY::DATA_REVISION) != m_UserData->_userDataUnsignedMap.end())
+        m_UserData->_userDataUnsignedMap.find(USERDATA_KEY::DATA_REVISION)->second = value;
 }
 
 void CUserDataManager::setUserData_Number(std::string key, unsigned value)
@@ -443,12 +443,12 @@ bool CUserDataManager::CoinUpdate(int value)
     if (value > 0)
     {
         result = true;
-        setUserData_Number("USER_COIN", getUserData_Number("USER_COIN") + value);
+        setUserData_Number(USERDATA_KEY::COIN, getUserData_Number(USERDATA_KEY::COIN) + value);
     }
     else
     {
         result = false;
-        if ((value * -1) > getUserData_Number("USER_COIN") )
+        if ((value * -1) > getUserData_Number(USERDATA_KEY::COIN) )
         {
             Size visibleSize = Director::getInstance()->getVisibleSize();
             Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -463,7 +463,7 @@ bool CUserDataManager::CoinUpdate(int value)
         else
         {
             result = true;
-            setUserData_Number("USER_COIN", getUserData_Number("USER_COIN") + value);
+            setUserData_Number(USERDATA_KEY::COIN, getUserData_Number(USERDATA_KEY::COIN) + value);
         }
     }
     return result;
@@ -479,7 +479,7 @@ bool CUserDataManager::CoinUpdate(int value)
 //        CCLOG("GoogleLoginResult : Call google revision function");
 //        
 //        // 리비전 비교 위해 함수 호출
-//        std::string crypto_key = MakeCryptoString("USER_DATA_SAVE_REVISION", CRYPTO_KEY);
+//        std::string crypto_key = MakeCryptoString(USERDATA_KEY::DATA_REVISION, CRYPTO_KEY);
 //        CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
 //        
 //        m_IsFirstRevisionCall = true;
@@ -546,8 +546,8 @@ bool CUserDataManager::CoinUpdate(int value)
 //#pragma mark [ interface function setter ]
 //void CUserDataManager::setSaveRevision(unsigned value)
 //{
-//    if(m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION") != m_UserData->_userDataUnsignedMap.end())
-//        m_UserData->_userDataUnsignedMap.find("USER_DATA_SAVE_REVISION")->second = value;
+//    if(m_UserData->_userDataUnsignedMap.find(USERDATA_KEY::DATA_REVISION) != m_UserData->_userDataUnsignedMap.end())
+//        m_UserData->_userDataUnsignedMap.find(USERDATA_KEY::DATA_REVISION)->second = value;
 //    
 //    convertUserDataToJson_Revision();
 //}
@@ -578,12 +578,12 @@ bool CUserDataManager::CoinUpdate(int value)
 //    if (value > 0)
 //    {
 //        result = true;
-//        setUserData_Number("USER_COIN", getUserData_Number("USER_COIN") + value);
+//        setUserData_Number(USERDATA_KEY::COIN, getUserData_Number(USERDATA_KEY::COIN) + value);
 //    }
 //    else
 //    {
 //        result = false;
-//        if ((value * -1) > getUserData_Number("USER_COIN") )
+//        if ((value * -1) > getUserData_Number(USERDATA_KEY::COIN) )
 //        {
 //            Size visibleSize = Director::getInstance()->getVisibleSize();
 //            Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -596,7 +596,7 @@ bool CUserDataManager::CoinUpdate(int value)
 //        else
 //        {
 //            result = true;
-//            setUserData_Number("USER_COIN", getUserData_Number("USER_COIN") + value);
+//            setUserData_Number(USERDATA_KEY::COIN, getUserData_Number(USERDATA_KEY::COIN) + value);
 //        }
 //    }
 //    return result;
@@ -627,7 +627,7 @@ bool CUserDataManager::CoinUpdate(int value)
 //        xmlRevision = root["data"].asInt();
 //    }
 //    
-//    unsigned googleRevision = getUserData_Number("USER_DATA_SAVE_REVISION");
+//    unsigned googleRevision = getUserData_Number(USERDATA_KEY::DATA_REVISION);
 //    
 //    CCLOG("xmlRevision : %u googleRevision : %u", xmlRevision, googleRevision);
 //    
@@ -742,7 +742,7 @@ bool CUserDataManager::CoinUpdate(int value)
 //    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
 //    
 //    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
-//    setSaveRevision(getUserData_Number("USER_DATA_SAVE_REVISION") + 1);
+//    setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
 //    
 //    if (CGoogleCloudManager::Instance()->getIsConnected())
 //        CGoogleCloudManager::Instance()->GoogleCloudDataSave(crypto_key.c_str(), crypto_value);
@@ -766,7 +766,7 @@ bool CUserDataManager::CoinUpdate(int value)
 //    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
 //    
 //    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
-//    setSaveRevision(getUserData_Number("USER_DATA_SAVE_REVISION") + 1);
+//    setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
 //    
 //    if (CGoogleCloudManager::Instance()->getIsConnected())
 //        CGoogleCloudManager::Instance()->GoogleCloudDataSave(crypto_key.c_str(), crypto_value);
@@ -774,7 +774,7 @@ bool CUserDataManager::CoinUpdate(int value)
 //
 //void CUserDataManager::convertUserDataToJson_Revision()
 //{
-//    std::string key = "USER_DATA_SAVE_REVISION";
+//    std::string key = USERDATA_KEY::DATA_REVISION;
 //    
 //    JSONWRITER_CREATE
 //    root["data"] = getUserData_Number(key);

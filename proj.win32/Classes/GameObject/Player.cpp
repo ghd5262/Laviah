@@ -62,12 +62,12 @@ bool CPlayer::init()
 {
     if (!CGameObject::init()) return false;
     
-    m_fMagnetLimitTime = m_CharacterParam._magnetItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_TIME_IDX");
-    m_fMagnetLimitRadius = m_CharacterParam._magnetItemSize + CUserDataManager::Instance()->getItemCurrentValue("USER_MAGNET_LIMIT_SIZE_IDX");
-    m_fCoinLimitTime = m_CharacterParam._coinItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_COIN_LIMIT_TIME_IDX");
-    m_fStarLimitTime = m_CharacterParam._starItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_STAR_LIMIT_TIME_IDX");
-    m_fBonusTimeLimitTime = m_CharacterParam._bonusItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_BONUS_LIMIT_TIME_IDX");
-    m_fGiantLimitTime = m_CharacterParam._giantItemTime + CUserDataManager::Instance()->getItemCurrentValue("USER_GIANT_LIMIT_TIME_IDX");
+    m_fMagnetLimitTime = m_CharacterParam._magnetItemTime + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_TIME_MAGNET);
+    m_fMagnetLimitRadius = m_CharacterParam._magnetItemSize + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_SIZE_MAGNET);
+    m_fCoinLimitTime = m_CharacterParam._coinItemTime + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_TIME_COIN);
+    m_fStarLimitTime = m_CharacterParam._starItemTime + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_TIME_STAR);
+    m_fBonusTimeLimitTime = m_CharacterParam._bonusItemTime + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_TIME_BOUNS);
+    m_fGiantLimitTime = m_CharacterParam._giantItemTime + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_TIME_GIANT);
     
     this->setItemEffect(eITEM_FLAG_giant);
     this->setCascadeOpacityEnabled(true);

@@ -79,7 +79,7 @@ void CUserCoinButton::update(float delta)
 {
 	Size iconSize = m_CoinIcon->getContentSize();
 	
-	m_CoinLabel->setString(CScoreUI::insertComma(m_UserData->getUserData_Number("USER_COIN")));
+	m_CoinLabel->setString(CScoreUI::insertComma(m_UserData->getUserData_Number(USERDATA_KEY::COIN)));
 	m_Back->setContentSize(Size(m_CoinLabel->getContentSize().width + (iconSize.width * 2.5f), iconSize.height * 2.0f));
 	this->setContentSize(m_Back->getContentSize());
 	m_Back->setPosition(this->getContentSize() / 2);

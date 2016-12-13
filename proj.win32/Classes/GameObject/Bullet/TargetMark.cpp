@@ -86,26 +86,13 @@ bool CTargetMark::init()
 
 void CTargetMark::setParticle()
 {
-    m_pParticle = CParticle_Line::create(MakeString("particle_star%d.png", this->getIsAiming() + 1));
+    m_pParticle = CParticle_Line::create("particle_star0.png");
     if (m_pParticle != nullptr){
 		m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_pParticle->setPosVar(Vec2(this->getContentSize().width * 0.7f, 20));
         m_pParticle->setPosition(Vec2(this->getContentSize().width, this->getContentSize().height /2));
         this->addChild(m_pParticle, 10);
     }
-}
-
-void CTargetMark::Rotation(float dir, float delta)
-{
-	// aimingMissile일 경우 화면안에 들어왔을 때에만 회전한다.
-	if (this->getIsAiming() && !m_isItemTime){
-		if (m_Bullet->IsAlive() && !m_ScreenRect.containsPoint(m_Bullet->getPosition()))
-		{
-			return;
-		}
-	}
-
-	CBullet::Rotation(dir, delta);
 }
 
 void CTargetMark::Execute(float delta)

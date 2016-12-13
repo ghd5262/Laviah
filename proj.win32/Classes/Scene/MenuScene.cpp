@@ -81,7 +81,7 @@ bool CMenuScene::initVariable()
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
+	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
 	sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
 
 	auto planet = CPlanet::create(currentCharacterInfo._planetTextureName);

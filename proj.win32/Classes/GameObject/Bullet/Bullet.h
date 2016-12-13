@@ -58,7 +58,6 @@ struct sBULLET_PARAM{
 	float _delayTime;
     char  _symbol;
     bool  _isFly;
-	bool  _isAiming;
 
 	sBULLET_PARAM()
     : _spriteName("")
@@ -69,8 +68,7 @@ struct sBULLET_PARAM{
     , _distance(0)
 	, _delayTime(0)
     , _symbol(-1)
-    , _isFly(true)
-    , _isAiming(false){}
+    , _isFly(true){}
     
     sBULLET_PARAM(const sBULLET_PARAM& data)
     : _spriteName(data._spriteName)
@@ -81,8 +79,7 @@ struct sBULLET_PARAM{
     , _distance(data._distance)
 	, _delayTime(data._delayTime)
     , _symbol(data._symbol)
-    , _isFly(data._isFly)
-    , _isAiming(data._isAiming){}
+    , _isFly(data._isFly){}
     
     sBULLET_PARAM(const sBULLET_PARAM* data)
     : _spriteName(data->_spriteName)
@@ -93,8 +90,7 @@ struct sBULLET_PARAM{
     , _distance(data->_distance)
 	, _delayTime(data->_delayTime)
     , _symbol(data->_symbol)
-    , _isFly(data->_isFly)
-    , _isAiming(data->_isAiming){}
+    , _isFly(data->_isFly){}
 };
 
 class CScoreUI;
@@ -123,7 +119,6 @@ public:
     void  setPower          (float data);
     void  setSymbol         (float data);
     void  setIsFly          (float data);
-    void  setIsAiming       (float data);
     
     sBULLET_PARAM getInfo()   const;
     float getSpeed()          const;
@@ -133,7 +128,6 @@ public:
     float getPower()          const;
     char  getSymbol()         const;
     bool  getIsFly()          const;
-    bool  getIsAiming()       const;
     
     //현재 bullet이 영향을 받는 모든 플래그를 반환함
     int getItemEffect(){ return m_ItemFlag; }

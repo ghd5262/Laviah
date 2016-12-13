@@ -54,15 +54,15 @@ void CCharacterSelectPopupDP::Buy()
     if (CUserDataManager::Instance()->CoinUpdate(-m_Character._cost)){
     
         // USER Data Save
-        CUserDataManager::Instance()->setUserData_ItemGet("USER_CHARACTER_LIST", m_Character._idx);
-        CUserDataManager::Instance()->setUserData_Number("USER_CUR_CHARACTER", m_Character._idx);
+        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Character._idx);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character._idx);
     }
 }
 
 void CCharacterSelectPopupDP::Select()
 {
     // USER Data Save
-    CUserDataManager::Instance()->setUserData_Number("USER_CUR_CHARACTER", m_Character._idx);
+    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character._idx);
 }
 
 void CCharacterSelectPopupDP::Center()

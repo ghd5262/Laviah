@@ -318,7 +318,6 @@ void CBullet::setDelayTime		(float data) { m_BulletInfo._delayTime		  = data; }
 void CBullet::setPower          (float data) { m_BulletInfo._power            = data; }
 void CBullet::setSymbol         (float data) { m_BulletInfo._symbol           = data; }
 void CBullet::setIsFly          (float data) { m_BulletInfo._isFly            = data; }
-void CBullet::setIsAiming       (float data) { m_BulletInfo._isAiming         = data; }
 
 sBULLET_PARAM CBullet::getInfo()   const { return m_BulletInfo;                 }
 float CBullet::getBoundingRadius() const { return m_BulletInfo._boundingRadius; }
@@ -329,4 +328,3 @@ float CBullet::getDelayTime()      const { return m_BulletInfo._delayTime;		}
 float CBullet::getPower()          const { return m_BulletInfo._power;          }
 char  CBullet::getSymbol()         const { return m_BulletInfo._symbol;         }
 bool  CBullet::getIsFly()          const { return m_BulletInfo._isFly;          }
-bool  CBullet::getIsAiming()       const { return m_BulletInfo._isAiming;       }

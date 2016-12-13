@@ -104,7 +104,7 @@ void CGachaPopup::PlayGacha(Node* sender){
         CCLOG("format popup PlayGacha");
         
         int allCharacterCount = static_cast<int>(CCharacterDataManager::Instance()->getCharacterList().size());
-        auto haveCharacterList = CUserDataManager::Instance()->getUserData_List("USER_CHARACTER_LIST");
+        auto haveCharacterList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST);
         int currentCharacterCount = static_cast<int>(haveCharacterList->size());
         
         if (allCharacterCount < haveCharacterList->size())
@@ -121,11 +121,11 @@ void CGachaPopup::PlayGacha(Node* sender){
         {
             do{
                 randomIdx = random<int>(0, allCharacterCount - 1);
-            } while (CUserDataManager::Instance()->getUserData_IsItemHave("USER_CHARACTER_LIST", randomIdx));
+            } while (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, randomIdx));
         }
         
         CCLOG("GET %d", randomIdx);
-        CUserDataManager::Instance()->setUserData_ItemGet("USER_CHARACTER_LIST", randomIdx);
-        CUserDataManager::Instance()->setUserData_Number("USER_CUR_CHARACTER", randomIdx);
+        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, randomIdx);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, randomIdx);
     }
 }

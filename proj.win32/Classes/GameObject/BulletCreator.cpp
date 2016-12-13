@@ -45,7 +45,7 @@ bool CBulletCreator::init()
     
     this->Clear();
     
-    auto index = CUserDataManager::Instance()->getUserData_Number("USER_CUR_CHARACTER");
+    auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
     m_CharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(index);
     
     return true;

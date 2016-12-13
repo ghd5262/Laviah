@@ -45,7 +45,6 @@ CBulletDataManager::CBulletDataManager()
         param._boundingRadius   = bullet["bindingRadius"].asDouble();
         param._power            = bullet["power"].asDouble();
 		param._speed			= bullet["speed"].asDouble();
-        param._isAiming         = bullet["isAimingMissile"].asBool();
         
         AddBulletData(param);
     }

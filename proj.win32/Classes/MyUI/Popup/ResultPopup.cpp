@@ -188,14 +188,14 @@ bool CResultPopup::init()
     auto totalScoreBG = createLayerBG(startPos[6]);
     totalScoreBG->setTexture("resultPopup_1.png");
     
-    auto bestScore = CUserDataManager::Instance()->getUserData_Number("USER_BEST_TOTAL_SCORE");
+    auto bestScore = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
     std::string totalContent = "Total Score";
     
     // total score가 best score면 저장한다.
     if (GLOBAL->TOTALSCORE > bestScore){
         totalContent = "Best Score";
         bestScore = GLOBAL->TOTALSCORE;
-        CUserDataManager::Instance()->setUserData_Number("USER_BEST_TOTAL_SCORE", GLOBAL->TOTALSCORE);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, GLOBAL->TOTALSCORE);
     }
     auto totalLabel = createContent(totalScoreBG,
                                     Vec2(totalScoreBG->getContentSize().width * 0.08f,
