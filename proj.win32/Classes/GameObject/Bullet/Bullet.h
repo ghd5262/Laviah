@@ -109,6 +109,8 @@ public:
 
     virtual void Execute(float delta) override;
 
+    void ChangeState(CState<CBullet>* newState)
+    { m_FSM->ChangeState(newState); };
     CBullet* setBulletInfo(sBULLET_PARAM data);
     virtual CBullet* build(); //TODO: 빌드가 하위클래스들의 init보다 시점이 늦기 때문에 하위 클래스들역시 빌드를 해야한다.
     
@@ -154,7 +156,6 @@ protected:
 
 	//getter & setter
 	//중요 - 멤버변수로 포인터를 넣을때는 꼭 초기화 및 nullptr을 이용하자 (크래시 유발)
-    CC_SYNTHESIZE(CStateMachine<CBullet>*, m_FSM, FSM);
     CC_SYNTHESIZE(CPlayer*, m_Player, Player);
     CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
     CC_SYNTHESIZE(cocos2d::Vec2, m_TargetVec, TargetVec);
@@ -166,37 +167,41 @@ protected:
 
 	/* "R_"로 시작하는 함수는 이펙트가 끝나면 ReturnToMemoryBlock 호출됨*/
 
-	// 목표지점으로 이동 후 커지면서 FadeOut 
-	void R_BezierWithScale(
-		cocos2d::Vec2 targetPos,
-		cocos2d::Vec2 controlPoint_1,
-		cocos2d::Vec2 controlPoint_2,
-		float time,
-		float scale);
-	
-
-	// 목표지점으로 이동 하면서 회전 
-	void R_BezierWithRotation(
-		cocos2d::Vec2 targetPos,
-		cocos2d::Vec2 controlPoint_1,
-		cocos2d::Vec2 controlPoint_2,
-		float time);
-
-
-	// 현재지점에서 커지면서 FadeOut
-	void R_ScaleWithFadeOut(
-		float scale, 
-		float scaleTime, 
-		float fadeOutTime);
-
-
-	// 현재지점에서 removeTime 후 FadeOut count만큼 반복 후 삭제
-	void R_FadeOutWithCount(
-		int intervalCount,
-		float removeTime);
+    // 목표지점으로 이동 후 커지면서 FadeOut
+    void R_UpAndBezier(cocos2d::Vec2 targetPos,
+                       cocos2d::Vec2 controlPoint_1,
+                       cocos2d::Vec2 controlPoint_2,
+                       float time,
+                       float scale);
     
-	// 좌우로 흔들림
-	void StackedRL(float duration, float stackSize, int stackCount);
+    
+    // 목표지점으로 이동 후 커지면서 FadeOut
+    void R_BezierWithScale(cocos2d::Vec2 targetPos,
+                           cocos2d::Vec2 controlPoint_1,
+                           cocos2d::Vec2 controlPoint_2,
+                           float time,
+                           float scale);
+    
+    
+    // 목표지점으로 이동 하면서 회전
+    void R_BezierWithRotation(cocos2d::Vec2 targetPos,
+                              cocos2d::Vec2 controlPoint_1,
+                              cocos2d::Vec2 controlPoint_2,
+                              float time);
+    
+    
+    // 현재지점에서 커지면서 FadeOut
+    void R_ScaleWithFadeOut(float scale,
+                            float scaleTime, 
+                            float fadeOutTime);
+    
+    
+    // 현재지점에서 removeTime 후 FadeOut count만큼 반복 후 삭제
+    void R_FadeOutWithCount(int repeat,
+                            float removeTime);
+    
+    // 좌우로 흔들림
+    void StackedRL(float duration, float stackSize, int stackCount);
 
 	// 조종행동 - 찾기
 	void Seek(float delta);
@@ -209,6 +214,9 @@ protected:
 
 private:
 	bool on(eITEM_FLAG itemType){ return (m_ItemFlag & itemType) == itemType; }
+    
+protected:
+    CStateMachine<CBullet>* m_FSM;
     
 private:
     sBULLET_PARAM m_BulletInfo;

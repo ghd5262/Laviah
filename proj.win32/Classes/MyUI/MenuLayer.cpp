@@ -113,9 +113,11 @@ bool CMenuLayer::init()
         
         createTestButton([=](Node* sender){
             createTwoButtonPopup([](Node* sender){
+                
 				CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyAway::Instance());
+                CGameScene::getGameScene()->RandomCoin();
             }, "Are you sure want reset user data?");
-        }, "R", testButtonPos[4], Size(30, 30)),
+        }, "R", testButtonPos[4], Size(100, 100)),
     };
     
     this->setOpenAnimation([=](Node* sender){
@@ -133,8 +135,8 @@ bool CMenuLayer::init()
 
 bool CMenuLayer::TouchBegan(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
 {
-	CCPoint touchLocation = pTouch->getLocationInView();
-	touchLocation = CCDirector::sharedDirector()->convertToGL(touchLocation);
+	Point touchLocation = pTouch->getLocationInView();
+	touchLocation = Director::getInstance()->convertToGL(touchLocation);
 	CGameScene::getGameScene()->setTouchPos(convertToNodeSpace(touchLocation));
 	CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyToTouchArea::Instance());
 
@@ -143,8 +145,8 @@ bool CMenuLayer::TouchBegan(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
 
 void CMenuLayer::TouchScreen(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
 {
-	CCPoint touchLocation = pTouch->getLocationInView();
-	touchLocation = CCDirector::sharedDirector()->convertToGL(touchLocation);
+	Point touchLocation = pTouch->getLocationInView();
+	touchLocation = Director::getInstance()->convertToGL(touchLocation);
 	CGameScene::getGameScene()->setTouchPos(convertToNodeSpace(touchLocation));
 	CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyToTouchArea::Instance());
 

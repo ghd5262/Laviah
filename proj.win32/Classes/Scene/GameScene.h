@@ -32,6 +32,7 @@ public:
     void GameHelp();
 	void WatchVideo();
     void GameExit();
+    void RandomCoin();
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }

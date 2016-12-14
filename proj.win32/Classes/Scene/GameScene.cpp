@@ -215,6 +215,11 @@ void CGameScene::OpenGameMenuLayer()
 	this->createRandomCoin();
 }
 
+void CGameScene::RandomCoin()
+{
+    this->createRandomCoin();
+}
+
 void CGameScene::clearData()
 {
     CObjectManager::Instance()->Clear();
@@ -337,8 +342,10 @@ void CGameScene::initKeyboardListener()
 
 void CGameScene::createRandomCoin()
 {
-	auto bullet = CBulletCreator::createBullet('U', random<int>(0, 360), 400, false);
-	bullet->setPosition(Vec2(random<int>(0, m_VisibleSize.width), random<int>(0, m_VisibleSize.height)));
+	auto bullet = CBulletCreator::createBullet('U', 0, 0, false);
+    auto padding = 200;
+	bullet->setPosition(Vec2(random<int>(padding, m_VisibleSize.width - padding),
+                             random<int>(padding, m_VisibleSize.height - padding)));
 	bullet->setLocalZOrder(ZORDER::PLAYER);
 }
 //void CGameScene::ResetGameScene()

@@ -108,10 +108,13 @@ void CSpaceShip::Collision()
         {
             auto visibleSize = Director::getInstance()->getVisibleSize();
             auto targetPos = Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.96f);
-            auto length = Vec2(targetPos - getPosition()).length();
-            auto cPos1 = Vec2(getPosition().x - (length * 0.3f), getPosition().y - (length * 0.1f));
+            auto length = Vec2(targetPos - bullet->getPosition()).length();
+            auto cPos1 = Vec2(bullet->getPosition().x - (length * 0.3f),
+                              bullet->getPosition().y - 50.f);
             auto cPos2 = Vec2(targetPos.x, targetPos.y - (length * 0.3f));
-            bullet->R_BezierWithScale(targetPos, cPos1, cPos2, (length / visibleSize.height), 4.f);
+            auto time = std::max<float>(0.5f, (length / visibleSize.height) * 1.3f);
+            
+            bullet->R_UpAndBezier(targetPos, cPos1, cPos2, time, 4.f);
         }
     }
 }

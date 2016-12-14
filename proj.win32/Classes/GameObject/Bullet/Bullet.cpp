@@ -174,98 +174,134 @@ void CBullet::Rotation(float dir, float delta)
     setRotation(-getAngle());
 }
 
+void CBullet::R_UpAndBezier(cocos2d::Vec2 targetPos,
+                   cocos2d::Vec2 controlPoint_1,
+                   cocos2d::Vec2 controlPoint_2,
+                   float time,
+                   float scale)
+{
+    // do not execute
+    this->setAlive(false);
+    
+    // zorder
+    this->setLocalZOrder(ZORDER::POPUP);
+    
+    // create action
+    ccBezierConfig bezier;
+    bezier.controlPoint_1 = Vec2(controlPoint_1);
+    bezier.controlPoint_2 = Vec2(controlPoint_2);
+    bezier.endPosition    = Vec2(targetPos);
+    auto upActin      = MoveTo::create(0.6f, Vec2(getPositionX(), getPositionY() + 150.f));
+    auto sineAction   = EaseExponentialOut::create(upActin);
+    auto delayAction  = DelayTime::create(0.5f);
+    auto bezierAction = BezierTo::create(time, bezier);
+    auto exponential  = EaseSineIn::create(bezierAction);
+    auto scaleAction  = ScaleTo::create(0.4f, scale);
+    auto fadeAction   = FadeTo::create(0.4f, 1);
+    auto spawn = Spawn::create(scaleAction, fadeAction, nullptr);
+    
+    auto action = Sequence::create(sineAction,
+                                   delayAction,
+                                   exponential,
+                                   spawn,
+                                   CallFunc::create([=](){
+        
+        this->ReturnToMemoryBlock();
+        
+    }), nullptr);
+    
+    this->runAction(action);
+}
 
 /* 일정 위치로 베지어 곡선을 그리며 이동한 후 커지면서 FadeOut */
 void CBullet::R_BezierWithScale(Vec2 targetPos, Vec2 controlPoint_1, Vec2 controlPoint_2, float time, float scale)
 {
-    // 더이상 Execute 하지 않는다.
-    setAlive(false);
+    // do not execute
+    this->setAlive(false);
     
-    // 베지어 곡선 생성
+    // zorder
+    this->setLocalZOrder(ZORDER::POPUP);
+    
+    // create action
     ccBezierConfig bezier;
     bezier.controlPoint_1 = Vec2(controlPoint_1);
     bezier.controlPoint_2 = Vec2(controlPoint_2);
-    bezier.endPosition = Vec2(targetPos);
+    bezier.endPosition    = Vec2(targetPos);
+    auto bezierAction = BezierTo::create(time, bezier);
+    auto scaleAction  = ScaleTo::create(0.4f, scale);
+    auto fadeAction   = FadeTo::create(0.4f, 1);
+    auto spawn = Spawn::create(scaleAction, fadeAction, nullptr);
     
-    // 베지어 액션 및 다른 액션 순서대로 실행
-    auto bezierTo1 = BezierTo::create(time, bezier);
-    this->setLocalZOrder(101);
-    auto action = Sequence::create(bezierTo1,
-        Spawn::create(ScaleBy::create(0.5f, scale), FadeTo::create(0.8f, 1), NULL),
-        // 두 액션이 끝난후 스케줄을 걸어 오브젝트 삭제
-        CallFunc::create([&](){
-        this->scheduleOnce([=](float dt){
-            this->ReturnToMemoryBlock();
-        }, 1.0f, "BezierWithScale");
+    auto action = Sequence::create(bezierAction,
+                                   spawn,
+                                   CallFunc::create([=](){
+        
+        this->ReturnToMemoryBlock();
         
     }), nullptr);
-    this->runAction(action);
     
-    // texture 페이드 아웃
-//    auto textureAction = FadeOut::create(2.0f);
-//    m_pTexture->runAction(textureAction);
+    this->runAction(action);
 }
 
 
 void CBullet::R_BezierWithRotation(Vec2 targetPos, Vec2 controlPoint_1, Vec2 controlPoint_2, float time)
 {
-	// 더이상 Execute 하지 않는다.
-	setAlive(false);
+    // do not execute
+    setAlive(false);
 
+    // zorder
+    this->setLocalZOrder(ZORDER::POPUP);
+    
 	// 이전의 Action들을 cancel
 	this->stopAllActions();
 
 	ccBezierConfig bezier;
 	bezier.controlPoint_1 = Vec2(controlPoint_1);
 	bezier.controlPoint_2 = Vec2(controlPoint_2);
-	bezier.endPosition = Vec2(targetPos);
+	bezier.endPosition    = Vec2(targetPos);
+	auto bezierAction = BezierTo::create(time, bezier);
+    auto rotateAction = RotateBy::create(0.5f, 720.f);
+    auto spawn = Spawn::create(rotateAction, bezierAction, nullptr);
+	auto action = Sequence::create(spawn,
+                                   CallFunc::create([=](){
 
-	auto bezierTo1 = BezierTo::create(time, bezier);
-	auto action = Sequence::create(
-        Spawn::create(RotateBy::create(0.5f, 720.f), bezierTo1, NULL),
-		CallFunc::create([&](){
-
-		this->scheduleOnce([=](float dt){
-			this->ReturnToMemoryBlock();
-		}, 1.0f, "BezierWithRotation");
+        this->ReturnToMemoryBlock();
+        
 	}), nullptr);
+    
 	this->runAction(action);
-//	auto textureAction = RotateBy::create(0.5f, 720.f);
-//	m_pTexture->runAction(textureAction);
 }
 
 
 void CBullet::R_ScaleWithFadeOut(float scale, float scaleTime, float fadeOutTime)
 {
-	// 더이상 Execute 하지 않는다.
-	setAlive(false);
-
-	// 이전의 Action들을 cancel
+    // do not execute
+    this->setAlive(false);
+    
 	this->stopAllActions();
-//	this->m_pTexture->stopAllActions(); 
 
-	auto action = Sequence::create(
-        Spawn::create(FadeTo::create(fadeOutTime, 1), ScaleBy::create(scaleTime, scale), NULL),
-		CallFunc::create([=](){
-		this->scheduleOnce([=](float dt){
-			this->ReturnToMemoryBlock();
-		}, 1.0f, MakeString("ScaleWithFadeOut_%d", random<int>(1, 100)));
+    auto fadeAction = FadeTo::create(fadeOutTime, 1);
+    auto scaleAction = ScaleTo::create(scaleTime, scale);
+    auto spawn = Spawn::create(fadeAction, scaleAction, nullptr);
+    
+	auto action = Sequence::create(spawn,
+                                   CallFunc::create([=](){
+        this->ReturnToMemoryBlock();
 	}), nullptr);
+    
 	this->runAction(action);
-//	auto textureAction = FadeOut::create(fadeOutTime);
-//	this->runAction(textureAction);
 }
 
 
-void CBullet::R_FadeOutWithCount(int intervalCount, float removeTime)
+void CBullet::R_FadeOutWithCount(int repeat, float removeTime)
 {
 	this->scheduleOnce([=](float dt){
 		this->ReturnToMemoryBlock();
 	}, removeTime + 0.1f, MakeString("FadeOutWithCount_%d", random<int>(1, 100)));
 
-	auto textureAction1 = FadeTo::create((removeTime / intervalCount) - 0.1f, 1);
+	auto textureAction1 = FadeTo::create((removeTime / repeat) - 0.1f, 1);
 	auto textureAction2 = FadeTo::create(0.1f, 255);
-	auto repeatAction = Repeat::create(Sequence::create(textureAction2, textureAction1, nullptr), intervalCount);
+	auto repeatAction = Repeat::create(Sequence::create(textureAction2, textureAction1, nullptr), repeat);
 	this->runAction(repeatAction);
 }
 

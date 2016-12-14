@@ -41,7 +41,7 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 	if (bullet->IsEffectWithItem(static_cast<eITEM_FLAG>
 		(eITEM_FLAG_magnet & CItemManager::Instance()->getCurrentItem())))
 	{
-		bullet->getFSM()->ChangeState(CBulletMagnetItem::Instance());
+		bullet->ChangeState(CBulletMagnetItem::Instance());
 	}
 
 	if (bullet->IsEffectWithItem(static_cast<eITEM_FLAG>
@@ -135,7 +135,7 @@ void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 	}
 	if (!(CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_magnet))
 	{
-		bullet->getFSM()->ChangeState(CBulletNormal::Instance());
+		bullet->ChangeState(CBulletNormal::Instance());
 	}
 }
 
