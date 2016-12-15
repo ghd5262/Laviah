@@ -14,10 +14,10 @@
 class CBullet;
 class CPlanet;
 class CPlayer;
-class CSpaceShip;
+class CRocket;
 class CBackGround;
 class CBulletCreator;
-
+class CItemManager;
 class CObjectManager
 {
     // 회전 가속도 
@@ -56,7 +56,7 @@ public:
 	//getter & setter
 	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
 	CC_SYNTHESIZE(CPlayer*, m_Player, Player);
-    CC_SYNTHESIZE(CSpaceShip*, m_SpaceShip, SpaceShip);
+    CC_SYNTHESIZE(CRocket*, m_Rocket, Rocket);
     CC_SYNTHESIZE(CBulletCreator*, m_BulletCreator, BulletCreator);
 	CC_SYNTHESIZE(CBackGround*, m_Background, Background);
 	CC_SYNTHESIZE(float, m_fStageTime, StageTime);
@@ -66,10 +66,16 @@ public:
 private:
 	void createBulletByTimer(float delta);
 	void removeAllBullet();				// Delete함수 호출! 이유는 구현부에~
-	CObjectManager();
+    void bulletListExecute();
+    void bulletListRotate(float dir);
+    void inGameUpdate();
+    void waitingUpdate();
+    
+    CObjectManager();
 	~CObjectManager(){};
 
 private:
+    CItemManager* m_ItemManager;
 	std::vector<CBullet*> m_BulletList;
     float m_fRotateAcceleration;
 };

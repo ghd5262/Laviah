@@ -10,7 +10,7 @@
 #include "../GameObject/Bullet/Bullet.h"
 #include "../GameObject/BackGround.h"
 #include "../GameObject/BulletCreator.h"
-#include "../GameObject/SpaceShip.h"
+#include "../GameObject/Rocket.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/MenuLayer.hpp"
 #include "../MyUI/UILayer.hpp"
@@ -23,7 +23,7 @@
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
-#include "../AI/States/SpaceShipStates.h"
+#include "../AI/States/RocketStates.h"
 #include <array>
 
 USING_NS_CC;
@@ -112,14 +112,14 @@ bool CGameScene::init()
     CObjectManager::Instance()->setPlayer(player);
     
     
-    auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM());
-    spaceship->setSpeed(350.f);
-    spaceship->setDistance(500.f);
-	spaceship->setPosition(CBullet::getCirclePosition(random<int>(0, 360), SPACESHIP::FLYAWAY_DISTANCE, planet->getPosition()));
-    this->addChild(spaceship, ZORDER::PLAYER);
-    CObjectManager::Instance()->setSpaceShip(spaceship);
-   	spaceship->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), spaceship->getDistance(), planet->getPosition()));
-	spaceship->ChangeState(CFlyToTouchArea::Instance());
+    auto rocket = CRocket::create(sROCKET_PARAM());
+    rocket->setSpeed(350.f);
+    rocket->setDistance(500.f);
+	rocket->setPosition(CBullet::getCirclePosition(random<int>(0, 360), ROCKET::FLYAWAY_DISTANCE, planet->getPosition()));
+    this->addChild(rocket, ZORDER::PLAYER);
+    CObjectManager::Instance()->setRocket(rocket);
+   	rocket->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), rocket->getDistance(), planet->getPosition()));
+	rocket->ChangeState(CFlyToTouchArea::Instance());
 
     auto multipleScoreUI = CMultipleScore::Instance();
     this->addChild(multipleScoreUI, ZORDER::PLAYER);
@@ -206,9 +206,9 @@ void CGameScene::OpenGamePausePopup()
 void CGameScene::OpenGameMenuLayer()
 {
 	auto centerPos = Director::getInstance()->getVisibleSize() / 2;
-	auto spaceShip = CObjectManager::Instance()->getSpaceShip();
-	spaceShip->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), spaceShip->getDistance(), centerPos));
-	spaceShip->ChangeState(CFlyToTouchArea::Instance());
+	auto rocket = CObjectManager::Instance()->getRocket();
+	rocket->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), rocket->getDistance(), centerPos));
+	rocket->ChangeState(CFlyToTouchArea::Instance());
 
     this->clearData();
     this->createMenuLayer();

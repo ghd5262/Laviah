@@ -2,7 +2,7 @@
 #include "GameScene.h"
 #include "EmptyScene.h"
 #include "../GameObject/Planet.h"
-#include "../GameObject/SpaceShip.h"
+#include "../GameObject/Rocket.h"
 #include "../GameObject/Player.h"
 #include "../MyUI/MyButton.h"
 #include "../Task/PoolingManager.h"
@@ -98,11 +98,11 @@ bool CMenuScene::initVariable()
 	this->addChild(player);
 	CMenuSceneObjectManager::Instance()->setPlayer(player);
 
-	auto spaceship = CSpaceShip::create(sSPACESHIP_PARAM());
-	if (spaceship != nullptr)
+	auto rocket = CRocket::create(sROCKET_PARAM());
+	if (rocket != nullptr)
 	{
-		this->addChild(spaceship);
-		CMenuSceneObjectManager::Instance()->setSpaceShip(spaceship);
+		this->addChild(rocket);
+		CMenuSceneObjectManager::Instance()->setRocket(rocket);
 	}
 
 	InitMenuSceneUI();

@@ -5,8 +5,8 @@
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 #include "../GameObject/ObjectManager.h"
-#include "../GameObject/SpaceShip.h"
-#include "../AI/States/SpaceShipStates.h"
+#include "../GameObject/Rocket.h"
+#include "../AI/States/RocketStates.h"
 #include <array>
 
 using namespace cocos2d;
@@ -102,7 +102,7 @@ bool CMenuLayer::init()
         }, "Select", testButtonPos[1], Size(200, 150)),
         
         createTestButton([=](Node* sender){
-			CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyAway::Instance());
+			CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
             CGameScene::getGameScene()->GameStart();
             this->popupClose();
         }, "Start", testButtonPos[2], Size(200, 150)),
@@ -114,7 +114,7 @@ bool CMenuLayer::init()
         createTestButton([=](Node* sender){
             createTwoButtonPopup([](Node* sender){
                 
-				CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyAway::Instance());
+				CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
                 CGameScene::getGameScene()->RandomCoin();
             }, "Are you sure want reset user data?");
         }, "R", testButtonPos[4], Size(100, 100)),
@@ -138,7 +138,7 @@ bool CMenuLayer::TouchBegan(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
 	Point touchLocation = pTouch->getLocationInView();
 	touchLocation = Director::getInstance()->convertToGL(touchLocation);
 	CGameScene::getGameScene()->setTouchPos(convertToNodeSpace(touchLocation));
-	CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyToTouchArea::Instance());
+	CObjectManager::Instance()->getRocket()->ChangeState(CFlyToTouchArea::Instance());
 
 	return true;
 }
@@ -148,7 +148,7 @@ void CMenuLayer::TouchScreen(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
 	Point touchLocation = pTouch->getLocationInView();
 	touchLocation = Director::getInstance()->convertToGL(touchLocation);
 	CGameScene::getGameScene()->setTouchPos(convertToNodeSpace(touchLocation));
-	CObjectManager::Instance()->getSpaceShip()->ChangeState(CFlyToTouchArea::Instance());
+	CObjectManager::Instance()->getRocket()->ChangeState(CFlyToTouchArea::Instance());
 
 	//return true;
 }

@@ -4,7 +4,7 @@
 #include "BackGround.h"
 #include "ItemManager.h"
 #include "BulletCreator.h"
-#include "SpaceShip.h"
+#include "Rocket.h"
 #include "Bullet/Bullet.h"
 #include "../AI/States/StageStates.h"
 #include "../Scene/GameScene.h"
@@ -17,8 +17,9 @@ CObjectManager::CObjectManager()
 , m_BulletCreator(nullptr)
 , m_Planet(nullptr)
 , m_Player(nullptr)
-, m_SpaceShip(nullptr)
+, m_Rocket(nullptr)
 , m_Background(nullptr)
+, m_ItemManager(CItemManager::Instance())
 , m_fDelta(0.f)
 {}
 
@@ -70,6 +71,32 @@ void CObjectManager::RemoveAllObject()
 #endif
 }
 
+void CObjectManager::RotateAccelerationUpdate(float value){
+    // value가 음수
+    if(value < 0.f)
+    {
+        if(m_fRotateAcceleration + value > 0)
+            m_fRotateAcceleration += value;
+        else
+            m_fRotateAcceleration = 0;
+    }
+    else{
+        if(m_fRotateAcceleration + value < ROTATE_ACCEL_MAX)
+            m_fRotateAcceleration += value;
+        else
+            m_fRotateAcceleration = ROTATE_ACCEL_MAX;
+    }
+}
+
+void CObjectManager::ReturnToMemoryBlockAll()
+{
+    for(auto it : m_BulletList)
+    {
+        if(it->IsAlive())
+            it->ReturnToMemoryBlock();
+    }
+}
+
 void CObjectManager::createBulletByTimer(float delta)
 {
     m_fStageTime += delta;
@@ -95,66 +122,54 @@ void CObjectManager::createBulletByTimer(float delta)
 
 void CObjectManager::Execute(float delta)
 {
-    m_SpaceShip->Execute(delta);
-    
-    if (m_IsGamePause) return;
-    
     m_fDelta = delta;
-    
-    this->RotationObject(1);
-    this->createBulletByTimer(delta);
-    
-    CItemManager::Instance()->Execute(delta);
-    
-    m_BulletCreator->Update(delta);
-    m_Player->Execute(delta);
-    
-    for (auto bullet : m_BulletList)
-    {
-        if (bullet->IsAlive()) {
-            bullet->Execute(delta);
-        }
-    }
+    this->inGameUpdate();
+    this->waitingUpdate();
 }
 
 void CObjectManager::RotationObject(float dir)
 {
     if (m_IsGamePause) return;
     
-	for (auto bullet : m_BulletList)
-	{
-		if (bullet->IsAlive()) {
-			bullet->Rotation(dir + (dir * m_fRotateAcceleration), m_fDelta);
-		}
-	}
-    
+    this->bulletListRotate(dir);
     m_BulletCreator->setRotationAngle(dir + (dir * m_fRotateAcceleration), m_fDelta);
     m_Planet->Rotation(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
 	m_Player->Rotation(dir, m_fDelta);
 }
 
-void CObjectManager::RotateAccelerationUpdate(float value){
-    // value가 음수
-    if(value < 0.f)
+void CObjectManager::inGameUpdate()
+{
+    if (m_IsGamePause) return;
+    
+    this->RotationObject(1);
+    this->createBulletByTimer(m_fDelta);
+    m_ItemManager->Execute(m_fDelta);
+    m_BulletCreator->Update(m_fDelta);
+    m_Player->Execute(m_fDelta);
+    this->bulletListExecute();
+}
+
+void CObjectManager::waitingUpdate()
+{
+    m_Rocket->Execute(m_fDelta);
+}
+
+void CObjectManager::bulletListExecute()
+{
+    for (auto bullet : m_BulletList)
     {
-        if(m_fRotateAcceleration + value > 0)
-            m_fRotateAcceleration += value;
-        else
-            m_fRotateAcceleration = 0;
-    }
-    else{
-        if(m_fRotateAcceleration + value < ROTATE_ACCEL_MAX)
-            m_fRotateAcceleration += value;
-        else
-            m_fRotateAcceleration = ROTATE_ACCEL_MAX;
+        if (bullet->IsAlive()) {
+            bullet->Execute(m_fDelta);
+        }
     }
 }
 
-void CObjectManager::ReturnToMemoryBlockAll()
+void CObjectManager::bulletListRotate(float dir)
 {
-    for(auto it : m_BulletList)
+    for (auto bullet : m_BulletList)
     {
-        if(it->IsAlive())
-            it->ReturnToMemoryBlock();
+        if (bullet->IsAlive()) {
+            bullet->Rotation(dir + (dir * m_fRotateAcceleration), m_fDelta);
+        }
     }
 }

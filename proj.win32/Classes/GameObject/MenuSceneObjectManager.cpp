@@ -1,5 +1,5 @@
 #include "MenuSceneObjectManager.h"
-#include "SpaceShip.h"
+#include "Rocket.h"
 
 CMenuSceneObjectManager::CMenuSceneObjectManager()
 {
@@ -15,7 +15,7 @@ CMenuSceneObjectManager* CMenuSceneObjectManager::Instance()
 void CMenuSceneObjectManager::Clear()
 {
 	m_Planet = nullptr;
-	m_SpaceShip = nullptr;
+	m_Rocket = nullptr;
 }
 
 void CMenuSceneObjectManager::RemoveAllObject()
@@ -25,6 +25,6 @@ void CMenuSceneObjectManager::RemoveAllObject()
 
 void CMenuSceneObjectManager::Execute(float delta)
 {
-	if (m_SpaceShip != nullptr)
-		m_SpaceShip->Execute(delta);
+	if (m_Rocket != nullptr)
+		m_Rocket->Execute(delta);
 }

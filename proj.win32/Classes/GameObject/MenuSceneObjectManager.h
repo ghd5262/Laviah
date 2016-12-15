@@ -14,7 +14,7 @@
 
 class CPlanet;
 class CPlayer;
-class CSpaceShip;
+class CRocket;
 class CMenuSceneObjectManager
 {
 public:
@@ -28,7 +28,7 @@ public:
 protected:
 	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
 	CC_SYNTHESIZE(CPlayer*, m_Player, Player);
-	CC_SYNTHESIZE(CSpaceShip*, m_SpaceShip, SpaceShip);
+	CC_SYNTHESIZE(CRocket*, m_Rocket, Rocket);
 
 private:
 	CMenuSceneObjectManager();

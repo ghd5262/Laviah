@@ -1,16 +1,16 @@
-#include "SpaceShip.h"
+#include "Rocket.h"
 #include "Planet.h"
 #include "Bullet/Bullet.h"
 #include "MenuSceneObjectManager.h"
-#include "../AI/States/SpaceShipStates.h"
+#include "../AI/States/RocketStates.h"
 #include "../Particle/Particles.h"
 #include "../Scene/GameScene.h"
 #include "../GameObject/ObjectManager.h"
 
 using namespace cocos2d;
 
-CSpaceShip::CSpaceShip(sSPACESHIP_PARAM SpaceShipParam)
-: m_SpaceshipParam(SpaceShipParam)
+CRocket::CRocket(sROCKET_PARAM RocketParam)
+: m_RocketParam(RocketParam)
 , m_Speed(0.f)
 , m_ActionTime(0.f)
 , m_Distance(0.f)
@@ -22,7 +22,7 @@ CSpaceShip::CSpaceShip(sSPACESHIP_PARAM SpaceShipParam)
 , m_Arrive(false)
 {
 	if (m_FSM == nullptr){
-		m_FSM = new CStateMachine<CSpaceShip>(this);
+		m_FSM = new CStateMachine<CRocket>(this);
 	}
 	if (m_FSM != nullptr){
 		m_FSM->ChangeState(CFlyAround::Instance());
@@ -31,14 +31,14 @@ CSpaceShip::CSpaceShip(sSPACESHIP_PARAM SpaceShipParam)
 	setCascadeOpacityEnabled(true);
 }
 
-CSpaceShip::~CSpaceShip(){
+CRocket::~CRocket(){
 	if (m_FSM != nullptr)
 		delete m_FSM;
 }
 
-CSpaceShip* CSpaceShip::create(sSPACESHIP_PARAM SpaceShipParam)
+CRocket* CRocket::create(sROCKET_PARAM RocketParam)
 {
-	CSpaceShip* pRet = new(std::nothrow)CSpaceShip(SpaceShipParam);
+	CRocket* pRet = new(std::nothrow)CRocket(RocketParam);
 
 	if (pRet && pRet->init())
 	{
@@ -54,18 +54,18 @@ CSpaceShip* CSpaceShip::create(sSPACESHIP_PARAM SpaceShipParam)
 }
 
 
-bool CSpaceShip::init()
+bool CRocket::init()
 {
     if (!CGameObject::init())
 		return false;
     
     auto visibleSize = Director::getInstance()->getVisibleSize();
     
-    m_Texture = Sprite::create("spaceship_0.png");
+    m_Texture = Sprite::create("rocket_0.png");
     m_Texture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     addChild(m_Texture);
     
-	this->setBoundingRadius(SPACESHIP::BOUNDING_RADIUS);
+	this->setBoundingRadius(ROCKET::BOUNDING_RADIUS);
 
     m_CenterPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.35f);
 	m_Velocity = Vec2(0, 1);
@@ -75,31 +75,36 @@ bool CSpaceShip::init()
 	return true;
 }
 
-void CSpaceShip::Execute(float delta)
+void CRocket::Execute(float delta)
 {
 	getFSM()->Execute(delta);
 }
 
-void CSpaceShip::FlyAround(float delta)
+void CRocket::Fly(float dir, float delta)
+{
+    
+}
+
+void CRocket::FlyAround(float delta)
 {
 	m_Time += (m_Direction * (m_Speed / 10 * delta));
 	m_TargetPos = CBullet::getCirclePosition(m_Time, m_Distance, m_CenterPos);
 	this->seek(delta);
 }
 
-void CSpaceShip::FlyAway(float delta)
+void CRocket::FlyAway(float delta)
 {
-	m_TargetPos = CBullet::getCirclePosition(m_AwayAngle, SPACESHIP::FLYAWAY_DISTANCE, m_CenterPos);
+	m_TargetPos = CBullet::getCirclePosition(m_AwayAngle, ROCKET::FLYAWAY_DISTANCE, m_CenterPos);
 	this->arrive(delta);
 }
 
-void CSpaceShip::FlyToTouchArea(float delta)
+void CRocket::FlyToTouchArea(float delta)
 {
 	m_TargetPos = CGameScene::getGameScene()->getTouchPos();
 	this->arrive(delta);
 }
 
-void CSpaceShip::Collision()
+void CRocket::CollisionCheckAtHome()
 {
     for (auto bullet : *m_BulletList)
     {
@@ -119,7 +124,7 @@ void CSpaceShip::Collision()
     }
 }
 
-void CSpaceShip::arrive(float delta)
+void CRocket::arrive(float delta)
 {
 	auto toTarget = m_TargetPos - this->getPosition();
 
@@ -129,7 +134,7 @@ void CSpaceShip::arrive(float delta)
 		const double DecelerationTweaker = 0.3;
 		double speed = dist / ((double)5 * DecelerationTweaker);
 
-		speed = std::min<double>(speed, SPACESHIP::SPEED_MAX);
+		speed = std::min<double>(speed, ROCKET::SPEED_MAX);
 
 		toTarget.normalize();
         Vec2 desiredVelocity = toTarget * speed;
@@ -137,7 +142,7 @@ void CSpaceShip::arrive(float delta)
         auto steeringForce = Vec2::ZERO;
         steeringForce = (desiredVelocity - m_Velocity);
 
-		Vec2 acceleration = steeringForce / SPACESHIP::MASS;
+		Vec2 acceleration = steeringForce / ROCKET::MASS;
 		m_Velocity += (acceleration * delta);
 		auto nextPos = this->getPosition() + (m_Velocity * delta);
 		this->setPosition(nextPos);
@@ -146,7 +151,7 @@ void CSpaceShip::arrive(float delta)
     this->arriveCheck();
 }
 
-void CSpaceShip::seek(float delta)
+void CRocket::seek(float delta)
 {
 	auto toTarget = m_TargetPos - this->getPosition();
 
@@ -156,7 +161,7 @@ void CSpaceShip::seek(float delta)
     auto steeringForce = Vec2::ZERO;
     steeringForce = (desiredVelocity - m_Velocity);
 
-	Vec2 acceleration = steeringForce / SPACESHIP::MASS;
+	Vec2 acceleration = steeringForce / ROCKET::MASS;
 	m_Velocity += (acceleration * delta);
 	auto nextPos = this->getPosition() + (m_Velocity * delta);
     
@@ -165,18 +170,18 @@ void CSpaceShip::seek(float delta)
     this->arriveCheck();
 }
 
-void CSpaceShip::rotateToHead()
+void CRocket::rotateToHead()
 {
     auto degree = atan2(m_Velocity.x, m_Velocity.y) * 180.f / PI;
     this->setRotation(degree);
 }
 
-void CSpaceShip::arriveCheck()
+void CRocket::arriveCheck()
 {
-    auto rect = Rect(m_TargetPos.x - SPACESHIP::ARRIVE_RADIUS,
-                     m_TargetPos.y - SPACESHIP::ARRIVE_RADIUS,
-                     m_TargetPos.x + SPACESHIP::ARRIVE_RADIUS,
-                     m_TargetPos.y + SPACESHIP::ARRIVE_RADIUS);
+    auto rect = Rect(m_TargetPos.x - ROCKET::ARRIVE_RADIUS,
+                     m_TargetPos.y - ROCKET::ARRIVE_RADIUS,
+                     m_TargetPos.x + ROCKET::ARRIVE_RADIUS,
+                     m_TargetPos.y + ROCKET::ARRIVE_RADIUS);
     
     if (rect.containsPoint(this->getPosition()))
         m_Arrive = true;
@@ -184,7 +189,7 @@ void CSpaceShip::arriveCheck()
         m_Arrive = false;
 }
 
-void CSpaceShip::createFlameParticle()
+void CRocket::createFlameParticle()
 {
     m_ParticleFlame = CParticle_Flame::create("fire.png");
     m_ParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
