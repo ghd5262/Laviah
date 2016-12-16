@@ -54,7 +54,7 @@ void CNormalBullet::CollisionWithPlanet()
 
 void CNormalBullet::CollisionWithPlayer()
 {
-	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
+	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
 		createScoreCurrentPos(30);
 		this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	}
@@ -77,7 +77,7 @@ void CNormalBullet::ChangeToCoinOrStar()
 	float distance = m_TargetVec.distance(getPosition());
     char symbol = 0;
     
-    if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star) symbol = 'P';
+    if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_star)) symbol = 'P';
     else symbol = 'U';
     
     CBulletCreator::createBullet(symbol, -getRotation(), distance, false);
@@ -87,8 +87,10 @@ void CNormalBullet::ChangeToCoinOrStar()
 
 void CNormalBullet::setParticle()
 {
-    m_pParticleCrash = CParticle_Explosion::create(m_Player->getCharacterParam()._normalBulletTextureName);
+    m_pParticleCrash = CParticle_Explosion::create();
     if (m_pParticleCrash != nullptr){
+        m_pParticleCrash->setTotalParticles(50);
+        m_pParticleCrash->setTextureName(m_Player->getCharacterParam()._normalBulletTextureName);
         m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleCrash->setAngle(-getRotation());
         m_pParticleCrash->setPosition(getPosition());

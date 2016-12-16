@@ -22,8 +22,7 @@ void CFlyAround::Execute(CRocket* rocket, float delta)
     rocket->FlyAround(delta);
 }
 
-void CFlyAround::Exit(CRocket* rocket)
-{}
+void CFlyAround::Exit(CRocket* rocket){}
 
 CFlyAway* CFlyAway::Instance()
 {
@@ -41,8 +40,7 @@ void CFlyAway::Execute(CRocket* rocket, float delta)
 	rocket->FlyAway(delta);
 }
 
-void CFlyAway::Exit(CRocket* rocket)
-{}
+void CFlyAway::Exit(CRocket* rocket){}
 
 CFlyToTouchArea* CFlyToTouchArea::Instance()
 {
@@ -50,8 +48,7 @@ CFlyToTouchArea* CFlyToTouchArea::Instance()
 	return &instance;
 }
 
-void CFlyToTouchArea::Enter(CRocket* rocket)
-{}
+void CFlyToTouchArea::Enter(CRocket* rocket){}
 
 void CFlyToTouchArea::Execute(CRocket* rocket, float delta)
 {
@@ -61,6 +58,5 @@ void CFlyToTouchArea::Execute(CRocket* rocket, float delta)
 		rocket->ChangeState(CFlyAround::Instance());
 }
 
-void CFlyToTouchArea::Exit(CRocket* rocket)
-{}
+void CFlyToTouchArea::Exit(CRocket* rocket){}
 

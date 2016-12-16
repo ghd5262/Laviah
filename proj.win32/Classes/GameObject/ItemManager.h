@@ -8,7 +8,9 @@ public:
 	static CItemManager* Instance();
 	void Execute(float delta);
 
-	//현재 돌아가는 타이머 반환(플래그 형식)
+    bool isCurrentItem(eITEM_FLAG itemType) { return (m_CurrentItems & itemType) == itemType; }
+
+    //현재 돌아가는 타이머 반환(플래그 형식)
 	int getCurrentItem(){ return m_CurrentItems; }
 
 	//유저가 아이템을 획득했을때 호출됨

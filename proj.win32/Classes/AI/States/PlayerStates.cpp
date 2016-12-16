@@ -58,7 +58,7 @@ void CPlayerGiant::Enter(CPlayer* player)
 
 void CPlayerGiant::Execute(CPlayer* player, float delta)
 {
-	if (!(CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant))
+	if (!(CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)))
 	{
 		player->getFSM()->ChangeState(CPlayerNormal::Instance());
 	}

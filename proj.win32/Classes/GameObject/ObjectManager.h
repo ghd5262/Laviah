@@ -2,7 +2,7 @@
 #include <vector>
 #include "../Common/HSHUtility.h"
 #include "../AI/StateMachine.h"
-
+#include "../DataManager/CharacterDataManager.h"
 /*------------------------------ObjectManager 클래스설명----------------------------------
 *
 * CMover를 상속받는 모든 클래스를 Execute및 Remove하는 함수이다.
@@ -10,7 +10,6 @@
 * 이유는 Delete에서 removeFromParent()와 operator delete를 호출하여 소멸자를 호출하기 위함
 *
 *----------------------------------------------------------------------------------------*/
-
 class CBullet;
 class CPlanet;
 class CPlayer;
@@ -47,6 +46,7 @@ public:
     void RotateAccelerationUpdate(float value);
 	
     void Execute(float delta);
+    void ChangeCharacter();
     
 	// 초기화
 	void Clear();

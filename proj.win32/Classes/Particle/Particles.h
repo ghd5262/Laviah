@@ -1,107 +1,80 @@
 #pragma once
 #include "../Common/HSHUtility.h"
 #include "2d/CCParticleSystemQuad.h"
+#include "cocos2d.h"
 
-class CParticle_Flame : public cocos2d::ParticleSystemQuad
+class CParticle : public cocos2d::ParticleSystemQuad
 {
 public:
-	static CParticle_Flame* create(std::string textureName);
-	static CParticle_Flame* createWithTotalParticles(int numberOfParticles, std::string textureName);
-
+    std::string getTextureName() const { return m_TextureName; }
+    void setTextureName(std::string name) { m_TextureName = name; }
+    
+    CParticle() : m_TextureName(""){}
+    virtual ~CParticle(){}
+    
 protected:
-	CParticle_Flame(std::string textureName)
-		: m_strTextureName(textureName){}
-	virtual ~CParticle_Flame(){}
-
-	bool init() override { return initWithTotalParticles(50); }
-	virtual bool initWithTotalParticles(int numberOfParticles) override;
-
-private:
-	CC_DISALLOW_COPY_AND_ASSIGN(CParticle_Flame);
-	std::string m_strTextureName;
+    std::string m_TextureName;
 };
 
-
-
-class CParticle_Explosion : public cocos2d::ParticleSystemQuad
+class CParticle_Flame : public CParticle
 {
 public:
-	static CParticle_Explosion* create(std::string textureName);
-	static CParticle_Explosion* createWithTotalParticles(int numberOfParticles, std::string textureName);
+    static CParticle_Flame* create();
+    
+    virtual bool init() override;
+    
+private:
+    CParticle_Flame(){}
+    virtual ~CParticle_Flame(){}
+};
 
+class CParticle_Explosion : public CParticle
+{
+public:
+	static CParticle_Explosion* create();
+
+    virtual bool init() override;
+    
 protected:
-	CParticle_Explosion(std::string textureName)
-		: m_strTextureName(textureName){}
+    CParticle_Explosion(){}
 	virtual ~CParticle_Explosion(){}
-
-	bool init() override { return initWithTotalParticles(50); }
-	virtual bool initWithTotalParticles(int numberOfParticles) override;
-
-private:
-	CC_DISALLOW_COPY_AND_ASSIGN(CParticle_Explosion);
-	std::string m_strTextureName;
 };
 
-
-
-class CParticle_Explosion_2 : public cocos2d::ParticleSystemQuad
+//300
+class CParticle_Explosion_2 : public CParticle
 {
 public:
-	static CParticle_Explosion_2* create(std::string textureName);
-	static CParticle_Explosion_2* createWithTotalParticles(int numberOfParticles, std::string textureName);
-
-protected:
-	CParticle_Explosion_2(std::string textureName)
-		: m_strTextureName(textureName){}
-	virtual ~CParticle_Explosion_2(){}
-
-	bool init() override { return initWithTotalParticles(300); }
-	virtual bool initWithTotalParticles(int numberOfParticles) override;
-
-private:
-	CC_DISALLOW_COPY_AND_ASSIGN(CParticle_Explosion_2);
-	std::string m_strTextureName;
-};
-
-
-
-
-class CParticle_Line : public cocos2d::ParticleSystemQuad
-{
-public:
-	static CParticle_Line* create(std::string textureName);
-	static CParticle_Line* createWithTotalParticles(int numberOfParticles, std::string textureName);
-
-protected:
-	CParticle_Line(std::string textureName)
-		: m_strTextureName(textureName){}
-	virtual ~CParticle_Line(){}
-
-	bool init() override { return initWithTotalParticles(120); }
-	virtual bool initWithTotalParticles(int numberOfParticles) override;
-
-private:
-	CC_DISALLOW_COPY_AND_ASSIGN(CParticle_Line);
-	std::string m_strTextureName;
-};
-
-
-
-class CParticle_BackGround : public cocos2d::ParticleSystemQuad
-{
-public:
-    static CParticle_BackGround* create(std::string textureName);
-    static CParticle_BackGround* createWithTotalParticles(int numberOfParticles, std::string textureName);
+    static CParticle_Explosion_2* create();
+    
+    virtual bool init() override;
     
 protected:
-    CParticle_BackGround(std::string textureName)
-    : m_strTextureName(textureName){}
+    CParticle_Explosion_2(){}
+    virtual ~CParticle_Explosion_2(){}
+};
+
+//120
+class CParticle_Line : public CParticle
+{
+public:
+    static CParticle_Line* create();
+    
+    virtual bool init() override;
+    
+protected:
+    CParticle_Line(){}
+    virtual ~CParticle_Line(){}
+};
+
+//60
+class CParticle_BackGround : public CParticle
+{
+public:
+    static CParticle_BackGround* create();
+    
+    virtual bool init() override;
+    
+protected:
+    CParticle_BackGround(){}
     virtual ~CParticle_BackGround(){}
-    
-    bool init() override { return initWithTotalParticles(60); }
-    virtual bool initWithTotalParticles(int numberOfParticles) override;
-    
-private:
-    CC_DISALLOW_COPY_AND_ASSIGN(CParticle_BackGround);
-    std::string m_strTextureName;
 };

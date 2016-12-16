@@ -182,15 +182,8 @@ void CCharacterSelectPopup::Select(Node* sender)
 
 	auto centerCharacterParam = m_CenterDP->getCharacterParam();
 
-	auto planet = CObjectManager::Instance()->getPlanet();
-	if (planet != nullptr)
-		planet->setPlanetTexture(centerCharacterParam._planetTextureName);
-
-	auto player = CObjectManager::Instance()->getPlayer();
-	if (player != nullptr)
-		player->setPlayerTexture(centerCharacterParam._normalTextureName);
-
-	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam._idx))
+	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST,
+                                                             centerCharacterParam._idx))
 	{
 		m_CenterDP->Select();
 	}
@@ -199,6 +192,7 @@ void CCharacterSelectPopup::Select(Node* sender)
 		m_btnSelect->changeContents("Select");
 	}
     
+    CObjectManager::Instance()->ChangeCharacter();
     this->End(nullptr);
 }
 

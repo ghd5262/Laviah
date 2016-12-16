@@ -88,7 +88,7 @@ void CNormalMissile::CollisionWithPlayer()
 {
     //		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_0.mp3", false);
     
-	if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
+	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
 		createScoreCurrentPos(50);
 		R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
 	}
@@ -164,8 +164,9 @@ void CNormalMissile::createParticle_Flame()
     //    this->addChild(m_pParticleFlame);
     //}
 
-	m_pParticleFlame = CParticle_Flame::create("fire.png");
+	m_pParticleFlame = CParticle_Flame::create();
 	if (m_pParticleFlame != nullptr){
+        m_pParticleFlame->setTextureName("fire.png");
 		m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_pParticleFlame->setAngle(0);
 		m_pParticleFlame->setGravity(Vec2(90, 0));
@@ -185,8 +186,10 @@ void CNormalMissile::createParticle_Flame()
 
 void CNormalMissile::createParticle_Explosion()
 {
-    m_pParticleCrash = CParticle_Explosion::create("explosion_0.png");
+    m_pParticleCrash = CParticle_Explosion::create();
     if (m_pParticleCrash != nullptr){
+        m_pParticleCrash->setTextureName("explosion_0.png");
+        m_pParticleCrash->setTotalParticles(50);
         m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleCrash->setAngle(-getRotation());
         m_pParticleCrash->setPosition(getPosition());

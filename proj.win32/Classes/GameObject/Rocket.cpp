@@ -6,6 +6,7 @@
 #include "../Particle/Particles.h"
 #include "../Scene/GameScene.h"
 #include "../GameObject/ObjectManager.h"
+#include "../GameObject/ItemManager.h"
 
 using namespace cocos2d;
 
@@ -60,8 +61,10 @@ bool CRocket::init()
 		return false;
     
     auto visibleSize = Director::getInstance()->getVisibleSize();
+    m_FlyLimitMax = visibleSize.width * 0.9f;
+    m_FlyLimitMin = visibleSize.width * 0.1f;
     
-    m_Texture = Sprite::create("rocket_0.png");
+    m_Texture = Sprite::create("spaceship_0.png");
     m_Texture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     addChild(m_Texture);
     
@@ -82,7 +85,14 @@ void CRocket::Execute(float delta)
 
 void CRocket::Fly(float dir, float delta)
 {
+    if (!(CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))) return;
+ 
+    auto oldPos = getPositionX();
     
+    auto newPos = oldPos + (dir * (m_Speed * delta));
+    
+    if(newPos > m_FlyLimitMin && newPos < m_FlyLimitMax)
+        this->setPositionX(newPos);
 }
 
 void CRocket::FlyAround(float delta)
@@ -94,6 +104,8 @@ void CRocket::FlyAround(float delta)
 
 void CRocket::FlyAway(float delta)
 {
+    if ((CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))) return;
+
 	m_TargetPos = CBullet::getCirclePosition(m_AwayAngle, ROCKET::FLYAWAY_DISTANCE, m_CenterPos);
 	this->arrive(delta);
 }
@@ -191,7 +203,8 @@ void CRocket::arriveCheck()
 
 void CRocket::createFlameParticle()
 {
-    m_ParticleFlame = CParticle_Flame::create("fire.png");
+    m_ParticleFlame = CParticle_Flame::create();
+    m_ParticleFlame->setTextureName("fire.png");
     m_ParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_ParticleFlame->setGravity(Vec2(0, -270));
     m_ParticleFlame->setPosition(Vec2(m_Texture->getContentSize().width * 0.5f,

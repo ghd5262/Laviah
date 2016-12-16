@@ -8,6 +8,7 @@
 #include "Bullet/Bullet.h"
 #include "../AI/States/StageStates.h"
 #include "../Scene/GameScene.h"
+#include "../DataManager/UserDataManager.h"
 #include <algorithm>
 
 CObjectManager::CObjectManager()
@@ -69,6 +70,21 @@ void CObjectManager::RemoveAllObject()
 #if(USE_MEMORY_POOLING)
 	removeAllBullet();
 #endif
+}
+
+void CObjectManager::ChangeCharacter()
+{
+    auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
+    auto data = CCharacterDataManager::Instance()->getCharacterInfoByIndex(index);
+    
+    if(m_Player)
+        m_Player->setCharacterParam(data);
+    
+    if(m_Planet)
+        m_Planet->setPlanetTexture(data._planetTextureName);
+    
+    if(m_BulletCreator)
+        m_BulletCreator->setCharacterInfo(data);
 }
 
 void CObjectManager::RotateAccelerationUpdate(float value){
@@ -135,6 +151,7 @@ void CObjectManager::RotationObject(float dir)
     m_BulletCreator->setRotationAngle(dir + (dir * m_fRotateAcceleration), m_fDelta);
     m_Planet->Rotation(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
 	m_Player->Rotation(dir, m_fDelta);
+    m_Rocket->Fly(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
 }
 
 void CObjectManager::inGameUpdate()

@@ -104,8 +104,6 @@ bool CPlayer::init()
     }
     
     this->createRunParticle();
-    this->setVisible(false);
-    
     this->setScale(SCALE_SIZE);
 	this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
     return true;
@@ -286,14 +284,16 @@ void CPlayer::InvincibilityMode(float time)
 void CPlayer::setPlayerTexture(std::string textureName)
 {
 	if (m_pTexture != nullptr){
-		this->m_pTexture->setSpriteFrame(textureName);
+		m_pTexture->setSpriteFrame(textureName);
 	}
 }
 
 void CPlayer::createAliveParticle()
 {
-    auto particle = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
+    auto particle = CParticle_Explosion_2::create();
     if (particle != nullptr){
+        particle->setTextureName(m_CharacterParam._deadParticleTextureName);
+        particle->setTotalParticles(300);
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(getPosition());
         particle->setStartRadius(160);
@@ -305,8 +305,10 @@ void CPlayer::createAliveParticle()
 
 void CPlayer::createDeadParticle()
 {
-    auto particle = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
+    auto particle = CParticle_Explosion_2::create();
     if (particle != nullptr){
+        particle->setTextureName(m_CharacterParam._deadParticleTextureName);
+        particle->setTotalParticles(300);
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());
         CGameScene::getGameScene()->addChild(particle, ZORDER::PLAYER);
@@ -315,8 +317,10 @@ void CPlayer::createDeadParticle()
 
 void CPlayer::createRunParticle()
 {
-    m_pParticle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
+    m_pParticle = CParticle_Flame::create();
     if (m_pParticle != nullptr){
+        m_pParticle->setTextureName(m_CharacterParam._normalTextureName);
+        m_pParticle->setTotalParticles(50);
         m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticle->setAngle(90);
         m_pParticle->setGravity(Vec2(0, -270));

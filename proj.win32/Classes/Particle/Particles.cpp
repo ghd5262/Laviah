@@ -3,9 +3,9 @@
 using namespace cocos2d;
 
 
-CParticle_Flame* CParticle_Flame::create(std::string textureName)
+CParticle_Flame* CParticle_Flame::create()
 {
-	CParticle_Flame* ret = new (std::nothrow) CParticle_Flame(textureName);
+	CParticle_Flame* ret = new (std::nothrow) CParticle_Flame();
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -17,23 +17,9 @@ CParticle_Flame* CParticle_Flame::create(std::string textureName)
 	return ret;
 }
 
-CParticle_Flame* CParticle_Flame::createWithTotalParticles(int numberOfParticles, std::string textureName)
+bool CParticle_Flame::init()
 {
-	CParticle_Flame* ret = new (std::nothrow) CParticle_Flame(textureName);
-	if (ret && ret->initWithTotalParticles(numberOfParticles))
-	{
-		ret->autorelease();
-	}
-	else
-	{
-		CC_SAFE_DELETE(ret);
-	}
-	return ret;
-}
-
-bool CParticle_Flame::initWithTotalParticles(int numberOfParticles)
-{
-	if (ParticleSystemQuad::initWithTotalParticles(numberOfParticles))
+	if (ParticleSystemQuad::initWithTotalParticles(getTotalParticles()))
 	{
 		// duration
 		_duration = DURATION_INFINITY;
@@ -91,7 +77,7 @@ bool CParticle_Flame::initWithTotalParticles(int numberOfParticles)
 		_endSize = 5;
 
         SpriteFrame* spriteFrame = nullptr;
-        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_strTextureName);
+        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_TextureName);
         
         if (spriteFrame != nullptr)
         {
@@ -99,7 +85,7 @@ bool CParticle_Flame::initWithTotalParticles(int numberOfParticles)
         }
         else{
             Texture2D* texture = nullptr;
-            texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_strTextureName);
+            texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_TextureName);
             
             if (texture != nullptr)
             {
@@ -107,7 +93,7 @@ bool CParticle_Flame::initWithTotalParticles(int numberOfParticles)
             }
             else
             {
-                texture = Director::getInstance()->getTextureCache()->addImage(m_strTextureName);
+                texture = Director::getInstance()->getTextureCache()->addImage(m_TextureName);
                 if(texture != nullptr){
                     setTexture(texture);
                 }
@@ -123,9 +109,9 @@ bool CParticle_Flame::initWithTotalParticles(int numberOfParticles)
 }
 
 
-CParticle_Explosion* CParticle_Explosion::create(std::string textureName)
+CParticle_Explosion* CParticle_Explosion::create()
 {
-    CParticle_Explosion* ret = new (std::nothrow) CParticle_Explosion(textureName);
+    CParticle_Explosion* ret = new (std::nothrow) CParticle_Explosion();
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -137,23 +123,9 @@ CParticle_Explosion* CParticle_Explosion::create(std::string textureName)
 	return ret;
 }
 
-CParticle_Explosion* CParticle_Explosion::createWithTotalParticles(int numberOfParticles, std::string textureName)
+bool CParticle_Explosion::init()
 {
-	CParticle_Explosion* ret = new (std::nothrow) CParticle_Explosion(textureName);
-	if (ret && ret->initWithTotalParticles(numberOfParticles))
-	{
-		ret->autorelease();
-	}
-	else
-	{
-		CC_SAFE_DELETE(ret);
-	}
-	return ret;
-}
-
-bool CParticle_Explosion::initWithTotalParticles(int numberOfParticles)
-{
-	if (ParticleSystemQuad::initWithTotalParticles(numberOfParticles))
+	if (ParticleSystemQuad::initWithTotalParticles(getTotalParticles()))
 	{
 		this->setAutoRemoveOnFinish(true);
 
@@ -204,7 +176,7 @@ bool CParticle_Explosion::initWithTotalParticles(int numberOfParticles)
 		_endSize = 10.f;
 
         SpriteFrame* spriteFrame = nullptr;
-        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_strTextureName);
+        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_TextureName);
         
         if (spriteFrame != nullptr)
         {
@@ -212,7 +184,7 @@ bool CParticle_Explosion::initWithTotalParticles(int numberOfParticles)
         }
         else{
             Texture2D* texture = nullptr;
-            texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_strTextureName);
+            texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_TextureName);
             
             if (texture != nullptr)
             {
@@ -220,7 +192,7 @@ bool CParticle_Explosion::initWithTotalParticles(int numberOfParticles)
             }
             else
             {
-                texture = Director::getInstance()->getTextureCache()->addImage(m_strTextureName);
+                texture = Director::getInstance()->getTextureCache()->addImage(m_TextureName);
                 if(texture != nullptr){
                     setTexture(texture);
                 }
@@ -238,9 +210,9 @@ bool CParticle_Explosion::initWithTotalParticles(int numberOfParticles)
 
 
 
-CParticle_Explosion_2* CParticle_Explosion_2::create(std::string textureName)
+CParticle_Explosion_2* CParticle_Explosion_2::create()
 {
-	CParticle_Explosion_2* ret = new (std::nothrow) CParticle_Explosion_2(textureName);
+	CParticle_Explosion_2* ret = new (std::nothrow) CParticle_Explosion_2();
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -252,23 +224,9 @@ CParticle_Explosion_2* CParticle_Explosion_2::create(std::string textureName)
 	return ret;
 }
 
-CParticle_Explosion_2* CParticle_Explosion_2::createWithTotalParticles(int numberOfParticles, std::string textureName)
+bool CParticle_Explosion_2::init()
 {
-	CParticle_Explosion_2* ret = new (std::nothrow) CParticle_Explosion_2(textureName);
-	if (ret && ret->initWithTotalParticles(numberOfParticles))
-	{
-		ret->autorelease();
-	}
-	else
-	{
-		CC_SAFE_DELETE(ret);
-	}
-	return ret;
-}
-
-bool CParticle_Explosion_2::initWithTotalParticles(int numberOfParticles)
-{
-	if (ParticleSystemQuad::initWithTotalParticles(numberOfParticles))
+	if (ParticleSystemQuad::initWithTotalParticles(getTotalParticles()))
 	{
 		this->setAutoRemoveOnFinish(true);
 
@@ -332,7 +290,7 @@ bool CParticle_Explosion_2::initWithTotalParticles(int numberOfParticles)
 		_endSize = 0.f;
 
         SpriteFrame* spriteFrame = nullptr;
-        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_strTextureName);
+        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_TextureName);
         
         if (spriteFrame != nullptr)
         {
@@ -340,7 +298,7 @@ bool CParticle_Explosion_2::initWithTotalParticles(int numberOfParticles)
         }
         else{
             Texture2D* texture = nullptr;
-            texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_strTextureName);
+            texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_TextureName);
             
             if (texture != nullptr)
             {
@@ -348,7 +306,7 @@ bool CParticle_Explosion_2::initWithTotalParticles(int numberOfParticles)
             }
             else
             {
-                texture = Director::getInstance()->getTextureCache()->addImage(m_strTextureName);
+                texture = Director::getInstance()->getTextureCache()->addImage(m_TextureName);
                 if(texture != nullptr){
                     setTexture(texture);
                 }
@@ -366,9 +324,9 @@ bool CParticle_Explosion_2::initWithTotalParticles(int numberOfParticles)
 
 
 #pragma mark - Particle_Line
-CParticle_Line* CParticle_Line::create(std::string textureName)
+CParticle_Line* CParticle_Line::create()
 {
-	CParticle_Line* ret = new (std::nothrow) CParticle_Line(textureName);
+	CParticle_Line* ret = new (std::nothrow) CParticle_Line();
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -379,24 +337,9 @@ CParticle_Line* CParticle_Line::create(std::string textureName)
 	}
 	return ret;
 }
-
-CParticle_Line* CParticle_Line::createWithTotalParticles(int numberOfParticles, std::string textureName)
+bool CParticle_Line::init()
 {
-	CParticle_Line* ret = new (std::nothrow) CParticle_Line(textureName);
-	if (ret && ret->initWithTotalParticles(numberOfParticles))
-	{
-		ret->autorelease();
-	}
-	else
-	{
-		CC_SAFE_DELETE(ret);
-	}
-	return ret;
-}
-
-bool CParticle_Line::initWithTotalParticles(int numberOfParticles)
-{
-	if (ParticleSystemQuad::initWithTotalParticles(numberOfParticles))
+	if (ParticleSystemQuad::initWithTotalParticles(getTotalParticles()))
 	{
 		this->setAutoRemoveOnFinish(true);
 
@@ -448,7 +391,7 @@ bool CParticle_Line::initWithTotalParticles(int numberOfParticles)
 		_endSize = 10.f;
 
         SpriteFrame* spriteFrame = nullptr;
-        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_strTextureName);
+        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_TextureName);
         
         if (spriteFrame != nullptr)
         {
@@ -456,7 +399,7 @@ bool CParticle_Line::initWithTotalParticles(int numberOfParticles)
         }
         else{
             Texture2D* texture = nullptr;
-            texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_strTextureName);
+            texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_TextureName);
             
             if (texture != nullptr)
             {
@@ -464,7 +407,7 @@ bool CParticle_Line::initWithTotalParticles(int numberOfParticles)
             }
             else
             {
-                texture = Director::getInstance()->getTextureCache()->addImage(m_strTextureName);
+                texture = Director::getInstance()->getTextureCache()->addImage(m_TextureName);
                 if(texture != nullptr){
                     setTexture(texture);
                 }
@@ -481,9 +424,9 @@ bool CParticle_Line::initWithTotalParticles(int numberOfParticles)
 
 
 #pragma mark - Particle_BackGround
-CParticle_BackGround* CParticle_BackGround::create(std::string textureName)
+CParticle_BackGround* CParticle_BackGround::create()
 {
-    CParticle_BackGround* ret = new (std::nothrow) CParticle_BackGround(textureName);
+    CParticle_BackGround* ret = new (std::nothrow) CParticle_BackGround();
     if (ret && ret->init())
     {
         ret->autorelease();
@@ -495,23 +438,9 @@ CParticle_BackGround* CParticle_BackGround::create(std::string textureName)
     return ret;
 }
 
-CParticle_BackGround* CParticle_BackGround::createWithTotalParticles(int numberOfParticles, std::string textureName)
+bool CParticle_BackGround::init()
 {
-    CParticle_BackGround* ret = new (std::nothrow) CParticle_BackGround(textureName);
-    if (ret && ret->initWithTotalParticles(numberOfParticles))
-    {
-        ret->autorelease();
-    }
-    else
-    {
-        CC_SAFE_DELETE(ret);
-    }
-    return ret;
-}
-
-bool CParticle_BackGround::initWithTotalParticles(int numberOfParticles)
-{
-    if (ParticleSystemQuad::initWithTotalParticles(numberOfParticles))
+    if (ParticleSystemQuad::initWithTotalParticles(getTotalParticles()))
     {
         this->setAutoRemoveOnFinish(true);
         
@@ -574,7 +503,7 @@ bool CParticle_BackGround::initWithTotalParticles(int numberOfParticles)
         _endSize = 0.f;
         
         SpriteFrame* spriteFrame = nullptr;
-        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_strTextureName);
+        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_TextureName);
         
         if (spriteFrame != nullptr)
         {
@@ -582,7 +511,7 @@ bool CParticle_BackGround::initWithTotalParticles(int numberOfParticles)
         }
         else{
             Texture2D* texture = nullptr;
-            texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_strTextureName);
+            texture = Director::getInstance()->getTextureCache()->getTextureForKey(m_TextureName);
             
             if (texture != nullptr)
             {
@@ -590,7 +519,7 @@ bool CParticle_BackGround::initWithTotalParticles(int numberOfParticles)
             }
             else
             {
-                texture = Director::getInstance()->getTextureCache()->addImage(m_strTextureName);
+                texture = Director::getInstance()->getTextureCache()->addImage(m_TextureName);
                 if(texture != nullptr){
                     setTexture(texture);
                 }

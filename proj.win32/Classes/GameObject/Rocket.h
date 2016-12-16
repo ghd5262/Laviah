@@ -6,7 +6,7 @@
 
 namespace ROCKET{
 	static float			BOUNDING_RADIUS = 50.f;
-	static float			FLYAWAY_DISTANCE = 3000.f;
+	static float			FLYAWAY_DISTANCE = 50.f;
 	static float			SPEED_MAX = 1500.f;
 	static float			MASS = 0.5f;
 	static float			ARRIVE_RADIUS = 50.f;

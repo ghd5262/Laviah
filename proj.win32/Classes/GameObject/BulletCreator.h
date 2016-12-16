@@ -42,7 +42,7 @@ public:
                                  float angle,
                                  float distance,
 								 bool isDelay = true);
-        
+    CC_SYNTHESIZE(sCHARACTER_PARAM, m_CharacterInfo, CharacterInfo);
 private:
 	void setData(const sBULLET_PATTERN* data);
     void createOneLine(const sBULLET_PATTERN* data,
@@ -58,7 +58,6 @@ private:
     
 private:
     const sBULLET_PATTERN* m_CurrentPattern;
-    sCHARACTER_PARAM m_CharacterInfo;
     CBulletDataManager* m_BulletDataManager;
     float m_RotationAngle;
 	float m_Time;

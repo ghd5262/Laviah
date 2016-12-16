@@ -86,6 +86,8 @@ bool CUILayer::init()
     m_PauseBtn->setCascadeOpacityEnabled(true);
     m_PauseBtn->setOpacity(0);
     
+    this->initItemTestButton();
+    
     CGameScene::getGameScene()->GameResume();
     
     return true;
@@ -137,13 +139,14 @@ void CUILayer::initItemTestButton()
     
     Size popupSize = this->getContentSize();
 
-    array<Vec2, 6> itemPosArray = {
+    array<Vec2, 7> itemPosArray = {
         Vec2(popupSize.width * 0.08f, popupSize.height * 0.5f   ),
         Vec2(popupSize.width * 0.08f, popupSize.height * 0.475f ),
         Vec2(popupSize.width * 0.08f, popupSize.height * 0.45f  ),
         Vec2(popupSize.width * 0.08f, popupSize.height * 0.425f ),
         Vec2(popupSize.width * 0.08f, popupSize.height * 0.4f   ),
-        Vec2(popupSize.width * 0.08f, popupSize.height * 0.375f )
+        Vec2(popupSize.width * 0.08f, popupSize.height * 0.375f ),
+        Vec2(popupSize.width * 0.08f, popupSize.height * 0.35f  )
     };
     
     for (int idx = 0; idx < itemPosArray.size(); idx++)

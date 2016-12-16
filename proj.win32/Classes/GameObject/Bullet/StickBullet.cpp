@@ -90,7 +90,7 @@ void CStickBullet::CollisionWithPlanet()
 
 void CStickBullet::CollisionWithPlayer()
 {
-    if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_giant){
+    if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
         this->createScoreCurrentPos(30);
         this->R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
     }
@@ -111,7 +111,7 @@ void CStickBullet::ChangeToCoinOrStar()
 {
     float distance = m_TargetVec.distance(getPosition());
     char symbol = 'T';
-    if (CItemManager::Instance()->getCurrentItem() & eITEM_FLAG_star) symbol = 'Y';
+    if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_star)) symbol = 'Y';
     
 	auto bullet = CBulletCreator::createBullet(symbol, -getRotation(), distance, false);
 	if (m_HitWithPlanet) bullet->setIsFly(false);
