@@ -53,6 +53,8 @@
 		930C44641DF54BD90011CFA3 /* CountDown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930C44611DF54BD90011CFA3 /* CountDown.cpp */; };
 		9312B4781D58A0A800FE954C /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9312B4771D58A0A800FE954C /* CoreText.framework */; };
 		9312B47C1D58A12600FE954C /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93865F3E1D588C39007ECE5A /* libiconv.tbd */; };
+		9316AFCF1DFE904900432CA8 /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9316AFCD1DFE904900432CA8 /* Global.cpp */; };
+		9316AFD01DFE904A00432CA8 /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9316AFCD1DFE904900432CA8 /* Global.cpp */; };
 		931D9DB11DB0FEBC008BA5AC /* DownloadManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */; };
 		9329BAB61D75C50100878CEF /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9329BAB41D75C50100878CEF /* LoadingScene.cpp */; };
 		9329BABC1D75E47500878CEF /* AMTestScene1 in Resources */ = {isa = PBXBuildFile; fileRef = 9329BABB1D75E47500878CEF /* AMTestScene1 */; };
@@ -62,7 +64,7 @@
 		9348E4C61D9D62B1007DF5D9 /* GradientDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9348E4C41D9D62B1007DF5D9 /* GradientDataManager.cpp */; };
 		9373115A1D5849C800D5EB5C /* BulletStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A01D5849C700D5EB5C /* BulletStates.cpp */; };
 		9373115B1D5849C800D5EB5C /* PlayerStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A21D5849C700D5EB5C /* PlayerStates.cpp */; };
-		9373115C1D5849C800D5EB5C /* SpaceShipStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A41D5849C700D5EB5C /* SpaceShipStates.cpp */; };
+		9373115C1D5849C800D5EB5C /* RocketStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A41D5849C700D5EB5C /* RocketStates.cpp */; };
 		9373115D1D5849C800D5EB5C /* StageStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A61D5849C700D5EB5C /* StageStates.cpp */; };
 		9373115E1D5849C800D5EB5C /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A91D5849C700D5EB5C /* AppDelegate.cpp */; };
 		9373115F1D5849C800D5EB5C /* AudioManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310AC1D5849C700D5EB5C /* AudioManager.cpp */; };
@@ -93,7 +95,7 @@
 		9373117A1D5849C800D5EB5C /* ObjectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310E81D5849C700D5EB5C /* ObjectManager.cpp */; };
 		9373117B1D5849C800D5EB5C /* Planet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310EA1D5849C700D5EB5C /* Planet.cpp */; };
 		9373117C1D5849C800D5EB5C /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310EC1D5849C700D5EB5C /* Player.cpp */; };
-		937311801D5849C800D5EB5C /* SpaceShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F61D5849C700D5EB5C /* SpaceShip.cpp */; };
+		937311801D5849C800D5EB5C /* Rocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F61D5849C700D5EB5C /* Rocket.cpp */; };
 		937311811D5849C800D5EB5C /* GoogleCloudManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310F91D5849C700D5EB5C /* GoogleCloudManager.cpp */; };
 		937311821D5849C800D5EB5C /* json_internalarray.inl in Resources */ = {isa = PBXBuildFile; fileRef = 937311021D5849C700D5EB5C /* json_internalarray.inl */; };
 		937311831D5849C800D5EB5C /* json_internalmap.inl in Resources */ = {isa = PBXBuildFile; fileRef = 937311031D5849C700D5EB5C /* json_internalmap.inl */; };
@@ -237,6 +239,8 @@
 		930C44621DF54BD90011CFA3 /* CountDown.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CountDown.hpp; sourceTree = "<group>"; };
 		9312B4771D58A0A800FE954C /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
 		9312B47A1D58A10100FE954C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		9316AFCD1DFE904900432CA8 /* Global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Global.cpp; sourceTree = "<group>"; };
+		9316AFCE1DFE904900432CA8 /* Global.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Global.hpp; sourceTree = "<group>"; };
 		931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DownloadManager.cpp; sourceTree = "<group>"; };
 		931D9DB01DB0FEBC008BA5AC /* DownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadManager.h; sourceTree = "<group>"; };
 		9329BAB41D75C50100878CEF /* LoadingScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadingScene.cpp; sourceTree = "<group>"; };
@@ -254,8 +258,8 @@
 		937310A11D5849C700D5EB5C /* BulletStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletStates.h; sourceTree = "<group>"; };
 		937310A21D5849C700D5EB5C /* PlayerStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerStates.cpp; sourceTree = "<group>"; };
 		937310A31D5849C700D5EB5C /* PlayerStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerStates.h; sourceTree = "<group>"; };
-		937310A41D5849C700D5EB5C /* SpaceShipStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceShipStates.cpp; sourceTree = "<group>"; };
-		937310A51D5849C700D5EB5C /* SpaceShipStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceShipStates.h; sourceTree = "<group>"; };
+		937310A41D5849C700D5EB5C /* RocketStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RocketStates.cpp; sourceTree = "<group>"; };
+		937310A51D5849C700D5EB5C /* RocketStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RocketStates.h; sourceTree = "<group>"; };
 		937310A61D5849C700D5EB5C /* StageStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StageStates.cpp; sourceTree = "<group>"; };
 		937310A71D5849C700D5EB5C /* StageStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StageStates.h; sourceTree = "<group>"; };
 		937310A81D5849C700D5EB5C /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
@@ -319,8 +323,8 @@
 		937310EB1D5849C700D5EB5C /* Planet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Planet.h; sourceTree = "<group>"; };
 		937310EC1D5849C700D5EB5C /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		937310ED1D5849C700D5EB5C /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		937310F61D5849C700D5EB5C /* SpaceShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceShip.cpp; sourceTree = "<group>"; };
-		937310F71D5849C700D5EB5C /* SpaceShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceShip.h; sourceTree = "<group>"; };
+		937310F61D5849C700D5EB5C /* Rocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rocket.cpp; sourceTree = "<group>"; };
+		937310F71D5849C700D5EB5C /* Rocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rocket.h; sourceTree = "<group>"; };
 		937310F91D5849C700D5EB5C /* GoogleCloudManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleCloudManager.cpp; sourceTree = "<group>"; };
 		937310FA1D5849C700D5EB5C /* GoogleCloudManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleCloudManager.h; sourceTree = "<group>"; };
 		937310FC1D5849C700D5EB5C /* autolink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = autolink.h; sourceTree = "<group>"; };
@@ -645,8 +649,8 @@
 				937310A11D5849C700D5EB5C /* BulletStates.h */,
 				937310A21D5849C700D5EB5C /* PlayerStates.cpp */,
 				937310A31D5849C700D5EB5C /* PlayerStates.h */,
-				937310A41D5849C700D5EB5C /* SpaceShipStates.cpp */,
-				937310A51D5849C700D5EB5C /* SpaceShipStates.h */,
+				937310A41D5849C700D5EB5C /* RocketStates.cpp */,
+				937310A51D5849C700D5EB5C /* RocketStates.h */,
 				937310A61D5849C700D5EB5C /* StageStates.cpp */,
 				937310A71D5849C700D5EB5C /* StageStates.h */,
 				937310A81D5849C700D5EB5C /* State.h */,
@@ -665,6 +669,8 @@
 				9396940A1DC9CE17008B2CD2 /* NoticeDefine.h */,
 				93E2317C1DDC344600899F4A /* StringUtility.cpp */,
 				93E2317D1DDC344600899F4A /* StringUtility.hpp */,
+				9316AFCD1DFE904900432CA8 /* Global.cpp */,
+				9316AFCE1DFE904900432CA8 /* Global.hpp */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -714,8 +720,8 @@
 				937310EB1D5849C700D5EB5C /* Planet.h */,
 				937310EC1D5849C700D5EB5C /* Player.cpp */,
 				937310ED1D5849C700D5EB5C /* Player.h */,
-				937310F61D5849C700D5EB5C /* SpaceShip.cpp */,
-				937310F71D5849C700D5EB5C /* SpaceShip.h */,
+				937310F61D5849C700D5EB5C /* Rocket.cpp */,
+				937310F71D5849C700D5EB5C /* Rocket.h */,
 			);
 			path = GameObject;
 			sourceTree = "<group>";
@@ -1105,12 +1111,13 @@
 				93E2317E1DDC344600899F4A /* StringUtility.cpp in Sources */,
 				9373115A1D5849C800D5EB5C /* BulletStates.cpp in Sources */,
 				937311A71D5849C800D5EB5C /* SceneTransition.cpp in Sources */,
-				937311801D5849C800D5EB5C /* SpaceShip.cpp in Sources */,
+				937311801D5849C800D5EB5C /* Rocket.cpp in Sources */,
 				9373117B1D5849C800D5EB5C /* Planet.cpp in Sources */,
 				9373118E1D5849C800D5EB5C /* CharacterSelectPopup.cpp in Sources */,
+				9316AFCF1DFE904900432CA8 /* Global.cpp in Sources */,
 				937311751D5849C800D5EB5C /* ItemBarrier.cpp in Sources */,
 				937311761D5849C800D5EB5C /* ItemManager.cpp in Sources */,
-				9373115C1D5849C800D5EB5C /* SpaceShipStates.cpp in Sources */,
+				9373115C1D5849C800D5EB5C /* RocketStates.cpp in Sources */,
 				9373116C1D5849C800D5EB5C /* NormalBullet.cpp in Sources */,
 				937311791D5849C800D5EB5C /* Mover.cpp in Sources */,
 				930C445A1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */,
@@ -1138,6 +1145,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9316AFD01DFE904A00432CA8 /* Global.cpp in Sources */,
 				93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */,
 				930C44641DF54BD90011CFA3 /* CountDown.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
