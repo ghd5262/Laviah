@@ -65,7 +65,9 @@ bool CRocket::init()
     m_FlyLimitMin = visibleSize.width * 0.1f;
     
     m_Texture = Sprite::create("spaceship_0.png");
+	this->setContentSize(m_Texture->getContentSize());
     m_Texture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	m_Texture->setPosition(this->getContentSize() / 2);
     addChild(m_Texture);
     
 	this->setBoundingRadius(ROCKET::BOUNDING_RADIUS);
@@ -97,7 +99,7 @@ void CRocket::Fly(float dir, float delta)
 
 void CRocket::FlyAround(float delta)
 {
-	m_Time += (m_Direction * (m_Speed / 10 * delta));
+	m_Time += (m_Direction * (m_Speed / 9 * delta));
 	m_TargetPos = CBullet::getCirclePosition(m_Time, m_Distance, m_CenterPos);
 	this->seek(delta);
 }
@@ -203,12 +205,12 @@ void CRocket::arriveCheck()
 
 void CRocket::createFlameParticle()
 {
-    m_ParticleFlame = CParticle_Flame::create();
-    m_ParticleFlame->setTextureName("fire.png");
+	m_ParticleFlame = CParticle_Flame::create("fire.png");
     m_ParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_ParticleFlame->setGravity(Vec2(0, -270));
-    m_ParticleFlame->setPosition(Vec2(m_Texture->getContentSize().width * 0.5f,
-                                      m_Texture->getContentSize().height * -0.1f));
+    m_ParticleFlame->setGravity(Vec2(90, 0));
+	m_ParticleFlame->setRotation(90);
+    m_ParticleFlame->setPosition(Vec2(this->getContentSize().width * 0.5f,
+		this->getContentSize().height * -0.1f));
     m_ParticleFlame->setStartSize(100);
     m_ParticleFlame->setLife(0.8f);
     m_ParticleFlame->setLifeVar(0.15f);
@@ -218,5 +220,5 @@ void CRocket::createFlameParticle()
     m_ParticleFlame->setEndColorVar(Color4F(0, 0, 0, 0));
     m_ParticleFlame->setPosVar(Vec2(10, 0));
     m_ParticleFlame->setTotalParticles(80);
-    m_Texture->addChild(m_ParticleFlame);
+	this->addChild(m_ParticleFlame);
 }

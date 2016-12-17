@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include <vector>
+#include "../Common/HSHUtility.h"
 
 class CCountDown : public cocos2d::Node{
     typedef std::function<void(cocos2d::Node*)> LAST_CALLBACK;
@@ -40,7 +41,7 @@ private:
     , m_MinNumber(0)
     , m_CurrentNumber(0)
     , m_FontSize(50)
-    , m_FontName("fonts/malgunbd.ttf")
+    , m_FontName(FONT::MALGUNBD)
     , m_LastContent("")
     , m_IsCountUP(false)
     , m_IsPause(false)

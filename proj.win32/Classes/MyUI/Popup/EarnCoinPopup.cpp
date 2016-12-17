@@ -32,7 +32,7 @@ bool CEarnCoinPopup::init()
 		this->addChild(bg);
 	}
 
-	auto mentLabel = Label::createWithTTF(MakeString("Would you like to watch a video to earn %d more?", 500).c_str(), "fonts/malgunbd.ttf", 40);
+	auto mentLabel = Label::createWithTTF(MakeString("Would you like to watch a video to earn %d more?", 500).c_str(), FONT::MALGUNBD, 40);
 	if (mentLabel != nullptr)
 	{
 		mentLabel->setColor(COLOR::DARKGRAY);

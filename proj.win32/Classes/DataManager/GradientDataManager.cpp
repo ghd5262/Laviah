@@ -1,10 +1,10 @@
 #include "GradientDataManager.h"
-#include "../Common/HSHUtility.h"
 #include "../json/json.h"
 
 using namespace cocos2d;
 
 CGradientDataManager::CGradientDataManager()
+	: m_GradientIdx(0)
 {
     Json::Value root;
     Json::Reader reader;
@@ -45,9 +45,7 @@ CGradientDataManager::CGradientDataManager()
     }
 }
 
-CGradientDataManager::~CGradientDataManager()
-{
-}
+CGradientDataManager::~CGradientDataManager(){}
 
 CGradientDataManager* CGradientDataManager::Instance()
 {
@@ -63,4 +61,13 @@ sGRADIENT_PARAM CGradientDataManager::getRandomGradient() const
     if(listSize > 0)
         result = m_GradientList.at(idx);
     return result;
+}
+
+sGRADIENT_PARAM CGradientDataManager::getNextGradient()
+{
+	m_GradientIdx = m_GradientIdx % (m_GradientList.size() - 1);
+	auto result = m_GradientList.at(m_GradientIdx);
+	m_GradientIdx++;
+
+	return result;
 }

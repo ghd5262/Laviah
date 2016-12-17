@@ -148,6 +148,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Classes\AI\States\RocketStates.cpp" />
+    <ClCompile Include="Classes\Common\Global.cpp" />
     <ClCompile Include="Classes\Common\StringUtility.cpp" />
     <ClCompile Include="Classes\DataManager\GradientDataManager.cpp" />
     <ClCompile Include="Classes\Download\DownloadManager.cpp" />
@@ -183,6 +185,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\GameObject\Planet.cpp" />
     <ClCompile Include="Classes\GameObject\Player.cpp" />
     <ClCompile Include="Classes\GameObject\BulletCreator.cpp" />
+    <ClCompile Include="Classes\GameObject\Rocket.cpp" />
     <ClCompile Include="Classes\GoogleCloud\GoogleCloudManager.cpp" />
     <ClCompile Include="Classes\json\json_reader.cpp" />
     <ClCompile Include="Classes\json\json_value.cpp" />
@@ -221,14 +224,14 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\SDKUtil\SDKUtil_WIN.cpp" />
     <ClCompile Include="Classes\Task\PoolingManager.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\GachaPopup.cpp" />
-    <ClCompile Include="Classes\AI\States\SpaceShipStates.cpp" />
     <ClCompile Include="Classes\Scene\LoadingScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Classes\SDKUtil\SDKUtil_IOS.cpp" />
-    <ClCompile Include="Classes\GameObject\SpaceShip.cpp" />
     <ClCompile Include="Classes\GameObject\MenuSceneObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Classes\AI\States\RocketStates.h" />
+    <ClInclude Include="Classes\Common\Global.hpp" />
     <ClInclude Include="Classes\Common\NoticeDefine.h" />
     <ClInclude Include="Classes\Common\StringUtility.h" />
     <ClInclude Include="Classes\DataManager\GradientDataManager.h" />
@@ -270,6 +273,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\GameObject\ObjectManager.h" />
     <ClInclude Include="Classes\GameObject\Planet.h" />
     <ClInclude Include="Classes\GameObject\Player.h" />
+    <ClInclude Include="Classes\GameObject\Rocket.h" />
     <ClInclude Include="Classes\GoogleCloud\GoogleCloudManager.h" />
     <ClInclude Include="Classes\json\autolink.h" />
     <ClInclude Include="Classes\json\config.h" />
@@ -316,10 +320,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\SDKUtil\SDKUtil_IOS.h" />
     <ClInclude Include="Classes\Task\PoolingManager.h" />
     <ClInclude Include="Classes\MyUI\Popup\GachaPopup.h" />
-    <ClInclude Include="Classes\AI\States\SpaceShipStates.h" />
     <ClInclude Include="Classes\Scene\LoadingScene.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="Classes\GameObject\SpaceShip.h" />
     <ClInclude Include="Classes\GameObject\MenuSceneObjectManager.h" />
   </ItemGroup>
   <ItemGroup>

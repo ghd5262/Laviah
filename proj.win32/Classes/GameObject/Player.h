@@ -16,7 +16,7 @@ class CMagnetEffect;
 class CMultipleScore;
 class CPlayer : public CGameObject {
 public:
-	static CPlayer* create(sCHARACTER_PARAM characterParam);
+	static CPlayer* create();
 
 	virtual void Execute(float delta = 0.f) override;
     void Clear();
@@ -54,8 +54,10 @@ public:
 	// time 동안무적
 	void InvincibilityMode(float time);
 
+	void ChangeDataByCharacter();
+
 	//getter & setter
-	void setPlayerTexture(std::string textureName);
+	void setCharacterParam(sCHARACTER_PARAM data);
 	CStateMachine<CPlayer>* getFSM(){ return m_FSM.get(); }
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
 	cocos2d::Vec2 getOriginPos(){ return m_OriginPos; }
@@ -77,7 +79,6 @@ protected:
 	CC_SYNTHESIZE(float, m_fGiantLimitTime, GiantLimitTime);
 	CC_SYNTHESIZE(float, m_fBonusTimeLimitTime, BonusTimeLimitTime);
 	CC_SYNTHESIZE(CItemBarrier*, m_pItemBarrier, ItemBarrier);
-	CC_SYNTHESIZE(sCHARACTER_PARAM, m_CharacterParam, CharacterParam);
     
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
@@ -85,8 +86,9 @@ private:
     void createAliveParticle();
     void createDeadParticle();
     void createRunParticle();
+	void setPlayerTexture(std::string textureName);
     
-	CPlayer(sCHARACTER_PARAM characterParam);
+	CPlayer();
 	virtual ~CPlayer(){}
 
 private:
@@ -96,6 +98,7 @@ private:
 	cocos2d::Sprite* m_pTexture;
 	cocos2d::ParticleSystemQuad* m_pParticle;
     CMagnetEffect* m_MagnetEffect;
+	sCHARACTER_PARAM m_CharacterParam;
 	bool m_Invincibility;
 
 	// 영향을 받는 아이템 타입 

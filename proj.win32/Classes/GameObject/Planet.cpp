@@ -6,9 +6,9 @@
 using namespace cocos2d;
 using namespace PLANET_DEFINE;
 
-CPlanet* CPlanet::create(std::string textureName)
+CPlanet* CPlanet::create()
 {
-	CPlanet *pRet = new(std::nothrow) CPlanet(textureName);
+	CPlanet *pRet = new(std::nothrow) CPlanet();
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -22,9 +22,8 @@ CPlanet* CPlanet::create(std::string textureName)
 	}
 }
 
-CPlanet::CPlanet(std::string textureName)
-: m_TextureName(textureName)
-, m_Angle(0.f)
+CPlanet::CPlanet()
+: m_Angle(0.f)
 , m_fRotateSpeed(BULLETCREATOR::ROTATION_SPEED)
 , m_fElapsed(0.0f)
 {
@@ -36,7 +35,8 @@ bool CPlanet::init()
 	//this->DrawDebugBinding();   //for debug
     if (!Node::init()) return false;
     
-    m_pTexture = Sprite::createWithSpriteFrameName(m_TextureName);
+	auto data = CObjectManager::Instance()->getCharacterParam();
+	m_pTexture = Sprite::createWithSpriteFrameName(data._planetTextureName);
     if (m_pTexture != nullptr){
 		this->setContentSize(m_pTexture->getContentSize());
 		m_pTexture->setPosition(this->getContentSize() / 2);

@@ -60,10 +60,8 @@ void CMagnetEffect::Execute(float delta)
         
         if(m_IntervalTimer > MAGNET_INTERVAL)
         {
-			m_pParticle = CParticle_Explosion_2::create();
+			m_pParticle = CParticle_Explosion_2::create("fire.png");
 			if (m_pParticle != nullptr){
-                m_pParticle->setTextureName("fire.png");
-                m_pParticle->setTotalParticles(300);
 				m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 				m_pParticle->setPosition(Vec2::ZERO);
 				m_pParticle->setStartRadius(m_OriginBoundingRadius);

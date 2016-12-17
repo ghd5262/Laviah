@@ -105,7 +105,7 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 		}
 
 		if (m_Message != ""){
-			auto message = Label::createWithTTF(m_Message, "fonts/malgunbd.ttf", m_MessageFontSize);
+			auto message = Label::createWithTTF(m_Message, FONT::MALGUNBD, m_MessageFontSize);
 			message->setColor(m_MessageFontColor);
 			message->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			message->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));

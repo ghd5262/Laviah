@@ -7,7 +7,7 @@ namespace PLANET_DEFINE {
 
 class CPlanet : public CGameObject {
 public:
-	static CPlanet* create(std::string textureName);
+	static CPlanet* create();
 	
     void Clear();
     
@@ -30,12 +30,11 @@ protected:
 
 private:
 	float noise(int x, int y);
-	CPlanet(std::string textureName);
+	CPlanet();
 	virtual ~CPlanet(){}
 
 private:
 	cocos2d::Vec2 m_OriginPos;
-	std::string m_TextureName;
 	cocos2d::Sprite* m_pTexture;
 	float m_fElapsed;
 };

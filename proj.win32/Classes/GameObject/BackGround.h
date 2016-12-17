@@ -22,8 +22,9 @@ private:
     , m_Gradient(nullptr)
     , m_tempStartGradient(nullptr)
     , m_tempEndGradient(nullptr)
+	, m_Index(nullptr)
     , m_Time(0.f)
-    , m_fLimitTime(20.f){}
+    , m_fLimitTime(5.f){}
 
     virtual ~CBackGround(){}
     
@@ -31,6 +32,7 @@ private:
     ParticleSystemQuad* m_pParticleBG1;
     ParticleSystemQuad* m_pParticleBG2;
     LayerGradient* m_Gradient;
+	Label* m_Index;
     Sprite* m_tempStartGradient;
     Sprite* m_tempEndGradient;
     float m_Time;

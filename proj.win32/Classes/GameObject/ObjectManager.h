@@ -62,7 +62,7 @@ public:
 	CC_SYNTHESIZE(float, m_fStageTime, StageTime);
 	CC_SYNTHESIZE(float, m_fDelta, Delta);
 	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
-
+	CC_SYNTHESIZE(sCHARACTER_PARAM, m_CharacterParam, CharacterParam);
 private:
 	void createBulletByTimer(float delta);
 	void removeAllBullet();				// Delete함수 호출! 이유는 구현부에~

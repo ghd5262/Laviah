@@ -16,3 +16,8 @@ namespace COLOR {
 	const cocos2d::Color4B BRIGHT_WHITEGRAY_ALPHA(255, 255, 255, 255 * 0.3f);
     const cocos2d::Color4B BRIGHTRED_ALPHA(255, 48, 48, 255 * 0.8f);
 }
+
+namespace FONT {
+	const std::string MALGUNBD("fonts/malgunbd.ttf");
+	const std::string NUMBER("fonts/Number.ttf");
+}

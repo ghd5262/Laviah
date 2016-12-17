@@ -75,16 +75,16 @@ void CObjectManager::RemoveAllObject()
 void CObjectManager::ChangeCharacter()
 {
     auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
-    auto data = CCharacterDataManager::Instance()->getCharacterInfoByIndex(index);
+    m_CharacterParam = CCharacterDataManager::Instance()->getCharacterInfoByIndex(index);
     
-    if(m_Player)
-        m_Player->setCharacterParam(data);
+	if(m_Player)
+		m_Player->setCharacterParam(m_CharacterParam);
     
     if(m_Planet)
-        m_Planet->setPlanetTexture(data._planetTextureName);
+		m_Planet->setPlanetTexture(m_CharacterParam._planetTextureName);
     
     if(m_BulletCreator)
-        m_BulletCreator->setCharacterInfo(data);
+		m_BulletCreator->setCharacterInfo(m_CharacterParam);
 }
 
 void CObjectManager::RotateAccelerationUpdate(float value){

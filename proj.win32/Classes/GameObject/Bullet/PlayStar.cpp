@@ -46,10 +46,8 @@ void CPlayStar::CollisionWithPlanet()
 {
 	if (this->getIsFly())
 	{
-		m_pParticleCrash = CParticle_Explosion::create();
+		m_pParticleCrash = CParticle_Explosion::create("coin_5.png");
 		if (m_pParticleCrash != nullptr){
-            m_pParticleCrash->setTextureName("coin_5.png");
-            m_pParticleCrash->setTotalParticles(50);
 			m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			m_pParticleCrash->setAngle(-getRotation());
 			m_pParticleCrash->setPosition(getPosition());

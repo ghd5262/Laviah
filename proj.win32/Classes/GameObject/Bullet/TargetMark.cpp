@@ -86,10 +86,8 @@ bool CTargetMark::init()
 
 void CTargetMark::setParticle()
 {
-    m_pParticle = CParticle_Line::create();
+	m_pParticle = CParticle_Line::create("particle_star1.png");
     if (m_pParticle != nullptr){
-        m_pParticle->setTextureName("particle_star0.png");
-        m_pParticle->setTotalParticles(120);
 		m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_pParticle->setPosVar(Vec2(this->getContentSize().width * 0.7f, 20));
         m_pParticle->setPosition(Vec2(this->getContentSize().width, this->getContentSize().height /2));

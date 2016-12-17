@@ -5,11 +5,11 @@
 #include <vector>
 
 namespace ROCKET{
-	static float			BOUNDING_RADIUS = 50.f;
+	static float			BOUNDING_RADIUS = 80.f;
 	static float			FLYAWAY_DISTANCE = 50.f;
 	static float			SPEED_MAX = 1500.f;
 	static float			MASS = 0.5f;
-	static float			ARRIVE_RADIUS = 50.f;
+	static float			ARRIVE_RADIUS = 30.f;
 };
 
 struct sROCKET_PARAM{

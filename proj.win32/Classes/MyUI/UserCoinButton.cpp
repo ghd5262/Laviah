@@ -34,7 +34,7 @@ bool CUserCoinButton::init()
 		this->addChild(m_Back);
 	}
 
-	m_CoinLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 50);
+	m_CoinLabel = Label::createWithTTF("", FONT::MALGUNBD, 50);
 	if (m_CoinLabel != nullptr){
 		m_CoinLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 		m_CoinLabel->setColor(COLOR::GOLD);

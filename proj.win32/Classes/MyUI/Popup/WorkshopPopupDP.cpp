@@ -70,7 +70,7 @@ bool CWorkshopPopupDP::initVariable()
 	}
 
 
-	auto workshopItemName = Label::createWithTTF(m_WorkshopItem._name.c_str(), "fonts/malgunbd.ttf", 40);
+	auto workshopItemName = Label::createWithTTF(m_WorkshopItem._name.c_str(), FONT::MALGUNBD, 40);
 	if (workshopItemName != nullptr)
 	{
 		workshopItemName->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);

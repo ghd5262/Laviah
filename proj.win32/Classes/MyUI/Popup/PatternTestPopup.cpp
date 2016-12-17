@@ -76,7 +76,7 @@ bool CPatternTestPopup::init()
 		this->addChild(bg);
 	}
 
-	auto workShopLabel = Label::createWithTTF("Pattern Test", "fonts/malgunbd.ttf", 80);
+	auto workShopLabel = Label::createWithTTF("Pattern Test", FONT::MALGUNBD, 80);
 	if (workShopLabel != nullptr)
 	{
 		workShopLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -163,7 +163,7 @@ bool CPatternTestPopup::init()
 		bg->addChild(patternBack);
 	}
 
-	m_TextFieldPattern = CTextField::create("pattern", "fonts/malgunbd.ttf", 40, Vec2(patternBack->getContentSize().width * 0.5f, patternBack->getContentSize().height * 0.5f));
+	m_TextFieldPattern = CTextField::create("pattern", FONT::MALGUNBD, 40, Vec2(patternBack->getContentSize().width * 0.5f, patternBack->getContentSize().height * 0.5f));
 	if (m_TextFieldPattern != nullptr)
 	{
 		m_TextFieldPattern->setDimensions(Size(patternBack->getContentSize().width * 0.9f, patternBack->getContentSize().height * 0.9f));
@@ -179,7 +179,7 @@ bool CPatternTestPopup::init()
 		bg->addChild(widthBack);
 	}
 
-	m_TextFieldWidth = CTextField::create("pattern", "fonts/malgunbd.ttf", 40, Vec2(widthBack->getContentSize().width * 0.5f, widthBack->getContentSize().height * 0.5f));
+	m_TextFieldWidth = CTextField::create("pattern", FONT::MALGUNBD, 40, Vec2(widthBack->getContentSize().width * 0.5f, widthBack->getContentSize().height * 0.5f));
 	if (m_TextFieldWidth != nullptr)
 	{
 		m_TextFieldWidth->setDimensions(Size(widthBack->getContentSize().width * 0.9f, widthBack->getContentSize().height * 0.9f));

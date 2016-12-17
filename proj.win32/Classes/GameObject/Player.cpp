@@ -26,9 +26,9 @@ namespace PLAYER_DEFINE{
 using namespace cocos2d;
 using namespace PLAYER_DEFINE;
 
-CPlayer* CPlayer::create(sCHARACTER_PARAM characterParam)
+CPlayer* CPlayer::create()
 {
-	CPlayer *pRet = new(std::nothrow) CPlayer(characterParam);
+	CPlayer *pRet = new(std::nothrow) CPlayer();
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -42,12 +42,12 @@ CPlayer* CPlayer::create(sCHARACTER_PARAM characterParam)
 	}
 }
 
-CPlayer::CPlayer(sCHARACTER_PARAM characterParam)
-: m_CharacterParam(characterParam)
+CPlayer::CPlayer()
+: m_CharacterParam(sCHARACTER_PARAM())
 , m_Angle(0.f)
 , m_fRotateSpeed(0.f)
-, m_fMaxLife(characterParam._health)
-, m_fLife(characterParam._health)
+, m_fMaxLife(0)
+, m_fLife(0)
 , m_fMagnetLimitTime(0)
 , m_fMagnetLimitRadius(0)
 , m_EffectItemTypes(eITEM_FLAG_none)
@@ -61,14 +61,7 @@ CPlayer::CPlayer(sCHARACTER_PARAM characterParam)
 bool CPlayer::init()
 {
     if (!CGameObject::init()) return false;
-    
-    m_fMagnetLimitTime = m_CharacterParam._magnetItemTime + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_TIME_MAGNET);
-    m_fMagnetLimitRadius = m_CharacterParam._magnetItemSize + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_SIZE_MAGNET);
-    m_fCoinLimitTime = m_CharacterParam._coinItemTime + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_TIME_COIN);
-    m_fStarLimitTime = m_CharacterParam._starItemTime + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_TIME_STAR);
-    m_fBonusTimeLimitTime = m_CharacterParam._bonusItemTime + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_TIME_BOUNS);
-    m_fGiantLimitTime = m_CharacterParam._giantItemTime + CUserDataManager::Instance()->getItemCurrentValue(USERDATA_KEY::ITEM_TIME_GIANT);
-    
+      
     this->setItemEffect(eITEM_FLAG_giant);
     this->setCascadeOpacityEnabled(true);
     
@@ -88,6 +81,7 @@ bool CPlayer::init()
         addChild(m_pItemBarrier);
     }
     
+	m_CharacterParam = CObjectManager::Instance()->getCharacterParam();
     m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam._normalTextureName);
     if (m_pTexture != nullptr){
         this->setContentSize(m_pTexture->getContentSize());
@@ -106,6 +100,7 @@ bool CPlayer::init()
     this->createRunParticle();
     this->setScale(SCALE_SIZE);
 	this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
+	this->ChangeDataByCharacter();
     return true;
 }
 
@@ -130,6 +125,7 @@ void CPlayer::PlayerAlive(){
     this->setVisible(false);
     this->createAliveParticle();
 	this->setPlayerTexture(m_CharacterParam._aliveTextureName);
+	m_fLife = m_fMaxLife;
 
 	this->scheduleOnce([=](float delta){
 		this->setVisible(true);
@@ -281,19 +277,49 @@ void CPlayer::InvincibilityMode(float time)
 	}, time, "SetPlayerNormalMode");
 }
 
+void CPlayer::ChangeDataByCharacter()
+{
+	auto getValue = [=](std::string key){
+		return CUserDataManager::Instance()->getItemCurrentValue(key);
+	};
+
+	m_fMagnetLimitTime		= m_CharacterParam._magnetItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_MAGNET);
+	m_fMagnetLimitRadius	= m_CharacterParam._magnetItemSize	+ getValue(USERDATA_KEY::ITEM_SIZE_MAGNET);
+	m_fCoinLimitTime		= m_CharacterParam._coinItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_COIN);
+	m_fStarLimitTime		= m_CharacterParam._starItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_STAR);
+	m_fBonusTimeLimitTime	= m_CharacterParam._bonusItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_BOUNS);
+	m_fGiantLimitTime		= m_CharacterParam._giantItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_GIANT);
+	m_fMaxLife				= m_CharacterParam._health;
+	this->setPlayerTexture(m_CharacterParam._normalTextureName);
+}
+
+void CPlayer::setCharacterParam(sCHARACTER_PARAM data)
+{
+	m_CharacterParam = data;
+	this->ChangeDataByCharacter();
+}
+
 void CPlayer::setPlayerTexture(std::string textureName)
 {
 	if (m_pTexture != nullptr){
 		m_pTexture->setSpriteFrame(textureName);
 	}
+
+	if (m_pParticle != nullptr){
+		SpriteFrame* spriteFrame = nullptr;
+		spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(textureName);
+
+		if (spriteFrame != nullptr)
+		{
+			m_pParticle->setTextureWithRect(spriteFrame->getTexture(), spriteFrame->getRect());
+		}
+	}
 }
 
 void CPlayer::createAliveParticle()
 {
-    auto particle = CParticle_Explosion_2::create();
+	auto particle = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
     if (particle != nullptr){
-        particle->setTextureName(m_CharacterParam._deadParticleTextureName);
-        particle->setTotalParticles(300);
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(getPosition());
         particle->setStartRadius(160);
@@ -305,10 +331,8 @@ void CPlayer::createAliveParticle()
 
 void CPlayer::createDeadParticle()
 {
-    auto particle = CParticle_Explosion_2::create();
+	auto particle = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
     if (particle != nullptr){
-        particle->setTextureName(m_CharacterParam._deadParticleTextureName);
-        particle->setTotalParticles(300);
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());
         CGameScene::getGameScene()->addChild(particle, ZORDER::PLAYER);
@@ -317,16 +341,14 @@ void CPlayer::createDeadParticle()
 
 void CPlayer::createRunParticle()
 {
-    m_pParticle = CParticle_Flame::create();
+	m_pParticle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
     if (m_pParticle != nullptr){
-        m_pParticle->setTextureName(m_CharacterParam._normalTextureName);
-        m_pParticle->setTotalParticles(50);
         m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticle->setAngle(90);
         m_pParticle->setGravity(Vec2(0, -270));
         m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_pParticle->setEndSize(4.f);
-        CGameScene::getGameScene()->addChild(m_pParticle);
         m_pParticle->setVisible(false);
+		CGameScene::getGameScene()->addChild(m_pParticle);
     }
 }

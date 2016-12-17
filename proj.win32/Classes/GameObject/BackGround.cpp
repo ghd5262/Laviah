@@ -32,7 +32,7 @@ bool CBackGround::init()
     if (m_Gradient != nullptr)
         addChild(m_Gradient);
     
-    auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
+	auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
     
     m_tempStartGradient = Sprite::create();
     if (m_tempStartGradient != nullptr){
@@ -48,19 +48,16 @@ bool CBackGround::init()
         m_Gradient->setEndColor(gradientTo._leftColor);
     }
     
-    m_pParticleBG1 = CParticle_BackGround::create();
+	m_pParticleBG1 = CParticle_BackGround::create("whiteSquare.png");
     if (m_pParticleBG1 != nullptr){
-        m_pParticleBG1->setTextureName("whiteSquare.png");
         m_pParticleBG1->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.75f));
         m_pParticleBG1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleBG1->setTotalParticles(15);
         addChild(m_pParticleBG1);
     }
     
-    m_pParticleBG2 = CParticle_BackGround::create();
+	m_pParticleBG2 = CParticle_BackGround::create("whiteSquare.png");
     if (m_pParticleBG2 != nullptr){
-        m_pParticleBG2->setTextureName("whiteSquare.png");
-        m_pParticleBG2->setTotalParticles(60);
         m_pParticleBG2->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * -0.05f));
         m_pParticleBG2->setPosVar(Vec2(visibleSize.width, 0));
         m_pParticleBG2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -73,6 +70,12 @@ bool CBackGround::init()
         
         addChild(m_pParticleBG2);
     }
+
+	//m_Index = Label::createWithTTF(StringUtils::format("%d", CGradientDataManager::Instance()->getGradientIdx()), FONT::MALGUNBD, 60);
+	//m_Index->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.65f));
+	//m_Index->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	//m_Index->setTextColor(COLOR::WHITEGRAY_ALPHA);
+	//addChild(m_Index);
     
     return true;
 }
@@ -81,8 +84,17 @@ void CBackGround::ChangeBackground()
 {
 	if (m_tempStartGradient != nullptr && m_tempEndGradient != nullptr){
 		auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
-		m_tempStartGradient->runAction(TintTo::create(1.5f, gradientTo._rightColor));
-		m_tempEndGradient->runAction(TintTo::create(1.5f, gradientTo._leftColor));
+
+		auto data = sGRADIENT_PARAM(gradientTo._idx, gradientTo._leftColor, gradientTo._rightColor);
+		if (random<int>(0, 1)) //flip
+		{
+			data._leftColor = gradientTo._rightColor;
+			data._rightColor = gradientTo._leftColor;
+		}
+
+		m_tempStartGradient->runAction(TintTo::create(1.5f, data._rightColor));
+		m_tempEndGradient->runAction(TintTo::create(1.5f, data._leftColor));
+		//m_Index->setString(StringUtils::format("%d", CGradientDataManager::Instance()->getGradientIdx()));
 	}
 }
 

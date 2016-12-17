@@ -84,14 +84,14 @@ bool CMenuScene::initVariable()
 	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
 	sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
 
-	auto planet = CPlanet::create(currentCharacterInfo._planetTextureName);
+	auto planet = CPlanet::create();
 	planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	planet->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f));
 	planet->setScale(2.f);
 	this->addChild(planet);
 	CMenuSceneObjectManager::Instance()->setPlanet(planet);
 
-	auto player = CPlayer::create(currentCharacterInfo);
+	auto player = CPlayer::create();
 	player->setScale(2.f);
 	player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	player->setPosition(Vec2(visibleSize.width * 0.5f, planet->getPosition().y + (((planet->getContentSize().width * planet->getScale()) / 2) + 20)));

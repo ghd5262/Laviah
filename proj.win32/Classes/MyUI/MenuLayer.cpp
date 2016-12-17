@@ -113,7 +113,7 @@ bool CMenuLayer::init()
         
         createTestButton([=](Node* sender){
             createTwoButtonPopup([](Node* sender){
-                
+				CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, 0);
 				CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
                 CGameScene::getGameScene()->RandomCoin();
             }, "Are you sure want reset user data?");

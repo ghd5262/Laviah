@@ -114,7 +114,7 @@ void CNormalMissile::ChangeToCoinOrStar()
 
 	this->setAlive(false);
 
-	std::string patternName = m_Player->getCharacterParam()._normalMissilePattern;
+	std::string patternName = CObjectManager::Instance()->getCharacterParam()._normalMissilePattern;
 
 	float distance = m_TargetVec.distance(getPosition());
 
@@ -164,9 +164,8 @@ void CNormalMissile::createParticle_Flame()
     //    this->addChild(m_pParticleFlame);
     //}
 
-	m_pParticleFlame = CParticle_Flame::create();
+	m_pParticleFlame = CParticle_Flame::create("fire.png");
 	if (m_pParticleFlame != nullptr){
-        m_pParticleFlame->setTextureName("fire.png");
 		m_pParticleFlame->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_pParticleFlame->setAngle(0);
 		m_pParticleFlame->setGravity(Vec2(90, 0));
@@ -186,10 +185,9 @@ void CNormalMissile::createParticle_Flame()
 
 void CNormalMissile::createParticle_Explosion()
 {
-    m_pParticleCrash = CParticle_Explosion::create();
+	auto texture = CObjectManager::Instance()->getCharacterParam()._missileParticleTextureName;
+	m_pParticleCrash = CParticle_Explosion::create(texture);
     if (m_pParticleCrash != nullptr){
-        m_pParticleCrash->setTextureName("explosion_0.png");
-        m_pParticleCrash->setTotalParticles(50);
         m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleCrash->setAngle(-getRotation());
         m_pParticleCrash->setPosition(getPosition());

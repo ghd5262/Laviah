@@ -92,8 +92,9 @@ bool CGameScene::init()
 	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
 	sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
 	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
+	CObjectManager::Instance()->setCharacterParam(currentCharacterInfo);
 
-	auto planet = CPlanet::create(currentCharacterInfo._planetTextureName);
+	auto planet = CPlanet::create();
 	planet->setPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.35f));
 	planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	planet->setOriginPos(planet->getPosition());
@@ -101,7 +102,7 @@ bool CGameScene::init()
     CObjectManager::Instance()->setPlanet(planet);
     
 
-	auto player = CPlayer::create(currentCharacterInfo);
+	auto player = CPlayer::create();
 	player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * BULLETCREATOR::ROTATION_SPEED));
 	player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	player->setPosition(Vec2(m_VisibleSize.width * 0.5f,
@@ -115,11 +116,13 @@ bool CGameScene::init()
     auto rocket = CRocket::create(sROCKET_PARAM());
     rocket->setSpeed(350.f);
     rocket->setDistance(500.f);
+	rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	rocket->setPosition(CBullet::getCirclePosition(random<int>(0, 360), ROCKET::FLYAWAY_DISTANCE, planet->getPosition()));
-    this->addChild(rocket, ZORDER::PLAYER);
-    CObjectManager::Instance()->setRocket(rocket);
    	rocket->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), rocket->getDistance(), planet->getPosition()));
 	rocket->ChangeState(CFlyToTouchArea::Instance());
+	this->addChild(rocket, ZORDER::PLAYER);
+	CObjectManager::Instance()->setRocket(rocket);
+
 
     auto multipleScoreUI = CMultipleScore::Instance();
     this->addChild(multipleScoreUI, ZORDER::PLAYER);

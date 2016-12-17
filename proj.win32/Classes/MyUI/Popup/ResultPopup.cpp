@@ -136,7 +136,8 @@ bool CResultPopup::init()
     
 
     auto createNormalLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize){
-        GLOBAL->TOTALSCORE += score;
+		if (GLOBAL->TOTALSCORE + score < INT_MAX )
+		  GLOBAL->TOTALSCORE += score;
 
 		auto layerBG = createLayerBG(layerPos);
         createIcon(layerBG, Vec2(layerBG->getContentSize().width * 0.1f,
@@ -150,8 +151,9 @@ bool CResultPopup::init()
 	};
 
 	auto createMultipleLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize){
-        GLOBAL->TOTALSCORE += score * 10000;
-        
+		if (GLOBAL->TOTALSCORE + (score*10000) < INT_MAX)
+			GLOBAL->TOTALSCORE += score * 10000;
+
         auto layerBG = createLayerBG(layerPos);
         createIcon(layerBG, Vec2(layerBG->getContentSize().width * 0.1f,
                                  layerBG->getContentSize().height * 0.5f), iconImg);
@@ -188,7 +190,7 @@ bool CResultPopup::init()
     auto totalScoreBG = createLayerBG(startPos[6]);
     totalScoreBG->setTexture("resultPopup_1.png");
     
-    auto bestScore = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
+	auto bestScore = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
     std::string totalContent = "Total Score";
     
     // total score가 best score면 저장한다.
