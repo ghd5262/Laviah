@@ -24,7 +24,7 @@ private:
     , m_tempEndGradient(nullptr)
 	, m_Index(nullptr)
     , m_Time(0.f)
-    , m_fLimitTime(5.f){}
+    , m_fLimitTime(20.f){}
 
     virtual ~CBackGround(){}
     

@@ -151,7 +151,7 @@ void CObjectManager::RotationObject(float dir)
     m_BulletCreator->setRotationAngle(dir + (dir * m_fRotateAcceleration), m_fDelta);
     m_Planet->Rotation(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
 	m_Player->Rotation(dir, m_fDelta);
-    m_Rocket->Fly(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
+    //m_Rocket->Fly(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
 }
 
 void CObjectManager::inGameUpdate()

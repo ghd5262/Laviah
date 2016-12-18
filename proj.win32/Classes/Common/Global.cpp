@@ -8,7 +8,7 @@ Global::Global()
 void Global::Clear()
 {
     BONUSTIME = 0;
-    ALIENGET = 0;
+    COMBO = 0;
     CHALLENGECLEAR = 0;
     TOTALSCORE = 0;
     STARSCORE = 0;

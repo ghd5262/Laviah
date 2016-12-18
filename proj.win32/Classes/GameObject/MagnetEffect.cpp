@@ -3,9 +3,9 @@
 
 using namespace cocos2d;
 
-CMagnetEffect* CMagnetEffect::create(std::string textureName, float boundingRadius, float limitTime)
+CMagnetEffect* CMagnetEffect::create()
 {
-    CMagnetEffect *pRet = new(std::nothrow) CMagnetEffect(textureName, boundingRadius, limitTime);
+    CMagnetEffect *pRet = new(std::nothrow) CMagnetEffect();
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -19,14 +19,12 @@ CMagnetEffect* CMagnetEffect::create(std::string textureName, float boundingRadi
     }
 }
 
-CMagnetEffect::CMagnetEffect(std::string textureName, float boundingRadius, float limitTime)
-: m_TextureName(textureName)
-, m_OriginBoundingRadius(boundingRadius)
+CMagnetEffect::CMagnetEffect()
+: m_OriginBoundingRadius(0.f)
 , m_bMagnetAlive(false)
-, m_limitTime(limitTime)
+, m_LimitTime(0.f)
 , m_Timer(0.f)
 , m_IntervalTimer(MAGNET_INTERVAL)
-, m_BoundingSizeByPercent(0.f)
 {
 }
 
@@ -36,13 +34,12 @@ bool CMagnetEffect::init()
     
     scheduleUpdate();
     
-    m_pTexture = Sprite::create(m_TextureName);
+    m_pTexture = Sprite::create("barrier.png");
     if (m_pTexture != nullptr){
         m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
         addChild(m_pTexture);
     }
     
-    m_BoundingSizeByPercent = (m_OriginBoundingRadius / m_pTexture->getContentSize().width) * 2;
     m_pTexture->setScale(0);
     
     return true;
@@ -55,10 +52,10 @@ void CMagnetEffect::Execute(float delta)
         m_Timer += delta;
         m_IntervalTimer += delta;
         
-        if(m_Timer > m_limitTime)
+		if (m_Timer > m_LimitTime)
             FinishedBarrierItem();
         
-        if(m_IntervalTimer > MAGNET_INTERVAL)
+        if (m_IntervalTimer > MAGNET_INTERVAL)
         {
 			m_pParticle = CParticle_Explosion_2::create("fire.png");
 			if (m_pParticle != nullptr){
@@ -71,7 +68,11 @@ void CMagnetEffect::Execute(float delta)
 				m_pParticle->setStartSize(10);
 				addChild(m_pParticle, 101);
 			}
-            m_pTexture->runAction(Sequence::create(ScaleTo::create(0, m_BoundingSizeByPercent), EaseOut::create( ScaleTo::create(MAGNET_INTERVAL - 0.2f, 0), 0.3f), NULL));
+			auto boundingSizeByPercent = (m_OriginBoundingRadius / m_pTexture->getContentSize().width) * 2;
+			m_pTexture->runAction(Sequence::create(
+				ScaleTo::create(0, boundingSizeByPercent), 
+				EaseOut::create(
+				ScaleTo::create(MAGNET_INTERVAL - 0.2f, 0), 0.3f), NULL));
             m_IntervalTimer = 0.f;
         }
     }

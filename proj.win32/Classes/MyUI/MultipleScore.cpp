@@ -46,12 +46,14 @@ bool CMultipleScore::init()
     m_Instance = this;
     this->scheduleUpdate();
     
+	auto visibleSize = _director->getVisibleSize();
+
     m_Player = CObjectManager::Instance()->getPlayer();
     
-    m_MultipleNumberLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 30);
-    m_MultipleNumberLabel->setColor(COLOR::BRIGHTGRAY);
+    m_MultipleNumberLabel = Label::createWithTTF("", FONT::MALGUNBD, 60);
+	m_MultipleNumberLabel->setTextColor(COLOR::WHITEGRAY_ALPHA);
     m_MultipleNumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_MultipleNumberLabel->setPosition(this->getContentSize() / 2);
+	//m_MultipleNumberLabel->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.7f));
     m_MultipleNumberLabel->setVisible(false);
     
     this->addChild(m_MultipleNumberLabel);
@@ -88,6 +90,9 @@ void CMultipleScore::calculateScore()
 	// 현재 점수 계산 (배수 * 저장된 점수)
 	unsigned calculatedScore = m_MultipleNumber * m_SavedScore;
 	
+	if (m_MultipleNumber > GLOBAL->COMBO)
+		GLOBAL->COMBO = m_MultipleNumber;
+
 	// 점수 반영
     GLOBAL->STARSCORE += calculatedScore;
 }

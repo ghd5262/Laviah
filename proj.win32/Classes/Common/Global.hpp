@@ -13,7 +13,7 @@ private:
     
 public:
     int BONUSTIME;        
-    int ALIENGET;         
+    int COMBO;         
     int CHALLENGECLEAR;   
     int TOTALSCORE;       
     int STARSCORE;        

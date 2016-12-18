@@ -173,6 +173,8 @@ bool CVideoPopup::init()
 
 void CVideoPopup::End(Node* sender){
     CGameScene::getGameScene()->GameResult();
+	m_CountDown->Pause();
+	m_CountDown->setVisible(false);
 	this->popupClose();
 }
 

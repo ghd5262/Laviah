@@ -185,8 +185,7 @@ void CNormalMissile::createParticle_Flame()
 
 void CNormalMissile::createParticle_Explosion()
 {
-	auto texture = CObjectManager::Instance()->getCharacterParam()._missileParticleTextureName;
-	m_pParticleCrash = CParticle_Explosion::create(texture);
+	m_pParticleCrash = CParticle_Explosion::create("explosion_1.png");
     if (m_pParticleCrash != nullptr){
         m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleCrash->setAngle(-getRotation());

@@ -74,13 +74,6 @@ bool CPlayer::init()
         m_FSM.get()->ChangeState(CPlayerNormal::Instance());
     }
     
-    m_pItemBarrier = CItemBarrier::create("barrier2.png", 800.f);
-    if (m_pItemBarrier != nullptr){
-        m_pItemBarrier->setPosition(this->getContentSize() / 2);
-        m_pItemBarrier->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        addChild(m_pItemBarrier);
-    }
-    
 	m_CharacterParam = CObjectManager::Instance()->getCharacterParam();
     m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam._normalTextureName);
     if (m_pTexture != nullptr){
@@ -90,7 +83,14 @@ bool CPlayer::init()
 		addChild(m_pTexture);
     }
     
-    m_MagnetEffect = CMagnetEffect::create("barrier.png", m_fMagnetLimitRadius, m_fMagnetLimitTime);
+	m_pItemBarrier = CItemBarrier::create("barrier2.png", 800.f);
+	if (m_pItemBarrier != nullptr){
+		m_pItemBarrier->setPosition(this->getContentSize() / 2);
+		m_pItemBarrier->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		addChild(m_pItemBarrier);
+	}
+
+    m_MagnetEffect = CMagnetEffect::create();
     if (m_MagnetEffect != nullptr)
     {
         m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -290,6 +290,9 @@ void CPlayer::ChangeDataByCharacter()
 	m_fBonusTimeLimitTime	= m_CharacterParam._bonusItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_BOUNS);
 	m_fGiantLimitTime		= m_CharacterParam._giantItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_GIANT);
 	m_fMaxLife				= m_CharacterParam._health;
+
+	m_MagnetEffect->setLimitTime(m_fMagnetLimitTime);
+	m_MagnetEffect->setOriginBoundingRadius(m_fMagnetLimitRadius);
 	this->setPlayerTexture(m_CharacterParam._normalTextureName);
 }
 
@@ -318,7 +321,7 @@ void CPlayer::setPlayerTexture(std::string textureName)
 
 void CPlayer::createAliveParticle()
 {
-	auto particle = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
+	auto particle = CParticle_Explosion_2::create("whiteSquare.png");
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(getPosition());
@@ -331,7 +334,7 @@ void CPlayer::createAliveParticle()
 
 void CPlayer::createDeadParticle()
 {
-	auto particle = CParticle_Explosion_2::create(m_CharacterParam._deadParticleTextureName);
+	auto particle = CParticle_Explosion_2::create("whiteSquare.png");
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());

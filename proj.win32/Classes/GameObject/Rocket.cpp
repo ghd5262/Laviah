@@ -13,7 +13,6 @@ using namespace cocos2d;
 CRocket::CRocket(sROCKET_PARAM RocketParam)
 : m_RocketParam(RocketParam)
 , m_Speed(0.f)
-, m_ActionTime(0.f)
 , m_Distance(0.f)
 , m_Direction(1)
 , m_Time(0.f)
@@ -21,6 +20,7 @@ CRocket::CRocket(sROCKET_PARAM RocketParam)
 , m_Texture(nullptr)
 , m_Velocity(Vec2::ZERO)
 , m_Arrive(false)
+, m_ArriveCallback(nullptr)
 {
 	if (m_FSM == nullptr){
 		m_FSM = new CStateMachine<CRocket>(this);
@@ -64,7 +64,7 @@ bool CRocket::init()
     m_FlyLimitMax = visibleSize.width * 0.9f;
     m_FlyLimitMin = visibleSize.width * 0.1f;
     
-    m_Texture = Sprite::create("spaceship_0.png");
+    m_Texture = Sprite::create("spaceship_1.png");
 	this->setContentSize(m_Texture->getContentSize());
     m_Texture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	m_Texture->setPosition(this->getContentSize() / 2);
@@ -106,8 +106,6 @@ void CRocket::FlyAround(float delta)
 
 void CRocket::FlyAway(float delta)
 {
-    if ((CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))) return;
-
 	m_TargetPos = CBullet::getCirclePosition(m_AwayAngle, ROCKET::FLYAWAY_DISTANCE, m_CenterPos);
 	this->arrive(delta);
 }
@@ -117,6 +115,12 @@ void CRocket::FlyToTouchArea(float delta)
 	m_TargetPos = CGameScene::getGameScene()->getTouchPos();
 	this->arrive(delta);
 }
+
+void CRocket::FlyToTarget(float delta)
+{
+	this->seek(delta);
+}
+
 
 void CRocket::CollisionCheckAtHome()
 {
@@ -197,8 +201,16 @@ void CRocket::arriveCheck()
                      m_TargetPos.x + ROCKET::ARRIVE_RADIUS,
                      m_TargetPos.y + ROCKET::ARRIVE_RADIUS);
     
-    if (rect.containsPoint(this->getPosition()))
-        m_Arrive = true;
+	if (!m_Arrive && rect.containsPoint(this->getPosition())){
+		m_Arrive = true;
+		if (m_ArriveCallback)
+		{
+			this->retain();
+			m_ArriveCallback(this);
+			m_ArriveCallback = nullptr;
+			this->release();
+		}
+	}
     else
         m_Arrive = false;
 }
