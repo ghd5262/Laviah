@@ -27,6 +27,8 @@ public:
     void GotMagnetItem();
 	void GiantMode();
 	void NormalMode();
+    void TakeOnRocket();
+    void TakeOffRocket();
 	void Rotation(float dir, float delta);
 	
 	//인자로 전달된 아이템의 영향을 받는다

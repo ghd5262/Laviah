@@ -21,8 +21,6 @@ public:
 	static cocos2d::Scene* createScene();
 	virtual void update(float delta) override;
 
-//	void ResetGameScene();
-//	void BackToMenuScene();
 	void OpenGamePausePopup();
     void OpenGameMenuLayer();
 	void GameStart();
@@ -33,6 +31,7 @@ public:
 	void WatchVideo();
     void GameExit();
     void RandomCoin();
+    void ScreenFade();
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }

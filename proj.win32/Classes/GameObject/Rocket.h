@@ -6,9 +6,11 @@
 
 namespace ROCKET{
 	static float			BOUNDING_RADIUS = 80.f;
+    static float            FLYAROUND_DISTANCE = 500.f;
 	static float			FLYAWAY_DISTANCE = 3000.f;
 	static float			SPEED_MAX = 1500.f;
-	static float			MASS = 0.5f;
+    static float            SPEED = 350.f;
+    static float			MASS = 0.5f;
 	static float			ARRIVE_RADIUS = 30.f;
 };
 
@@ -29,6 +31,8 @@ public:
 	void FlyToTouchArea(float delta);
 	void FlyToTarget(float delta);
 	void CollisionCheckAtHome();
+    void BonusTimeBegan();
+    void BonusTimeEnd();
 	void ChangeState(CState<CRocket>* newState)
     { m_FSM->ChangeState(newState); };
     
@@ -61,6 +65,7 @@ private:
 	cocos2d::ParticleSystemQuad* m_ParticleFlame;
     cocos2d::Sprite* m_Texture;
     cocos2d::Vec2 m_CenterPos;
+    cocos2d::Vec2 m_PlayerPos;
     float m_FlyLimitMax;
     float m_FlyLimitMin;
     float m_Time;

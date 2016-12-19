@@ -114,8 +114,8 @@ bool CGameScene::init()
     
     
     auto rocket = CRocket::create(sROCKET_PARAM());
-    rocket->setSpeed(350.f);
-    rocket->setDistance(500.f);
+    rocket->setSpeed(ROCKET::SPEED);
+    rocket->setDistance(ROCKET::FLYAROUND_DISTANCE);
 	rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	rocket->setPosition(CBullet::getCirclePosition(random<int>(0, 360), ROCKET::FLYAWAY_DISTANCE, planet->getPosition()));
    	rocket->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), rocket->getDistance(), planet->getPosition()));
@@ -165,6 +165,7 @@ void CGameScene::GameStart()
 {
     this->clearData();
     this->createUILayer();
+    this->ScreenFade();
 	CObjectManager::Instance()->getPlayer()->PlayerAlive();
 }
 
@@ -216,11 +217,19 @@ void CGameScene::OpenGameMenuLayer()
     this->clearData();
     this->createMenuLayer();
 	this->createRandomCoin();
+    this->ScreenFade();
 }
 
 void CGameScene::RandomCoin()
 {
     this->createRandomCoin();
+}
+
+void CGameScene::ScreenFade()
+{
+    auto fadeOut = FadeTo::create(0.3f, 1);
+    auto fadeIn  = FadeIn::create(0.3f);
+    this->runAction(Sequence::create(fadeOut, fadeIn, nullptr));
 }
 
 void CGameScene::clearData()
@@ -351,33 +360,3 @@ void CGameScene::createRandomCoin()
                              random<int>(padding, m_VisibleSize.height - padding)));
 	bullet->setLocalZOrder(ZORDER::PLAYER);
 }
-//void CGameScene::ResetGameScene()
-//{
-//	Director::getInstance()->getScheduler()->schedule([](float delta){
-//
-//		auto tempScene = CEmptyScene::createScene();
-//		Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
-//
-//		Director::getInstance()->getScheduler()->schedule([](float delta){
-//			auto Scene = CGameScene::createScene();
-//			Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
-//		}, Director::getInstance(), 1.f, 0, 0.f, false, "createGameScene");
-//
-//	}, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
-//}
-
-//void CGameScene::BackToMenuScene()
-//{
-//	CAudioManager::Instance()->AllPause();
-//    Director::getInstance()->getScheduler()->schedule([](float delta){
-//
-//        auto tempScene = CEmptyScene::createScene();
-//        Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
-//
-//        Director::getInstance()->getScheduler()->schedule([](float delta){
-//            auto Scene = CMenuScene::createScene();
-//            Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
-//        }, Director::getInstance(), 1.f, 0, 0.f, false, "createMenuScene");
-//
-//    }, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
-//}

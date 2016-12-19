@@ -68,14 +68,22 @@ CBullet* CBullet::build()
     }
     
     // position init
-    auto pos = CBullet::getCirclePosition(getAngle(),
-                                          getDistance(),
-                                          m_Planet->getPosition());
+    Vec2 pos = Vec2::ZERO;
+    float angle = 0.f;
+    if(1){
+        pos = CBullet::getCirclePosition(getAngle(),
+                                         getDistance(),
+                                         m_Planet->getPosition());
+        angle = -getAngle();
+    }
+    else{
+        
+    }
     this->setPosition(pos);
 	this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 
     // rotation init
-    this->setRotation(-getAngle());
+    this->setRotation(angle);
 	this->setScale(1.5f);
 	this->setBoundingRadius(this->getBoundingRadius() * 1.5f);
     
@@ -144,11 +152,11 @@ void CBullet::ReturnToMemoryBlock()
 
 
 /* 회전행렬을 이용하여 오브젝트 회전 및 이동 */
-void CBullet::Rotation(float dir, float delta)
+void CBullet::Rotation(float speed)
 {
     
     // 회전 속도와 방향을 이용하여 각도를 구하고 라디안으로 변환
-    float radian = CC_DEGREES_TO_RADIANS(dir * (m_RotationSpeed * delta));
+    float radian = CC_DEGREES_TO_RADIANS(speed);
     
     // 현재의 Direction Vector를 저장한다.
     Vec2 beforeRotation = getPosition() - m_Planet->getPosition();
@@ -170,7 +178,9 @@ void CBullet::Rotation(float dir, float delta)
     setPosition(m_Planet->getPosition() + m_RotationVec);
     
     // 오브젝트 자체도 회전
-	setAngle(-(getRotation() - (dir *(m_RotationSpeed * delta))));
+    setAngle(-(getRotation() - speed));
+    
+//	setAngle(-(getRotation() - (dir *(m_RotationSpeed * delta))));
     setRotation(-getAngle());
 }
 

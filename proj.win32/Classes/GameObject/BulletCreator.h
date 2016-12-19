@@ -26,7 +26,7 @@ public:
     
     void Clear();
     
-    void setRotationAngle(float dir, float delta);
+    void setRotationAngle(float speed);
     
     void setPattern(std::string patternName);
     

@@ -9,7 +9,7 @@ public:
 	받은 메모리는 메모리풀에 미리 생성되어있던 메모리이다.*/
 	static CScoreBullet* create(int score = 0);
 	virtual void Execute(float delta = 0.f) override {};
-	virtual void Rotation(float dir, float delta) override {};
+	virtual void Rotation(float speed) override {};
 
 protected:
 	virtual bool init() override;

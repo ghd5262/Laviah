@@ -2,6 +2,7 @@
 #include "../../GameObject/Player.h"
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/ObjectManager.h"
+#include "../../GameObject/BulletCreator.h"
 
 using namespace cocos2d;
 
@@ -48,9 +49,7 @@ CPlayerGiant* CPlayerGiant::Instance()
 
 void CPlayerGiant::Enter(CPlayer* player)
 {
-    player->schedule([=](float delta){
-        CObjectManager::Instance()->RotateAccelerationUpdate(0.1f);
-    }, 0.1f, 5, 0.f, "AccelerationUP");
+    CObjectManager::Instance()->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED * 1.5f);
     
     // change player to GiantMode
 	player->GiantMode();
@@ -66,9 +65,7 @@ void CPlayerGiant::Execute(CPlayer* player, float delta)
 
 void CPlayerGiant::Exit(CPlayer* player)
 {
-    player->schedule([=](float delta){
-        CObjectManager::Instance()->RotateAccelerationUpdate(-0.1f);
-    }, 0.1f, 5, 0.f, "AccelerationDOWN");
+    CObjectManager::Instance()->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     
     // change player to NormalMode
 	player->NormalMode();

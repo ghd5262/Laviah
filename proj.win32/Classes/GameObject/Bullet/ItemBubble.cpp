@@ -83,10 +83,10 @@ void CItemBubble::calculateIntersectPos()
 	setPosition(resultPoint);
 }
 
-void CItemBubble::Rotation(float dir, float delta)
+void CItemBubble::Rotation(float speed)
 {
 	// 오브젝트 자체도 회전
-	setRotation(getRotation() - (dir *(m_RotationSpeed * delta)));
+    setRotation(getRotation() - speed);
 }
 
 void CItemBubble::Execute(float delta)

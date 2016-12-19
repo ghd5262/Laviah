@@ -7,6 +7,7 @@
 #include "../Scene/GameScene.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/ItemManager.h"
+#include "../GameObject/Player.h"
 
 using namespace cocos2d;
 
@@ -19,6 +20,7 @@ CRocket::CRocket(sROCKET_PARAM RocketParam)
 , m_FSM(nullptr)
 , m_Texture(nullptr)
 , m_Velocity(Vec2::ZERO)
+, m_PlayerPos(Vec2::ZERO)
 , m_Arrive(false)
 , m_ArriveCallback(nullptr)
 {
@@ -72,6 +74,8 @@ bool CRocket::init()
     
 	this->setBoundingRadius(ROCKET::BOUNDING_RADIUS);
 
+    auto player = CObjectManager::Instance()->getPlayer();
+    m_PlayerPos = player->getOriginPos();
     m_CenterPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.35f);
 	m_Velocity = Vec2(0, 1);
 	m_BulletList = CObjectManager::Instance()->getBulletList();
@@ -140,6 +144,34 @@ void CRocket::CollisionCheckAtHome()
             bullet->R_UpAndBezier(targetPos, cPos1, cPos2, time, 4.f);
         }
     }
+}
+
+void CRocket::BonusTimeBegan()
+{
+    this->setPosition(Vec2(-50, -50));
+    this->setTargetPos(Vec2(m_PlayerPos.x, m_PlayerPos.y + 10));
+    this->setVelocity(Vec2(800, 300));
+    this->setSpeed(800.f);
+    setArriveCallback([=](cocos2d::Node* sender){
+        
+        this->scheduleOnce([=](float delta){
+            this->setTargetPos(Vec2(_director->getVisibleSize().width * 0.5f,
+                                    _director->getVisibleSize().height + 500));
+            this->setArrive(false);
+            this->setVelocity(Vec2(0, 1500));
+        }, 1.f, "DELAY");
+    });
+}
+
+void CRocket::BonusTimeEnd()
+{
+    this->setArrive(false);
+    this->setTargetPos(Vec2(0, _director->getVisibleSize().height + 500));
+    this->setSpeed(ROCKET::SPEED);
+    // screen fade out
+    this->scheduleOnce([=](float delta){
+        this->ChangeState(CFlyAway::Instance());
+    }, 1.f, "BONUSTIMEEND");
 }
 
 void CRocket::arrive(float delta)

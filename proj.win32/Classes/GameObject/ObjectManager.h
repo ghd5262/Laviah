@@ -22,39 +22,28 @@ class CObjectManager
     // 회전 가속도 
     const float ROTATE_ACCEL_MAX = 0.5f;
 public:
-	static CObjectManager* Instance();
-
-	/* AddBullet(), AddShooter() => Bullet과 Shooter를 따로 관리하는 이유는
-	첫째로 Bullet이 생성되는 루틴이 Shooter에 있다.
-	때문에 하나의 리스트에서 둘 다 관리하면 리스트 순회 중 Bullet이 리스트에 추가될 수 있다.
-	즉, 리스트를 사용하고 있는 중에 원하지 않는 변형을 가지고 올 수 있다.
-	
-	또한 Bullet에는 존재하지만 Shooter에는 존재하지 않는 함수들이 있다.*/
+    static CObjectManager* Instance();
     
 #if(USE_MEMORY_POOLING)
     void AddBullet(void* bullet);
 #else
     void AddBullet(CBullet* bullet);
 #endif
-    
-    // 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllShooter() 호출함
-	void RemoveAllObject();
-    void ReturnToMemoryBlockAll();
-
-	//callback
-	void RotationObject(float dir);
-    void RotateAccelerationUpdate(float value);
-	
     void Execute(float delta);
+	void RotationObject(float dir);
+    void SpeedControl(float duration, float speed);
     void ChangeCharacter();
-    
+
 	// 초기화
 	void Clear();
-
-	std::vector<CBullet*>* getBulletList(){ return &m_BulletList; }
+    
+    // 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllShooter() 호출함
+    void RemoveAllObject();
+    void ReturnToMemoryBlockAll();
 
 	//getter & setter
-	CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
+    std::vector<CBullet*>* getBulletList(){ return &m_BulletList; }
+    CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
 	CC_SYNTHESIZE(CPlayer*, m_Player, Player);
     CC_SYNTHESIZE(CRocket*, m_Rocket, Rocket);
     CC_SYNTHESIZE(CBulletCreator*, m_BulletCreator, BulletCreator);
@@ -63,13 +52,15 @@ public:
 	CC_SYNTHESIZE(float, m_fDelta, Delta);
 	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
 	CC_SYNTHESIZE(sCHARACTER_PARAM, m_CharacterParam, CharacterParam);
+    
 private:
 	void createBulletByTimer(float delta);
-	void removeAllBullet();				// Delete함수 호출! 이유는 구현부에~
-    void bulletListExecute();
-    void bulletListRotate(float dir);
     void inGameUpdate();
-    void waitingUpdate();
+    void inMenuUpdate();
+    void inBonusGameUpdate();
+    void removeAllBullet();	// Delete함수 호출! 이유는 구현부에~
+    void bulletListExecute();
+    void bulletListRotate();
     
     CObjectManager();
 	~CObjectManager(){};
@@ -77,5 +68,7 @@ private:
 private:
     CItemManager* m_ItemManager;
 	std::vector<CBullet*> m_BulletList;
-    float m_fRotateAcceleration;
+    cocos2d::Node* m_SpeedController;
+    float m_RotationSpeed;
+    float m_RotateAcceleration;
 };

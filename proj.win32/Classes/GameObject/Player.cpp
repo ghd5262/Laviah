@@ -5,6 +5,7 @@
 #include "ObjectManager.h"
 #include "MagnetEffect.h"
 #include "BulletCreator.h"
+#include "Rocket.h"
 #include "../AI/States/PlayerStates.h"
 #include "../AI/States/StageStates.h"
 #include "../Particle/Particles.h"
@@ -218,6 +219,28 @@ void CPlayer::NormalMode()
         m_pParticle->setEndSize(4.f);
 	}), nullptr);
 	this->runAction(action);
+}
+
+void CPlayer::TakeOnRocket()
+{
+    this->retain();
+    auto rocket = CObjectManager::Instance()->getRocket();
+    this->removeFromParent();
+    rocket->addChild(this);
+    this->setAngle(0);
+    this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    this->setPosition(Vec2(rocket->getContentSize().width * 0.5f,
+                           rocket->getContentSize().height * 0.6f));
+    this->release();
+}
+
+void CPlayer::TakeOffRocket()
+{
+    this->retain();
+    this->removeFromParent();
+    CGameScene::getGameScene()->addChild(this, ZORDER::PLAYER);
+    this->setPosition(this->getOriginPos());
+    this->release();
 }
 
 // callback 평소에 적용되는 생명력 계산함수

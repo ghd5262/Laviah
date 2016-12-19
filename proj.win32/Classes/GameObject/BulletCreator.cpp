@@ -62,9 +62,9 @@ void CBulletCreator::Update(float delta)
 	m_Time = 0.0f;
 }
 
-void CBulletCreator::setRotationAngle(float dir, float delta)
+void CBulletCreator::setRotationAngle(float speed)
 {
-	m_RotationAngle -= (dir * (ROTATION_SPEED * delta));
+    m_RotationAngle -= speed;
 }
 
 void CBulletCreator::setPattern(std::string patternName)

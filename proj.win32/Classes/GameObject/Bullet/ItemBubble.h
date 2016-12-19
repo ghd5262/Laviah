@@ -14,7 +14,7 @@ public:
 		float angle,				//TargetMark 초기 각도 
 		CBullet* owner = nullptr);	//owner missile (nullptr 일 때에는 도착시간으로 삭제한다.)
 	virtual void Execute(float delta = 0.f) override;
-	virtual void Rotation(float dir, float delta) override;
+	virtual void Rotation(float speed) override;
 
 protected:
 	virtual bool init() override;

@@ -14,15 +14,23 @@
 CObjectManager::CObjectManager()
 : m_fStageTime(0.f)
 , m_IsGamePause(true)
-, m_fRotateAcceleration(0.f)
+, m_RotationSpeed(0.f)
+, m_RotateAcceleration(0.f)
 , m_BulletCreator(nullptr)
 , m_Planet(nullptr)
 , m_Player(nullptr)
 , m_Rocket(nullptr)
 , m_Background(nullptr)
+, m_SpeedController(nullptr)
 , m_ItemManager(CItemManager::Instance())
 , m_fDelta(0.f)
-{}
+{
+    m_SpeedController = Node::create();
+    if(CGameScene::getGameScene()){
+        m_SpeedController->setPositionX(BULLETCREATOR::ROTATION_SPEED);
+        CGameScene::getGameScene()->addChild(m_SpeedController);
+    }
+}
 
 CObjectManager* CObjectManager::Instance()
 {
@@ -32,7 +40,7 @@ CObjectManager* CObjectManager::Instance()
 
 void CObjectManager::Clear()
 {
-    m_fRotateAcceleration = 0.f;
+    m_RotateAcceleration = 0.f;
 	m_fStageTime = 0.f;
 	m_IsGamePause = true;
     m_BulletCreator->Clear();
@@ -53,23 +61,31 @@ void CObjectManager::AddBullet(CBullet* bullet)
 }
 #endif
 
-/* bullet->Delete() :
- * 게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해 */
-void CObjectManager::removeAllBullet()
-{											
-	for (auto bullet : m_BulletList)
-	{
-		if (bullet->HasPointer()) 
-			bullet->Delete();
-	}
-    m_BulletList.clear();
+void CObjectManager::Execute(float delta)
+{
+    m_fDelta = delta;
+    this->inGameUpdate();
+    this->inMenuUpdate();
 }
 
-void CObjectManager::RemoveAllObject()
+void CObjectManager::RotationObject(float dir)
 {
-#if(USE_MEMORY_POOLING)
-	removeAllBullet();
-#endif
+    if (m_IsGamePause) return;
+    
+    m_RotationSpeed = (dir * (m_SpeedController->getPositionX() * m_fDelta));
+    
+    this->bulletListRotate();
+    m_BulletCreator->setRotationAngle(m_RotationSpeed);
+    m_Planet->Rotation(-m_RotationSpeed);
+    m_Player->Rotation(dir, m_fDelta);
+}
+
+void CObjectManager::SpeedControl(float duration, float speed)
+{
+    if(m_SpeedController)
+    {
+        m_SpeedController->runAction(MoveTo::create(duration, Vec2(speed, 0)));
+    }
 }
 
 void CObjectManager::ChangeCharacter()
@@ -77,31 +93,21 @@ void CObjectManager::ChangeCharacter()
     auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
     m_CharacterParam = CCharacterDataManager::Instance()->getCharacterInfoByIndex(index);
     
-	if(m_Player)
-		m_Player->setCharacterParam(m_CharacterParam);
+    if(m_Player)
+        m_Player->setCharacterParam(m_CharacterParam);
     
     if(m_Planet)
-		m_Planet->setPlanetTexture(m_CharacterParam._planetTextureName);
+        m_Planet->setPlanetTexture(m_CharacterParam._planetTextureName);
     
     if(m_BulletCreator)
-		m_BulletCreator->setCharacterInfo(m_CharacterParam);
+        m_BulletCreator->setCharacterInfo(m_CharacterParam);
 }
 
-void CObjectManager::RotateAccelerationUpdate(float value){
-    // value가 음수
-    if(value < 0.f)
-    {
-        if(m_fRotateAcceleration + value > 0)
-            m_fRotateAcceleration += value;
-        else
-            m_fRotateAcceleration = 0;
-    }
-    else{
-        if(m_fRotateAcceleration + value < ROTATE_ACCEL_MAX)
-            m_fRotateAcceleration += value;
-        else
-            m_fRotateAcceleration = ROTATE_ACCEL_MAX;
-    }
+void CObjectManager::RemoveAllObject()
+{
+#if(USE_MEMORY_POOLING)
+	removeAllBullet();
+#endif
 }
 
 void CObjectManager::ReturnToMemoryBlockAll()
@@ -118,7 +124,7 @@ void CObjectManager::createBulletByTimer(float delta)
     m_fStageTime += delta;
 	if (m_fStageTime < BULLETCREATOR::PATTERN_PADDING_LIMIT) return;
 
-	if (!m_BulletCreator->getIsRunning())	{
+	if (!m_BulletCreator->getIsRunning()) {
 		if (1)
 		{
 			m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPattern()->_patternName);
@@ -136,24 +142,6 @@ void CObjectManager::createBulletByTimer(float delta)
 	m_fStageTime = 0.f;
 }
 
-void CObjectManager::Execute(float delta)
-{
-    m_fDelta = delta;
-    this->inGameUpdate();
-    this->waitingUpdate();
-}
-
-void CObjectManager::RotationObject(float dir)
-{
-    if (m_IsGamePause) return;
-    
-    this->bulletListRotate(dir);
-    m_BulletCreator->setRotationAngle(dir + (dir * m_fRotateAcceleration), m_fDelta);
-    m_Planet->Rotation(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
-	m_Player->Rotation(dir, m_fDelta);
-    //m_Rocket->Fly(-dir + (-dir * m_fRotateAcceleration), m_fDelta);
-}
-
 void CObjectManager::inGameUpdate()
 {
     if (m_IsGamePause) return;
@@ -166,9 +154,26 @@ void CObjectManager::inGameUpdate()
     this->bulletListExecute();
 }
 
-void CObjectManager::waitingUpdate()
+void CObjectManager::inMenuUpdate()
 {
     m_Rocket->Execute(m_fDelta);
+}
+
+void CObjectManager::inBonusGameUpdate()
+{
+    
+}
+
+/* bullet->Delete() :
+ * 게임 종료시 가지고 있는 Non_Node계열의 포인터를 해제하기위해 */
+void CObjectManager::removeAllBullet()
+{
+    for (auto bullet : m_BulletList)
+    {
+        if (bullet->HasPointer())
+            bullet->Delete();
+    }
+    m_BulletList.clear();
 }
 
 void CObjectManager::bulletListExecute()
@@ -181,12 +186,12 @@ void CObjectManager::bulletListExecute()
     }
 }
 
-void CObjectManager::bulletListRotate(float dir)
+void CObjectManager::bulletListRotate()
 {
     for (auto bullet : m_BulletList)
     {
         if (bullet->IsAlive()) {
-            bullet->Rotation(dir + (dir * m_fRotateAcceleration), m_fDelta);
+            bullet->Rotation(m_RotationSpeed);
         }
     }
 }

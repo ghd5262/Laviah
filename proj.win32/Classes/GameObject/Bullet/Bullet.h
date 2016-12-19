@@ -98,7 +98,7 @@ class CPlayer;
 class CPlanet;
 class CBullet : public CMover {
 public:
-	virtual void Rotation(float dir, float delta);
+	virtual void Rotation(float speed);
 	virtual void CollisionWithPlayer(){}
 	virtual void CollisionWithPlanet(){}
 	virtual void CollisionWithBarrier(){}
