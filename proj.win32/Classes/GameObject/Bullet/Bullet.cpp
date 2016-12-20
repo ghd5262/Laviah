@@ -69,16 +69,14 @@ CBullet* CBullet::build()
     
     // position init
     Vec2 pos = Vec2::ZERO;
-    float angle = 0.f;
-    if(1){
-        pos = CBullet::getCirclePosition(getAngle(),
-                                         getDistance(),
-                                         m_Planet->getPosition());
+    float angle = 90.f;
+    if(!CItemManager::Instance()->isCurrentItem(eITEM_FLAG::eITEM_FLAG_bonustime)){
+        pos = CBullet::getCirclePosition(getAngle(), getDistance(), m_Planet->getPosition());
         angle = -getAngle();
     }
-    else{
-        
-    }
+    else
+        pos = CBullet::getSquarePosition(getAngle(), getDistance());
+    
     this->setPosition(pos);
 	this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 
@@ -119,6 +117,15 @@ Vec2 CBullet::getCirclePosition(float angle, float distance, Vec2 center)
     return result;
 }
 
+Vec2 CBullet::getSquarePosition(float angle, float distance)
+{
+    Vec2 result = Vec2::ZERO;
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    result.x = angle * (visibleSize.width / 360);
+    result.y = distance;
+    
+    return result;
+}
 
 #if(USE_MEMORY_POOLING)
 /* poolingManager에서 FreeMemory Block을 하나 가져옴 */

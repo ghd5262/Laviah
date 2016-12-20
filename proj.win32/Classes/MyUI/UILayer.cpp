@@ -9,7 +9,7 @@
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Player.h"
 #include "../Scene/GameScene.h"
-#include "../AI/States/StageStates.h"
+#include "../AI/States/GameStates.h"
 #include <array>
 
 using namespace std;

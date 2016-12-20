@@ -33,7 +33,11 @@ public:
 	void RotationObject(float dir);
     void SpeedControl(float duration, float speed);
     void ChangeCharacter();
-
+    void ChangeState(CState<CObjectManager>* newState)
+    { m_FSM->ChangeState(newState); };
+    void StartBonusTime();
+    void EndBonusTime();
+    
 	// 초기화
 	void Clear();
     
@@ -66,6 +70,7 @@ private:
 	~CObjectManager(){};
 
 private:
+    std::shared_ptr<CStateMachine<CObjectManager>> m_FSM;
     CItemManager* m_ItemManager;
 	std::vector<CBullet*> m_BulletList;
     cocos2d::Node* m_SpeedController;

@@ -6,7 +6,7 @@
 #include "BulletCreator.h"
 #include "Rocket.h"
 #include "Bullet/Bullet.h"
-#include "../AI/States/StageStates.h"
+#include "../AI/States/GameStates.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 #include <algorithm>
@@ -25,6 +25,12 @@ CObjectManager::CObjectManager()
 , m_ItemManager(CItemManager::Instance())
 , m_fDelta(0.f)
 {
+//    m_FSM = std::shared_ptr<CStateMachine<CObjectManager>>(new CStateMachine<CObjectManager>(this),
+//                                                           [=](CStateMachine<CObjectManager>* fsm){
+//        delete fsm;
+//    });
+//    this->ChangeState(CNormalState::Instance());
+    
     m_SpeedController = Node::create();
     if(CGameScene::getGameScene()){
         m_SpeedController->setPositionX(BULLETCREATOR::ROTATION_SPEED);
@@ -64,6 +70,8 @@ void CObjectManager::AddBullet(CBullet* bullet)
 void CObjectManager::Execute(float delta)
 {
     m_fDelta = delta;
+//    m_FSM->Execute(delta);
+    
     this->inGameUpdate();
     this->inMenuUpdate();
 }
@@ -101,6 +109,19 @@ void CObjectManager::ChangeCharacter()
     
     if(m_BulletCreator)
         m_BulletCreator->setCharacterInfo(m_CharacterParam);
+}
+
+void CObjectManager::StartBonusTime()
+{
+    // Rotation speed down
+    CObjectManager::Instance()->SpeedControl(1.5f, 0);
+    m_Rocket->
+}
+
+void CObjectManager::EndBonusTime()
+{
+    // Rotation speed up to origin
+    CObjectManager::Instance()->SpeedControl(1.0f, BULLETCREATOR::ROTATION_SPEED);
 }
 
 void CObjectManager::RemoveAllObject()

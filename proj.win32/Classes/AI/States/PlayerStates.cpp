@@ -23,7 +23,7 @@ void CPlayerNormal::Execute(CPlayer* player, float delta)
 	{
 	case eITEM_FLAG_giant:
 	{
-		player->getFSM()->ChangeState(CPlayerGiant::Instance());
+		player->ChangeState(CPlayerGiant::Instance());
 	}break;
 
 	default:
@@ -35,9 +35,6 @@ void CPlayerNormal::Execute(CPlayer* player, float delta)
 
 void CPlayerNormal::Exit(CPlayer* player)
 {}
-
-
-
 
 
 CPlayerGiant* CPlayerGiant::Instance()
@@ -59,7 +56,7 @@ void CPlayerGiant::Execute(CPlayer* player, float delta)
 {
 	if (!(CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)))
 	{
-		player->getFSM()->ChangeState(CPlayerNormal::Instance());
+		player->ChangeState(CPlayerNormal::Instance());
 	}
 }
 

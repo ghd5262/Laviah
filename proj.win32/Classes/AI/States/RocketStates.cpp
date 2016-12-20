@@ -7,23 +7,20 @@
 
 using namespace cocos2d;
 
-CFlyAtBonusTime* CFlyAtBonusTime::Instance()
+CFlyToTarget* CFlyToTarget::Instance()
 {
-	static CFlyAtBonusTime instance;
+	static CFlyToTarget instance;
 	return &instance;
 }
 
-void CFlyAtBonusTime::Enter(CRocket* rocket)
-{
+void CFlyToTarget::Enter(CRocket* rocket){}
 
+void CFlyToTarget::Execute(CRocket* rocket, float delta)
+{
+    rocket->FlyToTarget(delta);
 }
 
-void CFlyAtBonusTime::Execute(CRocket* rocket, float delta)
-{
-
-}
-
-void CFlyAtBonusTime::Exit(CRocket* rocket){}
+void CFlyToTarget::Exit(CRocket* rocket){}
 
 
 CFlyAround* CFlyAround::Instance()
@@ -61,9 +58,6 @@ void CFlyAway::Enter(CRocket* rocket)
 void CFlyAway::Execute(CRocket* rocket, float delta)
 {
 	rocket->FlyAway(delta);
-
-	if ((CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime)))
-		rocket->ChangeState(CFlyAtBonusTime::Instance());
 }
 
 void CFlyAway::Exit(CRocket* rocket){}

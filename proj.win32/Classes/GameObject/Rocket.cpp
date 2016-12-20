@@ -23,21 +23,9 @@ CRocket::CRocket(sROCKET_PARAM RocketParam)
 , m_PlayerPos(Vec2::ZERO)
 , m_Arrive(false)
 , m_ArriveCallback(nullptr)
-{
-	if (m_FSM == nullptr){
-		m_FSM = new CStateMachine<CRocket>(this);
-	}
-	if (m_FSM != nullptr){
-		m_FSM->ChangeState(CFlyAround::Instance());
-	}
+{}
 
-	setCascadeOpacityEnabled(true);
-}
-
-CRocket::~CRocket(){
-	if (m_FSM != nullptr)
-		delete m_FSM;
-}
+CRocket::~CRocket(){}
 
 CRocket* CRocket::create(sROCKET_PARAM RocketParam)
 {
@@ -61,6 +49,14 @@ bool CRocket::init()
 {
     if (!CGameObject::init())
 		return false;
+    
+    setCascadeOpacityEnabled(true);
+
+    m_FSM = std::shared_ptr<CStateMachine<CRocket>>(new CStateMachine<CRocket>(this),
+                                                    [=](CStateMachine<CRocket>* fsm){
+                                                        delete fsm;
+                                                    });
+    this->ChangeState(CFlyAround::Instance());
     
     auto visibleSize = Director::getInstance()->getVisibleSize();
     m_FlyLimitMax = visibleSize.width * 0.9f;
@@ -86,16 +82,16 @@ bool CRocket::init()
 
 void CRocket::Execute(float delta)
 {
-	getFSM()->Execute(delta);
+	m_FSM->Execute(delta);
 }
 
-void CRocket::Fly(float dir, float delta)
+void CRocket::Fly(float speed, float delta)
 {
     if (!(CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))) return;
  
     auto oldPos = getPositionX();
     
-    auto newPos = oldPos + (dir * (m_Speed * delta));
+    auto newPos = oldPos + speed;
     
     if(newPos > m_FlyLimitMin && newPos < m_FlyLimitMax)
         this->setPositionX(newPos);
@@ -122,9 +118,8 @@ void CRocket::FlyToTouchArea(float delta)
 
 void CRocket::FlyToTarget(float delta)
 {
-	this->seek(delta);
+    if(!m_Arrive) this->arrive(delta);
 }
-
 
 void CRocket::CollisionCheckAtHome()
 {
@@ -148,27 +143,35 @@ void CRocket::CollisionCheckAtHome()
 
 void CRocket::BonusTimeBegan()
 {
+    this->ChangeState(CFlyToTarget::Instance());
     this->setPosition(Vec2(-50, -50));
-    this->setTargetPos(Vec2(m_PlayerPos.x, m_PlayerPos.y + 10));
+    this->setTargetPos(Vec2(m_PlayerPos.x, m_PlayerPos.y));
     this->setVelocity(Vec2(800, 300));
     this->setSpeed(800.f);
+    
     setArriveCallback([=](cocos2d::Node* sender){
+        CObjectManager::Instance()->getPlayer()->TakeOnRocket();
         
         this->scheduleOnce([=](float delta){
             this->setTargetPos(Vec2(_director->getVisibleSize().width * 0.5f,
                                     _director->getVisibleSize().height + 500));
-            this->setArrive(false);
             this->setVelocity(Vec2(0, 1500));
+            
+//            // start bonus game
+//            this->scheduleOnce([=](float delta){
+//                
+//            }, 0.5f, "SCREENFADEOUT");
+            
         }, 1.f, "DELAY");
     });
 }
 
 void CRocket::BonusTimeEnd()
 {
-    this->setArrive(false);
-    this->setTargetPos(Vec2(0, _director->getVisibleSize().height + 500));
-    this->setSpeed(ROCKET::SPEED);
-    // screen fade out
+    this->setTargetPos(Vec2(getPositionX(), _director->getVisibleSize().height + 500));
+    this->setSpeed(800.f);
+    
+    // return to game
     this->scheduleOnce([=](float delta){
         this->ChangeState(CFlyAway::Instance());
     }, 1.f, "BONUSTIMEEND");

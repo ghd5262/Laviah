@@ -7,7 +7,7 @@
 #include "BulletCreator.h"
 #include "Rocket.h"
 #include "../AI/States/PlayerStates.h"
-#include "../AI/States/StageStates.h"
+#include "../AI/States/GameStates.h"
 #include "../Particle/Particles.h"
 #include "../Scene/GameScene.h"
 #include "../MyUI/ScoreUI.h"
@@ -66,14 +66,11 @@ bool CPlayer::init()
     this->setItemEffect(eITEM_FLAG_giant);
     this->setCascadeOpacityEnabled(true);
     
-    m_FSM = std::shared_ptr<CStateMachine<CPlayer>>( new CStateMachine<CPlayer>(this),
-                                                    [](CStateMachine<CPlayer>* fsm){
+    m_FSM = std::shared_ptr<CStateMachine<CPlayer>>(new CStateMachine<CPlayer>(this),
+                                                    [=](CStateMachine<CPlayer>* fsm){
         delete fsm;
     });
-    
-    if (m_FSM.get() != nullptr){
-        m_FSM.get()->ChangeState(CPlayerNormal::Instance());
-    }
+    this->ChangeState(CPlayerNormal::Instance());
     
 	m_CharacterParam = CObjectManager::Instance()->getCharacterParam();
     m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam._normalTextureName);

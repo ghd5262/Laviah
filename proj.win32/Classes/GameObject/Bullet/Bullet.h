@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "../Mover.h"
 #include "../../Common/HSHUtility.h"
 #include "../../AI/StateMachine.h"
@@ -145,6 +145,7 @@ public:
     }
     
     static cocos2d::Vec2 getCirclePosition(float angle, float distance, cocos2d::Vec2 center);
+    static cocos2d::Vec2 getSquarePosition(float angle, float distance);
 
 protected:
     virtual bool init() override;

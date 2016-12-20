@@ -26,14 +26,14 @@ CPlanet::CPlanet()
 : m_Angle(0.f)
 , m_fRotateSpeed(BULLETCREATOR::ROTATION_SPEED)
 , m_fElapsed(0.0f)
-{
-    this->setBoundingRadius(PLANET_DEFINE::BOUNDING_RADIUS);
-}
+{}
 
 bool CPlanet::init()
 {
 	//this->DrawDebugBinding();   //for debug
     if (!Node::init()) return false;
+    
+    this->setBoundingRadius(PLANET_DEFINE::BOUNDING_RADIUS);
     
 	auto data = CObjectManager::Instance()->getCharacterParam();
 	m_pTexture = Sprite::createWithSpriteFrameName(data._planetTextureName);

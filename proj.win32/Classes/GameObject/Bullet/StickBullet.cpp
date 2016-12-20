@@ -14,7 +14,7 @@
 using namespace cocos2d;
 
 namespace STICKBULLET{
-	const static float STAY_LIMIT_TIME = 2.f;
+	const static float STAY_LIMIT_TIME = 1.f;
 };
 
 CStickBullet::CStickBullet()

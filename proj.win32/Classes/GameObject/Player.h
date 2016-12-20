@@ -30,7 +30,9 @@ public:
     void TakeOnRocket();
     void TakeOffRocket();
 	void Rotation(float dir, float delta);
-	
+    void ChangeState(CState<CPlayer>* newState)
+    { m_FSM->ChangeState(newState); };
+    
 	//인자로 전달된 아이템의 영향을 받는다
 	void setItemEffect(int item){ m_EffectItemTypes |= item; }
 
@@ -60,7 +62,6 @@ public:
 
 	//getter & setter
 	void setCharacterParam(sCHARACTER_PARAM data);
-	CStateMachine<CPlayer>* getFSM(){ return m_FSM.get(); }
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
 	cocos2d::Vec2 getOriginPos(){ return m_OriginPos; }
     void setParticlePos(cocos2d::Vec2 pos);

@@ -4,12 +4,12 @@
 class CRocket;
 //------------------------------------------------------------------------
 
-class CFlyAtBonusTime : public CState<CRocket>
+class CFlyToTarget : public CState<CRocket>
 {
 public:
 
 	//this is a singleton
-	static CFlyAtBonusTime* Instance();
+	static CFlyToTarget* Instance();
 
 	void Enter(CRocket* rocket) override;
 
@@ -18,8 +18,8 @@ public:
 	void Exit(CRocket* rocket) override;
 
 private:
-	CFlyAtBonusTime(){}
-	virtual ~CFlyAtBonusTime(){}
+	CFlyToTarget(){}
+	virtual ~CFlyToTarget(){}
 };
 
 class CFlyAround : public CState<CRocket>
