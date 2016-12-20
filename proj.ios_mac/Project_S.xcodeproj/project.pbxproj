@@ -65,7 +65,7 @@
 		9373115A1D5849C800D5EB5C /* BulletStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A01D5849C700D5EB5C /* BulletStates.cpp */; };
 		9373115B1D5849C800D5EB5C /* PlayerStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A21D5849C700D5EB5C /* PlayerStates.cpp */; };
 		9373115C1D5849C800D5EB5C /* RocketStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A41D5849C700D5EB5C /* RocketStates.cpp */; };
-		9373115D1D5849C800D5EB5C /* StageStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A61D5849C700D5EB5C /* StageStates.cpp */; };
+		9373115D1D5849C800D5EB5C /* GameStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A61D5849C700D5EB5C /* GameStates.cpp */; };
 		9373115E1D5849C800D5EB5C /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A91D5849C700D5EB5C /* AppDelegate.cpp */; };
 		9373115F1D5849C800D5EB5C /* AudioManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310AC1D5849C700D5EB5C /* AudioManager.cpp */; };
 		937311601D5849C800D5EB5C /* HSHUitlity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310B01D5849C700D5EB5C /* HSHUitlity.cpp */; };
@@ -260,8 +260,8 @@
 		937310A31D5849C700D5EB5C /* PlayerStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerStates.h; sourceTree = "<group>"; };
 		937310A41D5849C700D5EB5C /* RocketStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RocketStates.cpp; sourceTree = "<group>"; };
 		937310A51D5849C700D5EB5C /* RocketStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RocketStates.h; sourceTree = "<group>"; };
-		937310A61D5849C700D5EB5C /* StageStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StageStates.cpp; sourceTree = "<group>"; };
-		937310A71D5849C700D5EB5C /* StageStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StageStates.h; sourceTree = "<group>"; };
+		937310A61D5849C700D5EB5C /* GameStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStates.cpp; sourceTree = "<group>"; };
+		937310A71D5849C700D5EB5C /* GameStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStates.h; sourceTree = "<group>"; };
 		937310A81D5849C700D5EB5C /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
 		937310A91D5849C700D5EB5C /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		937310AA1D5849C700D5EB5C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -651,8 +651,8 @@
 				937310A31D5849C700D5EB5C /* PlayerStates.h */,
 				937310A41D5849C700D5EB5C /* RocketStates.cpp */,
 				937310A51D5849C700D5EB5C /* RocketStates.h */,
-				937310A61D5849C700D5EB5C /* StageStates.cpp */,
-				937310A71D5849C700D5EB5C /* StageStates.h */,
+				937310A61D5849C700D5EB5C /* GameStates.cpp */,
+				937310A71D5849C700D5EB5C /* GameStates.h */,
 				937310A81D5849C700D5EB5C /* State.h */,
 			);
 			path = States;
@@ -1070,7 +1070,7 @@
 				937311601D5849C800D5EB5C /* HSHUitlity.cpp in Sources */,
 				9348E4C61D9D62B1007DF5D9 /* GradientDataManager.cpp in Sources */,
 				937311A61D5849C800D5EB5C /* MenuScene.cpp in Sources */,
-				9373115D1D5849C800D5EB5C /* StageStates.cpp in Sources */,
+				9373115D1D5849C800D5EB5C /* GameStates.cpp in Sources */,
 				9373119C1D5849C800D5EB5C /* WorkshopPopupDP.cpp in Sources */,
 				931D9DB11DB0FEBC008BA5AC /* DownloadManager.cpp in Sources */,
 				937311AA1D5849C800D5EB5C /* SDKUtil_IOS.cpp in Sources */,
