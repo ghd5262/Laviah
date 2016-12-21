@@ -88,6 +88,15 @@ void CObjectManager::RotationObject(float dir)
     m_Player->Rotation(dir, m_fDelta);
 }
 
+void CObjectManager::BonusTimeTouchEvent(float dir)
+{
+    if (m_IsGamePause) return;
+    
+    m_RotationSpeed = (dir * (m_SpeedController->getPositionX() * m_fDelta));
+    
+    m_Rocket->Fly(m_RotationSpeed);
+}
+
 void CObjectManager::SpeedControl(float duration, float speed)
 {
     if(m_SpeedController)
@@ -114,14 +123,19 @@ void CObjectManager::ChangeCharacter()
 void CObjectManager::StartBonusTime()
 {
     // Rotation speed down
-    CObjectManager::Instance()->SpeedControl(1.5f, 0);
-    m_Rocket->
+    this->SpeedControl(1.5f, 0);
+    this->removeAllBullet();
+    m_Background->BonusTimeStart();
+    CGameScene::getGameScene()->BonusTimeStart();
 }
 
 void CObjectManager::EndBonusTime()
 {
     // Rotation speed up to origin
-    CObjectManager::Instance()->SpeedControl(1.0f, BULLETCREATOR::ROTATION_SPEED);
+    this->SpeedControl(1.0f, BULLETCREATOR::ROTATION_SPEED);
+    this->removeAllBullet();
+    m_Background->BonusTimeEnd();
+    CGameScene::getGameScene()->BonusTimeEnd();
 }
 
 void CObjectManager::RemoveAllObject()

@@ -31,6 +31,7 @@ public:
 #endif
     void Execute(float delta);
 	void RotationObject(float dir);
+    void BonusTimeTouchEvent(float dir);
     void SpeedControl(float duration, float speed);
     void ChangeCharacter();
     void ChangeState(CState<CObjectManager>* newState)

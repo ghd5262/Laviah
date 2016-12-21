@@ -85,7 +85,7 @@ void CRocket::Execute(float delta)
 	m_FSM->Execute(delta);
 }
 
-void CRocket::Fly(float speed, float delta)
+void CRocket::Fly(float speed)
 {
     if (!(CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))) return;
  
@@ -156,12 +156,6 @@ void CRocket::BonusTimeBegan()
             this->setTargetPos(Vec2(_director->getVisibleSize().width * 0.5f,
                                     _director->getVisibleSize().height + 500));
             this->setVelocity(Vec2(0, 1500));
-            
-//            // start bonus game
-//            this->scheduleOnce([=](float delta){
-//                
-//            }, 0.5f, "SCREENFADEOUT");
-            
         }, 1.f, "DELAY");
     });
 }

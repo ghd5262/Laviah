@@ -25,7 +25,7 @@ public:
 	static CRocket* create(sROCKET_PARAM RocketParam);
 
 	virtual void Execute(float delta = 0.f) override;
-    void Fly(float speed, float delta);
+    void Fly(float speed);
     void FlyAround(float delta);
 	void FlyAway(float delta);
 	void FlyToTouchArea(float delta);

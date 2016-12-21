@@ -14,6 +14,7 @@
 #include "../MyUI/MyButton.h"
 #include "../MyUI/MenuLayer.hpp"
 #include "../MyUI/UILayer.hpp"
+#include "../MyUI/BonusTimeLayer.hpp"
 #include "../MyUI/MultipleScore.h"
 #include "../MyUI/CountDown.hpp"
 #include "../MyUI/Popup.h"
@@ -48,6 +49,8 @@ Scene* CGameScene::createScene()
 
 CGameScene::CGameScene()
 : m_UILayer(nullptr)
+, m_BonusTimeLayer(nullptr)
+, m_ScreenFade(nullptr)
 , m_CountDown(nullptr)
 , m_KeyBoardSpace(false){}
 
@@ -79,6 +82,12 @@ bool CGameScene::init()
 	m_GridWorld = NodeGrid::create();
 	this->addChild(m_GridWorld, 0, 1);
 
+    m_ScreenFade = LayerColor::create(Color4B::BLACK, m_VisibleSize.width, m_VisibleSize.height);
+    m_ScreenFade->setIgnoreAnchorPointForPosition(false);
+    m_ScreenFade->setPosition(m_VisibleSize / 2);
+    m_ScreenFade->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    this->addChild(m_ScreenFade, ZORDER::SCREENFADE);
+    
 	auto bulletCreator = CBulletCreator::create();
 	this->addChild(bulletCreator);
     CObjectManager::Instance()->setBulletCreator(bulletCreator);
@@ -163,10 +172,11 @@ void CGameScene::GameExit()
 
 void CGameScene::GameStart()
 {
-    this->clearData();
-    this->createUILayer();
-    this->ScreenFade();
-	CObjectManager::Instance()->getPlayer()->PlayerAlive();
+    this->ScreenFade([=](){
+        this->clearData();
+        this->createUILayer();
+        CObjectManager::Instance()->getPlayer()->PlayerAlive();
+    });
 }
 
 void CGameScene::GameResume()
@@ -209,15 +219,16 @@ void CGameScene::OpenGamePausePopup()
 
 void CGameScene::OpenGameMenuLayer()
 {
-	auto centerPos = Director::getInstance()->getVisibleSize() / 2;
-	auto rocket = CObjectManager::Instance()->getRocket();
-	rocket->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), rocket->getDistance(), centerPos));
-	rocket->ChangeState(CFlyToTouchArea::Instance());
-
-    this->clearData();
-    this->createMenuLayer();
-	this->createRandomCoin();
-    this->ScreenFade();
+    this->ScreenFade([=](){
+        auto centerPos = Director::getInstance()->getVisibleSize() / 2;
+        auto rocket = CObjectManager::Instance()->getRocket();
+        rocket->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), rocket->getDistance(), centerPos));
+        rocket->ChangeState(CFlyToTouchArea::Instance());
+        
+        this->clearData();
+        this->createMenuLayer();
+        this->createRandomCoin();
+    });
 }
 
 void CGameScene::RandomCoin()
@@ -225,11 +236,35 @@ void CGameScene::RandomCoin()
     this->createRandomCoin();
 }
 
-void CGameScene::ScreenFade()
+void CGameScene::ScreenFade(const FADE_CALLBACK& callback/* = nullptr*/)
 {
-    auto fadeOut = FadeTo::create(0.3f, 1);
-    auto fadeIn  = FadeIn::create(0.3f);
-    this->runAction(Sequence::create(fadeOut, fadeIn, nullptr));
+    auto fadeOut = FadeTo::create(0.2f, 1);
+    auto fadeIn  = FadeIn::create(0.2f);
+    auto callFunc = CallFunc::create([=](){
+        callback();
+    });
+    auto delayAction = DelayTime::create(0.2f);
+    auto visibleOff = CallFunc::create([=](){ m_ScreenFade->setVisible(false); });
+    auto visibleOn  = CallFunc::create([=](){ m_ScreenFade->setVisible(true);  });
+
+    
+    m_ScreenFade->runAction(Sequence::create(visibleOn,
+                                             fadeIn,
+                                             callFunc,
+                                             delayAction,
+                                             fadeOut,
+                                             visibleOff,
+                                             nullptr));
+}
+
+void CGameScene::BonusTimeStart()
+{
+    this->createBonusTimeLayer();
+}
+
+void CGameScene::BonusTimeEnd()
+{
+    this->removeBonusTimeLayer();
 }
 
 void CGameScene::clearData()
@@ -316,11 +351,28 @@ void CGameScene::createUILayer()
     ->show(this, ZORDER::POPUP);
 }
 
+void CGameScene::createBonusTimeLayer()
+{
+    m_BonusTimeLayer = CBonusTimeLayer::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
+}
+
 void CGameScene::removeUILayer()
 {
     if(m_UILayer) {
         m_UILayer->popupClose();
         m_UILayer = nullptr;
+    }
+}
+
+void CGameScene::removeBonusTimeLayer()
+{
+    if(m_BonusTimeLayer) {
+        m_BonusTimeLayer->popupClose();
+        m_BonusTimeLayer = nullptr;
     }
 }
 

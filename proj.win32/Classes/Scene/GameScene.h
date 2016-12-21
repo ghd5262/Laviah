@@ -9,6 +9,7 @@ enum ZORDER{
     PLANET,
     PLAYER,
     POPUP,
+    SCREENFADE,
 };
 
 class CMyButton;
@@ -16,6 +17,8 @@ class CPopup;
 class CCountDown;
 class CGameScene : public cocos2d::Layer
 {
+    typedef std::function<void(void)> FADE_CALLBACK;
+    
 public:
 	CREATE_FUNC(CGameScene);
 	static cocos2d::Scene* createScene();
@@ -31,7 +34,9 @@ public:
 	void WatchVideo();
     void GameExit();
     void RandomCoin();
-    void ScreenFade();
+    void BonusTimeStart();
+    void BonusTimeEnd();
+    void ScreenFade(const FADE_CALLBACK& callback = nullptr);
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
@@ -55,8 +60,10 @@ private:
     void createExitPopup();
     void createMenuLayer();
     void createUILayer();
+    void createBonusTimeLayer();
 	void createRandomCoin();
     void removeUILayer();
+    void removeBonusTimeLayer();
     void turnDownSound();
     void turnUpSound();
 	void initKeyboardListener();
@@ -64,9 +71,10 @@ private:
 private:
 	static CGameScene* m_GameScene;
 	static cocos2d::NodeGrid* m_GridWorld;
+    cocos2d::LayerColor* m_ScreenFade;
     CPopup* m_UILayer;
+    CPopup* m_BonusTimeLayer;
     CCountDown* m_CountDown;
 	cocos2d::Size m_VisibleSize;
-    std::map<std::string, int> m_GlobalVariable;
 	bool m_KeyBoardSpace;
 };
