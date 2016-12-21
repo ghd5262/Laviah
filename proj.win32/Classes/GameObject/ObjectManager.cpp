@@ -53,6 +53,7 @@ void CObjectManager::Clear()
     m_Planet->Clear();
     m_Player->Clear();
     this->ReturnToMemoryBlockAll();
+	this->EndBonusTime();
 }
 
 #if(USE_MEMORY_POOLING)
@@ -85,7 +86,7 @@ void CObjectManager::RotationObject(float dir)
     this->bulletListRotate();
     m_BulletCreator->setRotationAngle(m_RotationSpeed);
     m_Planet->Rotation(-m_RotationSpeed);
-    m_Player->Rotation(dir, m_fDelta);
+	m_Player->Rotation(m_RotationSpeed);
 }
 
 void CObjectManager::BonusTimeTouchEvent(float dir)
@@ -124,8 +125,9 @@ void CObjectManager::StartBonusTime()
 {
     // Rotation speed down
     this->SpeedControl(1.5f, 0);
-    this->removeAllBullet();
-    m_Background->BonusTimeStart();
+	this->ReturnToMemoryBlockAll();
+    //m_Background->BonusTimeStart();
+	m_BulletCreator->Clear();
     CGameScene::getGameScene()->BonusTimeStart();
 }
 
@@ -133,8 +135,9 @@ void CObjectManager::EndBonusTime()
 {
     // Rotation speed up to origin
     this->SpeedControl(1.0f, BULLETCREATOR::ROTATION_SPEED);
-    this->removeAllBullet();
-    m_Background->BonusTimeEnd();
+	this->ReturnToMemoryBlockAll();
+    //m_Background->BonusTimeEnd();
+	m_BulletCreator->Clear();
     CGameScene::getGameScene()->BonusTimeEnd();
 }
 

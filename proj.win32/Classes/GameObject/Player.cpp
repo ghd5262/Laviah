@@ -170,17 +170,17 @@ void CPlayer::LostSomeHealth(float loseHealth)
 }
 
 // Dir -1 == Left, 1 == Right
-void CPlayer::Rotation(float dir, float delta)
+void CPlayer::Rotation(float speed)
 {
     if(!m_pParticle->isVisible())
         m_pParticle->setVisible(true);
     
-	m_Angle = this->getRotation() + (dir * m_fRotateSpeed * delta);
+	m_Angle = this->getRotation() + (speed * 5.5f);
 //	m_Angle = static_cast<int>(m_Angle) % 360;
 	m_pParticle->setStartSpin(m_Angle);
 	m_pParticle->setEndSpin(m_Angle);
-	m_pParticle->setAngle(dir == 1 ? 180 : 0);
-	m_pParticle->setGravity(Vec2(-90 * dir, 0));
+	m_pParticle->setAngle(speed < 0 ? 180 : 0);
+	m_pParticle->setGravity(Vec2(-90 * (speed < 0 ? -1 : 1), 0));
 	this->setRotation(m_Angle);
 
     GLOBAL->RUNSCORE += 1;
@@ -194,7 +194,7 @@ void CPlayer::GiantMode()
 		this->setPlayerTexture(m_CharacterParam._giantTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
-		this->setRotateSpeed(PLAYER_DEFINE::GIANT_ROTATION_SPEED);
+		//this->setRotateSpeed(PLAYER_DEFINE::GIANT_ROTATION_SPEED);
 		m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 4.f);
 		m_pParticle->setEndSize(40.f);
 	}), nullptr);
@@ -211,7 +211,7 @@ void CPlayer::NormalMode()
         this->setPlayerTexture(m_CharacterParam._normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
-		this->setRotateSpeed(PLAYER_DEFINE::NORMAL_ROTATION_SPEED);
+		//this->setRotateSpeed(PLAYER_DEFINE::NORMAL_ROTATION_SPEED);
 		m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_pParticle->setEndSize(4.f);
 	}), nullptr);

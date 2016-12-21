@@ -148,6 +148,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Classes\AI\States\GameStates.cpp" />
     <ClCompile Include="Classes\AI\States\RocketStates.cpp" />
     <ClCompile Include="Classes\Common\Global.cpp" />
     <ClCompile Include="Classes\Common\StringUtility.cpp" />
@@ -155,7 +156,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\Download\DownloadManager.cpp" />
     <ClCompile Include="Classes\AI\States\BulletStates.cpp" />
     <ClCompile Include="Classes\AI\States\PlayerStates.cpp" />
-    <ClCompile Include="Classes\AI\States\StageStates.cpp" />
     <ClCompile Include="Classes\AppDelegate.cpp" />
     <ClCompile Include="Classes\Common\AudioManager.cpp" />
     <ClCompile Include="Classes\Common\HSHUitlity.cpp" />
@@ -190,6 +190,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\json\json_reader.cpp" />
     <ClCompile Include="Classes\json\json_value.cpp" />
     <ClCompile Include="Classes\json\json_writer.cpp" />
+    <ClCompile Include="Classes\MyUI\BonusTimeLayer.cpp" />
     <ClCompile Include="Classes\MyUI\BonusTimeUI.cpp" />
     <ClCompile Include="Classes\MyUI\CountDown.cpp" />
     <ClCompile Include="Classes\MyUI\HealthBarUI.cpp" />
@@ -230,6 +231,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\GameObject\MenuSceneObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Classes\AI\States\GameStates.h" />
     <ClInclude Include="Classes\AI\States\RocketStates.h" />
     <ClInclude Include="Classes\Common\Global.hpp" />
     <ClInclude Include="Classes\Common\NoticeDefine.h" />
@@ -239,7 +241,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\AI\StateMachine.h" />
     <ClInclude Include="Classes\AI\States\BulletStates.h" />
     <ClInclude Include="Classes\AI\States\PlayerStates.h" />
-    <ClInclude Include="Classes\AI\States\StageStates.h" />
     <ClInclude Include="Classes\AI\States\State.h" />
     <ClInclude Include="Classes\AppDelegate.h" />
     <ClInclude Include="Classes\Common\AudioManager.h" />
@@ -284,6 +285,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\json\reader.h" />
     <ClInclude Include="Classes\json\value.h" />
     <ClInclude Include="Classes\json\writer.h" />
+    <ClInclude Include="Classes\MyUI\BonusTimeLayer.hpp" />
     <ClInclude Include="Classes\MyUI\BonusTimeUI.h" />
     <ClInclude Include="Classes\MyUI\CountDown.hpp" />
     <ClInclude Include="Classes\MyUI\HealthBarUI.h" />

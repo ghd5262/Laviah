@@ -178,6 +178,6 @@ void CBackGround::particlePause(ParticleSystemQuad* particle)
 
 void CBackGround::particleResume(ParticleSystemQuad* particle)
 {
-    if (particle != nullptr)
+	if (particle != nullptr)
         particle->resumeEmissions();
 }

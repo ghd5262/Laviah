@@ -29,7 +29,7 @@ public:
 	void NormalMode();
     void TakeOnRocket();
     void TakeOffRocket();
-	void Rotation(float dir, float delta);
+	void Rotation(float speed);
     void ChangeState(CState<CPlayer>* newState)
     { m_FSM->ChangeState(newState); };
     

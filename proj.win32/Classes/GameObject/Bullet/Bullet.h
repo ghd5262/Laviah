@@ -112,7 +112,7 @@ public:
     void ChangeState(CState<CBullet>* newState)
     { m_FSM->ChangeState(newState); };
     CBullet* setBulletInfo(sBULLET_PARAM data);
-    virtual CBullet* build(); //TODO: 빌드가 하위클래스들의 init보다 시점이 늦기 때문에 하위 클래스들역시 빌드를 해야한다.
+    virtual CBullet* build(); 
     
     void  setSpeed          (float data);
     void  setAngle          (float data);
@@ -131,13 +131,10 @@ public:
     char  getSymbol()         const;
     bool  getIsFly()          const;
     
-    //현재 bullet이 영향을 받는 모든 플래그를 반환함
     int getItemEffect(){ return m_ItemFlag; }
     
-    //인자로 전달된 아이템의 영향을 받는다
     void setItemEffect(int item){ m_ItemFlag |= item; }
     
-    //인자로 전달된 아이템의 영향을 받는 bullet인지 검사한다.
     bool IsEffectWithItem(eITEM_FLAG itemType){
         if (itemType == eITEM_FLAG_none)
             return false;
@@ -155,8 +152,6 @@ protected:
 	void operator delete(void* ptr){};
 #endif
 
-	//getter & setter
-	//중요 - 멤버변수로 포인터를 넣을때는 꼭 초기화 및 nullptr을 이용하자 (크래시 유발)
     CC_SYNTHESIZE(CPlayer*, m_Player, Player);
     CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
     CC_SYNTHESIZE(cocos2d::Vec2, m_TargetVec, TargetVec);
@@ -166,9 +161,7 @@ protected:
     CC_SYNTHESIZE(int, m_ItemFlag, ItemFlag);
 	CC_SYNTHESIZE(bool, m_bIsPlayerGet, IsPlayerGet);
 
-	/* "R_"로 시작하는 함수는 이펙트가 끝나면 ReturnToMemoryBlock 호출됨*/
 
-    // 목표지점으로 이동 후 커지면서 FadeOut
     void R_UpAndBezier(cocos2d::Vec2 targetPos,
                        cocos2d::Vec2 controlPoint_1,
                        cocos2d::Vec2 controlPoint_2,
@@ -176,7 +169,6 @@ protected:
                        float scale);
     
     
-    // 목표지점으로 이동 후 커지면서 FadeOut
     void R_BezierWithScale(cocos2d::Vec2 targetPos,
                            cocos2d::Vec2 controlPoint_1,
                            cocos2d::Vec2 controlPoint_2,
@@ -184,30 +176,24 @@ protected:
                            float scale);
     
     
-    // 목표지점으로 이동 하면서 회전
     void R_BezierWithRotation(cocos2d::Vec2 targetPos,
                               cocos2d::Vec2 controlPoint_1,
                               cocos2d::Vec2 controlPoint_2,
                               float time);
     
     
-    // 현재지점에서 커지면서 FadeOut
     void R_ScaleWithFadeOut(float scale,
                             float scaleTime, 
                             float fadeOutTime);
     
     
-    // 현재지점에서 removeTime 후 FadeOut count만큼 반복 후 삭제
     void R_FadeOutWithCount(int repeat,
                             float removeTime);
     
-    // 좌우로 흔들림
     void StackedRL(float duration, float stackSize, int stackCount);
 
-	// 조종행동 - 찾기
 	void Seek(float delta);
 
-	// 점수bullet 생성 및 점수 반영
 	void createScoreCurrentPos(int score);
     
     CBullet();

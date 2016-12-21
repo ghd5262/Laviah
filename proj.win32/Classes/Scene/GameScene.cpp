@@ -238,12 +238,12 @@ void CGameScene::RandomCoin()
 
 void CGameScene::ScreenFade(const FADE_CALLBACK& callback/* = nullptr*/)
 {
-    auto fadeOut = FadeTo::create(0.2f, 1);
-    auto fadeIn  = FadeIn::create(0.2f);
+    auto fadeOut = FadeTo::create(0.3f, 1);
+    auto fadeIn  = FadeIn::create(0.3f);
     auto callFunc = CallFunc::create([=](){
         callback();
     });
-    auto delayAction = DelayTime::create(0.2f);
+    auto delayAction = DelayTime::create(0.5f);
     auto visibleOff = CallFunc::create([=](){ m_ScreenFade->setVisible(false); });
     auto visibleOn  = CallFunc::create([=](){ m_ScreenFade->setVisible(true);  });
 
@@ -251,8 +251,8 @@ void CGameScene::ScreenFade(const FADE_CALLBACK& callback/* = nullptr*/)
     m_ScreenFade->runAction(Sequence::create(visibleOn,
                                              fadeIn,
                                              callFunc,
-                                             delayAction,
-                                             fadeOut,
+											 fadeOut,
+											 delayAction,
                                              visibleOff,
                                              nullptr));
 }
@@ -273,6 +273,7 @@ void CGameScene::clearData()
     CItemManager::Instance()->Clear();
     this->cleanGlobalData();
     this->removeUILayer();
+	this->removeBonusTimeLayer();
 }
 
 void CGameScene::cleanGlobalData()

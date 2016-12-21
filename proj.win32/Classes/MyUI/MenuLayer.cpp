@@ -120,16 +120,16 @@ bool CMenuLayer::init()
         }, "R", testButtonPos[4], Size(100, 100)),
     };
     
-    this->setOpenAnimation([=](Node* sender){
-        for(auto btn : btnArray)
-            btn->runAction(FadeIn::create(0.2f));
-    });
-    
-    this->setCloseAnimation([=](Node* sender){
-        for(auto btn : btnArray)
-            btn->runAction(FadeTo::create(0.2f, 0));
-    });
-    
+    //this->setOpenAnimation([=](Node* sender){
+    //    for(auto btn : btnArray)
+    //        btn->runAction(FadeIn::create(0.2f));
+    //});
+    //
+    //this->setCloseAnimation([=](Node* sender){
+    //    for(auto btn : btnArray)
+    //        btn->runAction(FadeTo::create(0.2f, 0));
+    //});
+    //
     return true;
 }
 

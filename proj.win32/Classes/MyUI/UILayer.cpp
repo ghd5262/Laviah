@@ -127,6 +127,7 @@ void CUILayer::initItemTestButton()
         CMyButton::create()
         ->addEventListener([=](Node* sender){
             CItemManager::Instance()->StartItemTimer(type);
+			CObjectManager::Instance()->StartBonusTime();
         })
         ->setButtonNormalImage(StringUtils::format("playItem_%d.png", type))
         ->setButtonPosition(pos)
