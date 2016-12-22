@@ -52,7 +52,7 @@ CPlayer::CPlayer()
 , m_fMagnetLimitTime(0)
 , m_fMagnetLimitRadius(0)
 , m_EffectItemTypes(eITEM_FLAG_none)
-, m_pParticle(nullptr)
+, m_Particle(nullptr)
 , m_pItemBarrier(nullptr)
 , m_MagnetEffect(nullptr)
 , m_Invincibility(false)
@@ -111,11 +111,12 @@ void CPlayer::Execute(float delta)
 
 void CPlayer::Clear()
 {
+    this->TakeOffRocket();
     this->setRotation(0);
-    m_pParticle->setVisible(false);
-    m_pParticle->setAngle(90);
-    m_pParticle->setRotation(0);
-    m_pParticle->setGravity(Vec2(0, -270));
+    m_Particle->setVisible(false);
+    m_Particle->setAngle(90);
+    m_Particle->setRotation(0);
+    m_Particle->setGravity(Vec2(0, -270));
     CMultipleScore::Instance()->UpdateScore();
 }
 
@@ -123,18 +124,20 @@ void CPlayer::PlayerAlive(){
     this->setVisible(false);
     this->createAliveParticle();
 	this->setPlayerTexture(m_CharacterParam._aliveTextureName);
+    m_Particle->setVisible(false);
 	m_fLife = m_fMaxLife;
 
 	this->scheduleOnce([=](float delta){
 		this->setVisible(true);
 		this->setPlayerTexture(m_CharacterParam._normalTextureName);
 		this->InvincibilityMode(INVINCIVILITY_TIME); // 1초간 무적 카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
+        m_Particle->setVisible(true);
 	}, 1.5f, "PlayerAlive");
 
 }
 
 void CPlayer::PlayerDead(){
-    m_pParticle->setVisible(false);
+    m_Particle->setVisible(false);
     this->createDeadParticle();
 	this->setVisible(false);
 }
@@ -172,15 +175,12 @@ void CPlayer::LostSomeHealth(float loseHealth)
 // Dir -1 == Left, 1 == Right
 void CPlayer::Rotation(float speed)
 {
-    if(!m_pParticle->isVisible())
-        m_pParticle->setVisible(true);
-    
 	m_Angle = this->getRotation() + (speed * 5.5f);
 //	m_Angle = static_cast<int>(m_Angle) % 360;
-	m_pParticle->setStartSpin(m_Angle);
-	m_pParticle->setEndSpin(m_Angle);
-	m_pParticle->setAngle(speed < 0 ? 180 : 0);
-	m_pParticle->setGravity(Vec2(-90 * (speed < 0 ? -1 : 1), 0));
+	m_Particle->setStartSpin(m_Angle);
+	m_Particle->setEndSpin(m_Angle);
+	m_Particle->setAngle(speed > 0 ? 180 : 0);
+	m_Particle->setGravity(Vec2(-90 * (speed < 0 ? -1 : 1), 0));
 	this->setRotation(m_Angle);
 
     GLOBAL->RUNSCORE += 1;
@@ -195,8 +195,8 @@ void CPlayer::GiantMode()
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
 		//this->setRotateSpeed(PLAYER_DEFINE::GIANT_ROTATION_SPEED);
-		m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 4.f);
-		m_pParticle->setEndSize(40.f);
+		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 4.f);
+		m_Particle->setEndSize(40.f);
 	}), nullptr);
 	this->runAction(action);
 }
@@ -212,8 +212,8 @@ void CPlayer::NormalMode()
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
 		//this->setRotateSpeed(PLAYER_DEFINE::NORMAL_ROTATION_SPEED);
-		m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
-        m_pParticle->setEndSize(4.f);
+		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
+        m_Particle->setEndSize(4.f);
 	}), nullptr);
 	this->runAction(action);
 }
@@ -223,11 +223,12 @@ void CPlayer::TakeOnRocket()
     this->retain();
     auto rocket = CObjectManager::Instance()->getRocket();
     this->removeFromParent();
-    rocket->addChild(this);
-    this->setAngle(0);
+    rocket->addChild(this, -1);
+    this->setRotation(0);
     this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     this->setPosition(Vec2(rocket->getContentSize().width * 0.5f,
                            rocket->getContentSize().height * 0.6f));
+    m_Particle->setVisible(false);
     this->release();
 }
 
@@ -237,6 +238,7 @@ void CPlayer::TakeOffRocket()
     this->removeFromParent();
     CGameScene::getGameScene()->addChild(this, ZORDER::PLAYER);
     this->setPosition(this->getOriginPos());
+    m_Particle->setVisible(true);
     this->release();
 }
 
@@ -260,7 +262,7 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 }
 
 void CPlayer::setParticlePos(Vec2 pos){
-    m_pParticle->setPosition(pos);
+    m_Particle->setPosition(pos);
     m_MagnetEffect->setPosition(pos);
 }
 
@@ -328,13 +330,13 @@ void CPlayer::setPlayerTexture(std::string textureName)
 		m_pTexture->setSpriteFrame(textureName);
 	}
 
-	if (m_pParticle != nullptr){
+	if (m_Particle != nullptr){
 		SpriteFrame* spriteFrame = nullptr;
 		spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(textureName);
 
 		if (spriteFrame != nullptr)
 		{
-			m_pParticle->setTextureWithRect(spriteFrame->getTexture(), spriteFrame->getRect());
+			m_Particle->setTextureWithRect(spriteFrame->getTexture(), spriteFrame->getRect());
 		}
 	}
 }
@@ -364,14 +366,14 @@ void CPlayer::createDeadParticle()
 
 void CPlayer::createRunParticle()
 {
-	m_pParticle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
-    if (m_pParticle != nullptr){
-        m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_pParticle->setAngle(90);
-        m_pParticle->setGravity(Vec2(0, -270));
-        m_pParticle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
-        m_pParticle->setEndSize(4.f);
-        m_pParticle->setVisible(false);
-		CGameScene::getGameScene()->addChild(m_pParticle);
+	m_Particle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
+    if (m_Particle != nullptr){
+        m_Particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_Particle->setAngle(90);
+        m_Particle->setGravity(Vec2(0, -270));
+        m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
+        m_Particle->setEndSize(4.f);
+        m_Particle->setVisible(false);
+		CGameScene::getGameScene()->addChild(m_Particle);
     }
 }

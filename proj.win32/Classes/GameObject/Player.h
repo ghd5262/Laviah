@@ -99,7 +99,7 @@ private:
 	CMultipleScore* m_MultipleScore;
 	cocos2d::Vec2 m_OriginPos;
 	cocos2d::Sprite* m_pTexture;
-	cocos2d::ParticleSystemQuad* m_pParticle;
+	cocos2d::ParticleSystemQuad* m_Particle;
     CMagnetEffect* m_MagnetEffect;
 	sCHARACTER_PARAM m_CharacterParam;
 	bool m_Invincibility;

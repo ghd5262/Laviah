@@ -167,7 +167,8 @@ void CRocket::BonusTimeEnd()
     
     // return to game
     this->scheduleOnce([=](float delta){
-        this->ChangeState(CFlyAway::Instance());
+//        this->ChangeState(CFlyAway::Instance());
+        this->setSpeed(ROCKET::SPEED);
     }, 1.f, "BONUSTIMEEND");
 }
 

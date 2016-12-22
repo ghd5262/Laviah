@@ -126,7 +126,7 @@ void CObjectManager::StartBonusTime()
     // Rotation speed down
     this->SpeedControl(1.5f, 0);
 	this->ReturnToMemoryBlockAll();
-    //m_Background->BonusTimeStart();
+    m_Rocket->BonusTimeBegan();
 	m_BulletCreator->Clear();
     CGameScene::getGameScene()->BonusTimeStart();
 }
@@ -136,7 +136,7 @@ void CObjectManager::EndBonusTime()
     // Rotation speed up to origin
     this->SpeedControl(1.0f, BULLETCREATOR::ROTATION_SPEED);
 	this->ReturnToMemoryBlockAll();
-    //m_Background->BonusTimeEnd();
+    m_Rocket->BonusTimeEnd();
 	m_BulletCreator->Clear();
     CGameScene::getGameScene()->BonusTimeEnd();
 }
