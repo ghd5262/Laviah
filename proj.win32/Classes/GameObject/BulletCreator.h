@@ -26,7 +26,7 @@ public:
     
     void Clear();
     
-    void setRotationAngle(float speed);
+	void Rotation(float speed);
     
     void setPattern(std::string patternName);
     
@@ -42,7 +42,10 @@ public:
                                  float angle,
                                  float distance,
 								 bool isDelay = true);
+
     CC_SYNTHESIZE(sCHARACTER_PARAM, m_CharacterInfo, CharacterInfo);
+	CC_SYNTHESIZE(float, m_RotationAngle, RotationAngle);
+
 private:
 	void setData(const sBULLET_PATTERN* data);
     void createOneLine(const sBULLET_PATTERN* data,
@@ -59,7 +62,6 @@ private:
 private:
     const sBULLET_PATTERN* m_CurrentPattern;
     CBulletDataManager* m_BulletDataManager;
-    float m_RotationAngle;
 	float m_Time;
 	float m_LineIntervalLimit;
     int m_CurrentHeight;

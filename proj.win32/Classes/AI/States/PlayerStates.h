@@ -2,7 +2,6 @@
 #include "State.h"
 
 class CPlayer;
-//------------------------------------------------------------------------
 class CPlayerNormal : public CState<CPlayer>
 {
 public:
@@ -20,7 +19,6 @@ private:
 	virtual ~CPlayerNormal(){}
 };
 
-//------------------------------------------------------------------------
 class CPlayerGiant : public CState<CPlayer>
 {
 public:
@@ -36,4 +34,21 @@ public:
 private:
 	CPlayerGiant(){}
 	virtual ~CPlayerGiant(){}
+};
+
+class CPlayerBonusTime : public CState<CPlayer>
+{
+public:
+
+	static CPlayerBonusTime* Instance();
+
+	void Enter(CPlayer* player) override;
+
+	void Execute(CPlayer* player, float delta) override;
+
+	void Exit(CPlayer* player) override;
+
+private:
+	CPlayerBonusTime(){}
+	virtual ~CPlayerBonusTime(){}
 };

@@ -3,13 +3,13 @@
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/BulletCreator.h"
+#include "../../GameObject/Rocket.h"
 
 using namespace cocos2d;
 
 CPlayerNormal* CPlayerNormal::Instance()
 {
 	static CPlayerNormal instance;
-
 	return &instance;
 }
 
@@ -40,7 +40,6 @@ void CPlayerNormal::Exit(CPlayer* player)
 CPlayerGiant* CPlayerGiant::Instance()
 {
 	static CPlayerGiant instance;
-
 	return &instance;
 }
 
@@ -66,4 +65,27 @@ void CPlayerGiant::Exit(CPlayer* player)
     
     // change player to NormalMode
 	player->NormalMode();
+}
+
+
+CPlayerBonusTime* CPlayerBonusTime::Instance()
+{
+	static CPlayerBonusTime instance;
+	return &instance;
+}
+
+void CPlayerBonusTime::Enter(CPlayer* player)
+{
+	player->StartBonusTime();
+}
+
+void CPlayerBonusTime::Execute(CPlayer* player, float delta)
+{
+	auto rocket = CObjectManager::Instance()->getRocket();
+	player->setPosition(rocket->getPosition());
+}
+
+void CPlayerBonusTime::Exit(CPlayer* player)
+{
+	player->EndBonusTime();
 }

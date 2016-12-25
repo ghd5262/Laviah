@@ -69,14 +69,17 @@ CBullet* CBullet::build()
     
     // position init
     Vec2 pos = Vec2::ZERO;
-    float angle = 90.f;
+    float angle = -90.f;
     if(!CItemManager::Instance()->isCurrentItem(eITEM_FLAG::eITEM_FLAG_bonustime)){
         pos = CBullet::getCirclePosition(getAngle(), getDistance(), m_Planet->getPosition());
+		this->setTargetVec(this->getPlanet()->getPosition());
         angle = -getAngle();
     }
-    else
-        pos = CBullet::getSquarePosition(getAngle(), getDistance());
-    
+	else{
+		pos = CBullet::getSquarePosition(getAngle(), getDistance());
+		this->setTargetVec(cocos2d::Vec2(pos.x, 0));
+	}
+	
     this->setPosition(pos);
 	this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 
@@ -121,7 +124,7 @@ Vec2 CBullet::getSquarePosition(float angle, float distance)
 {
     Vec2 result = Vec2::ZERO;
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    result.x = angle * (visibleSize.width / 360);
+	result.x = (angle * (visibleSize.width / 360));
     result.y = distance;
     
     return result;

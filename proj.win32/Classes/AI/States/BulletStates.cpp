@@ -14,9 +14,7 @@ CBulletNormal* CBulletNormal::Instance()
 }
 
 void CBulletNormal::Enter(CBullet* bullet)
-{
-	bullet->setTargetVec(bullet->getPlanet()->getPosition());
-}
+{}
 
 void CBulletNormal::Execute(CBullet* bullet, float delta)
 {

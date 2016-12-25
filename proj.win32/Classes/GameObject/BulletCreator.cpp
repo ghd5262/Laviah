@@ -4,6 +4,8 @@
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 #include "../GameObject/ObjectManager.h"
+#include "../GameObject/ItemManager.h"
+
 
 using namespace cocos2d;
 using namespace BULLETCREATOR;
@@ -62,7 +64,7 @@ void CBulletCreator::Update(float delta)
 	m_Time = 0.0f;
 }
 
-void CBulletCreator::setRotationAngle(float speed)
+void CBulletCreator::Rotation(float speed)
 {
     m_RotationAngle -= speed;
 }
@@ -110,7 +112,8 @@ void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
 
 		float bulletAngle = (data->_widthPadding * w) - angle;
 		bulletAngle += data->_widthPadding / 2;									 // 각도 보정 (패턴이 중앙에 오도록)
-		bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정 
+		//if (!CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))
+			bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정 
         
 		this->createBullet(symbol, bulletAngle, distance, isDelay);
     }

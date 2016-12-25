@@ -151,7 +151,7 @@ bool CGameScene::init()
     m_CountDown->Pause();
     
 #if(USE_MEMORY_POOLING)
-	CPoolingManager::Instance()->CreateBulletList(500, 900);
+	CPoolingManager::Instance()->CreateBulletList(600, 900);
 #endif
 
 	this->initKeyboardListener();

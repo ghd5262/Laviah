@@ -12,6 +12,7 @@ CBulletPatternDataManager::CBulletPatternDataManager()
 	InitWithJson(m_PatternList, "patternList_1.json");
 	InitWithJson(m_MissilePatternList, "aimingMissilePatternList.json");
 	InitWithJson(m_MissilePatternList, "normalMissilePatternList.json");
+	InitWithJson(m_BonusTimePatternList, "bonusTimePatternList.json");
 
 	m_TestPattern = new sBULLET_PATTERN();
 }
@@ -47,6 +48,10 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getDataByName(std::string name
 
 	if (m_MissilePatternList.find(name) != m_MissilePatternList.end()){
 		return m_MissilePatternList.find(name)->second;
+	}
+
+	if (m_BonusTimePatternList.find(name) != m_BonusTimePatternList.end()){
+		return m_BonusTimePatternList.find(name)->second;
 	}
 
 	CCASSERT(false, StringUtils::format("It is not a pattern key : %s", name.c_str()).c_str());
@@ -124,4 +129,15 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getRandomPattern() const
     CCLOG("Pick a pattern :: idx %d name %s", picked->_index, picked->_patternName.c_str());
     
     return picked;
+}
+
+const sBULLET_PATTERN* CBulletPatternDataManager::getRandomBonusTimePattern() const
+{
+	auto item = m_BonusTimePatternList.begin();
+	std::advance(item, random<int>(0, m_BonusTimePatternList.size() - 1));
+	auto picked = (*item).second;
+
+	CCLOG("Pick a pattern :: idx %d name %s", picked->_index, picked->_patternName.c_str());
+
+	return picked;
 }

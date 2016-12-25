@@ -27,8 +27,10 @@ public:
     void GotMagnetItem();
 	void GiantMode();
 	void NormalMode();
-    void TakeOnRocket();
-    void TakeOffRocket();
+	void TakeOnRocket();
+	void TakeOffRocket();
+	void StartBonusTime();
+	void EndBonusTime();
 	void Rotation(float speed);
     void ChangeState(CState<CPlayer>* newState)
     { m_FSM->ChangeState(newState); };

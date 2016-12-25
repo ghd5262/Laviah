@@ -84,7 +84,7 @@ void CObjectManager::RotationObject(float dir)
     m_RotationSpeed = (dir * (m_SpeedController->getPositionX() * m_fDelta));
     
     this->bulletListRotate();
-    m_BulletCreator->setRotationAngle(m_RotationSpeed);
+    m_BulletCreator->Rotation(m_RotationSpeed);
     m_Planet->Rotation(-m_RotationSpeed);
 	m_Player->Rotation(m_RotationSpeed);
 }
@@ -128,6 +128,7 @@ void CObjectManager::StartBonusTime()
 	this->ReturnToMemoryBlockAll();
     m_Rocket->BonusTimeBegan();
 	m_BulletCreator->Clear();
+	m_BulletCreator->setRotationAngle(0.f);
     CGameScene::getGameScene()->BonusTimeStart();
 }
 
@@ -138,6 +139,7 @@ void CObjectManager::EndBonusTime()
 	this->ReturnToMemoryBlockAll();
     m_Rocket->BonusTimeEnd();
 	m_BulletCreator->Clear();
+	m_BulletCreator->setRotationAngle(0.f);
     CGameScene::getGameScene()->BonusTimeEnd();
 }
 
@@ -165,7 +167,10 @@ void CObjectManager::createBulletByTimer(float delta)
 	if (!m_BulletCreator->getIsRunning()) {
 		if (1)
 		{
-			m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPattern()->_patternName);
+			if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))
+				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomBonusTimePattern()->_patternName);
+			else
+				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPattern()->_patternName);
 			//m_BulletCreator->setPattern("pattern_32");
 		}
 		else

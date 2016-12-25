@@ -57,6 +57,7 @@ public:
 	//getter & setter
 	const sBULLET_PATTERN* getDataByName(std::string name) const;
     const sBULLET_PATTERN* getRandomPattern() const;
+	const sBULLET_PATTERN* getRandomBonusTimePattern() const;
 
 	const sBULLET_PATTERN* getTestPattern() const { return m_TestPattern; };
 	void setTestPattern(sBULLET_PATTERN data){
@@ -78,6 +79,7 @@ private:
 private:
 	PATTERN_LIST m_PatternList;
 	PATTERN_LIST m_MissilePatternList;
+	PATTERN_LIST m_BonusTimePatternList;
 	sBULLET_PATTERN* m_TestPattern;
 };
 

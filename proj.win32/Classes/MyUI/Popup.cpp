@@ -83,7 +83,7 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 			positiveButton = createButton([=](Node* sender){
 				this->retain();
 				m_PositiveButtonCallBack(this);
-				this->removeFromParent();
+				this->popupClose();
 				this->release();
 			}, COLOR::BRIGHTRED_ALPHA, m_PositiveButtonName);
 		}
@@ -93,7 +93,7 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 			negativeButton = createButton([=](Node* sender){
 				this->retain();
 				m_NegativeButtonCallBack(this);
-				this->removeFromParent();
+				this->popupClose();
 				this->release();
 			}, COLOR::DARKGRAY_ALPHA, m_NegativeButtonName);
 		}
@@ -239,7 +239,7 @@ void CPopup::popupOpenAnimation()
 	case ePOPUP_ANIMATION::OPEN_CENTER:
 	{
 		this->setScale(0.f);
-		action = EaseElasticOut::create(ScaleTo::create(0.5f, 1.0f));
+		action = EaseElasticOut::create(ScaleTo::create(0.5f, 1.0f), 0.5f);
 	} break;
 	}
 
@@ -286,7 +286,10 @@ void CPopup::popupClose()
 	case ePOPUP_ANIMATION::CLOSE_RIGHT:action = ease(posArray[1]); break;
 	case ePOPUP_ANIMATION::CLOSE_DOWN: action = ease(posArray[2]); break;
 	case ePOPUP_ANIMATION::CLOSE_UP:   action = ease(posArray[3]); break;
-
+	case ePOPUP_ANIMATION::CLOSE_CENTER:
+	{
+		action = EaseElasticIn::create(ScaleTo::create(0.4f, 0.2f), 1);
+	} break;
 	}
 
 	this->runAction(Sequence::create(action, DelayTime::create(delayTime), CallFunc::create([=](){

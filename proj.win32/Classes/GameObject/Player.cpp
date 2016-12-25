@@ -220,26 +220,40 @@ void CPlayer::NormalMode()
 
 void CPlayer::TakeOnRocket()
 {
-    this->retain();
-    auto rocket = CObjectManager::Instance()->getRocket();
-    this->removeFromParent();
-    rocket->addChild(this, -1);
-    this->setRotation(0);
-    this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    this->setPosition(Vec2(rocket->getContentSize().width * 0.5f,
-                           rocket->getContentSize().height * 0.6f));
-    m_Particle->setVisible(false);
-    this->release();
+	//this->retain();
+	//auto rocket = CObjectManager::Instance()->getRocket();
+	//this->removeFromParent();
+	//rocket->addChild(this, -1);
+	//this->setRotation(0);
+	//this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	//this->setPosition(Vec2(rocket->getContentSize().width * 0.5f,
+	//                       rocket->getContentSize().height * 0.6f));
+	//m_Particle->setVisible(false);
+	//    this->release();
+
+	this->ChangeState(CPlayerBonusTime::Instance());
 }
 
 void CPlayer::TakeOffRocket()
 {
-    this->retain();
-    this->removeFromParent();
-    CGameScene::getGameScene()->addChild(this, ZORDER::PLAYER);
-    this->setPosition(this->getOriginPos());
-    m_Particle->setVisible(true);
-    this->release();
+	/*this->retain();
+	this->removeFromParent();
+	CGameScene::getGameScene()->addChild(this, ZORDER::PLAYER);*/
+	//this->setPosition(this->getOriginPos());
+	//m_Particle->setVisible(true);
+	//this->release();
+	this->ChangeState(CPlayerNormal::Instance());
+}
+
+void CPlayer::StartBonusTime()
+{
+    m_Particle->setVisible(false);
+}
+
+void CPlayer::EndBonusTime()
+{
+	this->setPosition(this->getOriginPos());
+	m_Particle->setVisible(true);
 }
 
 // callback 평소에 적용되는 생명력 계산함수
