@@ -240,7 +240,7 @@ void CPatternTestPopup::End(Node* sender)
 		sBULLET_PATTERN pattern;
 
 		pattern._index = 10000;
-		pattern._patternName = "test_Pattern";
+		pattern._level = 0;
 		pattern._widthPadding = atol(m_TextFieldWidth->getText().c_str());
 		pattern._height = CELL_HEIGHT;
 		pattern._width = CELL_WIDTH;

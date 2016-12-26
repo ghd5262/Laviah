@@ -114,12 +114,12 @@ void CNormalMissile::ChangeToCoinOrStar()
 
 	this->setAlive(false);
 
-	std::string patternName = CObjectManager::Instance()->getCharacterParam()._normalMissilePattern;
+	auto patternIndex = CObjectManager::Instance()->getCharacterParam()._idx;
 
 	float distance = m_TargetVec.distance(getPosition());
 
     // TODO: 패턴 안에 있는 bullet의 데이터를 셋팅해야한다.
-	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(patternName, getAngle(), distance);
+	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(patternIndex, getAngle(), distance);
     
 	// 이부분 일단 작업하고 다음 리펙토링 때 autoReturnMemoryPool에 넣어야한다.
 	this->scheduleOnce([this](float delta){

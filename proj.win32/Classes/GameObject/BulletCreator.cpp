@@ -69,9 +69,9 @@ void CBulletCreator::Rotation(float speed)
     m_RotationAngle -= speed;
 }
 
-void CBulletCreator::setPattern(std::string patternName)
+void CBulletCreator::setPattern(int index)
 {	
-	auto data = CBulletPatternDataManager::Instance()->getDataByName(patternName);
+	auto data = CBulletPatternDataManager::Instance()->getNormalPatternByIndex(index);
 	this->setData(data);
 }
 
@@ -119,11 +119,11 @@ void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
     }
 }
 
-void CBulletCreator::CreateImmediately(std::string patternName,
+void CBulletCreator::CreateImmediately(int index,
                                        float angle,
                                        float distance)
 {
-	auto data = CBulletPatternDataManager::Instance()->getDataByName(patternName);
+	auto data = CBulletPatternDataManager::Instance()->getMissilePatternByIndex(index);
 	m_IsFlip = false;
 	for (int height = data->_height - 1; height >= 0; height--)
 	{

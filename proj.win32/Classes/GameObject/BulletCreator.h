@@ -28,15 +28,15 @@ public:
     
 	void Rotation(float speed);
     
-    void setPattern(std::string patternName);
+	void setPattern(int index);
     
 	void setPattern(const sBULLET_PATTERN* data);
 
 	bool getIsRunning() const { return m_Running; }
     
-    void CreateImmediately(std::string patternName,
-                                  float angle,
-                                  float distance);
+	void CreateImmediately(int index,
+						   float angle,
+						   float distance);
     
     static CBullet* createBullet(char symbol,
                                  float angle,

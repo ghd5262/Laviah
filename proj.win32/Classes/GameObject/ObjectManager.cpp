@@ -168,9 +168,9 @@ void CObjectManager::createBulletByTimer(float delta)
 		if (1)
 		{
 			if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))
-				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomBonusTimePattern()->_patternName);
+				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomBonusTimePattern());
 			else
-				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPattern()->_patternName);
+				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPatternByLevel(1));
 			//m_BulletCreator->setPattern("pattern_32");
 		}
 		else

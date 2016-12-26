@@ -56,8 +56,6 @@ CCharacterDataManager::CCharacterDataManager()
 		param._stickBulletTextureName = valueItem["stickBullet"].asString();
 		param._normalMissileTextureName = valueItem["normalMissile"].asString();
 		param._aimingMissileTextureName = valueItem["aimingMissile"].asString();
-		param._normalMissilePattern = valueItem["normalMissilePattern"].asString();
-		param._aimingMissilePattern = valueItem["aimingMissilePattern"].asString();
 		param._deadParticleTextureName = valueItem["deadParticle"].asString();
 		param._missileParticleTextureName = valueItem["missileParticle"].asString();
 		param._name = valueItem["name"].asString();
@@ -180,8 +178,6 @@ void CCharacterDataManager::PrintCharacterInfo(int index)
 	CCLOG("Aiming Missile Line Texture Name : %s", character._aimingMissileLine.c_str());
 	CCLOG("Normal Missile Texture Name      : %s", character._normalMissileTextureName.c_str());
 	CCLOG("Aiming Missile Texture Name      : %s", character._aimingMissileTextureName.c_str());
-	CCLOG("Normal Missile Pattern Name      : %s", character._normalMissilePattern.c_str());
-	CCLOG("Aiming Missile Pattern Name      : %s", character._aimingMissilePattern.c_str());
     CCLOG("Dead Particle Texture Name       : %s", character._deadParticleTextureName.c_str());
     CCLOG("Missile Particle Texture Name    : %s", character._missileParticleTextureName.c_str());
 	CCLOG("Name                             : %s", character._name.c_str());
