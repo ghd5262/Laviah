@@ -69,8 +69,8 @@ CBullet* CStandBullet::build()
 void CStandBullet::Execute(float delta)
 {
     m_Time += delta;
-    this->StandUp(delta);
     if (m_Time < getDelayTime()) return;
+    this->StandUp(delta);
     if (m_StandUpComplete) m_StayLimitTime += delta;
     
     if (m_StayLimitTime > STAY_LIMIT_TIME)
@@ -136,7 +136,7 @@ void CStandBullet::ChangeToCoinOrStar()
     char symbol = 'T';
     if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_star)) symbol = 'Y';
     
-    auto bullet = CBulletCreator::createBullet(symbol, -getRotation(), distance, false);
+    auto bullet = CBulletCreator::CreateBullet(symbol, -getRotation(), distance, false);
     if (m_HitWithPlanet) bullet->setIsFly(false);
     
     this->ReturnToMemoryBlock();

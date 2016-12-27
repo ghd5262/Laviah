@@ -53,7 +53,7 @@ struct sBULLET_PATTERN
 class CBulletPatternDataManager
 {
     typedef std::vector<const sBULLET_PATTERN*> PATTERN_LIST;
-
+    typedef std::function<bool(const sBULLET_PATTERN*)> PATTERN_PICK;
 public:
 	static CBulletPatternDataManager* Instance();
 	void InitWithJson(PATTERN_LIST &list, std::string fileName);
@@ -63,9 +63,11 @@ public:
 	const sBULLET_PATTERN* getNormalPatternByIndex(int index) const;
 	const sBULLET_PATTERN* getMissilePatternByIndex(int index) const;
 	const sBULLET_PATTERN* getBonusPatternByIndex(int index) const;
-	const sBULLET_PATTERN* getRandomPatternByLevel(int level);
-	const sBULLET_PATTERN* getRandomBonusTimePattern();
-	const sBULLET_PATTERN* getRandomDataFromList(PATTERN_LIST &list, int level);
+	const sBULLET_PATTERN* getRandomNormalPatternByLevel(int level, bool below);
+    const sBULLET_PATTERN* getRandomConstellationPatternByLevel(int level, bool below);
+    const sBULLET_PATTERN* getRandomBonusTimePattern();
+    const sBULLET_PATTERN* getRandomPatternFromList(const PATTERN_PICK& callFunc,
+                                                    PATTERN_LIST &list);
 
 	const sBULLET_PATTERN* getTestPattern() const { return m_TestPattern; };
 	void setTestPattern(sBULLET_PATTERN data){
@@ -88,6 +90,7 @@ private:
 	PATTERN_LIST m_PatternList;
 	PATTERN_LIST m_MissilePatternList;
 	PATTERN_LIST m_BonusTimePatternList;
+    PATTERN_LIST m_ConstellationPatternList;
 	sBULLET_PATTERN* m_TestPattern;
 };
 

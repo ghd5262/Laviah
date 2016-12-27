@@ -19,6 +19,8 @@ CBulletPatternDataManager::CBulletPatternDataManager()
 
 	InitWithJson(m_MissilePatternList, "missilePatternList.json");
 	InitWithJson(m_BonusTimePatternList, "bonusTimePatternList.json");
+    
+    InitWithJson(m_ConstellationPatternList, "constellationPatternList.json");
 
 	m_TestPattern = new sBULLET_PATTERN();
 }
@@ -56,13 +58,13 @@ void CBulletPatternDataManager::InitWithJson(PATTERN_LIST &list, std::string fil
 	Json::Value root;
 	Json::Reader reader;
 
-	// patternList.json 파일 읽음
+	// patternList.json
 	std::string file = FileUtils::getInstance()->fullPathForFilename(fileName);
 	std::string fileData = FileUtils::getInstance()->getStringFromFile(file);
 	size_t pos = fileData.rfind("}");
 	fileData = fileData.substr(0, pos + 1);
 
-	// patternList.json log출력
+	// patternList.json
 	bool parsingSuccessful = reader.parse(fileData, root);
 	if (!parsingSuccessful)
 	{
@@ -131,23 +133,52 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getBonusPatternByIndex(int ind
 	return m_BonusTimePatternList.at(index);
 }
 
-const sBULLET_PATTERN* CBulletPatternDataManager::getRandomPatternByLevel(int level)
-{    
-	return getRandomDataFromList(m_PatternList, level);
+const sBULLET_PATTERN* CBulletPatternDataManager::getRandomNormalPatternByLevel(int level, bool below)
+{
+    if(below){
+    return getRandomPatternFromList([=](const sBULLET_PATTERN* data){
+        return data->_level > level;
+    }, m_PatternList);
+    }
+    else
+    {
+        return getRandomPatternFromList([=](const sBULLET_PATTERN* data){
+            return data->_level != level;
+        }, m_PatternList);
+    }
+}
+
+const sBULLET_PATTERN* CBulletPatternDataManager::getRandomConstellationPatternByLevel(int level, bool below)
+{
+    if(below){
+        return getRandomPatternFromList([=](const sBULLET_PATTERN* data){
+            return data->_level > level;
+        }, m_ConstellationPatternList);
+    }
+    else
+    {
+        return getRandomPatternFromList([=](const sBULLET_PATTERN* data){
+            return data->_level != level;
+        }, m_ConstellationPatternList);
+    }
 }
 
 const sBULLET_PATTERN* CBulletPatternDataManager::getRandomBonusTimePattern()
 {
-	return getRandomDataFromList(m_BonusTimePatternList, 0);
+    return getRandomPatternFromList([=](const sBULLET_PATTERN* data){
+        return data->_level == 0;
+    }, m_BonusTimePatternList);
 }
 
-const sBULLET_PATTERN* CBulletPatternDataManager::getRandomDataFromList(PATTERN_LIST &list, int level)
+const sBULLET_PATTERN* CBulletPatternDataManager::getRandomPatternFromList(const PATTERN_PICK& callFunc,
+                                                                           PATTERN_LIST &list)
 {
 	const sBULLET_PATTERN* picked;
 	do{
-		auto randomIdx = random<int>(0, list.size() - 1);
+        auto size = list.size();
+		auto randomIdx = random<int>(0, int(size) - 1);
 		picked = list.at(randomIdx);
-	} while (picked->_level > level);
+	} while (callFunc(picked));
 
 	CCLOG("Pick a pattern :: idx %d level %d", picked->_index, picked->_level);
 

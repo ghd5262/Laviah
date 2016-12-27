@@ -80,7 +80,7 @@ void CNormalBullet::ChangeToCoinOrStar()
     if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_star)) symbol = 'P';
     else symbol = 'U';
     
-    CBulletCreator::createBullet(symbol, -getRotation(), distance, false);
+    CBulletCreator::CreateBullet(symbol, -getRotation(), distance, false);
     
     this->ReturnToMemoryBlock();
 }

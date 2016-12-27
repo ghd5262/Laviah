@@ -24,6 +24,7 @@ CObjectManager::CObjectManager()
 , m_Background(nullptr)
 , m_SpeedController(nullptr)
 , m_ItemManager(CItemManager::Instance())
+, m_PatternManager(CBulletPatternDataManager::Instance())
 , m_Delta(0.f)
 , m_GameLevel(0)
 {
@@ -41,13 +42,16 @@ CObjectManager::CObjectManager()
     
     m_LevelList.emplace_back(sLEVEL_BALANCE(20,     1));
     m_LevelList.emplace_back(sLEVEL_BALANCE(40,     2));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(60,     3));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(100,    4));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(250,    5));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(60,     3, true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(80,     3));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(120,    4, true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(160,    4));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(240,    5, true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(280,    5));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(380,    6, true));
     m_LevelList.emplace_back(sLEVEL_BALANCE(300,    6));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(350,    7));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(400,    6));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(450,    7));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(400,    7, true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(440,    7));
 }
 
 CObjectManager* CObjectManager::Instance()
@@ -183,16 +187,19 @@ void CObjectManager::createBulletByTimer(float delta)
 		if (1)
 		{
 			if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))
-				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomBonusTimePattern());
+				m_BulletCreator->setPattern(m_PatternManager->getRandomBonusTimePattern());
             else{
-				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPatternByLevel(m_LevelList.at(m_GameLevel)._level));
-			//m_BulletCreator->setPattern("pattern_32");
-//                m_BulletCreator->setPattern(0);
+                auto level = m_LevelList.at(m_GameLevel)._level;
+                auto below = m_LevelList.at(m_GameLevel)._below;
+                auto data = m_PatternManager->getRandomNormalPatternByLevel(level, below);
+                m_BulletCreator->setPattern(data);
+//               m_BulletCreator->setPattern("pattern_32");
+//               m_BulletCreator->setPattern(0);
             }
         }
 		else
 		{
-            auto testPattern = CBulletPatternDataManager::Instance()->getTestPattern();            
+            auto testPattern = m_PatternManager->getTestPattern();
 			if (testPattern != nullptr){
 				m_BulletCreator->setPattern(testPattern);
 			}

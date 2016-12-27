@@ -224,6 +224,7 @@ bool CResultPopup::init()
     auto bestScoreBG = createNormalLayer(resultIcon[7], resultContent[7], bestScore,  startPos[7], 50);
     CUserDataManager::Instance()->CoinUpdate(GLOBAL->COINSCORE);
     
+    GLOBAL->Clear();
     
     /* result label*/
     auto resultLabel = Label::createWithTTF("Result", "fonts/malgunbd.ttf", 80);

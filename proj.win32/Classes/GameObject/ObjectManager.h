@@ -17,6 +17,7 @@ class CRocket;
 class CBackGround;
 class CBulletCreator;
 class CItemManager;
+class CBulletPatternDataManager;
 class CObjectManager
 {
     // 회전 가속도 
@@ -76,13 +77,16 @@ private:
     struct sLEVEL_BALANCE{
         float _time;
         int   _level;
+        bool  _below;
         sLEVEL_BALANCE()
         : _time(0.f)
-        , _level(0){}
+        , _level(0)
+        , _below(false){}
         
-        sLEVEL_BALANCE(float time, int level)
+        sLEVEL_BALANCE(float time, int level, bool below = false)
         : _time(time)
-        , _level(level){}
+        , _level(level)
+        , _below(below){}
     };
 
 private:
@@ -91,6 +95,7 @@ private:
     std::vector<sLEVEL_BALANCE> m_LevelList;
     cocos2d::Node* m_SpeedController;
     CItemManager* m_ItemManager;
+    CBulletPatternDataManager* m_PatternManager;
     float m_RotationSpeed;
     float m_RotateAcceleration;
 };

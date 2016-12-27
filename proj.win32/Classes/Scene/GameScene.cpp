@@ -407,9 +407,6 @@ void CGameScene::initKeyboardListener()
 
 void CGameScene::createRandomCoin()
 {
-	auto bullet = CBulletCreator::createBullet('U', 0, 0, false);
-    auto padding = 200;
-	bullet->setPosition(Vec2(random<int>(padding, m_VisibleSize.width - padding),
-                             random<int>(padding, m_VisibleSize.height - padding)));
-	bullet->setLocalZOrder(ZORDER::PLAYER);
+    auto data = CBulletPatternDataManager::Instance()->getRandomConstellationPatternByLevel(1, true);
+    CBulletCreator::CreateConstellation(data);
 }

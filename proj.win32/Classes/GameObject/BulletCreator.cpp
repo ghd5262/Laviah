@@ -112,10 +112,9 @@ void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
 
 		float bulletAngle = (data->_widthPadding * w) - angle;
 		bulletAngle += data->_widthPadding / 2;									 // 각도 보정 (패턴이 중앙에 오도록)
-		//if (!CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))
-			bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정 
+        bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정
         
-		this->createBullet(symbol, bulletAngle, distance, isDelay);
+		this->CreateBullet(symbol, bulletAngle, distance, isDelay);
     }
 }
 
@@ -132,7 +131,24 @@ void CBulletCreator::CreateImmediately(int index,
 	}
 }
 
-CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance, bool isDelay/* = true*/)
+void CBulletCreator::CreateConstellation(const sBULLET_PATTERN* data)
+{
+    for (int height = data->_height - 1; height >= 0; height--)
+    {
+        for (int width = data->_width - 1; width >= 0; width--)
+        {
+            int index = (data->_width * height) + ((data->_width - 1) - width);
+            auto symbol = data->_pattern[index];
+            
+            auto bullet = CBulletCreator::CreateBullet(symbol, width, 0);
+            auto pos = CBullet::getSquarePosition(width, height);
+            bullet->setPosition(pos);
+            bullet->setLocalZOrder(ZORDER::PLAYER);
+        }
+    }
+}
+
+CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, bool isDelay/* = true*/)
 {
     CBullet* bullet = nullptr;
 

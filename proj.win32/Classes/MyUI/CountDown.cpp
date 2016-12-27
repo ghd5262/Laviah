@@ -143,10 +143,9 @@ void CCountDown::updateContent()
     if(m_CurrentNumber < 0)
     {
         this->retain();
-        
+        this->processEventListner();
         this->Pause();
         this->setVisible(false);
-        this->processEventListner();
         if(m_CleanUP) this->removeFromParent();
         
         this->release();
@@ -163,6 +162,8 @@ void CCountDown::updateContent()
 
 void CCountDown::processEventListner()
 {
+    if(m_IsPause) return;
+    
     for(auto callback : m_EventList)
     {
         callback(this);

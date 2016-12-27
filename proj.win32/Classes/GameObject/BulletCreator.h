@@ -37,12 +37,14 @@ public:
 	void CreateImmediately(int index,
 						   float angle,
 						   float distance);
-    
-    static CBullet* createBullet(char symbol,
+        
+    static CBullet* CreateBullet(char symbol,
                                  float angle,
                                  float distance,
 								 bool isDelay = true);
-
+    
+    static void CreateConstellation(const sBULLET_PATTERN* data);
+    
     CC_SYNTHESIZE(sCHARACTER_PARAM, m_CharacterInfo, CharacterInfo);
 	CC_SYNTHESIZE(float, m_RotationAngle, RotationAngle);
 
