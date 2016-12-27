@@ -141,6 +141,7 @@ CBullet* CBulletCreator::createBullet(char symbol, float angle, float distance, 
     if      (symbol >= '1' && symbol <= '3')    bullet = CNormalBullet::create();
     else if (symbol >= '4' && symbol <= '5')    bullet = CNormalMissile::create();
     else if (symbol == '6')                     bullet = CStickBullet::create();
+    else if (symbol == '7')                     bullet = CStandBullet::create();
     else if (symbol >= 'A' && symbol <= 'F')    bullet = CPlayItem::create();
 	else if (symbol >= 'P' && symbol <= 'T')    bullet = CPlayStar::create();
 	else if (symbol >= 'U' && symbol <= 'Y')    bullet = CPlayCoin::create();
@@ -177,7 +178,8 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
     else if (symbol == '4')                     name = m_CharacterInfo._normalMissileTextureName;
     else if (symbol == '5')                     name = m_CharacterInfo._aimingMissileTextureName;
     else if (symbol == '6')                     name = m_CharacterInfo._stickBulletTextureName;
-    
+    else if (symbol == '7')                     name = m_CharacterInfo._stickBulletTextureName;
+
     else if (symbol == 'A')                     name = "playItem_1.png";
     else if (symbol == 'B')                     name = "playItem_2.png";
     else if (symbol == 'C')                     name = "playItem_3.png";

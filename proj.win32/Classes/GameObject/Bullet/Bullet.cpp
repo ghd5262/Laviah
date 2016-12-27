@@ -351,6 +351,18 @@ void CBullet::Seek(float delta)
     setPosition(getPosition() + dir);
 }
 
+void CBullet::Flee(float delta)
+{
+    // 방향벡터 구하기
+    Vec2 dir = getPosition() - m_TargetVec;
+    dir.normalize();
+    
+    // 속력벡터 계산
+    dir *= (getSpeed() * delta);
+    
+    // 현재 좌표에 적용
+    setPosition(getPosition() + dir);
+}
 
 void CBullet::createScoreCurrentPos(int score)
 {

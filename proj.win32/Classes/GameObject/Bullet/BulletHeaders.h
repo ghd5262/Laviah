@@ -11,3 +11,4 @@
 #include "PlayStar.h"
 #include "ScoreBullet.h"
 #include "StickBullet.h"
+#include "StandBullet.hpp"

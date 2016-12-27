@@ -12,7 +12,8 @@
 #include <algorithm>
 
 CObjectManager::CObjectManager()
-: m_fStageTime(0.f)
+: m_PatternTimer(0.f)
+, m_LevelTimer(0.f)
 , m_IsGamePause(true)
 , m_RotationSpeed(0.f)
 , m_RotateAcceleration(0.f)
@@ -23,7 +24,8 @@ CObjectManager::CObjectManager()
 , m_Background(nullptr)
 , m_SpeedController(nullptr)
 , m_ItemManager(CItemManager::Instance())
-, m_fDelta(0.f)
+, m_Delta(0.f)
+, m_GameLevel(0)
 {
 //    m_FSM = std::shared_ptr<CStateMachine<CObjectManager>>(new CStateMachine<CObjectManager>(this),
 //                                                           [=](CStateMachine<CObjectManager>* fsm){
@@ -36,6 +38,16 @@ CObjectManager::CObjectManager()
         m_SpeedController->setPositionX(BULLETCREATOR::ROTATION_SPEED);
         CGameScene::getGameScene()->addChild(m_SpeedController);
     }
+    
+    m_LevelList.emplace_back(sLEVEL_BALANCE(20,     1));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(40,     2));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(60,     3));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(100,    4));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(250,    5));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(300,    6));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(350,    7));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(400,    6));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(450,    7));
 }
 
 CObjectManager* CObjectManager::Instance()
@@ -47,7 +59,9 @@ CObjectManager* CObjectManager::Instance()
 void CObjectManager::Clear()
 {
     m_RotateAcceleration = 0.f;
-	m_fStageTime = 0.f;
+	m_PatternTimer = 0.f;
+    m_LevelTimer = 0.f;
+    m_GameLevel = 0;
 	m_IsGamePause = true;
     m_BulletCreator->Clear();
     m_Planet->Clear();
@@ -70,7 +84,8 @@ void CObjectManager::AddBullet(CBullet* bullet)
 
 void CObjectManager::Execute(float delta)
 {
-    m_fDelta = delta;
+    m_Delta = delta;
+    
 //    m_FSM->Execute(delta);
     
     this->inGameUpdate();
@@ -81,7 +96,7 @@ void CObjectManager::RotationObject(float dir)
 {
     if (m_IsGamePause) return;
     
-    m_RotationSpeed = (dir * (m_SpeedController->getPositionX() * m_fDelta));
+    m_RotationSpeed = (dir * (m_SpeedController->getPositionX() * m_Delta));
     
     this->bulletListRotate();
     m_BulletCreator->Rotation(m_RotationSpeed);
@@ -93,7 +108,7 @@ void CObjectManager::BonusTimeTouchEvent(float dir)
 {
     if (m_IsGamePause) return;
     
-    m_RotationSpeed = (dir * (m_SpeedController->getPositionX() * m_fDelta));
+    m_RotationSpeed = (dir * (m_SpeedController->getPositionX() * m_Delta));
     
     m_Rocket->Fly(m_RotationSpeed);
 }
@@ -161,18 +176,20 @@ void CObjectManager::ReturnToMemoryBlockAll()
 
 void CObjectManager::createBulletByTimer(float delta)
 {
-    m_fStageTime += delta;
-	if (m_fStageTime < BULLETCREATOR::PATTERN_PADDING_LIMIT) return;
+    m_PatternTimer += delta;
+	if (m_PatternTimer < BULLETCREATOR::PATTERN_PADDING_LIMIT) return;
 
 	if (!m_BulletCreator->getIsRunning()) {
 		if (1)
 		{
 			if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))
 				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomBonusTimePattern());
-			else
-				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPatternByLevel(1));
+            else{
+				m_BulletCreator->setPattern(CBulletPatternDataManager::Instance()->getRandomPatternByLevel(m_LevelList.at(m_GameLevel)._level));
 			//m_BulletCreator->setPattern("pattern_32");
-		}
+//                m_BulletCreator->setPattern(0);
+            }
+        }
 		else
 		{
             auto testPattern = CBulletPatternDataManager::Instance()->getTestPattern();            
@@ -182,7 +199,7 @@ void CObjectManager::createBulletByTimer(float delta)
 		}
 	}
 
-	m_fStageTime = 0.f;
+	m_PatternTimer = 0.f;
 }
 
 void CObjectManager::inGameUpdate()
@@ -190,16 +207,17 @@ void CObjectManager::inGameUpdate()
     if (m_IsGamePause) return;
     
     this->RotationObject(1);
-    this->createBulletByTimer(m_fDelta);
-    m_ItemManager->Execute(m_fDelta);
-    m_BulletCreator->Update(m_fDelta);
-    m_Player->Execute(m_fDelta);
+    this->createBulletByTimer(m_Delta);
+    m_ItemManager->Execute(m_Delta);
+    m_BulletCreator->Update(m_Delta);
+    m_Player->Execute(m_Delta);
     this->bulletListExecute();
+    this->setGameLevelByTimer();
 }
 
 void CObjectManager::inMenuUpdate()
 {
-    m_Rocket->Execute(m_fDelta);
+    m_Rocket->Execute(m_Delta);
 }
 
 void CObjectManager::inBonusGameUpdate()
@@ -224,7 +242,7 @@ void CObjectManager::bulletListExecute()
     for (auto bullet : m_BulletList)
     {
         if (bullet->IsAlive()) {
-            bullet->Execute(m_fDelta);
+            bullet->Execute(m_Delta);
         }
     }
 }
@@ -236,5 +254,16 @@ void CObjectManager::bulletListRotate()
         if (bullet->IsAlive()) {
             bullet->Rotation(m_RotationSpeed);
         }
+    }
+}
+
+void CObjectManager::setGameLevelByTimer()
+{
+    if(m_LevelList.size() <= m_GameLevel) return;
+    
+    m_LevelTimer += m_Delta;
+    if(m_LevelList.at(m_GameLevel)._time < m_LevelTimer)
+    {
+        m_GameLevel++;
     }
 }

@@ -112,7 +112,7 @@ public:
     void ChangeState(CState<CBullet>* newState)
     { m_FSM->ChangeState(newState); };
     CBullet* setBulletInfo(sBULLET_PARAM data);
-    virtual CBullet* build(); 
+    virtual CBullet* build();
     
     void  setSpeed          (float data);
     void  setAngle          (float data);
@@ -193,6 +193,8 @@ protected:
     void StackedRL(float duration, float stackSize, int stackCount);
 
 	void Seek(float delta);
+    
+    void Flee(float delta);
 
 	void createScoreCurrentPos(int score);
     

@@ -104,7 +104,7 @@ void CBulletPatternDataManager::InitWithJson(PATTERN_LIST &list, std::string fil
 
 const sBULLET_PATTERN* CBulletPatternDataManager::getNormalPatternByIndex(int index) const
 {
-	if (m_PatternList.size() >= index) {
+	if (m_PatternList.size() <= index) {
 		CCLOG("Wrong index : %d", index);
 		CCASSERT(false, "Wrong index");
 		return nullptr;
@@ -114,7 +114,7 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getNormalPatternByIndex(int in
 
 const sBULLET_PATTERN* CBulletPatternDataManager::getMissilePatternByIndex(int index) const
 {
-	if (m_MissilePatternList.size() >= index) 
+	if (m_MissilePatternList.size() <= index)
 		return m_MissilePatternList.at(0);
 
 	return m_MissilePatternList.at(index);
@@ -122,7 +122,7 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getMissilePatternByIndex(int i
 
 const sBULLET_PATTERN* CBulletPatternDataManager::getBonusPatternByIndex(int index) const
 {
-	if (m_BonusTimePatternList.size() >= index) {
+	if (m_BonusTimePatternList.size() <= index) {
 		CCLOG("Wrong index : %d", index);
 		CCASSERT(false, "Wrong index");
 		return nullptr;

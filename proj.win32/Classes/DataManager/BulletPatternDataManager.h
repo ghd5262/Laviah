@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <memory>
 
 struct sBULLET_PATTERN
 {

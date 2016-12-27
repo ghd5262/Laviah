@@ -113,14 +113,14 @@ void CPlayer::Clear()
 {
     this->TakeOffRocket();
     this->setRotation(0);
-    m_Particle->setVisible(false);
     m_Particle->setAngle(90);
-    m_Particle->setRotation(0);
     m_Particle->setGravity(Vec2(0, -270));
+    m_Particle->setVisible(false);
     CMultipleScore::Instance()->UpdateScore();
 }
 
-void CPlayer::PlayerAlive(){
+void CPlayer::PlayerAlive()
+{
     this->setVisible(false);
     this->createAliveParticle();
 	this->setPlayerTexture(m_CharacterParam._aliveTextureName);

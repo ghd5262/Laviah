@@ -53,10 +53,12 @@ public:
     CC_SYNTHESIZE(CRocket*, m_Rocket, Rocket);
     CC_SYNTHESIZE(CBulletCreator*, m_BulletCreator, BulletCreator);
 	CC_SYNTHESIZE(CBackGround*, m_Background, Background);
-	CC_SYNTHESIZE(float, m_fStageTime, StageTime);
-	CC_SYNTHESIZE(float, m_fDelta, Delta);
+	CC_SYNTHESIZE(float, m_PatternTimer, PatternTimer);
+    CC_SYNTHESIZE(float, m_LevelTimer, LevelTimer);
+    CC_SYNTHESIZE(float, m_Delta, Delta);
 	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
 	CC_SYNTHESIZE(sCHARACTER_PARAM, m_CharacterParam, CharacterParam);
+    CC_SYNTHESIZE(int, m_GameLevel, GameLevel);
     
 private:
 	void createBulletByTimer(float delta);
@@ -66,15 +68,29 @@ private:
     void removeAllBullet();	// Delete함수 호출! 이유는 구현부에~
     void bulletListExecute();
     void bulletListRotate();
+    void setGameLevelByTimer();
     
     CObjectManager();
 	~CObjectManager(){};
+    
+    struct sLEVEL_BALANCE{
+        float _time;
+        int   _level;
+        sLEVEL_BALANCE()
+        : _time(0.f)
+        , _level(0){}
+        
+        sLEVEL_BALANCE(float time, int level)
+        : _time(time)
+        , _level(level){}
+    };
 
 private:
     std::shared_ptr<CStateMachine<CObjectManager>> m_FSM;
-    CItemManager* m_ItemManager;
 	std::vector<CBullet*> m_BulletList;
+    std::vector<sLEVEL_BALANCE> m_LevelList;
     cocos2d::Node* m_SpeedController;
+    CItemManager* m_ItemManager;
     float m_RotationSpeed;
     float m_RotateAcceleration;
 };
