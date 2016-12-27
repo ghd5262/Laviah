@@ -82,7 +82,7 @@ void CBulletPatternDataManager::InitWithJson(PATTERN_LIST &list, std::string fil
 
 		sBULLET_PATTERN patternInfo;
 
-		patternInfo._index = patternCount;
+		patternInfo._index = list.size();
 		patternInfo._level = valuePattern["level"].asInt();
 		patternInfo._widthPadding = valuePattern["widthAngleDistance"].asDouble();
 		const Json::Value pattern = valuePattern["pattern"];

@@ -1,4 +1,5 @@
 #pragma once
+#include "../Common/HSHUtility.h"
 #include <vector>
 #include <memory>
 

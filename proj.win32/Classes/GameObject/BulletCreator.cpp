@@ -133,15 +133,18 @@ void CBulletCreator::CreateImmediately(int index,
 
 void CBulletCreator::CreateConstellation(const sBULLET_PATTERN* data)
 {
-    for (int height = data->_height - 1; height >= 0; height--)
+	for (int height = 0; height < data->_height; height++)
     {
-        for (int width = data->_width - 1; width >= 0; width--)
+        for (int width = 0; width < data->_width; width++)
         {
-            int index = (data->_width * height) + ((data->_width - 1) - width);
+            int index = (data->_width * height) + width;
             auto symbol = data->_pattern[index];
-            
-            auto bullet = CBulletCreator::CreateBullet(symbol, width, 0);
-            auto pos = CBullet::getSquarePosition(width, height);
+			
+			if (symbol == ' ') continue;
+
+            auto bullet = CBulletCreator::CreateBullet(symbol, width * data->_widthPadding, 0);
+			auto visible = CCDirector::getInstance()->getVisibleSize();
+			auto pos = CBullet::getSquarePosition(width * data->_widthPadding, visible.height - (height * BULLET_STANDARD_PADDING));
             bullet->setPosition(pos);
             bullet->setLocalZOrder(ZORDER::PLAYER);
         }

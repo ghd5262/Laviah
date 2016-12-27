@@ -8,6 +8,7 @@
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/ItemManager.h"
 #include "../GameObject/Player.h"
+#include "../DataManager/UserDataManager.h"
 
 using namespace cocos2d;
 
@@ -125,7 +126,8 @@ void CRocket::CollisionCheckAtHome()
 {
     for (auto bullet : *m_BulletList)
     {
-        if (!bullet->IsAlive()) return;
+        if (!bullet->IsAlive()) continue;
+
         if (bullet->IsHit(this))
         {
             auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -134,8 +136,9 @@ void CRocket::CollisionCheckAtHome()
             auto cPos1 = Vec2(bullet->getPosition().x - (length * 0.3f),
                               bullet->getPosition().y - 50.f);
             auto cPos2 = Vec2(targetPos.x, targetPos.y - (length * 0.3f));
-            auto time = std::max<float>(0.5f, (length / visibleSize.height) * 1.3f);
-            
+            auto time = std::max<float>(0.4f, (length / visibleSize.height) * 1.3f);
+			auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(bullet->getSymbol() - 'U' + 1));
+			CUserDataManager::Instance()->CoinUpdate(value);
             bullet->R_UpAndBezier(targetPos, cPos1, cPos2, time, 4.f);
         }
     }
