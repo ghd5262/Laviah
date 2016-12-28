@@ -85,7 +85,7 @@ bool CUILayer::init()
     m_PauseBtn->setCascadeOpacityEnabled(true);
     m_PauseBtn->setOpacity(0);
     
-    this->initItemTestButton();    
+    //this->initItemTestButton();    
     CGameScene::getGameScene()->GameResume();
     
     return true;
