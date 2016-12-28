@@ -50,7 +50,16 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
     
     
     const Json::Value challengeArray = root["challenges"];
-    
+	typedef std::pair<std::string, int> STD_PAIR;
+
+	auto initMaterial = [=](sCHALLENGE_PARAM& data, std::string key, const Json::Value value){
+		data._materialList.emplace(STD_PAIR(key, value[key].asInt()));
+	};
+
+	auto initReward = [=](sCHALLENGE_PARAM& data, std::string key, const Json::Value value){
+		data._rewardList.emplace(STD_PAIR(key, value[key].asInt()));
+	};
+
     for (unsigned int count = 0; count < challengeArray.size(); ++count)
     {
         const Json::Value challenge = challengeArray[count];
@@ -64,19 +73,15 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
         const Json::Value materialList  = challenge["material"];
         const Json::Value rewardList    = challenge["reward"];
         
-        for (auto material : materialList)
-        {
-            auto key = materialList[material];
-            auto value = materialList[material].asInt();
-            challengeInfo._materialList.emplace(std::pair<std::string, int>("", value));
-        }
-        
-        for (unsigned int reward = 0; reward < rewardList.size(); reward++)
-        {
-            auto key = materialList[reward];
-            auto value = materialList[reward].asInt();
-            challengeInfo._rewardList.emplace(std::pair<std::string, int>("", value));
-        }
+		initMaterial(challengeInfo, "coinScore", materialList);
+		initMaterial(challengeInfo, "starScore", materialList);
+		initMaterial(challengeInfo, "runScore", materialList);
+		initMaterial(challengeInfo, "bestScore", materialList);
+		initMaterial(challengeInfo, "bestCombo", materialList);
+		initMaterial(challengeInfo, "combo", materialList);
+		initMaterial(challengeInfo, "characterCount", materialList);
+
+		initReward(challengeInfo, "coin", rewardList);
         
         list.emplace_back(new sCHALLENGE_PARAM(challengeInfo));
     }

@@ -152,6 +152,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\AI\States\RocketStates.cpp" />
     <ClCompile Include="Classes\Common\Global.cpp" />
     <ClCompile Include="Classes\Common\StringUtility.cpp" />
+    <ClCompile Include="Classes\DataManager\ChallengeDataManager.cpp" />
     <ClCompile Include="Classes\DataManager\GradientDataManager.cpp" />
     <ClCompile Include="Classes\Download\DownloadManager.cpp" />
     <ClCompile Include="Classes\AI\States\BulletStates.cpp" />
@@ -237,6 +238,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\Common\Global.hpp" />
     <ClInclude Include="Classes\Common\NoticeDefine.h" />
     <ClInclude Include="Classes\Common\StringUtility.h" />
+    <ClInclude Include="Classes\DataManager\ChallengeDataManager.hpp" />
     <ClInclude Include="Classes\DataManager\GradientDataManager.h" />
     <ClInclude Include="Classes\Download\DownloadManager.h" />
     <ClInclude Include="Classes\AI\StateMachine.h" />

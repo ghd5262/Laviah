@@ -2,6 +2,7 @@
 #include "../Common/HSHUtility.h"
 #include <map>
 #include <vector>
+#include <algorithm>
 
 struct sCHALLENGE_PARAM
 {
@@ -23,14 +24,20 @@ struct sCHALLENGE_PARAM
     , _level(data._level)
     , _oneTime(data._oneTime)
     , _contents(data._contents)
-    {}
+    {
+		_materialList.insert(std::begin(data._materialList), std::end(data._materialList));
+		_rewardList.insert(std::begin(data._rewardList), std::end(data._rewardList));
+	}
     
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM* data)
     : _index(data->_index)
     , _level(data->_level)
     , _oneTime(data->_oneTime)
     , _contents(data->_contents)
-    {}
+    {
+		_materialList.insert(std::begin(data->_materialList), std::end(data->_materialList));
+		_rewardList.insert(std::begin(data->_rewardList), std::end(data->_rewardList));
+	}
 };
 
 class CChallengeDataManager
