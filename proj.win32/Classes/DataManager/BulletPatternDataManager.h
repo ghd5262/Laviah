@@ -57,8 +57,6 @@ class CBulletPatternDataManager
     typedef std::function<bool(const sBULLET_PATTERN*)> PATTERN_PICK;
 public:
 	static CBulletPatternDataManager* Instance();
-	void InitWithJson(PATTERN_LIST &list, std::string fileName);
-	void AddPatternToList(PATTERN_LIST &list, const sBULLET_PATTERN& data);
 
 	//getter & setter
 	const sBULLET_PATTERN* getNormalPatternByIndex(int index) const;
@@ -84,6 +82,8 @@ public:
 	};
 
 private:
+    void initWithJson(PATTERN_LIST &list, std::string fileName);
+    
 	CBulletPatternDataManager();
 	virtual ~CBulletPatternDataManager();
 

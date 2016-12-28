@@ -52,7 +52,7 @@ bool CCharacterSelectPopup::init()
 	}
 
 	/* select label*/
-	//        auto selectLabel = Label::createWithTTF("Select", "fonts/malgunbd.ttf", 80);
+	//        auto selectLabel = Label::createWithTTF("Select", FONT::MALGUNBD, 80);
 	//        if (selectLabel != nullptr)
 	//        {
 	//            selectLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -105,7 +105,7 @@ bool CCharacterSelectPopup::init()
 	}
 
 	auto currentCharacterParam = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
-	m_CenterCharacterNameLabel = Label::createWithTTF(currentCharacterParam._name, "fonts/malgunbd.ttf", 80);
+	m_CenterCharacterNameLabel = Label::createWithTTF(currentCharacterParam._name, FONT::MALGUNBD, 80);
 	if (m_CenterCharacterNameLabel != nullptr)
 	{
 		m_CenterCharacterNameLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.7f));

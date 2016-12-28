@@ -33,7 +33,7 @@ bool CVideoPopup::init()
     auto popupSize = this->getContentSize();
     
 	/* revive label*/
-	auto reviveLabel = Label::createWithTTF("Revive", "fonts/malgunbd.ttf", 80);
+	auto reviveLabel = Label::createWithTTF("Revive", FONT::MALGUNBD, 80);
 	if (reviveLabel != nullptr)
 	{
 		reviveLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -62,7 +62,7 @@ bool CVideoPopup::init()
         button->addChild(icon);
         
         
-        auto contentLabel = Label::createWithTTF(content, "fonts/malgunbd.ttf", 50);
+        auto contentLabel = Label::createWithTTF(content, FONT::MALGUNBD, 50);
         contentLabel->setColor(color);
         contentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
         contentLabel->setPosition(Vec2(btnSize.width * 0.5f - btnSize.width * 0.13f, btnSize.height * 0.5));

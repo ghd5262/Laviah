@@ -41,7 +41,7 @@ bool CBonusTimeLayer::init()
     this->setCascadeOpacityEnabled(true);
     
     auto createScoreUI = [=](string iconImg, Vec2 labelAnchor, Vec2 pos){
-        auto scoreUI = CScoreUI::create("fonts/Number.ttf", 38, iconImg);
+        auto scoreUI = CScoreUI::create(FONT::NUMBER, 38, iconImg);
         scoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         scoreUI->setLabelAnchor(labelAnchor);
         scoreUI->setPosition(pos);

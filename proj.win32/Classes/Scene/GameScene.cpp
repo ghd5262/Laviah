@@ -24,6 +24,7 @@
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
+#include "../DataManager/ChallengeDataManager.hpp"
 #include "../AI/States/RocketStates.h"
 #include <array>
 
@@ -81,6 +82,8 @@ bool CGameScene::init()
 
 	m_GridWorld = NodeGrid::create();
 	this->addChild(m_GridWorld, 0, 1);
+    
+    CChallengeDataManager::Instance();
 
     m_ScreenFade = LayerColor::create(Color4B::BLACK, m_VisibleSize.width, m_VisibleSize.height);
     m_ScreenFade->setIgnoreAnchorPointForPosition(false);

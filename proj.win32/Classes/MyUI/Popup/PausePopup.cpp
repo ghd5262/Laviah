@@ -74,7 +74,7 @@ bool CPausePopup::init()
 	auto btnExit = createButton([=](Node* sender){ this->GameExit(sender); }, btnImageName[4], btnPosArray[4])->show(this);
 	btnExit->setOpacity(0);
 	
-	auto noticeLabel = Label::createWithTTF("", "fonts/malgunbd.ttf", 25);
+	auto noticeLabel = Label::createWithTTF("", FONT::MALGUNBD, 25);
 	noticeLabel->setColor(Color3B::BLACK);
 	noticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	noticeLabel->setPosition(Vec2(pauseBG->getContentSize().width * 0.5f, pauseBG->getContentSize().height * 0.5f));

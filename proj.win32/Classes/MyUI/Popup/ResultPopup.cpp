@@ -107,7 +107,7 @@ bool CResultPopup::init()
     };
     
     auto createContent = [=](Node* parent, Vec2 pos, std::string content, int fontSize){
-        auto contentLabel = Label::createWithTTF(content, "fonts/malgunbd.ttf", fontSize);
+        auto contentLabel = Label::createWithTTF(content, FONT::MALGUNBD, fontSize);
         contentLabel->setColor(COLOR::DARKGRAY);
         contentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
         contentLabel->setPosition(pos);
@@ -117,7 +117,7 @@ bool CResultPopup::init()
     };
     
     auto createScoreLabel = [=](Node* parent, Vec2 pos, int score, int fontSize){
-        auto scoreLabel = Label::createWithTTF(StringUtility::toCommaString(score), "fonts/malgunbd.ttf", fontSize);
+        auto scoreLabel = Label::createWithTTF(StringUtility::toCommaString(score), FONT::MALGUNBD, fontSize);
         scoreLabel->setColor(COLOR::DARKGRAY);
         scoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
         scoreLabel->setPosition(pos);
@@ -127,7 +127,7 @@ bool CResultPopup::init()
     };
     
     auto createMultipleLabel = [=](Node* parent, Vec2 pos, int multiple){
-		auto multipleLabel = Label::createWithTTF(StringUtils::format("%d x ", multiple), "fonts/malgunbd.ttf", 25);
+		auto multipleLabel = Label::createWithTTF(StringUtils::format("%d x ", multiple), FONT::MALGUNBD, 25);
         multipleLabel->setColor(COLOR::DARKGRAY);
         multipleLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
         multipleLabel->setPosition(pos);
@@ -227,7 +227,7 @@ bool CResultPopup::init()
     GLOBAL->Clear();
     
     /* result label*/
-    auto resultLabel = Label::createWithTTF("Result", "fonts/malgunbd.ttf", 80);
+    auto resultLabel = Label::createWithTTF("Result", FONT::MALGUNBD, 80);
     if (resultLabel != nullptr)
     {
         resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
