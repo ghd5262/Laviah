@@ -4,14 +4,17 @@
 #include <vector>
 #include <algorithm>
 
+typedef std::map<std::string, int> MATERIAL_LIST;
+typedef std::map<std::string, int> REWARD_LIST;
+
 struct sCHALLENGE_PARAM
 {
     int _index;
     int _level;
     bool _oneTime;
     std::string _contents;
-    std::map<std::string, int> _materialList;
-    std::map<std::string, int> _rewardList;
+	MATERIAL_LIST _materialList;
+	REWARD_LIST _rewardList;
     
     sCHALLENGE_PARAM()
     : _index(-1)
@@ -47,20 +50,27 @@ class CChallengeDataManager
 public:
     static CChallengeDataManager* Instance();
     
+	void UpdateCurrentState(std::string key, int value);
+	const sCHALLENGE_PARAM* SkipChallenge(int index);
+
     //getter & setter
     const sCHALLENGE_PARAM* getChallengeByIndex(int index) const;
-    const sCHALLENGE_PARAM* getRandomChallenge(bool oneTime);
-    const sCHALLENGE_PARAM* getRandomChallengeByLevel(int level, bool below);
-    const sCHALLENGE_PARAM* getRandomChallengeFromList(const CHALLENGE_PICK& callFunc,
+    const sCHALLENGE_PARAM* getNewRandomChallenge(bool oneTime);
+    const sCHALLENGE_PARAM* getMewRandomChallengeByLevel(int level, bool below);
+    const sCHALLENGE_PARAM* getNewRandomChallengeFromList(const CHALLENGE_PICK& callFunc,
                                                        CHALLENGE_LIST &list);
     
 private:
     void initWithJson(CHALLENGE_LIST &list, std::string fileName);
-    
+	void addMaterialToCurrentState(std::string key, int value);
+	bool checkCurrentChallengeComplete(int index);
+	void completeAllCurrentChallenges();
+
     CChallengeDataManager();
     virtual ~CChallengeDataManager();
     
 private:
-    CHALLENGE_LIST m_CallengeList;
+    CHALLENGE_LIST m_CallengeDataList;
+	MATERIAL_LIST m_CurrentState;
 };
 

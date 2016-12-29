@@ -1,13 +1,15 @@
 #include "ChallengeDataManager.hpp"
+#include "UserDataManager.h"
 #include "../json/json.h"
 
 using namespace cocos2d;
 
+const static std::string FILE_NAME = "challengeKeyList.json";
 const static std::string FILE_NAME = "challengeList.json";
 
 CChallengeDataManager::CChallengeDataManager()
 {
-    initWithJson(m_CallengeList, FILE_NAME);
+    initWithJson(m_CallengeDataList, FILE_NAME);
 }
 
 CChallengeDataManager::~CChallengeDataManager()
@@ -21,7 +23,7 @@ CChallengeDataManager::~CChallengeDataManager()
         list.clear();
     };
     
-    cleanList(m_CallengeList);
+    cleanList(m_CallengeDataList);
 }
 
 CChallengeDataManager* CChallengeDataManager::Instance()
@@ -87,47 +89,72 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
     }
 }
 
+void CChallengeDataManager::UpdateCurrentState(std::string key, int value)
+{
+	auto state = m_CurrentState.find(key);
+	if (state == std::end(m_CurrentState))
+		this->addMaterialToCurrentState(key, value);
+
+	state->second += value;
+
+	auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+
+	for (auto idx : *list){
+		if(this->checkCurrentChallengeComplete(idx))
+			CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_LIST, idx);
+	}
+}
+
+const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
+{
+	CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
+	auto newChallenge = this->getMewRandomChallengeByLevel(1, false);
+	CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, newChallenge->_index);
+
+	return newChallenge;
+}
+
 const sCHALLENGE_PARAM* CChallengeDataManager::getChallengeByIndex(int index) const
 {
-    if (m_CallengeList.size() <= index) {
+    if (m_CallengeDataList.size() <= index) {
         CCLOG("Wrong index : %d", index);
         CCASSERT(false, "Wrong index");
         return nullptr;
     }
-    return m_CallengeList.at(index);
+    return m_CallengeDataList.at(index);
 }
 
-const sCHALLENGE_PARAM* CChallengeDataManager::getRandomChallenge(bool oneTime)
+const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge(bool oneTime)
 {
     if(oneTime){
-        return getRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
+		return getNewRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
             return !data->_oneTime;
-        }, m_CallengeList);
+        }, m_CallengeDataList);
     }
     else
     {
-        return getRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
+		return getNewRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
             return data->_oneTime;
-        }, m_CallengeList);
+        }, m_CallengeDataList);
     }
 }
 
-const sCHALLENGE_PARAM* CChallengeDataManager::getRandomChallengeByLevel(int level, bool below)
+const sCHALLENGE_PARAM* CChallengeDataManager::getMewRandomChallengeByLevel(int level, bool below)
 {
     if(below){
-        return getRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
+		return getNewRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
             return data->_level > level;
-        }, m_CallengeList);
+        }, m_CallengeDataList);
     }
     else
     {
-        return getRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
+		return getNewRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
             return data->_level != level;
-        }, m_CallengeList);
+        }, m_CallengeDataList);
     }
 }
 
-const sCHALLENGE_PARAM* CChallengeDataManager::getRandomChallengeFromList(const CHALLENGE_PICK& callFunc,
+const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(const CHALLENGE_PICK& callFunc,
                                                                           CHALLENGE_LIST &list)
 {
     const sCHALLENGE_PARAM* picked;
@@ -143,4 +170,22 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getRandomChallengeFromList(const 
           picked->_level);
     
     return picked;
+}
+
+void CChallengeDataManager::addMaterialToCurrentState(std::string key, int value)
+{
+	m_CurrentState.emplace(std::pair<std::string, int>(key, value));
+}
+
+bool CChallengeDataManager::checkCurrentChallengeComplete(int index)
+{
+	auto challengeData = this->getChallengeByIndex(index);
+	for (auto mtrl : challengeData->_materialList)
+	{
+		auto state = m_CurrentState.find(mtrl.first);
+
+		if (state == std::end(m_CurrentState))	return false;
+		if (state->second < mtrl.second)		return false;
+	}
+	return true;
 }

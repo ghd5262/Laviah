@@ -427,14 +427,32 @@ void CUserDataManager::setUserData_ItemGet(std::string key, unsigned itemIdx)
         return;
     }
     
-    if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
-        auto list = m_UserData->_userDataListMap.find(key)->second;
+	auto itemList = m_UserData->_userDataListMap.find(key);
+	if (itemList != m_UserData->_userDataListMap.end()){
+		auto list = itemList->second;
 
         list->push_back(itemIdx);
         
         std::sort(list->begin(), list->end(), compare);
     }
     convertUserDataToJson();
+}
+
+void CUserDataManager::setUserData_ItemRemove(std::string key, unsigned itemIdx)
+{
+	if (!getUserData_IsItemHave(key, itemIdx))
+	{
+		CCLOG("Item remove : Do not have %s", key.c_str());
+		return;
+	}
+
+	auto itemList = m_UserData->_userDataListMap.find(key);
+	if (itemList != m_UserData->_userDataListMap.end()){
+		auto list = itemList->second;
+		list->erase(std::remove(std::begin(*list), std::end(*list), itemIdx), std::end(*list));
+		std::sort(list->begin(), list->end(), compare);
+	}
+	convertUserDataToJson();
 }
 
 bool CUserDataManager::CoinUpdate(int value)
