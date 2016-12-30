@@ -4,8 +4,31 @@
 #include <vector>
 #include <algorithm>
 
+typedef std::vector<std::string> KEY_LIST;
 typedef std::map<std::string, int> MATERIAL_LIST;
 typedef std::map<std::string, int> REWARD_LIST;
+
+namespace CHALLENGE_DATA_KEY {
+    const std::string COIN_SCORE          = "COIN_SCORE";
+    const std::string STAR_SCORE          = "STAR_SCORE";
+    const std::string RUN_SCORE           = "RUN_SCORE";
+    
+    const std::string BEST_SCORE          = "BEST_SCORE";
+    const std::string BEST_COMBO          = "BEST_COMBO";
+    
+    const std::string CHARACTER_COLLECT   = "CHARACTER_COLLECT";
+    const std::string ROCKET_COLLECT      = "ROCKET_COLLECT";
+    
+    const std::string CHARACTER_COUNT     = "CHARACTER_COUNT";
+    const std::string ROCKET_COUNT        = "ROCKET_COUNT";
+    
+    const std::string USER_LEVEL          = "USER_LEVEL";
+    const std::string WORKSHOP_LEVEL      = "WORKSHOP_LEVEL";
+    
+    const std::string COMBO               = "COMBO";
+    const std::string COIN                = "COIN";
+    const std::string ITEM_USE            = "ITEM_USE";
+};
 
 struct sCHALLENGE_PARAM
 {
@@ -62,6 +85,7 @@ public:
     
 private:
     void initWithJson(CHALLENGE_LIST &list, std::string fileName);
+    void initKeyListWithJson(std::string fileName);
 	void addMaterialToCurrentState(std::string key, int value);
 	bool checkCurrentChallengeComplete(int index);
 	void completeAllCurrentChallenges();
@@ -72,5 +96,7 @@ private:
 private:
     CHALLENGE_LIST m_CallengeDataList;
 	MATERIAL_LIST m_CurrentState;
+    KEY_LIST m_MaterialKeyList;
+    KEY_LIST m_RewardKeyList;
 };
 

@@ -4,12 +4,13 @@
 
 using namespace cocos2d;
 
-const static std::string FILE_NAME = "challengeKeyList.json";
-const static std::string FILE_NAME = "challengeList.json";
+const static std::string KEY_FILE_NAME = "challengeKeyList.json";
+const static std::string DATA_FILE_NAME = "challengeList.json";
 
 CChallengeDataManager::CChallengeDataManager()
 {
-    initWithJson(m_CallengeDataList, FILE_NAME);
+    initKeyListWithJson(KEY_FILE_NAME);
+    initWithJson(m_CallengeDataList, DATA_FILE_NAME);
 }
 
 CChallengeDataManager::~CChallengeDataManager()
@@ -30,6 +31,39 @@ CChallengeDataManager* CChallengeDataManager::Instance()
 {
     static CChallengeDataManager instance;
     return &instance;
+}
+
+void CChallengeDataManager::initKeyListWithJson(std::string fileName)
+{
+    Json::Value root;
+    Json::Reader reader;
+    
+    std::string file = FileUtils::getInstance()->fullPathForFilename(fileName);
+    std::string fileData = FileUtils::getInstance()->getStringFromFile(file);
+    size_t pos = fileData.rfind("}");
+    fileData = fileData.substr(0, pos + 1);
+    
+    bool parsingSuccessful = reader.parse(fileData, root);
+    if (!parsingSuccessful)
+    {
+        CCASSERT(false, MakeString("parser failed : \n %s", fileData.c_str()).c_str());
+        return;
+    }
+    CCLOG("Challenge List JSON : \n %s\n", fileData.c_str());
+    
+    
+    const Json::Value challengeMaterialArray = root["challengeMaterialList"];
+    const Json::Value challengeRewardArray = root["challengeRewardList"];
+    
+    auto initList = [=](KEY_LIST &list, const Json::Value array){
+        for(auto key : array)
+        {
+            list.emplace_back(key.asString());
+        }
+    };
+    
+    initList(m_MaterialKeyList, challengeMaterialArray);
+    initList(m_RewardKeyList, challengeRewardArray);
 }
 
 void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileName)
@@ -53,14 +87,15 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
     
     const Json::Value challengeArray = root["challenges"];
 	typedef std::pair<std::string, int> STD_PAIR;
-
-	auto initMaterial = [=](sCHALLENGE_PARAM& data, std::string key, const Json::Value value){
-		data._materialList.emplace(STD_PAIR(key, value[key].asInt()));
-	};
-
-	auto initReward = [=](sCHALLENGE_PARAM& data, std::string key, const Json::Value value){
-		data._rewardList.emplace(STD_PAIR(key, value[key].asInt()));
-	};
+    
+    auto initList = [=](MATERIAL_LIST& list, KEY_LIST &keyList, const Json::Value array){
+        for(auto key : keyList)
+        {
+            if(!array[key].asInt()) continue;
+            
+            list.emplace(STD_PAIR(key, array[key].asInt()));
+        }
+    };
 
     for (unsigned int count = 0; count < challengeArray.size(); ++count)
     {
@@ -72,18 +107,11 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
         challengeInfo._level        = challenge["level"].asInt();
         challengeInfo._oneTime      = challenge["oneTime"].asBool();
         challengeInfo._contents     = challenge["contents"].asString();
-        const Json::Value materialList  = challenge["material"];
-        const Json::Value rewardList    = challenge["reward"];
+        const Json::Value materialArray  = challenge["material"];
+        const Json::Value rewardArray    = challenge["reward"];
         
-		initMaterial(challengeInfo, "coinScore", materialList);
-		initMaterial(challengeInfo, "starScore", materialList);
-		initMaterial(challengeInfo, "runScore", materialList);
-		initMaterial(challengeInfo, "bestScore", materialList);
-		initMaterial(challengeInfo, "bestCombo", materialList);
-		initMaterial(challengeInfo, "combo", materialList);
-		initMaterial(challengeInfo, "characterCount", materialList);
-
-		initReward(challengeInfo, "coin", rewardList);
+        initList(challengeInfo._materialList, m_MaterialKeyList, materialArray);
+        initList(challengeInfo._rewardList,   m_RewardKeyList,   rewardArray);
         
         list.emplace_back(new sCHALLENGE_PARAM(challengeInfo));
     }
