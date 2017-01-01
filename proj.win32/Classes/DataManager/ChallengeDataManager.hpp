@@ -4,9 +4,13 @@
 #include <vector>
 #include <algorithm>
 
+class CChallengeClearChecker;
+
 typedef std::vector<std::string> KEY_LIST;
 typedef std::map<std::string, int> MATERIAL_LIST;
 typedef std::map<std::string, int> REWARD_LIST;
+typedef std::shared_ptr<CChallengeClearChecker> CHECKER;
+typedef std::vector<CHECKER> CHECKER_LIST;
 
 namespace CHALLENGE_DATA_KEY {
     const std::string COIN_SCORE          = "COIN_SCORE";
@@ -38,7 +42,8 @@ struct sCHALLENGE_PARAM
     std::string _contents;
 	MATERIAL_LIST _materialList;
 	REWARD_LIST _rewardList;
-    
+	CHECKER_LIST _challengeCheckerList;
+
     sCHALLENGE_PARAM()
     : _index(-1)
     , _level(-1)
@@ -53,6 +58,7 @@ struct sCHALLENGE_PARAM
     {
 		_materialList.insert(std::begin(data._materialList), std::end(data._materialList));
 		_rewardList.insert(std::begin(data._rewardList), std::end(data._rewardList));
+		std::copy(std::begin(data._challengeCheckerList), std::end(data._challengeCheckerList), std::begin(_challengeCheckerList));
 	}
     
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM* data)
@@ -63,6 +69,7 @@ struct sCHALLENGE_PARAM
     {
 		_materialList.insert(std::begin(data->_materialList), std::end(data->_materialList));
 		_rewardList.insert(std::begin(data->_rewardList), std::end(data->_rewardList));
+		std::copy(std::begin(data->_challengeCheckerList), std::end(data->_challengeCheckerList), std::begin(_challengeCheckerList));
 	}
 };
 
@@ -86,6 +93,7 @@ public:
 private:
     void initWithJson(CHALLENGE_LIST &list, std::string fileName);
     void initKeyListWithJson(std::string fileName);
+	void initChallengeClearChecker(MATERIAL_LIST &list);
 	void addMaterialToCurrentState(std::string key, int value);
 	bool checkCurrentChallengeComplete(int index);
 	void completeAllCurrentChallenges();
@@ -100,3 +108,10 @@ private:
     KEY_LIST m_RewardKeyList;
 };
 
+class CChallengeClearChecker{
+public:
+	bool Check();
+
+	CChallengeClearChecker(){};
+	virtual ~CChallengeClearChecker(){};
+};

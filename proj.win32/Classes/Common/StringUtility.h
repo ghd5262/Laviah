@@ -1,9 +1,27 @@
 #pragma once
 
-#include <stdio.h>
-
+#include <iostream>
 #include "cocos2d.h"
 
+template <const char* str, int h>
+struct str2int{
+	static unsigned const value = !str[h] ? 5381 : (str2int<str, h>::value * 33) ^ str[h];
+};
+
+template <>
+struct str2int<0, 0>{
+	static unsigned const value = 0;
+};
+
+//template <unsigned long N>
+//struct binary{
+//	static unsigned const val = binary<N / 10>::val * 2 + N % 10;
+//};
+//
+//template <>
+//struct binary<0>{
+//	static unsigned const val = 0;
+//};
 class StringUtility {
     
 public:

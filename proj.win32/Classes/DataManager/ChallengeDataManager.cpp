@@ -1,6 +1,7 @@
 #include "ChallengeDataManager.hpp"
 #include "UserDataManager.h"
 #include "../json/json.h"
+#include "../Common/StringUtility.h"
 
 using namespace cocos2d;
 
@@ -112,9 +113,43 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
         
         initList(challengeInfo._materialList, m_MaterialKeyList, materialArray);
         initList(challengeInfo._rewardList,   m_RewardKeyList,   rewardArray);
-        
+		initChallengeClearChecker(challengeInfo._materialList);
+
         list.emplace_back(new sCHALLENGE_PARAM(challengeInfo));
     }
+}
+//const std::string COIN_SCORE = "COIN_SCORE";
+//const std::string STAR_SCORE = "STAR_SCORE";
+//const std::string RUN_SCORE = "RUN_SCORE";
+//
+//const std::string BEST_SCORE = "BEST_SCORE";
+//const std::string BEST_COMBO = "BEST_COMBO";
+//
+//const std::string CHARACTER_COLLECT = "CHARACTER_COLLECT";
+//const std::string ROCKET_COLLECT = "ROCKET_COLLECT";
+//
+//const std::string CHARACTER_COUNT = "CHARACTER_COUNT";
+//const std::string ROCKET_COUNT = "ROCKET_COUNT";
+//
+//const std::string USER_LEVEL = "USER_LEVEL";
+//const std::string WORKSHOP_LEVEL = "WORKSHOP_LEVEL";
+//
+//const std::string COMBO = "COMBO";
+//const std::string COIN = "COIN";
+//const std::string ITEM_USE = "ITEM_USE";
+void CChallengeDataManager::initChallengeClearChecker(MATERIAL_LIST &list)
+{
+	for (auto mtrl : list)
+	{
+		switch (str2int<mtrl.first.c_str(), 0>::value)
+		{
+		case str2int<CHALLENGE_DATA_KEY::COIN_SCORE.c_str(), 0>::value:
+		{
+
+		} break;
+
+		}
+	}
 }
 
 void CChallengeDataManager::UpdateCurrentState(std::string key, int value)
@@ -210,10 +245,10 @@ bool CChallengeDataManager::checkCurrentChallengeComplete(int index)
 	auto challengeData = this->getChallengeByIndex(index);
 	for (auto mtrl : challengeData->_materialList)
 	{
-		auto state = m_CurrentState.find(mtrl.first);
+		/*auto state = m_CurrentState.find(mtrl.first);
 
 		if (state == std::end(m_CurrentState))	return false;
-		if (state->second < mtrl.second)		return false;
+		if (state->second < mtrl.second)		return false;*/
 	}
 	return true;
 }
