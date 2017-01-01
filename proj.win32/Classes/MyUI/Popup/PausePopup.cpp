@@ -4,13 +4,10 @@
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
-#include "../CountDown.hpp"
 
-CPausePopup::CPausePopup()
-{}
+CPausePopup::CPausePopup(){}
 
-CPausePopup::~CPausePopup()
-{}
+CPausePopup::~CPausePopup(){}
 
 CPausePopup* CPausePopup::create()
 {
@@ -73,12 +70,6 @@ bool CPausePopup::init()
 	btnPlay->setOpacity(0);
 	auto btnExit = createButton([=](Node* sender){ this->GameExit(sender); }, btnImageName[4], btnPosArray[4])->show(this);
 	btnExit->setOpacity(0);
-	
-	auto noticeLabel = Label::createWithTTF("", FONT::MALGUNBD, 25);
-	noticeLabel->setColor(Color3B::BLACK);
-	noticeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	noticeLabel->setPosition(Vec2(pauseBG->getContentSize().width * 0.5f, pauseBG->getContentSize().height * 0.5f));
-	pauseBG->addChild(noticeLabel);
 
 	auto btnUserCoin = CUserCoinButton::create();
 	if (btnUserCoin != nullptr)
