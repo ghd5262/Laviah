@@ -45,6 +45,12 @@
 		521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6219F0C34300D177D7 /* Default-667h@2x.png */; };
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
+		930304381E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304361E0A1CF80017C149 /* BonusTimeLayer.cpp */; };
+		930304391E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304361E0A1CF80017C149 /* BonusTimeLayer.cpp */; };
+		930304421E1248A20017C149 /* StandBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304401E1248A20017C149 /* StandBullet.cpp */; };
+		930304431E1248A20017C149 /* StandBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304401E1248A20017C149 /* StandBullet.cpp */; };
+		930304471E1390D80017C149 /* ChallengeDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304451E1390D80017C149 /* ChallengeDataManager.cpp */; };
+		930304481E1390D80017C149 /* ChallengeDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304451E1390D80017C149 /* ChallengeDataManager.cpp */; };
 		930C445A1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930C44581DF501BA0011CFA3 /* MenuLayer.cpp */; };
 		930C445B1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930C44581DF501BA0011CFA3 /* MenuLayer.cpp */; };
 		930C445E1DF501D10011CFA3 /* UILayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930C445C1DF501D10011CFA3 /* UILayer.cpp */; };
@@ -231,6 +237,12 @@
 		521A8E6219F0C34300D177D7 /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h@2x.png"; sourceTree = "<group>"; };
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		930304361E0A1CF80017C149 /* BonusTimeLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BonusTimeLayer.cpp; sourceTree = "<group>"; };
+		930304371E0A1CF80017C149 /* BonusTimeLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BonusTimeLayer.hpp; sourceTree = "<group>"; };
+		930304401E1248A20017C149 /* StandBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StandBullet.cpp; sourceTree = "<group>"; };
+		930304411E1248A20017C149 /* StandBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StandBullet.hpp; sourceTree = "<group>"; };
+		930304451E1390D80017C149 /* ChallengeDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengeDataManager.cpp; sourceTree = "<group>"; };
+		930304461E1390D80017C149 /* ChallengeDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChallengeDataManager.hpp; sourceTree = "<group>"; };
 		930C44581DF501BA0011CFA3 /* MenuLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuLayer.cpp; sourceTree = "<group>"; };
 		930C44591DF501BA0011CFA3 /* MenuLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MenuLayer.hpp; sourceTree = "<group>"; };
 		930C445C1DF501D10011CFA3 /* UILayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UILayer.cpp; sourceTree = "<group>"; };
@@ -410,10 +422,11 @@
 		937311B01D5849D500D5EB5C /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		937311B11D5849D500D5EB5C /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		93865F3E1D588C39007ECE5A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
+		938FF6C61E1A373900664426 /* StringUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtility.h; sourceTree = "<group>"; };
+		938FF6CB1E1A82A500664426 /* ChallengeChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeChecker.h; sourceTree = "<group>"; };
 		939694091DC990EF008B2CD2 /* SDKUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKUtil.h; sourceTree = "<group>"; };
 		9396940A1DC9CE17008B2CD2 /* NoticeDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoticeDefine.h; sourceTree = "<group>"; };
 		93E2317C1DDC344600899F4A /* StringUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtility.cpp; sourceTree = "<group>"; };
-		93E2317D1DDC344600899F4A /* StringUtility.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringUtility.hpp; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -661,6 +674,7 @@
 		937310AB1D5849C700D5EB5C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				938FF6C61E1A373900664426 /* StringUtility.h */,
 				937310AC1D5849C700D5EB5C /* AudioManager.cpp */,
 				937310AD1D5849C700D5EB5C /* AudioManager.h */,
 				937310AE1D5849C700D5EB5C /* Defines.h */,
@@ -668,7 +682,6 @@
 				937310B11D5849C700D5EB5C /* HSHUtility.h */,
 				9396940A1DC9CE17008B2CD2 /* NoticeDefine.h */,
 				93E2317C1DDC344600899F4A /* StringUtility.cpp */,
-				93E2317D1DDC344600899F4A /* StringUtility.hpp */,
 				9316AFCD1DFE904900432CA8 /* Global.cpp */,
 				9316AFCE1DFE904900432CA8 /* Global.hpp */,
 			);
@@ -678,6 +691,7 @@
 		937310B21D5849C700D5EB5C /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				938FF6CA1E1A82A500664426 /* ChallengeChecker */,
 				937310B31D5849C700D5EB5C /* BulletDataManager.cpp */,
 				937310B41D5849C700D5EB5C /* BulletDataManager.h */,
 				937310B51D5849C700D5EB5C /* BulletPatternDataManager.cpp */,
@@ -690,6 +704,8 @@
 				937310BE1D5849C700D5EB5C /* WorkshopItemDataManager.h */,
 				9348E4C41D9D62B1007DF5D9 /* GradientDataManager.cpp */,
 				9348E4C51D9D62B1007DF5D9 /* GradientDataManager.h */,
+				930304451E1390D80017C149 /* ChallengeDataManager.cpp */,
+				930304461E1390D80017C149 /* ChallengeDataManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -752,6 +768,8 @@
 				937310D91D5849C700D5EB5C /* StickBullet.h */,
 				937310DA1D5849C700D5EB5C /* TargetMark.cpp */,
 				937310DB1D5849C700D5EB5C /* TargetMark.h */,
+				930304401E1248A20017C149 /* StandBullet.cpp */,
+				930304411E1248A20017C149 /* StandBullet.hpp */,
 			);
 			path = Bullet;
 			sourceTree = "<group>";
@@ -820,6 +838,8 @@
 				930C445D1DF501D10011CFA3 /* UILayer.hpp */,
 				930C44611DF54BD90011CFA3 /* CountDown.cpp */,
 				930C44621DF54BD90011CFA3 /* CountDown.hpp */,
+				930304361E0A1CF80017C149 /* BonusTimeLayer.cpp */,
+				930304371E0A1CF80017C149 /* BonusTimeLayer.hpp */,
 			);
 			path = MyUI;
 			sourceTree = "<group>";
@@ -900,6 +920,14 @@
 				937311581D5849C800D5EB5C /* PoolingManager.h */,
 			);
 			path = Task;
+			sourceTree = "<group>";
+		};
+		938FF6CA1E1A82A500664426 /* ChallengeChecker */ = {
+			isa = PBXGroup;
+			children = (
+				938FF6CB1E1A82A500664426 /* ChallengeChecker.h */,
+			);
+			path = ChallengeChecker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1082,6 +1110,7 @@
 				9373117C1D5849C800D5EB5C /* Player.cpp in Sources */,
 				937311A31D5849C800D5EB5C /* Particles.cpp in Sources */,
 				9373115E1D5849C800D5EB5C /* AppDelegate.cpp in Sources */,
+				930304471E1390D80017C149 /* ChallengeDataManager.cpp in Sources */,
 				937311A41D5849C800D5EB5C /* EmptyScene.cpp in Sources */,
 				937311991D5849C800D5EB5C /* ResultPopup.cpp in Sources */,
 				937311A81D5849C800D5EB5C /* SDKUtil.cpp in Sources */,
@@ -1123,6 +1152,8 @@
 				930C445A1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */,
 				937311901D5849C800D5EB5C /* EarnCoinPopup.cpp in Sources */,
 				937311771D5849C800D5EB5C /* MagnetEffect.cpp in Sources */,
+				930304381E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */,
+				930304421E1248A20017C149 /* StandBullet.cpp in Sources */,
 				937311661D5849C800D5EB5C /* WorkshopItemDataManager.cpp in Sources */,
 				9373118C1D5849C800D5EB5C /* MultipleScore.cpp in Sources */,
 				937311631D5849C800D5EB5C /* CharacterDataManager.cpp in Sources */,
@@ -1147,9 +1178,12 @@
 			files = (
 				9316AFD01DFE904A00432CA8 /* Global.cpp in Sources */,
 				93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */,
+				930304431E1248A20017C149 /* StandBullet.cpp in Sources */,
 				930C44641DF54BD90011CFA3 /* CountDown.cpp in Sources */,
+				930304391E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				930C445B1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */,
+				930304481E1390D80017C149 /* ChallengeDataManager.cpp in Sources */,
 				930C445F1DF501D10011CFA3 /* UILayer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
