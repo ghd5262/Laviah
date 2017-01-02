@@ -102,52 +102,48 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
     {
         const Json::Value challenge = challengeArray[count];
         
-        sCHALLENGE_PARAM challengeInfo;
+        sCHALLENGE_PARAM* challengeInfo = new sCHALLENGE_PARAM();
         
-        challengeInfo._index        = list.size();
-        challengeInfo._level        = challenge["level"].asInt();
-        challengeInfo._oneTime      = challenge["oneTime"].asBool();
-        challengeInfo._contents     = challenge["contents"].asString();
+        challengeInfo->_index        = list.size();
+        challengeInfo->_level        = challenge["level"].asInt();
+        challengeInfo->_oneTime      = challenge["oneTime"].asBool();
+        challengeInfo->_contents     = challenge["contents"].asString();
         const Json::Value materialArray  = challenge["material"];
         const Json::Value rewardArray    = challenge["reward"];
         
-        initList(challengeInfo._materialList, m_MaterialKeyList, materialArray);
-        initList(challengeInfo._rewardList,   m_RewardKeyList,   rewardArray);
-		initChallengeClearChecker(challengeInfo._materialList);
+        initList(challengeInfo->_materialList, m_MaterialKeyList, materialArray);
+        initList(challengeInfo->_rewardList,   m_RewardKeyList,   rewardArray);
+		this->initChallengeClearChecker(challengeInfo);
 
-        list.emplace_back(new sCHALLENGE_PARAM(challengeInfo));
+        list.emplace_back(challengeInfo);
     }
 }
-//const std::string COIN_SCORE = "COIN_SCORE";
-//const std::string STAR_SCORE = "STAR_SCORE";
-//const std::string RUN_SCORE = "RUN_SCORE";
-//
-//const std::string BEST_SCORE = "BEST_SCORE";
-//const std::string BEST_COMBO = "BEST_COMBO";
-//
-//const std::string CHARACTER_COLLECT = "CHARACTER_COLLECT";
-//const std::string ROCKET_COLLECT = "ROCKET_COLLECT";
-//
-//const std::string CHARACTER_COUNT = "CHARACTER_COUNT";
-//const std::string ROCKET_COUNT = "ROCKET_COUNT";
-//
-//const std::string USER_LEVEL = "USER_LEVEL";
-//const std::string WORKSHOP_LEVEL = "WORKSHOP_LEVEL";
-//
-//const std::string COMBO = "COMBO";
-//const std::string COIN = "COIN";
-//const std::string ITEM_USE = "ITEM_USE";
-void CChallengeDataManager::initChallengeClearChecker(MATERIAL_LIST &list)
+
+void CChallengeDataManager::initChallengeClearChecker(sCHALLENGE_PARAM* data)
 {
-	for (auto mtrl : list)
+    auto addChecker = [=](CChallengeClearChecker* checker, int mtrlValue){
+        data->_challengeCheckerList.emplace_back(CHECKER(checker));
+        checker->setMtrlValue(mtrlValue);
+    };
+    
+	for (auto mtrl : data->_materialList)
 	{
-		switch (str2int<mtrl.first.c_str(), 0>::value)
+		switch (str2int(mtrl.first.c_str()))
 		{
-		case str2int<CHALLENGE_DATA_KEY::COIN_SCORE.c_str(), 0>::value:
-		{
-
-		} break;
-
+            case str2int(COIN_SCORE):           addChecker(new coinScoreCheck(),        mtrl.second); break;
+            case str2int(STAR_SCORE):           addChecker(new starScoreCheck(),        mtrl.second); break;
+            case str2int(RUN_SCORE):            addChecker(new runScoreCheck(),         mtrl.second); break;
+            case str2int(BEST_SCORE):           addChecker(new bestScoreCheck(),        mtrl.second); break;
+            case str2int(BEST_COMBO):           addChecker(new bestComboCheck(),        mtrl.second); break;
+            case str2int(CHARACTER_COLLECT):    addChecker(new characterCollectCheck(), mtrl.second); break;
+            case str2int(ROCKET_COLLECT):       addChecker(new rocketCollectCheck(),    mtrl.second); break;
+            case str2int(CHARACTER_COUNT):      addChecker(new characterCountCheck(),   mtrl.second); break;
+            case str2int(ROCKET_COUNT):         addChecker(new rocketCountCheck(),      mtrl.second); break;
+            case str2int(USER_LEVEL):           addChecker(new userLevelCheck(),        mtrl.second); break;
+            case str2int(WORKSHOP_LEVEL):       addChecker(new workshopLevelCheck(),    mtrl.second); break;
+            case str2int(COMBO):                addChecker(new comboCheck(),            mtrl.second); break;
+            case str2int(COIN):                 addChecker(new coinCheck(),             mtrl.second); break;
+            case str2int(ITEM_USE):             addChecker(new itemUseCheck(),          mtrl.second); break;
 		}
 	}
 }
@@ -243,12 +239,13 @@ void CChallengeDataManager::addMaterialToCurrentState(std::string key, int value
 bool CChallengeDataManager::checkCurrentChallengeComplete(int index)
 {
 	auto challengeData = this->getChallengeByIndex(index);
-	for (auto mtrl : challengeData->_materialList)
+    
+    if(challengeData->_challengeCheckerList.size() == 0) return false;
+    
+	for (auto checker : challengeData->_challengeCheckerList)
 	{
-		/*auto state = m_CurrentState.find(mtrl.first);
-
-		if (state == std::end(m_CurrentState))	return false;
-		if (state->second < mtrl.second)		return false;*/
+        if(!checker->Check())
+            return false;
 	}
 	return true;
 }

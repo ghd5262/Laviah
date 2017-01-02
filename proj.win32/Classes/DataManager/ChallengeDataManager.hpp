@@ -1,4 +1,5 @@
 #pragma once
+#include "ChallengeChecker/ChallengeChecker.h"
 #include "../Common/HSHUtility.h"
 #include <map>
 #include <vector>
@@ -13,25 +14,25 @@ typedef std::shared_ptr<CChallengeClearChecker> CHECKER;
 typedef std::vector<CHECKER> CHECKER_LIST;
 
 namespace CHALLENGE_DATA_KEY {
-    const std::string COIN_SCORE          = "COIN_SCORE";
-    const std::string STAR_SCORE          = "STAR_SCORE";
-    const std::string RUN_SCORE           = "RUN_SCORE";
+#define COIN_SCORE           "COIN_SCORE"
+#define STAR_SCORE           "STAR_SCORE"
+#define RUN_SCORE            "RUN_SCORE"
     
-    const std::string BEST_SCORE          = "BEST_SCORE";
-    const std::string BEST_COMBO          = "BEST_COMBO";
+#define BEST_SCORE           "BEST_SCORE"
+#define BEST_COMBO           "BEST_COMBO"
     
-    const std::string CHARACTER_COLLECT   = "CHARACTER_COLLECT";
-    const std::string ROCKET_COLLECT      = "ROCKET_COLLECT";
+#define CHARACTER_COLLECT    "CHARACTER_COLLECT"
+#define ROCKET_COLLECT       "ROCKET_COLLECT"
     
-    const std::string CHARACTER_COUNT     = "CHARACTER_COUNT";
-    const std::string ROCKET_COUNT        = "ROCKET_COUNT";
+#define CHARACTER_COUNT      "CHARACTER_COUNT"
+#define ROCKET_COUNT         "ROCKET_COUNT"
     
-    const std::string USER_LEVEL          = "USER_LEVEL";
-    const std::string WORKSHOP_LEVEL      = "WORKSHOP_LEVEL";
+#define USER_LEVEL           "USER_LEVEL"
+#define WORKSHOP_LEVEL       "WORKSHOP_LEVEL"
     
-    const std::string COMBO               = "COMBO";
-    const std::string COIN                = "COIN";
-    const std::string ITEM_USE            = "ITEM_USE";
+#define COMBO                "COMBO"
+#define COIN                 "COIN"
+#define ITEM_USE             "ITEM_USE"
 };
 
 struct sCHALLENGE_PARAM
@@ -93,7 +94,7 @@ public:
 private:
     void initWithJson(CHALLENGE_LIST &list, std::string fileName);
     void initKeyListWithJson(std::string fileName);
-	void initChallengeClearChecker(MATERIAL_LIST &list);
+	void initChallengeClearChecker(sCHALLENGE_PARAM* data);
 	void addMaterialToCurrentState(std::string key, int value);
 	bool checkCurrentChallengeComplete(int index);
 	void completeAllCurrentChallenges();
@@ -106,12 +107,4 @@ private:
 	MATERIAL_LIST m_CurrentState;
     KEY_LIST m_MaterialKeyList;
     KEY_LIST m_RewardKeyList;
-};
-
-class CChallengeClearChecker{
-public:
-	bool Check();
-
-	CChallengeClearChecker(){};
-	virtual ~CChallengeClearChecker(){};
 };
