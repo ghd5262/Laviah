@@ -6,6 +6,8 @@
 #include "../ItemManager.h"
 #include "../../Scene/GameScene.h"
 #include "../ObjectManager.h"
+#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
 
 using namespace cocos2d;
 
@@ -52,5 +54,15 @@ void CPlayItem::CollisionWithPlayer()
 {
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
-	CItemManager::Instance()->StartItemTimer((eITEM_TYPE)(this->getSymbol() - 'A' + 1));
+    auto type = (eITEM_TYPE)(this->getSymbol() - 'A' + 1);
+	CItemManager::Instance()->StartItemTimer(type);
+    switch (type) {
+        case eITEM_TYPE_coin:       GLOBAL->COIN_ITEM_USE += 1;     break;
+        case eITEM_TYPE_star:       GLOBAL->STAR_ITEM_USE += 1;     break;
+        case eITEM_TYPE_bonustime:  GLOBAL->BONUS_ITEM_USE += 1;    break;
+        case eITEM_TYPE_giant:      GLOBAL->GIANT_ITEM_USE += 1;    break;
+        case eITEM_TYPE_magnet:     GLOBAL->MAGNET_ITEM_USE += 1;   break;
+        case eITEM_TYPE_shield:     GLOBAL->BARRIER_ITEM_USE += 1;  break;
+        default: break;
+    }
 }

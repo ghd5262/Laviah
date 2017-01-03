@@ -1,16 +1,21 @@
 #include "ChallengeDataManager.hpp"
 #include "UserDataManager.h"
+#include "ChallengeChecker/ChallengeClearChecker.h"
+#include "ChallengeRewarder/ChallengeRewarder.hpp"
 #include "../json/json.h"
 #include "../Common/StringUtility.h"
 
 using namespace cocos2d;
+using namespace CHALLENGE_DATA_KEY;
 
-const static std::string KEY_FILE_NAME = "challengeKeyList.json";
 const static std::string DATA_FILE_NAME = "challengeList.json";
 
 CChallengeDataManager::CChallengeDataManager()
+: m_Checker(new CChallengeClearChecker())
+, m_Rewarder(new CChallengeRewarder())
 {
-    initKeyListWithJson(KEY_FILE_NAME);
+    initMaterialKeyList();
+    initRewardKeyList();
     initWithJson(m_CallengeDataList, DATA_FILE_NAME);
 }
 
@@ -26,45 +31,15 @@ CChallengeDataManager::~CChallengeDataManager()
     };
     
     cleanList(m_CallengeDataList);
+    
+    CC_SAFE_DELETE(m_Checker);
+    CC_SAFE_DELETE(m_Rewarder);
 }
 
 CChallengeDataManager* CChallengeDataManager::Instance()
 {
     static CChallengeDataManager instance;
     return &instance;
-}
-
-void CChallengeDataManager::initKeyListWithJson(std::string fileName)
-{
-    Json::Value root;
-    Json::Reader reader;
-    
-    std::string file = FileUtils::getInstance()->fullPathForFilename(fileName);
-    std::string fileData = FileUtils::getInstance()->getStringFromFile(file);
-    size_t pos = fileData.rfind("}");
-    fileData = fileData.substr(0, pos + 1);
-    
-    bool parsingSuccessful = reader.parse(fileData, root);
-    if (!parsingSuccessful)
-    {
-        CCASSERT(false, MakeString("parser failed : \n %s", fileData.c_str()).c_str());
-        return;
-    }
-    CCLOG("Challenge List JSON : \n %s\n", fileData.c_str());
-    
-    
-    const Json::Value challengeMaterialArray = root["challengeMaterialList"];
-    const Json::Value challengeRewardArray = root["challengeRewardList"];
-    
-    auto initList = [=](KEY_LIST &list, const Json::Value array){
-        for(auto key : array)
-        {
-            list.emplace_back(key.asString());
-        }
-    };
-    
-    initList(m_MaterialKeyList, challengeMaterialArray);
-    initList(m_RewardKeyList, challengeRewardArray);
 }
 
 void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileName)
@@ -104,7 +79,7 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
         
         sCHALLENGE_PARAM* challengeInfo = new sCHALLENGE_PARAM();
         
-        challengeInfo->_index        = list.size();
+        challengeInfo->_index        = int(list.size());
         challengeInfo->_level        = challenge["level"].asInt();
         challengeInfo->_oneTime      = challenge["oneTime"].asBool();
         challengeInfo->_contents     = challenge["contents"].asString();
@@ -113,55 +88,25 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
         
         initList(challengeInfo->_materialList, m_MaterialKeyList, materialArray);
         initList(challengeInfo->_rewardList,   m_RewardKeyList,   rewardArray);
-		this->initChallengeClearChecker(challengeInfo);
 
         list.emplace_back(challengeInfo);
     }
 }
 
-void CChallengeDataManager::initChallengeClearChecker(sCHALLENGE_PARAM* data)
+void CChallengeDataManager::Reward(int index)
 {
-    auto addChecker = [=](CChallengeClearChecker* checker, int mtrlValue){
-        data->_challengeCheckerList.emplace_back(CHECKER(checker));
-        checker->setMtrlValue(mtrlValue);
-    };
+    auto challengeData = getChallengeByIndex(index);
     
-	for (auto mtrl : data->_materialList)
-	{
-		switch (str2int(mtrl.first.c_str()))
-		{
-            case str2int(COIN_SCORE):           addChecker(new coinScoreCheck(),        mtrl.second); break;
-            case str2int(STAR_SCORE):           addChecker(new starScoreCheck(),        mtrl.second); break;
-            case str2int(RUN_SCORE):            addChecker(new runScoreCheck(),         mtrl.second); break;
-            case str2int(BEST_SCORE):           addChecker(new bestScoreCheck(),        mtrl.second); break;
-            case str2int(BEST_COMBO):           addChecker(new bestComboCheck(),        mtrl.second); break;
-            case str2int(CHARACTER_COLLECT):    addChecker(new characterCollectCheck(), mtrl.second); break;
-            case str2int(ROCKET_COLLECT):       addChecker(new rocketCollectCheck(),    mtrl.second); break;
-            case str2int(CHARACTER_COUNT):      addChecker(new characterCountCheck(),   mtrl.second); break;
-            case str2int(ROCKET_COUNT):         addChecker(new rocketCountCheck(),      mtrl.second); break;
-            case str2int(USER_LEVEL):           addChecker(new userLevelCheck(),        mtrl.second); break;
-            case str2int(WORKSHOP_LEVEL):       addChecker(new workshopLevelCheck(),    mtrl.second); break;
-            case str2int(COMBO):                addChecker(new comboCheck(),            mtrl.second); break;
-            case str2int(COIN):                 addChecker(new coinCheck(),             mtrl.second); break;
-            case str2int(ITEM_USE):             addChecker(new itemUseCheck(),          mtrl.second); break;
-		}
-	}
-}
-
-void CChallengeDataManager::UpdateCurrentState(std::string key, int value)
-{
-	auto state = m_CurrentState.find(key);
-	if (state == std::end(m_CurrentState))
-		this->addMaterialToCurrentState(key, value);
-
-	state->second += value;
-
-	auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
-
-	for (auto idx : *list){
-		if(this->checkCurrentChallengeComplete(idx))
-			CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_LIST, idx);
-	}
+    for(auto reward : challengeData->_rewardList)
+    {
+        auto key = reward.first;
+        auto rewardValue = reward.second;
+        
+        auto rewarder = m_RewarderList.find(key);
+        if(rewarder == std::end(m_RewarderList)) continue;
+        
+        rewarder->second(rewardValue);
+    }
 }
 
 const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
@@ -231,21 +176,83 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(con
     return picked;
 }
 
-void CChallengeDataManager::addMaterialToCurrentState(std::string key, int value)
-{
-	m_CurrentState.emplace(std::pair<std::string, int>(key, value));
-}
-
 bool CChallengeDataManager::checkCurrentChallengeComplete(int index)
 {
 	auto challengeData = this->getChallengeByIndex(index);
+
+    if(challengeData->_materialList.size() == 0) return false;
+
+    for(auto material : challengeData->_materialList)
+    {
+        auto key = material.first;
+        auto mtrlValue = material.second;
+        
+        auto checker = m_CheckerList.find(key);
+        if(checker == std::end(m_CheckerList)) continue;
+        if(!checker->second(mtrlValue)) return false;
+    }
     
-    if(challengeData->_challengeCheckerList.size() == 0) return false;
-    
-	for (auto checker : challengeData->_challengeCheckerList)
-	{
-        if(!checker->Check())
-            return false;
-	}
 	return true;
+}
+
+void CChallengeDataManager::initMaterialKeyList()
+{
+    auto initChecker = [=](std::string key, const CHECKER& func){
+        m_MaterialKeyList.emplace_back(key);
+        m_CheckerList.emplace(std::pair<std::string, CHECKER>(key, func));
+    };
+    
+    initChecker(COIN_SCORE,        CC_CALLBACK_1(CChallengeClearChecker::coinScoreCheck        , m_Checker));
+    initChecker(STAR_SCORE,        CC_CALLBACK_1(CChallengeClearChecker::starScoreCheck        , m_Checker));
+    initChecker(RUN_SCORE,         CC_CALLBACK_1(CChallengeClearChecker::runScoreCheck         , m_Checker));
+    initChecker(BEST_SCORE,        CC_CALLBACK_1(CChallengeClearChecker::bestScoreCheck        , m_Checker));
+    initChecker(BEST_COMBO,        CC_CALLBACK_1(CChallengeClearChecker::bestComboCheck        , m_Checker));
+    
+    initChecker(CHARACTER_COLLECT, CC_CALLBACK_1(CChallengeClearChecker::characterCollectCheck , m_Checker));
+    initChecker(ROCKET_COLLECT,    CC_CALLBACK_1(CChallengeClearChecker::rocketCollectCheck    , m_Checker));
+    
+    initChecker(CHARACTER_COUNT,   CC_CALLBACK_1(CChallengeClearChecker::characterCountCheck   , m_Checker));
+    initChecker(ROCKET_COUNT,      CC_CALLBACK_1(CChallengeClearChecker::rocketCountCheck      , m_Checker));
+    
+    initChecker(USER_LEVEL,        CC_CALLBACK_1(CChallengeClearChecker::userLevelCheck        , m_Checker));
+    initChecker(COIN_ITEM_LEVEL,   CC_CALLBACK_1(CChallengeClearChecker::coinItemLevelCheck    , m_Checker));
+    initChecker(STAR_ITEM_LEVEL,   CC_CALLBACK_1(CChallengeClearChecker::starItemLevelCheck    , m_Checker));
+    initChecker(BONUS_ITEM_LEVEL,  CC_CALLBACK_1(CChallengeClearChecker::bonusItemLevelCheck   , m_Checker));
+    initChecker(GIANT_ITEM_LEVEL,  CC_CALLBACK_1(CChallengeClearChecker::giantItemLevelCheck   , m_Checker));
+    initChecker(MAGNET_ITEM_LEVEL, CC_CALLBACK_1(CChallengeClearChecker::magnetItemLevelCheck  , m_Checker));
+    initChecker(MAGNET_SIZE_LEVEL, CC_CALLBACK_1(CChallengeClearChecker::magnetSizeLevelCheck  , m_Checker));
+    
+    initChecker(GIANT_SCORE_TOTAL,   CC_CALLBACK_1(CChallengeClearChecker::giantScoreTotal     , m_Checker));
+    initChecker(GIANT_SCORE_BULLET,  CC_CALLBACK_1(CChallengeClearChecker::giantScoreBullet    , m_Checker));
+    initChecker(GIANT_SCORE_MISSILE, CC_CALLBACK_1(CChallengeClearChecker::giantScoreMissile   , m_Checker));
+    initChecker(GIANT_SCORE_STICK,   CC_CALLBACK_1(CChallengeClearChecker::giantScoreStick     , m_Checker));
+    initChecker(MAGNET_SCORE,        CC_CALLBACK_1(CChallengeClearChecker::magnetScore         , m_Checker));
+    initChecker(BARRIER_SCORE,       CC_CALLBACK_1(CChallengeClearChecker::barrierScore        , m_Checker));
+    
+    initChecker(GIANT_COUNT_TOTAL,   CC_CALLBACK_1(CChallengeClearChecker::giantCountTotal     , m_Checker));
+    initChecker(GIANT_COUNT_BULLET,  CC_CALLBACK_1(CChallengeClearChecker::giantCountBullet    , m_Checker));
+    initChecker(GIANT_COUNT_MISSILE, CC_CALLBACK_1(CChallengeClearChecker::giantCountMissile   , m_Checker));
+    initChecker(GIANT_COUNT_STICK,   CC_CALLBACK_1(CChallengeClearChecker::giantCountStick     , m_Checker));
+    initChecker(MAGNET_COUNT,        CC_CALLBACK_1(CChallengeClearChecker::magnetCount         , m_Checker));
+    initChecker(BARRIER_COUNT,       CC_CALLBACK_1(CChallengeClearChecker::barrierCount        , m_Checker));
+    
+    initChecker(COIN_ITEM_USE,       CC_CALLBACK_1(CChallengeClearChecker::coinItemUse         , m_Checker));
+    initChecker(STAR_ITEM_USE,       CC_CALLBACK_1(CChallengeClearChecker::starItemUse         , m_Checker));
+    initChecker(BONUS_ITEM_USE,      CC_CALLBACK_1(CChallengeClearChecker::bonusItemUse        , m_Checker));
+    initChecker(GIANT_ITEM_USE,      CC_CALLBACK_1(CChallengeClearChecker::giantItemUse        , m_Checker));
+    initChecker(MAGNET_ITEM_USE,     CC_CALLBACK_1(CChallengeClearChecker::magnetItemUse       , m_Checker));
+    initChecker(BARRIER_ITEM_USE,    CC_CALLBACK_1(CChallengeClearChecker::barrierItemUse      , m_Checker));
+    
+    initChecker(COMBO,               CC_CALLBACK_1(CChallengeClearChecker::comboCheck          , m_Checker));
+    initChecker(COIN,                CC_CALLBACK_1(CChallengeClearChecker::coinCheck           , m_Checker));
+}
+
+void CChallengeDataManager::initRewardKeyList()
+{
+    auto initRewarder = [=](std::string key, const REWARDER& func){
+        m_RewardKeyList.emplace_back(key);
+        m_RewarderList.emplace(std::pair<std::string, REWARDER>(key, func));
+    };
+    
+    initRewarder(REWARD_COIN,        CC_CALLBACK_1(CChallengeRewarder::coinReward, m_Rewarder));
 }

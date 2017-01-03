@@ -183,7 +183,7 @@ void CPlayer::Rotation(float speed)
 	m_Particle->setGravity(Vec2(-90 * (speed < 0 ? -1 : 1), 0));
 	this->setRotation(m_Angle);
 
-    GLOBAL->RUNSCORE += 1;
+    GLOBAL->RUN_SCORE += 1;
 }
 
 void CPlayer::GiantMode()

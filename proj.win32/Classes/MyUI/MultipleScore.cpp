@@ -94,7 +94,7 @@ void CMultipleScore::calculateScore()
 		GLOBAL->COMBO = m_MultipleNumber;
 
 	// 점수 반영
-    GLOBAL->STARSCORE += calculatedScore;
+    GLOBAL->STAR_SCORE += calculatedScore;
 }
 
 void CMultipleScore::multipleScoreReset()

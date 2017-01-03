@@ -5,6 +5,8 @@
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/Bullet/Bullet.h"
 #include "../../GameObject/ItemBarrier.h"
+#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
 
 CBulletNormal* CBulletNormal::Instance()
 {
@@ -105,6 +107,9 @@ CBulletMagnetItem* CBulletMagnetItem::Instance()
 void CBulletMagnetItem::Enter(CBullet* bullet)
 {
 	bullet->setTargetVec(bullet->getPlanet()->getPosition());
+
+    GLOBAL->MAGNET_COUNT += 1;
+    GLOBAL->MAGNET_SCORE += 30;
 }
 
 void CBulletMagnetItem::Execute(CBullet* bullet, float delta)

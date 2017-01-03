@@ -8,6 +8,8 @@
 #include "../../AI/States/BulletStates.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/MultipleScore.h"
+#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
 
 using namespace cocos2d;
 
@@ -366,6 +368,9 @@ void CBullet::Flee(float delta)
 
 void CBullet::createScoreCurrentPos(int score)
 {
+    GLOBAL->BARRIER_COUNT += 1;
+    GLOBAL->BARRIER_SCORE += score;
+
     auto scoreBullet = CScoreBullet::create(score);
     scoreBullet->setPosition(getPosition());
     scoreBullet->setAnchorPoint(Vec2::ZERO);

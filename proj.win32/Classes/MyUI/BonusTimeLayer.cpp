@@ -90,9 +90,9 @@ void CBonusTimeLayer::update(float delta)
     else if(!CObjectManager::Instance()->getIsGamePause() && m_Pause)
         this->play();
     
-    m_StarScoreUI->setValue(GLOBAL->STARSCORE);
-    m_CoinScoreUI->setValue(GLOBAL->COINSCORE);
-    m_RunScoreUI->setValue(GLOBAL->RUNSCORE);
+    m_StarScoreUI->setValue(GLOBAL->STAR_SCORE);
+    m_CoinScoreUI->setValue(GLOBAL->COIN_SCORE);
+    m_RunScoreUI->setValue(GLOBAL->RUN_SCORE);
 }
 
 void CBonusTimeLayer::onPauseButton(cocos2d::Node* sender)

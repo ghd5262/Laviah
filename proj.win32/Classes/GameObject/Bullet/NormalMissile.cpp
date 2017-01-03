@@ -13,6 +13,8 @@
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/MultipleScore.h"
 #include "../../DataManager/UserDataManager.h"
+#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
 
 using namespace cocos2d;
 
@@ -89,6 +91,8 @@ void CNormalMissile::CollisionWithPlayer()
     //		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_0.mp3", false);
     
 	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
+        GLOBAL->GIANT_COUNT_MISSILE += 1;
+        GLOBAL->GIANT_SCORE_MISSILE += 50;
 		createScoreCurrentPos(50);
 		R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
 	}
@@ -103,6 +107,9 @@ void CNormalMissile::CollisionWithPlayer()
 
 void CNormalMissile::CollisionWithBarrier()
 {
+    GLOBAL->BARRIER_COUNT += 1;
+    GLOBAL->BARRIER_SCORE += 50;
+    createScoreCurrentPos(50);
     this->createParticle_Explosion();
 	this->ReturnToMemoryBlock();
 }

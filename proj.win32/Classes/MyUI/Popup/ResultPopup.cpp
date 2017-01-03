@@ -136,8 +136,8 @@ bool CResultPopup::init()
     
 
     auto createNormalLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize){
-		if (GLOBAL->TOTALSCORE + score < INT_MAX )
-		  GLOBAL->TOTALSCORE += score;
+		if (GLOBAL->TOTAL_SCORE + score < INT_MAX )
+		  GLOBAL->TOTAL_SCORE += score;
 
 		auto layerBG = createLayerBG(layerPos);
         createIcon(layerBG, Vec2(layerBG->getContentSize().width * 0.1f,
@@ -151,8 +151,8 @@ bool CResultPopup::init()
 	};
 
 	auto createMultipleLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize, int multiple){
-		if (GLOBAL->TOTALSCORE + (score * multiple) < INT_MAX)
-			GLOBAL->TOTALSCORE += score * multiple;
+		if (GLOBAL->TOTAL_SCORE + (score * multiple) < INT_MAX)
+			GLOBAL->TOTAL_SCORE += score * multiple;
 
         auto layerBG = createLayerBG(layerPos);
         createIcon(layerBG, Vec2(layerBG->getContentSize().width * 0.1f,
@@ -180,12 +180,12 @@ bool CResultPopup::init()
         return button;
     };
     
-	auto starScoreBG	= createNormalLayer(resultIcon[0], resultContent[0], GLOBAL->STARSCORE, startPos[0], 50);
-	auto moveDistanceBG = createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->RUNSCORE, startPos[1], 50);
-	auto coinScoreBG    = createNormalLayer(resultIcon[2], resultContent[2], GLOBAL->COINSCORE, startPos[2], 50);
+	auto starScoreBG	= createNormalLayer(resultIcon[0], resultContent[0], GLOBAL->STAR_SCORE, startPos[0], 50);
+	auto moveDistanceBG = createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->RUN_SCORE, startPos[1], 50);
+	auto coinScoreBG    = createNormalLayer(resultIcon[2], resultContent[2], GLOBAL->COIN_SCORE, startPos[2], 50);
 	auto comboBG		= createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->COMBO, startPos[3], 50, 100);
 	auto bonusTimeBG	= createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->BONUSTIME, startPos[4], 50, 10000);
-	auto challengeBG	= createMultipleLayer(resultIcon[5], resultContent[5], GLOBAL->CHALLENGECLEAR, startPos[5], 50, 10000);
+	auto challengeBG	= createMultipleLayer(resultIcon[5], resultContent[5], GLOBAL->CHALLENGE_CLEAR_COUNT, startPos[5], 50, 10000);
     
     auto totalScoreBG = createLayerBG(startPos[6]);
     totalScoreBG->setTexture("resultPopup_1.png");
@@ -201,10 +201,10 @@ bool CResultPopup::init()
 	}
 
     // total score가 best score면 저장한다.
-    if (GLOBAL->TOTALSCORE > bestScore){
+    if (GLOBAL->TOTAL_SCORE > bestScore){
         totalContent = "Best Score";
-        bestScore = GLOBAL->TOTALSCORE;
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, GLOBAL->TOTALSCORE);
+        bestScore = GLOBAL->TOTAL_SCORE;
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, GLOBAL->TOTAL_SCORE);
     }
     auto totalLabel = createContent(totalScoreBG,
                                     Vec2(totalScoreBG->getContentSize().width * 0.08f,
@@ -216,13 +216,13 @@ bool CResultPopup::init()
     auto totalScoreLabel = createScoreLabel(totalScoreBG,
                                             Vec2(totalScoreBG->getContentSize().width * 0.9f,
                                                  totalScoreBG->getContentSize().height * 0.5f),
-                                            GLOBAL->TOTALSCORE,
+                                            GLOBAL->TOTAL_SCORE,
                                             60);
     totalScoreLabel->setColor(COLOR::BRIGHTGRAY);
     
     
     auto bestScoreBG = createNormalLayer(resultIcon[7], resultContent[7], bestScore,  startPos[7], 50);
-    CUserDataManager::Instance()->CoinUpdate(GLOBAL->COINSCORE);
+    CUserDataManager::Instance()->CoinUpdate(GLOBAL->COIN_SCORE);
     
     GLOBAL->Clear();
     

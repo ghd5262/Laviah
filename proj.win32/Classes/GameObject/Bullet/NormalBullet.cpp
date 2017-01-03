@@ -11,6 +11,8 @@
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/MultipleScore.h"
+#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
 
 using namespace cocos2d;
 
@@ -55,6 +57,8 @@ void CNormalBullet::CollisionWithPlanet()
 void CNormalBullet::CollisionWithPlayer()
 {
 	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
+        GLOBAL->GIANT_COUNT_BULLET += 1;
+        GLOBAL->GIANT_SCORE_BULLET += 30;
 		createScoreCurrentPos(30);
 		this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	}
@@ -68,6 +72,8 @@ void CNormalBullet::CollisionWithPlayer()
 
 void CNormalBullet::CollisionWithBarrier()
 {
+    GLOBAL->BARRIER_COUNT += 1;
+    GLOBAL->BARRIER_SCORE += 30;
 	this->createScoreCurrentPos(30);
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 }

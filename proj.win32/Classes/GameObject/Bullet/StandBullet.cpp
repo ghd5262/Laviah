@@ -10,6 +10,8 @@
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/MultipleScore.h"
 #include "../BulletCreator.h"
+#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
 
 namespace STANDBULLET{
     const static float STAY_LIMIT_TIME = 1.f;
@@ -114,6 +116,8 @@ void CStandBullet::CollisionWithPlanet()
 void CStandBullet::CollisionWithPlayer()
 {
     if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
+        GLOBAL->GIANT_COUNT_STICK += 1;
+        GLOBAL->GIANT_SCORE_STICK += 30;
         this->createScoreCurrentPos(30);
         this->R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
     }
@@ -126,6 +130,8 @@ void CStandBullet::CollisionWithPlayer()
 
 void CStandBullet::CollisionWithBarrier()
 {
+    GLOBAL->BARRIER_COUNT += 1;
+    GLOBAL->BARRIER_SCORE += 30;
     this->createScoreCurrentPos(30);
     this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 }
