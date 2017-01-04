@@ -1,9 +1,11 @@
 #include "PausePopup.h"
+#include "ChallengePopup.h"
 #include "../MyButton.h"
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
+#include <array>
 
 CPausePopup::CPausePopup(){}
 
@@ -47,12 +49,18 @@ bool CPausePopup::init()
 		"exitButton.png"
 	};
 
-	Vec2 btnPosArray[] = {
+	std::array<Vec2, 5> btnStartPosArray = {
 		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.85f),
 		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.7f),
 		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.55f),
 		Vec2(this->getContentSize().width * 0.92f, this->getContentSize().height * 0.05f),
 		Vec2(this->getContentSize().width * 0.08f, this->getContentSize().height * 0.05f)
+	};
+
+	std::array<Vec2, 3> btnOriginPosArray = {
+		Vec2(pauseBG->getContentSize().width * 0.15f, pauseBG->getContentSize().height * 0.85f),
+		Vec2(pauseBG->getContentSize().width * 0.15f, pauseBG->getContentSize().height * 0.7f),
+		Vec2(pauseBG->getContentSize().width * 0.15f, pauseBG->getContentSize().height * 0.55f)
 	};
 
 	auto createButton = [=](const std::function<void(Node*)> &callback, std::string imageName, Vec2 pos)->CMyButton*{
@@ -63,12 +71,12 @@ bool CPausePopup::init()
 			->setButtonPosition(pos);
 	};
 	
-	auto btnHome = createButton([=](Node* sender){ this->GoHome(sender); }, btnImageName[0], btnPosArray[0])->show(pauseBG);
-	auto btnReset = createButton([=](Node* sender){ this->Reset(sender); }, btnImageName[1], btnPosArray[1])->show(pauseBG);
-//	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[2], btnPosArray[2])->show(pauseBG);
-	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[3], btnPosArray[3])->show(this);
+	auto btnHome = createButton([=](Node* sender){ this->GoHome(sender); }, btnImageName[0], btnStartPosArray[0])->show(pauseBG);
+	auto btnReset = createButton([=](Node* sender){ this->Reset(sender); }, btnImageName[1], btnStartPosArray[1])->show(pauseBG);
+//	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[2], btnStartPosArray[2])->show(pauseBG);
+	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[3], btnStartPosArray[3])->show(this);
 	btnPlay->setOpacity(0);
-	auto btnExit = createButton([=](Node* sender){ this->GameExit(sender); }, btnImageName[4], btnPosArray[4])->show(this);
+	auto btnExit = createButton([=](Node* sender){ this->GameExit(sender); }, btnImageName[4], btnStartPosArray[4])->show(this);
 	btnExit->setOpacity(0);
 
 	auto btnUserCoin = CUserCoinButton::create();
@@ -81,22 +89,25 @@ bool CPausePopup::init()
 		this->addChild(btnUserCoin);
 	}
 
+	auto challengePopup = CChallengePopup::create()
+		->setBackgroundVisible(false)
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(this->getContentSize() / 2)
+		->show(this);
+
 	this->setOpenAnimation([=](Node* sender){
-		this->scheduleOnce([=](float delta){
 
-			auto action = [=](Node* sender, float height){
-				sender->runAction(
-					EaseExponentialOut::create(
-					MoveTo::create(1.0f,
-					Vec2(pauseBG->getContentSize().width * 0.15f,
-					pauseBG->getContentSize().height * height))));
-			};
+		auto action = [=](Node* sender, Vec2 pos){
+			auto delayAction = DelayTime::create(0.1f);
+			auto moveAction = MoveTo::create(1.f, pos);
+			auto exponentialAction = EaseExponentialOut::create(moveAction);
+			auto sequence = Sequence::createWithTwoActions(delayAction, exponentialAction);
+			sender->runAction(sequence);
+		};
 
-			action(btnHome, 0.85f);
-			action(btnReset, 0.7f);
-//			action(btnPlay, 0.55f);
-
-		}, 0.1f, "PausePopupOpen");
+		action(btnHome, btnOriginPosArray[0]);
+		action(btnReset, btnOriginPosArray[1]);
+		//			action(btnPlay, 0.55f);
 
 		pauseBG->runAction(EaseExponentialOut::create(MoveTo::create(0.5f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.86f))));
 		btnExit->runAction(FadeIn::create(0.5f));
@@ -106,16 +117,16 @@ bool CPausePopup::init()
 
 	this->setCloseAnimation([=](Node* sender){
 
-		auto action = [=](Node* sender, float height){
-			sender->runAction(
-				EaseSineIn::create(
-				MoveTo::create(0.4f, 
-				Vec2(pauseBG->getContentSize().width * -1.1f,
-				pauseBG->getContentSize().height * height))));
+		challengePopup->popupClose();
+
+		auto action = [=](Node* sender, Vec2 pos){
+			auto moveAction = MoveTo::create(0.4f, pos);
+			auto easeAction = EaseSineIn::create(moveAction);
+			sender->runAction(easeAction);
 		};
 
-		action(btnHome, 0.85f);
-		action(btnReset, 0.7f);
+		action(btnHome, btnStartPosArray[0]);
+		action(btnReset, btnStartPosArray[1]);
 //		action(btnPlay, 0.55f);
 
 		this->scheduleOnce([=](float delta){

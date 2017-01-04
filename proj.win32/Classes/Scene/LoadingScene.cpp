@@ -120,7 +120,7 @@ void CLoadingScene::callbackDownloadFail(Ref* object)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(this->getContentSize() / 2)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-    ->show(this);
+    ->show(this, ZORDER::POPUP);
 }
 
 void CLoadingScene::callbackDownloadComplete(Ref* object)
@@ -171,7 +171,7 @@ void CLoadingScene::createNetworkConnectPopup()
 	->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 	->setPopupPosition(this->getContentSize() / 2)
 	->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-    ->show(this);
+	->show(this, ZORDER::POPUP);
 }
 
 void CLoadingScene::update(float delta)

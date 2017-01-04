@@ -2,6 +2,7 @@
 #include "../MyButton.h"
 #include "../Popup.h"
 #include "../../Scene/GameScene.h"
+#include "../../DataManager/UserDataManager.h"
 
 USING_NS_CC;
 
@@ -24,55 +25,71 @@ CChallengePopupDP* CChallengePopupDP::create(const sCHALLENGE_PARAM challenge)
 bool CChallengePopupDP::init()
 {
     if (!CPopup::init()) return false;
-    
+
     auto bg = Sprite::create("resultPopup_2.png");
     this->setContentSize(bg->getContentSize());
     bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     bg->setPosition(Vec2(this->getContentSize() / 2));
-    bg->setOpacity(0);
-    bg->setCascadeOpacityEnabled(true);
+	bg->setOpacity(0);
+	bg->setCascadeOpacityEnabled(true);
     this->addChild(bg);
     
-    auto label = Label::createWithTTF(m_Challenge._contents, FONT::MALGUNBD, 50);
-    label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-    label->setPosition(Vec2(bg->getContentSize().width * 0.05f, bg->getContentSize().height * 0.5f));
+
+
+    auto label = Label::createWithTTF(m_Challenge._contents, FONT::MALGUNBD, 45);
+	label->setColor(COLOR::DARKGRAY);
+    label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    label->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f));
     bg->addChild(label);
     
-    CMyButton::create()
-    ->addEventListener([=](Node* sender){
-        if(m_SkipCallback){
-            this->retain();
-            m_SkipCallback(this);
-            this->release();
-        }
-    })
-    ->setButtonNormalImage("resetIcon.png")
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setButtonPosition(Vec2(label->getContentSize().width + 10.f, bg->getContentSize().height * 0.5f))
-    ->show(bg);
+    //CMyButton::create()
+    //->addEventListener([=](Node* sender){
+    //    if(m_SkipCallback){
+    //        this->retain();
+    //        m_SkipCallback(this);
+    //        this->release();
+    //    }
+    //})
+    //->setButtonNormalImage("resetIcon.png")
+    //->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT)
+    //->setButtonPosition(Vec2(label->getContentSize().width + 100.f, bg->getContentSize().height * 0.5f))
+    //->show(bg);
     
+	auto delayTime = CUserDataManager::getUserDataSequenceFromList(USERDATA_KEY::CHALLENGE_CUR_LIST, m_Challenge._index) * 0.5f;
     this->setOpenAnimation([=](Node* sender){
-        auto originPos = getPosition();
+        /*auto originPos = getPosition();
         Size ScreenSize = Director::getInstance()->getVisibleSize();
-        this->setPosition(Vec2(ScreenSize.width + originPos.x, originPos.y));
-        auto moveAction = MoveTo::create(0.5f, originPos);
+        this->setPosition(Vec2(-ScreenSize.width + originPos.x, originPos.y));
+		auto delayAction = DelayTime::create(delayTime);
+        auto moveAction = MoveTo::create(1.f, originPos);
         auto fadeInAction = FadeIn::create(1.f);
         auto exponentialAction = EaseExponentialOut::create(moveAction);
-        auto twoAction = Spawn::createWithTwoActions(exponentialAction, fadeInAction);
-        
-        this->runAction(twoAction);
+        auto twoAction = Spawn::createWithTwoActions(exponentialAction, fadeInAction);*/
+
+		auto delayAction = DelayTime::create(delayTime + 0.5f);
+		auto fadeInAction = FadeIn::create(0.5f);
+
+		auto sequence = Sequence::createWithTwoActions(delayAction, fadeInAction);
+
+		bg->runAction(sequence);
     });
     
     this->setCloseAnimation([=](Node* sender){
-        auto originPos = getPosition();
+       /* auto originPos = getPosition();
         Size ScreenSize = Director::getInstance()->getVisibleSize();
         auto targetPos = Vec2(-ScreenSize.width + originPos.x, originPos.y);
+		auto delayAction = DelayTime::create(delayTime);
         auto moveAction = MoveTo::create(0.35f, targetPos);
         auto fadeOutAction = FadeTo::create(0.2f, 0);
         auto easeAction = EaseSineIn::create(moveAction);
-        auto twoAction = Spawn::createWithTwoActions(easeAction, fadeOutAction);
+        auto twoAction = Spawn::createWithTwoActions(easeAction, fadeOutAction);*/
 
-        this->runAction(twoAction);
+		auto delayAction = DelayTime::create(delayTime);
+		auto fadeOutAction = FadeTo::create(0.5f, 0);
+
+		auto sequence = Sequence::createWithTwoActions(delayAction, fadeOutAction);
+
+		bg->runAction(fadeOutAction);
     });
 
     return true;
