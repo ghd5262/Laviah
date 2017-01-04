@@ -21,6 +21,7 @@ CPopup::CPopup()
 , m_PopupOpenAnimation(ePOPUP_ANIMATION::NONE)
 , m_PopupCloseAnimation(ePOPUP_ANIMATION::NONE)
 , m_BackgroundColor(COLOR::BRIGHT_WHITEGRAY_ALPHA)
+, m_BackgroundVisible(true)
 {
 	this->setContentSize(Director::getInstance()->getVisibleSize());
 }
@@ -53,7 +54,8 @@ bool CPopup::init()
 
 CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 {
-	this->backgroundTouchDisable();
+    if(m_BackgroundVisible)
+        this->backgroundTouchDisable();
 
 	if (m_PositiveButtonCallBack || m_NegativeButtonCallBack){
 		auto defaultBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
@@ -203,6 +205,11 @@ CPopup* CPopup::setBackgroundColor(Color4B color)
 	return this;
 }
 
+CPopup* CPopup::setBackgroundVisible(bool visible)
+{
+    m_BackgroundVisible = visible;
+    return this;
+}
 
 void CPopup::popupOpenAnimation()
 {

@@ -55,6 +55,7 @@ namespace CHALLENGE_DATA_KEY {
 
 class CChallengeClearChecker{
 public:
+    bool continuingTypeCheck   (int index);
     bool coinScoreCheck        (int value);
     bool starScoreCheck        (int value);
     bool runScoreCheck         (int value);

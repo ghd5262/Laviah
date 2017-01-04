@@ -18,7 +18,7 @@ struct sCHALLENGE_PARAM
 {
     int _index;
     int _level;
-    bool _oneTime;
+    bool _continuingType;
     std::string _contents;
 	MATERIAL_LIST _materialList;
 	REWARD_LIST _rewardList;
@@ -26,13 +26,13 @@ struct sCHALLENGE_PARAM
     sCHALLENGE_PARAM()
     : _index(-1)
     , _level(-1)
-    , _oneTime(false)
+    , _continuingType(false)
     , _contents(""){}
     
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM& data)
     : _index(data._index)
     , _level(data._level)
-    , _oneTime(data._oneTime)
+    , _continuingType(data._continuingType)
     , _contents(data._contents)
     {
 		_materialList.insert(std::begin(data._materialList), std::end(data._materialList));
@@ -42,7 +42,7 @@ struct sCHALLENGE_PARAM
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM* data)
     : _index(data->_index)
     , _level(data->_level)
-    , _oneTime(data->_oneTime)
+    , _continuingType(data->_continuingType)
     , _contents(data->_contents)
     {
 		_materialList.insert(std::begin(data->_materialList), std::end(data->_materialList));
@@ -71,7 +71,7 @@ private:
     void initWithJson(CHALLENGE_LIST &list, std::string fileName);
     void initMaterialKeyList();
     void initRewardKeyList();
-	bool checkCurrentChallengeComplete(int index);
+	bool checkChallengeComplete(int index);
 	void completeAllCurrentChallenges();
 
     CChallengeDataManager();

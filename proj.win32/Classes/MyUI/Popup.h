@@ -39,6 +39,7 @@ public:
     CPopup* setPopupPosition(cocos2d::Vec2 position);
     CPopup* setPopupAnchorPoint(cocos2d::Vec2 anchorPoint);
 	CPopup* setBackgroundColor(Color4B color);
+    CPopup* setBackgroundVisible(bool visible);
 	CPopup* show(Node* parent, int zOrder = 0);
 
 	void popupOpenAnimation();
@@ -64,11 +65,12 @@ private:
 	std::string m_NegativeButtonName;
 	Color4B m_BackgroundColor;
 	Color3B m_MessageFontColor;
-	Color3B m_ButtonFontColor;
-	int m_MessageFontSize;
-	int m_ButtonFontSize;
+    Color3B m_ButtonFontColor;
     Vec2 m_Position;
     Vec2 m_AnchorPoint;
-	ePOPUP_ANIMATION m_PopupOpenAnimation;
-	ePOPUP_ANIMATION m_PopupCloseAnimation;
+    ePOPUP_ANIMATION m_PopupOpenAnimation;
+    ePOPUP_ANIMATION m_PopupCloseAnimation;
+	int m_MessageFontSize;
+	int m_ButtonFontSize;
+    bool m_BackgroundVisible;
 };

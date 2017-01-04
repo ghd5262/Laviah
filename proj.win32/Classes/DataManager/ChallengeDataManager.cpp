@@ -79,12 +79,12 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
         
         sCHALLENGE_PARAM* challengeInfo = new sCHALLENGE_PARAM();
         
-        challengeInfo->_index        = int(list.size());
-        challengeInfo->_level        = challenge["level"].asInt();
-        challengeInfo->_oneTime      = challenge["oneTime"].asBool();
-        challengeInfo->_contents     = challenge["contents"].asString();
-        const Json::Value materialArray  = challenge["material"];
-        const Json::Value rewardArray    = challenge["reward"];
+        challengeInfo->_index               = int(list.size());
+        challengeInfo->_level               = challenge["level"].asInt();
+        challengeInfo->_continuingType      = challenge["continuingType"].asBool();
+        challengeInfo->_contents            = challenge["contents"].asString();
+        const Json::Value materialArray     = challenge["material"];
+        const Json::Value rewardArray       = challenge["reward"];
         
         initList(challengeInfo->_materialList, m_MaterialKeyList, materialArray);
         initList(challengeInfo->_rewardList,   m_RewardKeyList,   rewardArray);
@@ -111,10 +111,29 @@ void CChallengeDataManager::Reward(int index)
 
 const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 {
+/** continuing type 은 기존 로직으로 처리하지 못한다.
+ *  기존 로직으로 구글 클라우드 데이터에 저장해 보려했지만 
+ *  현재 로직으로는 CHALLENGE_CUR_LIST와 CHALLENGE_CUR_VALUE_LIST 를 1 : 1 대응 하지 못한다.
+ *  ( CHALLENGE_CUR_LIST 중 3번째가 continuing type이면 sequence가 2이지만
+ *  CHALLENGE_CUR_VALUE_LIST에서는 첫번째 이기 때문)
+ *  후에 challenge용으로 클라우드 데이터 저장을 따로 해야할 것 같다.
+ */
+//    auto challengeData = getChallengeByIndex(index);
+//    if(challengeData->_continuingType){
+//        auto sequence = CUserDataManager::getUserDataSequenceFromList(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
+//        auto savedDataList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST);
+//        auto savedData = savedDataList->at(sequence);
+//        CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST, savedData);
+//    }
+    
 	CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
 	auto newChallenge = this->getMewRandomChallengeByLevel(1, false);
 	CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, newChallenge->_index);
-
+    
+//    if(newChallenge->_continuingType){
+//        
+//    }
+    
 	return newChallenge;
 }
 
@@ -128,17 +147,17 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getChallengeByIndex(int index) co
     return m_CallengeDataList.at(index);
 }
 
-const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge(bool oneTime)
+const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge(bool continuingType)
 {
-    if(oneTime){
+    if(continuingType){
 		return getNewRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
-            return !data->_oneTime;
+            return !data->_continuingType;
         }, m_CallengeDataList);
     }
     else
     {
 		return getNewRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
-            return data->_oneTime;
+            return data->_continuingType;
         }, m_CallengeDataList);
     }
 }
@@ -176,12 +195,25 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(con
     return picked;
 }
 
-bool CChallengeDataManager::checkCurrentChallengeComplete(int index)
+bool CChallengeDataManager::checkChallengeComplete(int index)
 {
 	auto challengeData = this->getChallengeByIndex(index);
 
-    if(challengeData->_materialList.size() == 0) return false;
+    if(challengeData->_materialList.size() <= 0)
+    {
+        std::string msg = "There is no mtrl values.";
+        CCLOG("%s", msg.c_str());
+        CCASSERT(false, StringUtils::format("%s", msg.c_str()).c_str());
+        return false;
+    }
 
+//    if(challengeData->_continuingType)
+//    {
+//        auto sequence = CUserDataManager::getUserDataSequenceFromList(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
+//        if(m_Checker->continuingTypeCheck(int(sequence))) return true;
+//        return false;
+//    }
+    
     for(auto material : challengeData->_materialList)
     {
         auto key = material.first;

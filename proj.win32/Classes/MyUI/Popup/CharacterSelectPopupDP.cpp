@@ -28,22 +28,22 @@ bool CCharacterSelectPopupDP::init()
 bool CCharacterSelectPopupDP::initVariable()
 {
 
-	m_DPBack = LayerColor::create(Color4B(0, 0, 0, 0), 150.f, 15.f);
-	if (m_DPBack != nullptr){
-		this->setContentSize(m_DPBack->getContentSize());
+	auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 150.f, 15.f);
+	if (bg != nullptr){
+		this->setContentSize(bg->getContentSize());
 
-		m_DPBack->setIgnoreAnchorPointForPosition(false);
-		m_DPBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_DPBack->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.5f));
-		this->addChild(m_DPBack);
+		bg->setIgnoreAnchorPointForPosition(false);
+		bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		bg->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.5f));
+		this->addChild(bg);
 	}
 
 	m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character._normalTextureName.c_str());
 	if (m_CharacterImg != nullptr)
 	{
 		m_CharacterImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_CharacterImg->setPosition(Vec2(m_DPBack->getContentSize().width * 0.5f, m_DPBack->getContentSize().height * 0.5f));
-		m_DPBack->addChild(m_CharacterImg);
+		m_CharacterImg->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f));
+		bg->addChild(m_CharacterImg);
 	}
     
     return true;

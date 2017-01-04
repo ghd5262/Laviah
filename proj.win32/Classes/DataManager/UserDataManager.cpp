@@ -48,7 +48,7 @@ CUserDataManager::CUserDataManager()
 
 CUserDataManager::~CUserDataManager()
 {
-	std::for_each(m_UserData->_userDataListMap.begin(), m_UserData->_userDataListMap.end(), [=](std::pair<std::string, std::vector<unsigned>*> list)
+	std::for_each(m_UserData->_userDataListMap.begin(), m_UserData->_userDataListMap.end(), [=](std::pair<std::string, DATA_LIST*> list)
 	{
 		if (list.second != nullptr)
 			delete list.second;
@@ -100,10 +100,10 @@ void CUserDataManager::initUserDefaultValue()
         const Json::Value valueItem = listDataArray[dataCount];
         
         std::string dataKey = valueItem["dataKey"].asString();
-        auto emptyList = new std::vector<unsigned>();
+        auto emptyList = new DATA_LIST();
         addKey("userDefaultDatas_List", dataKey);
         
-        m_UserData->_userDataListMap.emplace(std::pair<std::string, std::vector<unsigned>*>(dataKey, emptyList));
+        m_UserData->_userDataListMap.emplace(std::pair<std::string, DATA_LIST*>(dataKey, emptyList));
     }
     
     if (m_UserData->_userDataKeyMap.size() == 0)
@@ -241,7 +241,7 @@ void CUserDataManager::convertJsonToUserData(std::string valueJson)
 
 					list->push_back(itemIdx);
 
-					std::sort(list->begin(), list->end(), compare);
+					this->sortUserDataList(key, compare);
 				}
 			}
 		}
@@ -321,7 +321,7 @@ unsigned CUserDataManager::getUserData_Number(std::string key)
     CCASSERT(false, "Wrong Key");
 }
 
-std::vector<unsigned>* CUserDataManager::getUserData_List(std::string key)
+DATA_LIST* CUserDataManager::getUserData_List(std::string key)
 {
     if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
         auto list = m_UserData->_userDataListMap.find(key)->second;
@@ -433,7 +433,7 @@ void CUserDataManager::setUserData_ItemGet(std::string key, unsigned itemIdx)
 
         list->push_back(itemIdx);
         
-        std::sort(list->begin(), list->end(), compare);
+        this->sortUserDataList(key, compare);
     }
     convertUserDataToJson();
 }
@@ -450,8 +450,8 @@ void CUserDataManager::setUserData_ItemRemove(std::string key, unsigned itemIdx)
 	if (itemList != m_UserData->_userDataListMap.end()){
 		auto list = itemList->second;
 		list->erase(std::remove(std::begin(*list), std::end(*list), itemIdx), std::end(*list));
-		std::sort(list->begin(), list->end(), compare);
-	}
+        this->sortUserDataList(key, compare);
+    }
 	convertUserDataToJson();
 }
 
@@ -486,6 +486,24 @@ bool CUserDataManager::CoinUpdate(int value)
     }
     return result;
 }
+
+int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex)
+{
+    auto curList = CUserDataManager::Instance()->getUserData_List(key);
+    auto iter = std::find(curList->begin(), curList->end(), itemIndex);
+    auto sequence = std::distance(curList->begin(), iter);
+    return int(sequence);
+}
+
+void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& compare)
+{
+//    if(key == USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST ||
+//       key == USERDATA_KEY::CHALLENGE_CUR_LIST) return;
+    
+    auto list = CUserDataManager::Instance()->getUserData_List(key);
+    std::sort(list->begin(), list->end(), compare);
+}
+
 
 // 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
 ///* google login을 시도한 후에 호출됨 */
@@ -522,7 +540,7 @@ bool CUserDataManager::CoinUpdate(int value)
 //    CCASSERT(false, "Wrong Key");
 //}
 //
-//std::vector<unsigned>* CUserDataManager::getUserData_List(std::string key)
+//DATA_LIST* CUserDataManager::getUserData_List(std::string key)
 //{
 //    if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
 //        auto list = m_UserData->_userDataListMap.find(key)->second;
@@ -725,7 +743,7 @@ bool CUserDataManager::CoinUpdate(int value)
 //
 //void CUserDataManager::convertJsonToUserData_List(std::string key, std::string valueJson)
 //{
-//    std::vector<unsigned>* list;
+//    DATA_LIST* list;
 //    
 //    if(m_UserData->_userDataListMap.find(key) == m_UserData->_userDataListMap.end()){
 //        CCLOG("There is no list with this key %s", key.c_str());

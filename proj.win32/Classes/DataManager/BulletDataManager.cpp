@@ -26,7 +26,7 @@ CBulletDataManager::CBulletDataManager()
     bool parsingSuccessful = reader.parse(fileData, root);
     if (! parsingSuccessful)
     {
-        CCASSERT(false, MakeString("parser failed : \n %s", fileData.c_str()).c_str());
+        CCASSERT(false, StringUtils::format("parser failed : \n %s", fileData.c_str()).c_str());
         return ;
     }
     CCLOG("Bullet List JSON : \n %s\n", fileData.c_str());

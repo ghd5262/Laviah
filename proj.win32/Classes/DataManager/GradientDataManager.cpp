@@ -17,7 +17,7 @@ CGradientDataManager::CGradientDataManager()
     bool parsingSuccessful = reader.parse(gradientListClearData, root);
     if (!parsingSuccessful)
     {
-        CCASSERT(false, MakeString("parser failed : \n %s", gradientListClearData.c_str()).c_str());
+        CCASSERT(false, StringUtils::format("parser failed : \n %s", gradientListClearData.c_str()).c_str());
         return;
     }
     CCLOG("strGradientList JSON : \n %s\n", gradientListClearData.c_str());

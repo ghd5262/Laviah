@@ -3,6 +3,37 @@
 #include "../ChallengeDataManager.hpp"
 #include "../WorkshopItemDataManager.h"
 
+using namespace cocos2d;
+
+bool CChallengeClearChecker::continuingTypeCheck(int index)
+{
+    auto savedDataList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST);
+    auto challengeList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+    auto challengeData = CChallengeDataManager::Instance()->getChallengeByIndex(challengeList->at(index));
+    
+    auto fail = [=](std::string msg){
+        CCLOG("%s", msg.c_str());
+        CCASSERT(false, StringUtils::format("%s", msg.c_str()).c_str());
+        return false;
+    };
+    
+    if(challengeData->_materialList.size() <= 0)
+        return fail("There is no mtrl values.");
+    
+    
+    if(challengeData->_materialList.size() > 1)
+        return fail("Continuing type challenges can not have two or more mtrl values.");
+    
+    for(auto material : challengeData->_materialList)
+    {
+        if(material.second <= savedDataList->at(index))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool CChallengeClearChecker::coinScoreCheck(int value)      { return value >= GLOBAL->COIN_SCORE; }
 bool CChallengeClearChecker::starScoreCheck(int value)      { return value >= GLOBAL->STAR_SCORE; }
 bool CChallengeClearChecker::runScoreCheck(int value)       { return value >= GLOBAL->RUN_SCORE; }
