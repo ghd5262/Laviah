@@ -14,6 +14,8 @@ CChallengeDataManager::CChallengeDataManager()
 : m_Checker(new CChallengeClearChecker())
 , m_Rewarder(new CChallengeRewarder())
 {
+	initMaterialKeyList();
+	initRewardKeyList();
     initWithJson(m_CallengeDataList, DATA_FILE_NAME);
 }
 
@@ -78,6 +80,32 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
 
         list.emplace_back(challengeInfo);
     }
+}
+
+bool CChallengeDataManager::CheckChallengeComplete(int index)
+{
+	auto challengeData = this->getChallengeByIndex(index);
+
+	//    if(challengeData->_continuingType)
+	//    {
+	//        auto sequence = CUserDataManager::getUserDataSequenceFromList(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
+	//        if(m_Checker->continuingTypeCheck(int(sequence))) return true;
+	//        return false;
+	//    }
+
+	auto key = challengeData->_materialKey;
+	auto mtrlValue = challengeData->_materialValue;
+
+	auto checker = m_CheckerList.find(key);
+	if (checker == std::end(m_CheckerList)){
+		if (!m_Checker->checkWithGlobal(key, mtrlValue)) return false;
+
+		return true;
+	}
+
+	if (!checker->second(mtrlValue)) return false;
+
+	return true;
 }
 
 void CChallengeDataManager::Reward(int index)
@@ -177,30 +205,6 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(con
           picked->_level);
     
     return picked;
-}
-
-bool CChallengeDataManager::checkChallengeComplete(int index)
-{
-	auto challengeData = this->getChallengeByIndex(index);
-
-//    if(challengeData->_continuingType)
-//    {
-//        auto sequence = CUserDataManager::getUserDataSequenceFromList(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
-//        if(m_Checker->continuingTypeCheck(int(sequence))) return true;
-//        return false;
-//    }
-    
-    auto key = challengeData->_materialKey;
-    auto mtrlValue = challengeData->_materialValue;
-    
-    auto checker = m_CheckerList.find(key);
-    if(checker == std::end(m_CheckerList)){
-        if(!m_Checker->checkWithGlobal(key, mtrlValue)) return false;
-    }
-    
-    if(!checker->second(mtrlValue)) return false;
-    
-	return true;
 }
 
 void CChallengeDataManager::initMaterialKeyList()

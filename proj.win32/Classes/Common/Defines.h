@@ -13,7 +13,7 @@ namespace COLOR {
     const cocos2d::Color4B DARKGRAY_ALPHA(0, 0, 0, 255 * 0.8f);
     const cocos2d::Color4B BRIGHTGRAY_ALPHA(0, 0, 0, 255 * 0.4f);
     const cocos2d::Color4B WHITEGRAY_ALPHA(255, 255, 255, 255 * 0.8f);
-	const cocos2d::Color4B BRIGHT_WHITEGRAY_ALPHA(255, 255, 255, 255 * 0.3f);
+	const cocos2d::Color4B BRIGHT_WHITEGRAY_ALPHA(255, 255, 255, 255 * 0.5f);
     const cocos2d::Color4B BRIGHTRED_ALPHA(255, 48, 48, 255 * 0.8f);
 }
 

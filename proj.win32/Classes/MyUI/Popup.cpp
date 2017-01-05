@@ -9,6 +9,7 @@ CPopup::CPopup()
 , m_NegativeButtonCallBack(nullptr)
 , m_OpenAnimationCallBack(nullptr)
 , m_CloseAnimationCallBack(nullptr)
+, m_EmptyBackground(nullptr)
 , m_Message("")
 , m_PositiveButtonName("")
 , m_NegativeButtonName("")
@@ -20,7 +21,7 @@ CPopup::CPopup()
 , m_Position(Vec2::ZERO)
 , m_PopupOpenAnimation(ePOPUP_ANIMATION::NONE)
 , m_PopupCloseAnimation(ePOPUP_ANIMATION::NONE)
-, m_BackgroundColor(COLOR::WHITEGRAY_ALPHA)
+, m_BackgroundColor(COLOR::BRIGHT_WHITEGRAY_ALPHA)
 , m_BackgroundVisible(true)
 {
 	this->setContentSize(Director::getInstance()->getVisibleSize());
@@ -46,9 +47,6 @@ bool CPopup::init()
 {
 	if (!Node::init())
 		return false;
-
-	
-
 	return true;
 }
 
@@ -229,6 +227,7 @@ void CPopup::popupOpenAnimation()
 	};
 
 	FiniteTimeAction* action = nullptr;
+
 	switch (m_PopupOpenAnimation){
 
 	case ePOPUP_ANIMATION::NONE:
@@ -248,6 +247,14 @@ void CPopup::popupOpenAnimation()
 		this->setScale(0.f);
 		action = EaseElasticOut::create(ScaleTo::create(0.5f, 1.0f), 0.5f);
 	} break;
+	}
+
+	if (m_BackgroundVisible)
+	{
+		auto originOpacity = m_EmptyBackground->getOpacity();
+		m_EmptyBackground->setOpacity(0);
+		auto fadeInAction = FadeTo::create(0.3f, originOpacity);
+		m_EmptyBackground->runAction(fadeInAction);
 	}
 
 	this->runAction(action);
@@ -299,6 +306,12 @@ void CPopup::popupClose()
 	} break;
 	}
 
+	if (m_BackgroundVisible)
+	{
+		auto fadeOutAction = FadeTo::create(0.5f, 1);
+		m_EmptyBackground->runAction(fadeOutAction);
+	}
+
 	this->runAction(Sequence::create(action, DelayTime::create(delayTime), CallFunc::create([=](){
 		this->removeFromParent();
 	}), NULL));
@@ -313,7 +326,7 @@ void CPopup::backgroundTouchDisable()
 	//touchDisable->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	//touchDisable->setPosition(this->getContentSize() / 2);
 	//addChild(touchDisable);
-	auto emptyBtnBG = CMyButton::create()
+	m_EmptyBackground = CMyButton::create()
 		->addEventListener([](Node* sender){})
 		->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
 		->setLayer(LayerColor::create(m_BackgroundColor, 1080, 1920))

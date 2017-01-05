@@ -22,17 +22,17 @@ bool CChallengeClearChecker::continuingTypeCheck(int index)
 bool CChallengeClearChecker::checkWithGlobal(std::string key, int value)
 {
     auto global = GLOBAL->getVariable(key);
-    return value >= global;
+    return value <= global;
 }
 
 bool CChallengeClearChecker::bestScoreCheck(int value) {
     auto bestScore = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
-    return (value >= bestScore);
+    return (value <= bestScore);
 }
 
 bool CChallengeClearChecker::bestComboCheck(int value) {
     auto bestCombo = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_COMBO);
-    return (value >= bestCombo);
+    return (value <= bestCombo);
 }
 
 bool CChallengeClearChecker::characterCollectCheck(int value) {
@@ -45,17 +45,17 @@ bool CChallengeClearChecker::rocketCollectCheck(int value) {
 
 bool CChallengeClearChecker::characterCountCheck(int value) {
     auto count = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST)->size();
-    return (value >= count);
+	return (value <= count);
 }
 
 bool CChallengeClearChecker::rocketCountCheck(int value) {
     auto count = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ROCKET_LIST)->size();
-    return (value >= count);
+	return (value <= count);
 }
 
 bool CChallengeClearChecker::userLevelCheck(int value) {
     auto level = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
-    return (value >= level);
+	return (value <= level);
 }
 
 bool workshopLevelCheck(std::string key, int material) {
@@ -89,5 +89,5 @@ bool CChallengeClearChecker::magnetSizeLevelCheck(int value) {
 
 bool CChallengeClearChecker::coinCheck(int value) {
     auto coin = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN);
-    return (value >= coin);
+	return (value <= coin);
 }

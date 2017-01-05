@@ -40,7 +40,7 @@ public:
     CPopup* setPopupAnchorPoint(cocos2d::Vec2 anchorPoint);
 	CPopup* setBackgroundColor(Color4B color);
     CPopup* setBackgroundVisible(bool visible);
-	CPopup* show(Node* parent, int zOrder = 0);
+	virtual CPopup* show(Node* parent, int zOrder = 0);
 
 	void popupOpenAnimation();
 	void popupClose();
@@ -60,6 +60,7 @@ private:
 	NODE_CALLBACK m_OpenAnimationCallBack;
 	NODE_CALLBACK m_CloseAnimationCallBack;
 
+	CMyButton* m_EmptyBackground;
 	std::string m_Message;
 	std::string m_PositiveButtonName;
 	std::string m_NegativeButtonName;

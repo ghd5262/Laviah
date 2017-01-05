@@ -167,8 +167,10 @@ void CPlayer::LostSomeHealth(float loseHealth)
 	else{
 		this->PlayerDead();
         CMultipleScore::Instance()->UpdateScore();
-		CGameScene::getGameScene()->WatchVideo();
 		m_fLife = 0.f;
+
+		if (GLOBAL->RUN_SCORE < 3000)	CGameScene::getGameScene()->ShowChallenge();
+		else							CGameScene::getGameScene()->WatchVideo();
 	}
 }
 

@@ -61,7 +61,7 @@ class CChallengeDataManager
     typedef std::function<bool(const sCHALLENGE_PARAM*)> CHALLENGE_PICK;
 public:
     static CChallengeDataManager* Instance();
-    
+	bool CheckChallengeComplete(int index);
     void Reward(int index);
     const sCHALLENGE_PARAM* SkipChallenge(int index);
 
@@ -76,7 +76,6 @@ private:
     void initWithJson(CHALLENGE_LIST &list, std::string fileName);
     void initMaterialKeyList();
     void initRewardKeyList();
-	bool checkChallengeComplete(int index);
 	void completeAllCurrentChallenges();
 
     CChallengeDataManager();

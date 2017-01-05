@@ -21,6 +21,7 @@
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
 #include "../MyUI/Popup/VideoPopup.h"
+#include "../MyUI/Popup/ChallengePopup.h"
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
@@ -83,8 +84,6 @@ bool CGameScene::init()
 	m_GridWorld = NodeGrid::create();
 	this->addChild(m_GridWorld, 0, 1);
     
-    CChallengeDataManager::Instance();
-
     m_ScreenFade = LayerColor::create(Color4B::BLACK, m_VisibleSize.width, m_VisibleSize.height);
     m_ScreenFade->setIgnoreAnchorPointForPosition(false);
     m_ScreenFade->setPosition(m_VisibleSize / 2);
@@ -210,6 +209,12 @@ void CGameScene::WatchVideo()
 	this->GamePause();
 }
 
+void CGameScene::ShowChallenge()
+{
+	this->createChallengePopup();
+	this->GamePause();
+}
+
 void CGameScene::OpenGamePausePopup()
 {
     // 이미 Pause인 상태면 리턴한다.
@@ -241,12 +246,12 @@ void CGameScene::RandomCoin()
 
 void CGameScene::ScreenFade(const FADE_CALLBACK& callback/* = nullptr*/)
 {
-    auto fadeOut = FadeTo::create(0.3f, 1);
-    auto fadeIn  = FadeIn::create(0.3f);
+    auto fadeOut = FadeTo::create(0.5f, 1);
+    auto fadeIn  = FadeIn::create(0.5f);
     auto callFunc = CallFunc::create([=](){
         callback();
     });
-    auto delayAction = DelayTime::create(0.5f);
+    auto delayAction = DelayTime::create(0.3f);
     auto visibleOff = CallFunc::create([=](){ m_ScreenFade->setVisible(false); });
     auto visibleOn  = CallFunc::create([=](){ m_ScreenFade->setVisible(true);  });
 
@@ -254,8 +259,8 @@ void CGameScene::ScreenFade(const FADE_CALLBACK& callback/* = nullptr*/)
     m_ScreenFade->runAction(Sequence::create(visibleOn,
                                              fadeIn,
                                              callFunc,
-											 fadeOut,
 											 delayAction,
+											 fadeOut,
                                              visibleOff,
                                              nullptr));
 }
@@ -295,6 +300,15 @@ void CGameScene::createPausePopup()
 void CGameScene::createVideoPopup()
 {
 	CVideoPopup::create()
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(m_VisibleSize / 2)
+		->show(this, ZORDER::POPUP);
+}
+
+void CGameScene::createChallengePopup()
+{
+	CChallengePopup::create()
+		->EndButtonVisible(true)
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(m_VisibleSize / 2)
 		->show(this, ZORDER::POPUP);

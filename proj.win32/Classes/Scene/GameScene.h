@@ -32,6 +32,7 @@ public:
 	void GameResult();
     void GameHelp();
 	void WatchVideo();
+	void ShowChallenge();
     void GameExit();
     void RandomCoin();
     void BonusTimeStart();
@@ -55,6 +56,7 @@ private:
     void cleanGlobalData();
 	void createPausePopup();
 	void createVideoPopup();
+	void createChallengePopup();
 	void createResultPopup();
 	void createHelpPopup();
     void createExitPopup();

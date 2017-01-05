@@ -37,9 +37,11 @@ bool CChallengePopupDP::init()
 
     auto value = GLOBAL->getVariable(m_Challenge._materialKey);
     auto mtrlValue = m_Challenge._materialValue;
-    
+	bool complete = CChallengeDataManager::Instance()->CheckChallengeComplete(m_Challenge._index);
+	if (complete) value = mtrlValue;
+
     auto contents = m_Challenge._contents;
-    if(value > 0) contents += StringUtils::format("(%d / %d)", value, mtrlValue);
+	if (value > 0) contents += StringUtils::format("(%d / %d)", value, mtrlValue);
     
     auto label = Label::createWithTTF(contents, FONT::MALGUNBD, 45);
 	label->setColor(COLOR::DARKGRAY);
@@ -47,6 +49,7 @@ bool CChallengePopupDP::init()
     label->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f));
     bg->addChild(label);
     
+	if (complete) label->setTextColor(COLOR::DARKGRAY_ALPHA);
     //CMyButton::create()
     //->addEventListener([=](Node* sender){
     //    if(m_SkipCallback){
@@ -60,7 +63,7 @@ bool CChallengePopupDP::init()
     //->setButtonPosition(Vec2(label->getContentSize().width + 100.f, bg->getContentSize().height * 0.5f))
     //->show(bg);
     
-	auto delayTime = CUserDataManager::getUserDataSequenceFromList(USERDATA_KEY::CHALLENGE_CUR_LIST, m_Challenge._index) * 0.5f;
+	auto delayTime = CUserDataManager::getUserDataSequenceFromList(USERDATA_KEY::CHALLENGE_CUR_LIST, m_Challenge._index) * 0.4f;
     this->setOpenAnimation([=](Node* sender){
         /*auto originPos = getPosition();
         Size ScreenSize = Director::getInstance()->getVisibleSize();
@@ -69,31 +72,29 @@ bool CChallengePopupDP::init()
         auto moveAction = MoveTo::create(1.f, originPos);
         auto fadeInAction = FadeIn::create(1.f);
         auto exponentialAction = EaseExponentialOut::create(moveAction);
-        auto twoAction = Spawn::createWithTwoActions(exponentialAction, fadeInAction);*/
+        auto twoAction = Spawn::createWithTwoActions(exponentialAction, fadeInAction);
+		auto sequence = Sequence::createWithTwoActions(delayAction, twoAction);
+		bg->runAction(sequence);*/
 
-		auto delayAction = DelayTime::create(delayTime + 0.5f);
+		auto delayAction = DelayTime::create(delayTime + 0.3f);
 		auto fadeInAction = FadeIn::create(0.5f);
-
 		auto sequence = Sequence::createWithTwoActions(delayAction, fadeInAction);
-
 		bg->runAction(sequence);
     });
     
     this->setCloseAnimation([=](Node* sender){
-       /* auto originPos = getPosition();
+        /*auto originPos = getPosition();
         Size ScreenSize = Director::getInstance()->getVisibleSize();
         auto targetPos = Vec2(-ScreenSize.width + originPos.x, originPos.y);
 		auto delayAction = DelayTime::create(delayTime);
         auto moveAction = MoveTo::create(0.35f, targetPos);
         auto fadeOutAction = FadeTo::create(0.2f, 0);
         auto easeAction = EaseSineIn::create(moveAction);
-        auto twoAction = Spawn::createWithTwoActions(easeAction, fadeOutAction);*/
+        auto twoAction = Spawn::createWithTwoActions(easeAction, fadeOutAction);
+		auto sequence = Sequence::createWithTwoActions(delayAction, twoAction);
+		bg->runAction(sequence);*/
 
-		auto delayAction = DelayTime::create(delayTime);
 		auto fadeOutAction = FadeTo::create(0.5f, 0);
-
-		auto sequence = Sequence::createWithTwoActions(delayAction, fadeOutAction);
-
 		bg->runAction(fadeOutAction);
     });
 
