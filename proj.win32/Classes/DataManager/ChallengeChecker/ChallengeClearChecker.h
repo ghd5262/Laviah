@@ -54,7 +54,7 @@ namespace CHALLENGE_DATA_KEY {
     const std::string COIN                = "COIN";
 };
 
-class CChallengeClearChecker{
+class CChallengeClearChecker {
 public:
     bool continuingTypeCheck   (int index);
     bool checkWithGlobal       (std::string key, int value);

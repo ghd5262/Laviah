@@ -4,7 +4,6 @@
 #include <vector>
 #include <algorithm>
 
-typedef std::vector<std::string> KEY_LIST;
 typedef std::function<bool(int)> CHECKER;
 typedef std::map<std::string, CHECKER> CHECKER_LIST;
 typedef std::function<void(int)> REWARDER;

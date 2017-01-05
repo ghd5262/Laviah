@@ -100,8 +100,13 @@ void CUserDataManager::initUserDefaultValue()
         const Json::Value valueItem = listDataArray[dataCount];
         
         std::string dataKey = valueItem["dataKey"].asString();
+        const Json::Value defaultValueArray = valueItem["defaultValue"];
+        
         auto emptyList = new DATA_LIST();
         addKey("userDefaultDatas_List", dataKey);
+        
+        for(unsigned int valueCount = 0; valueCount < defaultValueArray.size(); valueCount++)
+            emptyList->emplace_back(defaultValueArray[valueCount].asInt());
         
         m_UserData->_userDataListMap.emplace(std::pair<std::string, DATA_LIST*>(dataKey, emptyList));
     }
@@ -190,17 +195,6 @@ void CUserDataManager::convertJsonToUserData(std::string valueJson)
 {
 	if (valueJson == "")
 	{
-        // 첫 실행시 0번째 아이템은 가지고 있는 상태
-        for(auto list : m_UserData->_userDataListMap)
-        {
-            if(list.first == USERDATA_KEY::CHALLENGE_CUR_LIST){
-                list.second->emplace_back(0);
-                list.second->emplace_back(1);
-                list.second->emplace_back(2);
-            }
-            else
-                list.second->emplace_back(0);
-        }
 		CCLOG("This is the first time to load. use default value");
 		return;
 	}

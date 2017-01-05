@@ -20,7 +20,7 @@ CPopup::CPopup()
 , m_Position(Vec2::ZERO)
 , m_PopupOpenAnimation(ePOPUP_ANIMATION::NONE)
 , m_PopupCloseAnimation(ePOPUP_ANIMATION::NONE)
-, m_BackgroundColor(COLOR::BRIGHT_WHITEGRAY_ALPHA)
+, m_BackgroundColor(COLOR::WHITEGRAY_ALPHA)
 , m_BackgroundVisible(true)
 {
 	this->setContentSize(Director::getInstance()->getVisibleSize());
