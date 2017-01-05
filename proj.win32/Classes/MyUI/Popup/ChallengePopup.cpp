@@ -106,14 +106,21 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		this->addChild(bg);
 	}
 
-	auto challengesLabel = Label::createWithTTF("CHALLENGES", FONT::MALGUNBD, 80);
+	auto challengesLabel = Label::createWithTTF("Challenge", FONT::MALGUNBD, 80);
 	if (challengesLabel != nullptr)
 	{
+		if (!m_EndButtonVisible) { 
+			challengesLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.6f));
+			challengesLabel->setColor(COLOR::DARKGRAY);
+		}
+		else { 
+			challengesLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f)); 
+			challengesLabel->setColor(COLOR::BRIGHTGRAY);
+		}
+		
 		challengesLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		challengesLabel->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.6f));
-		challengesLabel->setColor(COLOR::DARKGRAY);
-		this->addChild(challengesLabel);
 		challengesLabel->setOpacity(0);
+		this->addChild(challengesLabel);
 	}
 
 	Vec2 posArray[] = {
