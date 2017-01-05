@@ -35,8 +35,13 @@ bool CChallengePopupDP::init()
     this->addChild(bg);
     
 
-
-    auto label = Label::createWithTTF(m_Challenge._contents, FONT::MALGUNBD, 45);
+    auto value = GLOBAL->getVariable(m_Challenge._materialKey);
+    auto mtrlValue = m_Challenge._materialValue;
+    
+    auto contents = m_Challenge._contents;
+    if(value > 0) contents += StringUtils::format("(%d / %d)", value, mtrlValue);
+    
+    auto label = Label::createWithTTF(contents, FONT::MALGUNBD, 45);
 	label->setColor(COLOR::DARKGRAY);
     label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     label->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f));

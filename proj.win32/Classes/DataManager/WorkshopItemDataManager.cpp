@@ -57,27 +57,6 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 
 		m_WorkshopItemList.emplace_back(param);
 	}
-
-	/*for (int i = 0; i < 5; i++)
-	{
-		sCHARACTER_PARAM character;
-
-		character._idx = i;
-		character._openLevel = 10;
-		character._cost = 100;
-		character._health = 10;
-		character._starItemTime = 1.f;
-		character._coinItemTime = 2.f;
-		character._bonusItemTime = 3.f;
-		character._magnetItemTime = 4.f;
-		character._giantItemTime = 5.f;
-		character._textureName = "player.png";
-		character._name = MakeString("character_%d", i);
-		character._skillName = MakeString("skill_%d", i);;
-		character._story = MakeString("story_%d", i);
-
-		m_CharacterList.emplace_back(character);
-	}*/
 }
 
 CWorkshopItemDataManager::~CWorkshopItemDataManager()

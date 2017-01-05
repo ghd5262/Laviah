@@ -34,6 +34,8 @@ CObjectManager::CObjectManager()
 //    });
 //    this->ChangeState(CNormalState::Instance());
     
+    m_BulletList.reserve(1000);
+    
     m_SpeedController = Node::create();
     if(CGameScene::getGameScene()){
         m_SpeedController->setPositionX(BULLETCREATOR::ROTATION_SPEED);

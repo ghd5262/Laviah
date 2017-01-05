@@ -193,7 +193,13 @@ void CUserDataManager::convertJsonToUserData(std::string valueJson)
         // 첫 실행시 0번째 아이템은 가지고 있는 상태
         for(auto list : m_UserData->_userDataListMap)
         {
-            list.second->emplace_back(0);
+            if(list.first == USERDATA_KEY::CHALLENGE_CUR_LIST){
+                list.second->emplace_back(0);
+                list.second->emplace_back(1);
+                list.second->emplace_back(2);
+            }
+            else
+                list.second->emplace_back(0);
         }
 		CCLOG("This is the first time to load. use default value");
 		return;

@@ -7,6 +7,7 @@
 
 namespace CHALLENGE_DATA_KEY {
 
+    const std::string TOTAL_SCORE         = "TOTAL_SCORE";
     const std::string COIN_SCORE          = "COIN_SCORE";
     const std::string STAR_SCORE          = "STAR_SCORE";
     const std::string RUN_SCORE           = "RUN_SCORE";
@@ -56,9 +57,8 @@ namespace CHALLENGE_DATA_KEY {
 class CChallengeClearChecker{
 public:
     bool continuingTypeCheck   (int index);
-    bool coinScoreCheck        (int value);
-    bool starScoreCheck        (int value);
-    bool runScoreCheck         (int value);
+    bool checkWithGlobal       (std::string key, int value);
+    
     bool bestScoreCheck        (int value);
     bool bestComboCheck        (int value);
     
@@ -75,28 +75,6 @@ public:
     bool magnetItemLevelCheck  (int value);
     bool magnetSizeLevelCheck  (int value);
     
-    bool giantScoreTotal       (int value);
-    bool giantScoreBullet      (int value);
-    bool giantScoreMissile     (int value);
-    bool giantScoreStick       (int value);
-    bool magnetScore           (int value);
-    bool barrierScore          (int value);
-    
-    bool giantCountTotal       (int value);
-    bool giantCountBullet      (int value);
-    bool giantCountMissile     (int value);
-    bool giantCountStick       (int value);
-    bool magnetCount           (int value);
-    bool barrierCount          (int value);
-    
-    bool coinItemUse           (int value);
-    bool starItemUse           (int value);
-    bool bonusItemUse          (int value);
-    bool giantItemUse          (int value);
-    bool magnetItemUse         (int value);
-    bool barrierItemUse        (int value);
-    
-    bool comboCheck            (int value);
     bool coinCheck             (int value);
 
     CChallengeClearChecker(){};

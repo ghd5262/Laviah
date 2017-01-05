@@ -5,8 +5,6 @@
 #include <algorithm>
 
 typedef std::vector<std::string> KEY_LIST;
-typedef std::map<std::string, int> MATERIAL_LIST;
-typedef std::map<std::string, int> REWARD_LIST;
 typedef std::function<bool(int)> CHECKER;
 typedef std::map<std::string, CHECKER> CHECKER_LIST;
 typedef std::function<void(int)> REWARDER;
@@ -20,34 +18,42 @@ struct sCHALLENGE_PARAM
     int _level;
     bool _continuingType;
     std::string _contents;
-	MATERIAL_LIST _materialList;
-	REWARD_LIST _rewardList;
+    std::string _materialKey;
+    std::string _rewardKey;
+    int _materialValue;
+    int _rewardValue;
 
     sCHALLENGE_PARAM()
     : _index(-1)
     , _level(-1)
     , _continuingType(false)
-    , _contents(""){}
+    , _contents("")
+    , _materialKey("")
+    , _rewardKey("")
+    , _materialValue(0)
+    , _rewardValue(0){}
     
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM& data)
     : _index(data._index)
     , _level(data._level)
     , _continuingType(data._continuingType)
     , _contents(data._contents)
-    {
-		_materialList.insert(std::begin(data._materialList), std::end(data._materialList));
-		_rewardList.insert(std::begin(data._rewardList), std::end(data._rewardList));
-	}
+    , _materialKey(data._materialKey)
+    , _rewardKey(data._rewardKey)
+    , _materialValue(data._materialValue)
+    , _rewardValue(data._rewardValue)
+    {}
     
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM* data)
     : _index(data->_index)
     , _level(data->_level)
     , _continuingType(data->_continuingType)
     , _contents(data->_contents)
-    {
-		_materialList.insert(std::begin(data->_materialList), std::end(data->_materialList));
-		_rewardList.insert(std::begin(data->_rewardList), std::end(data->_rewardList));
-	}
+    , _materialKey(data->_materialKey)
+    , _rewardKey(data->_rewardKey)
+    , _materialValue(data->_materialValue)
+    , _rewardValue(data->_rewardValue)
+    {}
 };
 
 class CChallengeDataManager
@@ -81,8 +87,6 @@ private:
     CHALLENGE_LIST m_CallengeDataList;
     CHECKER_LIST m_CheckerList;
     REWARDER_LIST m_RewarderList;
-    KEY_LIST m_MaterialKeyList;
-    KEY_LIST m_RewardKeyList;
     CChallengeClearChecker* m_Checker;
     CChallengeRewarder* m_Rewarder;
 };

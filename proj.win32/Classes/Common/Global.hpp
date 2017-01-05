@@ -1,17 +1,22 @@
 #pragma once
 
 #include <stdio.h>
-
+#include <map>
 class Global{
 public:
     static Global* Instance();
     void Clear();
-    
+    int getVariable(std::string key);
+
 private:
+    void addVariableToList();
+    
     Global();
     ~Global(){};
     
 public:
+    std::map<std::string, int&> m_VariableList;
+    
     int BONUSTIME;        
     int COMBO;         
     int CHALLENGE_CLEAR_COUNT;
