@@ -63,6 +63,7 @@ public:
     void setUserData_Number(std::string key, unsigned value);
     void setUserData_ItemGet(std::string key, unsigned itemIdx);
 	void setUserData_ItemRemove(std::string key, unsigned itemIdx);
+    void setUserData_ItemRemoveAll(std::string key);
     bool CoinUpdate(int value);
     
     static int getUserDataSequenceFromList(std::string key, int itemIndex);

@@ -1,10 +1,11 @@
 #include "PausePopup.h"
-#include "ChallengePopup.h"
+#include "ChallengePopupDP.h"
 #include "../MyButton.h"
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
+#include "../../DataManager/UserDataManager.h"
 #include <array>
 
 CPausePopup::CPausePopup(){}
@@ -33,6 +34,8 @@ bool CPausePopup::init()
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
+    this->initChallengeList();
+    
 	auto pauseBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
 	if (pauseBG != nullptr){
 		pauseBG->setIgnoreAnchorPointForPosition(false);
@@ -89,13 +92,7 @@ bool CPausePopup::init()
 		this->addChild(btnUserCoin);
 	}
 
-	auto challengePopup = CChallengePopup::create()
-		->setBackgroundVisible(false)
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(this->getContentSize() / 2)
-		->show(this);
-
-	this->setOpenAnimation([=](Node* sender){
+    this->setOpenAnimation([=](Node* sender){
 
 		auto action = [=](Node* sender, Vec2 pos){
 			auto delayAction = DelayTime::create(0.1f);
@@ -116,8 +113,6 @@ bool CPausePopup::init()
 	});
 
 	this->setCloseAnimation([=](Node* sender){
-
-		challengePopup->popupClose();
 
 		auto action = [=](Node* sender, Vec2 pos){
 			auto moveAction = MoveTo::create(0.4f, pos);
@@ -167,4 +162,57 @@ void CPausePopup::Help(Node* sender)
 {
 	CGameScene::getGameScene()->GameHelp();
 }
+
+void CPausePopup::Skip(CChallengePopupDP *sender, int posIndex)
+{
+    auto scene = CGameScene::getGameScene();
+    auto dp = sender;
+    CPopup::create()
+    ->setPositiveButton([=](Node* sender){
+        auto newData = CChallengeDataManager::Instance()->SkipChallenge(dp->getChallengeParam()._index);
+        dp->popupClose();
+        this->createChallengeDP(newData, posIndex);
+    }, "Yes")
+    ->setNegativeButton([=](Node* sender){
+    }, "No")
+    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setMessage("Are you sure you want to skip this challenge?")
+    ->setMessageFont(Color3B::BLACK, 40)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(scene->getContentSize() / 2)
+    ->show(scene, ZORDER::POPUP);
+}
+
+void CPausePopup::initChallengeList()
+{
+    int posIndex = 0;
+    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+    for (auto index : *list)
+    {
+        auto challengeData = CChallengeDataManager::Instance()->getChallengeByIndex(index);
+        this->createChallengeDP(challengeData, posIndex++);
+    }
+}
+
+void CPausePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posIndex)
+{
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 posArray[] = {
+        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f),
+        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.425f),
+        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.35f)
+    };
+    
+    auto dp = CChallengePopupDP::create(data, posIndex)
+    ->addSkipEventListner([=](CChallengePopupDP* sender, int posIdx){
+        this->Skip(sender, posIdx);
+    })
+    ->setBackgroundVisible(false)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(posArray[posIndex])
+    ->show(this, ZORDER::POPUP);
+    m_ChallengeList.emplace_back(dp);
+}
+
 

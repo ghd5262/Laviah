@@ -14,7 +14,7 @@ protected:
 
 private:
 	void End(cocos2d::Node* sender);
-    void skip(CChallengePopupDP* sender);
+    void Skip(CChallengePopupDP* sender, int posIndex);
     
 	CChallengePopup()
 		: m_EndButtonVisible(false){};

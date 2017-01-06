@@ -6,9 +6,9 @@
 
 USING_NS_CC;
 
-CChallengePopupDP* CChallengePopupDP::create(const sCHALLENGE_PARAM challenge)
+CChallengePopupDP* CChallengePopupDP::create(const sCHALLENGE_PARAM challenge, int posIndex)
 {
-    CChallengePopupDP *pRet = new(std::nothrow) CChallengePopupDP(challenge);
+    CChallengePopupDP *pRet = new(std::nothrow) CChallengePopupDP(challenge, posIndex);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -33,7 +33,6 @@ bool CChallengePopupDP::init()
 	bg->setOpacity(0);
 	bg->setCascadeOpacityEnabled(true);
     this->addChild(bg);
-    
 
     auto value = GLOBAL->getVariable(m_Challenge._materialKey);
     auto mtrlValue = m_Challenge._materialValue;
@@ -41,29 +40,38 @@ bool CChallengePopupDP::init()
 	if (complete) value = mtrlValue;
 
     auto contents = m_Challenge._contents;
-	if (value > 0) contents += StringUtils::format("(%d / %d)", value, mtrlValue);
+	if (value > 0) contents += StringUtils::format("(%d%%)", int(getPercent(value, mtrlValue)));
     
-    auto label = Label::createWithTTF(contents, FONT::MALGUNBD, 45);
+    auto label = Label::createWithTTF(contents, FONT::MALGUNBD, 45,
+                                      Size(this->getContentSize().width * 0.8f,
+                                           this->getContentSize().height * 3.f),
+                                      TextHAlignment::CENTER,
+                                      TextVAlignment::CENTER);
 	label->setColor(COLOR::DARKGRAY);
     label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     label->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f));
     bg->addChild(label);
     
 	if (complete) label->setTextColor(COLOR::DARKGRAY_ALPHA);
-    //CMyButton::create()
-    //->addEventListener([=](Node* sender){
-    //    if(m_SkipCallback){
-    //        this->retain();
-    //        m_SkipCallback(this);
-    //        this->release();
-    //    }
-    //})
-    //->setButtonNormalImage("resetIcon.png")
-    //->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT)
-    //->setButtonPosition(Vec2(label->getContentSize().width + 100.f, bg->getContentSize().height * 0.5f))
-    //->show(bg);
     
-	auto delayTime = CUserDataManager::getUserDataSequenceFromList(USERDATA_KEY::CHALLENGE_CUR_LIST, m_Challenge._index) * 0.4f;
+    if (!complete &&
+        CChallengeDataManager::Instance()->NonCompleteChallengeExist(m_Challenge._level, false)){
+        
+        CMyButton::create()
+        ->addEventListener([=](Node* sender){
+            if(m_SkipCallback){
+                this->retain();
+                m_SkipCallback(this, m_PosIndex);
+                this->release();
+            }
+        })
+        ->setButtonNormalImage("resetIcon.png")
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT)
+        ->setButtonPosition(Vec2(bg->getContentSize().width - 10, bg->getContentSize().height * 0.5f))
+        ->show(bg);
+    }
+    
+    float delayTime = m_PosIndex * 0.4f;
     this->setOpenAnimation([=](Node* sender){
         /*auto originPos = getPosition();
         Size ScreenSize = Director::getInstance()->getVisibleSize();
@@ -107,6 +115,15 @@ CPopup* CChallengePopupDP::addSkipEventListner(const SKIP_CALLBACK &callback)
     
     return this;
 }
+
+float CChallengePopupDP::getPercent(float value, float max)
+{
+    if(value != 0 && max != 0)
+        return (value / max) * 100.f;
+    return 0.f;
+}
+
+
 //
 //void CChallengePopupDP::Skip()
 //{

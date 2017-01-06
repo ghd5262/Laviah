@@ -423,7 +423,7 @@ void CUserDataManager::setUserData_ItemGet(std::string key, unsigned itemIdx)
 {
     if(getUserData_IsItemHave(key, itemIdx))
     {
-        CCLOG("Item get : Already have %s", key.c_str());
+        CCLOG("Item get : Already have %s index %d", key.c_str(), itemIdx);
         return;
     }
     
@@ -442,7 +442,7 @@ void CUserDataManager::setUserData_ItemRemove(std::string key, unsigned itemIdx)
 {
 	if (!getUserData_IsItemHave(key, itemIdx))
 	{
-		CCLOG("Item remove : Do not have %s", key.c_str());
+		CCLOG("Item remove : Do not have %s index %d", key.c_str(), itemIdx);
 		return;
 	}
 
@@ -453,6 +453,16 @@ void CUserDataManager::setUserData_ItemRemove(std::string key, unsigned itemIdx)
         this->sortUserDataList(key, compare);
     }
 	convertUserDataToJson();
+}
+
+void CUserDataManager::setUserData_ItemRemoveAll(std::string key)
+{
+    auto itemList = m_UserData->_userDataListMap.find(key);
+    if (itemList != m_UserData->_userDataListMap.end()){
+        auto list = itemList->second;
+        list->clear();
+    }
+    convertUserDataToJson();
 }
 
 bool CUserDataManager::CoinUpdate(int value)

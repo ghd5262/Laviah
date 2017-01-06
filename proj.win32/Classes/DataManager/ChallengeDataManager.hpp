@@ -4,11 +4,6 @@
 #include <vector>
 #include <algorithm>
 
-typedef std::function<bool(int)> CHECKER;
-typedef std::map<std::string, CHECKER> CHECKER_LIST;
-typedef std::function<void(int)> REWARDER;
-typedef std::map<std::string, REWARDER> REWARDER_LIST;
-
 class CChallengeClearChecker;
 class CChallengeRewarder;
 struct sCHALLENGE_PARAM
@@ -55,34 +50,47 @@ struct sCHALLENGE_PARAM
     {}
 };
 
+typedef std::function<bool(int)> CHECKER;
+typedef std::map<std::string, CHECKER> CHECKER_LIST;
+typedef std::function<void(int)> REWARDER;
+typedef std::map<std::string, REWARDER> REWARDER_LIST;
+typedef std::vector<const sCHALLENGE_PARAM*> CHALLENGE_LIST;
+typedef std::function<bool(const sCHALLENGE_PARAM*)> CHALLENGE_PICK;
+
 class CChallengeDataManager
 {
-    typedef std::vector<const sCHALLENGE_PARAM*> CHALLENGE_LIST;
-    typedef std::function<bool(const sCHALLENGE_PARAM*)> CHALLENGE_PICK;
 public:
     static CChallengeDataManager* Instance();
 	bool CheckChallengeComplete(int index);
     void Reward(int index);
+    bool NonCompleteChallengeExist(int level,
+                                   bool below,
+                                   bool continuingType = false);
     const sCHALLENGE_PARAM* SkipChallenge(int index);
 
     //getter & setter
     const sCHALLENGE_PARAM* getChallengeByIndex(int index) const;
-    const sCHALLENGE_PARAM* getNewRandomChallenge(bool oneTime);
-    const sCHALLENGE_PARAM* getMewRandomChallengeByLevel(int level, bool below);
-    const sCHALLENGE_PARAM* getNewRandomChallengeFromList(const CHALLENGE_PICK& callFunc,
-                                                       CHALLENGE_LIST &list);
+    const sCHALLENGE_PARAM* getNewRandomChallenge(int level,
+                                                  bool below,
+                                                  bool continuingType = false);
     
+    static CHALLENGE_LIST getListByFunc(const CHALLENGE_PICK &func, CHALLENGE_LIST list);
+
 private:
     void initWithJson(CHALLENGE_LIST &list, std::string fileName);
     void initMaterialKeyList();
     void initRewardKeyList();
-	void completeAllCurrentChallenges();
-
+    void completeAllCurrentChallenges();
+    const sCHALLENGE_PARAM* getNewRandomChallengeFromList(CHALLENGE_LIST &list);
+    CHALLENGE_LIST getNonCompletedChallengeList(int level,
+                                                bool below,
+                                                bool continuingType = false);
+    
     CChallengeDataManager();
     virtual ~CChallengeDataManager();
     
 private:
-    CHALLENGE_LIST m_CallengeDataList;
+    CHALLENGE_LIST m_ChallengeDataList;
     CHECKER_LIST m_CheckerList;
     REWARDER_LIST m_RewarderList;
     CChallengeClearChecker* m_Checker;

@@ -136,14 +136,15 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 	for (auto index : *list)
 	{
 		auto challengeData = CChallengeDataManager::Instance()->getChallengeByIndex(index);
-		dpVector.emplace_back(CChallengePopupDP::create(challengeData)
-			->addSkipEventListner([=](CChallengePopupDP* sender){
-			this->skip(sender);
+		dpVector.emplace_back(CChallengePopupDP::create(challengeData, idx)
+			->addSkipEventListner([=](CChallengePopupDP* sender, int sequence){
+			this->Skip(sender, sequence);
 		})
 			->setBackgroundVisible(false)
 			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-			->setPopupPosition(posArray[idx++])
+			->setPopupPosition(posArray[idx])
 			->show(this, ZORDER::POPUP));
+        idx++;
 	}
 
 	auto btnEnd = CMyButton::create()
@@ -183,7 +184,7 @@ CPopup* CChallengePopup::EndButtonVisible(bool visible)
 	return this;
 }
 
-void CChallengePopup::skip(CChallengePopupDP* sender)
+void CChallengePopup::Skip(CChallengePopupDP* sender, int posIndex)
 {
     
 }

@@ -16,7 +16,7 @@ CChallengeDataManager::CChallengeDataManager()
 {
 	initMaterialKeyList();
 	initRewardKeyList();
-    initWithJson(m_CallengeDataList, DATA_FILE_NAME);
+    initWithJson(m_ChallengeDataList, DATA_FILE_NAME);
 }
 
 CChallengeDataManager::~CChallengeDataManager()
@@ -30,7 +30,7 @@ CChallengeDataManager::~CChallengeDataManager()
         list.clear();
     };
     
-    cleanList(m_CallengeDataList);
+    cleanList(m_ChallengeDataList);
     
     CC_SAFE_DELETE(m_Checker);
     CC_SAFE_DELETE(m_Rewarder);
@@ -121,6 +121,13 @@ void CChallengeDataManager::Reward(int index)
     rewarder->second(rewardValue);
 }
 
+bool CChallengeDataManager::NonCompleteChallengeExist(int level,
+                                                      bool below,
+                                                      bool continuingType/* = false*/)
+{
+    return getNonCompletedChallengeList(level, below, continuingType).size();
+}
+
 const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 {
 /** continuing type 은 기존 로직으로 처리하지 못한다.
@@ -138,8 +145,10 @@ const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 //        CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST, savedData);
 //    }
     
+    CCLOG("Skip challenge %d", index);
 	CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
-	auto newChallenge = this->getMewRandomChallengeByLevel(1, false);
+	auto newChallenge = this->getNewRandomChallenge(1, false);
+    CCLOG("Get new challenge %d", newChallenge->_index);
 	CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, newChallenge->_index);
     
 //    if(newChallenge->_continuingType){
@@ -151,60 +160,74 @@ const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 
 const sCHALLENGE_PARAM* CChallengeDataManager::getChallengeByIndex(int index) const
 {
-    if (m_CallengeDataList.size() <= index) {
+    if (m_ChallengeDataList.size() <= index) {
         CCLOG("Wrong index : %d", index);
         CCASSERT(false, "Wrong index");
         return nullptr;
     }
-    return m_CallengeDataList.at(index);
+    return m_ChallengeDataList.at(index);
 }
 
-const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge(bool continuingType)
+const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge(int level,
+                                                                     bool below,
+                                                                     bool continuingType/* = false*/)
 {
-    if(continuingType){
-		return getNewRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
-            return !data->_continuingType;
-        }, m_CallengeDataList);
-    }
-    else
+    auto newList = getNonCompletedChallengeList(level, below, continuingType);
+    return getNewRandomChallengeFromList(newList);
+}
+
+CHALLENGE_LIST CChallengeDataManager::getListByFunc(const CHALLENGE_PICK &func, CHALLENGE_LIST list)
+{
+    for(auto iter = list.begin(); iter != list.end(); )
     {
-		return getNewRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
-            return data->_continuingType;
-        }, m_CallengeDataList);
+        auto &item = (*iter);
+        if(item != nullptr){
+            
+            if(!func(item)) iter = list.erase(iter);
+            else            iter++;
+        }
     }
-}
-
-const sCHALLENGE_PARAM* CChallengeDataManager::getMewRandomChallengeByLevel(int level, bool below)
-{
-    if(below){
-		return getNewRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
-            return data->_level > level;
-        }, m_CallengeDataList);
-    }
-    else
-    {
-		return getNewRandomChallengeFromList([=](const sCHALLENGE_PARAM* data){
-            return data->_level != level;
-        }, m_CallengeDataList);
-    }
-}
-
-const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(const CHALLENGE_PICK& callFunc,
-                                                                          CHALLENGE_LIST &list)
-{
-    const sCHALLENGE_PARAM* picked;
-    do{
-        auto size = list.size();
-        auto randomIdx = random<int>(0, int(size) - 1);
-        picked = list.at(randomIdx);
-    } while (callFunc(picked));
     
-    CCLOG("Pick a challenge :: \nidx %d \ncontent %s \nlevel %d",
+    return list;
+}
+
+const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(CHALLENGE_LIST &list)
+{
+    auto size = list.size();
+    if(size <= 0) {
+        CCLOG("There is no challenge anymore.");
+        return nullptr;
+    }
+    const sCHALLENGE_PARAM* picked;
+    auto randomIdx = random<int>(0, int(size) - 1);
+    picked = list.at(randomIdx);
+    
+    CCLOG("Pick a challenge :: idx %d content %s level %d",
           picked->_index,
           picked->_contents.c_str(),
           picked->_level);
     
     return picked;
+}
+
+CHALLENGE_LIST CChallengeDataManager::getNonCompletedChallengeList(int level,
+                                                                   bool below,
+                                                                   bool continuingType/* = false*/)
+{
+    auto userDataMng = CUserDataManager::Instance();
+    
+    return getListByFunc([=](const sCHALLENGE_PARAM* data){
+        
+        if(userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_LIST, data->_index)) return false;
+        if(userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_CUR_LIST, data->_index)) return false;
+        
+        if(below)           { if(data->_level > level) return false;   }
+        else                { if(data->_level != level) return false;  }
+        
+        if(continuingType)  { if(!data->_continuingType) return false; }
+        
+        return true;
+    }, m_ChallengeDataList);
 }
 
 void CChallengeDataManager::initMaterialKeyList()
