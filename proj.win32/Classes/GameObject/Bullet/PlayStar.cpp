@@ -68,4 +68,5 @@ void CPlayStar::CollisionWithPlayer()
 
 	auto value = CItemManager::Instance()->getValueOfStar((eSTAR_TYPE)(this->getSymbol() - 'P' + 1));
     CMultipleScore::Instance()->AddScore(value);
+	GLOBAL->STAR_COUNT += 1;
 }

@@ -13,7 +13,9 @@ namespace CHALLENGE_DATA_KEY {
     const std::string RUN_SCORE           = "RUN_SCORE";
     const std::string BEST_SCORE          = "BEST_SCORE";
     const std::string BEST_COMBO          = "BEST_COMBO";
-    
+	const std::string COIN_COUNT		  = "COIN_COUNT";
+	const std::string STAR_COUNT		  = "STAR_COUNT";
+
     const std::string CHARACTER_COLLECT   = "CHARACTER_COLLECT";
     const std::string ROCKET_COLLECT      = "ROCKET_COLLECT";
     

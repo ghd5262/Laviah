@@ -74,4 +74,5 @@ void CPlayCoin::CollisionWithPlayer()
     this->R_UpAndBezier(targetPos, cPos1, cPos2, time, 4.f);
     auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
     GLOBAL->COIN_SCORE += value;
+	GLOBAL->COIN_COUNT += 1;
 }

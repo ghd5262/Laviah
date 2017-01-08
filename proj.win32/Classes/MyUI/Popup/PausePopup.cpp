@@ -133,6 +133,9 @@ bool CPausePopup::init()
 				EaseSineIn::create(
 				MoveTo::create(0.3f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f))), NULL));
 		}, 0.1f, "PausePopupClose");
+
+		for (auto dp : m_ChallengeList)
+			dp->popupClose();
 	});
 
 	return true;

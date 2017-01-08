@@ -8,16 +8,16 @@ CItemManager::CItemManager()
 {
 	// 기본 값
 	m_ValueOfCoin[eCOIN_TYPE_bronze]	= 1.f;
-	m_ValueOfCoin[eCOIN_TYPE_silver]	= 3.f;
-	m_ValueOfCoin[eCOIN_TYPE_gold]		= 5.f;
-	m_ValueOfCoin[eCOIN_TYPE_bigSilver] = 10.f;
-	m_ValueOfCoin[eCOIN_TYPE_bigGold]	= 20.f;
+	m_ValueOfCoin[eCOIN_TYPE_silver]	= 2.f;
+	m_ValueOfCoin[eCOIN_TYPE_gold]		= 3.f;
+	m_ValueOfCoin[eCOIN_TYPE_bigSilver] = 4.f;
+	m_ValueOfCoin[eCOIN_TYPE_bigGold]	= 5.f;
 
-	m_ValueOfStar[eSTAR_TYPE_bronze]	= 3.f;
-	m_ValueOfStar[eSTAR_TYPE_silver]	= 5.f;
-	m_ValueOfStar[eSTAR_TYPE_gold]		= 10.f;
-	m_ValueOfStar[eSTAR_TYPE_bigSilver] = 20.f;
-	m_ValueOfStar[eSTAR_TYPE_bigGold]	= 30.f;
+	m_ValueOfStar[eSTAR_TYPE_bronze]	= 1.f;
+	m_ValueOfStar[eSTAR_TYPE_silver]	= 2.f;
+	m_ValueOfStar[eSTAR_TYPE_gold]		= 3.f;
+	m_ValueOfStar[eSTAR_TYPE_bigSilver] = 4.f;
+	m_ValueOfStar[eSTAR_TYPE_bigGold]	= 5.f;
 
 	Clear();
 }

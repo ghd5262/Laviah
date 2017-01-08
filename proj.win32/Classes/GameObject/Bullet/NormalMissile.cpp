@@ -92,8 +92,8 @@ void CNormalMissile::CollisionWithPlayer()
     
 	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
         GLOBAL->GIANT_COUNT_MISSILE += 1;
-        GLOBAL->GIANT_SCORE_MISSILE += 50;
-		createScoreCurrentPos(50);
+        GLOBAL->GIANT_SCORE_MISSILE += 30;
+		createScoreCurrentPos(30);
 		R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
 	}
 	else{
@@ -108,8 +108,8 @@ void CNormalMissile::CollisionWithPlayer()
 void CNormalMissile::CollisionWithBarrier()
 {
     GLOBAL->BARRIER_COUNT += 1;
-    GLOBAL->BARRIER_SCORE += 50;
-    createScoreCurrentPos(50);
+	GLOBAL->BARRIER_SCORE += 30;
+	createScoreCurrentPos(30);
     this->createParticle_Explosion();
 	this->ReturnToMemoryBlock();
 }

@@ -135,7 +135,6 @@ void CLoadingScene::callbackDownloadComplete(Ref* object)
 
 void CLoadingScene::callbackLoginResult(Ref* object)
 {
-	CUserDataManager::Instance()->initUserDefaultValue();
 	CUserDataManager::Instance()->UserDataLoad();
 }
 

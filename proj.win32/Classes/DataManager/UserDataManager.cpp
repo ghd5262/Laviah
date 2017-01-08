@@ -26,12 +26,18 @@
 	Json::StyledWriter writer;
 
 // 오름차순 compare
-unsigned compare (unsigned a, unsigned b)
+int compare (int a, int b)
 {
     return ( a < b );
 }
-//d8d56d34a90de34339f8a174523adaae - texturepacker global key
-static const std::string CRYPTO_KEY = "sktjdgmlq1024!";
+
+namespace USERDATA{
+	//d8d56d34a90de34339f8a174523adaae - texturepacker global key
+	static const std::string CRYPTO_KEY			= "sktjdgmlq1024!";
+	static const std::string SINGLE_DATA_KEY	= "userDefaultDatas_Number";
+	static const std::string ARRAY_DATA_KEY		= "userDefaultDatas_List";
+	static const std::string GOOGLE_DATA_KEY	= "USER_DATA";
+};
 
 CUserDataManager::CUserDataManager()
 : m_JsonUserDataFromXML("")
@@ -40,19 +46,21 @@ CUserDataManager::CUserDataManager()
 //: m_IsFirstRevisionCall(false)
 //, m_IsDataLoadFinish(false)
 {
-	m_UserData = std::shared_ptr<sUSER_DATA>(new sUSER_DATA(), [](sUSER_DATA* userData)
-	{
-		delete userData;
-	});
+	this->initUserDefaultValue(m_UserDefaultData);
+	this->initUserDataKey(m_UserDefaultData);
 }
 
 CUserDataManager::~CUserDataManager()
 {
-	std::for_each(m_UserData->_userDataListMap.begin(), m_UserData->_userDataListMap.end(), [=](std::pair<std::string, DATA_LIST*> list)
-	{
-		if (list.second != nullptr)
-			delete list.second;
-	});
+	auto deleteList = [=](std::map<std::string, ARRAY_DATA*> list){
+		for (auto dataList : list)
+		{
+			if (dataList.second) delete dataList.second;
+		}
+	};
+
+	deleteList(m_UserData._userDataListMap);
+	deleteList(m_UserDefaultData._userDataListMap);
 }
 
 CUserDataManager* CUserDataManager::Instance()
@@ -61,7 +69,7 @@ CUserDataManager* CUserDataManager::Instance()
     return &instance;
 }
 
-void CUserDataManager::initUserDefaultValue()
+void CUserDataManager::initUserDefaultValue(sUSER_DATA &data)
 {
     Json::Value root;
     Json::Reader reader;
@@ -81,46 +89,70 @@ void CUserDataManager::initUserDefaultValue()
     CCLOG("strUserDefaultDataList JSON : \n %s\n", userDefaultDataListClearData.c_str());
     
     
-    const Json::Value numberDataArray = root["userDefaultDatas_Number"];
+    const Json::Value numberDataArray = root[USERDATA::SINGLE_DATA_KEY];
     
-    for (unsigned int dataCount = 0; dataCount < numberDataArray.size(); ++dataCount)
+    for (int dataCount = 0; dataCount < numberDataArray.size(); ++dataCount)
     {
         const Json::Value valueItem = numberDataArray[dataCount];
         
         std::string dataKey = valueItem["dataKey"].asString();
-        unsigned defaultValue = valueItem["defaultValue"].asUInt();
-        addKey("userDefaultDatas_Number", dataKey);
-        m_UserData->_userDataUnsignedMap.emplace(std::pair<std::string, unsigned>(dataKey, defaultValue));
+        int defaultValue = valueItem["defaultValue"].asInt();
+
+		data._userDataIntMap.emplace(std::pair<std::string, int>(dataKey, defaultValue));
     }
     
-    const Json::Value listDataArray = root["userDefaultDatas_List"];
+    const Json::Value listDataArray = root[USERDATA::ARRAY_DATA_KEY];
     
-    for (unsigned int dataCount = 0; dataCount < listDataArray.size(); ++dataCount)
+    for (int dataCount = 0; dataCount < listDataArray.size(); ++dataCount)
     {
         const Json::Value valueItem = listDataArray[dataCount];
         
         std::string dataKey = valueItem["dataKey"].asString();
         const Json::Value defaultValueArray = valueItem["defaultValue"];
-        
-        auto emptyList = new DATA_LIST();
-        addKey("userDefaultDatas_List", dataKey);
-        
-        for(unsigned int valueCount = 0; valueCount < defaultValueArray.size(); valueCount++)
+       
+		auto emptyList = new ARRAY_DATA();        
+		data._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(dataKey, emptyList));
+
+        for(int valueCount = 0; valueCount < defaultValueArray.size(); valueCount++)
             emptyList->emplace_back(defaultValueArray[valueCount].asInt());
-        
-        m_UserData->_userDataListMap.emplace(std::pair<std::string, DATA_LIST*>(dataKey, emptyList));
     }
-    
-    if (m_UserData->_userDataKeyMap.size() == 0)
-    {
-        CCLOG("WARNNING : There is no key of game data");
-        CCASSERT(false, "No Key");
-    }
+}
+
+void CUserDataManager::initUserDataKey(sUSER_DATA &data)
+{
+	for (auto singleData : data._userDataIntMap)
+		this->addKey(USERDATA::SINGLE_DATA_KEY, singleData.first);
+	
+
+	for (auto arrayData : data._userDataListMap)
+		this->addKey(USERDATA::ARRAY_DATA_KEY, arrayData.first);
+
+
+	if (!m_UserDataKeyList.size())
+	{
+		CCLOG("WARNNING : There is no key of game data");
+		CCASSERT(false, "No Key");
+	}
+}
+
+void CUserDataManager::initSingleUserDataWithDefaultValue(std::string key)
+{
+	m_UserData._userDataIntMap[key] = m_UserDefaultData._userDataIntMap[key];
+}
+
+void CUserDataManager::initArrayUserDataWithDefaultValue(std::string key)
+{
+	auto userArrayData = m_UserData._userDataListMap[key];
+	auto userDefaultArrayData = m_UserDefaultData._userDataListMap[key];
+	if (userDefaultArrayData->size() > 0){
+		userArrayData->resize(userDefaultArrayData->size());
+		std::copy(std::begin(*userDefaultArrayData), std::end(*userDefaultArrayData), std::begin(*userArrayData));
+	}
 }
 
 bool CUserDataManager::getIsFirstPlay()
 {
-    std::string crypto_key = MakeCryptoString("USER_DATA_FIRSTLOAD", CRYPTO_KEY);
+    std::string crypto_key = MakeCryptoString(USERDATA_KEY::FIRST_LOAD, USERDATA::CRYPTO_KEY);
     return UserDefault::getInstance()->getBoolForKey(crypto_key.c_str(), true);
 }
 
@@ -135,7 +167,6 @@ void CUserDataManager::UserDataLoad()
 		// 첫 로드일 경우 구글 클라우드 로드를 기다린다.
 		dataLoadFromGoogleCloud();
 		dataLoadFromXML();
-		//convertJsonToUserData(m_JsonUserDataFromXML);
 	}
 	else
 	{
@@ -143,24 +174,23 @@ void CUserDataManager::UserDataLoad()
         
 		// 첫 로드가 아닐 경우 xml에서 로드
 		dataLoadFromXML();
-		convertJsonToUserData(m_JsonUserDataFromXML);
+		convertJsonToUserData(m_UserData, m_JsonUserDataFromXML);
         __NotificationCenter::getInstance()->postNotification(NOTICE::USERDATA_LOAD_FINISH, NULL);
 	}
-
 }
 
 void CUserDataManager::dataLoadFromXML()
 {
-	std::string crypto_key = MakeCryptoString("USER_DATA", CRYPTO_KEY);
+	std::string crypto_key = MakeCryptoString(USERDATA::GOOGLE_DATA_KEY, USERDATA::CRYPTO_KEY);
 	std::string crypto_value = UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), "");
-	std::string decrypto_value = MakeCryptoString(crypto_value, CRYPTO_KEY);
+	std::string decrypto_value = MakeCryptoString(crypto_value, USERDATA::CRYPTO_KEY);
 
 	m_JsonUserDataFromXML = decrypto_value;
 }
 
 void CUserDataManager::dataLoadFromGoogleCloud()
 {
-	std::string crypto_key = MakeCryptoString("USER_DATA", CRYPTO_KEY);
+	std::string crypto_key = MakeCryptoString(USERDATA::GOOGLE_DATA_KEY, USERDATA::CRYPTO_KEY);
 	       
 	// google sdk와 통신후 googleCloudDataLoad 호출됨
 	// googleCloudDataLoad 호출 후에는 revision 비교 후 더 높은 것을 채택함
@@ -169,7 +199,7 @@ void CUserDataManager::dataLoadFromGoogleCloud()
 
 void CUserDataManager::googleCloudDataLoad(std::string cryptoValue)
 {
-	std::string decrypto_value = MakeCryptoString(cryptoValue, CRYPTO_KEY);
+	std::string decrypto_value = MakeCryptoString(cryptoValue, USERDATA::CRYPTO_KEY);
 
 	m_JsonUserDataFromGoogleCloud = decrypto_value;
 
@@ -177,21 +207,21 @@ void CUserDataManager::googleCloudDataLoad(std::string cryptoValue)
 	{
         CSDKUtil::Instance()->Toast("Google revision");
         
-		convertJsonToUserData(m_JsonUserDataFromGoogleCloud);
+		convertJsonToUserData(m_UserData, m_JsonUserDataFromGoogleCloud);
 		overwriteXmlByGoogleCloud(m_JsonUserDataFromGoogleCloud);
-        UserDefault::getInstance()->setBoolForKey("USER_DATA_FIRSTLOAD", false);
+        UserDefault::getInstance()->setBoolForKey(USERDATA_KEY::FIRST_LOAD.c_str(), false);
 	}
 	else
 	{
         CSDKUtil::Instance()->Toast("xml revision");
         
-		convertJsonToUserData(m_JsonUserDataFromXML);
+		convertJsonToUserData(m_UserData, m_JsonUserDataFromXML);
 	}
     
     __NotificationCenter::getInstance()->postNotification(NOTICE::USERDATA_LOAD_FINISH, NULL);
 }
 
-void CUserDataManager::convertJsonToUserData(std::string valueJson)
+void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string valueJson)
 {
 	if (valueJson == "")
 	{
@@ -212,37 +242,50 @@ void CUserDataManager::convertJsonToUserData(std::string valueJson)
 
 	const Json::Value dataArray = root["data"];
 
-	for (auto keyInfo : m_UserData->_userDataKeyMap)
+	for (auto keyInfo : m_UserDataKeyList)
 	{
 		std::string keyKind = keyInfo.second;
 		std::string key = keyInfo.first;
 
-		if (keyKind == "userDefaultDatas_Number")
+		if (keyKind == USERDATA::SINGLE_DATA_KEY)
 		{
-			unsigned value = dataArray[key.c_str()].asUInt();
-			if (m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end())
-				m_UserData->_userDataUnsignedMap.find(key)->second = value;
+			auto value = dataArray[key.c_str()];
+			auto iter = data._userDataIntMap.find(key);
+			if (iter == data._userDataIntMap.end())
+				data._userDataIntMap.emplace(std::pair<std::string, int>(key, 0));
+
+			/** if there isn't data about the key.
+			* set user data from the default data. */
+			if (value.isNull())
+			{
+				this->initSingleUserDataWithDefaultValue(key);
+				continue;
+			}
+
+			data._userDataIntMap[key] = value.asInt();
 		}
-		else if (keyKind == "userDefaultDatas_List")
+		else if (keyKind == USERDATA::ARRAY_DATA_KEY)
 		{
 			const Json::Value arrayValue = dataArray[key.c_str()];
+
+			auto iter = data._userDataListMap.find(key);
+			if (iter == data._userDataListMap.end()){
+				auto emptyList = new ARRAY_DATA();
+				data._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(key, emptyList));
+			}
+			/** if there isn't data about the key.
+			 * set user data from the default data. */
+			if (arrayValue.isNull())
+			{
+				this->initArrayUserDataWithDefaultValue(key);
+				continue;
+			}
+
 			for (auto value : arrayValue)
 			{
-				unsigned itemIdx = value.asUInt();
-
-				if (getUserData_IsItemHave(key, itemIdx))
-				{
-					CCLOG("Item get : Already have %s", key.c_str());
-					continue;
-				}
-
-				if (m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
-					auto list = m_UserData->_userDataListMap.find(key)->second;
-
-					list->push_back(itemIdx);
-
-					this->sortUserDataList(key, compare);
-				}
+				int itemIdx = value.asInt();
+				data._userDataListMap[key]->push_back(itemIdx);
+				this->sortUserDataList(key, compare);
 			}
 		}
 	}
@@ -250,8 +293,8 @@ void CUserDataManager::convertJsonToUserData(std::string valueJson)
 
 bool CUserDataManager::isGoogleRevisionHigher()
 {
-	unsigned googleRevision = 0;
-	unsigned xmlRevision = 0;
+	int googleRevision = 0;
+	int xmlRevision = 0;
 	std::string key = USERDATA_KEY::DATA_REVISION;
 	if (m_JsonUserDataFromGoogleCloud != "")
 	{
@@ -267,7 +310,7 @@ bool CUserDataManager::isGoogleRevisionHigher()
 		CCLOG("UserData JSON : \n %s\n", m_JsonUserDataFromGoogleCloud.c_str());
 
 		const Json::Value dataArray = googleJsonRoot["data"];
-		googleRevision = dataArray[key.c_str()].asUInt();
+		googleRevision = dataArray[key.c_str()].asInt();
 	}
 	if (m_JsonUserDataFromXML != "")
 	{
@@ -283,7 +326,7 @@ bool CUserDataManager::isGoogleRevisionHigher()
 		CCLOG("UserData JSON : \n %s\n", m_JsonUserDataFromXML.c_str());
 
 		const Json::Value dataArray = xmlJsonRoot["data"];
-		xmlRevision = dataArray[key.c_str()].asUInt();
+		xmlRevision = dataArray[key.c_str()].asInt();
 	}
 
     CCLOG("Compare revision - Google : %d vs XML : %d", googleRevision, xmlRevision);
@@ -300,45 +343,45 @@ bool CUserDataManager::isGoogleRevisionHigher()
 void CUserDataManager::overwriteXmlByGoogleCloud(std::string valueJson)
 {
     CSDKUtil::Instance()->Toast("Overwrite to xml");
-    UserDefault::getInstance()->setStringForKey("USER_DATA", valueJson);
+    UserDefault::getInstance()->setStringForKey(USERDATA::GOOGLE_DATA_KEY.c_str(), valueJson);
 }
 
 void CUserDataManager::addKey(std::string keyKind, std::string key)
 {
-    m_UserData->_userDataKeyMap.emplace(std::pair<std::string, std::string>(key, keyKind));
+    m_UserDataKeyList.emplace(std::pair<std::string, std::string>(key, keyKind));
     CCLOG("Kind : %s Add Key : %s ", keyKind.c_str(), key.c_str());
 }
 
 #pragma mark -
 #pragma mark [ interface function getter ]
-unsigned CUserDataManager::getUserData_Number(std::string key)
+int CUserDataManager::getUserData_Number(std::string key)
 {
-    if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end()){
-        auto value = m_UserData->_userDataUnsignedMap.find(key)->second;
+    if(m_UserData._userDataIntMap.find(key) != m_UserData._userDataIntMap.end()){
+        auto value = m_UserData._userDataIntMap.find(key)->second;
         return value;
     }
     CCLOG("There is no user data key : %s", key.c_str());
     CCASSERT(false, "Wrong Key");
 }
 
-DATA_LIST* CUserDataManager::getUserData_List(std::string key)
+ARRAY_DATA* CUserDataManager::getUserData_List(std::string key)
 {
-    if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
-        auto list = m_UserData->_userDataListMap.find(key)->second;
+    if(m_UserData._userDataListMap.find(key) != m_UserData._userDataListMap.end()){
+        auto list = m_UserData._userDataListMap.find(key)->second;
         return list;
     }
     CCLOG("There is no user data key : %s", key.c_str());
     CCASSERT(false, "Wrong Key");
 }
 
-bool CUserDataManager::getUserData_IsItemHave(std::string key, unsigned itemIdx)
+bool CUserDataManager::getUserData_IsItemHave(std::string key, int itemIdx)
 {
-    if(m_UserData->_userDataListMap.find(key) == m_UserData->_userDataListMap.end()){
+    if(m_UserData._userDataListMap.find(key) == m_UserData._userDataListMap.end()){
         CCLOG("There is no list with this key %s", key.c_str());
         CCASSERT(false, "Wrong Key");
     }
     
-    auto itemList = m_UserData->_userDataListMap.find(key)->second;
+    auto itemList = m_UserData._userDataListMap.find(key)->second;
     size_t listSize = itemList->size();
     
     if (listSize > 0)
@@ -367,24 +410,24 @@ void CUserDataManager::convertUserDataToJson()
 		
 	Json::Value dataArray = root["data"];
 	
-	for (auto keyInfo : m_UserData->_userDataKeyMap)
+	for (auto keyInfo : m_UserDataKeyList)
 	{
 		std::string keyKind = keyInfo.second;
 		std::string key = keyInfo.first;
 		Json::Value userData;
-		if (keyKind == "userDefaultDatas_Number")
+		if (keyKind == USERDATA::SINGLE_DATA_KEY)
 		{
 			dataArray[key.c_str()] = getUserData_Number(key);
 			//dataArray[key.c_str()] = userData;
 		}
-		else if (keyKind == "userDefaultDatas_List")
+		else if (keyKind == USERDATA::ARRAY_DATA_KEY)
 		{
 			Json::Value jsonItemList;
 			auto list = getUserData_List(key);
 
 			for (auto data : *list)
 			{
-				jsonItemList.append(static_cast<unsigned>(data));
+				jsonItemList.append(static_cast<int>(data));
 			}
 			dataArray[key.c_str()] = jsonItemList;
 			//dataArray[key.c_str()] = userData;
@@ -394,8 +437,8 @@ void CUserDataManager::convertUserDataToJson()
 	root["data"] = dataArray;
 	dataStr = writer.write(root);
 	// 암호화
-	std::string crypto_key = MakeCryptoString("USER_DATA", CRYPTO_KEY);
-	std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
+	std::string crypto_key = MakeCryptoString(USERDATA::GOOGLE_DATA_KEY, USERDATA::CRYPTO_KEY);
+	std::string crypto_value = MakeCryptoString(dataStr, USERDATA::CRYPTO_KEY);
 
 	UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
 
@@ -405,21 +448,21 @@ void CUserDataManager::convertUserDataToJson()
 
 #pragma mark -
 #pragma mark [ interface function setter ]
-void CUserDataManager::setSaveRevision(unsigned value)
+void CUserDataManager::setSaveRevision(int value)
 {
-    if(m_UserData->_userDataUnsignedMap.find(USERDATA_KEY::DATA_REVISION) != m_UserData->_userDataUnsignedMap.end())
-        m_UserData->_userDataUnsignedMap.find(USERDATA_KEY::DATA_REVISION)->second = value;
+    if(m_UserData._userDataIntMap.find(USERDATA_KEY::DATA_REVISION) != m_UserData._userDataIntMap.end())
+        m_UserData._userDataIntMap.find(USERDATA_KEY::DATA_REVISION)->second = value;
 }
 
-void CUserDataManager::setUserData_Number(std::string key, unsigned value)
+void CUserDataManager::setUserData_Number(std::string key, int value)
 {
-    if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end())
-        m_UserData->_userDataUnsignedMap.find(key)->second = value;
+    if(m_UserData._userDataIntMap.find(key) != m_UserData._userDataIntMap.end())
+        m_UserData._userDataIntMap.find(key)->second = value;
     
     convertUserDataToJson();
 }
 
-void CUserDataManager::setUserData_ItemGet(std::string key, unsigned itemIdx)
+void CUserDataManager::setUserData_ItemGet(std::string key, int itemIdx)
 {
     if(getUserData_IsItemHave(key, itemIdx))
     {
@@ -427,8 +470,8 @@ void CUserDataManager::setUserData_ItemGet(std::string key, unsigned itemIdx)
         return;
     }
     
-	auto itemList = m_UserData->_userDataListMap.find(key);
-	if (itemList != m_UserData->_userDataListMap.end()){
+	auto itemList = m_UserData._userDataListMap.find(key);
+	if (itemList != m_UserData._userDataListMap.end()){
 		auto list = itemList->second;
 
         list->push_back(itemIdx);
@@ -438,7 +481,7 @@ void CUserDataManager::setUserData_ItemGet(std::string key, unsigned itemIdx)
     convertUserDataToJson();
 }
 
-void CUserDataManager::setUserData_ItemRemove(std::string key, unsigned itemIdx)
+void CUserDataManager::setUserData_ItemRemove(std::string key, int itemIdx)
 {
 	if (!getUserData_IsItemHave(key, itemIdx))
 	{
@@ -446,8 +489,8 @@ void CUserDataManager::setUserData_ItemRemove(std::string key, unsigned itemIdx)
 		return;
 	}
 
-	auto itemList = m_UserData->_userDataListMap.find(key);
-	if (itemList != m_UserData->_userDataListMap.end()){
+	auto itemList = m_UserData._userDataListMap.find(key);
+	if (itemList != m_UserData._userDataListMap.end()){
 		auto list = itemList->second;
 		list->erase(std::remove(std::begin(*list), std::end(*list), itemIdx), std::end(*list));
         this->sortUserDataList(key, compare);
@@ -457,8 +500,8 @@ void CUserDataManager::setUserData_ItemRemove(std::string key, unsigned itemIdx)
 
 void CUserDataManager::setUserData_ItemRemoveAll(std::string key)
 {
-    auto itemList = m_UserData->_userDataListMap.find(key);
-    if (itemList != m_UserData->_userDataListMap.end()){
+    auto itemList = m_UserData._userDataListMap.find(key);
+    if (itemList != m_UserData._userDataListMap.end()){
         auto list = itemList->second;
         list->clear();
     }
@@ -525,7 +568,7 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //        CCLOG("GoogleLoginResult : Call google revision function");
 //        
 //        // 리비전 비교 위해 함수 호출
-//        std::string crypto_key = MakeCryptoString(USERDATA_KEY::DATA_REVISION, CRYPTO_KEY);
+//        std::string crypto_key = MakeCryptoString(USERDATA_KEY::DATA_REVISION, USERDATA::CRYPTO_KEY);
 //        CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
 //        
 //        m_IsFirstRevisionCall = true;
@@ -540,10 +583,10 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //
 //#pragma mark -
 //#pragma mark [ interface function getter ]
-//unsigned CUserDataManager::getUserData_Number(std::string key)
+//int CUserDataManager::getUserData_Number(std::string key)
 //{
-//    if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end()){
-//        auto value = m_UserData->_userDataUnsignedMap.find(key)->second;
+//    if(m_UserData._userDataIntMap.find(key) != m_UserData._userDataIntMap.end()){
+//        auto value = m_UserData._userDataIntMap.find(key)->second;
 //        return value;
 //    }
 //    CCLOG("There is no user data key : %s", key.c_str());
@@ -552,22 +595,22 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //
 //DATA_LIST* CUserDataManager::getUserData_List(std::string key)
 //{
-//    if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
-//        auto list = m_UserData->_userDataListMap.find(key)->second;
+//    if(m_UserData._userDataListMap.find(key) != m_UserData._userDataListMap.end()){
+//        auto list = m_UserData._userDataListMap.find(key)->second;
 //        return list;
 //    }
 //    CCLOG("There is no user data key : %s", key.c_str());
 //    CCASSERT(false, "Wrong Key");
 //}
 //
-//bool CUserDataManager::getUserData_IsItemHave(std::string key, unsigned itemIdx)
+//bool CUserDataManager::getUserData_IsItemHave(std::string key, int itemIdx)
 //{
-//    if(m_UserData->_userDataListMap.find(key) == m_UserData->_userDataListMap.end()){
+//    if(m_UserData._userDataListMap.find(key) == m_UserData._userDataListMap.end()){
 //        CCLOG("There is no list with this key %s", key.c_str());
 //        CCASSERT(false, "Wrong Key");
 //    }
 //    
-//    auto itemList = m_UserData->_userDataListMap.find(key)->second;
+//    auto itemList = m_UserData._userDataListMap.find(key)->second;
 //    size_t listSize = itemList->size();
 //    
 //    if (listSize > 0)
@@ -590,26 +633,26 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //
 //#pragma mark -
 //#pragma mark [ interface function setter ]
-//void CUserDataManager::setSaveRevision(unsigned value)
+//void CUserDataManager::setSaveRevision(int value)
 //{
-//    if(m_UserData->_userDataUnsignedMap.find(USERDATA_KEY::DATA_REVISION) != m_UserData->_userDataUnsignedMap.end())
-//        m_UserData->_userDataUnsignedMap.find(USERDATA_KEY::DATA_REVISION)->second = value;
+//    if(m_UserData._userDataIntMap.find(USERDATA_KEY::DATA_REVISION) != m_UserData._userDataIntMap.end())
+//        m_UserData._userDataIntMap.find(USERDATA_KEY::DATA_REVISION)->second = value;
 //    
 //    convertUserDataToJson_Revision();
 //}
 //
-//void CUserDataManager::setUserData_Number(std::string key, unsigned value)
+//void CUserDataManager::setUserData_Number(std::string key, int value)
 //{
-//    if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end())
-//        m_UserData->_userDataUnsignedMap.find(key)->second = value;
+//    if(m_UserData._userDataIntMap.find(key) != m_UserData._userDataIntMap.end())
+//        m_UserData._userDataIntMap.find(key)->second = value;
 //    
 //    convertUserDataToJson_Number(key);
 //}
 //
-//void CUserDataManager::setUserData_ItemGet(std::string key, unsigned itemIdx)
+//void CUserDataManager::setUserData_ItemGet(std::string key, int itemIdx)
 //{
-//    if(m_UserData->_userDataListMap.find(key) != m_UserData->_userDataListMap.end()){
-//        auto list = m_UserData->_userDataListMap.find(key)->second;
+//    if(m_UserData._userDataListMap.find(key) != m_UserData._userDataListMap.end()){
+//        auto list = m_UserData._userDataListMap.find(key)->second;
 //
 //        list->push_back(itemIdx);
 //        
@@ -665,15 +708,15 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //     * 게임중 인터넷이 끊기면 구글클라우드에는 저장하지 않기 때문에 대부분 xml의 revision이 높을 것이다.
 //     * 하지만 게임을 지웠다가 다시 설치할 경우엔 클라우드의 데이터를 가져와야한다. */
 //    
-//    unsigned xmlRevision = 0;
-//    std::string crypto_key = MakeCryptoString("USER_DATA_SAVE_REVISION", CRYPTO_KEY);
+//    int xmlRevision = 0;
+//    std::string crypto_key = MakeCryptoString("USER_DATA_SAVE_REVISION", USERDATA::CRYPTO_KEY);
 //    auto valueJson = UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), "");
 //    if (valueJson != ""){
 //        JSONREADER_CREATE
 //        xmlRevision = root["data"].asInt();
 //    }
 //    
-//    unsigned googleRevision = getUserData_Number(USERDATA_KEY::DATA_REVISION);
+//    int googleRevision = getUserData_Number(USERDATA_KEY::DATA_REVISION);
 //    
 //    CCLOG("xmlRevision : %u googleRevision : %u", xmlRevision, googleRevision);
 //    
@@ -692,8 +735,8 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //
 //void CUserDataManager::dataLoadFromXML()
 //{
-//    for(auto keyInfo : m_UserData->_userDataKeyMap){
-//        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
+//    for(auto keyInfo : m_UserDataKeyList){
+//        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), USERDATA::CRYPTO_KEY);
 //        convertJsonToUserData(crypto_key.c_str(), UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), ""));
 //    }
 //    
@@ -704,9 +747,9 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //
 //void CUserDataManager::dataLoadFromGoogleCloud()
 //{
-//    for(auto keyInfo : m_UserData->_userDataKeyMap)
+//    for(auto keyInfo : m_UserDataKeyList)
 //    {
-//        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), CRYPTO_KEY);
+//        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), USERDATA::CRYPTO_KEY);
 //        
 //        // google sdk와 통신후 convertJsonToUserData 호출됨
 //        CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
@@ -716,20 +759,20 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //void CUserDataManager::convertJsonToUserData(std::string key, std::string valueJson)
 //{
 //    // 복호화
-//    std::string decrypto_key = MakeCryptoString(key, CRYPTO_KEY);
-//    std::string decrypto_value = MakeCryptoString(valueJson, CRYPTO_KEY);
+//    std::string decrypto_key = MakeCryptoString(key, USERDATA::CRYPTO_KEY);
+//    std::string decrypto_value = MakeCryptoString(valueJson, USERDATA::CRYPTO_KEY);
 //    
 //    CCLOG("=======================GoogleCloudLoad========================");
 //    CCLOG("Decrypto Key : %s", decrypto_key.c_str());
 //    CCLOG("Decrypto Value : %s", decrypto_value.c_str());
 //    CCLOG("==============================================================");
 //    
-//    if(m_UserData->_userDataKeyMap.find(decrypto_key) != m_UserData->_userDataKeyMap.end()){
-//        if(m_UserData->_userDataKeyMap.find(decrypto_key)->second == "userDefaultDatas_Number")
+//    if(m_UserDataKeyList.find(decrypto_key) != m_UserDataKeyList.end()){
+//        if(m_UserDataKeyList.find(decrypto_key)->second == USERDATA::SINGLE_DATA_KEY)
 //        {
 //            convertJsonToUserData_Number(decrypto_key, decrypto_value);
 //        }
-//        else if(m_UserData->_userDataKeyMap.find(decrypto_key)->second == "userDefaultDatas_List")
+//        else if(m_UserDataKeyList.find(decrypto_key)->second == USERDATA::ARRAY_DATA_KEY)
 //        {
 //            convertJsonToUserData_List(decrypto_key, decrypto_value);
 //        }
@@ -740,14 +783,14 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //{
 //    if (valueJson != ""){
 //        JSONREADER_CREATE
-//        unsigned data = root["data"].asInt();
+//        int data = root["data"].asInt();
 //        CCLOG("%s : %d", key.c_str(), data);
-//        if(m_UserData->_userDataUnsignedMap.find(key) != m_UserData->_userDataUnsignedMap.end())
-//            m_UserData->_userDataUnsignedMap.find(key)->second = data;
+//        if(m_UserData._userDataIntMap.find(key) != m_UserData._userDataIntMap.end())
+//            m_UserData._userDataIntMap.find(key)->second = data;
 //    }
 //    else{
 //        CCLOG("This is the first time to play.");
-//        CCLOG("%s : %d", key.c_str(), m_UserData->_userDataUnsignedMap.find(key)->second);
+//        CCLOG("%s : %d", key.c_str(), m_UserData._userDataIntMap.find(key)->second);
 //    }
 //}
 //
@@ -755,12 +798,12 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //{
 //    DATA_LIST* list;
 //    
-//    if(m_UserData->_userDataListMap.find(key) == m_UserData->_userDataListMap.end()){
+//    if(m_UserData._userDataListMap.find(key) == m_UserData._userDataListMap.end()){
 //        CCLOG("There is no list with this key %s", key.c_str());
 //        CCASSERT(false, "Wrong Key");
 //    }
 //    
-//    list = m_UserData->_userDataListMap.find(key)->second;
+//    list = m_UserData._userDataListMap.find(key)->second;
 //    CCLOG("%s : %s", key.c_str(), valueJson.c_str());
 //    
 //    if (valueJson != ""){
@@ -768,7 +811,7 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //        const Json::Value dataArray = root["data"];
 //        for(auto element : dataArray)
 //        {
-//            list->push_back(element.asUInt());
+//            list->push_back(element.asInt());
 //        }
 //    }
 //    else{
@@ -784,8 +827,8 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //    std::string dataStr = writer.write(root);
 //    
 //    // 암호화
-//    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
-//    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
+//    std::string crypto_key = MakeCryptoString(key, USERDATA::CRYPTO_KEY);
+//    std::string crypto_value = MakeCryptoString(dataStr, USERDATA::CRYPTO_KEY);
 //    
 //    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
 //    setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
@@ -802,14 +845,14 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //    
 //    for(auto data : *list)
 //    {
-//        jsonItemList.append(static_cast<unsigned>(data));
+//        jsonItemList.append(static_cast<int>(data));
 //    }
 //    root["data"] = jsonItemList;
 //    std::string dataStr = writer.write(root);
 //    
 //    // 암호화
-//    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
-//    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
+//    std::string crypto_key = MakeCryptoString(key, USERDATA::CRYPTO_KEY);
+//    std::string crypto_value = MakeCryptoString(dataStr, USERDATA::CRYPTO_KEY);
 //    
 //    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
 //    setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
@@ -827,8 +870,8 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //    std::string dataStr = writer.write(root);
 //    
 //    // 암호화
-//    std::string crypto_key = MakeCryptoString(key, CRYPTO_KEY);
-//    std::string crypto_value = MakeCryptoString(dataStr, CRYPTO_KEY);
+//    std::string crypto_key = MakeCryptoString(key, USERDATA::CRYPTO_KEY);
+//    std::string crypto_value = MakeCryptoString(dataStr, USERDATA::CRYPTO_KEY);
 //    
 //    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
 //    
@@ -838,7 +881,7 @@ void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& com
 //
 //void CUserDataManager::addKey(std::string keyKind, std::string key)
 //{
-//    m_UserData->_userDataKeyMap.emplace(std::pair<std::string, std::string>(key, keyKind));
+//    m_UserDataKeyList.emplace(std::pair<std::string, std::string>(key, keyKind));
 //    CCLOG("Kind : %s Add Key : %s ", keyKind.c_str(), key.c_str());
 //}
 //

@@ -8,7 +8,6 @@
 using namespace cocos2d;
 using namespace CHALLENGE_DATA_KEY;
 
-const static std::string DATA_FILE_NAME = "challengeList.json";
 
 CChallengeDataManager::CChallengeDataManager()
 : m_Checker(new CChallengeClearChecker())
@@ -16,7 +15,9 @@ CChallengeDataManager::CChallengeDataManager()
 {
 	initMaterialKeyList();
 	initRewardKeyList();
-    initWithJson(m_ChallengeDataList, DATA_FILE_NAME);
+    initWithJson(m_ChallengeDataList, "challengeList_1.json");
+	initWithJson(m_ChallengeDataList, "challengeList_2.json");
+	initWithJson(m_ChallengeDataList, "challengeList_3.json");
 }
 
 CChallengeDataManager::~CChallengeDataManager()
@@ -82,8 +83,20 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
     }
 }
 
+bool CChallengeDataManager::CheckCompleteAll()
+{
+	auto currentList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+	for (auto index : *currentList)
+		if (!CheckChallengeComplete(index)) return false;
+
+	return true;
+}
+
 bool CChallengeDataManager::CheckChallengeComplete(int index)
 {
+	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_LIST, index))
+		return true;
+
 	auto challengeData = this->getChallengeByIndex(index);
 
 	//    if(challengeData->_continuingType)
@@ -100,11 +113,15 @@ bool CChallengeDataManager::CheckChallengeComplete(int index)
 	if (checker == std::end(m_CheckerList)){
 		if (!m_Checker->checkWithGlobal(key, mtrlValue)) return false;
 
+		GLOBAL->CHALLENGE_CLEAR_COUNT += 1;
+		CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_LIST, index);
 		return true;
 	}
 
 	if (!checker->second(mtrlValue)) return false;
 
+	GLOBAL->CHALLENGE_CLEAR_COUNT += 1;
+	CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_LIST, index);
 	return true;
 }
 
@@ -115,10 +132,15 @@ void CChallengeDataManager::Reward(int index)
     auto key = challengeData->_rewardKey;
     auto rewardValue = challengeData->_rewardValue;
     
-    auto rewarder = m_RewarderList.find(key);
-    if(rewarder == std::end(m_RewarderList)) return;
-    
-    rewarder->second(rewardValue);
+	this->RewardByKey(key, rewardValue);
+}
+
+void CChallengeDataManager::RewardByKey(std::string key, int value)
+{
+	auto rewarder = m_RewarderList.find(key);
+	if (rewarder == std::end(m_RewarderList)) return;
+
+	rewarder->second(value);
 }
 
 bool CChallengeDataManager::NonCompleteChallengeExist(int level,
@@ -263,3 +285,4 @@ void CChallengeDataManager::initRewardKeyList()
     
     initRewarder(REWARD_COIN,        CC_CALLBACK_1(CChallengeRewarder::coinReward, m_Rewarder));
 }
+

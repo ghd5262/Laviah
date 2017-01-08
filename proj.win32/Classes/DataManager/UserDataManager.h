@@ -2,16 +2,20 @@
 #include "../Common/HSHUtility.h"
 #include <vector>
 #include <map>
-typedef std::vector<unsigned> DATA_LIST;
+typedef std::vector<int> ARRAY_DATA;
+typedef std::map<std::string, int> SINGLE_DATA_LIST;
+typedef std::map<std::string, ARRAY_DATA*> ARRAY_DATA_LIST;
+typedef std::map<std::string, std::string> USERDATA_KEY_LIST;
+
 struct sUSER_DATA{
-    std::map<std::string, unsigned> _userDataUnsignedMap;
-    std::map<std::string, DATA_LIST*> _userDataListMap;
-	std::map<std::string, std::string> _userDataKeyMap;
+	SINGLE_DATA_LIST  _userDataIntMap;
+	ARRAY_DATA_LIST   _userDataListMap;
 };
 
 namespace USERDATA_KEY {
-    const std::string DATA_REVISION             = "USER_DATA_SAVE_REVISION";
-    
+    const std::string FIRST_LOAD			    = "USER_DATA_FIRSTLOAD";
+	const std::string DATA_REVISION				= "USER_DATA_SAVE_REVISION";
+
     const std::string LEVEL                     = "USER_LEVEL";
     const std::string CHARACTER                 = "USER_CUR_CHARACTER";
     const std::string COIN                      = "USER_COIN";
@@ -45,35 +49,42 @@ class CGoogleCloudManager;
 class CUserDataManager
 {
     friend CGoogleCloudManager;
-    typedef std::function<unsigned(unsigned, unsigned)> LIST_COMPARE;
+    typedef std::function<int(int, int)> LIST_COMPARE;
 public:
     static CUserDataManager* Instance();
     void UserDataLoad();
 
     //getter & setter
-    void initUserDefaultValue();
     bool getIsFirstPlay();
-    unsigned getUserData_Number(std::string key);
-    DATA_LIST* getUserData_List(std::string key);
-    bool getUserData_IsItemHave(std::string key, unsigned itemIdx);
+    int getUserData_Number(std::string key);
+	ARRAY_DATA* getUserData_List(std::string key);
+    bool getUserData_IsItemHave(std::string key, int itemIdx);
     float getItemCurrentValue(std::string key);
-    std::map<std::string, std::string> getKeyList() { return m_UserData->_userDataKeyMap; }
+	USERDATA_KEY_LIST getKeyList() { return m_UserDataKeyList; }
     
-    void setSaveRevision(unsigned value);
-    void setUserData_Number(std::string key, unsigned value);
-    void setUserData_ItemGet(std::string key, unsigned itemIdx);
-	void setUserData_ItemRemove(std::string key, unsigned itemIdx);
+    void setSaveRevision(int value);
+    void setUserData_Number(std::string key, int value);
+    void setUserData_ItemGet(std::string key, int itemIdx);
+	void setUserData_ItemRemove(std::string key, int itemIdx);
     void setUserData_ItemRemoveAll(std::string key);
     bool CoinUpdate(int value);
     
     static int getUserDataSequenceFromList(std::string key, int itemIndex);
     
 private:
+	void initUserDefaultValue(sUSER_DATA &data);
+
+	void initUserDataKey(sUSER_DATA &data);
+
+	void initSingleUserDataWithDefaultValue(std::string key);
+
+	void initArrayUserDataWithDefaultValue(std::string key);
+
 	void dataLoadFromXML();
 
 	void dataLoadFromGoogleCloud();
 
-	void convertJsonToUserData(std::string valueJson);
+	void convertJsonToUserData(sUSER_DATA &data, std::string valueJson);
 
 	void convertUserDataToJson();
 
@@ -109,7 +120,10 @@ private:
     virtual ~CUserDataManager();
     
 private:
-    std::shared_ptr<sUSER_DATA> m_UserData;
+    sUSER_DATA m_UserData;
+	sUSER_DATA m_UserDefaultData;
+	USERDATA_KEY_LIST m_UserDataKeyList;
+
 	std::string m_JsonUserDataFromXML;
 	std::string m_JsonUserDataFromGoogleCloud;
 	

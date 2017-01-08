@@ -26,13 +26,11 @@ bool CChallengePopupDP::init()
 {
     if (!CPopup::init()) return false;
 
-    auto bg = Sprite::create("resultPopup_2.png");
-    this->setContentSize(bg->getContentSize());
-    bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    bg->setPosition(Vec2(this->getContentSize() / 2));
-	bg->setOpacity(0);
-	bg->setCascadeOpacityEnabled(true);
-    this->addChild(bg);
+	float delayTime = m_PosIndex * 0.4f;
+	this->setCascadeOpacityEnabled(true);
+	this->setOpacity(0);
+	this->setContentSize(Size(1080, 270));
+	auto popupSize = this->getContentSize();
 
     auto value = GLOBAL->getVariable(m_Challenge._materialKey);
     auto mtrlValue = m_Challenge._materialValue;
@@ -40,24 +38,21 @@ bool CChallengePopupDP::init()
 	if (complete) value = mtrlValue;
 
     auto contents = m_Challenge._contents;
-	if (value > 0) contents += StringUtils::format("(%d%%)", int(getPercent(value, mtrlValue)));
+	if (value > 0) contents += StringUtils::format(" (%d%%)", int(getPercent(value, mtrlValue)));
     
-    auto label = Label::createWithTTF(contents, FONT::MALGUNBD, 45,
-                                      Size(this->getContentSize().width * 0.8f,
-                                           this->getContentSize().height * 3.f),
+	auto label = Label::createWithTTF(contents, FONT::MALGUNBD, 45, 
+									  Size(popupSize.width * 0.8f, popupSize.height),
                                       TextHAlignment::CENTER,
                                       TextVAlignment::CENTER);
 	label->setColor(COLOR::DARKGRAY);
     label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    label->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f));
-    bg->addChild(label);
-    
-	if (complete) label->setTextColor(COLOR::DARKGRAY_ALPHA);
-    
+    label->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.5f));
+	this->addChild(label);
+        
     if (!complete &&
         CChallengeDataManager::Instance()->NonCompleteChallengeExist(m_Challenge._level, false)){
         
-        CMyButton::create()
+        auto skipBtn = CMyButton::create()
         ->addEventListener([=](Node* sender){
             if(m_SkipCallback){
                 this->retain();
@@ -65,13 +60,40 @@ bool CChallengePopupDP::init()
                 this->release();
             }
         })
-        ->setButtonNormalImage("resetIcon.png")
-        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT)
-        ->setButtonPosition(Vec2(bg->getContentSize().width - 10, bg->getContentSize().height * 0.5f))
-        ->show(bg);
+        ->setButtonNormalImage("skipIcon.png")
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setButtonPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f))
+		->show(this);
+
+		skipBtn->setColor(COLOR::DARKGRAY);
     }
+	if (complete)
+	{
+		label->setOpacity(255 * 0.4f);
+
+		auto completeImg = Sprite::create("completeIcon.png");
+		/*completeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		completeIcon->setPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f));
+		completeIcon->setColor(COLOR::DARKGRAY);
+		this->addChild(completeIcon);*/
+
+		auto completeIcon = ProgressTimer::create(completeImg);
+
+		if (completeIcon != nullptr){
+			completeIcon->setType(ProgressTimer::Type::BAR);
+			completeIcon->setMidpoint(Vec2(0, 0));
+			completeIcon->setBarChangeRate(Vec2(1, 0));
+			completeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			completeIcon->setPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f));
+			completeIcon->setColor(COLOR::DARKGRAY);
+			this->addChild(completeIcon);
+			auto delayAction = DelayTime::create(delayTime + 0.5f);
+			auto progressAction = ProgressFromTo::create(0.3f, 0, 100);
+			auto sequence = Sequence::createWithTwoActions(delayAction, progressAction);
+			completeIcon->runAction(sequence);
+		}
+	}
     
-    float delayTime = m_PosIndex * 0.4f;
     this->setOpenAnimation([=](Node* sender){
         /*auto originPos = getPosition();
         Size ScreenSize = Director::getInstance()->getVisibleSize();
@@ -87,7 +109,7 @@ bool CChallengePopupDP::init()
 		auto delayAction = DelayTime::create(delayTime + 0.3f);
 		auto fadeInAction = FadeIn::create(0.5f);
 		auto sequence = Sequence::createWithTwoActions(delayAction, fadeInAction);
-		bg->runAction(sequence);
+		this->runAction(sequence);
     });
     
     this->setCloseAnimation([=](Node* sender){
@@ -103,7 +125,7 @@ bool CChallengePopupDP::init()
 		bg->runAction(sequence);*/
 
 		auto fadeOutAction = FadeTo::create(0.5f, 0);
-		bg->runAction(fadeOutAction);
+		this->runAction(fadeOutAction);
     });
 
     return true;
@@ -122,25 +144,3 @@ float CChallengePopupDP::getPercent(float value, float max)
         return (value / max) * 100.f;
     return 0.f;
 }
-
-
-//
-//void CChallengePopupDP::Skip()
-//{
-//    auto scene = CGameScene::getGameScene();
-//    
-//    CPopup::create()
-//    ->setPositiveButton([=](Node* sender){
-//        CCLOG("Skip");
-//    }, "Yes")
-//    ->setNegativeButton([=](Node* sender){
-//        CCLOG("Cancel");
-//    }, "No")
-//    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-//    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-//    ->setMessage("Are you sure you want to exit StarStarStar?")
-//    ->setMessageFont(Color3B::BLACK, 40)
-//    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-//    ->setPopupPosition(scene->getContentSize() / 2)
-//    ->show(scene, ZORDER::POPUP);
-//}

@@ -16,7 +16,9 @@ void Global::Clear()
     STAR_SCORE = 0;
     COIN_SCORE = 0;
     RUN_SCORE = 0;
-    
+	COIN_COUNT = 0;
+	STAR_COUNT = 0;
+
     GIANT_SCORE_TOTAL = 0;
     GIANT_SCORE_BULLET = 0;
     GIANT_SCORE_MISSILE = 0;
@@ -64,6 +66,8 @@ void Global::addVariableToList()
     addVariable( CHALLENGE_DATA_KEY::STAR_SCORE            , STAR_SCORE             );
     addVariable( CHALLENGE_DATA_KEY::COIN_SCORE            , COIN_SCORE             );
     addVariable( CHALLENGE_DATA_KEY::RUN_SCORE             , RUN_SCORE              );
+    addVariable( CHALLENGE_DATA_KEY::STAR_COUNT            , STAR_COUNT             );
+    addVariable( CHALLENGE_DATA_KEY::COIN_COUNT            , COIN_COUNT             );
     
     addVariable( CHALLENGE_DATA_KEY::GIANT_SCORE_TOTAL     , GIANT_SCORE_TOTAL      );
     addVariable( CHALLENGE_DATA_KEY::GIANT_SCORE_BULLET    , GIANT_SCORE_BULLET     );

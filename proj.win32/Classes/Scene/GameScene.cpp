@@ -23,6 +23,7 @@
 #include "../MyUI/Popup/VideoPopup.h"
 #include "../MyUI/Popup/ChallengePopup.h"
 #include "../MyUI/Popup/HelpPopup.h"
+#include "../MyUI/Popup/RewardPopup.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/ChallengeDataManager.hpp"
@@ -273,6 +274,14 @@ void CGameScene::BonusTimeStart()
 void CGameScene::BonusTimeEnd()
 {
     this->removeBonusTimeLayer();
+}
+
+CPopup* CGameScene::Reward()
+{
+	return CRewardPopup::create()
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(m_VisibleSize / 2)
+		->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::clearData()

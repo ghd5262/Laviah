@@ -38,6 +38,7 @@ public:
     void BonusTimeStart();
     void BonusTimeEnd();
     void ScreenFade(const FADE_CALLBACK& callback = nullptr);
+	CPopup* Reward();
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }

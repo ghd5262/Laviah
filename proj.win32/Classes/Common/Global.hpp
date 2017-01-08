@@ -24,6 +24,8 @@ public:
     int STAR_SCORE;
     int COIN_SCORE;
     int RUN_SCORE;
+	int COIN_COUNT;
+	int STAR_COUNT;
     
     int GIANT_SCORE_TOTAL;
     int GIANT_SCORE_BULLET;

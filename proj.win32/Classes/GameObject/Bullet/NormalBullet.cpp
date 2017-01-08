@@ -58,8 +58,8 @@ void CNormalBullet::CollisionWithPlayer()
 {
 	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
         GLOBAL->GIANT_COUNT_BULLET += 1;
-        GLOBAL->GIANT_SCORE_BULLET += 30;
-		createScoreCurrentPos(30);
+        GLOBAL->GIANT_SCORE_BULLET += 10;
+		createScoreCurrentPos(10);
 		this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	}
 	else{
@@ -73,8 +73,8 @@ void CNormalBullet::CollisionWithPlayer()
 void CNormalBullet::CollisionWithBarrier()
 {
     GLOBAL->BARRIER_COUNT += 1;
-    GLOBAL->BARRIER_SCORE += 30;
-	this->createScoreCurrentPos(30);
+	GLOBAL->BARRIER_SCORE += 10;
+	this->createScoreCurrentPos(10);
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 }
 

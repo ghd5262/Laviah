@@ -61,8 +61,10 @@ class CChallengeDataManager
 {
 public:
     static CChallengeDataManager* Instance();
+	bool CheckCompleteAll();
 	bool CheckChallengeComplete(int index);
     void Reward(int index);
+	void RewardByKey(std::string key, int value);
     bool NonCompleteChallengeExist(int level,
                                    bool below,
                                    bool continuingType = false);
@@ -80,7 +82,6 @@ private:
     void initWithJson(CHALLENGE_LIST &list, std::string fileName);
     void initMaterialKeyList();
     void initRewardKeyList();
-    void completeAllCurrentChallenges();
     const sCHALLENGE_PARAM* getNewRandomChallengeFromList(CHALLENGE_LIST &list);
     CHALLENGE_LIST getNonCompletedChallengeList(int level,
                                                 bool below,
