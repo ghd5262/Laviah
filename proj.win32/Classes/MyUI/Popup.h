@@ -25,9 +25,9 @@ class CPopup : public cocos2d::Node
     typedef std::function<void(Node*)> NODE_CALLBACK;
     struct sDEFAULT_CALLBACK {
         NODE_CALLBACK _callback;
-        Node* _sender;
+		CPopup* _sender;
         
-        sDEFAULT_CALLBACK(const NODE_CALLBACK &callback, Node* sender)
+		sDEFAULT_CALLBACK(const NODE_CALLBACK &callback, CPopup* sender)
         : _callback(callback)
         , _sender(sender){}
     };
@@ -38,7 +38,7 @@ public:
    
 	CPopup* setPositiveButton(const NODE_CALLBACK &callback, std::string btnName);
 	CPopup* setNegativeButton(const NODE_CALLBACK &callback, std::string btnName);
-    CPopup* setDefaultCallback(const NODE_CALLBACK &callback);
+	CPopup* setDefaultCallback(const NODE_CALLBACK &callback, bool cleanUp = true);
 	CPopup* setOpenAnimation(const NODE_CALLBACK &callback);
 	CPopup* setCloseAnimation(const NODE_CALLBACK &callback);
 	CPopup* setDefaultAnimation(ePOPUP_ANIMATION open, ePOPUP_ANIMATION close);
@@ -56,6 +56,7 @@ public:
     
     static void DefaultCallback();
 	
+	CC_SYNTHESIZE(bool, m_DefaultCallbackCleanUp, DefaultCallbackCleanUp);
 protected:
 	virtual bool init() override;
 
@@ -86,6 +87,6 @@ private:
 	int m_MessageFontSize;
 	int m_ButtonFontSize;
     bool m_BackgroundVisible;
-    
+
     static CALLBACK_STACK m_DefaultCallbackStack;
 };

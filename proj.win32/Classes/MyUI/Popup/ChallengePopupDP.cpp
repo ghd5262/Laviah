@@ -71,14 +71,14 @@ bool CChallengePopupDP::init()
 	{
 		label->setOpacity(255 * 0.4f);
 
-		auto completeImg = Sprite::create("completeIcon.png");
-		/*completeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		auto completeIcon = Sprite::create("completeIcon.png");
+		completeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		completeIcon->setPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f));
 		completeIcon->setColor(COLOR::DARKGRAY);
-		this->addChild(completeIcon);*/
+		this->addChild(completeIcon);
 
-		auto completeIcon = ProgressTimer::create(completeImg);
 
+		/*auto completeIcon = ProgressTimer::create(completeImg);
 		if (completeIcon != nullptr){
 			completeIcon->setType(ProgressTimer::Type::BAR);
 			completeIcon->setMidpoint(Vec2(0, 0));
@@ -91,7 +91,8 @@ bool CChallengePopupDP::init()
 			auto progressAction = ProgressFromTo::create(0.3f, 0, 100);
 			auto sequence = Sequence::createWithTwoActions(delayAction, progressAction);
 			completeIcon->runAction(sequence);
-		}
+			completeIcon->addChild(completeImg);
+		}*/
 	}
     
     this->setOpenAnimation([=](Node* sender){

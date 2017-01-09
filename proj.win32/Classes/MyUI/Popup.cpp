@@ -28,16 +28,15 @@ CPopup::CPopup()
 , m_PopupCloseAnimation(ePOPUP_ANIMATION::NONE)
 , m_BackgroundColor(COLOR::BRIGHT_WHITEGRAY_ALPHA)
 , m_BackgroundVisible(true)
+, m_DefaultCallbackCleanUp(true)
 {
 	this->setContentSize(Director::getInstance()->getVisibleSize());
 }
 
 CPopup::~CPopup()
 {
-    if(m_DefaultCallBack){
-        if(m_DefaultCallbackStack.top()._sender == this)
-            m_DefaultCallbackStack.pop();
-    }
+	if (m_DefaultCallBack)
+		m_DefaultCallbackStack.pop();  
 }
 
 CPopup* CPopup::create()
@@ -72,6 +71,8 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
         m_DefaultCallbackStack.push(sDEFAULT_CALLBACK([=](Node* sender){
             this->retain();
             m_DefaultCallBack(this);
+			if (getDefaultCallbackCleanUp())
+				m_DefaultCallBack = nullptr;
             this->release();
         }, this));
     }
@@ -159,10 +160,11 @@ CPopup* CPopup::setNegativeButton(const NODE_CALLBACK &callback, std::string btn
 	return this;
 }
 
-CPopup* CPopup::setDefaultCallback(const NODE_CALLBACK &callback)
+CPopup* CPopup::setDefaultCallback(const NODE_CALLBACK &callback, bool cleanUp/* = true*/)
 {
     m_DefaultCallBack = callback;
-    
+	m_DefaultCallbackCleanUp = cleanUp;
+
     return this;
 }
 
@@ -245,8 +247,9 @@ void CPopup::DefaultCallback()
     }
     
     auto callback = CPopup::m_DefaultCallbackStack.top();
+	if (callback._sender->getDefaultCallbackCleanUp())
+		CPopup::m_DefaultCallbackStack.pop();
     callback._callback(callback._sender);
-    CPopup::m_DefaultCallbackStack.pop();
 }
 
 void CPopup::popupOpenAnimation()

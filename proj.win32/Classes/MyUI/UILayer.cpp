@@ -90,7 +90,7 @@ bool CUILayer::init()
     
     this->setDefaultCallback([=](Node* sender){
         this->onPauseButton(sender);
-    });
+    }, false);
     
     return true;
 }

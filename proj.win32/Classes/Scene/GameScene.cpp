@@ -351,6 +351,8 @@ void CGameScene::createExitPopup()
     ->setNegativeButton([=](Node* sender){
     }, "No")
     ->setDefaultCallback([=](Node* sender){
+		auto popup = dynamic_cast<CPopup*>(sender);
+		popup->popupClose();
     })
     ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
