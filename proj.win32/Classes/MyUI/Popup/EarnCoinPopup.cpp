@@ -63,6 +63,8 @@ bool CEarnCoinPopup::init()
 		->setButtonPosition(Vec2(bg->getContentSize().width * 0.725f, bg->getContentSize().height * 0.25f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->show(bg);
+    
+    this->setDefaultCallback([=](Node* sender){});
 
 	return true;
 }

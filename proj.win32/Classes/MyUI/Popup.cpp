@@ -1,12 +1,17 @@
 #include "Popup.h"
 #include "MyButton.h"
+#include "../Scene/GameScene.h"
+#include "../Scene/LoadingScene.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
 
+CPopup::CALLBACK_STACK CPopup::m_DefaultCallbackStack;
+
 CPopup::CPopup()
 : m_PositiveButtonCallBack(nullptr)
 , m_NegativeButtonCallBack(nullptr)
+, m_DefaultCallBack(nullptr)
 , m_OpenAnimationCallBack(nullptr)
 , m_CloseAnimationCallBack(nullptr)
 , m_EmptyBackground(nullptr)
@@ -25,6 +30,14 @@ CPopup::CPopup()
 , m_BackgroundVisible(true)
 {
 	this->setContentSize(Director::getInstance()->getVisibleSize());
+}
+
+CPopup::~CPopup()
+{
+    if(m_DefaultCallBack){
+        if(m_DefaultCallbackStack.top()._sender == this)
+            m_DefaultCallbackStack.pop();
+    }
 }
 
 CPopup* CPopup::create()
@@ -52,9 +65,17 @@ bool CPopup::init()
 
 CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 {
-    if(m_BackgroundVisible)
+    if (m_BackgroundVisible)
         this->backgroundTouchDisable();
-
+    
+    if (m_DefaultCallBack){
+        m_DefaultCallbackStack.push(sDEFAULT_CALLBACK([=](Node* sender){
+            this->retain();
+            m_DefaultCallBack(this);
+            this->release();
+        }, this));
+    }
+    
 	if (m_PositiveButtonCallBack || m_NegativeButtonCallBack){
 		auto defaultBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
 		defaultBG->setIgnoreAnchorPointForPosition(false);
@@ -112,6 +133,7 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 			defaultBG->addChild(message);
 		}
 	}
+    
 	popupOpenAnimation();
 
     this->setAnchorPoint(m_AnchorPoint);
@@ -135,6 +157,13 @@ CPopup* CPopup::setNegativeButton(const NODE_CALLBACK &callback, std::string btn
 	m_NegativeButtonName = btnName;
 
 	return this;
+}
+
+CPopup* CPopup::setDefaultCallback(const NODE_CALLBACK &callback)
+{
+    m_DefaultCallBack = callback;
+    
+    return this;
 }
 
 CPopup* CPopup::setOpenAnimation(const NODE_CALLBACK &callback)
@@ -199,7 +228,6 @@ CPopup* CPopup::setPopupAnchorPoint(cocos2d::Vec2 anchorPoint)
 CPopup* CPopup::setBackgroundColor(Color4B color)
 {
 	m_BackgroundColor = color;
-
 	return this;
 }
 
@@ -207,6 +235,18 @@ CPopup* CPopup::setBackgroundVisible(bool visible)
 {
     m_BackgroundVisible = visible;
     return this;
+}
+
+void CPopup::DefaultCallback()
+{
+    if(CPopup::m_DefaultCallbackStack.size() <= 0){
+        CGameScene::getGameScene()->GameExit();
+        return;
+    }
+    
+    auto callback = CPopup::m_DefaultCallbackStack.top();
+    callback._callback(callback._sender);
+    CPopup::m_DefaultCallbackStack.pop();
 }
 
 void CPopup::popupOpenAnimation()

@@ -106,5 +106,7 @@ private:
 	bool m_Touchable;	//버튼을 누를수 없는지 여부
     bool m_Sound;       //사운드 재생 여부
 	int m_ClickedAnimationInfo;
+    
+    static bool m_MultiTouchesDisable;
 };
 

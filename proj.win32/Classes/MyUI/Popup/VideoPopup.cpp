@@ -167,6 +167,10 @@ bool CVideoPopup::init()
         reviveLabel->runAction(FadeTo::create(0.5f, 0));
 		btnUserCoin->runAction(FadeTo::create(0.5f, 0));
 	});
+    
+    this->setDefaultCallback([=](Node* sender){
+        this->End(sender);
+    });
 
 	return true;
 }

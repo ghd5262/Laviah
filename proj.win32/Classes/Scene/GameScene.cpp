@@ -349,8 +349,9 @@ void CGameScene::createExitPopup()
 #endif
     }, "Yes")
     ->setNegativeButton([=](Node* sender){
-        this->GameResume();
     }, "No")
+    ->setDefaultCallback([=](Node* sender){
+    })
     ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setMessage("Are you sure you want to exit StarStarStar?")
@@ -426,6 +427,7 @@ void CGameScene::initKeyboardListener()
 	pListener->onKeyReleased = [=](EventKeyboard::KeyCode code, Event* pEvent)
 	{
         if(code == EventKeyboard::KeyCode::KEY_SPACE) m_KeyBoardSpace = false;
+        if(code == EventKeyboard::KeyCode::KEY_BACK)  CPopup::DefaultCallback();
 	};
 
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);

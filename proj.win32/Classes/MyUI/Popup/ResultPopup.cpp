@@ -309,6 +309,10 @@ bool CResultPopup::init()
 		btnReset->runAction(FadeTo::create(0.5f, 0));
 		btnUserCoin->runAction(FadeTo::create(0.5f, 0));
 	});
+    
+    this->setDefaultCallback([=](Node* sender){
+        this->GoHome(sender);
+    });
 
 	return true;
 }

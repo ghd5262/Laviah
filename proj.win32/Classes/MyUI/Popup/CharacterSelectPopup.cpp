@@ -167,6 +167,10 @@ bool CCharacterSelectPopup::init()
 		scrollBack->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f))));
 	});
 
+    this->setDefaultCallback([=](Node* sender){
+        this->End(sender);
+    });
+    
 	return true;
 }
 

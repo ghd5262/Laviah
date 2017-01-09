@@ -88,6 +88,10 @@ bool CUILayer::init()
     //this->initItemTestButton();    
     CGameScene::getGameScene()->GameResume();
     
+    this->setDefaultCallback([=](Node* sender){
+        this->onPauseButton(sender);
+    });
+    
     return true;
 }
 

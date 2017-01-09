@@ -163,6 +163,9 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		action(btnReward, startPos[3]);
 	});
 
+    this->setDefaultCallback([=](Node* sender){
+        this->End(sender);
+    });
 
 	return 	CPopup::show(parent, zOrder);
 }

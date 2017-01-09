@@ -4,6 +4,7 @@
 
 using namespace cocos2d;
 
+bool CMyButton::m_MultiTouchesDisable = false;
 static const std::string SOUND_PATH = "sounds/";
 
 CMyButton::CMyButton()
@@ -288,6 +289,8 @@ void CMyButton::onTouchEvent(Ref *pSender, Widget::TouchEventType type)
 /* 버튼이 눌렸을 때 BEGIN */
 bool CMyButton::onTouchBegan()
 {
+    if(m_MultiTouchesDisable) return false;
+    
     // BEGIN 상태일때 호출해야할 함수가 있다면 호출
     if(m_BeginFunctionList.size() > 0){
         
@@ -305,6 +308,7 @@ bool CMyButton::onTouchBegan()
 		this->playClickedSound(CAudioManager::Instance()->PUBLIC_CLICK_SOUND.first);
 
     m_IsSelect = true;
+    m_MultiTouchesDisable = true;
     
     return m_IsSelect;
 }
@@ -331,6 +335,7 @@ void CMyButton::onTouchEnded()
 
     // 버튼 눌림 종료
     m_IsSelect = false;
+    m_MultiTouchesDisable = false;
 }
 
 /* 버튼터치가 Cancel 됬을 때 */
@@ -345,6 +350,7 @@ void CMyButton::onTouchCancelled()
 
     // 버튼 눌림 종료
     m_IsSelect = false;
+    m_MultiTouchesDisable = false;
 }
 
 /* 버튼이 눌리고 있는 중일때 EXECUTE */

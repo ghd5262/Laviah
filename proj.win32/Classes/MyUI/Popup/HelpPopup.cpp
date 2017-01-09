@@ -88,6 +88,10 @@ bool CHelpPopup::init()
 
 		btnEnd->runAction(FadeTo::create(0.5f, 0));
 	});
+    
+    this->setDefaultCallback([=](Node* sender){
+        this->End(sender);
+    });
 
 	return true;
 }

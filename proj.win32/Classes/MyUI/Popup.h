@@ -1,6 +1,6 @@
 #pragma once
 #include "../Common/HSHUtility.h"
-
+#include <stack>
 USING_NS_CC;
 
 enum class ePOPUP_ANIMATION{
@@ -20,16 +20,25 @@ enum class ePOPUP_ANIMATION{
 class CMyButton;
 class CUIEffect;
 class CSpecificPopupBase;
-
 class CPopup : public cocos2d::Node
 {
-	typedef std::function<void(Node*)> NODE_CALLBACK;
+    typedef std::function<void(Node*)> NODE_CALLBACK;
+    struct sDEFAULT_CALLBACK {
+        NODE_CALLBACK _callback;
+        Node* _sender;
+        
+        sDEFAULT_CALLBACK(const NODE_CALLBACK &callback, Node* sender)
+        : _callback(callback)
+        , _sender(sender){}
+    };
+    typedef std::stack<sDEFAULT_CALLBACK>  CALLBACK_STACK;
 
 public:
     static CPopup* create();
    
 	CPopup* setPositiveButton(const NODE_CALLBACK &callback, std::string btnName);
 	CPopup* setNegativeButton(const NODE_CALLBACK &callback, std::string btnName);
+    CPopup* setDefaultCallback(const NODE_CALLBACK &callback);
 	CPopup* setOpenAnimation(const NODE_CALLBACK &callback);
 	CPopup* setCloseAnimation(const NODE_CALLBACK &callback);
 	CPopup* setDefaultAnimation(ePOPUP_ANIMATION open, ePOPUP_ANIMATION close);
@@ -44,19 +53,22 @@ public:
 
 	void popupOpenAnimation();
 	void popupClose();
+    
+    static void DefaultCallback();
 	
 protected:
 	virtual bool init() override;
 
 	CPopup();
-	virtual ~CPopup(){};
+	virtual ~CPopup();
 
 private:
 	void backgroundTouchDisable();
-
+    
 private:
 	NODE_CALLBACK m_PositiveButtonCallBack;
 	NODE_CALLBACK m_NegativeButtonCallBack;
+    NODE_CALLBACK m_DefaultCallBack;
 	NODE_CALLBACK m_OpenAnimationCallBack;
 	NODE_CALLBACK m_CloseAnimationCallBack;
 
@@ -74,4 +86,6 @@ private:
 	int m_MessageFontSize;
 	int m_ButtonFontSize;
     bool m_BackgroundVisible;
+    
+    static CALLBACK_STACK m_DefaultCallbackStack;
 };

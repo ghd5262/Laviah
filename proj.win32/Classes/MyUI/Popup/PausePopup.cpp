@@ -138,6 +138,10 @@ bool CPausePopup::init()
 			dp->popupClose();
 	});
 
+    this->setDefaultCallback([=](Node* sender){
+        this->Play(sender);
+    });
+    
 	return true;
 }
 
