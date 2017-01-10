@@ -75,7 +75,7 @@ public:
     const sCHALLENGE_PARAM* getNewRandomChallenge(int level,
                                                   bool below,
                                                   bool continuingType = false);
-    
+    std::string getRewardImageName(std::string rewardKey);
     static CHALLENGE_LIST getListByFunc(const CHALLENGE_PICK &func, CHALLENGE_LIST list);
 
 private:

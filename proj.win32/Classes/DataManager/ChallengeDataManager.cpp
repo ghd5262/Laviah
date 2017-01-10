@@ -286,3 +286,8 @@ void CChallengeDataManager::initRewardKeyList()
     initRewarder(REWARD_COIN,        CC_CALLBACK_1(CChallengeRewarder::coinReward, m_Rewarder));
 }
 
+std::string CChallengeDataManager::getRewardImageName(std::string rewardKey)
+{
+    
+}
+

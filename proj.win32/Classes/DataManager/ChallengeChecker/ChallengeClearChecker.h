@@ -1,10 +1,6 @@
 #pragma once
 #include "../../Common/HSHUtility.h"
 
-/**
- *  도전과제 종류 추가 시 define 추가필요
- */
-
 namespace CHALLENGE_DATA_KEY {
 
     const std::string TOTAL_SCORE         = "TOTAL_SCORE";
