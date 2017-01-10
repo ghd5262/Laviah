@@ -20,31 +20,25 @@ CCharacterSelectPopupDP* CCharacterSelectPopupDP::create(const sCHARACTER_PARAM 
 
 bool CCharacterSelectPopupDP::init()
 {
-    if (!initVariable())
-        return false;
-    return true;
-}
-
-bool CCharacterSelectPopupDP::initVariable()
-{
-
-	auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 150.f, 15.f);
-	if (bg != nullptr){
-		this->setContentSize(bg->getContentSize());
-
-		bg->setIgnoreAnchorPointForPosition(false);
-		bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		bg->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.5f));
-		this->addChild(bg);
-	}
-
-	m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character._normalTextureName.c_str());
-	if (m_CharacterImg != nullptr)
-	{
-		m_CharacterImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_CharacterImg->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f));
-		bg->addChild(m_CharacterImg);
-	}
+    if (!Widget::init()) return false;
+    
+    auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 150.f, 15.f);
+    if (bg != nullptr){
+        this->setContentSize(bg->getContentSize());
+        
+        bg->setIgnoreAnchorPointForPosition(false);
+        bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        bg->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.5f));
+        this->addChild(bg);
+    }
+    
+    m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character._normalTextureName.c_str());
+    if (m_CharacterImg != nullptr)
+    {
+        m_CharacterImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_CharacterImg->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f));
+        bg->addChild(m_CharacterImg);
+    }
     
     return true;
 }

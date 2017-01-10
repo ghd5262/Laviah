@@ -45,38 +45,27 @@ void CLoadingScene::clearData()
 bool CLoadingScene::init()
 {
 	scheduleUpdate();
-	if (!Layer::init())
-	{
-		return false;
-	}
-
-	if (!initVariable())
-		return false;
-	return true;
-}
-
-bool CLoadingScene::initVariable()
-{
-	clearData();
-	m_LoadingScene = this;
-
-	auto createNotice = [=](cocos2d::SEL_CallFuncO selector, std::string name){
-		__NotificationCenter::getInstance()->addObserver(this, selector, name, NULL);
-	};
-
-	createNotice(callfuncO_selector(CLoadingScene::callbackNetworkResult), NOTICE::NETWORK_RESULT);
-	createNotice(callfuncO_selector(CLoadingScene::callbackLoginResult), NOTICE::LOGIN_RESULT);
-	createNotice(callfuncO_selector(CLoadingScene::callbackUserDataLoadFinish), NOTICE::USERDATA_LOAD_FINISH);
-	createNotice(callfuncO_selector(CLoadingScene::callbackDownloadFail), NOTICE::DOWN_ERROR);
-	createNotice(callfuncO_selector(CLoadingScene::callbackDownloadComplete), NOTICE::DOWN_COMPLETE);
-
-	CUserDataManager::Instance();
-	CSDKUtil::Instance()->IsNetworkConnect();
-
-	this->setContentSize(Director::getInstance()->getVisibleSize());
-
-	InitLoadingSceneUI();
-
+	if (!Layer::init()) return false;
+	
+    clearData();
+    m_LoadingScene = this;
+    
+    auto createNotice = [=](cocos2d::SEL_CallFuncO selector, std::string name){
+        __NotificationCenter::getInstance()->addObserver(this, selector, name, NULL);
+    };
+    
+    createNotice(callfuncO_selector(CLoadingScene::callbackNetworkResult), NOTICE::NETWORK_RESULT);
+    createNotice(callfuncO_selector(CLoadingScene::callbackLoginResult), NOTICE::LOGIN_RESULT);
+    createNotice(callfuncO_selector(CLoadingScene::callbackUserDataLoadFinish), NOTICE::USERDATA_LOAD_FINISH);
+    createNotice(callfuncO_selector(CLoadingScene::callbackDownloadFail), NOTICE::DOWN_ERROR);
+    createNotice(callfuncO_selector(CLoadingScene::callbackDownloadComplete), NOTICE::DOWN_COMPLETE);
+    
+    CSDKUtil::Instance()->IsNetworkConnect();
+    
+    this->setContentSize(Director::getInstance()->getVisibleSize());
+    
+    InitLoadingSceneUI();
+    
 	return true;
 }
 

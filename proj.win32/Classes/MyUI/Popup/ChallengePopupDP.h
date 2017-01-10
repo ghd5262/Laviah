@@ -16,7 +16,6 @@ public:
     CC_SYNTHESIZE(int, m_PosIndex, PosIndex);
 protected:
     virtual bool init() override;
-    bool initVariable();
     
 private:
     float getPercent(float value, float max);

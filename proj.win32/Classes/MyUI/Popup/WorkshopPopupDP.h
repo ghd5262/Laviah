@@ -12,7 +12,6 @@ public:
 
 protected:
     virtual bool init() override;
-    bool initVariable();
     
 private:
 	void Buy(cocos2d::Node* sender);

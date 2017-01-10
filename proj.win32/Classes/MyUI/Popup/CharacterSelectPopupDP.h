@@ -19,7 +19,6 @@ public:
     
 protected:
     virtual bool init() override;
-    bool initVariable();
     
 private:
     

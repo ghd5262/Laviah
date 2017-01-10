@@ -24,7 +24,6 @@ public:
     
 protected:
     virtual bool init() override;
-    bool initVariable();
     
 private:
     CTextField(const std::string& placeholder,

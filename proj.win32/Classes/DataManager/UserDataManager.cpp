@@ -45,10 +45,7 @@ CUserDataManager::CUserDataManager()
 // 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
 //: m_IsFirstRevisionCall(false)
 //, m_IsDataLoadFinish(false)
-{
-	this->initUserDefaultValue(m_UserDefaultData);
-	this->initUserDataKey(m_UserDefaultData);
-}
+{}
 
 CUserDataManager::~CUserDataManager()
 {
@@ -158,6 +155,9 @@ bool CUserDataManager::getIsFirstPlay()
 
 void CUserDataManager::UserDataLoad()
 {
+    this->initUserDefaultValue(m_UserDefaultData);
+    this->initUserDataKey(m_UserDefaultData);
+    
 	if (getIsFirstPlay() &&
         CGoogleCloudManager::Instance()->getIsConnected() &&
         CSDKUtil::Instance()->getIsNetworkConnect())
@@ -225,6 +225,7 @@ void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string value
 {
 	if (valueJson == "")
 	{
+        this->initUserDefaultValue(m_UserData);
 		CCLOG("This is the first time to load. use default value");
 		return;
 	}

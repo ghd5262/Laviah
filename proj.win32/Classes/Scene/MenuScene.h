@@ -20,7 +20,6 @@ private:
 	virtual ~CMenuScene();
 
 	void clearData();
-	bool initVariable();
     void InitMenuSceneUI();
 	void createGameScene(Node* sender);
     

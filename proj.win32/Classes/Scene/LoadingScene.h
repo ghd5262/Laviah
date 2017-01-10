@@ -28,7 +28,6 @@ private:
 	virtual ~CLoadingScene();
 
 	void clearData();
-	bool initVariable();
 	void InitLoadingSceneUI();
 	void createMenuScene();
 	void createNetworkConnectPopup();

@@ -75,7 +75,7 @@ private:
 	void initUserDefaultValue(sUSER_DATA &data);
 
 	void initUserDataKey(sUSER_DATA &data);
-
+    
 	void initSingleUserDataWithDefaultValue(std::string key);
 
 	void initArrayUserDataWithDefaultValue(std::string key);

@@ -20,28 +20,23 @@ CTextField* CTextField::create(const std::string& placeholder, const std::string
 
 bool CTextField::init()
 {
-    if (!initVariable())
-        return false;
-    return true;
-}
-
-bool CTextField::initVariable()
-{
-	//Register Touch Event
-	auto listener = EventListenerTouchOneByOne::create();
-	listener->onTouchBegan = CC_CALLBACK_2(CTextField::onTouchBegan, this);
-	listener->onTouchEnded = CC_CALLBACK_2(CTextField::onTouchEnded, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
-	// add TextFieldTTF
-	m_TrackNode = TextFieldTTF::textFieldWithPlaceHolder(m_PlaceHolderString, m_FontName,
-		m_FontSize);
-
-	if (m_TrackNode != nullptr){
-		m_TrackNode->setPosition(m_Pos);
-		addChild(m_TrackNode);
-	}
-
+    if (!Layer::init()) return false;
+    
+    //Register Touch Event
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->onTouchBegan = CC_CALLBACK_2(CTextField::onTouchBegan, this);
+    listener->onTouchEnded = CC_CALLBACK_2(CTextField::onTouchEnded, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+    
+    // add TextFieldTTF
+    m_TrackNode = TextFieldTTF::textFieldWithPlaceHolder(m_PlaceHolderString, m_FontName,
+                                                         m_FontSize);
+    
+    if (m_TrackNode != nullptr){
+        m_TrackNode->setPosition(m_Pos);
+        addChild(m_TrackNode);
+    }
+    
     return true;
 }
 
