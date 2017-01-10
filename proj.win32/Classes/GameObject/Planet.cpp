@@ -36,7 +36,7 @@ bool CPlanet::init()
     this->setBoundingRadius(PLANET_DEFINE::BOUNDING_RADIUS);
     
 	auto data = CObjectManager::Instance()->getCharacterParam();
-	m_pTexture = Sprite::createWithSpriteFrameName(data._planetTextureName);
+	m_pTexture = Sprite::createWithSpriteFrameName(data->_planetTextureName);
     if (m_pTexture != nullptr){
 		this->setContentSize(m_pTexture->getContentSize());
 		m_pTexture->setPosition(this->getContentSize() / 2);

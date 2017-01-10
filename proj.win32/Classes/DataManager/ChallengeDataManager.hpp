@@ -50,9 +50,23 @@ struct sCHALLENGE_PARAM
     {}
 };
 
+struct sREWARD_DATA{
+	std::string _key;
+	int _value;
+
+	sREWARD_DATA()
+		: _key("")
+		, _value(0){};
+
+
+	sREWARD_DATA(std::string key, int value)
+		: _key(key)
+		, _value(value){};
+};
+
 typedef std::function<bool(int)> CHECKER;
 typedef std::map<std::string, CHECKER> CHECKER_LIST;
-typedef std::function<void(int)> REWARDER;
+typedef std::function<sREWARD_DATA(sREWARD_DATA)> REWARDER;
 typedef std::map<std::string, REWARDER> REWARDER_LIST;
 typedef std::vector<const sCHALLENGE_PARAM*> CHALLENGE_LIST;
 typedef std::function<bool(const sCHALLENGE_PARAM*)> CHALLENGE_PICK;
@@ -63,8 +77,8 @@ public:
     static CChallengeDataManager* Instance();
 	bool CheckCompleteAll();
 	bool CheckChallengeComplete(int index);
-    void Reward(int index);
-	void RewardByKey(std::string key, int value);
+	sREWARD_DATA Reward(int index);
+	sREWARD_DATA RewardByKey(std::string key, int value);
     bool NonCompleteChallengeExist(int level,
                                    bool below,
                                    bool continuingType = false);
@@ -75,7 +89,7 @@ public:
     const sCHALLENGE_PARAM* getNewRandomChallenge(int level,
                                                   bool below,
                                                   bool continuingType = false);
-    std::string getRewardImageName(std::string rewardKey);
+	std::string getRewardImageName(std::string rewardKey, int rewardValue);
     static CHALLENGE_LIST getListByFunc(const CHALLENGE_PICK &func, CHALLENGE_LIST list);
 
 private:

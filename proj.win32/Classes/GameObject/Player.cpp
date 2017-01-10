@@ -44,7 +44,7 @@ CPlayer* CPlayer::create()
 }
 
 CPlayer::CPlayer()
-: m_CharacterParam(sCHARACTER_PARAM())
+: m_CharacterParam(nullptr)
 , m_Angle(0.f)
 , m_fRotateSpeed(0.f)
 , m_fMaxLife(0)
@@ -73,7 +73,7 @@ bool CPlayer::init()
     this->ChangeState(CPlayerNormal::Instance());
     
 	m_CharacterParam = CObjectManager::Instance()->getCharacterParam();
-    m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam._normalTextureName);
+    m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam->_normalTextureName);
     if (m_pTexture != nullptr){
         this->setContentSize(m_pTexture->getContentSize());
         m_pTexture->setPosition(this->getContentSize() / 2);
@@ -123,13 +123,13 @@ void CPlayer::PlayerAlive()
 {
     this->setVisible(false);
     this->createAliveParticle();
-	this->setPlayerTexture(m_CharacterParam._aliveTextureName);
+	this->setPlayerTexture(m_CharacterParam->_aliveTextureName);
     m_Particle->setVisible(false);
 	m_fLife = m_fMaxLife;
 
 	this->scheduleOnce([=](float delta){
 		this->setVisible(true);
-		this->setPlayerTexture(m_CharacterParam._normalTextureName);
+		this->setPlayerTexture(m_CharacterParam->_normalTextureName);
 		this->InvincibilityMode(INVINCIVILITY_TIME); // 1초간 무적 카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
         m_Particle->setVisible(true);
 	}, 1.5f, "PlayerAlive");
@@ -193,7 +193,7 @@ void CPlayer::GiantMode()
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, GIANT_SIZE_PERCENT),
 		CallFunc::create([=](){
-		this->setPlayerTexture(m_CharacterParam._giantTextureName);
+		this->setPlayerTexture(m_CharacterParam->_giantTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
 		//this->setRotateSpeed(PLAYER_DEFINE::GIANT_ROTATION_SPEED);
@@ -210,7 +210,7 @@ void CPlayer::NormalMode()
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, SCALE_SIZE),
 		CallFunc::create([=](){
-        this->setPlayerTexture(m_CharacterParam._normalTextureName);
+        this->setPlayerTexture(m_CharacterParam->_normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
 		//this->setRotateSpeed(PLAYER_DEFINE::NORMAL_ROTATION_SPEED);
@@ -321,20 +321,20 @@ void CPlayer::ChangeDataByCharacter()
 		return CUserDataManager::Instance()->getItemCurrentValue(key);
 	};
 
-	m_fMagnetLimitTime		= m_CharacterParam._magnetItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_MAGNET);
-	m_fMagnetLimitRadius	= m_CharacterParam._magnetItemSize	+ getValue(USERDATA_KEY::ITEM_SIZE_MAGNET);
-	m_fCoinLimitTime		= m_CharacterParam._coinItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_COIN);
-	m_fStarLimitTime		= m_CharacterParam._starItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_STAR);
-	m_fBonusTimeLimitTime	= m_CharacterParam._bonusItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_BOUNS);
-	m_fGiantLimitTime		= m_CharacterParam._giantItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_GIANT);
-	m_fMaxLife				= m_CharacterParam._health;
+	m_fMagnetLimitTime		= m_CharacterParam->_magnetItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_MAGNET);
+	m_fMagnetLimitRadius	= m_CharacterParam->_magnetItemSize	+ getValue(USERDATA_KEY::ITEM_SIZE_MAGNET);
+	m_fCoinLimitTime		= m_CharacterParam->_coinItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_COIN);
+	m_fStarLimitTime		= m_CharacterParam->_starItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_STAR);
+	m_fBonusTimeLimitTime	= m_CharacterParam->_bonusItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_BOUNS);
+	m_fGiantLimitTime		= m_CharacterParam->_giantItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_GIANT);
+	m_fMaxLife				= m_CharacterParam->_health;
 
 	m_MagnetEffect->setLimitTime(m_fMagnetLimitTime);
 	m_MagnetEffect->setOriginBoundingRadius(m_fMagnetLimitRadius);
-	this->setPlayerTexture(m_CharacterParam._normalTextureName);
+	this->setPlayerTexture(m_CharacterParam->_normalTextureName);
 }
 
-void CPlayer::setCharacterParam(sCHARACTER_PARAM data)
+void CPlayer::setCharacterParam(const sCHARACTER_PARAM* data)
 {
 	m_CharacterParam = data;
 	this->ChangeDataByCharacter();
@@ -382,7 +382,7 @@ void CPlayer::createDeadParticle()
 
 void CPlayer::createRunParticle()
 {
-	m_Particle = CParticle_Flame::create(m_CharacterParam._normalTextureName);
+	m_Particle = CParticle_Flame::create(m_CharacterParam->_normalTextureName);
     if (m_Particle != nullptr){
         m_Particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_Particle->setAngle(90);

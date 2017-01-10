@@ -102,8 +102,8 @@ bool CGameScene::init()
     
 
 	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
-	sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
-	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo._idx);
+	auto currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterByIndex(currentCharacterIdx);
+	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo->_idx);
 	CObjectManager::Instance()->setCharacterParam(currentCharacterInfo);
 
 	auto planet = CPlanet::create();

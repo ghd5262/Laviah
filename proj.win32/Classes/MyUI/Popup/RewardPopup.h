@@ -1,15 +1,7 @@
 #pragma once
+#include "../../DataManager/ChallengeDataManager.hpp"
 #include "../Popup.h"
 #include <vector>
-
-struct sREWARD_DATA{
-	std::string _key;
-	int _value;
-
-	sREWARD_DATA(std::string key, int value)
-		: _key(key)
-		, _value(value){};
-};
 
 typedef std::vector<sREWARD_DATA> REWARD_LIST;
 
@@ -23,11 +15,14 @@ protected:
 	virtual bool init() override;
 
 private:
+	CPopup* createRewardDP(sREWARD_DATA data);
 	CRewardPopup()
-		: m_RewardIndex(0){};
+		: m_RewardDP(nullptr)
+		, m_RewardIndex(0){};
 	virtual ~CRewardPopup(){};
 
 private:
+	CPopup* m_RewardDP;
 	REWARD_LIST m_RewardList;
 	int m_RewardIndex;
 };

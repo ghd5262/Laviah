@@ -72,7 +72,7 @@ bool CMenuScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     
     int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
-    sCHARACTER_PARAM currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
+    auto currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterByIndex(currentCharacterIdx);
     
     auto planet = CPlanet::create();
     planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

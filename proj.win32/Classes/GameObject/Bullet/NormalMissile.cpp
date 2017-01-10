@@ -121,7 +121,7 @@ void CNormalMissile::ChangeToCoinOrStar()
 
 	this->setAlive(false);
 
-	auto patternIndex = CObjectManager::Instance()->getCharacterParam()._idx;
+	auto patternIndex = CObjectManager::Instance()->getCharacterParam()->_idx;
 
 	float distance = m_TargetVec.distance(getPosition());
 

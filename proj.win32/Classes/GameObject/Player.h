@@ -63,7 +63,7 @@ public:
 	void ChangeDataByCharacter();
 
 	//getter & setter
-	void setCharacterParam(sCHARACTER_PARAM data);
+	void setCharacterParam(const sCHARACTER_PARAM* data);
 	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
 	cocos2d::Vec2 getOriginPos(){ return m_OriginPos; }
     void setParticlePos(cocos2d::Vec2 pos);
@@ -103,7 +103,7 @@ private:
 	cocos2d::Sprite* m_pTexture;
 	cocos2d::ParticleSystemQuad* m_Particle;
     CMagnetEffect* m_MagnetEffect;
-	sCHARACTER_PARAM m_CharacterParam;
+	const sCHARACTER_PARAM* m_CharacterParam;
 	bool m_Invincibility;
 
 	// 영향을 받는 아이템 타입 

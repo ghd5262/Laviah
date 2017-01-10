@@ -45,7 +45,7 @@ public:
     
     static void CreateConstellation(const sBULLET_PATTERN* data);
     
-    CC_SYNTHESIZE(sCHARACTER_PARAM, m_CharacterInfo, CharacterInfo);
+    CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterInfo, CharacterInfo);
 	CC_SYNTHESIZE(float, m_RotationAngle, RotationAngle);
 
 private:

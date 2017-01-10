@@ -1,5 +1,7 @@
 #include "RewardPopup.h"
+#include "RewardPopupDP.hpp"
 #include "../MyButton.h"
+#include "../UserCoinButton.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/ChallengeDataManager.hpp"
 #include "../../Scene/GameScene.h"
@@ -33,23 +35,48 @@ bool CRewardPopup::init()
 	rewardIcon->setPosition(popupSize / 2);
 	this->addChild(rewardIcon);
 
-	auto sizeDown = ScaleTo::create(0.8f, 1.f);
-	auto sizeUp = ScaleTo::create(0.8f, 1.2f);
-	auto sequence = Sequence::createWithTwoActions(sizeDown, sizeUp);
-	auto repeat = RepeatForever::create(sequence);
 
-	rewardIcon->runAction(repeat);
+	auto rewardBack = Sprite::create("rewardBack_2.png");
+	rewardBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	rewardBack->setPosition(popupSize / 2);
+	rewardBack->setOpacity(255 * 0.4f);
+	rewardBack->setVisible(false);
+	this->addChild(rewardBack);
+	rewardBack->runAction(RepeatForever::create(RotateBy::create(5.f, 360.f)));
+
+	//auto sizeDown = ScaleTo::create(0.8f, 1.f);
+	//auto sizeUp = ScaleTo::create(0.8f, 1.2f);
+	//auto sequence = Sequence::createWithTwoActions(sizeDown, sizeUp);
+	//auto repeat = RepeatForever::create(sequence);
+
+	//rewardIcon->runAction(repeat);
+	
+	auto btnUserCoin = CUserCoinButton::create();
+	if (btnUserCoin != nullptr)
+	{
+		btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.05f));
+		btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		btnUserCoin->setCascadeOpacityEnabled(true);
+		btnUserCoin->setOpacity(0);
+		this->addChild(btnUserCoin);
+	}
 
 	auto touchScreen = CMyButton::create()
 		->addEventListener([=](Node* sender){
-	
+		if (m_RewardDP != nullptr)
+			m_RewardDP->popupClose();
+
 		if (m_RewardIndex >= m_RewardList.size()){
 			this->popupClose();
 			return;
 		}
 
 		auto data = m_RewardList.at(m_RewardIndex);
-		CChallengeDataManager::Instance()->RewardByKey(data._key, data._value);
+		data = CChallengeDataManager::Instance()->RewardByKey(data._key, data._value);
+
+		m_RewardDP = this->createRewardDP(data);
+		rewardBack->setVisible(true);
+
 		m_RewardIndex++;
 	})
 		->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
@@ -58,10 +85,27 @@ bool CRewardPopup::init()
 		->setButtonPosition(this->getContentSize() / 2)
 		->show(this); 
 
+	this->setOpenAnimation([=](Node* sender){
+		btnUserCoin->runAction(FadeIn::create(0.5f));
+	});
+
+	this->setCloseAnimation([=](Node* sender){
+		btnUserCoin->runAction(FadeTo::create(0.5f, 0));	
+	});
+
 	return true;
 }
 
 void CRewardPopup::AddRewardToList(std::string key, int value)
 {
 	m_RewardList.emplace_back(sREWARD_DATA(key, value));
+}
+
+CPopup* CRewardPopup::createRewardDP(sREWARD_DATA data)
+{
+	return CRewardPopupDP::create(data)
+		->setBackgroundVisible(false)
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(getContentSize() / 2)
+		->show(this, ZORDER::POPUP);
 }

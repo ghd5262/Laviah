@@ -3,12 +3,13 @@
 #include "../Popup.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
+#include "../../DataManager/ChallengeDataManager.hpp"
 
 USING_NS_CC;
 
-CRewardPopupDP* CRewardPopupDP::create(const sCHALLENGE_PARAM challenge)
+CRewardPopupDP* CRewardPopupDP::create(const sREWARD_DATA reward)
 {
-    CRewardPopupDP *pRet = new(std::nothrow) CRewardPopupDP(challenge);
+	CRewardPopupDP *pRet = new(std::nothrow) CRewardPopupDP(reward);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -32,8 +33,8 @@ bool CRewardPopupDP::init()
 
     this->setOpenAnimation([=](Node* sender){
 
-        auto scaleUp    = ScaleTo::create(0.5f, 1.f);
-        auto jumpAction = JumpTo::create(1.f, Vec2(0, 0), 50, 1);
+        auto scaleUp    = ScaleTo::create(0.3f, 1.f);
+		auto jumpAction = JumpBy::create(0.3f, Vec2(0, 0), 150, 1);
         auto spawn      = Spawn::createWithTwoActions(scaleUp, jumpAction);
         
         this->runAction(spawn);
@@ -44,7 +45,11 @@ bool CRewardPopupDP::init()
 
 void CRewardPopupDP::initReward()
 {
-    auto sprite = Sprite::create();
+	auto name = CChallengeDataManager::Instance()->getRewardImageName(m_Reward._key, m_Reward._value);
+	auto sprite = Sprite::create(name);
+	if (sprite == nullptr)
+		sprite = Sprite::createWithSpriteFrameName(name);
+
     this->setContentSize(sprite->getContentSize());
     sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     sprite->setPosition(this->getContentSize() / 2);

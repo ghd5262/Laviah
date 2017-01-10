@@ -93,7 +93,7 @@ void CNormalBullet::ChangeToCoinOrStar()
 
 void CNormalBullet::setParticle()
 {
-	m_pParticleCrash = CParticle_Explosion::create(CObjectManager::Instance()->getCharacterParam()._normalBulletTextureName);
+	m_pParticleCrash = CParticle_Explosion::create(CObjectManager::Instance()->getCharacterParam()->_normalBulletTextureName);
     if (m_pParticleCrash != nullptr){
         m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_pParticleCrash->setAngle(-getRotation());

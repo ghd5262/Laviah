@@ -23,6 +23,7 @@ CObjectManager::CObjectManager()
 , m_Rocket(nullptr)
 , m_Background(nullptr)
 , m_SpeedController(nullptr)
+, m_CharacterParam(nullptr)
 , m_ItemManager(CItemManager::Instance())
 , m_PatternManager(CBulletPatternDataManager::Instance())
 , m_Delta(0.f)
@@ -130,13 +131,13 @@ void CObjectManager::SpeedControl(float duration, float speed)
 void CObjectManager::ChangeCharacter()
 {
     auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
-    m_CharacterParam = CCharacterDataManager::Instance()->getCharacterInfoByIndex(index);
+    m_CharacterParam = CCharacterDataManager::Instance()->getCharacterByIndex(index);
     
     if(m_Player)
         m_Player->setCharacterParam(m_CharacterParam);
     
     if(m_Planet)
-        m_Planet->setPlanetTexture(m_CharacterParam._planetTextureName);
+        m_Planet->setPlanetTexture(m_CharacterParam->_planetTextureName);
     
     if(m_BulletCreator)
         m_BulletCreator->setCharacterInfo(m_CharacterParam);

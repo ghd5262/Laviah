@@ -285,6 +285,13 @@ void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string value
 			for (auto value : arrayValue)
 			{
 				int itemIdx = value.asInt();
+
+				if (getUserData_IsItemHave(key, itemIdx))
+				{
+					CCLOG("Item get : Already have %s", key.c_str());
+					continue;
+				}
+
 				data._userDataListMap[key]->push_back(itemIdx);
 				this->sortUserDataList(key, compare);
 			}

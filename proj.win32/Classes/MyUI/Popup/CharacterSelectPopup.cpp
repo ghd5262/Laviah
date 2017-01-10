@@ -92,7 +92,7 @@ bool CCharacterSelectPopup::init()
 			characterDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			listView->pushBackCustomItem(characterDP);
 
-			if (character._idx == currentCharacterIdx){
+			if (character->_idx == currentCharacterIdx){
 				currentCharacterDPIdx = dpIdx;
 			}
 			dpIdx++;
@@ -104,8 +104,8 @@ bool CCharacterSelectPopup::init()
 		}, 0.3f, "ScrollToItem");
 	}
 
-	auto currentCharacterParam = CCharacterDataManager::Instance()->getCharacterInfoByIndex(currentCharacterIdx);
-	m_CenterCharacterNameLabel = Label::createWithTTF(currentCharacterParam._name, FONT::MALGUNBD, 80);
+	auto currentCharacterParam = CCharacterDataManager::Instance()->getCharacterByIndex(currentCharacterIdx);
+	m_CenterCharacterNameLabel = Label::createWithTTF(currentCharacterParam->_name, FONT::MALGUNBD, 80);
 	if (m_CenterCharacterNameLabel != nullptr)
 	{
 		m_CenterCharacterNameLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.7f));
@@ -187,7 +187,7 @@ void CCharacterSelectPopup::Select(Node* sender)
 	auto centerCharacterParam = m_CenterDP->getCharacterParam();
 
 	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST,
-                                                             centerCharacterParam._idx))
+                                                             centerCharacterParam->_idx))
 	{
 		m_CenterDP->Select();
 	}
@@ -223,13 +223,13 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
 	auto centerCharacterParam = m_CenterDP->getCharacterParam();
 
 	// If already have the Center Character, Change the Button String to "Select"
-	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam._idx))
+	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx))
 		m_btnSelect->changeContents("Select");
 	else// If do not have, Change the Button String to "buy cost"
-		m_btnSelect->changeContents(MakeString("$ %d", centerCharacterParam._cost));
+		m_btnSelect->changeContents(MakeString("$ %d", centerCharacterParam->_cost));
 
 	// Change name label
-	m_CenterCharacterNameLabel->setString(centerCharacterParam._name);
+	m_CenterCharacterNameLabel->setString(centerCharacterParam->_name);
 
 	// Size down the other dp
 	for (auto characterDP : listView->getChildren())

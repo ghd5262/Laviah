@@ -1,5 +1,6 @@
 #include "ChallengeDataManager.hpp"
 #include "UserDataManager.h"
+#include "CharacterDataManager.h"
 #include "ChallengeChecker/ChallengeClearChecker.h"
 #include "ChallengeRewarder/ChallengeRewarder.hpp"
 #include "../json/json.h"
@@ -7,7 +8,7 @@
 
 using namespace cocos2d;
 using namespace CHALLENGE_DATA_KEY;
-
+using namespace CHALLENGE_REWARD_KEY;
 
 CChallengeDataManager::CChallengeDataManager()
 : m_Checker(new CChallengeClearChecker())
@@ -125,22 +126,22 @@ bool CChallengeDataManager::CheckChallengeComplete(int index)
 	return true;
 }
 
-void CChallengeDataManager::Reward(int index)
+sREWARD_DATA CChallengeDataManager::Reward(int index)
 {
     auto challengeData = getChallengeByIndex(index);
     
     auto key = challengeData->_rewardKey;
     auto rewardValue = challengeData->_rewardValue;
     
-	this->RewardByKey(key, rewardValue);
+	return this->RewardByKey(key, rewardValue);
 }
 
-void CChallengeDataManager::RewardByKey(std::string key, int value)
+sREWARD_DATA CChallengeDataManager::RewardByKey(std::string key, int value)
 {
 	auto rewarder = m_RewarderList.find(key);
-	if (rewarder == std::end(m_RewarderList)) return;
+	if (rewarder == std::end(m_RewarderList)) return sREWARD_DATA();
 
-	rewarder->second(value);
+	return rewarder->second(sREWARD_DATA(key, value));
 }
 
 bool CChallengeDataManager::NonCompleteChallengeExist(int level,
@@ -283,11 +284,23 @@ void CChallengeDataManager::initRewardKeyList()
         m_RewarderList.emplace(std::pair<std::string, REWARDER>(key, func));
     };
     
-    initRewarder(REWARD_COIN,        CC_CALLBACK_1(CChallengeRewarder::coinReward, m_Rewarder));
+   	initRewarder(REWARD_COIN,			  CC_CALLBACK_1(CChallengeRewarder::coinReward				, m_Rewarder));
+	initRewarder(REWARD_CHARACTER,		  CC_CALLBACK_1(CChallengeRewarder::characterReward			, m_Rewarder));
+	initRewarder(REWARD_ROCKET,			  CC_CALLBACK_1(CChallengeRewarder::RocketReward			, m_Rewarder));
+	initRewarder(REWARD_PET,			  CC_CALLBACK_1(CChallengeRewarder::PetReward				, m_Rewarder));
+
+	initRewarder(REWARD_COIN_RANDOM,	  CC_CALLBACK_1(CChallengeRewarder::coinRewardRandom		, m_Rewarder));
+	initRewarder(REWARD_CHARACTER_RANDOM, CC_CALLBACK_1(CChallengeRewarder::characterRewardRandom	, m_Rewarder));
+	initRewarder(REWARD_ROCKET_RANDOM,	  CC_CALLBACK_1(CChallengeRewarder::RocketRewardRandom		, m_Rewarder));
+	initRewarder(REWARD_PET_RANDOM,		  CC_CALLBACK_1(CChallengeRewarder::PetRewardRandom			, m_Rewarder));
 }
 
-std::string CChallengeDataManager::getRewardImageName(std::string rewardKey)
+std::string CChallengeDataManager::getRewardImageName(std::string rewardKey, int rewardValue)
 {
-    
+	if (REWARD_COIN == rewardKey)
+		return "workshopCoinTime.png";
+	if (REWARD_CHARACTER == rewardKey){
+		auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
+		return data->_normalTextureName;
+	}
 }
-

@@ -212,6 +212,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\MyUI\Popup\ResultPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\PausePopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\PatternTestPopup.cpp" />
+    <ClCompile Include="Classes\MyUI\Popup\RewardPopupDP.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\VideoPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\WorkshopPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\WorkshopPopupDP.cpp" />
@@ -314,6 +315,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\MyUI\Popup\PausePopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\HelpPopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\ResultPopup.h" />
+    <ClInclude Include="Classes\MyUI\Popup\RewardPopupDP.hpp" />
     <ClInclude Include="Classes\MyUI\Popup\VideoPopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\WorkshopPopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\WorkshopPopupDP.h" />

@@ -2,7 +2,7 @@
 #include "../MyButton.h"
 #include "../../DataManager/UserDataManager.h"
 
-CCharacterSelectPopupDP* CCharacterSelectPopupDP::create(const sCHARACTER_PARAM character)
+CCharacterSelectPopupDP* CCharacterSelectPopupDP::create(const sCHARACTER_PARAM* character)
 {
     CCharacterSelectPopupDP *pRet = new(std::nothrow) CCharacterSelectPopupDP(character);
     if (pRet && pRet->init())
@@ -32,7 +32,7 @@ bool CCharacterSelectPopupDP::init()
         this->addChild(bg);
     }
     
-    m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character._normalTextureName.c_str());
+    m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character->_normalTextureName.c_str());
     if (m_CharacterImg != nullptr)
     {
         m_CharacterImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -45,18 +45,18 @@ bool CCharacterSelectPopupDP::init()
 
 void CCharacterSelectPopupDP::Buy()
 {
-    if (CUserDataManager::Instance()->CoinUpdate(-m_Character._cost)){
+    if (CUserDataManager::Instance()->CoinUpdate(-m_Character->_cost)){
     
         // USER Data Save
-        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Character._idx);
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character._idx);
+        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_idx);
     }
 }
 
 void CCharacterSelectPopupDP::Select()
 {
     // USER Data Save
-    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character._idx);
+    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_idx);
 }
 
 void CCharacterSelectPopupDP::Center()

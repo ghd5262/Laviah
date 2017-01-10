@@ -31,6 +31,8 @@ struct sCHARACTER_PARAM{
 	std::string _texturePackName;
 };
 
+typedef std::vector<const sCHARACTER_PARAM*> CHARACTER_LIST;
+typedef std::function<bool(const sCHARACTER_PARAM*)> CHARACTER_PICK;
 
 class CCharacterDataManager
 {
@@ -38,14 +40,23 @@ public:
     static CCharacterDataManager* Instance();
         
     //getter & setter
-    sCHARACTER_PARAM getCharacterInfoByIndex(int index) const;
-    std::vector<sCHARACTER_PARAM> getCharacterList(){ return m_CharacterList; };
+	CHARACTER_LIST getCharacterList(){ return m_CharacterList; };
 	void PrintCharacterInfo(int index);
-    
+	bool NonCollectedCharacterExist(int level, bool below);
+
+	//getter & setter
+	const sCHARACTER_PARAM* getCharacterByIndex(int index) const;
+	const sCHARACTER_PARAM* getNewRandomCharacter(int level, bool below);
+	static CHARACTER_LIST getListByFunc(const CHARACTER_PICK &func, CHARACTER_LIST list);
+
 private:
+	void initWithJson(CHARACTER_LIST &list, std::string fileName);
+	const sCHARACTER_PARAM* getNewRandomCharacterFromList(CHARACTER_LIST &list);
+	CHARACTER_LIST getNonCollectedCharacterList(int level, bool below);
+
     CCharacterDataManager();
     virtual ~CCharacterDataManager();
     
 private:
-    std::vector<sCHARACTER_PARAM> m_CharacterList;
+	CHARACTER_LIST m_CharacterList;
 };

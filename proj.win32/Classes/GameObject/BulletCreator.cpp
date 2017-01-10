@@ -13,6 +13,7 @@ using namespace PLANET_DEFINE;
 
 CBulletCreator::CBulletCreator()
 : m_CurrentPattern(nullptr)
+, m_CharacterInfo(nullptr)
 , m_BulletDataManager(CBulletDataManager::Instance())
 , m_RotationAngle(0)
 , m_CurrentHeight(0)
@@ -48,7 +49,7 @@ bool CBulletCreator::init()
     this->Clear();
     
     auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
-    m_CharacterInfo = CCharacterDataManager::Instance()->getCharacterInfoByIndex(index);
+    m_CharacterInfo = CCharacterDataManager::Instance()->getCharacterByIndex(index);
     
     return true;
 }
@@ -193,11 +194,11 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
 {
     std::string name = "hello.png";
     
-    if      (symbol == '1')                     name = m_CharacterInfo._normalBulletTextureName;
-    else if (symbol == '4')                     name = m_CharacterInfo._normalMissileTextureName;
-    else if (symbol == '5')                     name = m_CharacterInfo._aimingMissileTextureName;
-    else if (symbol == '6')                     name = m_CharacterInfo._stickBulletTextureName;
-    else if (symbol == '7')                     name = m_CharacterInfo._stickBulletTextureName;
+    if      (symbol == '1')                     name = m_CharacterInfo->_normalBulletTextureName;
+    else if (symbol == '4')                     name = m_CharacterInfo->_normalMissileTextureName;
+    else if (symbol == '5')                     name = m_CharacterInfo->_aimingMissileTextureName;
+    else if (symbol == '6')                     name = m_CharacterInfo->_stickBulletTextureName;
+    else if (symbol == '7')                     name = m_CharacterInfo->_stickBulletTextureName;
 
     else if (symbol == 'A')                     name = "playItem_1.png";
     else if (symbol == 'B')                     name = "playItem_2.png";

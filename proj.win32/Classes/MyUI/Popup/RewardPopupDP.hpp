@@ -1,25 +1,26 @@
 #pragma once
 #include "cocos2d.h"
+#include "RewardPopup.h"
 #include "../Popup.h"
 #include "../../DataManager/ChallengeDataManager.hpp"
 
 class CRewardPopupDP : public CPopup
 {
 public:
-    static CRewardPopupDP* create(const sCHALLENGE_PARAM challenge);
+    static CRewardPopupDP* create(const sREWARD_DATA reward);
     
     //setter & getter
-    const sCHALLENGE_PARAM getChallengeParam() const { return m_Challenge; }
+	const sREWARD_DATA getRewardData() const { return m_Reward; }
     
 protected:
     virtual bool init() override;
     
 private:
     void initReward();
-    CRewardPopupDP(const sCHALLENGE_PARAM challenge)
-    : m_Challenge(challenge){};
+	CRewardPopupDP(const sREWARD_DATA reward)
+		: m_Reward(reward){};
     virtual ~CRewardPopupDP(){};
     
 private:
-    const sCHALLENGE_PARAM m_Challenge;
+	const sREWARD_DATA m_Reward;
 };
