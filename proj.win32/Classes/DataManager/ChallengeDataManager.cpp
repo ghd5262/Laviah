@@ -151,6 +151,15 @@ bool CChallengeDataManager::NonCompleteChallengeExist(int level,
     return getNonCompletedChallengeList(level, below, continuingType).size();
 }
 
+void CChallengeDataManager::getNewChallenges()
+{
+    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+    for(int count = 0; count < CHALLENGE::LIMIT_COUNT; count++)
+    {
+        this->SkipChallenge(list->at(count));
+    }
+}
+
 const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 {
 /** continuing type 은 기존 로직으로 처리하지 못한다.
@@ -295,12 +304,29 @@ void CChallengeDataManager::initRewardKeyList()
 	initRewarder(REWARD_PET_RANDOM,		  CC_CALLBACK_1(CChallengeRewarder::PetRewardRandom			, m_Rewarder));
 }
 
-std::string CChallengeDataManager::getRewardImageName(std::string rewardKey, int rewardValue)
+cocos2d::Sprite* CChallengeDataManager::getRewardSprite(std::string rewardKey, int rewardValue)
 {
-	if (REWARD_COIN == rewardKey)
-		return "workshopCoinTime.png";
+    auto createTitle = [=](std::string title, Sprite* parent){
+        auto label  = Label::createWithTTF(title, FONT::MALGUNBD, 50);
+        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+        label->setPosition(Vec2(parent->getContentSize().width * 0.5f,
+                                parent->getContentSize().height * 0.9f));
+        label->setColor(COLOR::DARKGRAY);
+        parent->addChild(label);
+    };
+    
+    Sprite* sprite = nullptr;
+    
+    if (REWARD_COIN == rewardKey){
+        sprite = Sprite::create("workshopCoinTime.png");
+        createTitle(StringUtils::format("%d", rewardValue), sprite);
+        
+    }
 	if (REWARD_CHARACTER == rewardKey){
 		auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
-		return data->_normalTextureName;
+        sprite = Sprite::createWithSpriteFrameName(data->_normalTextureName);
+        createTitle(StringUtils::format("%s", data->_name.c_str()), sprite);
 	}
+    sprite->setScale(1.5f);
+    return sprite;
 }

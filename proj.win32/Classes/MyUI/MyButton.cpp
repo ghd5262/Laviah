@@ -172,12 +172,12 @@ CMyButton* CMyButton::setEnableSound(bool able)
     return this;
 }
 
-CMyButton* CMyButton::setTouchEnable(bool able)
+CMyButton* CMyButton::setTouchEnable(bool able, Color3B color/* = cocos2d::Color3B::GRAY*/)
 {
 	m_Touchable = able;
 
 	if (!m_Touchable)
-		this->setColor(Color3B::GRAY);
+		this->setColor(color);
 	else
 		this->setColor(Color3B::WHITE);
 

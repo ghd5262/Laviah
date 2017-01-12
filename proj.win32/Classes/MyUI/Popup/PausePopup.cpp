@@ -33,7 +33,8 @@ bool CPausePopup::init()
 	if (!CPopup::init()) return false;
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-
+    m_ChallengeList.resize(CHALLENGE::LIMIT_COUNT);
+    
     this->initChallengeList();
     
 	auto pauseBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
@@ -219,7 +220,7 @@ void CPausePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posIndex)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(posArray[posIndex])
     ->show(this, ZORDER::POPUP);
-    m_ChallengeList.emplace_back(dp);
+    m_ChallengeList.at(posIndex) = dp;
 }
 
 

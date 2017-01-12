@@ -143,7 +143,7 @@ bool CGameScene::init()
     ->addLastEventListner([=](Node* sender){
         CObjectManager::Instance()->setIsGamePause(false);
     })
-    ->setFont(Color4B::WHITE, 50)
+    ->setFont(Color4B::WHITE, 60)
     ->setMaxNumber(3)
     ->setMinNumber(0)
     ->setLastContent("GO!")
@@ -317,7 +317,6 @@ void CGameScene::createVideoPopup()
 void CGameScene::createChallengePopup()
 {
 	CChallengePopup::create()
-		->EndButtonVisible(true)
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(m_VisibleSize / 2)
 		->show(this, ZORDER::POPUP);

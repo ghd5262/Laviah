@@ -4,6 +4,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/ChallengeRewarder/ChallengeRewarder.hpp"
 
 USING_NS_CC;
 
@@ -45,11 +46,7 @@ bool CRewardPopupDP::init()
 
 void CRewardPopupDP::initReward()
 {
-	auto name = CChallengeDataManager::Instance()->getRewardImageName(m_Reward._key, m_Reward._value);
-	auto sprite = Sprite::create(name);
-	if (sprite == nullptr)
-		sprite = Sprite::createWithSpriteFrameName(name);
-
+	auto sprite = CChallengeDataManager::Instance()->getRewardSprite(m_Reward._key, m_Reward._value);
     this->setContentSize(sprite->getContentSize());
     sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     sprite->setPosition(this->getContentSize() / 2);

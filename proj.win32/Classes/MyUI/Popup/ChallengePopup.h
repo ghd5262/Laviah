@@ -1,25 +1,33 @@
 #pragma once
 #include "../Popup.h"
+#include "../../DataManager/ChallengeDataManager.hpp"
+#include <array>
 
 class CChallengePopupDP;
 class CChallengePopup : public CPopup
 {
 public:
 	static CChallengePopup* create();
-	CPopup* EndButtonVisible(bool visible);
 	virtual CPopup* show(Node* parent, int zOrder = 0) override;
 
 protected:
 	virtual bool init() override;
 
 private:
-	void End(cocos2d::Node* sender);
+    void initChallengeList();
+    void createChallengeDP(const sCHALLENGE_PARAM* data,
+                           int posIndex,
+                           bool isSkip);
+    
+    void End(cocos2d::Node* sender);
     void Skip(CChallengePopupDP* sender, int posIndex);
     
-	CChallengePopup()
-		: m_EndButtonVisible(false){};
+    
+	CChallengePopup(){};
 	virtual ~CChallengePopup(){};
-
+    
 private:
-	bool m_EndButtonVisible;
+    std::vector<CPopup*> m_ChallengeList;
+    std::array<Vec2, 4> m_DPStartPosArray;
+    std::array<Vec2, 4> m_DPTargetPosArray;
 };

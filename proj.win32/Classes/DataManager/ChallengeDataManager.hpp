@@ -64,6 +64,10 @@ struct sREWARD_DATA{
 		, _value(value){};
 };
 
+namespace CHALLENGE {
+    static const int LIMIT_COUNT = 3;
+}
+
 typedef std::function<bool(int)> CHECKER;
 typedef std::map<std::string, CHECKER> CHECKER_LIST;
 typedef std::function<sREWARD_DATA(sREWARD_DATA)> REWARDER;
@@ -82,6 +86,7 @@ public:
     bool NonCompleteChallengeExist(int level,
                                    bool below,
                                    bool continuingType = false);
+    void getNewChallenges();
     const sCHALLENGE_PARAM* SkipChallenge(int index);
 
     //getter & setter
@@ -89,7 +94,7 @@ public:
     const sCHALLENGE_PARAM* getNewRandomChallenge(int level,
                                                   bool below,
                                                   bool continuingType = false);
-	std::string getRewardImageName(std::string rewardKey, int rewardValue);
+    cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
     static CHALLENGE_LIST getListByFunc(const CHALLENGE_PICK &func, CHALLENGE_LIST list);
 
 private:

@@ -67,8 +67,12 @@ bool CRewardPopup::init()
 			m_RewardDP->popupClose();
 
 		if (m_RewardIndex >= m_RewardList.size()){
+            this->retain();
+            if(m_ExitCallback)
+                m_ExitCallback();
 			this->popupClose();
-			return;
+            this->release();
+            return;
 		}
 
 		auto data = m_RewardList.at(m_RewardIndex);
@@ -96,6 +100,13 @@ bool CRewardPopup::init()
 	return true;
 }
 
+CPopup* CRewardPopup::setExitCallback(const EXIT_CALLBACK &callback)
+{
+    m_ExitCallback = callback;
+    return this;
+}
+
+
 void CRewardPopup::AddRewardToList(std::string key, int value)
 {
 	m_RewardList.emplace_back(sREWARD_DATA(key, value));
@@ -109,3 +120,5 @@ CPopup* CRewardPopup::createRewardDP(sREWARD_DATA data)
 		->setPopupPosition(getContentSize() / 2)
 		->show(this, ZORDER::POPUP);
 }
+
+

@@ -41,7 +41,7 @@ public:
 	CMyButton* setDefaultClickedAnimation(int animationInfo);
 	CMyButton* setClickSound(std::string began, std::string ended = "");
     CMyButton* setEnableSound(bool able);
-	CMyButton* setTouchEnable(bool able);
+	CMyButton* setTouchEnable(bool able, cocos2d::Color3B color = cocos2d::Color3B::GRAY);
     CMyButton* setContents(std::string contents);
     CMyButton* setFont(cocos2d::Color3B fontColor, int fontSize);
     CMyButton* setButtonPosition(cocos2d::Vec2 position);
