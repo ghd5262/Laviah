@@ -63,8 +63,8 @@ bool CStickBullet::init()
 void CStickBullet::Execute(float delta)
 {
 	m_Time += delta;
-	if (m_Time < getDelayTime()) return;
-	if (m_HitWithPlanet) m_StayLimitTime += delta;
+    if (!IsTimeUP()) return;
+    if (m_HitWithPlanet) m_StayLimitTime += delta;
 
 	if (m_StayLimitTime > STICKBULLET::STAY_LIMIT_TIME)
 	{
@@ -76,8 +76,8 @@ void CStickBullet::Execute(float delta)
 			return;
 		}
 	}
-
-	m_FSM->Execute(delta);
+    this->setVisible(true);
+    m_FSM->Execute(delta);
 }
 
 void CStickBullet::CollisionWithPlanet()

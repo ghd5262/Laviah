@@ -71,7 +71,7 @@ CBullet* CStandBullet::build()
 void CStandBullet::Execute(float delta)
 {
     m_Time += delta;
-    if (m_Time < getDelayTime()) return;
+    if (!IsTimeUP()) return;
     this->StandUp(delta);
     if (m_StandUpComplete) m_StayLimitTime += delta;
     
@@ -85,7 +85,7 @@ void CStandBullet::Execute(float delta)
             return;
         }
     }
-    
+    this->setVisible(true);
     m_FSM->Execute(delta);
 }
 

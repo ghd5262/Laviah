@@ -108,9 +108,10 @@ bool CBullet::init()
 void CBullet::Execute(float delta)
 {
 	m_Time += delta;
-	if (m_Time < m_BulletInfo._delayTime) return;
-
+	if (!IsTimeUP()) return;
+    
     m_FSM->Execute(delta);
+    this->setVisible(true);
 }
 
 Vec2 CBullet::getCirclePosition(float angle, float distance, Vec2 center)

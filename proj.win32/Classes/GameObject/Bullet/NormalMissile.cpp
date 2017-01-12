@@ -67,13 +67,13 @@ bool CNormalMissile::init()
 void CNormalMissile::Execute(float delta)
 {
 	m_Time += delta;
-	if (m_Time < getDelayTime()) return;
+    if (!IsTimeUP()) return;
     if (!m_bIsTargetMarkCreate) {
         CCLOG("Delay : %f Time : %f", getDelayTime(), m_Time);
         this->createTargetLine();
     }
-
-	m_FSM->Execute(delta);
+    this->setVisible(true);
+    m_FSM->Execute(delta);
 }
 
 void CNormalMissile::CollisionWithPlanet()

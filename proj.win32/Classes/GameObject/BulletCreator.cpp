@@ -181,6 +181,8 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
     ->setBulletInfo(data)
     ->build();
     
+    bullet->setVisible(false);
+    
     CGameScene::getGameScene()->addChild(bullet, ZORDER::BULLET);
     
 #if(!USE_MEMORY_POOLING)

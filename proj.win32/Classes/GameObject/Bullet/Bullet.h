@@ -141,6 +141,10 @@ public:
         return on(itemType);
     }
     
+    bool IsTimeUP(){
+        return m_Time >= m_BulletInfo._delayTime;
+    }
+    
     static cocos2d::Vec2 getCirclePosition(float angle, float distance, cocos2d::Vec2 center);
     static cocos2d::Vec2 getSquarePosition(float angle, float distance);
 
