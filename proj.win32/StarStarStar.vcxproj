@@ -198,6 +198,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\MyUI\BonusTimeUI.cpp" />
     <ClCompile Include="Classes\MyUI\CountDown.cpp" />
     <ClCompile Include="Classes\MyUI\HealthBarUI.cpp" />
+    <ClCompile Include="Classes\MyUI\ItemProgress.cpp" />
     <ClCompile Include="Classes\MyUI\LevelProgressBar.cpp" />
     <ClCompile Include="Classes\MyUI\MenuLayer.cpp" />
     <ClCompile Include="Classes\MyUI\MultipleScore.cpp" />
@@ -301,6 +302,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\MyUI\BonusTimeUI.h" />
     <ClInclude Include="Classes\MyUI\CountDown.hpp" />
     <ClInclude Include="Classes\MyUI\HealthBarUI.h" />
+    <ClInclude Include="Classes\MyUI\ItemProgress.hpp" />
     <ClInclude Include="Classes\MyUI\LevelProgressBar.h" />
     <ClInclude Include="Classes\MyUI\MenuLayer.hpp" />
     <ClInclude Include="Classes\MyUI\MultipleScore.h" />

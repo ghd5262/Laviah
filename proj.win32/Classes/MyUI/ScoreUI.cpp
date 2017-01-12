@@ -81,7 +81,8 @@ void CScoreUI::setValue(int value)
 {
     if(value == m_Value) return;
     
-	m_ValueString = StringUtility::toCommaString(value);
+	m_Value = value;
+	m_ValueString = StringUtility::toCommaString(m_Value);
 	m_ValueLabel->setString(m_ValueString);
 	if (m_ValueImg != nullptr)
 		m_ValueImg->setPosition(

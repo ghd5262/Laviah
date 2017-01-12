@@ -20,10 +20,6 @@ protected:
 	CC_SYNTHESIZE(float, m_LimitTime, LimitTime);
 	CC_SYNTHESIZE(float, m_OriginBoundingRadius, OriginBoundingRadius);
 private:
-    inline void FinishedBarrierItem()
-    {
-        m_bMagnetAlive = false;
-    }
     CMagnetEffect();
     virtual ~CMagnetEffect(){}
     

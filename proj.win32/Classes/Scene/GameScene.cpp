@@ -177,8 +177,8 @@ void CGameScene::GameStart()
 {
     this->ScreenFade([=](){
         this->clearData();
-        m_UILayer->setVisible(true);
         this->GameResume();
+		m_UILayer->setVisible(true);
 //        this->createUILayer();
         CObjectManager::Instance()->getPlayer()->PlayerAlive();
     });
@@ -292,8 +292,8 @@ void CGameScene::clearData()
     CItemManager::Instance()->Clear();
     this->cleanGlobalData();
 //    this->removeUILayer();
-    m_UILayer->setVisible(false);
 	this->removeBonusTimeLayer();
+	m_UILayer->setVisible(false);
 }
 
 void CGameScene::cleanGlobalData()

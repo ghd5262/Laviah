@@ -41,6 +41,7 @@ void CItemProgress::update(float delta)
         this->retain();
         this->processEventListner();
         m_IsPause = true;
+		this->Reset();
         this->setVisible(false);
         if(m_CleanUP) this->removeFromParent();
         

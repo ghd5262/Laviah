@@ -7,11 +7,11 @@ class CScoreUI;
 class CItemProgress;
 class CUILayer : public CPopup
 {
-    typedef std::vector<CItemProgress*> PROGRESS_LIST;
+    typedef std::array<CItemProgress*, eITEM_TYPE_MAX> PROGRESS_LIST;
 
 public:
     static CUILayer* Instance();
-    void setItemTimer(eITEM_TYPE type, float limitTime);
+	void setItemTimer(eITEM_TYPE type, float limitTime);
     
     virtual void update(float delta) override;
     
@@ -22,7 +22,7 @@ private:
     void stop();
     void play();
     void onPauseButton(cocos2d::Node* sender);
-    void createItemTimerUI(std::string iconName, Color3B color);
+	void createItemTimerUI(eITEM_TYPE type, Color3B color);
     void initItemTestButton();
     
     

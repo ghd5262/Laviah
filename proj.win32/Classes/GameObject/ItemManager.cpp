@@ -31,8 +31,11 @@ CItemManager* CItemManager::Instance()
 
 void CItemManager::Clear()
 {
-	memset(m_ItemTimers, 0, sizeof(m_ItemTimers));
-	memset(m_ItemTimersLimit, 0, sizeof(m_ItemTimersLimit));
+	for (int idx = 1; idx < eITEM_TYPE_MAX; idx++){
+		m_ItemTimers[idx] = 0;
+		m_ItemTimersLimit[idx] = 0;
+		CUILayer::Instance()->setItemTimer((eITEM_TYPE)idx, 0);
+	}
 
 	m_CurrentItems = 0;
 }
@@ -41,7 +44,8 @@ void CItemManager::StartItemTimer(eITEM_TYPE itemType)
 {
     auto player = CObjectManager::Instance()->getPlayer();
     auto setTimer = [=](eITEM_TYPE  type, float limitTime){
-        m_ItemTimersLimit[type] = m_ItemTimers[type] + limitTime;
+		m_ItemTimers[type] = 0.f;
+        m_ItemTimersLimit[type] = limitTime;
         CUILayer::Instance()->setItemTimer(type, m_ItemTimersLimit[type]);
     };
     

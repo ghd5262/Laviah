@@ -23,6 +23,7 @@ public:
     void Reset();
     
     CC_SYNTHESIZE(float, m_LimitTime, LimitTime);
+	CC_SYNTHESIZE(float, m_Time, Time);
     CC_SYNTHESIZE(bool, m_IsPause, IsPause);
 private:
     void processEventListner();
@@ -46,7 +47,6 @@ private:
     cocos2d::Vec2 m_Position;
     cocos2d::Vec2 m_AnchorPoint;
     std::string m_IconName;
-    float m_Time;
     bool m_IsDirectionRight;
     bool m_CleanUP;
 };

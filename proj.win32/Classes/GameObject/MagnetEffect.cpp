@@ -53,7 +53,7 @@ void CMagnetEffect::Execute(float delta)
         m_IntervalTimer += delta;
         
 		if (m_Timer > m_LimitTime)
-            FinishedBarrierItem();
+            this->setMagnetAlive(false);
         
         if (m_IntervalTimer > MAGNET_INTERVAL)
         {

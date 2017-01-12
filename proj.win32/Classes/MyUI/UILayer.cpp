@@ -105,10 +105,11 @@ bool CUILayer::init()
     m_PauseBtn->setCascadeOpacityEnabled(true);
     m_PauseBtn->setOpacity(0);
     
+	std::fill(m_ProgressList.begin(), m_ProgressList.end(), nullptr);
     for(int count = 1; count < eITEM_TYPE_MAX; count++)
-        this->createItemTimerUI(StringUtils::format("playItem_%d.png", count), Color3B::WHITE);
+		this->createItemTimerUI((eITEM_TYPE)count, Color3B::WHITE);
     
-    this->initItemTestButton();
+    //this->initItemTestButton();
 //    CGameScene::getGameScene()->GameResume();
     
     this->setDefaultCallback([=](Node* sender){
@@ -120,9 +121,13 @@ bool CUILayer::init()
 
 void CUILayer::setItemTimer(eITEM_TYPE type, float limitTime)
 {
-    auto timer = m_ProgressList.at(type);
+	if (type == eITEM_TYPE_none) return;
+
+    auto timer = m_ProgressList[type];
     timer->setLimitTime(limitTime);
-    timer->setVisible(true);
+	timer->setTime(0.f);
+	if (limitTime > 0)
+		timer->setVisible(true);
     
     if(timer->getIsPause())
     {
@@ -163,20 +168,20 @@ void CUILayer::onPauseButton(cocos2d::Node* sender)
     CGameScene::getGameScene()->OpenGamePausePopup();
 }
 
-void CUILayer::createItemTimerUI(std::string iconName, Color3B color)
+void CUILayer::createItemTimerUI(eITEM_TYPE type, Color3B color)
 {
     auto progress = CItemProgress::create()
     ->addLastEventListner([=](Node* sender){
         if(m_TimerRunningCount > 0)
             m_TimerRunningCount--;
     })
-    ->setIcon(iconName)
+	->setIcon(StringUtils::format("playItem_%d.png", type))
     ->setBarColor(color)
     ->show(this);
     progress->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     progress->setPosition(m_ProgressPosArray[0]);
     progress->setVisible(false);
-    m_ProgressList.emplace_back(progress);
+	m_ProgressList[type] = progress;
 }
 
 void CUILayer::initItemTestButton()

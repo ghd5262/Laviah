@@ -137,6 +137,7 @@ void CPlayer::PlayerAlive()
 }
 
 void CPlayer::PlayerDead(){
+	m_MagnetEffect->setMagnetAlive(false);
     m_Particle->setVisible(false);
     this->createDeadParticle();
 	this->setVisible(false);
