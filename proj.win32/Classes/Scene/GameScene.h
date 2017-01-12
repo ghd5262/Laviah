@@ -65,7 +65,7 @@ private:
     void createUILayer();
     void createBonusTimeLayer();
 	void createRandomCoin();
-    void removeUILayer();
+//    void removeUILayer();
     void removeBonusTimeLayer();
     void turnDownSound();
     void turnUpSound();

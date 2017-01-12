@@ -156,7 +156,7 @@ bool CGameScene::init()
 #if(USE_MEMORY_POOLING)
 	CPoolingManager::Instance()->CreateBulletList(600, 900);
 #endif
-
+    this->createUILayer();
 	this->initKeyboardListener();
     this->OpenGameMenuLayer();
 
@@ -177,7 +177,9 @@ void CGameScene::GameStart()
 {
     this->ScreenFade([=](){
         this->clearData();
-        this->createUILayer();
+        m_UILayer->setVisible(true);
+        this->GameResume();
+//        this->createUILayer();
         CObjectManager::Instance()->getPlayer()->PlayerAlive();
     });
 }
@@ -289,7 +291,8 @@ void CGameScene::clearData()
     CObjectManager::Instance()->Clear();
     CItemManager::Instance()->Clear();
     this->cleanGlobalData();
-    this->removeUILayer();
+//    this->removeUILayer();
+    m_UILayer->setVisible(false);
 	this->removeBonusTimeLayer();
 }
 
@@ -373,7 +376,7 @@ void CGameScene::createMenuLayer()
 
 void CGameScene::createUILayer()
 {
-    m_UILayer = CUILayer::create()
+    m_UILayer = CUILayer::Instance()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
@@ -389,13 +392,13 @@ void CGameScene::createBonusTimeLayer()
     ->show(this, ZORDER::POPUP);
 }
 
-void CGameScene::removeUILayer()
-{
-    if(m_UILayer) {
-        m_UILayer->popupClose();
-        m_UILayer = nullptr;
-    }
-}
+//void CGameScene::removeUILayer()
+//{
+//    if(m_UILayer) {
+//        m_UILayer->popupClose();
+//        m_UILayer = nullptr;
+//    }
+//}
 
 void CGameScene::removeBonusTimeLayer()
 {

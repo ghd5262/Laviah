@@ -5,6 +5,7 @@
 #include "MultipleScore.h"
 #include "MyButton.h"
 #include "CountDown.hpp"
+#include "ItemProgress.hpp"
 #include "../GameObject/ItemManager.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Player.h"
@@ -16,18 +17,27 @@ using namespace std;
 using namespace cocos2d;
 using namespace cocos2d::ui;
 
-CUILayer* CUILayer::create()
+CUILayer* CUILayer::m_Instance = nullptr;
+
+CUILayer::~CUILayer()
 {
-    CUILayer *pRet = new(std::nothrow) CUILayer();
-    if (pRet && pRet->init())
+    m_Instance = nullptr;
+}
+
+CUILayer* CUILayer::Instance()
+{
+    if(m_Instance != nullptr) return m_Instance;
+    
+    m_Instance = new(std::nothrow) CUILayer();
+    if (m_Instance && m_Instance->init())
     {
-        pRet->autorelease();
-        return pRet;
+        m_Instance->autorelease();
+        return m_Instance;
     }
     else
     {
-        delete pRet;
-        pRet = NULL;
+        delete m_Instance;
+        m_Instance = NULL;
         return NULL;
     }
 }
@@ -53,6 +63,16 @@ bool CUILayer::init()
         Vec2(popupSize.width * 0.96f, popupSize.height * 0.96f ),
         Vec2(popupSize.width * 0.1f,  popupSize.height * 0.96f ),
         Vec2(popupSize.width * 0.96f, popupSize.height * 0.925f)
+    };
+    
+    m_ProgressPosArray = {
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.68f),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.66f),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.64f),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.62f),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.6f),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.58f)
     };
     
     m_StarScoreUI = createScoreUI("score.png",      Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
@@ -85,14 +105,32 @@ bool CUILayer::init()
     m_PauseBtn->setCascadeOpacityEnabled(true);
     m_PauseBtn->setOpacity(0);
     
-    //this->initItemTestButton();    
-    CGameScene::getGameScene()->GameResume();
+    for(int count = 1; count < eITEM_TYPE_MAX; count++)
+        this->createItemTimerUI(StringUtils::format("playItem_%d.png", count), Color3B::WHITE);
+    
+    this->initItemTestButton();
+//    CGameScene::getGameScene()->GameResume();
     
     this->setDefaultCallback([=](Node* sender){
         this->onPauseButton(sender);
     }, false);
     
     return true;
+}
+
+void CUILayer::setItemTimer(eITEM_TYPE type, float limitTime)
+{
+    auto timer = m_ProgressList.at(type);
+    timer->setLimitTime(limitTime);
+    timer->setVisible(true);
+    
+    if(timer->getIsPause())
+    {
+        // set new position
+        timer->setIsPause(false);
+        timer->setPosition(m_ProgressPosArray[m_TimerRunningCount]);
+        m_TimerRunningCount++;
+    }
 }
 
 void CUILayer::update(float delta)
@@ -107,10 +145,6 @@ void CUILayer::update(float delta)
     m_RunScoreUI->setValue(GLOBAL->RUN_SCORE);
 }
 
-void CUILayer::onPauseButton(cocos2d::Node* sender)
-{
-    CGameScene::getGameScene()->OpenGamePausePopup();
-}
 
 void CUILayer::stop()
 {
@@ -124,13 +158,34 @@ void CUILayer::play()
     m_PauseBtn->runAction(FadeIn::create(0.5f));
 }
 
+void CUILayer::onPauseButton(cocos2d::Node* sender)
+{
+    CGameScene::getGameScene()->OpenGamePausePopup();
+}
+
+void CUILayer::createItemTimerUI(std::string iconName, Color3B color)
+{
+    auto progress = CItemProgress::create()
+    ->addLastEventListner([=](Node* sender){
+        if(m_TimerRunningCount > 0)
+            m_TimerRunningCount--;
+    })
+    ->setIcon(iconName)
+    ->setBarColor(color)
+    ->show(this);
+    progress->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    progress->setPosition(m_ProgressPosArray[0]);
+    progress->setVisible(false);
+    m_ProgressList.emplace_back(progress);
+}
+
 void CUILayer::initItemTestButton()
 {
     auto createItemTest = [=](eITEM_TYPE type, Vec2 pos){
         CMyButton::create()
         ->addEventListener([=](Node* sender){
             CItemManager::Instance()->StartItemTimer(type);
-			CObjectManager::Instance()->StartBonusTime();
+//			CObjectManager::Instance()->StartBonusTime();
         })
         ->setButtonNormalImage(StringUtils::format("playItem_%d.png", type))
         ->setButtonPosition(pos)

@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
+#include "../MyUI/UILayer.hpp"
 
 CItemManager::CItemManager()
 {
@@ -41,6 +42,7 @@ void CItemManager::StartItemTimer(eITEM_TYPE itemType)
     auto player = CObjectManager::Instance()->getPlayer();
     auto setTimer = [=](eITEM_TYPE  type, float limitTime){
         m_ItemTimersLimit[type] = m_ItemTimers[type] + limitTime;
+        CUILayer::Instance()->setItemTimer(type, m_ItemTimersLimit[type]);
     };
     
     switch (itemType) {
