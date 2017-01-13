@@ -19,8 +19,6 @@ CItemManager::CItemManager()
 	m_ValueOfStar[eSTAR_TYPE_gold]		= 3.f;
 	m_ValueOfStar[eSTAR_TYPE_bigSilver] = 4.f;
 	m_ValueOfStar[eSTAR_TYPE_bigGold]	= 5.f;
-
-	Clear();
 }
 
 CItemManager* CItemManager::Instance()
