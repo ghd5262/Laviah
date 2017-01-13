@@ -35,8 +35,11 @@ CPopup::CPopup()
 
 CPopup::~CPopup()
 {
-	if (m_DefaultCallBack)
-		m_DefaultCallbackStack.pop();  
+    if (m_DefaultCallBack){
+        m_DefaultCallbackStack.remove_if([=](sDEFAULT_CALLBACK data){
+            return data._sender == this;
+        });
+    }
 }
 
 CPopup* CPopup::create()
@@ -68,7 +71,7 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
         this->backgroundTouchDisable();
     
     if (m_DefaultCallBack){
-        m_DefaultCallbackStack.push(sDEFAULT_CALLBACK([=](Node* sender){
+        m_DefaultCallbackStack.push_back(sDEFAULT_CALLBACK([=](Node* sender){
             this->retain();
             m_DefaultCallBack(this);
 			if (getDefaultCallbackCleanUp())
@@ -241,14 +244,11 @@ CPopup* CPopup::setBackgroundVisible(bool visible)
 
 void CPopup::DefaultCallback()
 {
-    if(CPopup::m_DefaultCallbackStack.size() <= 0){
-        CGameScene::getGameScene()->GameExit();
-        return;
-    }
+    if(CPopup::m_DefaultCallbackStack.size() <= 0) return;
     
-    auto callback = CPopup::m_DefaultCallbackStack.top();
+    auto callback = CPopup::m_DefaultCallbackStack.back();
 	if (callback._sender->getDefaultCallbackCleanUp())
-		CPopup::m_DefaultCallbackStack.pop();
+		CPopup::m_DefaultCallbackStack.pop_back();
     callback._callback(callback._sender);
 }
 

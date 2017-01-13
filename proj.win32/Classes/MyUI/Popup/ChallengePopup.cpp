@@ -112,8 +112,8 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
     
     // Do below when challenge was completed all.
 	if (CChallengeDataManager::Instance()->CheckCompleteAll()){
-		btnReward->setColor(COLOR::GOLD);
         btnReward->setTouchEnable(true);
+        btnReward->setColor(COLOR::GOLD);
         btnEnd->setVisible(false);
         this->setDefaultCallback(nullptr);
 	}

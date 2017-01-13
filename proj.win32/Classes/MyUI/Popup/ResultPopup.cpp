@@ -63,8 +63,8 @@ bool CResultPopup::init()
     std::array<std::string, 8> resultIcon = {
 		"starIcon.png",
         "runIcon.png",
-        "coinIcon.png",
 		"comboIcon.png",
+        "coinIcon.png",
         "bonustimeIcon.png",
         "challengeIcon.png",
         "",
@@ -74,8 +74,8 @@ bool CResultPopup::init()
     std::array<std::string, 8> resultContent = {
 		"Score",
         "Run",
-        "Coin",
 		"Combo",
+        "Coin",
         "BonusTime",
         "Challenge",
         "",
@@ -182,9 +182,9 @@ bool CResultPopup::init()
     
 	auto starScoreBG	= createNormalLayer(resultIcon[0], resultContent[0], GLOBAL->STAR_SCORE, startPos[0], 50);
 	auto moveDistanceBG = createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->RUN_SCORE, startPos[1], 50);
-	auto coinScoreBG    = createNormalLayer(resultIcon[2], resultContent[2], GLOBAL->COIN_SCORE, startPos[2], 50);
-	auto comboBG		= createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->COMBO, startPos[3], 50, 100);
-	auto bonusTimeBG	= createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->BONUSTIME, startPos[4], 50, 10000);
+	auto comboBG		= createMultipleLayer(resultIcon[2], resultContent[2], GLOBAL->COMBO, startPos[2], 50, 100);
+    auto coinScoreBG    = createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->COIN_SCORE, startPos[3], 50, 1000);
+    auto bonusTimeBG	= createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->BONUSTIME, startPos[4], 50, 10000);
 	auto challengeBG	= createMultipleLayer(resultIcon[5], resultContent[5], GLOBAL->CHALLENGE_CLEAR_COUNT, startPos[5], 50, 10000);
     
     auto totalScoreBG = createLayerBG(startPos[6]);
@@ -272,9 +272,9 @@ bool CResultPopup::init()
 		};
 		action(starScoreBG,		targetPos[0]);
 		action(moveDistanceBG,  targetPos[1]);
-		action(coinScoreBG,     targetPos[2]);
-		action(comboBG,			targetPos[3]);
-		action(bonusTimeBG,		targetPos[4]);
+		action(comboBG,			targetPos[2]);
+        action(coinScoreBG,     targetPos[3]);
+        action(bonusTimeBG,		targetPos[4]);
 		action(challengeBG,     targetPos[5]);
 		action(totalScoreBG,    targetPos[6]);
 		action(bestScoreBG,     targetPos[7]);
@@ -297,9 +297,9 @@ bool CResultPopup::init()
 
 		action(starScoreBG,		startPos[0]);
 		action(moveDistanceBG,	startPos[1]);
-		action(coinScoreBG,		startPos[2]);
-		action(comboBG,			startPos[3]);
-		action(bonusTimeBG,		startPos[4]);
+		action(comboBG,			startPos[2]);
+        action(coinScoreBG,		startPos[3]);
+        action(bonusTimeBG,		startPos[4]);
 		action(challengeBG,		startPos[5]);
 		action(totalScoreBG,	startPos[6]);
 		action(bestScoreBG,		startPos[7]);

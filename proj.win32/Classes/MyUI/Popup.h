@@ -1,6 +1,6 @@
 #pragma once
 #include "../Common/HSHUtility.h"
-#include <stack>
+#include <list>
 USING_NS_CC;
 
 enum class ePOPUP_ANIMATION{
@@ -31,7 +31,7 @@ class CPopup : public cocos2d::Node
         : _callback(callback)
         , _sender(sender){}
     };
-    typedef std::stack<sDEFAULT_CALLBACK>  CALLBACK_STACK;
+    typedef std::list<sDEFAULT_CALLBACK>  CALLBACK_STACK;
 
 public:
     static CPopup* create();

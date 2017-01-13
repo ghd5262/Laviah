@@ -42,6 +42,10 @@ bool CMenuLayer::init()
 
 	auto createOneButtonPopup = [=](const std::function<void(Node*)> &callback, std::string message){
         CPopup::create()
+        ->setDefaultCallback([=](Node* sender){
+            auto popup = dynamic_cast<CPopup*>(sender);
+            popup->popupClose();
+        })
         ->setPositiveButton(callback, "OK")
         ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
         ->setMessage(message)
@@ -125,16 +129,10 @@ bool CMenuLayer::init()
         }, "R", testButtonPos[4], Size(100, 100)),
     };
     
-    //this->setOpenAnimation([=](Node* sender){
-    //    for(auto btn : btnArray)
-    //        btn->runAction(FadeIn::create(0.2f));
-    //});
-    //
-    //this->setCloseAnimation([=](Node* sender){
-    //    for(auto btn : btnArray)
-    //        btn->runAction(FadeTo::create(0.2f, 0));
-    //});
-    //
+    this->setDefaultCallback([=](Node* sender){
+        CGameScene::getGameScene()->GameExit(false);
+    }, false);
+
     return true;
 }
 

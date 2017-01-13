@@ -163,14 +163,14 @@ bool CGameScene::init()
 	return true;
 }
 
-void CGameScene::GameExit()
+void CGameScene::GameExit(bool resume/* = false*/)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
 	return;
 #endif
 	this->GamePause();
-	this->createExitPopup();
+	this->createExitPopup(resume);
 }
 
 void CGameScene::GameStart()
@@ -341,7 +341,7 @@ void CGameScene::createHelpPopup()
 		->show(this, ZORDER::POPUP);
 }
 
-void CGameScene::createExitPopup()
+void CGameScene::createExitPopup(bool resume)
 {
     CPopup::create()
     ->setPositiveButton([=](Node* sender){
@@ -351,8 +351,11 @@ void CGameScene::createExitPopup()
 #endif
     }, "Yes")
     ->setNegativeButton([=](Node* sender){
+        if(resume) this->GameResume();
     }, "No")
     ->setDefaultCallback([=](Node* sender){
+        if(resume) this->GameResume();
+        
 		auto popup = dynamic_cast<CPopup*>(sender);
 		popup->popupClose();
     })

@@ -33,7 +33,7 @@ public:
     void GameHelp();
 	void WatchVideo();
 	void ShowChallenge();
-    void GameExit();
+    void GameExit(bool resume = false);
     void RandomCoin();
     void BonusTimeStart();
     void BonusTimeEnd();
@@ -60,7 +60,7 @@ private:
 	void createChallengePopup();
 	void createResultPopup();
 	void createHelpPopup();
-    void createExitPopup();
+    void createExitPopup(bool resume);
     void createMenuLayer();
     void createUILayer();
     void createBonusTimeLayer();

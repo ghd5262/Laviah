@@ -162,7 +162,7 @@ void CPausePopup::GoHome(Node* sender){
 }
 
 void CPausePopup::GameExit(Node* sender){
-	CGameScene::getGameScene()->GameExit();
+	CGameScene::getGameScene()->GameExit(true);
 	this->popupClose();
 }
 
