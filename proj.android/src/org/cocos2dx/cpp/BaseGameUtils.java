@@ -10,6 +10,8 @@ import android.util.Log;
 
 import kr.HongSeongHee.StarStarStar.R;
 
+import java.sql.Date;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -197,4 +199,10 @@ public class BaseGameUtils {
  			return false;
  		}
  	}
+    
+    public static long getUnixTime(){
+    	long time = new java.util.Date().getTime() / 1000;
+    	Log.d("Time", "getUnixTime : " + time);
+    	return time;
+    }
 }

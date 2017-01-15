@@ -26,6 +26,8 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.cpp;
 
+import java.util.HashMap;
+
 import org.cocos2dx.lib.Cocos2dxActivity;
 
 import android.content.Intent;
@@ -44,7 +46,7 @@ public class AppActivity extends Cocos2dxActivity{
 	private static GoogleUtils m_GoogleUtils = null;
 	private static Handler m_Handler = null;
 	private static String m_ToastMessage = "";
-	
+	private static HashMap<String, String> m_UserDataList = new HashMap<String, String>();
 	
 	 // [START on_create]
     @Override
@@ -67,17 +69,19 @@ public class AppActivity extends Cocos2dxActivity{
     			super.handleMessage(msg);
     		}
     	};
-    	
+        
     	Log.d(TAG, "AppActivty Create End");
     }
     
     @Override
     protected void onStart() {
+    	Log.d(TAG, "onStart function called");
         super.onStart();
     }
     
     @Override
    	protected void onResume() {
+    	Log.d(TAG, "onResume function called");
    		super.onResume();
    		m_UnityAdsUtils.Resume();
     }
@@ -95,28 +99,31 @@ public class AppActivity extends Cocos2dxActivity{
 
     @Override
     protected void onStop() {
+    	Log.d(TAG, "onStop function called");
         super.onStop();
-    }
-
+    }   
+    
     @Override
-    public void onBackPressed() {
-    	super.onBackPressed();
-    }
+    protected void onPause() {
+    	Log.d(TAG, "onPause function called");
+    	super.onPause();
+    	CPP_AutoSave();     
+    }   
     
     public static void CPP_GoogleLogin()
     {
-    	Log.d(TAG, "CPP_GoogleLogin Called");
+    	Log.d(TAG, "CPP_GoogleLogin function called");
     	
     	if(m_GoogleUtils == null)
     		return;
     	
     	m_GoogleUtils.GoogleLogin();
     }
-    
+     
     // Google Cloud Save      Key / Value
     public static void CPP_GoogleCloudSave(String key, String value)
     {
-    	Log.d(TAG, "CPP_GoogleCloudSave Called");
+    	Log.d(TAG, "CPP_GoogleCloudSave function called");
     	
     	if(m_GoogleUtils == null)
     		return;
@@ -129,7 +136,7 @@ public class AppActivity extends Cocos2dxActivity{
     // Google Cloud Load      Key
     public static void CPP_GoogleCloudLoad(String key)
     {
-    	Log.d(TAG, "CPP_GoogleCloudLoad Called");
+    	Log.d(TAG, "CPP_GoogleCloudLoad function called");
     	
     	if(m_GoogleUtils == null)
     		return;
@@ -139,10 +146,42 @@ public class AppActivity extends Cocos2dxActivity{
     	}
     }
     
+    // Set user data to auto save list
+    public static void CPP_AddDataToAutoSaveList(String key, String value)
+    {
+    	Log.d(TAG, "CPP_AddDataToAutoSaveList function called");
+
+    	m_UserDataList.put(key, value);
+    }
+    
+    // Set user data to auto save list
+    public static void CPP_AutoSave()
+    {
+    	Log.d(TAG, "CPP_AutoSave function called");
+    	Log.d(TAG, "User data list size : " + m_UserDataList.size());
+
+    	if(m_UserDataList.size() > 0)
+    	{
+    		if(BaseGameUtils.isNetWork(m_AppActivity)) 
+        	{
+    			for(String key : m_UserDataList.keySet()){
+    	    		String data = m_UserDataList.get(key);
+    	    		Log.d(TAG, "Auto save key : " + key);
+    	    		Log.d(TAG, "data : " + data);
+    	    		CPP_GoogleCloudSave(key, data);
+    	    	}
+    			m_UserDataList.clear();
+        	}
+    		else{
+        		Log.d(TAG, "You can not store user data in Google Cloud because your network is not connected.");
+    		}
+    	}   
+    }
+    
     // Reward Unity Ads
     public static void CPP_ShowRewardUnityAds()
     {
-    	Log.d(TAG, "CPP_ShowRewardUnityAds Called");
+    	Log.d(TAG, "CPP_ShowRewardUnityAds function called");
     	
     	if(m_UnityAdsUtils == null)
     		return;
@@ -155,7 +194,7 @@ public class AppActivity extends Cocos2dxActivity{
     // Normal Unity Ads
     public static void CPP_ShowNormalUnityAds()
     {
-    	Log.d(TAG, "CPP_ShowNormalUnityAds Called");
+    	Log.d(TAG, "CPP_ShowNormalUnityAds function called");
     	
     	if(m_UnityAdsUtils == null)
     		return;
@@ -178,7 +217,6 @@ public class AppActivity extends Cocos2dxActivity{
     	JAVA_NetworkConnect(BaseGameUtils.isNetWork(m_AppActivity));
     }
     
-    
     // Call Cocos2dx Function - Google Login Result
     public native static void JAVA_GoogleConnectionResult(final boolean isSucceed);
     
@@ -187,6 +225,9 @@ public class AppActivity extends Cocos2dxActivity{
         
     // Call Cocos2dx Function - Google Cloud Data Load
     public native static void JAVA_GoogleCloudLoad(final String key, final String value);
+    
+    // Call Cocos2dx Function - Google Cloud Data Save Succeed
+    public native static void JAVA_GoogleCloudSaveSucceed(long unixTime);
     
     // Call Cocos2dx Function - Normal UnityAds Ready
     public native static void JAVA_NormalUnityAdsReady();

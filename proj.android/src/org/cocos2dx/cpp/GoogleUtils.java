@@ -29,9 +29,7 @@ package org.cocos2dx.cpp;
 import kr.HongSeongHee.StarStarStar.R;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -327,6 +325,7 @@ public class GoogleUtils implements
                     	   toWrite.getSnapshotContents().writeBytes(value.getBytes());
                            Log.i(TAG, writeSnapshot(toWrite));
                            AppActivity.CPP_Toast("Save Finished");
+                           AppActivity.JAVA_GoogleCloudSaveSucceed(BaseGameUtils.getUnixTime());
                        }
                        else {
                            Log.e(TAG, "Error opening snapshot: " + result.toString());
