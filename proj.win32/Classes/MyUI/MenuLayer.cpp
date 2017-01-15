@@ -7,6 +7,7 @@
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Rocket.h"
 #include "../AI/States/RocketStates.h"
+#include <time.h>
 #include <array>
 
 using namespace cocos2d;
@@ -95,7 +96,7 @@ bool CMenuLayer::init()
 		Vec2(popupSize.width * 0.8f, popupSize.height * 0.25f),
         Vec2(popupSize.width * 0.1f, popupSize.height * 0.95f)
 	};
-    
+
     std::array<CMyButton*, 5> btnArray = {
         createTestButton([=](Node* sender){
             createOneButtonPopup([](Node* sender){}, "Share is comming soon");
@@ -113,19 +114,28 @@ bool CMenuLayer::init()
         
         createTestButton([=](Node* sender){
             createWidgetPopup(CWorkshopPopup::create());
-        }, "Work", testButtonPos[3], Size(200, 150)),
-        
-        createTestButton([=](Node* sender){
-            createTwoButtonPopup([](Node* sender){
-                CUserDataManager::Instance()->setUserData_ItemRemoveAll(USERDATA_KEY::CHALLENGE_CUR_LIST);
-                CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 0);
-                CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 1);
-                CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 2);
+		}, "Work", testButtonPos[3], Size(200, 150)),
 
-				CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, 0);
-				CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
-                CGameScene::getGameScene()->RandomCoin();
-            }, "Are you sure want reset user data?");
+        createTestButton([=](Node* sender){
+			auto savedTime = CUserDataManager::Instance()->getLastSavedTime();
+			auto msg = StringUtils::format("Are you sure want save user data?\n ( last saved time : %d-%d-%d %d:%d:%d)",
+				savedTime->tm_year + 1900,
+				savedTime->tm_mon + 1,
+				savedTime->tm_mday,
+				savedTime->tm_hour,
+				savedTime->tm_min,
+				savedTime->tm_sec);
+            createTwoButtonPopup([](Node* sender){
+                //CUserDataManager::Instance()->setUserData_ItemRemoveAll(USERDATA_KEY::CHALLENGE_CUR_LIST);
+                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 0);
+                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 1);
+                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 2);
+
+				//CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, 0);
+				//CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
+                //CGameScene::getGameScene()->RandomCoin();
+				CUserDataManager::Instance()->SaveUserData(true, true);
+			}, msg);
         }, "R", testButtonPos[4], Size(100, 100)),
     };
     

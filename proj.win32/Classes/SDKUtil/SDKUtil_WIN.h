@@ -18,6 +18,10 @@ public:
 
 	void GoogleCloudLoad(std::string key); 
 
+	void AddDataToAutoSaveList(std::string key, std::string value);
+
+	void AutoSave();
+
 	void ShowRewardUnityAds(); 
 
 	void ShowNormalUnityAds(); 

@@ -54,12 +54,14 @@ bool CLoadingScene::init()
         __NotificationCenter::getInstance()->addObserver(this, selector, name, NULL);
     };
     
-    createNotice(callfuncO_selector(CLoadingScene::callbackNetworkResult), NOTICE::NETWORK_RESULT);
     createNotice(callfuncO_selector(CLoadingScene::callbackLoginResult), NOTICE::LOGIN_RESULT);
     createNotice(callfuncO_selector(CLoadingScene::callbackUserDataLoadFinish), NOTICE::USERDATA_LOAD_FINISH);
     createNotice(callfuncO_selector(CLoadingScene::callbackDownloadFail), NOTICE::DOWN_ERROR);
     createNotice(callfuncO_selector(CLoadingScene::callbackDownloadComplete), NOTICE::DOWN_COMPLETE);
     
+	CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
+		this->callbackNetworkResult();
+	});
     CSDKUtil::Instance()->IsNetworkConnect();
     
     this->setContentSize(Director::getInstance()->getVisibleSize());
@@ -74,7 +76,7 @@ void CLoadingScene::InitLoadingSceneUI()
 
 }
 
-void CLoadingScene::callbackNetworkResult(Ref* object)
+void CLoadingScene::callbackNetworkResult()
 {
 	// 첫 실행 이라면 인터넷 연결 하라는 팝업
 	if (CUserDataManager::Instance()->getIsFirstPlay() &&
@@ -98,6 +100,7 @@ void CLoadingScene::callbackNetworkResult(Ref* object)
 
 void CLoadingScene::callbackDownloadFail(Ref* object)
 {
+	CCLOG("Loading Scene %s", __FUNCTION__);
     CPopup::create()
     ->setPositiveButton([=](Node* sender){
 		if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
@@ -114,6 +117,8 @@ void CLoadingScene::callbackDownloadFail(Ref* object)
 
 void CLoadingScene::callbackDownloadComplete(Ref* object)
 {
+	CCLOG("Loading Scene %s", __FUNCTION__);
+
 	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
 		CSDKUtil::Instance()->GoogleLogin();
 	}
@@ -124,17 +129,23 @@ void CLoadingScene::callbackDownloadComplete(Ref* object)
 
 void CLoadingScene::callbackLoginResult(Ref* object)
 {
+	CCLOG("Loading Scene %s", __FUNCTION__);
+
 	CUserDataManager::Instance()->UserDataLoad();
 }
 
 void CLoadingScene::callbackUserDataLoadFinish(Ref* object)
 {
+	CCLOG("Loading Scene %s", __FUNCTION__);
+
 	// 데이터 로딩 완료 후 패키지 다운로드
 	createMenuScene();
 }
 
 void CLoadingScene::createMenuScene()
 {
+	CCLOG("Loading Scene %s", __FUNCTION__);
+
 	Director::getInstance()->getScheduler()->schedule([=](float delta){
 
 		auto tempScene = CEmptyScene::createScene();
@@ -152,6 +163,9 @@ void CLoadingScene::createNetworkConnectPopup()
 {
     CPopup::create()
     ->setPositiveButton([=](Node* sender){
+		CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
+			this->callbackNetworkResult();
+		});
         CSDKUtil::Instance()->IsNetworkConnect();
     }, "OK")
 	->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)

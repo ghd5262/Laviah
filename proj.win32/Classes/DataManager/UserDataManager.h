@@ -13,6 +13,7 @@ struct sUSER_DATA{
 };
 
 namespace USERDATA_KEY {
+	const std::string LAST_SAVED_TIME		    = "USER_DATA_LAST_SAVED_TIME";
     const std::string FIRST_LOAD			    = "USER_DATA_FIRSTLOAD";
 	const std::string DATA_REVISION				= "USER_DATA_SAVE_REVISION";
 
@@ -56,12 +57,15 @@ public:
 
     //getter & setter
     bool getIsFirstPlay();
+	void setLastSavedTime(long long unixTime);
+	tm* getLastSavedTime();
     int getUserData_Number(std::string key);
 	ARRAY_DATA* getUserData_List(std::string key);
     bool getUserData_IsItemHave(std::string key, int itemIdx);
     float getItemCurrentValue(std::string key);
 	USERDATA_KEY_LIST getKeyList() { return m_UserDataKeyList; }
     
+	void SaveUserData(bool saveToCloud = false, bool forceSave = false);
     void setSaveRevision(int value);
     void setUserData_Number(std::string key, int value);
     void setUserData_ItemGet(std::string key, int itemIdx);
@@ -86,7 +90,7 @@ private:
 
 	void convertJsonToUserData(sUSER_DATA &data, std::string valueJson);
 
-	void convertUserDataToJson();
+	void convertUserDataToJson(std::string &valueJson);
 
 	void googleCloudDataLoad(std::string cryptoValue);
 
@@ -96,8 +100,10 @@ private:
 
 	void addKey(std::string keyKind, std::string key);
 
+	void saveUserDataToGoogleCloud(std::string key, std::string data, bool forceSave = false);
+
     static void sortUserDataList(std::string key, const LIST_COMPARE& compare);
-	// ë°ì´í„° í•œë²ˆì— ì €ì¥ ë° ë¡œë“œë¥¼ ìœ„í•´ ì£¼ì„ì²˜ë¦¬ - 2016. 9. 3
+	// µ¥ÀÌÅÍ ÇÑ¹ø¿¡ ÀúÀå ¹× ·Îµå¸¦ À§ÇØ ÁÖ¼®Ã³¸® - 2016. 9. 3
     /*void callbackFirstRevision();
     
     void dataLoad();
@@ -127,6 +133,6 @@ private:
 	std::string m_JsonUserDataFromXML;
 	std::string m_JsonUserDataFromGoogleCloud;
 	
-	// ë°ì´í„° í•œë²ˆì— ì €ì¥ ë° ë¡œë“œë¥¼ ìœ„í•´ ì£¼ì„ì²˜ë¦¬ - 2016. 9. 3
+	// µ¥ÀÌÅÍ ÇÑ¹ø¿¡ ÀúÀå ¹× ·Îµå¸¦ À§ÇØ ÁÖ¼®Ã³¸® - 2016. 9. 3
     //bool m_IsFirstRevisionCall;
 };

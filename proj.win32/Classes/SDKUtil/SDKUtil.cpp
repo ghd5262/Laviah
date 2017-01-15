@@ -13,7 +13,8 @@ CSDKUtil* CSDKUtil::Instance()
 
 CSDKUtil::CSDKUtil()
 	: m_SDKUtil(nullptr)
-	, m_SavedFunc(nullptr)
+	, m_UnityAdsSavedFunc(nullptr)
+	, m_NetworkConnectSavedFunc(nullptr)
 	, m_IsNormalUnityAdsReady(false)
 	, m_IsRewardUnityAdsReady(false)
 {
@@ -55,18 +56,21 @@ void CSDKUtil::GoogleCloudLoad(std::string key)
 	m_SDKUtil->GoogleCloudLoad(key);
 }
 
-void CSDKUtil::saveFuncUnityAdsCallBack(const std::function<void(void)> &func)
+void CSDKUtil::AddDataToAutoSaveList(std::string key, std::string value)
 {
-	if (func == nullptr)
-		CCASSERT(false, "Saving Function is null");
-	m_SavedFunc = func;
+	m_SDKUtil->AddDataToAutoSaveList(key, value);
+}
+
+void CSDKUtil::AutoSave()
+{
+	m_SDKUtil->AutoSave();
 }
 
 void CSDKUtil::ShowRewardUnityAds(const std::function<void(void)> &func)
 {
 	if (m_IsRewardUnityAdsReady){
 		m_IsRewardUnityAdsReady = false;
-		saveFuncUnityAdsCallBack(func);
+		m_UnityAdsSavedFunc = func;
 		m_SDKUtil->ShowRewardUnityAds();
 	}
 }
@@ -75,7 +79,7 @@ void CSDKUtil::ShowNormalUnityAds(const std::function<void(void)> &func)
 {
 	if (m_IsNormalUnityAdsReady){
 		m_IsNormalUnityAdsReady = false;
-		saveFuncUnityAdsCallBack(func);
+		m_UnityAdsSavedFunc = func;
 		m_SDKUtil->ShowNormalUnityAds();
 	}
 }
@@ -92,12 +96,22 @@ void CSDKUtil::IsNetworkConnect()
 
 void CSDKUtil::CallUnityAdsSavedFunction()
 {
-	if (m_SavedFunc != nullptr)
+	if (m_UnityAdsSavedFunc != nullptr)
 	{
-		m_SavedFunc();
-		m_SavedFunc = nullptr;
+		m_UnityAdsSavedFunc();
+		m_UnityAdsSavedFunc = nullptr;
 	}
 	else
-		CCASSERT(false, "No Function was saved.");
+		CCASSERT(false, "CallUnityAdsSavedFunction : No function was saved.");
 }
 
+void CSDKUtil::CallNetworkConnectSavedFunction()
+{
+	if (m_NetworkConnectSavedFunc != nullptr)
+	{
+		m_NetworkConnectSavedFunc();
+		m_NetworkConnectSavedFunc = nullptr;
+	}
+	else
+		CCASSERT(false, "CallNetworkConnectSavedFunction : No function was saved.");
+}

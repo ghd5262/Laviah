@@ -71,6 +71,29 @@ void CSDKUtil_AOS::GoogleCloudLoad(std::string key)
 	}
 }
 
+// Set user data to auto save list
+void CSDKUtil_AOS::AddDataToAutoSaveList(std::string key, std::string value)
+{
+	std::string methodName = "CPP_AddDataToAutoSaveList";
+	CCLOG("JavaCallMethod %s", methodName.c_str());
+	cocos2d::JniMethodInfo info;
+	bool isHave = cocos2d::JniHelper::getStaticMethodInfo(info, m_JavaUrlString.c_str(), methodName.c_str(), "(Ljava/lang/String;Ljava/lang/String;)V");
+	if (isHave) {
+		jstring stringArg1 = info.env->NewStringUTF(key.c_str());
+		jstring stringArg2 = info.env->NewStringUTF(value.c_str());
+
+		info.env->CallStaticVoidMethod(info.classID, info.methodID, stringArg1, stringArg2);
+	} else {
+		CCLOG("There is no %s java method", methodName.c_str());
+	}
+}
+
+// auto save to google cloud.
+void CSDKUtil_AOS::AutoSave()
+{
+	JavaCallMethod("CPP_AutoSave");
+}
+
 // 유니티 애드 보상형 광고
 void CSDKUtil_AOS::ShowRewardUnityAds()
 {
@@ -112,7 +135,7 @@ extern "C" {
 		std::string methodName = "JAVA_1GoogleConnectionResult";
 		CCLOG("JavaCallBackMethod %s", methodName.c_str());
         CCLOG("Google Cloud Connection %s", (isSucceed == true) ? "SUCCEED" : "FAILED");
-        Director::getInstance()->getScheduler()->schedule([isSucceed](float delta){
+        Director::getInstance()->getScheduler()->schedule([=](float delta){
             CGoogleCloudManager::Instance()->setIsConnected(isSucceed);
 			
             __NotificationCenter::getInstance()->postNotification(NOTICE::LOGIN_RESULT, NULL);
@@ -135,9 +158,19 @@ extern "C" {
 		std::string keyStr = JniHelper::jstring2string(key);
 		std::string valueJson = JniHelper::jstring2string(value);
 
-		Director::getInstance()->getScheduler()->schedule([keyStr, valueJson](float delta){
+		Director::getInstance()->getScheduler()->schedule([=](float delta){
 			CGoogleCloudManager::Instance()->GoogleCloudDataLoad(keyStr, valueJson);
 		}, Director::getInstance(), 0.f, 0, 0.f, false, "GoogleCloudDataLoad");
+	}
+
+	// Save succeed to google cloud 
+	JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_AppActivity_JAVA_1GoogleCloudSaveSucceed(JNIEnv*  env, jobject thiz, long long unixTime)
+	{
+		std::string methodName = "JAVA_1GoogleCloudSaveSucceed";
+		CCLOG("JavaCallBackMethod %s", methodName.c_str());
+		Director::getInstance()->getScheduler()->schedule([=](float delta){
+			CGoogleCloudManager::Instance()->setLastSavedTime(unixTime);
+		}, Director::getInstance(), 0.f, 0, 0.f, false, "GoogleCloudSaveSucceed");
 	}
 
 	// 유니티 일반 광고 준비완료 
@@ -146,7 +179,9 @@ extern "C" {
 		std::string methodName = "JAVA_1NormalUnityAdsReady";
 		CCLOG("JavaCallBackMethod %s", methodName.c_str());
 
-		CSDKUtil::Instance()->setIsNormalUnityAdsReady(true);
+		Director::getInstance()->getScheduler()->schedule([=](float delta){
+			CSDKUtil::Instance()->setIsNormalUnityAdsReady(true);
+		}, Director::getInstance(), 0.f, 0, 0.f, false, "NormalUnityAdsReady");
 	}
     
 	// 유니티 보상형 광고 준비완료
@@ -155,7 +190,9 @@ extern "C" {
 		std::string methodName = "JAVA_1RewardUnityAdsReady";
 		CCLOG("JavaCallBackMethod %s", methodName.c_str());
 
-		CSDKUtil::Instance()->setIsRewardUnityAdsReady(true);
+		Director::getInstance()->getScheduler()->schedule([=](float delta){
+			CSDKUtil::Instance()->setIsRewardUnityAdsReady(true);
+		}, Director::getInstance(), 0.f, 0, 0.f, false, "RewardUnityAdsReady");
 	}
 
 	// 유니티 광고 시작
@@ -171,7 +208,7 @@ extern "C" {
         std::string methodName = "JAVA_1UnityAdsFinish";
         CCLOG("JavaCallBackMethod %s", methodName.c_str());
 
-		Director::getInstance()->getScheduler()->schedule([](float delta){
+		Director::getInstance()->getScheduler()->schedule([=](float delta){
 			CSDKUtil::Instance()->CallUnityAdsSavedFunction();
 		}, Director::getInstance(), 0.f, 0, 0.f, false, "CallUnityAdsSavedFunction");
     }
@@ -191,8 +228,7 @@ extern "C" {
         CCLOG("Network Connection %s", (isConnect == true) ? "Y" : "N");
         Director::getInstance()->getScheduler()->schedule([=](float delta){
             CSDKUtil::Instance()->setIsNetworkConnect(isConnect);
-            
-            __NotificationCenter::getInstance()->postNotification(NOTICE::NETWORK_RESULT, NULL);
+			CSDKUtil::Instance()->CallNetworkConnectSavedFunction();
         }, Director::getInstance(), 0.f, 0, 0.f, false, "NetworkConnect");
     }
 }

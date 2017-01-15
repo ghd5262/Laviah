@@ -17,6 +17,12 @@ public:
 	// 구글 클라우드 로드 Key
 	void GoogleCloudLoad(std::string key);
 
+	// Set user data to auto save list
+	void AddDataToAutoSaveList(std::string key, std::string value);
+
+	// auto save to google cloud.
+	void AutoSave();
+
 	// 유니티 애드 보상형 광고
 	void ShowRewardUnityAds();
 

@@ -28,6 +28,7 @@
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/ChallengeDataManager.hpp"
 #include "../AI/States/RocketStates.h"
+#include "../SDKUtil/SDKUtil.h"
 #include <array>
 
 USING_NS_CC;
@@ -75,13 +76,13 @@ void CGameScene::update(float delta)
 bool CGameScene::init()
 {
 	if (!Layer::init()) return false;
-	
+
 	m_GameScene = this;
 	m_VisibleSize = Director::getInstance()->getVisibleSize();
 	m_TouchPos = m_VisibleSize / 2;
 	this->scheduleUpdate();
-	//CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
-
+	
+//CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 	m_GridWorld = NodeGrid::create();
 	this->addChild(m_GridWorld, 0, 1);
     
@@ -90,17 +91,15 @@ bool CGameScene::init()
     m_ScreenFade->setPosition(m_VisibleSize / 2);
     m_ScreenFade->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     this->addChild(m_ScreenFade, ZORDER::SCREENFADE);
-    
+
 	auto bulletCreator = CBulletCreator::create();
 	this->addChild(bulletCreator);
     CObjectManager::Instance()->setBulletCreator(bulletCreator);
     
-
 	auto background = CBackGround::create();
     this->addChild(background, ZORDER::BACKGROUND);
     CObjectManager::Instance()->setBackground(background);
     
-
 	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
 	auto currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterByIndex(currentCharacterIdx);
 	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo->_idx);
@@ -112,7 +111,7 @@ bool CGameScene::init()
 	planet->setOriginPos(planet->getPosition());
     this->addChild(planet, ZORDER::PLANET);
     CObjectManager::Instance()->setPlanet(planet);
-    
+
 
 	auto player = CPlayer::create();
 	player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * BULLETCREATOR::ROTATION_SPEED));
@@ -123,8 +122,7 @@ bool CGameScene::init()
 	player->setParticlePos(player->getPosition());
     this->addChild(player, ZORDER::PLAYER);
     CObjectManager::Instance()->setPlayer(player);
-    
-    
+
     auto rocket = CRocket::create(sROCKET_PARAM());
     rocket->setSpeed(ROCKET::SPEED);
     rocket->setDistance(ROCKET::FLYAROUND_DISTANCE);
@@ -134,7 +132,6 @@ bool CGameScene::init()
 	rocket->ChangeState(CFlyToTouchArea::Instance());
 	this->addChild(rocket, ZORDER::PLAYER);
 	CObjectManager::Instance()->setRocket(rocket);
-
 
     auto multipleScoreUI = CMultipleScore::Instance();
     this->addChild(multipleScoreUI, ZORDER::PLAYER);
@@ -152,7 +149,7 @@ bool CGameScene::init()
     ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(this);
     m_CountDown->Pause();
-    
+
 #if(USE_MEMORY_POOLING)
 	CPoolingManager::Instance()->CreateBulletList(600, 900);
 #endif
@@ -343,6 +340,8 @@ void CGameScene::createHelpPopup()
 
 void CGameScene::createExitPopup(bool resume)
 {
+	CSDKUtil::Instance()->AutoSave();
+
     CPopup::create()
     ->setPositiveButton([=](Node* sender){
         Director::getInstance()->end();

@@ -1,4 +1,6 @@
 #include "SDKUtil_WIN.h"
+#include "../GoogleCloud/GoogleCloudManager.h"
+#include <time.h>
 
 using namespace cocos2d;
 
@@ -17,6 +19,8 @@ void CSDKUtil_WIN::GoogleLogin()
 void CSDKUtil_WIN::GoogleCloudSave(std::string key, std::string value)
 { 
 	CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); 
+	auto unixTime = time(NULL);
+	CGoogleCloudManager::Instance()->setLastSavedTime(unixTime);
 }
 
 // 구글 클라우드 로드 Key
@@ -25,6 +29,19 @@ void CSDKUtil_WIN::GoogleCloudLoad(std::string key)
 	CCLOG("SDKUtil_WIN %s Test", __FUNCTION__); 
 };
 
+// Set user data to auto save list
+void CSDKUtil_WIN::AddDataToAutoSaveList(std::string key, std::string value)
+{
+	CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
+}
+
+// auto save to google cloud.
+void CSDKUtil_WIN::AutoSave()
+{
+	CCLOG("SDKUtil_WIN %s Test", __FUNCTION__);
+	auto unixTime = time(NULL);
+	CGoogleCloudManager::Instance()->setLastSavedTime(unixTime);
+}
 
 // 유니티 애드 보상형 광고
 void CSDKUtil_WIN::ShowRewardUnityAds()
@@ -58,6 +75,6 @@ void CSDKUtil_WIN::Toast(std::string content)
 
 void CSDKUtil_WIN::IsNetworkConnect()
 {
-	__NotificationCenter::getInstance()->postNotification(NOTICE::NETWORK_RESULT, NULL);
 	CSDKUtil::Instance()->setIsNetworkConnect(true);
+	CSDKUtil::Instance()->CallNetworkConnectSavedFunction();
 }

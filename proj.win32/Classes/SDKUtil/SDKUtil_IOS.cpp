@@ -38,6 +38,20 @@ void CSDKUtil_IOS::GoogleCloudLoad(std::string key)
     CCLOG("IOS Method %s", methodName.c_str());
 }
 
+// Set user data to auto save list
+void CSDKUtil_IOS::AddDataToAutoSaveList(std::string key, std::string value)
+{
+	std::string methodName = "AddDataToAutoSaveList";
+	CCLOG("IOS Method %s", methodName.c_str());
+}
+
+// auto save to google cloud.
+void CSDKUtil_IOS::AutoSave()
+{
+	std::string methodName = "AutoSave";
+	CCLOG("IOS Method %s", methodName.c_str());
+}
+
 // 유니티 애드 보상형 광고
 void CSDKUtil_IOS::ShowRewardUnityAds()
 {
@@ -70,8 +84,8 @@ void CSDKUtil_IOS::Toast(std::string content)
 // 네트워크 연결 여부
 void CSDKUtil_IOS::IsNetworkConnect()
 {
-    __NotificationCenter::getInstance()->postNotification(NOTICE::NETWORK_RESULT, NULL);
-    CSDKUtil::Instance()->setIsNetworkConnect(true);
+	CSDKUtil::Instance()->setIsNetworkConnect(true);
+	CSDKUtil::Instance()->CallNetworkConnectSavedFunction();
 }
 
 

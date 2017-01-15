@@ -12,7 +12,7 @@ public:
 	virtual void update(float delta) override;
 
 	//callback
-	void callbackNetworkResult(Ref* object);
+	void callbackNetworkResult();
 	void callbackLoginResult(Ref* object);
 	void callbackUserDataLoadFinish(Ref* object);
 	void callbackDownloadFail(Ref* object);

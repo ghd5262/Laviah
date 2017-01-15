@@ -153,6 +153,18 @@ bool CUserDataManager::getIsFirstPlay()
     return UserDefault::getInstance()->getBoolForKey(crypto_key.c_str(), true);
 }
 
+void CUserDataManager::setLastSavedTime(long long unixTime)
+{
+	UserDefault::getInstance()->setDoubleForKey(USERDATA_KEY::LAST_SAVED_TIME.c_str(), unixTime);
+}
+
+tm* CUserDataManager::getLastSavedTime()
+{
+	std::string crypto_key = MakeCryptoString(USERDATA_KEY::LAST_SAVED_TIME, USERDATA::CRYPTO_KEY);
+	time_t timer = UserDefault::getInstance()->getDoubleForKey(crypto_key.c_str(), true);
+	return localtime(&timer);
+}
+
 void CUserDataManager::UserDataLoad()
 {
     this->initUserDefaultValue(m_UserDefaultData);
@@ -348,6 +360,27 @@ bool CUserDataManager::isGoogleRevisionHigher()
 	}
 }
 
+void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/, bool forceSave/* = false*/)
+{
+	setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
+	std::string jsonString = "";
+	convertUserDataToJson(jsonString);
+
+	// crypto
+	std::string crypto_key = MakeCryptoString(USERDATA::GOOGLE_DATA_KEY, USERDATA::CRYPTO_KEY);
+	std::string crypto_value = MakeCryptoString(jsonString, USERDATA::CRYPTO_KEY);
+
+	UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
+	CGoogleCloudManager::Instance()->AddDataToAutoSaveList(crypto_key.c_str(), crypto_value);
+
+	if (saveToCloud) {
+		CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
+			this->saveUserDataToGoogleCloud(crypto_key, crypto_value, forceSave);
+		});
+		CSDKUtil::Instance()->IsNetworkConnect();
+	}
+}
+
 void CUserDataManager::overwriteXmlByGoogleCloud(std::string valueJson)
 {
     CSDKUtil::Instance()->Toast("Overwrite to xml");
@@ -410,49 +443,6 @@ float CUserDataManager::getItemCurrentValue(std::string key)
     return limitTime;
 }
 
-void CUserDataManager::convertUserDataToJson()
-{
-	setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
-
-	JSONWRITER_CREATE
-		
-	Json::Value dataArray = root["data"];
-	
-	for (auto keyInfo : m_UserDataKeyList)
-	{
-		std::string keyKind = keyInfo.second;
-		std::string key = keyInfo.first;
-		Json::Value userData;
-		if (keyKind == USERDATA::SINGLE_DATA_KEY)
-		{
-			dataArray[key.c_str()] = getUserData_Number(key);
-			//dataArray[key.c_str()] = userData;
-		}
-		else if (keyKind == USERDATA::ARRAY_DATA_KEY)
-		{
-			Json::Value jsonItemList;
-			auto list = getUserData_List(key);
-
-			for (auto data : *list)
-			{
-				jsonItemList.append(static_cast<int>(data));
-			}
-			dataArray[key.c_str()] = jsonItemList;
-			//dataArray[key.c_str()] = userData;
-		}
-	}
-	std::string dataStr = "";
-	root["data"] = dataArray;
-	dataStr = writer.write(root);
-	// 암호화
-	std::string crypto_key = MakeCryptoString(USERDATA::GOOGLE_DATA_KEY, USERDATA::CRYPTO_KEY);
-	std::string crypto_value = MakeCryptoString(dataStr, USERDATA::CRYPTO_KEY);
-
-	UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
-
-	if (CGoogleCloudManager::Instance()->getIsConnected())
-		CGoogleCloudManager::Instance()->GoogleCloudDataSave(crypto_key.c_str(), crypto_value);
-}
 
 #pragma mark -
 #pragma mark [ interface function setter ]
@@ -467,7 +457,7 @@ void CUserDataManager::setUserData_Number(std::string key, int value)
     if(m_UserData._userDataIntMap.find(key) != m_UserData._userDataIntMap.end())
         m_UserData._userDataIntMap.find(key)->second = value;
     
-    convertUserDataToJson();
+    SaveUserData();
 }
 
 void CUserDataManager::setUserData_ItemGet(std::string key, int itemIdx)
@@ -486,7 +476,7 @@ void CUserDataManager::setUserData_ItemGet(std::string key, int itemIdx)
         
         this->sortUserDataList(key, compare);
     }
-    convertUserDataToJson();
+	SaveUserData();
 }
 
 void CUserDataManager::setUserData_ItemRemove(std::string key, int itemIdx)
@@ -503,7 +493,7 @@ void CUserDataManager::setUserData_ItemRemove(std::string key, int itemIdx)
 		list->erase(std::remove(std::begin(*list), std::end(*list), itemIdx), std::end(*list));
         this->sortUserDataList(key, compare);
     }
-	convertUserDataToJson();
+	SaveUserData();
 }
 
 void CUserDataManager::setUserData_ItemRemoveAll(std::string key)
@@ -513,7 +503,7 @@ void CUserDataManager::setUserData_ItemRemoveAll(std::string key)
         auto list = itemList->second;
         list->clear();
     }
-    convertUserDataToJson();
+	SaveUserData();
 }
 
 bool CUserDataManager::CoinUpdate(int value)
@@ -530,14 +520,13 @@ bool CUserDataManager::CoinUpdate(int value)
         if ((value * -1) > getUserData_Number(USERDATA_KEY::COIN) )
         {
             Size visibleSize = Director::getInstance()->getVisibleSize();
-            Vec2 origin = Director::getInstance()->getVisibleOrigin();
             
 			CEarnCoinPopup::create()
 				->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 				->setPopupPosition(visibleSize / 2)
-				->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::NONE)
+				->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
 				->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-				->show(Director::getInstance()->getRunningScene(), 102);
+				->show(Director::getInstance()->getRunningScene(), ZORDER::POPUP);
         }
         else
         {
@@ -554,6 +543,64 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
     auto iter = std::find(curList->begin(), curList->end(), itemIndex);
     auto sequence = std::distance(curList->begin(), iter);
     return int(sequence);
+}
+
+void CUserDataManager::convertUserDataToJson(std::string &valueJson)
+{
+	JSONWRITER_CREATE
+
+	Json::Value dataArray = root["data"];
+
+	for (auto keyInfo : m_UserDataKeyList)
+	{
+		std::string keyKind = keyInfo.second;
+		std::string key = keyInfo.first;
+		Json::Value userData;
+		if (keyKind == USERDATA::SINGLE_DATA_KEY)
+		{
+			dataArray[key.c_str()] = getUserData_Number(key);
+		}
+		else if (keyKind == USERDATA::ARRAY_DATA_KEY)
+		{
+			Json::Value jsonItemList;
+			auto list = getUserData_List(key);
+
+			for (auto data : *list)
+			{
+				jsonItemList.append(static_cast<int>(data));
+			}
+			dataArray[key.c_str()] = jsonItemList;
+		}
+	}
+	root["data"] = dataArray;
+	valueJson = writer.write(root);
+}
+
+void CUserDataManager::saveUserDataToGoogleCloud(std::string key, std::string data, bool forceSave/*= false*/)
+{
+	if (CSDKUtil::Instance()->getIsNetworkConnect())
+		CGoogleCloudManager::Instance()->GoogleCloudDataSave(key.c_str(), data);
+	else
+	{
+		if (!forceSave) return;
+
+		Size visibleSize = Director::getInstance()->getVisibleSize();
+		auto gameScene = CGameScene::getGameScene();
+
+		CPopup::create()
+			->setPositiveButton([=](Node* sender){
+			CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
+				this->saveUserDataToGoogleCloud(key, data, forceSave);
+			});
+			CSDKUtil::Instance()->IsNetworkConnect();
+		}, "OK")
+			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+			->setMessage("Please connect to the network \n to save data to cloud.")
+			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->setPopupPosition(visibleSize / 2)
+			->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+			->show(gameScene, ZORDER::POPUP);
+	}
 }
 
 void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& compare)

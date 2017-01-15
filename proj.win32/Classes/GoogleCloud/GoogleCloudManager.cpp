@@ -3,11 +3,13 @@
 #include "../DataManager/WorkshopItemDataManager.h"
 #include "../json/json.h"
 #include "../SDKUtil/SDKUtil.h"
+#include <time.h>
 using namespace std;
 
 CGoogleCloudManager::CGoogleCloudManager()
 	: m_isConnected(false)
-    , m_GoogleCloudDataLoadCount(0)
+	//, m_GoogleCloudDataLoadCount(0)
+	, m_LastSavedTime(0LL)
 {}
 
 CGoogleCloudManager::~CGoogleCloudManager()
@@ -49,4 +51,31 @@ void CGoogleCloudManager::GoogleCloudDataLoad(std::string key, std::string value
         CSDKUtil::Instance()->Toast("Load finished from google cloud");
         CUserDataManager::Instance()->setIsDataLoadFinish(true);
     }*/
+}
+
+void CGoogleCloudManager::AddDataToAutoSaveList(std::string key, std::string valueJson)
+{
+	CCLOG("=========================DataAutoSave=========================");
+	CCLOG("Crypto Key : %s", key.c_str());
+	CCLOG("Crypto Value : %s", valueJson.c_str());
+	CCLOG("==============================================================");
+
+	CSDKUtil::Instance()->AddDataToAutoSaveList(key, valueJson);
+}
+
+void CGoogleCloudManager::setLastSavedTime(long long unixTime)
+{
+	m_LastSavedTime = unixTime;
+	time_t timer = m_LastSavedTime;
+	auto tm = localtime(&timer);
+	CUserDataManager::Instance()->setLastSavedTime(m_LastSavedTime);
+
+	CCLOG("The last of save time %lld", m_LastSavedTime);
+	CCLOG("YY : %d MM : %d DD : %d hh : %d mm : %d ss : %d", 
+		tm->tm_year + 1900,
+		tm->tm_mon + 1,
+		tm->tm_mday,
+		tm->tm_hour,
+		tm->tm_min,
+		tm->tm_sec);
 }
