@@ -19,7 +19,8 @@ private:
                            int posIndex,
                            bool isSkip);
     
-    void End(cocos2d::Node* sender);
+    void Reset(cocos2d::Node* sender);
+    void GoHome(cocos2d::Node* sender);
     void Skip(CChallengePopupDP* sender, int posIndex);
     
     

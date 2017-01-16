@@ -4,6 +4,7 @@
 #include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
+#include "../../DataManager/ChallengeDataManager.hpp"
 #include "../../Common/StringUtility.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
@@ -237,18 +238,21 @@ bool CResultPopup::init()
         resultLabel->setOpacity(0);
     }
     
-    auto btnHome = createButton([=](Node* sender)
-	{
-		this->GoHome(sender);
-	}, "homeIcon.png",
-		Vec2(bg->getContentSize().width * 0.08f, bg->getContentSize().height * 0.05f));
+    auto btnHome = createButton([=](Node* sender) { this->GoHome(sender); },
+                                "homeIcon.png",
+                                Vec2(bg->getContentSize().width * 0.08f,
+                                     bg->getContentSize().height * 0.05f));
 
-	auto btnReset = createButton([=](Node* sender)
-	{
-		this->Reset(sender);
-	}, "resetIcon.png",
-		Vec2(bg->getContentSize().width * 0.92f, bg->getContentSize().height * 0.05f));
-
+    auto btnReset = createButton([=](Node* sender) { this->Reset(sender); },
+                                 "resetIcon.png",
+                                 Vec2(bg->getContentSize().width * 0.92f,
+                                      bg->getContentSize().height * 0.05f));
+    
+    auto btnEnd = createButton([=](Node* sender) { this->Reset(sender); },
+                               "endIcon.png",
+                               Vec2(bg->getContentSize().width * 0.92f,
+                                    bg->getContentSize().height * 0.05f));
+    
 	auto btnUserCoin = CUserCoinButton::create();
 	if (btnUserCoin != nullptr)
 	{
@@ -260,6 +264,21 @@ bool CResultPopup::init()
 		btnUserCoin->setOpacity(0);
 	}
 
+    if(GLOBAL->CHALLENGE_CLEAR_COUNT ||
+       CChallengeDataManager::Instance()->CheckCompleteAll())
+    {
+        btnHome->setVisible(false);
+        btnReset->setVisible(false);
+        btnEnd->setVisible(true);
+    }
+    else{
+        btnHome->setVisible(true);
+        btnReset->setVisible(true);
+        btnEnd->setVisible(false);
+    }
+    
+    GLOBAL->Clear();
+    
 	this->setOpenAnimation([=](Node* sender){
 		auto winSize = Director::getInstance()->getWinSize();
 
@@ -282,6 +301,7 @@ bool CResultPopup::init()
 		resultLabel->runAction(FadeIn::create(0.5f));
 		btnHome->runAction(FadeIn::create(0.5f));
 		btnReset->runAction(FadeIn::create(0.5f));
+        btnEnd->runAction(FadeIn::create(0.5f));
 		btnUserCoin->runAction(FadeIn::create(0.5f));
 	});
 
@@ -307,6 +327,7 @@ bool CResultPopup::init()
 		resultLabel->runAction(FadeTo::create(0.5f, 0));
 		btnHome->runAction(FadeTo::create(0.5f, 0));
 		btnReset->runAction(FadeTo::create(0.5f, 0));
+        btnEnd->runAction(FadeTo::create(0.5f, 0));
 		btnUserCoin->runAction(FadeTo::create(0.5f, 0));
 	});
     
@@ -325,4 +346,9 @@ void CResultPopup::Reset(Node* sender){
 void CResultPopup::GoHome(Node* sender){
 	CGameScene::getGameScene()->OpenGameMenuLayer();
 	this->popupClose();
+}
+
+void CResultPopup::End(Node* sender){
+    CGameScene::getGameScene()->ShowChallenge();
+    this->popupClose();
 }

@@ -31,7 +31,9 @@ bool CChallengePopup::init()
 CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 {
     m_ChallengeList.resize(CHALLENGE::LIMIT_COUNT);
-	auto popupSize = this->getContentSize();
+    std::fill(m_ChallengeList.begin(), m_ChallengeList.end(), nullptr);
+
+    auto popupSize = this->getContentSize();
     m_DPStartPosArray = {
         Vec2(popupSize.width * 0.5f, popupSize.height * 0.3f),
         Vec2(popupSize.width * 0.5f, popupSize.height * 0.1f),
@@ -68,53 +70,67 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 
 
 	auto createBtn = [=](const std::function<void(Node*)> &callback, std::string icon, Vec2 pos){
-		return CMyButton::create()
+		auto btn = CMyButton::create()
 			->addEventListener(callback)
 			->setButtonNormalImage(icon)
 			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 			->setButtonPosition(pos)
 			->show(this);
+        btn->setOpacity(0);
+        btn->setCascadeOpacityEnabled(true);
+        
+        return btn;
 	};
 
-    auto btnEnd = createBtn([=](Node* sender){
-		this->End(sender);
-	}, "endIcon.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.05f));
-
-	btnEnd->setOpacity(0);
-	btnEnd->setCascadeOpacityEnabled(true);
-
-	auto btnReward = createBtn([=](Node* sender){
+    auto btnReset = createBtn([=](Node* sender){
+		this->Reset(sender);
+	}, "resetIcon.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.05f));
+    
+    auto btnHome = createBtn([=](Node* sender){
+        this->GoHome(sender);
+    }, "homeIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
+    
+    auto btnReward = createBtn([=](Node* sender){
 		auto popup = CGameScene::getGameScene()->Reward();
 		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
         rewardPopup->setExitCallback([=](){
-            // Do open challenge popup again.
-            CGameScene::getGameScene()->ShowChallenge();
-            this->popupClose();
+            
+            if(CChallengeDataManager::Instance()->NonCompleteChallengeExist(1, false) < CHALLENGE::LIMIT_COUNT){
+                btnReset->runAction(FadeIn::create(0.5f));
+                btnHome->runAction(FadeIn::create(0.5f));
+            }
+            else{
+                // Do open challenge popup again.
+                CGameScene::getGameScene()->ShowChallenge();
+                this->popupClose();
+            }
         });
         
 		for (auto node : m_ChallengeList)
 		{
+            if(node == nullptr) continue;
+            
 			auto dp = dynamic_cast<CChallengePopupDP*>(node);
 			auto data = dp->getChallengeParam();
 			rewardPopup->AddRewardToList(data._rewardKey, data._rewardValue);
 		}
         
         // TODO: If there are no more challenges. do not open challenge popup
-        // if(!CChallengeDataManager::Instance()->NonCompleteChallengeExist(m_Challenge._level, false)))
         CChallengeDataManager::Instance()->getNewChallenges();
         
 	}, "rewardIcon.png", m_DPStartPosArray[3])
     ->setTouchEnable(false, Color3B::WHITE);
     
     this->setDefaultCallback([=](Node* sender){
-        this->End(sender);
+        this->GoHome(sender);
     });
     
     // Do below when challenge was completed all.
 	if (CChallengeDataManager::Instance()->CheckCompleteAll()){
         btnReward->setTouchEnable(true);
         btnReward->setColor(COLOR::GOLD);
-        btnEnd->setVisible(false);
+        btnReset->setVisible(false);
+        btnHome->setVisible(false);
         this->setDefaultCallback(nullptr);
 	}
 
@@ -127,10 +143,15 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 				FadeIn::create(1.f)));
 		};
 		int dpIndex = 0;
-		for (auto dp : m_ChallengeList) action(dp, m_DPTargetPosArray[dpIndex++]);
+        for (auto dp : m_ChallengeList) {
+            if(dp == nullptr) continue;
+            
+            action(dp, m_DPTargetPosArray[dpIndex++]);
+        }
 
         action(btnReward, m_DPTargetPosArray[3]);
-        btnEnd->runAction(FadeIn::create(0.5f));
+        btnReset->runAction(FadeIn::create(0.5f));
+        btnHome->runAction(FadeIn::create(0.5f));
         challengesLabel->runAction(FadeIn::create(0.5f));
 	});
 
@@ -145,10 +166,15 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		};
 
 		int dpIndex = 0;
-		for (auto dp : m_ChallengeList) action(dp, m_DPStartPosArray[dpIndex++]);
+        for (auto dp : m_ChallengeList){
+            if(dp == nullptr) continue;
+            
+            action(dp, m_DPStartPosArray[dpIndex++]);
+        }
         
 		action(btnReward, m_DPStartPosArray[3]);
-        btnEnd->runAction(FadeTo::create(0.5f, 0));
+        btnReset->runAction(FadeTo::create(0.5f, 0));
+        btnHome->runAction(FadeTo::create(0.5f, 0));
         challengesLabel->runAction(FadeTo::create(0.5f, 0));
     });
 
@@ -207,7 +233,12 @@ void CChallengePopup::Skip(CChallengePopupDP *sender, int posIndex)
     ->show(scene, ZORDER::POPUP);
 }
 
-void CChallengePopup::End(Node* sender){
-    CGameScene::getGameScene()->GameResult();
-	this->popupClose();
+void CChallengePopup::Reset(Node* sender){
+    CGameScene::getGameScene()->GameStart();
+    this->popupClose();
+}
+
+void CChallengePopup::GoHome(Node* sender){
+    CGameScene::getGameScene()->OpenGameMenuLayer();
+    this->popupClose();
 }

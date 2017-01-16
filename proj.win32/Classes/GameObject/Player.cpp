@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Planet.h"
 #include "ItemManager.h"
-#include "ItemBarrier.h"
+#include "ItemRange.h"
 #include "ObjectManager.h"
 #include "MagnetEffect.h"
 #include "BulletCreator.h"
@@ -53,7 +53,7 @@ CPlayer::CPlayer()
 , m_fMagnetLimitRadius(0)
 , m_EffectItemTypes(eITEM_FLAG_none)
 , m_Particle(nullptr)
-, m_pItemBarrier(nullptr)
+, m_pItemRange(nullptr)
 , m_MagnetEffect(nullptr)
 , m_Invincibility(false)
 , m_MultipleScore(nullptr)
@@ -81,11 +81,11 @@ bool CPlayer::init()
 		addChild(m_pTexture);
     }
     
-	m_pItemBarrier = CItemBarrier::create("barrier2.png", 800.f);
-	if (m_pItemBarrier != nullptr){
-		m_pItemBarrier->setPosition(this->getContentSize() / 2);
-		m_pItemBarrier->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		addChild(m_pItemBarrier);
+	m_pItemRange = CItemRange::create("barrier2.png", 800.f);
+	if (m_pItemRange != nullptr){
+		m_pItemRange->setPosition(this->getContentSize() / 2);
+		m_pItemRange->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		addChild(m_pItemRange);
 	}
 
     m_MagnetEffect = CMagnetEffect::create();
@@ -105,7 +105,7 @@ bool CPlayer::init()
 void CPlayer::Execute(float delta)
 {
 	m_FSM->Execute(delta);
-    m_pItemBarrier->Execute(delta);
+    m_pItemRange->Execute(delta);
     m_MagnetEffect->Execute(delta);
 }
 
@@ -170,7 +170,7 @@ void CPlayer::LostSomeHealth(float loseHealth)
         CMultipleScore::Instance()->UpdateScore();
 		m_fLife = 0.f;
 
-		if (GLOBAL->RUN_SCORE < 3000)	CGameScene::getGameScene()->ShowChallenge();
+		if (GLOBAL->RUN_SCORE < 3000)	CGameScene::getGameScene()->GameResult();
 		else							CGameScene::getGameScene()->WatchVideo();
 	}
 }
@@ -296,9 +296,9 @@ void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, in
 	}
 }
 
-void CPlayer::GotBarrierItem()
+void CPlayer::BarrierItemGet()
 {
-    m_pItemBarrier->GotBarrierItem();
+    m_pItemRange->ItemGet();
 }
 
 void CPlayer::GotMagnetItem()

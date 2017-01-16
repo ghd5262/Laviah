@@ -196,6 +196,7 @@ void CGameScene::GamePause()
 void CGameScene::GameResult()
 {
 	this->createResultPopup();
+    this->GamePause();
 }
 
 void CGameScene::GameHelp()

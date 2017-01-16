@@ -11,7 +11,7 @@
 *-----------------------------------------------------------------*/
 
 class CScoreUI;
-class CItemBarrier;
+class CItemRange;
 class CMagnetEffect;
 class CMultipleScore;
 class CPlayer : public CGameObject {
@@ -23,7 +23,7 @@ public:
     
 	void GotSomeHealth(float health);
 	void LostSomeHealth(float loseHealth);
-    void GotBarrierItem();
+    void BarrierItemGet();
     void GotMagnetItem();
 	void GiantMode();
 	void NormalMode();
@@ -83,7 +83,7 @@ protected:
 	CC_SYNTHESIZE(float, m_fStarLimitTime, StarLimitTime);
 	CC_SYNTHESIZE(float, m_fGiantLimitTime, GiantLimitTime);
 	CC_SYNTHESIZE(float, m_fBonusTimeLimitTime, BonusTimeLimitTime);
-	CC_SYNTHESIZE(CItemBarrier*, m_pItemBarrier, ItemBarrier);
+	CC_SYNTHESIZE(CItemRange*, m_pItemRange, ItemRange);
     
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }

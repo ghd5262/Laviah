@@ -49,7 +49,7 @@ void CItemManager::StartItemTimer(eITEM_TYPE itemType)
     
     switch (itemType) {
         case eITEM_TYPE_health: player->GotSomeHealth(20); break;
-        case eITEM_TYPE_shield: player->GotBarrierItem(); break;
+        case eITEM_TYPE_shield: player->BarrierItemGet(); break;
         case eITEM_TYPE_magnet: player->GotMagnetItem();
             setTimer(itemType, player->getMagnetLimitTime());
             break;

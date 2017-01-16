@@ -34,6 +34,7 @@ bool CPausePopup::init()
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
     m_ChallengeList.resize(CHALLENGE::LIMIT_COUNT);
+    std::fill(m_ChallengeList.begin(), m_ChallengeList.end(), nullptr);
     
     this->initChallengeList();
     
@@ -135,8 +136,11 @@ bool CPausePopup::init()
 				MoveTo::create(0.3f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f))), NULL));
 		}, 0.1f, "PausePopupClose");
 
-		for (auto dp : m_ChallengeList)
-			dp->popupClose();
+        for (auto dp : m_ChallengeList){
+            if(dp == nullptr) continue;
+            
+            dp->popupClose();
+        }
 	});
 
     this->setDefaultCallback([=](Node* sender){

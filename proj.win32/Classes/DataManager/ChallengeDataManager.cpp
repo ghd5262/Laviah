@@ -144,7 +144,7 @@ sREWARD_DATA CChallengeDataManager::RewardByKey(std::string key, int value)
 	return rewarder->second(sREWARD_DATA(key, value));
 }
 
-bool CChallengeDataManager::NonCompleteChallengeExist(int level,
+int CChallengeDataManager::NonCompleteChallengeExist(int level,
                                                       bool below,
                                                       bool continuingType/* = false*/)
 {
@@ -154,6 +154,29 @@ bool CChallengeDataManager::NonCompleteChallengeExist(int level,
 void CChallengeDataManager::getNewChallenges()
 {
     auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+    auto nonCompleteList = getNonCompletedChallengeList(1, false);
+    
+    // Challenges not completed are less than limit count.
+    // then remove current list only.
+    if(nonCompleteList.size() < CHALLENGE::LIMIT_COUNT)
+    {
+        for(int index = 0; index < list->size(); index++)
+            this->removeChallengeFromUserData(list->at(index));
+        
+        return;
+    }
+    
+    // Current challenges are less than limit count.
+    // then get new challenges until limit count.
+    if(list->size() < CHALLENGE::LIMIT_COUNT)
+    {
+        for(int count = 0; count < CHALLENGE::LIMIT_COUNT - list->size(); count++)
+            this->getNewRandomChallenge(1, false);
+        
+        return;
+    }
+    
+    // There are enough challenges to skip.
     for(int count = 0; count < CHALLENGE::LIMIT_COUNT; count++)
     {
         this->SkipChallenge(list->at(count));
@@ -177,11 +200,8 @@ const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 //        CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST, savedData);
 //    }
     
-    CCLOG("Skip challenge %d", index);
-	CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
+    this->removeChallengeFromUserData(index);
 	auto newChallenge = this->getNewRandomChallenge(1, false);
-    CCLOG("Get new challenge %d", newChallenge->_index);
-	CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, newChallenge->_index);
     
 //    if(newChallenge->_continuingType){
 //        
@@ -205,7 +225,10 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge(int level,
                                                                      bool continuingType/* = false*/)
 {
     auto newList = getNonCompletedChallengeList(level, below, continuingType);
-    return getNewRandomChallengeFromList(newList);
+    auto newChallenge = getNewRandomChallengeFromList(newList);
+    CCLOG("Get new challenge %d", newChallenge->_index);
+    CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, newChallenge->_index);
+    return newChallenge;
 }
 
 CHALLENGE_LIST CChallengeDataManager::getListByFunc(const CHALLENGE_PICK &func, CHALLENGE_LIST list)
@@ -260,6 +283,12 @@ CHALLENGE_LIST CChallengeDataManager::getNonCompletedChallengeList(int level,
         
         return true;
     }, m_ChallengeDataList);
+}
+
+void CChallengeDataManager::removeChallengeFromUserData(int index)
+{
+    CCLOG("Remove challenge %d", index);
+    CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
 }
 
 void CChallengeDataManager::initMaterialKeyList()

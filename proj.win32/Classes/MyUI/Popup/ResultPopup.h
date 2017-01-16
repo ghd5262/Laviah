@@ -14,6 +14,7 @@ protected:
 private: 
 	void Reset(cocos2d::Node* sender);
 	void GoHome(cocos2d::Node* sender);
+    void End(cocos2d::Node* sender);
 
 	CResultPopup(){};
 	virtual ~CResultPopup(){};

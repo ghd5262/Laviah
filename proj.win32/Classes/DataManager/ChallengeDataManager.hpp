@@ -83,9 +83,9 @@ public:
 	bool CheckChallengeComplete(int index);
 	sREWARD_DATA Reward(int index);
 	sREWARD_DATA RewardByKey(std::string key, int value);
-    bool NonCompleteChallengeExist(int level,
-                                   bool below,
-                                   bool continuingType = false);
+    int NonCompleteChallengeExist(int level,
+                                  bool below,
+                                  bool continuingType = false);
     void getNewChallenges();
     const sCHALLENGE_PARAM* SkipChallenge(int index);
 
@@ -105,6 +105,7 @@ private:
     CHALLENGE_LIST getNonCompletedChallengeList(int level,
                                                 bool below,
                                                 bool continuingType = false);
+    void removeChallengeFromUserData(int index);
     
     CChallengeDataManager();
     virtual ~CChallengeDataManager();

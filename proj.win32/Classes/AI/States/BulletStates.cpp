@@ -4,7 +4,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/Bullet/Bullet.h"
-#include "../../GameObject/ItemBarrier.h"
+#include "../../GameObject/ItemRange.h"
 #include "../../DataManager/ChallengeDataManager.hpp"
 #include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
 
@@ -30,9 +30,9 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 	}
 
 	if (bullet->IsEffectWithItem(eITEM_FLAG_shield) && 
-		bullet->getPlayer()->getItemBarrier()->getBarrierAlive() && 
+		(!bullet->getPlayer()->getItemRange()->getIsItemTimeUP()) &&
 		bullet->IsHit(bullet->getPlayer()->getPosition(),
-		bullet->getPlayer()->getItemBarrier()->getBoundingRadius()))
+		bullet->getPlayer()->getItemRange()->getBoundingRadius()))
 	{
 		bullet->CollisionWithBarrier();
 		return;
