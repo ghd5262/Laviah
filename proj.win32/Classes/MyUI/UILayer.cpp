@@ -51,7 +51,7 @@ bool CUILayer::init()
     this->setCascadeOpacityEnabled(true);
     
     auto createScoreUI = [=](string iconImg, Vec2 labelAnchor, Vec2 pos){
-        auto scoreUI = CScoreUI::create(FONT::NUMBER, 38, iconImg);
+        auto scoreUI = CScoreUI::create(FONT::MALGUNBD, 40, iconImg);
         scoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         scoreUI->setLabelAnchor(labelAnchor);
         scoreUI->setPosition(pos);
@@ -75,9 +75,9 @@ bool CUILayer::init()
         Vec2(popupSize.width * 0.5f, popupSize.height * 0.64f)
     };
     
-    m_StarScoreUI = createScoreUI("score.png",      Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
-    m_CoinScoreUI = createScoreUI("coinIcon_2.png", Vec2::ANCHOR_MIDDLE_LEFT,  scoreUIPos[1]);
-    m_RunScoreUI  = createScoreUI("run.png",        Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
+    m_StarScoreUI = createScoreUI("starIcon_s.png",     Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
+    m_CoinScoreUI = createScoreUI("coinIcon_s.png",		Vec2::ANCHOR_MIDDLE_LEFT,  scoreUIPos[1]);
+    m_RunScoreUI  = createScoreUI("runIcon_s.png",      Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
     
 //    auto bonusTime = CBonusTimeUI::create();
 //    bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
