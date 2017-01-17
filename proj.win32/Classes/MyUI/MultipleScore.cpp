@@ -25,18 +25,18 @@ CMultipleScore::~CMultipleScore()
 
 CMultipleScore* CMultipleScore::Instance()
 {
-    if(m_Instance != nullptr) return m_Instance;
-    
-	CMultipleScore *pRet = new(std::nothrow) CMultipleScore();
-	if (pRet && pRet->init())
+	if (m_Instance != nullptr) return m_Instance;
+
+	m_Instance = new(std::nothrow) CMultipleScore();
+	if (m_Instance && m_Instance->init())
 	{
-		pRet->autorelease();
-		return pRet;
+		m_Instance->autorelease();
+		return m_Instance;
 	}
 	else
 	{
-		delete pRet;
-		pRet = NULL;
+		delete m_Instance;
+		m_Instance = NULL;
 		return NULL;
 	}
 }
@@ -44,16 +44,21 @@ CMultipleScore* CMultipleScore::Instance()
 bool CMultipleScore::init()
 {
     if (!Node::init()) return false;
-    m_Instance = this;
-    this->scheduleUpdate();
-    
-	auto visibleSize = _director->getVisibleSize();
 
+    this->scheduleUpdate();
+	this->setContentSize(_director->getWinSize());
+	auto popupSize = this->getContentSize();
     m_Player = CObjectManager::Instance()->getPlayer();
-    
-    m_MultipleNumberLabel = Label::createWithTTF("", FONT::MALGUNBD, 65);
+   
+	m_MultipleNumberLabel = Label::createWithTTF("", FONT::MALGUNBD, 65,
+		Size(popupSize.width, popupSize.height),
+		TextHAlignment::CENTER,
+		TextVAlignment::CENTER);
+
 	m_MultipleNumberLabel->setTextColor(COLOR::WHITEGRAY_ALPHA);
     m_MultipleNumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	m_MultipleNumberLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.68f));
+	m_MultipleNumberLabel->setOpacity(255 * 0.7f);
     m_MultipleNumberLabel->setVisible(false);
 	m_MultipleNumberLabel->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 5);
     this->addChild(m_MultipleNumberLabel);
@@ -104,7 +109,7 @@ void CMultipleScore::AddScore(unsigned score)
 
 	// UI visible On
 	m_MultipleNumberLabel->setVisible(true);
-	m_MultipleNumberLabel->setString(MakeString("X %d", m_MultipleNumber).c_str()); //1부터 시작해서 -1해준다.
+	m_MultipleNumberLabel->setString(MakeString("COMBO\nx %d", m_MultipleNumber).c_str()); //1부터 시작해서 -1해준다.
 
 	unsigned colorLevel = m_MultipleNumber / 100;
 	if (m_ColorLevel != colorLevel && colorLevel < 25){
@@ -148,10 +153,10 @@ void CMultipleScore::update(float delta)
 	{
 		m_Time += delta;
 
-		// UI 좌표 수정
-		m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x,
-                                                m_Player->getOriginPos().y +
-                                                m_Player->getBoundingRadius() + 80));
+		//// UI 좌표 수정
+		//m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x,
+  //                                              m_Player->getOriginPos().y +
+  //                                              m_Player->getBoundingRadius() + 80));
 
 		// 배수 유지 시간이 지나면 점수 반영 후 배수 초기화
 		if (m_Time > MULTIPLE_TIME_LIMIT)

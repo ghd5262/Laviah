@@ -126,7 +126,7 @@ bool CGameScene::init()
 	auto createRange = [=](std::string textureName){
 		auto range = CItemRange::create()
 			->setTextureName(textureName)
-			->show(this);
+			->show(this, ZORDER::PLAYER);
 		range->setPosition(player->getPosition());
 		range->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		return range;
@@ -145,9 +145,6 @@ bool CGameScene::init()
 	rocket->ChangeState(CFlyToTouchArea::Instance());
 	this->addChild(rocket, ZORDER::PLAYER);
 	CObjectManager::Instance()->setRocket(rocket);
-
-    auto multipleScoreUI = CMultipleScore::Instance();
-    this->addChild(multipleScoreUI, ZORDER::PLAYER);
     
     m_CountDown = CCountDown::create()
     ->addLastEventListner([=](Node* sender){

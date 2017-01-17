@@ -72,8 +72,8 @@ bool CVideoPopup::init()
 	};
 
     Vec2 posArray[] = {
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.3f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f)
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.1f)
     };
     
     std::string contentArray[] = {
@@ -115,7 +115,7 @@ bool CVideoPopup::init()
     ->addLastEventListner([=](Node* sender){
         this->End(sender);
     })
-    ->setFont(Color4B::WHITE, 50)
+    ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(10)
     ->setMinNumber(0)
     ->setInterval(0.8f)
@@ -142,8 +142,8 @@ bool CVideoPopup::init()
 				FadeIn::create(1.f)));
 		};
 
-		action(btnVideo, 0.6f);
-		action(btnCoin, 0.55f);
+		action(btnVideo, 0.55f);
+		action(btnCoin, 0.5f);
         
         btnEnd->runAction(FadeIn::create(0.5f));
         reviveLabel->runAction(FadeIn::create(0.5f));
@@ -160,8 +160,8 @@ bool CVideoPopup::init()
 				FadeTo::create(0.2f, 0)));
 		};
 
-		action(btnVideo, 0.3f);
-		action(btnCoin, 0.2f);
+		action(btnVideo, 0.2f);
+		action(btnCoin, 0.1f);
         
         btnEnd->runAction(FadeTo::create(0.5f, 0));
         reviveLabel->runAction(FadeTo::create(0.5f, 0));

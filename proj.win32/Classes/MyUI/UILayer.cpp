@@ -66,13 +66,13 @@ bool CUILayer::init()
     };
     
     m_ProgressPosArray = {
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.76f),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.74f),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.72f),
         Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f),
         Vec2(popupSize.width * 0.5f, popupSize.height * 0.68f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.66f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.64f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.62f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.6f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.58f)
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.66),
+        Vec2(popupSize.width * 0.5f, popupSize.height * 0.64f)
     };
     
     m_StarScoreUI = createScoreUI("score.png",      Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
@@ -109,6 +109,8 @@ bool CUILayer::init()
     for(int count = 1; count < eITEM_TYPE_MAX; count++)
 		this->createItemTimerUI((eITEM_TYPE)count, Color3B::WHITE);
     
+	auto multiscore = CMultipleScore::Instance();
+	this->addChild(multiscore);
     //this->initItemTestButton();
 //    CGameScene::getGameScene()->GameResume();
     
