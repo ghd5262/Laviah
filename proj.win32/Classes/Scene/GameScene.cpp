@@ -160,6 +160,9 @@ bool CGameScene::init()
     ->show(this);
     m_CountDown->Pause();
 
+	auto multiscore = CMultipleScore::Instance();
+	this->addChild(multiscore, ZORDER::BACKGROUND);
+
 #if(USE_MEMORY_POOLING)
 	CPoolingManager::Instance()->CreateBulletList(600, 900);
 #endif

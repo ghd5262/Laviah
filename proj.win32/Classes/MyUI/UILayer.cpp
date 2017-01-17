@@ -109,8 +109,7 @@ bool CUILayer::init()
     for(int count = 1; count < eITEM_TYPE_MAX; count++)
 		this->createItemTimerUI((eITEM_TYPE)count, Color3B::WHITE);
     
-	auto multiscore = CMultipleScore::Instance();
-	this->addChild(multiscore);
+
     //this->initItemTestButton();
 //    CGameScene::getGameScene()->GameResume();
     
