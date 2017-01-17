@@ -15,6 +15,7 @@ CMultipleScore::CMultipleScore()
 	, m_SavedScore(0)
 	, m_isAbleToMultiple(false)
 	, m_Time(0.f)
+	, m_ColorLevel(0)
 {}
 
 CMultipleScore::~CMultipleScore()
@@ -50,13 +51,40 @@ bool CMultipleScore::init()
 
     m_Player = CObjectManager::Instance()->getPlayer();
     
-    m_MultipleNumberLabel = Label::createWithTTF("", FONT::MALGUNBD, 60);
+    m_MultipleNumberLabel = Label::createWithTTF("", FONT::MALGUNBD, 65);
 	m_MultipleNumberLabel->setTextColor(COLOR::WHITEGRAY_ALPHA);
     m_MultipleNumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	//m_MultipleNumberLabel->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.7f));
     m_MultipleNumberLabel->setVisible(false);
-    
+	m_MultipleNumberLabel->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 5);
     this->addChild(m_MultipleNumberLabel);
+
+	m_ColorList = {
+		Color3B(255, 255, 255),
+		Color3B(240, 222, 218),
+		Color3B(230, 196, 193),
+		Color3B(230, 171, 163),
+		Color3B(242, 148, 148),
+		Color3B(240, 142, 115),
+		Color3B(245, 157, 91 ),
+		Color3B(235, 170, 66 ),
+		Color3B(240, 190, 53 ),
+		Color3B(240, 218, 26 ),
+		Color3B(237, 245, 24 ),
+		Color3B(227, 227, 25 ),
+		Color3B(201, 224, 20 ),
+		Color3B(151, 242, 24 ),
+		Color3B(81,  242, 22 ),
+		Color3B(7,   242, 140),
+		Color3B(0,   224, 232),
+		Color3B(12,  186, 235),
+		Color3B(21,  163, 235),
+		Color3B(24,  139, 240),
+		Color3B(29,  88,  224),
+		Color3B(54,  22,  240),
+		Color3B(54,  22,  240),
+		Color3B(54,  22,  240),
+		Color3B(54,  22,  240),
+	};
    
     return true;
 }
@@ -77,6 +105,13 @@ void CMultipleScore::AddScore(unsigned score)
 	// UI visible On
 	m_MultipleNumberLabel->setVisible(true);
 	m_MultipleNumberLabel->setString(MakeString("X %d", m_MultipleNumber).c_str()); //1부터 시작해서 -1해준다.
+
+	unsigned colorLevel = m_MultipleNumber / 100;
+	if (m_ColorLevel != colorLevel && colorLevel < 25){
+		m_ColorLevel = colorLevel;
+		m_MultipleNumberLabel->setColor(m_ColorList[m_ColorLevel]);
+		this->runAction(JumpBy::create(0.3f, Vec2(0, 0), 50, 1));
+	}
 }
 
 void CMultipleScore::UpdateScore()
@@ -116,7 +151,7 @@ void CMultipleScore::update(float delta)
 		// UI 좌표 수정
 		m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x,
                                                 m_Player->getOriginPos().y +
-                                                m_Player->getBoundingRadius() + 50));
+                                                m_Player->getBoundingRadius() + 80));
 
 		// 배수 유지 시간이 지나면 점수 반영 후 배수 초기화
 		if (m_Time > MULTIPLE_TIME_LIMIT)

@@ -153,7 +153,7 @@ bool CGameScene::init()
     ->addLastEventListner([=](Node* sender){
         CObjectManager::Instance()->setIsGamePause(false);
     })
-    ->setFont(Color4B::WHITE, 60)
+    ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(3)
     ->setMinNumber(0)
     ->setLastContent("GO!")

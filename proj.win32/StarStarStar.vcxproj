@@ -176,7 +176,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\GameObject\Bullet\PlayCoin.cpp" />
     <ClCompile Include="Classes\GameObject\Bullet\PlayItem.cpp" />
     <ClCompile Include="Classes\GameObject\Bullet\PlayStar.cpp" />
-    <ClCompile Include="Classes\GameObject\Bullet\rangeBullet.cpp" />
     <ClCompile Include="Classes\GameObject\Bullet\ScoreBullet.cpp" />
     <ClCompile Include="Classes\GameObject\Bullet\StandBullet.cpp" />
     <ClCompile Include="Classes\GameObject\Bullet\StickBullet.cpp" />
@@ -275,7 +274,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\GameObject\Bullet\PlayCoin.h" />
     <ClInclude Include="Classes\GameObject\Bullet\PlayItem.h" />
     <ClInclude Include="Classes\GameObject\Bullet\PlayStar.h" />
-    <ClInclude Include="Classes\GameObject\Bullet\rangeBullet.hpp" />
     <ClInclude Include="Classes\GameObject\Bullet\ScoreBullet.h" />
     <ClInclude Include="Classes\GameObject\Bullet\StandBullet.hpp" />
     <ClInclude Include="Classes\GameObject\Bullet\StickBullet.h" />
