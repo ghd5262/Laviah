@@ -1,6 +1,7 @@
 #include "ItemManager.h"
 #include "ObjectManager.h"
 #include "Player.h"
+#include "ItemRange.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 #include "../MyUI/UILayer.hpp"
@@ -49,13 +50,19 @@ void CItemManager::StartItemTimer(eITEM_TYPE itemType)
     
     switch (itemType) {
         case eITEM_TYPE_health: player->GotSomeHealth(20); break;
-        case eITEM_TYPE_shield: player->BarrierItemGet(); break;
+		case eITEM_TYPE_shield: CObjectManager::Instance()->getBarrierItemRange()->ItemGet(0.f); break;
         case eITEM_TYPE_magnet: player->GotMagnetItem();
             setTimer(itemType, player->getMagnetLimitTime());
             break;
             
-        case eITEM_TYPE_coin: setTimer(itemType, player->getCoinLimitTime()); break;
-        case eITEM_TYPE_star: setTimer(itemType, player->getStarLimitTime()); break;
+        case eITEM_TYPE_coin:
+			setTimer(itemType, player->getCoinLimitTime()); 
+			CObjectManager::Instance()->getCoinItemRange()->ItemGet(player->getCoinLimitTime());
+			break;
+        case eITEM_TYPE_star:
+			setTimer(itemType, player->getStarLimitTime());
+			CObjectManager::Instance()->getStarItemRange()->ItemGet(player->getStarLimitTime());
+			break;
         case eITEM_TYPE_giant: setTimer(itemType, player->getGiantLimitTime()); break;
         case eITEM_TYPE_bonustime: setTimer(itemType, player->getBonusTimeLimitTime()); break;
             

@@ -190,14 +190,26 @@ void CCharacterSelectPopup::Select(Node* sender)
                                                              centerCharacterParam->_idx))
 	{
 		m_CenterDP->Select();
+		CObjectManager::Instance()->ChangeCharacter();
+		this->End(nullptr);
 	}
 	else{
-		m_CenterDP->Buy();
-		m_btnSelect->changeContents("Select");
+		CPopup::create()
+			->setPositiveButton([=](Node* sender){
+			m_CenterDP->Buy();
+			m_btnSelect->changeContents("Select");
+			CObjectManager::Instance()->ChangeCharacter();
+		}, "Yes")
+			->setNegativeButton([=](Node* sender){
+		}, "No")
+			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+			->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+			->setMessage("Are you sure you want to buy it?")
+			->setMessageFont(Color3B::BLACK, 40)
+			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+			->setPopupPosition(this->getContentSize() / 2)
+			->show(this, ZORDER::POPUP);
 	}
-    
-    CObjectManager::Instance()->ChangeCharacter();
-    this->End(nullptr);
 }
 
 void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)

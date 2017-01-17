@@ -5,6 +5,7 @@
 #include "ItemManager.h"
 #include "BulletCreator.h"
 #include "Rocket.h"
+#include "ItemRange.h"
 #include "Bullet/Bullet.h"
 #include "../AI/States/GameStates.h"
 #include "../Scene/GameScene.h"
@@ -22,6 +23,8 @@ CObjectManager::CObjectManager()
 , m_Player(nullptr)
 , m_Rocket(nullptr)
 , m_Background(nullptr)
+, m_BarrierItemRange(nullptr)
+, m_StarItemRange(nullptr)
 , m_SpeedController(nullptr)
 , m_CharacterParam(nullptr)
 , m_ItemManager(CItemManager::Instance())
@@ -73,6 +76,10 @@ void CObjectManager::Clear()
     m_BulletCreator->Clear();
     m_Planet->Clear();
     m_Player->Clear();
+	m_BarrierItemRange->Clear();
+	m_StarItemRange->Clear();
+	m_CoinItemRange->Clear();
+
     this->ReturnToMemoryBlockAll();
 	this->EndBonusTime();
 }
@@ -221,6 +228,10 @@ void CObjectManager::inGameUpdate()
     m_ItemManager->Execute(m_Delta);
     m_BulletCreator->Update(m_Delta);
     m_Player->Execute(m_Delta);
+	m_BarrierItemRange->Execute(m_Delta);
+	m_StarItemRange->Execute(m_Delta);
+	m_CoinItemRange->Execute(m_Delta);
+
     this->bulletListExecute();
     this->setGameLevelByTimer();
 }

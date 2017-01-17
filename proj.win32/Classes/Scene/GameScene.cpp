@@ -11,6 +11,7 @@
 #include "../GameObject/BackGround.h"
 #include "../GameObject/BulletCreator.h"
 #include "../GameObject/Rocket.h"
+#include "../GameObject/ItemRange.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/MenuLayer.hpp"
 #include "../MyUI/UILayer.hpp"
@@ -112,7 +113,6 @@ bool CGameScene::init()
     this->addChild(planet, ZORDER::PLANET);
     CObjectManager::Instance()->setPlanet(planet);
 
-
 	auto player = CPlayer::create();
 	player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * BULLETCREATOR::ROTATION_SPEED));
 	player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -122,6 +122,19 @@ bool CGameScene::init()
 	player->setParticlePos(player->getPosition());
     this->addChild(player, ZORDER::PLAYER);
     CObjectManager::Instance()->setPlayer(player);
+
+	auto createRange = [=](std::string textureName){
+		auto range = CItemRange::create()
+			->setTextureName(textureName)
+			->show(this);
+		range->setPosition(player->getPosition());
+		range->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		return range;
+	};
+
+	CObjectManager::Instance()->setBarrierItemRange(createRange("barrier2.png"));
+	CObjectManager::Instance()->setStarItemRange(createRange("barrier3.png"));
+	CObjectManager::Instance()->setCoinItemRange(createRange("barrier3.png"));
 
     auto rocket = CRocket::create(sROCKET_PARAM());
     rocket->setSpeed(ROCKET::SPEED);

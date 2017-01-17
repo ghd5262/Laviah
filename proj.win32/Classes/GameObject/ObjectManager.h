@@ -18,6 +18,7 @@ class CBackGround;
 class CBulletCreator;
 class CItemManager;
 class CBulletPatternDataManager;
+class CItemRange;
 class CObjectManager
 {
     // 회전 가속도 
@@ -54,6 +55,9 @@ public:
     CC_SYNTHESIZE(CRocket*, m_Rocket, Rocket);
     CC_SYNTHESIZE(CBulletCreator*, m_BulletCreator, BulletCreator);
 	CC_SYNTHESIZE(CBackGround*, m_Background, Background);
+	CC_SYNTHESIZE(CItemRange*, m_BarrierItemRange, BarrierItemRange);
+	CC_SYNTHESIZE(CItemRange*, m_StarItemRange, StarItemRange);
+	CC_SYNTHESIZE(CItemRange*, m_CoinItemRange, CoinItemRange);
 	CC_SYNTHESIZE(float, m_PatternTimer, PatternTimer);
     CC_SYNTHESIZE(float, m_LevelTimer, LevelTimer);
     CC_SYNTHESIZE(float, m_Delta, Delta);

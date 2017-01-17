@@ -1,31 +1,38 @@
 #pragma once
 #include "GameObject.h"
 
+namespace ITEMRANGE{
+	const float STAY_DISTANCE = 800.f;
+	const float STAY_DURATION = 0.5f;
+	const float TARGET_DISTANCE = 1600.f;
+	const float TARGET_DURATION = 0.5f;
+};
 
 class CItemRange : public CGameObject {
-	const float BARRIER_TIMER = 1.5f;
-	const float BARRIER_SIZE = 3.f;
-
 public:
-    static CItemRange* create(std::string textureName,
-                              float delayTime/* = 0*/);
-    void ItemGet();
+    static CItemRange* create();
+	CItemRange* setTextureName(std::string name);
+	CItemRange* show(cocos2d::Node* parent, int zOrder = 0);
+
+	void ItemGet(float time);
     virtual void Execute(float delta) override;
-    
+	void Clear();
+
 protected:
-    virtual bool init() override;
     
     //getter & setter
-	CC_SYNTHESIZE(bool, m_IsItemTimeUP, IsItemTimeUP);
+	CC_SYNTHESIZE(bool, m_IsStayStatus, IsStayStatus);
     
 private:
-    void itemTimeUP();
-    CItemRange(std::string textureName,
-               float delayTime);
+	void stayTimeUP();
+
+    CItemRange();
     virtual ~CItemRange(){}
     
 private:
+	cocos2d::Sprite* m_Texture;
     std::string m_TextureName;
-    float m_OriginBoundingRadius;
-    float m_DelayTime;
+	float m_StayLimitTime;
+	float m_StayTime;
+	float m_TargetDuration;
 };

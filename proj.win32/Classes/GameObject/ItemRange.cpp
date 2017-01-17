@@ -1,11 +1,12 @@
 #include "ItemRange.h"
-#include "../Particle/Particles.h"
+#include "../Scene/GameScene.h"
 
 using namespace cocos2d;
+using namespace ITEMRANGE;
 
-CItemRange* CItemRange::create(std::string textureName, float delayTime/* = 0*/)
+CItemRange* CItemRange::create()
 {
-    CItemRange *pRet = new(std::nothrow) CItemRange(textureName, delayTime);
+    CItemRange *pRet = new(std::nothrow) CItemRange();
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -19,55 +20,88 @@ CItemRange* CItemRange::create(std::string textureName, float delayTime/* = 0*/)
     }
 }
 
-CItemRange::CItemRange(std::string textureName, float delayTime)
-: m_TextureName(textureName)
-, m_OriginBoundingRadius(0.f)
-, m_IsItemTimeUP(true)
-, m_DelayTime(delayTime)
-{}
+CItemRange::CItemRange()
+	: m_Texture(nullptr)
+	, m_TextureName("")
+	, m_StayTime(0.f)
+	, m_StayLimitTime(0.f)
+	, m_TargetDuration(0.f)
+	, m_IsStayStatus(false){}
 
-bool CItemRange::init()
+CItemRange* CItemRange::show(cocos2d::Node* parent, int zOrder/* = 0*/)
 {
-    if (!Node::init()) return false;
-    
-    this->setCascadeOpacityEnabled(true);
-    
-    auto texture = Sprite::create(m_TextureName);
-    this->setContentSize(texture->getContentSize());
-    texture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    texture->setPosition(this->getContentSize() / 2);
-    addChild(texture);
-    
-    this->setScale(0.f);
-    this->setVisible(false);
-    
-    return true;
+	this->setCascadeOpacityEnabled(true);
+	this->setVisible(false);
+	this->setBoundingRadius(1);
+
+	m_Texture = Sprite::create(m_TextureName);
+	this->setContentSize(m_Texture->getContentSize());
+	m_Texture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	m_Texture->setPosition(this->getContentSize() / 2);
+	m_Texture->setScale(0.f);
+	addChild(m_Texture);
+
+	parent->addChild(this, zOrder);
+	return this;
+}
+
+CItemRange* CItemRange::setTextureName(std::string name)
+{
+	m_TextureName = name;
+	return this;
 }
 
 void CItemRange::Execute(float delta)
 {
-    if (m_IsItemTimeUP) return;
-	
-    setBoundingRadius((m_OriginBoundingRadius * this->getScale()) * 0.5f);
+	this->setBoundingRadius((getContentSize().width * m_Texture->getScale()) / 2);
+	if (!m_IsStayStatus) return;
+
+	m_StayTime += delta;
+	if (m_StayTime >= m_StayLimitTime)
+	{
+		m_IsStayStatus = false;
+		this->stayTimeUP();
+	}
 }
 
-void CItemRange::ItemGet()
+void CItemRange::ItemGet(float time)
 {
     //		CAudioManager::Instance()->PlayEffectSound("sounds/barrier.mp3", false);
+	this->Clear();
     this->setVisible(true);
-    m_IsItemTimeUP = false;
-    
-    auto action = cocos2d::Sequence::create(cocos2d::ScaleTo::create(BARRIER_TIMER, BARRIER_SIZE),
-                                            cocos2d::CallFunc::create([=](){
-        this->itemTimeUP();
-    }), nullptr);
-    this->runAction(action);
+	m_StayLimitTime = time;
+	if (m_StayLimitTime <= 0.f)
+	{
+		m_TargetDuration = TARGET_DURATION + STAY_DURATION;
+		m_StayTime = m_StayLimitTime;
+		m_IsStayStatus = true;
+	}
+	else
+	{
+		m_TargetDuration = TARGET_DURATION;
+		float scale = (STAY_DISTANCE * 2) / getContentSize().width;
+		auto scaleAction = ScaleTo::create(STAY_DURATION, scale);
+		auto callFunc = CallFunc::create([=](){	m_IsStayStatus = true; });
+		auto sequence = Sequence::createWithTwoActions(scaleAction, callFunc);
+		m_Texture->runAction(sequence);
+	}
 }
 
-void CItemRange::itemTimeUP()
+void CItemRange::Clear()
 {
-    this->setScale(0.f);
-    this->setVisible(false);
-    setBoundingRadius(0);
-    m_IsItemTimeUP = true;
+	this->setBoundingRadius(1.f);
+	this->setVisible(false);
+	m_Texture->setScale(0.f);
+	m_Texture->stopAllActions();
+	m_IsStayStatus = false;
+	m_StayTime = 0.f;
+}
+
+void CItemRange::stayTimeUP()
+{
+	float scale = (TARGET_DISTANCE * 2) / getContentSize().width;
+	auto scaleAction = ScaleTo::create(m_TargetDuration, scale);
+	auto callFunc = CallFunc::create([=](){	this->Clear(); });
+	auto sequence = Sequence::createWithTwoActions(scaleAction, callFunc);
+	m_Texture->runAction(sequence);
 }

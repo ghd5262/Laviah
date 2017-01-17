@@ -114,7 +114,7 @@ void CNormalMissile::CollisionWithBarrier()
 	this->ReturnToMemoryBlock();
 }
 
-void CNormalMissile::ChangeToCoinOrStar()
+void CNormalMissile::ChangeToCoin()
 {
 	if (!m_bIsTargetMarkCreate)
 		return;
@@ -128,6 +128,26 @@ void CNormalMissile::ChangeToCoinOrStar()
     // TODO: 패턴 안에 있는 bullet의 데이터를 셋팅해야한다.
 	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(patternIndex, getAngle(), distance);
     
+	// 이부분 일단 작업하고 다음 리펙토링 때 autoReturnMemoryPool에 넣어야한다.
+	this->scheduleOnce([this](float delta){
+		this->ReturnToMemoryBlock();
+	}, 0.f, "ReturnToMemoryBlock");
+}
+
+void CNormalMissile::ChangeToStar()
+{
+	if (!m_bIsTargetMarkCreate)
+		return;
+
+	this->setAlive(false);
+
+	auto patternIndex = CObjectManager::Instance()->getCharacterParam()->_idx;
+
+	float distance = m_TargetVec.distance(getPosition());
+
+	// TODO: 패턴 안에 있는 bullet의 데이터를 셋팅해야한다.
+	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(patternIndex, getAngle(), distance);
+
 	// 이부분 일단 작업하고 다음 리펙토링 때 autoReturnMemoryPool에 넣어야한다.
 	this->scheduleOnce([this](float delta){
 		this->ReturnToMemoryBlock();

@@ -40,6 +40,9 @@ bool CCharacterSelectPopupDP::init()
         bg->addChild(m_CharacterImg);
     }
     
+	if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx))
+		m_CharacterImg->setColor(COLOR::DARKGRAY);
+
     return true;
 }
 
@@ -50,6 +53,9 @@ void CCharacterSelectPopupDP::Buy()
         // USER Data Save
         CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx);
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_idx);
+
+		// change color to white
+		m_CharacterImg->setColor(Color3B::WHITE);
     }
 }
 
@@ -61,10 +67,10 @@ void CCharacterSelectPopupDP::Select()
 
 void CCharacterSelectPopupDP::Center()
 {
-    m_CharacterImg->setScale(3.5f);
+    m_CharacterImg->setScale(4.5f);
 }
 
 void CCharacterSelectPopupDP::DeSelect()
 {
-    m_CharacterImg->setScale(1.f);
+    m_CharacterImg->setScale(1.5f);
 }

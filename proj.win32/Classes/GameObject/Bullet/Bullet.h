@@ -102,7 +102,8 @@ public:
 	virtual void CollisionWithPlayer(){}
 	virtual void CollisionWithPlanet(){}
 	virtual void CollisionWithBarrier(){}
-	virtual void ChangeToCoinOrStar(){}
+	virtual void ChangeToCoin(){}
+	virtual void ChangeToStar(){}
     virtual void ReturnToMemoryBlock() override;
     virtual void setBoundingRadius(float data) override;
     virtual float getBoundingRadius() const override;

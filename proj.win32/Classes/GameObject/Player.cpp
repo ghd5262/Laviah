@@ -53,7 +53,6 @@ CPlayer::CPlayer()
 , m_fMagnetLimitRadius(0)
 , m_EffectItemTypes(eITEM_FLAG_none)
 , m_Particle(nullptr)
-, m_pItemRange(nullptr)
 , m_MagnetEffect(nullptr)
 , m_Invincibility(false)
 , m_MultipleScore(nullptr)
@@ -81,13 +80,6 @@ bool CPlayer::init()
 		addChild(m_pTexture);
     }
     
-	m_pItemRange = CItemRange::create("barrier2.png", 800.f);
-	if (m_pItemRange != nullptr){
-		m_pItemRange->setPosition(this->getContentSize() / 2);
-		m_pItemRange->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		addChild(m_pItemRange);
-	}
-
     m_MagnetEffect = CMagnetEffect::create();
     if (m_MagnetEffect != nullptr)
     {
@@ -105,7 +97,6 @@ bool CPlayer::init()
 void CPlayer::Execute(float delta)
 {
 	m_FSM->Execute(delta);
-    m_pItemRange->Execute(delta);
     m_MagnetEffect->Execute(delta);
 }
 
@@ -294,11 +285,6 @@ void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, in
 			MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB)), nullptr), stackCount),
 			CallFunc::create([=](){this->setPosition(m_OriginPos); }), nullptr));
 	}
-}
-
-void CPlayer::BarrierItemGet()
-{
-    m_pItemRange->ItemGet();
 }
 
 void CPlayer::GotMagnetItem()

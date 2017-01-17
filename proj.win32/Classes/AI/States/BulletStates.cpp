@@ -30,9 +30,8 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 	}
 
 	if (bullet->IsEffectWithItem(eITEM_FLAG_shield) && 
-		(!bullet->getPlayer()->getItemRange()->getIsItemTimeUP()) &&
-		bullet->IsHit(bullet->getPlayer()->getPosition(),
-		bullet->getPlayer()->getItemRange()->getBoundingRadius()))
+		bullet->IsHit(bullet->getPlanet()->getPosition(),
+		CObjectManager::Instance()->getBarrierItemRange()->getBoundingRadius()))
 	{
 		bullet->CollisionWithBarrier();
 		return;
@@ -44,17 +43,19 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 		bullet->ChangeState(CBulletMagnetItem::Instance());
 	}
 
-	if (bullet->IsEffectWithItem(static_cast<eITEM_FLAG>
-		(eITEM_FLAG_coin & CItemManager::Instance()->getCurrentItem())))
+	if (bullet->IsEffectWithItem(eITEM_FLAG_coin) &&
+		bullet->IsHit(bullet->getPlayer()->getPosition(),
+		CObjectManager::Instance()->getCoinItemRange()->getBoundingRadius()))
 	{
-		bullet->ChangeToCoinOrStar();
+		bullet->ChangeToCoin();
 		return;
 	}
-	
-	if (bullet->IsEffectWithItem(static_cast<eITEM_FLAG>
-		(eITEM_FLAG_star & CItemManager::Instance()->getCurrentItem())))
+
+	if (bullet->IsEffectWithItem(eITEM_FLAG_star) &&
+		bullet->IsHit(bullet->getPlayer()->getPosition(),
+		CObjectManager::Instance()->getStarItemRange()->getBoundingRadius()))
 	{
-		bullet->ChangeToCoinOrStar();
+		bullet->ChangeToStar();
 		return;
 	}
 

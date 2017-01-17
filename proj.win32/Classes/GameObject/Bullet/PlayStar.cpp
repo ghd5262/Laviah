@@ -38,7 +38,6 @@ bool CPlayStar::init()
 	if (!CBullet::init()) return false;
 
     this->setItemEffect(eITEM_FLAG_magnet);
-    
     return true;
 }
 

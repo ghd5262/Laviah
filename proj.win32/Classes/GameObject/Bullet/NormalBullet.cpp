@@ -78,17 +78,20 @@ void CNormalBullet::CollisionWithBarrier()
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 }
 
-void CNormalBullet::ChangeToCoinOrStar()
+void CNormalBullet::ChangeToCoin()
 {
 	float distance = m_TargetVec.distance(getPosition());
-    char symbol = 0;
-    
-    if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_star)) symbol = 'P';
-    else symbol = 'U';
-    
-    CBulletCreator::CreateBullet(symbol, -getRotation(), distance, false);
+	CBulletCreator::CreateBullet('U', -getRotation(), distance, false);
     
     this->ReturnToMemoryBlock();
+}
+
+void CNormalBullet::ChangeToStar()
+{
+	float distance = m_TargetVec.distance(getPosition());
+	CBulletCreator::CreateBullet('P', -getRotation(), distance, false);
+
+	this->ReturnToMemoryBlock();
 }
 
 void CNormalBullet::setParticle()

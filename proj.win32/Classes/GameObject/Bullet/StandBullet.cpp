@@ -136,14 +136,20 @@ void CStandBullet::CollisionWithBarrier()
     this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 }
 
-void CStandBullet::ChangeToCoinOrStar()
+void CStandBullet::ChangeToCoin()
 {
     float distance = m_TargetVec.distance(getPosition());
-    char symbol = 'T';
-    if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_star)) symbol = 'Y';
-    
-    auto bullet = CBulletCreator::CreateBullet(symbol, -getRotation(), distance, false);
+	auto bullet = CBulletCreator::CreateBullet('Y', -getRotation(), distance, false);
     if (m_HitWithPlanet) bullet->setIsFly(false);
     
     this->ReturnToMemoryBlock();
+}
+
+void CStandBullet::ChangeToStar()
+{
+	float distance = m_TargetVec.distance(getPosition());
+	auto bullet = CBulletCreator::CreateBullet('T', -getRotation(), distance, false);
+	if (m_HitWithPlanet) bullet->setIsFly(false);
+
+	this->ReturnToMemoryBlock();
 }

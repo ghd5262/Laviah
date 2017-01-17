@@ -13,7 +13,8 @@ public:
     virtual void CollisionWithPlayer() override;
     virtual void CollisionWithPlanet() override;
     virtual void CollisionWithBarrier() override;
-    virtual void ChangeToCoinOrStar() override;
+    virtual void ChangeToCoin() override;
+	virtual void ChangeToStar() override;
     virtual void Execute(float delta) override;
     virtual CBullet* build() override;
     
