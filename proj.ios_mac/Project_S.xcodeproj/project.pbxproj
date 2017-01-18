@@ -97,7 +97,7 @@
 		937311721D5849C800D5EB5C /* StickBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310D81D5849C700D5EB5C /* StickBullet.cpp */; };
 		937311731D5849C800D5EB5C /* TargetMark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310DA1D5849C700D5EB5C /* TargetMark.cpp */; };
 		937311741D5849C800D5EB5C /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310DC1D5849C700D5EB5C /* GameObject.cpp */; };
-		937311751D5849C800D5EB5C /* ItemBarrier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310DE1D5849C700D5EB5C /* ItemBarrier.cpp */; };
+		937311751D5849C800D5EB5C /* ItemRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310DE1D5849C700D5EB5C /* ItemRange.cpp */; };
 		937311761D5849C800D5EB5C /* ItemManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310E01D5849C700D5EB5C /* ItemManager.cpp */; };
 		937311771D5849C800D5EB5C /* MagnetEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310E21D5849C700D5EB5C /* MagnetEffect.cpp */; };
 		937311781D5849C800D5EB5C /* MenuSceneObjectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310E41D5849C700D5EB5C /* MenuSceneObjectManager.cpp */; };
@@ -333,8 +333,8 @@
 		937310DB1D5849C700D5EB5C /* TargetMark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetMark.h; sourceTree = "<group>"; };
 		937310DC1D5849C700D5EB5C /* GameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
 		937310DD1D5849C700D5EB5C /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
-		937310DE1D5849C700D5EB5C /* ItemBarrier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemBarrier.cpp; sourceTree = "<group>"; };
-		937310DF1D5849C700D5EB5C /* ItemBarrier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemBarrier.h; sourceTree = "<group>"; };
+		937310DE1D5849C700D5EB5C /* ItemRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemRange.cpp; sourceTree = "<group>"; };
+		937310DF1D5849C700D5EB5C /* ItemRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemRange.h; sourceTree = "<group>"; };
 		937310E01D5849C700D5EB5C /* ItemManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemManager.cpp; sourceTree = "<group>"; };
 		937310E11D5849C700D5EB5C /* ItemManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemManager.h; sourceTree = "<group>"; };
 		937310E21D5849C700D5EB5C /* MagnetEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MagnetEffect.cpp; sourceTree = "<group>"; };
@@ -753,8 +753,8 @@
 				937310C41D5849C700D5EB5C /* Bullet */,
 				937310DC1D5849C700D5EB5C /* GameObject.cpp */,
 				937310DD1D5849C700D5EB5C /* GameObject.h */,
-				937310DE1D5849C700D5EB5C /* ItemBarrier.cpp */,
-				937310DF1D5849C700D5EB5C /* ItemBarrier.h */,
+				937310DE1D5849C700D5EB5C /* ItemRange.cpp */,
+				937310DF1D5849C700D5EB5C /* ItemRange.h */,
 				937310E01D5849C700D5EB5C /* ItemManager.cpp */,
 				937310E11D5849C700D5EB5C /* ItemManager.h */,
 				937310E21D5849C700D5EB5C /* MagnetEffect.cpp */,
@@ -1191,7 +1191,7 @@
 				9373117B1D5849C800D5EB5C /* Planet.cpp in Sources */,
 				9373118E1D5849C800D5EB5C /* CharacterSelectPopup.cpp in Sources */,
 				9316AFCF1DFE904900432CA8 /* Global.cpp in Sources */,
-				937311751D5849C800D5EB5C /* ItemBarrier.cpp in Sources */,
+				937311751D5849C800D5EB5C /* ItemRange.cpp in Sources */,
 				937311761D5849C800D5EB5C /* ItemManager.cpp in Sources */,
 				9373115C1D5849C800D5EB5C /* RocketStates.cpp in Sources */,
 				9373116C1D5849C800D5EB5C /* NormalBullet.cpp in Sources */,
