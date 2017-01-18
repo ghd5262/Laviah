@@ -154,23 +154,26 @@ int CChallengeDataManager::NonCompleteChallengeExist(int level,
 void CChallengeDataManager::getNewChallenges()
 {
     auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+	std::vector<int> copyList;
+	copyList.resize(list->size());
+	std::copy(list->begin(), list->end(), copyList.begin());
     auto nonCompleteList = getNonCompletedChallengeList(1, false);
     
     // Challenges not completed are less than limit count.
     // then remove current list only.
     if(nonCompleteList.size() < CHALLENGE::LIMIT_COUNT)
     {
-        for(int index = 0; index < list->size(); index++)
-            this->removeChallengeFromUserData(list->at(index));
+		for (int index = 0; index < copyList.size(); index++)
+			this->removeChallengeFromUserData(copyList.at(index));
         
         return;
     }
     
     // Current challenges are less than limit count.
     // then get new challenges until limit count.
-    if(list->size() < CHALLENGE::LIMIT_COUNT)
+	if (copyList.size() < CHALLENGE::LIMIT_COUNT)
     {
-        for(int count = 0; count < CHALLENGE::LIMIT_COUNT - list->size(); count++)
+		for (int count = 0; count < CHALLENGE::LIMIT_COUNT - copyList.size(); count++)
             this->getNewRandomChallenge(1, false);
         
         return;
@@ -179,7 +182,7 @@ void CChallengeDataManager::getNewChallenges()
     // There are enough challenges to skip.
     for(int count = 0; count < CHALLENGE::LIMIT_COUNT; count++)
     {
-        this->SkipChallenge(list->at(count));
+		this->SkipChallenge(copyList.at(count));
     }
 }
 
@@ -200,9 +203,9 @@ const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 //        CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST, savedData);
 //    }
     
-    this->removeChallengeFromUserData(index);
 	auto newChallenge = this->getNewRandomChallenge(1, false);
-    
+	this->removeChallengeFromUserData(index);
+
 //    if(newChallenge->_continuingType){
 //        
 //    }

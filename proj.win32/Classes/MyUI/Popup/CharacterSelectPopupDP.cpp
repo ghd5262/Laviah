@@ -67,7 +67,7 @@ void CCharacterSelectPopupDP::Select()
 
 void CCharacterSelectPopupDP::Center()
 {
-    m_CharacterImg->setScale(4.5f);
+    m_CharacterImg->setScale(4.f);
 }
 
 void CCharacterSelectPopupDP::DeSelect()

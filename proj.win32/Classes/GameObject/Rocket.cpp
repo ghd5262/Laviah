@@ -9,7 +9,9 @@
 #include "../GameObject/ItemManager.h"
 #include "../GameObject/Player.h"
 #include "../DataManager/UserDataManager.h"
-
+#include "../MyUI/MyButton.h"
+#include "../MyUI/Popup/RewardPopup.h"
+#include "../DataManager/ChallengeRewarder/ChallengeRewarder.hpp"
 using namespace cocos2d;
 
 CRocket::CRocket(sROCKET_PARAM RocketParam)
@@ -24,6 +26,7 @@ CRocket::CRocket(sROCKET_PARAM RocketParam)
 , m_PlayerPos(Vec2::ZERO)
 , m_Arrive(false)
 , m_ArriveCallback(nullptr)
+, m_Gift(nullptr)
 , m_Player(CObjectManager::Instance()->getPlayer())
 {}
 
@@ -71,6 +74,21 @@ bool CRocket::init()
     addChild(m_Texture);
     
 	this->setBoundingRadius(ROCKET::BOUNDING_RADIUS);
+
+	m_Gift = CMyButton::create()
+		->addEventListener([=](Node* sender){
+		auto popup = CGameScene::getGameScene()->Reward();
+		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
+		rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 100);
+		rewardPopup->setExitCallback([=](){
+			sender->setVisible(false);
+		});
+	})
+		->setButtonNormalImage("rewardIcon_s.png")
+		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setButtonPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.65f))
+		->show(this);
+	m_Gift->setColor(COLOR::GOLD);
 
     m_CenterPos = Vec2(PLANET_DEFINE::ZOOMIN_POS);
 	m_Velocity = Vec2(0, 1);
@@ -273,3 +291,23 @@ void CRocket::createFlameParticle()
     m_ParticleFlame->setTotalParticles(80);
 	this->addChild(m_ParticleFlame);
 }
+
+void CRocket::Gift()
+{
+	m_Gift->setVisible(true);
+}
+
+void CRocket::ZoomIn()
+{
+	auto scaleAction = ScaleTo::create(1.2f, 1.f);
+	auto exponential = EaseExponentialInOut::create(scaleAction);
+	this->runAction(exponential);
+}
+
+void CRocket::ZoomOut()
+{
+	auto scaleAction = ScaleTo::create(1.2f, 0.65f);
+	auto exponential = EaseExponentialInOut::create(scaleAction);
+	this->runAction(exponential);
+}
+

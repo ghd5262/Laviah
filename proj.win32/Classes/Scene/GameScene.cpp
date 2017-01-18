@@ -124,6 +124,8 @@ void CGameScene::GameStart()
         
         CObjectManager::Instance()->getPlanet()->ZoomOut();
         CObjectManager::Instance()->getPlayer()->ZoomOut();
+		CObjectManager::Instance()->getRocket()->ZoomOut();
+
         CObjectManager::Instance()->getPlayer()->GameStart();
 //    });
 }
@@ -178,8 +180,10 @@ void CGameScene::OpenGameMenuLayer()
     this->ScreenFade([=](){
         CObjectManager::Instance()->getPlanet()->ZoomIn();
         CObjectManager::Instance()->getPlayer()->ZoomIn();
-        CObjectManager::Instance()->getRocket()->ComebackHome();
+		CObjectManager::Instance()->getRocket()->ZoomIn();
 
+        CObjectManager::Instance()->getRocket()->ComebackHome();
+		CObjectManager::Instance()->getRocket()->Gift();
         this->clearData();
         this->createMenuLayer();
         this->createRandomCoin();
@@ -316,7 +320,7 @@ void CGameScene::createExitPopup(bool resume)
 void CGameScene::createMenuLayer()
 {
     CMenuLayer::create()
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+	->setBackgroundVisible(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);

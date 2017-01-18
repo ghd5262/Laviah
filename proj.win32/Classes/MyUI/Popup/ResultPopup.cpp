@@ -248,7 +248,7 @@ bool CResultPopup::init()
                                  Vec2(bg->getContentSize().width * 0.92f,
                                       bg->getContentSize().height * 0.05f));
     
-    auto btnEnd = createButton([=](Node* sender) { this->Reset(sender); },
+    auto btnEnd = createButton([=](Node* sender) { this->End(sender); },
                                "endIcon.png",
                                Vec2(bg->getContentSize().width * 0.92f,
                                     bg->getContentSize().height * 0.05f));

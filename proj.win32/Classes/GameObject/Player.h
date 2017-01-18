@@ -24,12 +24,12 @@ namespace PLAYER_DEFINE{
     = cocos2d::Vec2(PLANET_DEFINE::ZOOMOUT_POS.x,
                     PLANET_DEFINE::ZOOMOUT_POS.y +
                     (PLANET_DEFINE::RADIUS * PLANET_DEFINE::SCALE_SIZE) +
-                    25.f);
+                    (25.f * 0.8f));
     static const cocos2d::Vec2 ZOOMIN_POS
     = cocos2d::Vec2(PLANET_DEFINE::ZOOMIN_POS.x,
                     PLANET_DEFINE::ZOOMIN_POS.y +
                     (PLANET_DEFINE::RADIUS * PLANET_DEFINE::ZOOMIN_SIZE) +
-                    NORMAL_BOUNDING_RADIUS);
+					(NORMAL_BOUNDING_RADIUS * 0.8f));
 };
 
 class CScoreUI;
