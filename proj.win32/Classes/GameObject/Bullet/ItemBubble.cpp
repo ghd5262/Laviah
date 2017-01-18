@@ -53,7 +53,7 @@ bool CItemBubble::init()
         addChild(m_Bubble);
     }
     setRotation(-getAngle() + 90);
-    m_PlanetPos = m_Planet->getOriginPos();
+    m_PlanetPos = PLANET_DEFINE::ZOOMOUT_POS;
     this->calculateIntersectPos();
     
     return true;

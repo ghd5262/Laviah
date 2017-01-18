@@ -1,4 +1,5 @@
 #include "ItemRange.h"
+#include "ObjectManager.h"
 #include "../Scene/GameScene.h"
 
 using namespace cocos2d;
@@ -30,6 +31,7 @@ CItemRange::CItemRange()
 
 CItemRange* CItemRange::show(cocos2d::Node* parent, int zOrder/* = 0*/)
 {
+    this->scheduleUpdate();
 	this->setCascadeOpacityEnabled(true);
 	this->setVisible(false);
 	this->setBoundingRadius(1);
@@ -51,8 +53,10 @@ CItemRange* CItemRange::setTextureName(std::string name)
 	return this;
 }
 
-void CItemRange::Execute(float delta)
+void CItemRange::update(float delta)
 {
+    if(CObjectManager::Instance()->getIsGamePause()) return;
+
 	this->setBoundingRadius((getContentSize().width * m_Texture->getScale()) / 2);
 	if (!m_IsStayStatus) return;
 

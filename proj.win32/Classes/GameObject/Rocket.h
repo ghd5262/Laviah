@@ -19,6 +19,7 @@ struct sROCKET_PARAM{
 };
 
 class CBullet;
+class CPlayer;
 class CRocket : public CGameObject {
 	typedef std::function<void(cocos2d::Node*)> ARRIVE_CALLBACK;
 public:
@@ -30,13 +31,13 @@ public:
 	void FlyAway(float delta);
 	void FlyToTouchArea(float delta);
 	void FlyToTarget(float delta);
+    void ComebackHome();
 	void CollisionCheckAtHome();
     void BonusTimeBegan();
     void BonusTimeEnd();
 	void ChangeState(CState<CRocket>* newState){ m_FSM->ChangeState(newState); }
     
-	void setArriveCallback(const ARRIVE_CALLBACK& callback){ m_ArriveCallback = callback;
-    }
+	void setArriveCallback(const ARRIVE_CALLBACK& callback){ m_ArriveCallback = callback; }
     cocos2d::Vec2 getTargetPos() const { return m_TargetPos; }
     void setTargetPos(cocos2d::Vec2 pos) {
         if(pos == m_TargetPos) return;
@@ -51,7 +52,7 @@ public:
 	CC_SYNTHESIZE(bool, m_Arrive, Arrive);
 	CC_SYNTHESIZE(sROCKET_PARAM, m_RocketParam, RocketParam);
 	CC_SYNTHESIZE(cocos2d::Vec2, m_Velocity, Velocity);
-
+    CC_SYNTHESIZE(CPlayer*, m_Player, Player);
 private:
 	virtual bool init() override;
 	void arrive(float delta);

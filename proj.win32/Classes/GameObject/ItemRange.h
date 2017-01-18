@@ -15,8 +15,9 @@ public:
 	CItemRange* show(cocos2d::Node* parent, int zOrder = 0);
 
 	void ItemGet(float time);
-    virtual void Execute(float delta) override;
 	void Clear();
+
+    virtual void update(float delta) override;
 
 protected:
     

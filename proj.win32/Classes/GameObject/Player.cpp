@@ -1,10 +1,8 @@
 #include "Player.h"
-#include "Planet.h"
 #include "ItemManager.h"
 #include "ItemRange.h"
 #include "ObjectManager.h"
 #include "MagnetEffect.h"
-#include "BulletCreator.h"
 #include "Rocket.h"
 #include "../AI/States/PlayerStates.h"
 #include "../AI/States/GameStates.h"
@@ -13,16 +11,6 @@
 #include "../MyUI/ScoreUI.h"
 #include "../DataManager/UserDataManager.h"
 #include "../MyUI/MultipleScore.h"
-
-namespace PLAYER_DEFINE{
-	static const float SCALE_SIZE = 1.5f;
-	static const float NORMAL_BOUNDING_RADIUS = 25.f * SCALE_SIZE;
-	static const float GIANT_BOUNDING_RADIUS = NORMAL_BOUNDING_RADIUS * 3.f;
-	static const float GIANT_SIZE_PERCENT = 2.f;
-	static const float INVINCIVILITY_TIME = 5.f;
-	static const float NORMAL_ROTATION_SPEED = ((PLANET_DEFINE::BOUNDING_RADIUS / NORMAL_BOUNDING_RADIUS) * BULLETCREATOR::ROTATION_SPEED);
-	static const float GIANT_ROTATION_SPEED = NORMAL_ROTATION_SPEED * 0.7f;
-};
 
 using namespace cocos2d;
 using namespace PLAYER_DEFINE;
@@ -84,6 +72,7 @@ bool CPlayer::init()
     if (m_MagnetEffect != nullptr)
     {
         m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_MagnetEffect->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
         CGameScene::getGameScene()->addChild(m_MagnetEffect);
     }
     
@@ -104,34 +93,40 @@ void CPlayer::Clear()
 {
     this->TakeOffRocket();
     this->setRotation(0);
-    m_Particle->setAngle(90);
     m_Particle->setGravity(Vec2(0, -270));
-    m_Particle->setVisible(false);
     CMultipleScore::Instance()->UpdateScore();
 }
 
+void CPlayer::GameStart()
+{
+    if(!this->isVisible())
+    {
+        this->PlayerAlive();
+    }
+    else{
+        this->setVisible(true);
+        this->setPlayerTexture(m_CharacterParam->_normalTextureName);
+        m_fLife = m_fMaxLife;
+    }
+}
+    
 void CPlayer::PlayerAlive()
 {
     this->setVisible(false);
     this->createAliveParticle();
 	this->setPlayerTexture(m_CharacterParam->_aliveTextureName);
-    m_Particle->setVisible(false);
-	m_fLife = m_fMaxLife;
-
-	this->scheduleOnce([=](float delta){
-		this->setVisible(true);
-		this->setPlayerTexture(m_CharacterParam->_normalTextureName);
-		this->InvincibilityMode(INVINCIVILITY_TIME); // 1초간 무적 카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
-        m_Particle->setVisible(true);
+    this->InvincibilityMode(INVINCIVILITY_TIME); // 1초간 무적 카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
+    this->scheduleOnce([=](float delta){
+        this->setVisible(true);
+        this->GameStart();
 	}, 1.5f, "PlayerAlive");
 
 }
 
 void CPlayer::PlayerDead(){
 	m_MagnetEffect->setMagnetAlive(false);
-    m_Particle->setVisible(false);
     this->createDeadParticle();
-	this->setVisible(false);
+    this->setVisible(false);
 }
 
 void CPlayer::GotSomeHealth(float health)
@@ -246,7 +241,7 @@ void CPlayer::StartBonusTime()
 
 void CPlayer::EndBonusTime()
 {
-	this->setPosition(this->getOriginPos());
+	this->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
 	m_Particle->setVisible(true);
 }
 
@@ -269,11 +264,6 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 	return (m_fLife / m_fMaxLife) * 100;
 }
 
-void CPlayer::setParticlePos(Vec2 pos){
-    m_Particle->setPosition(pos);
-    m_MagnetEffect->setPosition(pos);
-}
-
 void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount)
 {
 	if (!m_Invincibility){
@@ -283,7 +273,7 @@ void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, in
 			Sequence::create(
 			MoveBy::create(duration / stackCount, Vec2(stackSizeLR, -stackSizeTB)),
 			MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB)), nullptr), stackCount),
-			CallFunc::create([=](){this->setPosition(m_OriginPos); }), nullptr));
+			CallFunc::create([=](){this->setPosition(PLAYER_DEFINE::ZOOMOUT_POS); }), nullptr));
 	}
 }
 
@@ -349,7 +339,7 @@ void CPlayer::createAliveParticle()
 	auto particle = CParticle_Explosion_2::create("whiteSquare.png");
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        particle->setPosition(getPosition());
+        particle->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
         particle->setStartRadius(160);
         particle->setEndRadius(0);
         particle->setDuration(0.5f);
@@ -371,12 +361,32 @@ void CPlayer::createRunParticle()
 {
 	m_Particle = CParticle_Flame::create(m_CharacterParam->_normalTextureName);
     if (m_Particle != nullptr){
+        m_Particle->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
         m_Particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_Particle->setAngle(90);
         m_Particle->setGravity(Vec2(0, -270));
         m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_Particle->setEndSize(4.f);
-        m_Particle->setVisible(false);
 		CGameScene::getGameScene()->addChild(m_Particle);
     }
 }
+
+void CPlayer::ZoomIn()
+{
+    auto scaleAction = ScaleTo::create(1.2f, 2.f);
+    auto moveAction = MoveTo::create(1.2f, PLAYER_DEFINE::ZOOMIN_POS);
+    auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
+    auto exponential = EaseExponentialInOut::create(spawnAction);
+    this->runAction(exponential);
+    this->setVisible(true);
+}
+
+void CPlayer::ZoomOut()
+{
+    auto scaleAction = ScaleTo::create(1.2f, PLAYER_DEFINE::SCALE_SIZE);
+    auto moveAction = MoveTo::create(1.2f, PLAYER_DEFINE::ZOOMOUT_POS);
+    auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
+    auto exponential = EaseExponentialInOut::create(spawnAction);
+    this->runAction(exponential);
+}
+

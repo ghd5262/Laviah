@@ -221,6 +221,7 @@ void CObjectManager::createBulletByTimer(float delta)
 
 void CObjectManager::inGameUpdate()
 {
+    m_Player->ParticleVisible(!m_IsGamePause); //;;;
     if (m_IsGamePause) return;
     
     this->RotationObject(1);
@@ -228,10 +229,6 @@ void CObjectManager::inGameUpdate()
     m_ItemManager->Execute(m_Delta);
     m_BulletCreator->Update(m_Delta);
     m_Player->Execute(m_Delta);
-	m_BarrierItemRange->Execute(m_Delta);
-	m_StarItemRange->Execute(m_Delta);
-	m_CoinItemRange->Execute(m_Delta);
-
     this->bulletListExecute();
     this->setGameLevelByTimer();
 }

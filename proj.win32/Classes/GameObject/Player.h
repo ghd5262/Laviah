@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Planet.h"
+#include "BulletCreator.h"
 #include "Bullet/Bullet.h"
 #include "../AI/StateMachine.h"
 #include "../DataManager/CharacterDataManager.h"
@@ -9,6 +11,26 @@
 * 이후 똑같은 캐릭터라도 상황, 버프, 특성 등 
 * 변경요소 마다 다르게 적용시키고 싶어서 콜백함수로 구현함
 *-----------------------------------------------------------------*/
+
+namespace PLAYER_DEFINE{
+    static const float SCALE_SIZE = 1.5f;
+    static const float NORMAL_BOUNDING_RADIUS = 25.f * SCALE_SIZE;
+    static const float GIANT_BOUNDING_RADIUS = NORMAL_BOUNDING_RADIUS * 3.f;
+    static const float GIANT_SIZE_PERCENT = 2.f;
+    static const float INVINCIVILITY_TIME = 5.f;
+    static const float NORMAL_ROTATION_SPEED = ((PLANET_DEFINE::BOUNDING_RADIUS / NORMAL_BOUNDING_RADIUS) * BULLETCREATOR::ROTATION_SPEED);
+    static const float GIANT_ROTATION_SPEED = NORMAL_ROTATION_SPEED * 0.7f;
+    static const cocos2d::Vec2 ZOOMOUT_POS
+    = cocos2d::Vec2(PLANET_DEFINE::ZOOMOUT_POS.x,
+                    PLANET_DEFINE::ZOOMOUT_POS.y +
+                    (PLANET_DEFINE::RADIUS * PLANET_DEFINE::SCALE_SIZE) +
+                    25.f);
+    static const cocos2d::Vec2 ZOOMIN_POS
+    = cocos2d::Vec2(PLANET_DEFINE::ZOOMIN_POS.x,
+                    PLANET_DEFINE::ZOOMIN_POS.y +
+                    (PLANET_DEFINE::RADIUS * PLANET_DEFINE::ZOOMIN_SIZE) +
+                    NORMAL_BOUNDING_RADIUS);
+};
 
 class CScoreUI;
 class CItemRange;
@@ -31,6 +53,8 @@ public:
 	void StartBonusTime();
 	void EndBonusTime();
 	void Rotation(float speed);
+    void ParticleVisible(bool visible)
+    { m_Particle->setVisible(visible); };
     void ChangeState(CState<CPlayer>* newState)
     { m_FSM->ChangeState(newState); };
     
@@ -51,6 +75,9 @@ public:
 	void StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount);
 
 	// 게임 시작할 때
+    void GameStart();
+    
+    // Game resume
 	void PlayerAlive();
 
 	// 게임 끝났을 때
@@ -60,12 +87,13 @@ public:
 	void InvincibilityMode(float time);
 
 	void ChangeDataByCharacter();
-
+    
+    void ZoomIn();
+    
+    void ZoomOut();
+    
 	//getter & setter
 	void setCharacterParam(const sCHARACTER_PARAM* data);
-	void setOriginPos(cocos2d::Vec2 pos) { m_OriginPos = pos; }
-	cocos2d::Vec2 getOriginPos(){ return m_OriginPos; }
-    void setParticlePos(cocos2d::Vec2 pos);
 
 protected:
 	virtual bool init() override;
@@ -97,7 +125,6 @@ private:
 private:
 	std::shared_ptr<CStateMachine<CPlayer>> m_FSM;
 	CMultipleScore* m_MultipleScore;
-	cocos2d::Vec2 m_OriginPos;
 	cocos2d::Sprite* m_pTexture;
 	cocos2d::ParticleSystemQuad* m_Particle;
     CMagnetEffect* m_MagnetEffect;

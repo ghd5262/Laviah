@@ -24,6 +24,7 @@ CRocket::CRocket(sROCKET_PARAM RocketParam)
 , m_PlayerPos(Vec2::ZERO)
 , m_Arrive(false)
 , m_ArriveCallback(nullptr)
+, m_Player(CObjectManager::Instance()->getPlayer())
 {}
 
 CRocket::~CRocket(){}
@@ -71,9 +72,7 @@ bool CRocket::init()
     
 	this->setBoundingRadius(ROCKET::BOUNDING_RADIUS);
 
-    auto player = CObjectManager::Instance()->getPlayer();
-    m_PlayerPos = player->getOriginPos();
-    m_CenterPos = Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.35f);
+    m_CenterPos = Vec2(PLANET_DEFINE::ZOOMIN_POS);
 	m_Velocity = Vec2(0, 1);
 	m_BulletList = CObjectManager::Instance()->getBulletList();
     this->createFlameParticle();
@@ -122,6 +121,13 @@ void CRocket::FlyToTarget(float delta)
     if(!m_Arrive) this->arrive(delta);
 }
 
+void CRocket::ComebackHome()
+{
+    auto centerPos = Director::getInstance()->getVisibleSize() / 2;
+    this->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), this->getDistance(), centerPos));
+    this->ChangeState(CFlyToTouchArea::Instance());
+}
+
 void CRocket::CollisionCheckAtHome()
 {
     for (auto bullet : *m_BulletList)
@@ -148,7 +154,7 @@ void CRocket::BonusTimeBegan()
 {
     this->ChangeState(CFlyToTarget::Instance());
     this->setPosition(Vec2(-50, -50));
-    this->setTargetPos(Vec2(m_PlayerPos.x, m_PlayerPos.y));
+    this->setTargetPos(PLAYER_DEFINE::ZOOMOUT_POS);
     this->setVelocity(Vec2(800, 300));
     this->setSpeed(800.f);
     

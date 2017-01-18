@@ -62,14 +62,25 @@ private:
 	void createHelpPopup();
     void createExitPopup(bool resume);
     void createMenuLayer();
-    void createUILayer();
     void createBonusTimeLayer();
 	void createRandomCoin();
-//    void removeUILayer();
     void removeBonusTimeLayer();
     void turnDownSound();
     void turnUpSound();
 	void initKeyboardListener();
+    
+    // The following items are initialized only once.
+    void createBulletCreator();
+    void createBackground();
+    void createPlanet();
+    void createPlayer();
+    void createRocket();
+    void createCountDown();
+    void createScreenFade();
+    void createItemRanges();
+    void createComboUI();
+    void createUILayer();
+    void initMemoryPool();
 
 private:
 	static CGameScene* m_GameScene;

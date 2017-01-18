@@ -83,93 +83,24 @@ bool CGameScene::init()
 	m_TouchPos = m_VisibleSize / 2;
 	this->scheduleUpdate();
 	
-//CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 	m_GridWorld = NodeGrid::create();
 	this->addChild(m_GridWorld, 0, 1);
     
-    m_ScreenFade = LayerColor::create(Color4B::BLACK, m_VisibleSize.width, m_VisibleSize.height);
-    m_ScreenFade->setIgnoreAnchorPointForPosition(false);
-    m_ScreenFade->setPosition(m_VisibleSize / 2);
-    m_ScreenFade->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    this->addChild(m_ScreenFade, ZORDER::SCREENFADE);
-
-	auto bulletCreator = CBulletCreator::create();
-	this->addChild(bulletCreator);
-    CObjectManager::Instance()->setBulletCreator(bulletCreator);
-    
-	auto background = CBackGround::create();
-    this->addChild(background, ZORDER::BACKGROUND);
-    CObjectManager::Instance()->setBackground(background);
-    
-	int currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
-	auto currentCharacterInfo = CCharacterDataManager::Instance()->getCharacterByIndex(currentCharacterIdx);
-	CCharacterDataManager::Instance()->PrintCharacterInfo(currentCharacterInfo->_idx);
-	CObjectManager::Instance()->setCharacterParam(currentCharacterInfo);
-
-	auto planet = CPlanet::create();
-	planet->setPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.35f));
-	planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	planet->setOriginPos(planet->getPosition());
-    this->addChild(planet, ZORDER::PLANET);
-    CObjectManager::Instance()->setPlanet(planet);
-
-	auto player = CPlayer::create();
-	player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) * BULLETCREATOR::ROTATION_SPEED));
-	player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	player->setPosition(Vec2(m_VisibleSize.width * 0.5f,
-                             planet->getPosition().y + (planet->getBoundingRadius() + 20)));
-	player->setOriginPos(player->getPosition());
-	player->setParticlePos(player->getPosition());
-    this->addChild(player, ZORDER::PLAYER);
-    CObjectManager::Instance()->setPlayer(player);
-
-	auto createRange = [=](std::string textureName){
-		auto range = CItemRange::create()
-			->setTextureName(textureName)
-			->show(this, ZORDER::PLAYER);
-		range->setPosition(player->getPosition());
-		range->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		return range;
-	};
-
-	CObjectManager::Instance()->setBarrierItemRange(createRange("barrier2.png"));
-	CObjectManager::Instance()->setStarItemRange(createRange("barrier3.png"));
-	CObjectManager::Instance()->setCoinItemRange(createRange("barrier3.png"));
-
-    auto rocket = CRocket::create(sROCKET_PARAM());
-    rocket->setSpeed(ROCKET::SPEED);
-    rocket->setDistance(ROCKET::FLYAROUND_DISTANCE);
-	rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	rocket->setPosition(CBullet::getCirclePosition(random<int>(0, 360), ROCKET::FLYAWAY_DISTANCE, planet->getPosition()));
-   	rocket->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), rocket->getDistance(), planet->getPosition()));
-	rocket->ChangeState(CFlyToTouchArea::Instance());
-	this->addChild(rocket, ZORDER::PLAYER);
-	CObjectManager::Instance()->setRocket(rocket);
-    
-    m_CountDown = CCountDown::create()
-    ->addLastEventListner([=](Node* sender){
-        CObjectManager::Instance()->setIsGamePause(false);
-    })
-    ->setFont(Color4B::WHITE, 65)
-    ->setMaxNumber(3)
-    ->setMinNumber(0)
-    ->setLastContent("GO!")
-    ->setInterval(0.8f)
-    ->setLabelPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.65f))
-    ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(this);
-    m_CountDown->Pause();
-
-	auto multiscore = CMultipleScore::Instance();
-	this->addChild(multiscore, ZORDER::BACKGROUND);
-
-#if(USE_MEMORY_POOLING)
-	CPoolingManager::Instance()->CreateBulletList(600, 900);
-#endif
+    this->initMemoryPool();
+    this->createBulletCreator();
+    this->createBackground();
+    this->createPlanet();
+    this->createPlayer();
+    this->createRocket();
+    this->createCountDown();
+    this->createScreenFade();
+    this->createItemRanges();
+    this->createComboUI();
     this->createUILayer();
-	this->initKeyboardListener();
+    this->initKeyboardListener();
     this->OpenGameMenuLayer();
-
+    //CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
+    
 	return true;
 }
 
@@ -185,13 +116,16 @@ void CGameScene::GameExit(bool resume/* = false*/)
 
 void CGameScene::GameStart()
 {
-    this->ScreenFade([=](){
+//    this->ScreenFade([=](){
         this->clearData();
         this->GameResume();
+        
 		m_UILayer->setVisible(true);
-//        this->createUILayer();
-        CObjectManager::Instance()->getPlayer()->PlayerAlive();
-    });
+        
+        CObjectManager::Instance()->getPlanet()->ZoomOut();
+        CObjectManager::Instance()->getPlayer()->ZoomOut();
+        CObjectManager::Instance()->getPlayer()->GameStart();
+//    });
 }
 
 void CGameScene::GameResume()
@@ -242,11 +176,10 @@ void CGameScene::OpenGamePausePopup()
 void CGameScene::OpenGameMenuLayer()
 {
     this->ScreenFade([=](){
-        auto centerPos = Director::getInstance()->getVisibleSize() / 2;
-        auto rocket = CObjectManager::Instance()->getRocket();
-        rocket->setTargetPos(CBullet::getCirclePosition(random<int>(0, 360), rocket->getDistance(), centerPos));
-        rocket->ChangeState(CFlyToTouchArea::Instance());
-        
+        CObjectManager::Instance()->getPlanet()->ZoomIn();
+        CObjectManager::Instance()->getPlayer()->ZoomIn();
+        CObjectManager::Instance()->getRocket()->ComebackHome();
+
         this->clearData();
         this->createMenuLayer();
         this->createRandomCoin();
@@ -302,7 +235,6 @@ void CGameScene::clearData()
     CObjectManager::Instance()->Clear();
     CItemManager::Instance()->Clear();
     this->cleanGlobalData();
-//    this->removeUILayer();
 	this->removeBonusTimeLayer();
 	m_UILayer->setVisible(false);
 }
@@ -390,15 +322,6 @@ void CGameScene::createMenuLayer()
     ->show(this, ZORDER::POPUP);
 }
 
-void CGameScene::createUILayer()
-{
-    m_UILayer = CUILayer::Instance()
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
-}
-
 void CGameScene::createBonusTimeLayer()
 {
     m_BonusTimeLayer = CBonusTimeLayer::create()
@@ -407,14 +330,6 @@ void CGameScene::createBonusTimeLayer()
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
 }
-
-//void CGameScene::removeUILayer()
-//{
-//    if(m_UILayer) {
-//        m_UILayer->popupClose();
-//        m_UILayer = nullptr;
-//    }
-//}
 
 void CGameScene::removeBonusTimeLayer()
 {
@@ -457,4 +372,120 @@ void CGameScene::createRandomCoin()
 {
     auto data = CBulletPatternDataManager::Instance()->getRandomConstellationPatternByLevel(1, true);
     CBulletCreator::CreateConstellation(data);
+}
+
+
+// The following items are initialized only once.
+void CGameScene::createBulletCreator()
+{
+    auto bulletCreator = CBulletCreator::create();
+    this->addChild(bulletCreator);
+    CObjectManager::Instance()->setBulletCreator(bulletCreator);
+}
+
+void CGameScene::createBackground()
+{
+    auto background = CBackGround::create();
+    this->addChild(background, ZORDER::BACKGROUND);
+    CObjectManager::Instance()->setBackground(background);
+}
+
+void CGameScene::createPlanet()
+{
+    CObjectManager::Instance()->ChangeCharacter();
+
+    auto planet = CPlanet::create();
+    planet->setPosition(PLANET_DEFINE::ZOOMOUT_POS);
+    planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    this->addChild(planet, ZORDER::PLANET);
+    CObjectManager::Instance()->setPlanet(planet);
+}
+
+void CGameScene::createPlayer()
+{
+    auto planet = CObjectManager::Instance()->getPlanet();
+    auto player = CPlayer::create();
+    player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) *
+                            BULLETCREATOR::ROTATION_SPEED));
+    player->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
+    player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    this->addChild(player, ZORDER::PLAYER);
+    CObjectManager::Instance()->setPlayer(player);
+}
+
+void CGameScene::createRocket()
+{
+    auto rocket = CRocket::create(sROCKET_PARAM());
+    rocket->setSpeed(ROCKET::SPEED);
+    rocket->setDistance(ROCKET::FLYAROUND_DISTANCE);
+    rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    rocket->setPosition(CBullet::getSquarePosition(random<int>(0, 360), ROCKET::FLYAWAY_DISTANCE));
+    rocket->setTargetPos(CBullet::getSquarePosition(random<int>(0, 360), rocket->getDistance()));
+    rocket->ChangeState(CFlyToTouchArea::Instance());
+    this->addChild(rocket, ZORDER::PLAYER);
+    CObjectManager::Instance()->setRocket(rocket);
+}
+
+void CGameScene::createCountDown()
+{
+    m_CountDown = CCountDown::create()
+    ->addLastEventListner([=](Node* sender){
+        CObjectManager::Instance()->setIsGamePause(false);
+    })
+    ->setFont(Color4B::WHITE, 65)
+    ->setMaxNumber(3)
+    ->setMinNumber(0)
+    ->setLastContent("GO!")
+    ->setInterval(0.8f)
+    ->setLabelPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.65f))
+    ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->show(this);
+    m_CountDown->Pause();
+}
+
+void CGameScene::createScreenFade()
+{
+    m_ScreenFade = LayerColor::create(Color4B::BLACK, m_VisibleSize.width, m_VisibleSize.height);
+    m_ScreenFade->setIgnoreAnchorPointForPosition(false);
+    m_ScreenFade->setPosition(m_VisibleSize / 2);
+    m_ScreenFade->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    this->addChild(m_ScreenFade, ZORDER::SCREENFADE);
+}
+
+void CGameScene::createItemRanges()
+{
+    auto createRange = [=](std::string textureName){
+        auto range = CItemRange::create()
+        ->setTextureName(textureName)
+        ->show(this, ZORDER::PLAYER);
+        range->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
+        range->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        return range;
+    };
+    
+    CObjectManager::Instance()->setBarrierItemRange(createRange("barrier2.png"));
+    CObjectManager::Instance()->setStarItemRange(createRange("barrier3.png"));
+    CObjectManager::Instance()->setCoinItemRange(createRange("barrier3.png"));
+}
+
+void CGameScene::createComboUI()
+{
+    auto multiscore = CMultipleScore::Instance();
+    this->addChild(multiscore, ZORDER::BACKGROUND);
+}
+
+void CGameScene::createUILayer()
+{
+    m_UILayer = CUILayer::Instance()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
+}
+
+void CGameScene::initMemoryPool()
+{
+#if(USE_MEMORY_POOLING)
+    CPoolingManager::Instance()->CreateBulletList(600, 900);
+#endif
 }

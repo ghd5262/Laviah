@@ -45,7 +45,7 @@ bool CPlanet::init()
         addChild(m_pTexture);
     }
     
-	this->setScale(1.5f);
+    this->setScale(PLANET_DEFINE::SCALE_SIZE);
 
     return true;
 }
@@ -84,18 +84,16 @@ void CPlanet::CrushShake(float interval, float duration, float speed, float magn
 
 		x *= magnitude * damper;
 		y *= magnitude * damper;
-		setPosition(m_OriginPos.x + x, m_OriginPos.y + y);
-		CObjectManager::Instance()->getPlayer()->setPosition(
-			CObjectManager::Instance()->getPlayer()->getOriginPos().x + x, 
-			CObjectManager::Instance()->getPlayer()->getOriginPos().y + y);
+		setPosition(PLANET_DEFINE::ZOOMOUT_POS.x + x, PLANET_DEFINE::ZOOMOUT_POS.y + y);
+		CObjectManager::Instance()->getPlayer()->setPosition(PLAYER_DEFINE::ZOOMOUT_POS.x + x,
+			PLAYER_DEFINE::ZOOMOUT_POS.y + y);
 		if (m_fElapsed >= duration)
 		{
 			m_fElapsed = 0;
 			this->unschedule("Shake");
 
-			setPosition(m_OriginPos);
-			CObjectManager::Instance()->getPlayer()->setPosition(
-				CObjectManager::Instance()->getPlayer()->getOriginPos() );
+			setPosition(PLANET_DEFINE::ZOOMOUT_POS);
+			CObjectManager::Instance()->getPlayer()->setPosition( PLAYER_DEFINE::ZOOMOUT_POS );
 		}
 
 	}, interval, CC_REPEAT_FOREVER, 0.f, "Shake");
@@ -120,4 +118,22 @@ void CPlanet::setPlanetTexture(std::string textureName)
     if(m_pTexture != nullptr){
         this->m_pTexture->setSpriteFrame(textureName);
     }
+}
+
+void CPlanet::ZoomIn()
+{
+    auto scaleAction = ScaleTo::create(1.2f, PLANET_DEFINE::ZOOMIN_SIZE);
+    auto moveAction = MoveTo::create(1.2f, PLANET_DEFINE::ZOOMIN_POS);
+    auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
+    auto exponential = EaseExponentialInOut::create(spawnAction);
+    this->runAction(exponential);
+}
+
+void CPlanet::ZoomOut()
+{
+    auto scaleAction = ScaleTo::create(1.2f, PLANET_DEFINE::SCALE_SIZE);
+    auto moveAction = MoveTo::create(1.2f, PLANET_DEFINE::ZOOMOUT_POS);
+    auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
+    auto exponential = EaseExponentialInOut::create(spawnAction);
+    this->runAction(exponential);
 }
