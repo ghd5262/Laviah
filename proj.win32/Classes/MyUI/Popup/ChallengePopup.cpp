@@ -95,15 +95,14 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
         rewardPopup->setExitCallback([=](){
             
-            if(CChallengeDataManager::Instance()->NonCompleteChallengeExist(1, false) < CHALLENGE::LIMIT_COUNT){
-                btnReset->runAction(FadeIn::create(0.5f));
-                btnHome->runAction(FadeIn::create(0.5f));
-            }
-            else{
-                // Do open challenge popup again.
-                CGameScene::getGameScene()->ShowChallenge();
-                this->popupClose();
-            }
+			if (CChallengeDataManager::Instance()->NonCompleteChallengeExist(1, false) >= CHALLENGE::LIMIT_COUNT){
+				// Do open challenge popup again.
+				CGameScene::getGameScene()->ShowChallenge();
+				this->popupClose();
+			}
+			else{
+				this->GoHome(nullptr);
+			}
         });
         
 		for (auto node : m_ChallengeList)
