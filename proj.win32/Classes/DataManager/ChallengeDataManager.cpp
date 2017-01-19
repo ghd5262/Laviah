@@ -87,7 +87,14 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
 bool CChallengeDataManager::CheckCompleteAll()
 {
 	auto currentList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
-	for (auto index : *currentList)
+    if(currentList.size() <= 0) {
+        /** If there are no challenges. get new challenges.
+         *  If there are no non-complete challenges. Nothing do. */
+        this->getNewChallenges();
+        return false;
+    }
+    
+	for (auto index : currentList)
 		if (!CheckChallengeComplete(index)) return false;
 
 	return true;
@@ -154,26 +161,23 @@ int CChallengeDataManager::NonCompleteChallengeExist(int level,
 void CChallengeDataManager::getNewChallenges()
 {
     auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
-	std::vector<int> copyList;
-	copyList.resize(list->size());
-	std::copy(list->begin(), list->end(), copyList.begin());
     auto nonCompleteList = getNonCompletedChallengeList(1, false);
     
     // Challenges not completed are less than limit count.
     // then remove current list only.
     if(nonCompleteList.size() < CHALLENGE::LIMIT_COUNT)
     {
-		for (int index = 0; index < copyList.size(); index++)
-			this->removeChallengeFromUserData(copyList.at(index));
+		for (int index = 0; index < list.size(); index++)
+			this->removeChallengeFromUserData(list.at(index));
         
         return;
     }
     
     // Current challenges are less than limit count.
     // then get new challenges until limit count.
-	if (copyList.size() < CHALLENGE::LIMIT_COUNT)
+	if (list.size() < CHALLENGE::LIMIT_COUNT)
     {
-		for (int count = 0; count < CHALLENGE::LIMIT_COUNT - copyList.size(); count++)
+		for (int count = 0; count < CHALLENGE::LIMIT_COUNT - list.size(); count++)
             this->getNewRandomChallenge(1, false);
         
         return;
@@ -182,7 +186,7 @@ void CChallengeDataManager::getNewChallenges()
     // There are enough challenges to skip.
     for(int count = 0; count < CHALLENGE::LIMIT_COUNT; count++)
     {
-		this->SkipChallenge(copyList.at(count));
+		this->SkipChallenge(list.at(count));
     }
 }
 

@@ -62,34 +62,35 @@ bool CRewardPopup::init()
 	}
 
 	auto touchScreen = CMyButton::create()
-		->addEventListener([=](Node* sender){
-		if (m_RewardDP != nullptr)
-			m_RewardDP->popupClose();
-
-		if (m_RewardIndex >= m_RewardList.size()){
+    ->addEventListener([=](Node* sender){
+        if (m_RewardDP != nullptr){
+            m_RewardDP->popupClose();
+            m_RewardDP = nullptr;
+        }
+        
+        if (m_RewardIndex >= m_RewardList.size()){
             this->retain();
             if(m_ExitCallback)
                 m_ExitCallback();
-			this->popupClose();
+            this->popupClose();
             this->release();
             return;
-		}
-
-		auto data = m_RewardList.at(m_RewardIndex);
-		data = CChallengeDataManager::Instance()->RewardByKey(data._key, data._value);
-
-		m_RewardDP = this->createRewardDP(data);
-		rewardBack->setVisible(true);
-
-		m_RewardIndex++;
-	})
-		->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-		->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height))
-		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setButtonPosition(this->getContentSize() / 2)
-		->show(this); 
-
-	this->setOpenAnimation([=](Node* sender){
+        }
+        
+        auto data = m_RewardList.at(m_RewardIndex);
+        data = CChallengeDataManager::Instance()->RewardByKey(data._key, data._value);
+        m_RewardDP = this->createRewardDP(data);
+        m_RewardIndex++;
+        
+        rewardBack->setVisible(true);
+    })
+    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(this->getContentSize() / 2)
+    ->show(this);
+    
+    this->setOpenAnimation([=](Node* sender){
 		btnUserCoin->runAction(FadeIn::create(0.5f));
 	});
 

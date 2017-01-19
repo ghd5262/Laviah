@@ -60,7 +60,7 @@ public:
 	void setLastSavedTime(long long unixTime);
 	tm* getLastSavedTime();
     int getUserData_Number(std::string key);
-	ARRAY_DATA* getUserData_List(std::string key);
+    ARRAY_DATA getUserData_List(std::string key);
     bool getUserData_IsItemHave(std::string key, int itemIdx);
     float getItemCurrentValue(std::string key);
 	USERDATA_KEY_LIST getKeyList() { return m_UserDataKeyList; }
@@ -102,8 +102,11 @@ private:
 
 	void saveUserDataToGoogleCloud(std::string key, std::string data, bool forceSave = false);
 
+    ARRAY_DATA* getUserData_ListRef(std::string key);
+
     static void sortUserDataList(std::string key, const LIST_COMPARE& compare);
-	// µ¥ÀÌÅÍ ÇÑ¹ø¿¡ ÀúÀå ¹× ·Îµå¸¦ À§ÇØ ÁÖ¼®Ã³¸® - 2016. 9. 3
+	
+	// ë°ì´í„° í•œë²ˆì— ì €ì¥ ë° ë¡œë“œë¥¼ ìœ„í•´ ì£¼ì„ì²˜ë¦¬ - 2016. 9. 3
     /*void callbackFirstRevision();
     
     void dataLoad();
@@ -133,6 +136,6 @@ private:
 	std::string m_JsonUserDataFromXML;
 	std::string m_JsonUserDataFromGoogleCloud;
 	
-	// µ¥ÀÌÅÍ ÇÑ¹ø¿¡ ÀúÀå ¹× ·Îµå¸¦ À§ÇØ ÁÖ¼®Ã³¸® - 2016. 9. 3
+	// ë°ì´í„° í•œë²ˆì— ì €ì¥ ë° ë¡œë“œë¥¼ ìœ„í•´ ì£¼ì„ì²˜ë¦¬ - 2016. 9. 3
     //bool m_IsFirstRevisionCall;
 };

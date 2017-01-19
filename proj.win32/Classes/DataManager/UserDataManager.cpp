@@ -405,14 +405,10 @@ int CUserDataManager::getUserData_Number(std::string key)
     CCASSERT(false, "Wrong Key");
 }
 
-ARRAY_DATA* CUserDataManager::getUserData_List(std::string key)
+ARRAY_DATA CUserDataManager::getUserData_List(std::string key)
 {
-    if(m_UserData._userDataListMap.find(key) != m_UserData._userDataListMap.end()){
-        auto list = m_UserData._userDataListMap.find(key)->second;
-        return list;
-    }
-    CCLOG("There is no user data key : %s", key.c_str());
-    CCASSERT(false, "Wrong Key");
+    auto list = getUserData_ListRef(key);
+    return *list;
 }
 
 bool CUserDataManager::getUserData_IsItemHave(std::string key, int itemIdx)
@@ -540,8 +536,8 @@ bool CUserDataManager::CoinUpdate(int value)
 int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex)
 {
     auto curList = CUserDataManager::Instance()->getUserData_List(key);
-    auto iter = std::find(curList->begin(), curList->end(), itemIndex);
-    auto sequence = std::distance(curList->begin(), iter);
+    auto iter = std::find(curList.begin(), curList.end(), itemIndex);
+    auto sequence = std::distance(curList.begin(), iter);
     return int(sequence);
 }
 
@@ -565,7 +561,7 @@ void CUserDataManager::convertUserDataToJson(std::string &valueJson)
 			Json::Value jsonItemList;
 			auto list = getUserData_List(key);
 
-			for (auto data : *list)
+			for (auto data : list)
 			{
 				jsonItemList.append(static_cast<int>(data));
 			}
@@ -603,12 +599,23 @@ void CUserDataManager::saveUserDataToGoogleCloud(std::string key, std::string da
 	}
 }
 
+
+ARRAY_DATA* CUserDataManager::getUserData_ListRef(std::string key)
+{
+    if(m_UserData._userDataListMap.find(key) != m_UserData._userDataListMap.end()){
+        auto list = m_UserData._userDataListMap.find(key)->second;
+        return list;
+    }
+    CCLOG("There is no user data key : %s", key.c_str());
+    CCASSERT(false, "Wrong Key");
+}
+
 void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& compare)
 {
 //    if(key == USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST ||
 //       key == USERDATA_KEY::CHALLENGE_CUR_LIST) return;
     
-    auto list = CUserDataManager::Instance()->getUserData_List(key);
+    auto list = CUserDataManager::Instance()->getUserData_ListRef(key);
     std::sort(list->begin(), list->end(), compare);
 }
 

@@ -109,9 +109,9 @@ void CGachaPopup::PlayGacha(Node* sender){
         
         int allCharacterCount = static_cast<int>(CCharacterDataManager::Instance()->getCharacterList().size());
         auto haveCharacterList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST);
-        int currentCharacterCount = static_cast<int>(haveCharacterList->size());
+        int currentCharacterCount = static_cast<int>(haveCharacterList.size());
         
-        if (allCharacterCount < haveCharacterList->size())
+        if (allCharacterCount < haveCharacterList.size())
             CCASSERT(false, "Error : Character count should be less than haveCharacterList count.");
         
         

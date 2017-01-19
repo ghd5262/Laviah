@@ -9,9 +9,9 @@ bool CChallengeClearChecker::continuingTypeCheck(int index)
 {
     auto savedDataList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST);
     auto challengeList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
-    auto challengeData = CChallengeDataManager::Instance()->getChallengeByIndex(challengeList->at(index));
+    auto challengeData = CChallengeDataManager::Instance()->getChallengeByIndex(challengeList.at(index));
     
-    if(challengeData->_materialValue <= savedDataList->at(index))
+    if(challengeData->_materialValue <= savedDataList.at(index))
     {
         return true;
     }
@@ -44,12 +44,12 @@ bool CChallengeClearChecker::rocketCollectCheck(int value) {
 }
 
 bool CChallengeClearChecker::characterCountCheck(int value) {
-    auto count = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST)->size();
+    auto count = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST).size();
 	return (value <= count);
 }
 
 bool CChallengeClearChecker::rocketCountCheck(int value) {
-    auto count = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ROCKET_LIST)->size();
+    auto count = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ROCKET_LIST).size();
 	return (value <= count);
 }
 

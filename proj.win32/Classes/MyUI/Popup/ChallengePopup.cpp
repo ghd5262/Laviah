@@ -184,7 +184,7 @@ void CChallengePopup::initChallengeList()
 {
     int posIndex = 0;
     auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
-    for (auto index : *list)
+    for (auto index : list)
     {
         auto challengeData = CChallengeDataManager::Instance()->getChallengeByIndex(index);
         this->createChallengeDP(challengeData, posIndex++, false);
