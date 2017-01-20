@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 namespace ITEMRANGE{
-	const float STAY_DISTANCE = 800.f;
+	const float STAY_DISTANCE = 700.f;
 	const float STAY_DURATION = 0.5f;
 	const float TARGET_DISTANCE = 1600.f;
 	const float TARGET_DURATION = 0.5f;

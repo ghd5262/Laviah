@@ -81,6 +81,8 @@ public:
     static CChallengeDataManager* Instance();
 	bool CheckCompleteAll();
 	bool CheckChallengeComplete(int index);
+	const sCHALLENGE_PARAM* CompleteCheckRealTime();
+
 	sREWARD_DATA Reward(int index);
 	sREWARD_DATA RewardByKey(std::string key, int value);
     int NonCompleteChallengeExist(int level,

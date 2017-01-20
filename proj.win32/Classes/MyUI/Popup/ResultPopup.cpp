@@ -181,6 +181,8 @@ bool CResultPopup::init()
         return button;
     };
     
+	bool challengeAll = CChallengeDataManager::Instance()->CheckCompleteAll();
+
 	auto starScoreBG	= createNormalLayer(resultIcon[0], resultContent[0], GLOBAL->STAR_SCORE, startPos[0], 50);
 	auto moveDistanceBG = createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->RUN_SCORE, startPos[1], 50);
 	auto comboBG		= createMultipleLayer(resultIcon[2], resultContent[2], GLOBAL->COMBO, startPos[2], 50, 100);
@@ -264,8 +266,7 @@ bool CResultPopup::init()
 		btnUserCoin->setOpacity(0);
 	}
 
-    if(GLOBAL->CHALLENGE_CLEAR_COUNT ||
-       CChallengeDataManager::Instance()->CheckCompleteAll())
+	if (GLOBAL->CHALLENGE_CLEAR_COUNT || challengeAll)
     {
         btnHome->setVisible(false);
         btnReset->setVisible(false);

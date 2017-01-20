@@ -94,10 +94,11 @@ bool CChallengeDataManager::CheckCompleteAll()
         return false;
     }
     
+	bool result = true;
 	for (auto index : currentList)
-		if (!CheckChallengeComplete(index)) return false;
+		if (!CheckChallengeComplete(index)) result = false;
 
-	return true;
+	return result;
 }
 
 bool CChallengeDataManager::CheckChallengeComplete(int index)
@@ -131,6 +132,26 @@ bool CChallengeDataManager::CheckChallengeComplete(int index)
 	GLOBAL->CHALLENGE_CLEAR_COUNT += 1;
 	CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_LIST, index);
 	return true;
+}
+
+const sCHALLENGE_PARAM* CChallengeDataManager::CompleteCheckRealTime()
+{
+	auto currentList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+	if (currentList.size() <= 0) return nullptr;
+	
+	for (auto index : currentList)
+	{
+		auto originCount = GLOBAL->CHALLENGE_CLEAR_COUNT;
+
+		if (this->CheckChallengeComplete(index)){
+			if (originCount < GLOBAL->CHALLENGE_CLEAR_COUNT)
+			{
+				return this->getChallengeByIndex(index);
+			}
+		}
+	}
+
+	return nullptr;
 }
 
 sREWARD_DATA CChallengeDataManager::Reward(int index)
