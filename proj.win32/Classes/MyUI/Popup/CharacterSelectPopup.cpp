@@ -52,7 +52,7 @@ bool CCharacterSelectPopup::init()
 	}
 
 	/* select label*/
-	//        auto selectLabel = Label::createWithTTF("Select", FONT::MALGUNBD, 80);
+	//        auto selectLabel = Label::createWithTTF(TRANSLATE("BUTTON_SELECT"), FONT::MALGUNBD, 80);
 	//        if (selectLabel != nullptr)
 	//        {
 	//            selectLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -130,7 +130,7 @@ bool CCharacterSelectPopup::init()
 		this->Select(sender);
 	})
 		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 250, 150))
-		->setContents("Select")
+		->setContents(TRANSLATE("BUTTON_SELECT"))
 		->setButtonPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.1f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->show(scrollBack);
@@ -197,14 +197,14 @@ void CCharacterSelectPopup::Select(Node* sender)
 		CPopup::create()
 			->setPositiveButton([=](Node* sender){
 			m_CenterDP->Buy();
-			m_btnSelect->changeContents("Select");
+			m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
 			CObjectManager::Instance()->ChangeCharacter();
-		}, "Yes")
+		}, TRANSLATE("BUTTON_YES"))
 			->setNegativeButton([=](Node* sender){
-		}, "No")
+		}, TRANSLATE("BUTTON_NO"))
 			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
 			->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-			->setMessage("Are you sure you want to buy it?")
+			->setMessage(TRANSLATE("CHARACTER_BUY_CHECK"))
 			->setMessageFont(Color3B::BLACK, 40)
 			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 			->setPopupPosition(this->getContentSize() / 2)
@@ -236,7 +236,7 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
 
 	// If already have the Center Character, Change the Button String to "Select"
 	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx))
-		m_btnSelect->changeContents("Select");
+		m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
 	else// If do not have, Change the Button String to "buy cost"
 		m_btnSelect->changeContents(MakeString("$ %d", centerCharacterParam->_cost));
 

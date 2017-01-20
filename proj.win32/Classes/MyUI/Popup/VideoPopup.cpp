@@ -33,7 +33,7 @@ bool CVideoPopup::init()
     auto popupSize = this->getContentSize();
     
 	/* revive label*/
-	auto reviveLabel = Label::createWithTTF("Revive", FONT::MALGUNBD, 80);
+	auto reviveLabel = Label::createWithTTF(TRANSLATE("REVIVE_POPUP_TITLE"), FONT::MALGUNBD, 80);
 	if (reviveLabel != nullptr)
 	{
 		reviveLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -77,8 +77,8 @@ bool CVideoPopup::init()
     };
     
     std::string contentArray[] = {
-        "Watch a Video",
-        StringUtils::format("Use %d Coin", g_coinToRevive)
+        TRANSLATE("REVIVE_BUTTON_WATCH_VIDEO"),
+        StringUtils::format(TRANSLATE("REVIVE_BUTTON_USE_COIN").c_str(), g_coinToRevive)
     };
     
     std::string iconArray[] = {

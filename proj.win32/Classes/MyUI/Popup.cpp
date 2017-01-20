@@ -96,7 +96,8 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 				->setContents(name)
 				->setFont(m_ButtonFontColor, m_ButtonFontSize)
 				->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-				->setButtonPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.25f))
+				->setButtonPosition(Vec2(defaultBG->getContentSize().width * 0.5f,
+                                         defaultBG->getContentSize().height * 0.25f))
 				->show(defaultBG);
 		};
 
@@ -130,10 +131,15 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 		}
 
 		if (m_Message != ""){
-			auto message = Label::createWithTTF(m_Message, FONT::MALGUNBD, m_MessageFontSize);
+            auto message = Label::createWithTTF(m_Message, FONT::MALGUNBD, m_MessageFontSize,
+                                                Size(defaultBG->getContentSize().width * 0.8f,
+                                                     defaultBG->getContentSize().height),
+                                                TextHAlignment::CENTER,
+                                                TextVAlignment::CENTER);
 			message->setColor(m_MessageFontColor);
 			message->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			message->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f, defaultBG->getContentSize().height * 0.6f));
+			message->setPosition(Vec2(defaultBG->getContentSize().width * 0.5f,
+                                      defaultBG->getContentSize().height * 0.6f));
 			defaultBG->addChild(message);
 		}
 	}

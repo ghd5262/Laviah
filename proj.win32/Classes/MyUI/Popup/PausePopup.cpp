@@ -184,12 +184,12 @@ void CPausePopup::Skip(CChallengePopupDP *sender, int posIndex)
         auto newData = CChallengeDataManager::Instance()->SkipChallenge(dp->getChallengeParam()._index);
         dp->popupClose();
         this->createChallengeDP(newData, posIndex);
-    }, "Yes")
+    }, TRANSLATE("BUTTON_YES"))
     ->setNegativeButton([=](Node* sender){
-    }, "No")
+    }, TRANSLATE("BUTTON_NO"))
     ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-    ->setMessage("Are you sure you want to skip this challenge?")
+    ->setMessage(TRANSLATE("CHALLENGE_SKIP_CHECK"))
     ->setMessageFont(Color3B::BLACK, 40)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(scene->getContentSize() / 2)

@@ -298,10 +298,10 @@ void CGameScene::createExitPopup(bool resume)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
         exit(0);
 #endif
-    }, "Yes")
+    }, TRANSLATE("BUTTON_YES"))
     ->setNegativeButton([=](Node* sender){
         if(resume) this->GameResume();
-    }, "No")
+    }, TRANSLATE("BUTTON_NO"))
     ->setDefaultCallback([=](Node* sender){
         if(resume) this->GameResume();
         
@@ -310,7 +310,7 @@ void CGameScene::createExitPopup(bool resume)
     })
     ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-    ->setMessage("Are you sure you want to exit StarStarStar?")
+    ->setMessage(TRANSLATE("GAME_EXIT_CHECK"))
     ->setMessageFont(Color3B::BLACK, 40)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
@@ -439,7 +439,7 @@ void CGameScene::createCountDown()
     ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(3)
     ->setMinNumber(0)
-    ->setLastContent("GO!")
+    ->setLastContent(TRANSLATE("COUNTDOWN_LAST"))
     ->setInterval(0.8f)
     ->setLabelPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.65f))
     ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)

@@ -47,7 +47,7 @@ bool CMenuLayer::init()
             auto popup = dynamic_cast<CPopup*>(sender);
             popup->popupClose();
         })
-        ->setPositiveButton(callback, "OK")
+        ->setPositiveButton(callback, TRANSLATE("BUTTON_OK"))
         ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
         ->setMessage(message)
         ->setMessageFont(Color3B::WHITE, 40)
@@ -59,8 +59,8 @@ bool CMenuLayer::init()
     
     auto createTwoButtonPopup = [=](const std::function<void(Node*)> &callback, std::string message){
         CPopup::create()
-        ->setPositiveButton(callback, "YES")
-        ->setNegativeButton([](Node* sender){}, "NO")
+        ->setPositiveButton(callback, TRANSLATE("BUTTON_YES"))
+        ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
         ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
         ->setMessage(message)
         ->setMessageFont(Color3B::WHITE, 40)
@@ -100,25 +100,25 @@ bool CMenuLayer::init()
     std::array<CMyButton*, 5> btnArray = {
         createTestButton([=](Node* sender){
             createOneButtonPopup([](Node* sender){}, "Share is comming soon");
-        }, "Share", testButtonPos[0], Size(200, 150)),
+        }, TRANSLATE("BUTTON_MENU_SHARE"), testButtonPos[0], Size(200, 150)),
         
         createTestButton([=](Node* sender){
             createWidgetPopup(CCharacterSelectPopup::create());
-        }, "Select", testButtonPos[1], Size(200, 150)),
+        }, TRANSLATE("BUTTON_MENU_SELECT"), testButtonPos[1], Size(200, 150)),
         
         createTestButton([=](Node* sender){
 			CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
             CGameScene::getGameScene()->GameStart();
             this->popupClose();
-        }, "Start", testButtonPos[2], Size(200, 150)),
+        }, TRANSLATE("BUTTON_MENU_START"), testButtonPos[2], Size(200, 150)),
         
         createTestButton([=](Node* sender){
             createWidgetPopup(CWorkshopPopup::create());
-		}, "Work", testButtonPos[3], Size(200, 150)),
+		}, TRANSLATE("BUTTON_MENU_WORKSHOP"), testButtonPos[3], Size(200, 150)),
 
         createTestButton([=](Node* sender){
 			auto savedTime = CUserDataManager::Instance()->getLastSavedTime();
-			auto msg = StringUtils::format("Are you sure want save user data?\n ( last saved time : %d-%d-%d %d:%d:%d)",
+            auto msg = TRANSLATE("USERDATA_SAVE_CHECK") + std::string("\n") + StringUtils::format(TRANSLATE("USERDATA_LAST_SAVED_TIME").c_str(),
 				savedTime->tm_year + 1900,
 				savedTime->tm_mon + 1,
 				savedTime->tm_mday,

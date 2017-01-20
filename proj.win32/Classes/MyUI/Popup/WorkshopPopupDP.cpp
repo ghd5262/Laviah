@@ -48,7 +48,7 @@ bool CWorkshopPopupDP::init()
         this->Buy(sender);
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 260, 200))
-    ->setContents("Buy")
+    ->setContents(TRANSLATE("WORKSHOP_BUTTON_BUY"))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(dpBack);
     
@@ -56,11 +56,11 @@ bool CWorkshopPopupDP::init()
     m_BtnBuy->setSwallowTouches(false);
     
     if (currentLevel >= m_WorkshopItem._maxLevel){
-        m_BtnBuy->changeContents("MAX");
+        m_BtnBuy->changeContents(TRANSLATE("WORKSHOP_BUTTON_MAX_LEVEL"));
         m_BtnBuy->setTouchEnable(false);
     }
     else{
-        m_BtnBuy->changeContents(MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(currentLevel)));
+        m_BtnBuy->changeContents(MakeString(TRANSLATE("WORKSHOP_BUTTON_BUY_LEVEL").c_str(), m_WorkshopItem._costPerLevel.at(currentLevel)));
         m_BtnBuy->setTouchEnable(true);
     }
     
@@ -115,12 +115,12 @@ void CWorkshopPopupDP::Buy(Node* sender)
         
         // Update button ui
         if(value >= m_WorkshopItem._maxLevel){
-            m_BtnBuy->changeContents("MAX");
+            m_BtnBuy->changeContents(TRANSLATE("WORKSHOP_BUTTON_MAX_LEVEL"));
             m_BtnBuy->setTouchEnable(false);
             m_BtnBuy->changeFontColor(Color3B::BLACK);
         }
         else{
-            m_BtnBuy->changeContents(MakeString("%d\nBuy", m_WorkshopItem._costPerLevel.at(value)));
+            m_BtnBuy->changeContents(MakeString(TRANSLATE("WORKSHOP_BUTTON_BUY_LEVEL").c_str(), m_WorkshopItem._costPerLevel.at(value)));
         }
         
         // Update level progress

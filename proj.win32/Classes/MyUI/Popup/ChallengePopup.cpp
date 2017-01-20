@@ -58,7 +58,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		this->addChild(bg);
 	}
 
-	auto challengesLabel = Label::createWithTTF("Challenge", FONT::MALGUNBD, 80);
+	auto challengesLabel = Label::createWithTTF(TRANSLATE("CHALLENGE_POPUP_TITLE"), FONT::MALGUNBD, 80);
 	if (challengesLabel != nullptr)
 	{
         challengesLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f));
@@ -220,12 +220,12 @@ void CChallengePopup::Skip(CChallengePopupDP *sender, int posIndex)
         auto newData = CChallengeDataManager::Instance()->SkipChallenge(dp->getChallengeParam()._index);
         dp->popupClose();
         this->createChallengeDP(newData, posIndex, true);
-    }, "Yes")
+    }, TRANSLATE("BUTTON_YES"))
     ->setNegativeButton([=](Node* sender){
-    }, "No")
+    }, TRANSLATE("BUTTON_NO"))
     ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-    ->setMessage("Are you sure you want to skip this challenge?")
+    ->setMessage(TRANSLATE("CHALLENGE_SKIP_CHECK"))
     ->setMessageFont(Color3B::BLACK, 40)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(scene->getContentSize() / 2)

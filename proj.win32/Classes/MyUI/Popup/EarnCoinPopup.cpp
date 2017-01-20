@@ -32,7 +32,7 @@ bool CEarnCoinPopup::init()
 		this->addChild(bg);
 	}
 
-	auto mentLabel = Label::createWithTTF(MakeString("Would you like to watch a video to earn %d more?", 500).c_str(), FONT::MALGUNBD, 40);
+	auto mentLabel = Label::createWithTTF(MakeString(TRANSLATE("WATCH_VIDEO_TO_EARN_COIN").c_str(), 500), FONT::MALGUNBD, 40);
 	if (mentLabel != nullptr)
 	{
 		mentLabel->setColor(COLOR::DARKGRAY);
@@ -46,7 +46,7 @@ bool CEarnCoinPopup::init()
 		this->Video(sender);
 	})
 		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 430, 150))
-		->setContents("Watch")
+		->setContents(TRANSLATE("BUTTON_WATCH"))
 		->setFont(Color3B::WHITE, 40)
 		->setButtonPosition(Vec2(bg->getContentSize().width * 0.275f, bg->getContentSize().height * 0.25f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -58,7 +58,7 @@ bool CEarnCoinPopup::init()
 		this->popupClose();
 	})
 		->setLayer(LayerColor::create(COLOR::BRIGHTRED_ALPHA, 430, 150))
-		->setContents("No")
+		->setContents(TRANSLATE("BUTTON_NO"))
 		->setFont(Color3B::WHITE, 40)
 		->setButtonPosition(Vec2(bg->getContentSize().width * 0.725f, bg->getContentSize().height * 0.25f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

@@ -169,7 +169,7 @@ void CLoadingScene::createNetworkConnectPopup()
         CSDKUtil::Instance()->IsNetworkConnect();
     }, "OK")
 	->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-    ->setMessage("Please connect to the internet \n to download resources.")
+    ->setMessage("Please connect to the internet\nto download resources.")
 	->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 	->setPopupPosition(this->getContentSize() / 2)
 	->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)

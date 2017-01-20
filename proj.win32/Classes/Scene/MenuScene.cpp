@@ -107,7 +107,7 @@ void CMenuScene::InitMenuSceneUI()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	auto createOneButtonPopup = [=](std::string message){
 		CPopup::create()
-			->setPositiveButton([=](Node* sender){}, "OK")
+			->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
 			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
 			->setMessage(message)
 			->setMessageFont(Color3B::WHITE, 40)
@@ -141,12 +141,12 @@ void CMenuScene::InitMenuSceneUI()
 		Vec2(visibleSize.width * 0.8f, visibleSize.height * 0.25f),
 	};
 
-	createTestButton([=](Node* sender){ createOneButtonPopup("Share is comming soon"); }, "Share", testButtonPos[0], Size(200, 150));
+	createTestButton([=](Node* sender){ createOneButtonPopup("Share is comming soon"); }, TRANSLATE("BUTTON_MENU_SHARE"), testButtonPos[0], Size(200, 150));
 	createTestButton([=](Node* sender){	createWidgetPopup(CCharacterSelectPopup::create());	}, "Select", testButtonPos[1], Size(200, 150));
-	createTestButton([=](Node* sender){	this->createGameScene(sender); }, "Start", testButtonPos[2], Size(200, 150));
-	createTestButton([=](Node* sender){	createWidgetPopup(CWorkshopPopup::create()); }, "Work", testButtonPos[3], Size(200, 150));
+	createTestButton([=](Node* sender){	this->createGameScene(sender); }, TRANSLATE("BUTTON_MENU_START"), testButtonPos[2], Size(200, 150));
+	createTestButton([=](Node* sender){	createWidgetPopup(CWorkshopPopup::create()); }, TRANSLATE("BUTTON_MENU_WORKSHOP"), testButtonPos[3], Size(200, 150));
 
-		/*createTestButton([=](Node* sender){ this->createGameScene(sender); }, "Start", testButtonPos[0], testButtonSize[0]);
+		/*createTestButton([=](Node* sender){ this->createGameScene(sender); }, TRANSLATE("BUTTON_MENU_START"), testButtonPos[0], testButtonSize[0]);
 		createTestButton([=](Node* sender){	createWidgetPopup(CCharacterSelectPopup::create());	}, "Select", testButtonPos[1], testButtonSize[0]);
 		createTestButton([=](Node* sender){	createWidgetPopup(CWorkshopPopup::create()); }, "Workshop", testButtonPos[2], testButtonSize[0]);
 		createTestButton([=](Node* sender){	createWidgetPopup(CGachaPopup::create()); }, "Gacha", testButtonPos[3], testButtonSize[0]);
@@ -204,7 +204,7 @@ void CMenuScene::InitMenuSceneUI()
 
 	auto createOneButtonPopup = [=](std::string message){
 		CPopup::create()
-			->setPositiveButton([=](Node* sender){}, "OK")
+			->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
 			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
 			->setMessage(message)
 			->setMessageFont(Color3B::WHITE, 40)
@@ -228,7 +228,7 @@ void CMenuScene::InitMenuSceneUI()
 		createTestButton(callback, name, pos, size)->setClickSound(sound.first, sound.second);
 	};*/
 
-	/*createTestButton([=](Node* sender){ this->createGameScene(sender); }, "Start", testButtonPos[0], testButtonSize[0]);
+	/*createTestButton([=](Node* sender){ this->createGameScene(sender); }, TRANSLATE("BUTTON_MENU_START"), testButtonPos[0], testButtonSize[0]);
 	createTestButton([=](Node* sender){	createWidgetPopup(CCharacterSelectPopup::create());	}, "Select", testButtonPos[1], testButtonSize[0]);
 	createTestButton([=](Node* sender){	createWidgetPopup(CWorkshopPopup::create()); }, "Workshop", testButtonPos[2], testButtonSize[0]);
 	createTestButton([=](Node* sender){	createWidgetPopup(CGachaPopup::create()); }, "Gacha", testButtonPos[3], testButtonSize[0]);

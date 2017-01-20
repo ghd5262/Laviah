@@ -73,14 +73,14 @@ bool CResultPopup::init()
     };
     
     std::array<std::string, 8> resultContent = {
-		"Score",
-        "Run",
-		"Combo",
-        "Coin",
-        "BonusTime",
-        "Challenge",
+		TRANSLATE("RESULT_SCORE"),
+        TRANSLATE("RESULT_RUN"),
+		TRANSLATE("RESULT_COMBO"),
+        TRANSLATE("RESULT_COIN"),
+        TRANSLATE("RESULT_BONUSTIME"),
+        TRANSLATE("RESULT_CHALLENGE"),
         "",
-        "Best Score"
+        TRANSLATE("RESULT_BEST_SCORE")
     };
     
     
@@ -194,7 +194,7 @@ bool CResultPopup::init()
     totalScoreBG->setTexture("resultPopup_1.png");
     
 	auto bestScore = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
-    std::string totalContent = "Total Score";
+    std::string totalContent = TRANSLATE("RESULT_TOTAL_SCORE");
     
 	auto bestCombo = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_COMBO);
 
@@ -205,7 +205,7 @@ bool CResultPopup::init()
 
     // total score가 best score면 저장한다.
     if (GLOBAL->TOTAL_SCORE > bestScore){
-        totalContent = "Best Score";
+        totalContent = TRANSLATE("RESULT_BEST_SCORE");
         bestScore = GLOBAL->TOTAL_SCORE;
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, GLOBAL->TOTAL_SCORE);
     }
@@ -230,7 +230,7 @@ bool CResultPopup::init()
     
     
     /* result label*/
-    auto resultLabel = Label::createWithTTF("Result", FONT::MALGUNBD, 80);
+    auto resultLabel = Label::createWithTTF(TRANSLATE("RESULT_POPUP_TITLE"), FONT::MALGUNBD, 80);
     if (resultLabel != nullptr)
     {
         resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

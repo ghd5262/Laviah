@@ -589,9 +589,9 @@ void CUserDataManager::saveUserDataToGoogleCloud(std::string key, std::string da
 				this->saveUserDataToGoogleCloud(key, data, forceSave);
 			});
 			CSDKUtil::Instance()->IsNetworkConnect();
-		}, "OK")
+		}, TRANSLATE("BUTTON_OK"))
 			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-			->setMessage("Please connect to the network \n to save data to cloud.")
+			->setMessage(TRANSLATE("USERDATA_NETWORK_CONNECT_CHECK"))
 			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 			->setPopupPosition(visibleSize / 2)
 			->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
