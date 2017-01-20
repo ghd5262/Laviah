@@ -7,10 +7,10 @@
 #include "../../DataManager/ChallengeDataManager.hpp"
 USING_NS_CC;
 
-namespace CHALLENGE_NOTICE{
+namespace CHALLENGE_COMPLETE_NOTICE{
 	static const std::string TAG_UPDATE = "checkChallengeCompleteOnRealTime";
-	static const std::string TAG_SHOW = "challengeNoticeShow";
-	static const float STAY_LIMIT_TIME = 3.f;
+	static const std::string TAG_SHOW   = "challengeNoticeShow";
+    static const float STAY_LIMIT_TIME  = 2.f;
 };
 
 CChallengeCompleteNoticePopup* CChallengeCompleteNoticePopup::create()
@@ -34,7 +34,7 @@ bool CChallengeCompleteNoticePopup::init()
 	if (!CPopup::init()) return false;
 	this->schedule([=](float delta){
 		this->checkChallengeCompleteOnRealTime();
-	}, 0.5f, CHALLENGE_NOTICE::TAG_UPDATE);
+	}, 0.5f, CHALLENGE_COMPLETE_NOTICE::TAG_UPDATE);
 
 	m_LayerBG = Sprite::create("resultPopup_2.png");
 	this->setContentSize(m_LayerBG->getContentSize());
@@ -65,10 +65,12 @@ bool CChallengeCompleteNoticePopup::init()
 void CChallengeCompleteNoticePopup::checkChallengeCompleteOnRealTime()
 {
 	if (CObjectManager::Instance()->getIsGamePause()) return;
+    if (!m_Checkable) return;
 
 	auto data = CChallengeDataManager::Instance()->CompleteCheckRealTime();
 	if (data != nullptr) {
-		m_Content = data->_contents;
+        m_Checkable = false;
+        m_ChallengeLabel->setString(data->_contents.c_str());
 		this->show();
 	}
 }
@@ -81,27 +83,23 @@ void CChallengeCompleteNoticePopup::show()
 		Vec2 targetPos = this->getContentSize() / 2;
 
 		m_LayerBG->setPosition(startPos);
-		m_ChallengeLabel->setString(m_Content.c_str());
 
 		auto downAction = Spawn::createWithTwoActions(
 			EaseExponentialOut::create(
 			MoveTo::create(0.5f, targetPos)),
 			FadeTo::create(0.3f, 255 * 0.8f));
-		auto delayAction = DelayTime::create(2.f);
+		auto delayAction = DelayTime::create(CHALLENGE_COMPLETE_NOTICE::STAY_LIMIT_TIME);
 		auto upAction = Spawn::createWithTwoActions(
 			EaseSineIn::create(
 			MoveTo::create(0.3f, startPos)),
 			FadeTo::create(0.1f, 0));
-		auto sequenceAction = Sequence::create(downAction, delayAction, upAction, nullptr);
+        auto callFunc = CallFunc::create([=](){
+            m_Checkable = true;
+        });
+		auto sequenceAction = Sequence::create(downAction, delayAction, upAction, callFunc, nullptr);
 
 		m_LayerBG->runAction(sequenceAction);
 
-		if ((m_DelayTime - CHALLENGE_NOTICE::STAY_LIMIT_TIME) >= 0.f)
-			m_DelayTime -= CHALLENGE_NOTICE::STAY_LIMIT_TIME;
-		else
-			m_DelayTime = 0.f;
-
-	}, m_DelayTime + 0.6f, CHALLENGE_NOTICE::TAG_SHOW);
-	m_DelayTime += CHALLENGE_NOTICE::STAY_LIMIT_TIME;
+	}, 0.f, CHALLENGE_COMPLETE_NOTICE::TAG_SHOW);
 }
 

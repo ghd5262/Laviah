@@ -17,13 +17,11 @@ private:
 	CChallengeCompleteNoticePopup()
 		: m_LayerBG(nullptr)
 		, m_ChallengeLabel(nullptr)
-		, m_Content("")
-		, m_DelayTime(0.f){};
+        , m_Checkable(true){};
 	virtual ~CChallengeCompleteNoticePopup(){};
 
 private:
 	cocos2d::Sprite* m_LayerBG;
 	cocos2d::Label* m_ChallengeLabel;
-	std::string m_Content;
-	float m_DelayTime;
+    bool m_Checkable;
 };
