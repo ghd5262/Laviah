@@ -28,9 +28,6 @@ private:
     
     CUILayer()
     : m_PauseBtn(nullptr)
-    , m_StarScoreUI(nullptr)
-    , m_CoinScoreUI(nullptr)
-    , m_RunScoreUI(nullptr)
     , m_TimerRunningCount(0)
     , m_Pause(false){};
     virtual ~CUILayer();
@@ -38,9 +35,6 @@ private:
 private:
     static CUILayer* m_Instance;
     CMyButton* m_PauseBtn;
-    CScoreUI* m_StarScoreUI;
-    CScoreUI* m_CoinScoreUI;
-    CScoreUI* m_RunScoreUI;
     PROGRESS_LIST m_ProgressList;
     std::array<cocos2d::Vec2, eITEM_TYPE_MAX> m_ProgressPosArray;
     int m_TimerRunningCount;

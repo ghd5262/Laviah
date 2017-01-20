@@ -148,6 +148,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Classes\DataManager\TranslateManager.cpp" />
+    <ClCompile Include="Classes\MyUI\Popup\ChallengeCompleteNoticePopup.cpp" />
     <ClCompile Include="Classes\AI\States\GameStates.cpp" />
     <ClCompile Include="Classes\AI\States\RocketStates.cpp" />
     <ClCompile Include="Classes\Common\Global.cpp" />
@@ -240,6 +242,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\MyUI\Popup\RewardPopup.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Classes\DataManager\TranslateManager.hpp" />
+    <ClInclude Include="Classes\MyUI\Popup\ChallengeCompleteNoticePopup.h" />
     <ClInclude Include="Classes\AI\States\GameStates.h" />
     <ClInclude Include="Classes\AI\States\RocketStates.h" />
     <ClInclude Include="Classes\Common\Global.hpp" />

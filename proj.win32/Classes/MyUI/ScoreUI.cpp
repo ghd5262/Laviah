@@ -1,10 +1,16 @@
 #include "ScoreUI.h"
 #include "../Common/StringUtility.h"
+#include "../GameObject/ObjectManager.h"
+
+namespace SCOREUI_DEFINE {
+	static const float VISIBLE_LIMIT_TIME = 5.f;
+};
+
 using namespace cocos2d;
 
-CScoreUI* CScoreUI::create(std::string fontName, size_t fontSize, std::string valueImgName/* = "" */)
+CScoreUI* CScoreUI::create(int& value)
 {
-	CScoreUI *pRet = new(std::nothrow) CScoreUI(fontName, fontSize, valueImgName);
+	CScoreUI *pRet = new(std::nothrow) CScoreUI(value);
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -17,79 +23,85 @@ CScoreUI* CScoreUI::create(std::string fontName, size_t fontSize, std::string va
 		return NULL;
 	}
 }
-
-bool CScoreUI::init()
+CScoreUI* CScoreUI::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
 {
-    if (!Node::init()) return false;
-	
-    m_ValueLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
-    if (nullptr != m_ValueLabel)
-        addChild(m_ValueLabel);
-    
-    if (m_ValueImgName != "")
-    {
-        m_ValueImg = Sprite::create(m_ValueImgName);
-        if (m_ValueImg != nullptr)
-        {
-            m_ValueImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            addChild(m_ValueImg);
-        }
-    }
-    
-    return true;
-}
+	m_ScoreLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
+	m_ScoreLabel->setAnchorPoint(m_ScoreAnchorPoint);
+	m_ScoreLabel->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 3);
+	this->addChild(m_ScoreLabel);
 
-std::string CScoreUI::insertComma(unsigned value)
-{
-	std::string valueStr = StringUtils::format("%u", value).c_str();
-	std::string resultStr = "";
-	//memset(resultStr, 0, sizeof(resultStr));
-
-	int len = valueStr.length();
-
-	int idx = 0;
-	while (len) {
-		resultStr += valueStr[idx++];
-
-		if ((len % 4) == 0)
-			resultStr += ',';
-
-		len--;
+	if (m_IconName != "")
+	{
+		m_Icon = Sprite::create(m_IconName);
+		m_Icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		this->addChild(m_Icon);
 	}
 
-	return resultStr;
+	this->scheduleUpdate();
+	this->setCascadeOpacityEnabled(true);
+	this->setOpacityByTimer();
+	this->setIconPosition();
+	parent->addChild(this, zOrder);
+	return this;
 }
 
-void CScoreUI::setLabelAnchor(Vec2 point)
+CScoreUI* CScoreUI::setFont(std::string fontName, size_t fontSize)
 {
-	m_ValueLabel->setAnchorPoint(point);
-	if (m_ValueImg != nullptr)
-		m_ValueImg->setPosition(
-		Vec2((m_ValueLabel->getContentSize().width * -m_ValueLabel->getAnchorPoint().x) - (m_ValueImg->getContentSize().width * 0.7f), 
-		m_ValueLabel->getContentSize().height * 0.05f));
-
+	m_FontName = fontName;
+	m_FontSize = fontSize;
+	return this;
 }
 
-void CScoreUI::addValue(int value)
+CScoreUI* CScoreUI::setIcon(std::string iconName)
 {
-	m_Value += value;
-	
-	setValue(m_Value);
+	m_IconName = iconName;
+	return this;
 }
 
-void CScoreUI::setValue(int value)
+CScoreUI* CScoreUI::setScoreAnchorPoint(cocos2d::Vec2 anchorPoint)
 {
-    if(value == m_Value) return;
-    
-	m_Value = value;
-	m_ValueString = StringUtility::toCommaString(m_Value);
-	m_ValueLabel->setString(m_ValueString);
-	if (m_ValueImg != nullptr)
-		m_ValueImg->setPosition(
-		Vec2((m_ValueLabel->getContentSize().width * -m_ValueLabel->getAnchorPoint().x) - (m_ValueImg->getContentSize().width * 0.7f),
-		m_ValueLabel->getContentSize().height * 0.05f));
+	m_ScoreAnchorPoint = anchorPoint;
+	return this;
 }
 
 void CScoreUI::update(float delta)
 {
+	//if (CObjectManager::Instance()->getIsGamePause()) return;
+	m_Time += delta;
+	this->setOpacityByTimer();
+
+	if (m_OldValue == m_ValueRef) return;
+
+	this->timerReset();
+	this->setScoreString();
+	this->setIconPosition();
+}
+
+void CScoreUI::setOpacityByTimer()
+{
+	float time = (SCOREUI_DEFINE::VISIBLE_LIMIT_TIME - m_Time);
+	time = std::max(0.f, time);
+
+	float opacity = ((255.f * 0.7f) / (SCOREUI_DEFINE::VISIBLE_LIMIT_TIME - 2.f)) * time;
+	opacity = std::min((255.f * 0.7f), opacity);
+	this->setOpacity(opacity);
+}
+
+void CScoreUI::timerReset()
+{
+	m_OldValue = m_ValueRef;
+	m_Time = 0.f;
+}
+
+void CScoreUI::setIconPosition()
+{
+	if (m_Icon == nullptr) return;
+
+	m_Icon->setPosition(Vec2((m_ScoreLabel->getContentSize().width * -m_ScoreLabel->getAnchorPoint().x) - m_FontSize, 0));
+}
+
+void CScoreUI::setScoreString()
+{
+	auto valueStr = StringUtility::toCommaString(m_OldValue);
+	m_ScoreLabel->setString(valueStr);
 }

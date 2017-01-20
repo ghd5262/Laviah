@@ -51,35 +51,25 @@ bool CUILayer::init()
     Size popupSize = this->getContentSize();
     this->setCascadeOpacityEnabled(true);
     
-    auto createScoreUI = [=](string iconImg, Vec2 labelAnchor, Vec2 pos){
-        auto scoreUI = CScoreUI::create(FONT::MALGUNBD, 40, iconImg);
-        scoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        scoreUI->setLabelAnchor(labelAnchor);
+    auto createScoreUI = [=](int& score, string iconImg, Vec2 labelAnchor, Vec2 pos){
+		auto scoreUI = CScoreUI::create(score)
+			->setFont(FONT::MALGUNBD, 40)
+			->setIcon(iconImg)
+			->setScoreAnchorPoint(labelAnchor)
+			->show(this);
         scoreUI->setPosition(pos);
-        this->addChild(scoreUI);
         return scoreUI;
     };
     
     array<Vec2, 3> scoreUIPos = {
-        Vec2(popupSize.width * 0.96f, popupSize.height * 0.96f ),
         Vec2(popupSize.width * 0.1f,  popupSize.height * 0.96f ),
-        Vec2(popupSize.width * 0.96f, popupSize.height * 0.925f)
+        Vec2(popupSize.width * 0.1f,  popupSize.height * 0.925f ),
+		Vec2(popupSize.width * 0.96f, popupSize.height * 0.96f)
     };
-    
-    m_ProgressPosArray = {
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.76f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.74f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.72f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.68f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.66),
-        Vec2(popupSize.width * 0.5f, popupSize.height * 0.64f)
-    };
-    
-    m_StarScoreUI = createScoreUI("starIcon_s.png",     Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
-    m_CoinScoreUI = createScoreUI("coinIcon_s.png",		Vec2::ANCHOR_MIDDLE_LEFT,  scoreUIPos[1]);
-    m_RunScoreUI  = createScoreUI("runIcon_s.png",      Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
-    
+	createScoreUI(GLOBAL->STAR_SCORE, "starIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[0]);
+	createScoreUI(GLOBAL->COIN_SCORE, "coinIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[1]);
+	createScoreUI(GLOBAL->RUN_SCORE, "runIcon_s.png", Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
+
 //    auto bonusTime = CBonusTimeUI::create();
 //    bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 //    bonusTime->setPosition(Vec2(popupSize.width * 0.06f, popupSize.height * 0.925f));
@@ -106,6 +96,15 @@ bool CUILayer::init()
     m_PauseBtn->setCascadeOpacityEnabled(true);
     m_PauseBtn->setOpacity(0);
     
+	m_ProgressPosArray = {
+		Vec2(popupSize.width * 0.5f, popupSize.height * 0.76f),
+		Vec2(popupSize.width * 0.5f, popupSize.height * 0.74f),
+		Vec2(popupSize.width * 0.5f, popupSize.height * 0.72f),
+		Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f),
+		Vec2(popupSize.width * 0.5f, popupSize.height * 0.68f),
+		Vec2(popupSize.width * 0.5f, popupSize.height * 0.66),
+		Vec2(popupSize.width * 0.5f, popupSize.height * 0.64f)
+	};
 	std::fill(m_ProgressList.begin(), m_ProgressList.end(), nullptr);
     for(int count = 1; count < eITEM_TYPE_MAX; count++)
 		this->createItemTimerUI((eITEM_TYPE)count, Color3B::WHITE);
@@ -151,10 +150,6 @@ void CUILayer::update(float delta)
         this->stop();
     else if(!CObjectManager::Instance()->getIsGamePause() && m_Pause)
         this->play();
-    
-    m_StarScoreUI->setValue(GLOBAL->STAR_SCORE);
-    m_CoinScoreUI->setValue(GLOBAL->COIN_SCORE);
-    m_RunScoreUI->setValue(GLOBAL->RUN_SCORE);
 }
 
 

@@ -5,39 +5,41 @@
 class CScoreUI : public cocos2d::Node
 {
 public:
-	static CScoreUI* create(std::string fontName, size_t fontSize, std::string valueImgName = "");
+	static CScoreUI* create(int& value);
+	CScoreUI* setFont(std::string fontName, size_t fontSize);
+	CScoreUI* setIcon(std::string iconName);
+	CScoreUI* setScoreAnchorPoint(cocos2d::Vec2 anchorPoint);
+	CScoreUI* show(cocos2d::Node* parent, unsigned zOrder = 0);
 
 	virtual void update(float delta) override;
-	void setLabelAnchor(cocos2d::Vec2 point);
-	void addValue(int value);
-	void setValue(int value);
-
-	static std::string insertComma(unsigned value);
-
-	//getter & setter
-	std::string getValueString() const { return m_ValueString; }
-	CC_SYNTHESIZE(unsigned int, m_Value, ScoreValue);
-
-protected:
-	virtual bool init() override;
 
 private:
-	CScoreUI(std::string fontName, size_t fontSize, std::string valueImgName)
-		: m_ValueImgName(valueImgName)
-		, m_FontName(fontName)
-		, m_FontSize(fontSize)
-		, m_ValueLabel(nullptr)
-		, m_ValueImg(nullptr)
-		, m_ValueString("0")
-		, m_Value(0){};
+	void setOpacityByTimer();
+	void timerReset();
+	void setIconPosition();
+	void setScoreString();
+
+	CScoreUI(int& value)
+		: m_ScoreLabel(nullptr)
+		, m_Icon(nullptr)
+		, m_IconName("")
+		, m_FontName("")
+		, m_FontSize(50)
+		, m_ScoreAnchorPoint(cocos2d::Vec2::ANCHOR_MIDDLE_LEFT)
+		, m_ValueRef(value)
+		, m_OldValue(0)
+		, m_Time(0.f){};
 	virtual ~CScoreUI(){};
 
 private:
+	cocos2d::Label* m_ScoreLabel;
+	cocos2d::Sprite* m_Icon;
+	std::string m_IconName;
 	std::string m_FontName;
-	std::string m_ValueImgName;
-	cocos2d::Label* m_ValueLabel;
-	cocos2d::Sprite* m_ValueImg;// 숫자 오른쪽에 보여줄 이미지 없다면 보여주지 않는다.
 	size_t m_FontSize;
-	std::string m_ValueString;
+	cocos2d::Vec2 m_ScoreAnchorPoint;
+	int& m_ValueRef;
+	int m_OldValue;
+	float m_Time;
 };
 

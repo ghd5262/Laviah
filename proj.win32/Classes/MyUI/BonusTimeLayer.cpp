@@ -40,14 +40,15 @@ bool CBonusTimeLayer::init()
     this->scheduleUpdate();
     this->setCascadeOpacityEnabled(true);
     
-    auto createScoreUI = [=](string iconImg, Vec2 labelAnchor, Vec2 pos){
-        auto scoreUI = CScoreUI::create(FONT::NUMBER, 38, iconImg);
-        scoreUI->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        scoreUI->setLabelAnchor(labelAnchor);
-        scoreUI->setPosition(pos);
-        this->addChild(scoreUI);
-        return scoreUI;
-    };
+	auto createScoreUI = [=](int& score, string iconImg, Vec2 labelAnchor, Vec2 pos){
+		auto scoreUI = CScoreUI::create(score)
+			->setFont(FONT::MALGUNBD, 40)
+			->setIcon(iconImg)
+			->setScoreAnchorPoint(labelAnchor)
+			->show(this);
+		scoreUI->setPosition(pos);
+		return scoreUI;
+	};
     
     array<Vec2, 3> scoreUIPos = {
         Vec2(popupSize.width * 0.96f, popupSize.height * 0.96f ),
@@ -55,9 +56,9 @@ bool CBonusTimeLayer::init()
         Vec2(popupSize.width * 0.96f, popupSize.height * 0.925f)
     };
     
-    m_StarScoreUI = createScoreUI("score.png",      Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
-    m_CoinScoreUI = createScoreUI("coinIcon_2.png", Vec2::ANCHOR_MIDDLE_LEFT,  scoreUIPos[1]);
-    m_RunScoreUI  = createScoreUI("run.png",        Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
+    m_StarScoreUI = createScoreUI(GLOBAL->STAR_SCORE, "starIcon_s.png", Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
+    m_CoinScoreUI = createScoreUI(GLOBAL->COIN_SCORE, "coinIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT,  scoreUIPos[1]);
+    m_RunScoreUI  = createScoreUI(GLOBAL->RUN_SCORE,  "runIcon_s.png",	Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
     
     CMyButton::create()
     ->addEventListener(std::bind(&CObjectManager::BonusTimeTouchEvent, CObjectManager::Instance(), -2.f), eMYBUTTON_STATE::EXECUTE)
@@ -90,9 +91,9 @@ void CBonusTimeLayer::update(float delta)
     else if(!CObjectManager::Instance()->getIsGamePause() && m_Pause)
         this->play();
     
-    m_StarScoreUI->setValue(GLOBAL->STAR_SCORE);
+   /* m_StarScoreUI->setValue(GLOBAL->STAR_SCORE);
     m_CoinScoreUI->setValue(GLOBAL->COIN_SCORE);
-    m_RunScoreUI->setValue(GLOBAL->RUN_SCORE);
+    m_RunScoreUI->setValue(GLOBAL->RUN_SCORE);*/
 }
 
 void CBonusTimeLayer::onPauseButton(cocos2d::Node* sender)

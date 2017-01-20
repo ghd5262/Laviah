@@ -116,6 +116,7 @@ void CMultipleScore::AddScore(unsigned score)
 		m_ColorLevel = colorLevel;
 		m_MultipleNumberLabel->setColor(m_ColorList[m_ColorLevel]);
 		this->runAction(JumpBy::create(0.3f, Vec2(0, 0), 50, 1));
+		this->calculateScore();
 	}
 }
 
@@ -153,6 +154,12 @@ void CMultipleScore::update(float delta)
 	{
 		m_Time += delta;
 
+		float time = (MULTIPLE_TIME_LIMIT - m_Time);
+		time = std::max(0.f, time);
+
+		float opacity = ((255.f * 0.7f) / (MULTIPLE_TIME_LIMIT - 2.f)) * time;
+		opacity = std::min((255.f * 0.7f), opacity);
+		m_MultipleNumberLabel->setOpacity(opacity);
 		//// UI 좌표 수정
 		//m_MultipleNumberLabel->setPosition(Vec2(m_Player->getOriginPos().x,
   //                                              m_Player->getOriginPos().y +

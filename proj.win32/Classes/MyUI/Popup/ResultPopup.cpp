@@ -277,9 +277,7 @@ bool CResultPopup::init()
         btnReset->setVisible(true);
         btnEnd->setVisible(false);
     }
-    
-    GLOBAL->Clear();
-    
+        
 	this->setOpenAnimation([=](Node* sender){
 		auto winSize = Director::getInstance()->getWinSize();
 

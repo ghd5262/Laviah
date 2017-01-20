@@ -33,6 +33,9 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
     m_ChallengeList.resize(CHALLENGE::LIMIT_COUNT);
     std::fill(m_ChallengeList.begin(), m_ChallengeList.end(), nullptr);
 
+	// To avoid duplicate check.
+	GLOBAL->Clear();
+
     auto popupSize = this->getContentSize();
     m_DPStartPosArray = {
         Vec2(popupSize.width * 0.5f, popupSize.height * 0.3f),
@@ -67,7 +70,6 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		challengesLabel->setOpacity(0);
 		this->addChild(challengesLabel);
 	}
-
 
 	auto createBtn = [=](const std::function<void(Node*)> &callback, std::string icon, Vec2 pos){
 		auto btn = CMyButton::create()
