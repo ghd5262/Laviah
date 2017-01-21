@@ -132,7 +132,7 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 
 		if (m_Message != ""){
             auto message = Label::createWithTTF(m_Message, FONT::MALGUNBD, m_MessageFontSize,
-                                                Size(defaultBG->getContentSize().width * 0.8f,
+                                                Size(defaultBG->getContentSize().width * 0.85f,
                                                      defaultBG->getContentSize().height),
                                                 TextHAlignment::CENTER,
                                                 TextVAlignment::CENTER);

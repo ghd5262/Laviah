@@ -10,7 +10,7 @@ USING_NS_CC;
 namespace CHALLENGE_COMPLETE_NOTICE{
 	static const std::string TAG_UPDATE = "checkChallengeCompleteOnRealTime";
 	static const std::string TAG_SHOW   = "challengeNoticeShow";
-    static const float STAY_LIMIT_TIME  = 2.f;
+    static const float STAY_LIMIT_TIME  = 3.f;
 };
 
 CChallengeCompleteNoticePopup* CChallengeCompleteNoticePopup::create()

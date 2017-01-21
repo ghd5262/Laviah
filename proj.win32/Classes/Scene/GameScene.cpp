@@ -441,7 +441,7 @@ void CGameScene::createCountDown()
     ->setMinNumber(0)
     ->setLastContent(TRANSLATE("COUNTDOWN_LAST"))
     ->setInterval(0.8f)
-    ->setLabelPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.65f))
+    ->setLabelPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.6f))
     ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(this);
     m_CountDown->Pause();

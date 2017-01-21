@@ -13,6 +13,8 @@ namespace BULLETCREATOR{
 	const static float BULLET_STANDARD_SPEED	= 400.f;
 	const static float BULLET_STANDARD_PADDING  = 60.f;
 	const static float BULLET_STANDARD_DELAY	= (CREATE_DISTANCE - PLANET_DEFINE::BOUNDING_RADIUS) / BULLET_STANDARD_SPEED;
+	const static float COIN_CREATE_LIMIT_TIME   = 5.f;
+	static bool COIN_CREATE						= false;
 };
 
 class CBulletDataManager;
@@ -64,6 +66,7 @@ private:
 private:
     const sBULLET_PATTERN* m_CurrentPattern;
     CBulletDataManager* m_BulletDataManager;
+	float m_CoinTimer;
 	float m_Time;
 	float m_LineIntervalLimit;
     int m_CurrentHeight;

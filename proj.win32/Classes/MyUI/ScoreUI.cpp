@@ -67,8 +67,8 @@ CScoreUI* CScoreUI::setScoreAnchorPoint(cocos2d::Vec2 anchorPoint)
 void CScoreUI::update(float delta)
 {
 	//if (CObjectManager::Instance()->getIsGamePause()) return;
-	m_Time += delta;
-	this->setOpacityByTimer();
+	//m_Time += delta;
+	//this->setOpacityByTimer();
 
 	if (m_OldValue == m_ValueRef) return;
 

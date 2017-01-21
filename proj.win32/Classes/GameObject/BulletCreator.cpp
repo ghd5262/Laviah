@@ -15,10 +15,11 @@ CBulletCreator::CBulletCreator()
 : m_CurrentPattern(nullptr)
 , m_CharacterInfo(nullptr)
 , m_BulletDataManager(CBulletDataManager::Instance())
-, m_RotationAngle(0)
+, m_RotationAngle(0.f)
 , m_CurrentHeight(0)
-, m_Time(0)
-, m_LineIntervalLimit(0.0f)
+, m_Time(0.f)
+, m_CoinTimer(0.f)
+, m_LineIntervalLimit(0.f)
 , m_Running(false)
 , m_IsFlip(false)
 {}
@@ -57,10 +58,15 @@ bool CBulletCreator::init()
 void CBulletCreator::Update(float delta)
 {
 	m_Time += delta;
+	m_CoinTimer += delta;
 	if (m_Time < m_LineIntervalLimit) return;
 	if (m_CurrentHeight <= 0) this->Clear();
     if (m_CurrentPattern == nullptr) return;
-    
+	if (m_CoinTimer > BULLETCREATOR::COIN_CREATE_LIMIT_TIME)
+	{
+		BULLETCREATOR::COIN_CREATE = true;
+		m_CoinTimer = 0.f;
+	}
 	this->createOneLine(m_CurrentPattern, --m_CurrentHeight, CREATE_DISTANCE, m_RotationAngle, true);
 	m_Time = 0.0f;
 }
@@ -157,6 +163,10 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
     CBullet* bullet = nullptr;
 
     // bullet create
+	if (BULLETCREATOR::COIN_CREATE && (symbol >= 'P' && symbol <= 'T')) {
+		symbol = (cocos2d::random<int>(1, 100) < 20) ? 'U' : symbol;
+		BULLETCREATOR::COIN_CREATE = false;
+	}
     if      (symbol == 'z')                     symbol = cocos2d::random<int>('A', 'F');
     if      (symbol >= '1' && symbol <= '3')    bullet = CNormalBullet::create();
     else if (symbol >= '4' && symbol <= '5')    bullet = CNormalMissile::create();
