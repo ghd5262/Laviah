@@ -39,17 +39,17 @@ bool CUserCoinButton::init()
 	if (m_CoinLabel != nullptr){
 		m_CoinLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 		m_CoinLabel->setColor(COLOR::GOLD);
-		m_Back->addChild(m_CoinLabel);
+		this->addChild(m_CoinLabel);
 	}
 
 	m_CoinIcon = Sprite::create("coinIcon_2.png");
 	if (m_CoinIcon != nullptr){
 		m_CoinIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_CoinIcon->setColor(COLOR::GOLD);
-		m_Back->addChild(m_CoinIcon);
+		this->addChild(m_CoinIcon);
 	}
 
-	
+	this->setCascadeOpacityEnabled(true);
 	this->scheduleUpdate();
 	this->update(0.f);
 	//auto earnCoinBtn = CMyButton::create("coinPlusIcon.png", END, std::bind(&CUserCoinButton::EarnCoin, this), EFFECT_SIZEDOWN);

@@ -53,7 +53,7 @@ bool CUILayer::init()
     
     auto createScoreUI = [=](int& score, string iconImg, Vec2 labelAnchor, Vec2 pos){
 		auto scoreUI = CScoreUI::create(score)
-			->setFont(FONT::MALGUNBD, 40)
+			->setFont(FONT::MALGUNBD, 45)
 			->setIcon(iconImg)
 			->setScoreAnchorPoint(labelAnchor)
 			->show(this);

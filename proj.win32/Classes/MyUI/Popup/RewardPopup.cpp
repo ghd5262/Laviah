@@ -39,7 +39,6 @@ bool CRewardPopup::init()
 	auto rewardBack = Sprite::create("rewardBack_2.png");
 	rewardBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	rewardBack->setPosition(popupSize / 2);
-	rewardBack->setOpacity(255 * 0.4f);
 	rewardBack->setVisible(false);
 	this->addChild(rewardBack);
 	rewardBack->runAction(RepeatForever::create(RotateBy::create(5.f, 360.f)));

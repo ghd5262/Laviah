@@ -108,7 +108,7 @@ bool CCharacterSelectPopup::init()
 	m_CenterCharacterNameLabel = Label::createWithTTF(currentCharacterParam->_name, FONT::MALGUNBD, 80);
 	if (m_CenterCharacterNameLabel != nullptr)
 	{
-		m_CenterCharacterNameLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.7f));
+		m_CenterCharacterNameLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.8f));
 		m_CenterCharacterNameLabel->setColor(COLOR::DARKGRAY);
 		scrollBack->addChild(m_CenterCharacterNameLabel);
 		m_CenterCharacterNameLabel->setOpacity(0);
@@ -131,7 +131,7 @@ bool CCharacterSelectPopup::init()
 	})
 		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 250, 150))
 		->setContents(TRANSLATE("BUTTON_SELECT"))
-		->setButtonPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.1f))
+		->setButtonPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.125f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->show(scrollBack);
 

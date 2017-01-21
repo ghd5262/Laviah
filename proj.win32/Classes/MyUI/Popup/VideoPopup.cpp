@@ -37,7 +37,7 @@ bool CVideoPopup::init()
 	if (reviveLabel != nullptr)
 	{
 		reviveLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		reviveLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f));
+		reviveLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.85f));
 		reviveLabel->setColor(COLOR::BRIGHTGRAY);
 		this->addChild(reviveLabel);
 		reviveLabel->setOpacity(0);

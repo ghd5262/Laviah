@@ -45,7 +45,7 @@ bool CWorkshopPopup::init()
 	if (workShopLabel != nullptr)
 	{
 		workShopLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		workShopLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.9f));
+		workShopLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.8f));
 		workShopLabel->setColor(COLOR::DARKGRAY);
 		workShopLabel->setOpacity(0);
 		scrollBack->addChild(workShopLabel);
@@ -55,7 +55,7 @@ bool CWorkshopPopup::init()
 	Size layerSize = scrollBack->getContentSize();
 	Size dpSize = Size(1080, 200);
 	size_t dpDistance = 15;
-	float spawnCount = 4;
+	float spawnCount = 3;
 
 	unsigned currentItemIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::SELECT_ITEM);
 
