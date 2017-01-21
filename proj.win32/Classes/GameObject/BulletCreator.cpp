@@ -164,7 +164,7 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
 
     // bullet create
 	if (BULLETCREATOR::COIN_CREATE && (symbol >= 'P' && symbol <= 'T')) {
-		symbol = (cocos2d::random<int>(1, 100) < 20) ? 'U' : symbol;
+		symbol = (cocos2d::random<int>(1, 10) < 5) ? 'U' : symbol;
 		BULLETCREATOR::COIN_CREATE = false;
 	}
     if      (symbol == 'z')                     symbol = cocos2d::random<int>('A', 'F');

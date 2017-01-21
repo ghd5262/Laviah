@@ -54,19 +54,20 @@ bool CVideoPopup::init()
 		button->setOpacity(0);
 		button->setCascadeOpacityEnabled(true);
         auto btnSize = button->getContentSize();
-        
+
+		auto contentLabel = Label::createWithTTF(content, FONT::MALGUNBD, 50);
+		contentLabel->setColor(color);
+		contentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		contentLabel->setPosition(btnSize / 2);
+		button->addChild(contentLabel);
+
         auto icon = Sprite::create(iconName);
         icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        icon->setPosition(Vec2(btnSize.width * 0.5f - btnSize.width * 0.18f, btnSize.height * 0.5f));
+		icon->setPosition(Vec2(btnSize.width * 0.5f - (contentLabel->getContentSize().width / 2) - 50, btnSize.height * 0.5f));
         icon->setColor(color);
         button->addChild(icon);
         
-        
-        auto contentLabel = Label::createWithTTF(content, FONT::MALGUNBD, 50);
-        contentLabel->setColor(color);
-        contentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        contentLabel->setPosition(Vec2(btnSize.width * 0.5f - btnSize.width * 0.13f, btnSize.height * 0.5));
-        button->addChild(contentLabel);
+
         
         return button;
 	};

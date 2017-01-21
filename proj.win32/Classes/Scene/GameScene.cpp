@@ -443,7 +443,7 @@ void CGameScene::createCountDown()
     ->setInterval(0.8f)
     ->setLabelPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.6f))
     ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(this);
+    ->show(this, ZORDER::POPUP);
     m_CountDown->Pause();
 }
 

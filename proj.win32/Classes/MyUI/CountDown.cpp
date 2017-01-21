@@ -48,6 +48,7 @@ CCountDown* CCountDown::show(cocos2d::Node* parent, int zOrder/* = 0*/)
     m_NumberLabel->setTextColor(m_FontColor);
     m_NumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_NumberLabel->setPosition(this->getContentSize() / 2);
+	m_NumberLabel->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 5);
     this->addChild(m_NumberLabel);
     
     parent->addChild(this, zOrder);
