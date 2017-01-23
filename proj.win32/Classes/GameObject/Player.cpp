@@ -77,7 +77,6 @@ bool CPlayer::init()
     }
     
     this->createRunParticle();
-    this->setScale(SCALE_SIZE);
 	this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
 	this->ChangeDataByCharacter();
     return true;
@@ -105,7 +104,6 @@ void CPlayer::GameStart()
     }
     else{
         this->setVisible(true);
-        this->setPlayerTexture(m_CharacterParam->_normalTextureName);
         m_fLife = m_fMaxLife;
     }
 }
@@ -114,7 +112,7 @@ void CPlayer::PlayerAlive()
 {
     this->setVisible(false);
     this->createAliveParticle();
-	this->setPlayerTexture(m_CharacterParam->_aliveTextureName);
+	this->setPlayerTexture(m_CharacterParam->_normalTextureName);
     this->InvincibilityMode(INVINCIVILITY_TIME); // 1초간 무적 카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
     this->scheduleOnce([=](float delta){
         this->setVisible(true);
@@ -178,7 +176,7 @@ void CPlayer::Rotation(float speed)
 void CPlayer::GiantMode()
 {
 	auto action = Sequence::create(
-		ScaleTo::create(0.5f, GIANT_SIZE_PERCENT),
+		ScaleTo::create(0.5f, GIANT_SCALE),
 		CallFunc::create([=](){
 		this->setPlayerTexture(m_CharacterParam->_giantTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
@@ -195,7 +193,7 @@ void CPlayer::NormalMode()
     //1초간 무적
     InvincibilityMode(1.5f);
 	auto action = Sequence::create(
-		ScaleTo::create(0.5f, SCALE_SIZE),
+		ScaleTo::create(0.5f, NORMAL_SCALE),
 		CallFunc::create([=](){
         this->setPlayerTexture(m_CharacterParam->_normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
@@ -383,7 +381,7 @@ void CPlayer::ZoomIn()
 
 void CPlayer::ZoomOut()
 {
-    auto scaleAction = ScaleTo::create(1.2f, PLAYER_DEFINE::SCALE_SIZE);
+    auto scaleAction = ScaleTo::create(1.2f, PLAYER_DEFINE::NORMAL_SCALE);
     auto moveAction = MoveTo::create(1.2f, PLAYER_DEFINE::ZOOMOUT_POS);
     auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
     auto exponential = EaseExponentialInOut::create(spawnAction);

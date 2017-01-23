@@ -65,7 +65,7 @@ bool CCharacterSelectPopup::init()
 
 	auto characterList = CCharacterDataManager::Instance()->getCharacterList();
 	Size layerSize = scrollBack->getContentSize();
-	size_t dpDistance = 15;
+	size_t dpDistance = 50;
 	unsigned currentCharacterIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
 
 	// Create the list view
@@ -86,8 +86,9 @@ bool CCharacterSelectPopup::init()
 		unsigned dpIdx = 0;
 		unsigned currentCharacterDPIdx = 0;
 
-		for (auto character : characterList)
+		for (auto iter : characterList)
 		{
+            auto character = iter.second;
 			auto characterDP = CCharacterSelectPopupDP::create(character);
 			characterDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			listView->pushBackCustomItem(characterDP);
@@ -234,15 +235,18 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
 	// Get CenterDP's Character Param
 	auto centerCharacterParam = m_CenterDP->getCharacterParam();
 
+    // Change name label
+    m_CenterCharacterNameLabel->setString(centerCharacterParam->_name);
+    
 	// If already have the Center Character, Change the Button String to "Select"
 	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx))
 		m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
-	else// If do not have, Change the Button String to "buy cost"
+    else{// If do not have, Change the Button String to "buy cost"
 		m_btnSelect->changeContents(MakeString("$ %d", centerCharacterParam->_cost));
-
-	// Change name label
-	m_CenterCharacterNameLabel->setString(centerCharacterParam->_name);
-
+        if(centerCharacterParam->_grade == CHARACTER_DEFINE::GRADE_RARE )
+            m_CenterCharacterNameLabel->setString("???");
+    }
+	
 	// Size down the other dp
 	for (auto characterDP : listView->getChildren())
 	{

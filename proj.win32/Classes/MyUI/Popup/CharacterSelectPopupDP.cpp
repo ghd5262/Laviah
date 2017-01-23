@@ -40,8 +40,12 @@ bool CCharacterSelectPopupDP::init()
         bg->addChild(m_CharacterImg);
     }
     
-	if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx))
-		m_CharacterImg->setColor(COLOR::DARKGRAY);
+    if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx)){
+        if(m_Character->_grade == CHARACTER_DEFINE::GRADE_NORMAL)
+            m_CharacterImg->setColor(COLOR::DARKGRAY);
+        else
+            m_CharacterImg->setColor(Color3B::BLACK);
+    }
 
     return true;
 }
@@ -67,7 +71,7 @@ void CCharacterSelectPopupDP::Select()
 
 void CCharacterSelectPopupDP::Center()
 {
-    m_CharacterImg->setScale(4.f);
+    m_CharacterImg->setScale(3.f);
 }
 
 void CCharacterSelectPopupDP::DeSelect()

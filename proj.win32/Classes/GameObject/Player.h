@@ -13,10 +13,10 @@
 *-----------------------------------------------------------------*/
 
 namespace PLAYER_DEFINE{
-    static const float SCALE_SIZE = 1.5f;
-    static const float NORMAL_BOUNDING_RADIUS = 25.f * SCALE_SIZE;
+    static const float NORMAL_BOUNDING_RADIUS = 38.f;
     static const float GIANT_BOUNDING_RADIUS = NORMAL_BOUNDING_RADIUS * 3.f;
-    static const float GIANT_SIZE_PERCENT = 2.f;
+    static const float NORMAL_SCALE = 1.f;
+    static const float GIANT_SCALE = 3.f;
     static const float INVINCIVILITY_TIME = 5.f;
     static const float NORMAL_ROTATION_SPEED = ((PLANET_DEFINE::BOUNDING_RADIUS / NORMAL_BOUNDING_RADIUS) * BULLETCREATOR::ROTATION_SPEED);
     static const float GIANT_ROTATION_SPEED = NORMAL_ROTATION_SPEED * 0.7f;
