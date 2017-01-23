@@ -227,7 +227,9 @@ CHARACTER_LIST CCharacterDataManager::getNonCollectedCharacterList(int level, bo
 	return getListByFunc([=](const sCHARACTER_PARAM* data){
 
 		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, data->_idx)) return false;
-
+        
+        if (!data->_random) return false;
+        
 		if (below)           { if (data->_openLevel > level) return false; }
 		else                 { if (data->_openLevel != level) return false; }
 

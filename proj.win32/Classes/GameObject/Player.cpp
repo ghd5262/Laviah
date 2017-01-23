@@ -182,7 +182,7 @@ void CPlayer::GiantMode()
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
 		//this->setRotateSpeed(PLAYER_DEFINE::GIANT_ROTATION_SPEED);
-		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 4.f);
+		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * GIANT_SCALE);
 		m_Particle->setEndSize(40.f);
 	}), nullptr);
 	this->runAction(action);
@@ -371,7 +371,7 @@ void CPlayer::createRunParticle()
 
 void CPlayer::ZoomIn()
 {
-    auto scaleAction = ScaleTo::create(1.2f, 2.f);
+    auto scaleAction = ScaleTo::create(1.2f, 1.5f);
     auto moveAction = MoveTo::create(1.2f, PLAYER_DEFINE::ZOOMIN_POS);
     auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
     auto exponential = EaseExponentialInOut::create(spawnAction);
