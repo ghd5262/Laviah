@@ -71,6 +71,7 @@ public:
     void setUserData_ItemGet(std::string key, int itemIdx);
 	void setUserData_ItemRemove(std::string key, int itemIdx);
     void setUserData_ItemRemoveAll(std::string key);
+    void setUserData_Reset();
     bool CoinUpdate(int value);
     
     static int getUserDataSequenceFromList(std::string key, int itemIndex);

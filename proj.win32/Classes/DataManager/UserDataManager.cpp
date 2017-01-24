@@ -502,6 +502,25 @@ void CUserDataManager::setUserData_ItemRemoveAll(std::string key)
 	SaveUserData();
 }
 
+void CUserDataManager::setUserData_Reset()
+{
+    for (auto keyInfo : m_UserDataKeyList)
+    {
+        std::string keyKind = keyInfo.second;
+        std::string key = keyInfo.first;
+        if (keyKind == USERDATA::SINGLE_DATA_KEY)
+        {
+            this->initSingleUserDataWithDefaultValue(key);
+        }
+        else if (keyKind == USERDATA::ARRAY_DATA_KEY)
+        {
+            this->initArrayUserDataWithDefaultValue(key);
+        }
+    }
+    
+   	SaveUserData();
+}
+
 bool CUserDataManager::CoinUpdate(int value)
 {
     bool result = false;
