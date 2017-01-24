@@ -91,12 +91,16 @@ bool CCharacterSelectPopup::init()
             auto character = iter.second;
 			auto characterDP = CCharacterSelectPopupDP::create(character);
 			characterDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            characterDP->setDPIndex(dpIdx);
+            characterDP->setSelectDPListener([=](int dpIndex){
+                listView->scrollToItem(dpIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.5f);
+            });
 			listView->pushBackCustomItem(characterDP);
 
 			if (character->_idx == currentCharacterIdx){
 				currentCharacterDPIdx = dpIdx;
 			}
-			dpIdx++;
+            dpIdx++;
 		}
 
 		// Scrolling to current character

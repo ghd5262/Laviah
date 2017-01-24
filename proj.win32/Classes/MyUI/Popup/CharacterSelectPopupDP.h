@@ -17,6 +17,9 @@ public:
     //setter & getter
     const sCHARACTER_PARAM* getCharacterParam() const { return m_Character; }
     
+    CC_SYNTHESIZE(int, m_DPIndex, DPIndex);
+    CC_SYNTHESIZE(std::function<void(int)>, m_SelectDPListener, SelectDPListener)
+    
 protected:
     virtual bool init() override;
     
@@ -24,7 +27,9 @@ private:
     
 	CCharacterSelectPopupDP(const sCHARACTER_PARAM* character)
     : m_Character(character)
-    , m_CharacterImg(nullptr){};
+    , m_CharacterImg(nullptr)
+    , m_SelectDPListener(nullptr)
+    , m_DPIndex(0){};
     virtual ~CCharacterSelectPopupDP(){};
     
 private:

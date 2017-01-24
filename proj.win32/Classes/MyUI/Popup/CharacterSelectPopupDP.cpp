@@ -22,7 +22,7 @@ bool CCharacterSelectPopupDP::init()
 {
     if (!Widget::init()) return false;
     
-    auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 150.f, 15.f);
+    auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 150.f, 150.f);
     if (bg != nullptr){
         this->setContentSize(bg->getContentSize());
         
@@ -47,6 +47,22 @@ bool CCharacterSelectPopupDP::init()
             m_CharacterImg->setColor(Color3B::BLACK);
     }
 
+    auto btn = CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        this->retain();
+        if(m_SelectDPListener)
+        {
+            m_SelectDPListener(m_DPIndex);
+        }
+        this->release();
+    })
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 150.f, 150.f))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->show(this);
+    
+    btn->setPosition(this->getContentSize() / 2);
+    btn->setSwallowTouches(false);
+    
     return true;
 }
 
