@@ -1,6 +1,7 @@
 #include "WorkshopPopupDP.h"
 #include "../MyButton.h"
 #include "../LevelProgressBar.h"
+#include "../Popup.h"
 #include "../../DataManager/UserDataManager.h"
 
 CWorkshopPopupDP* CWorkshopPopupDP::create(sWORKSHOPITEM_PARAM workshopItem)
@@ -45,7 +46,18 @@ bool CWorkshopPopupDP::init()
     
     m_BtnBuy = CMyButton::create()
     ->addEventListener([=](Node* sender){
-        this->Buy(sender);
+        CPopup::create()
+        ->setPositiveButton([=](Node* sender){
+                    this->Buy(sender);
+        }, TRANSLATE("BUTTON_YES"))
+        ->setNegativeButton([=](Node* sender){
+        }, TRANSLATE("BUTTON_NO"))
+        ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+        ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+        ->setMessage(TRANSLATE("CHARACTER_BUY_CHECK"))
+        ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setPopupPosition(this->getContentSize() / 2)
+        ->show(this);
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 260, 200))
     ->setContents(TRANSLATE("WORKSHOP_BUTTON_BUY"))
