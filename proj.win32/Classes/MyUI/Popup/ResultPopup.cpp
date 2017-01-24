@@ -172,6 +172,7 @@ bool CResultPopup::init()
     auto createButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos){
         auto button = CMyButton::create()
         ->addEventListener(callback)
+        ->setButtonSingleUse(true)
         ->setButtonNormalImage(name)
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(pos)

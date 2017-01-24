@@ -143,6 +143,7 @@ bool CCharacterSelectPopup::init()
 		->addEventListener([=](Node* sender){
 		this->End(sender);
 	})
+        ->setButtonSingleUse(true)
 		->setButtonNormalImage("endIcon.png")
 		->setButtonPosition(Vec2(bg->getContentSize().width * 0.92f,
 		bg->getContentSize().height * 0.05f))
@@ -206,10 +207,9 @@ void CCharacterSelectPopup::Select(Node* sender)
 			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
 			->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
 			->setMessage(TRANSLATE("CHARACTER_BUY_CHECK"))
-			->setMessageFont(Color3B::BLACK, 40)
 			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 			->setPopupPosition(this->getContentSize() / 2)
-			->show(this, ZORDER::POPUP);
+			->show(this);
 	}
 }
 

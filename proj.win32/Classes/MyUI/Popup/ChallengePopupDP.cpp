@@ -60,6 +60,7 @@ bool CChallengePopupDP::init()
                 this->release();
             }
         })
+        ->setButtonSingleUse(true)
         ->setButtonNormalImage("skipIcon.png")
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setButtonPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f))

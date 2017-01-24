@@ -50,7 +50,6 @@ bool CMenuLayer::init()
         ->setPositiveButton(callback, TRANSLATE("BUTTON_OK"))
         ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
         ->setMessage(message)
-        ->setMessageFont(Color3B::WHITE, 40)
         ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
         ->setPopupPosition(popupSize / 2)
         ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -63,7 +62,6 @@ bool CMenuLayer::init()
         ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
         ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
         ->setMessage(message)
-        ->setMessageFont(Color3B::WHITE, 40)
         ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
         ->setPopupPosition(popupSize / 2)
         ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -94,10 +92,11 @@ bool CMenuLayer::init()
 		Vec2(popupSize.width * 0.4f, popupSize.height * 0.25f),
 		Vec2(popupSize.width * 0.6f, popupSize.height * 0.25f),
 		Vec2(popupSize.width * 0.8f, popupSize.height * 0.25f),
-        Vec2(popupSize.width * 0.1f, popupSize.height * 0.95f)
+        Vec2(popupSize.width * 0.1f, popupSize.height * 0.95f),
+        Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f)
 	};
 
-    std::array<CMyButton*, 5> btnArray = {
+    std::array<CMyButton*, 6> btnArray = {
         createTestButton([=](Node* sender){
             createOneButtonPopup([](Node* sender){}, "Share is comming soon");
         }, TRANSLATE("BUTTON_MENU_SHARE"), testButtonPos[0], Size(200, 150)),
@@ -136,7 +135,14 @@ bool CMenuLayer::init()
                 //CGameScene::getGameScene()->RandomCoin();
 				CUserDataManager::Instance()->SaveUserData(true, true);
 			}, msg);
-        }, "R", testButtonPos[4], Size(100, 100)),
+        }, "S", testButtonPos[4], Size(100, 100)),
+        
+        createTestButton([=](Node* sender){
+            createTwoButtonPopup([](Node* sender){
+                CUserDataManager::Instance()->setUserData_Reset();
+                CUserDataManager::Instance()->SaveUserData(true, true);
+            }, "리셋 하시겠습니까?");
+        }, "R", testButtonPos[5], Size(100, 100)),
     };
     
     this->setDefaultCallback([=](Node* sender){

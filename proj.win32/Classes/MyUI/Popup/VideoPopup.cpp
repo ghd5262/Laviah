@@ -46,6 +46,7 @@ bool CVideoPopup::init()
     auto createButton = [=](const std::function<void(Node*)> &callback, std::string iconName, std::string content, Vec2 pos, Color3B color)->CMyButton*{
 		auto button = CMyButton::create()
 			->addEventListener(callback)
+            ->setButtonSingleUse(true)
 			->setButtonNormalImage("resultPopup_1.png")
 			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 			->setButtonPosition(pos)
@@ -104,6 +105,7 @@ bool CVideoPopup::init()
     ->addEventListener([=](Node* sender){
         this->End(sender);
     })
+    ->setButtonSingleUse(true)
     ->setButtonNormalImage("endIcon.png")
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.05f))

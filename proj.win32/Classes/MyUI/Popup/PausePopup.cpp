@@ -71,6 +71,7 @@ bool CPausePopup::init()
 	auto createButton = [=](const std::function<void(Node*)> &callback, std::string imageName, Vec2 pos)->CMyButton*{
 		return CMyButton::create()
 			->addEventListener(callback)
+            ->setButtonSingleUse(true)
 			->setButtonNormalImage(imageName)
 			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 			->setButtonPosition(pos);
@@ -190,7 +191,6 @@ void CPausePopup::Skip(CChallengePopupDP *sender, int posIndex)
     ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setMessage(TRANSLATE("CHALLENGE_SKIP_CHECK"))
-    ->setMessageFont(Color3B::BLACK, 40)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(scene->getContentSize() / 2)
     ->show(scene, ZORDER::POPUP);

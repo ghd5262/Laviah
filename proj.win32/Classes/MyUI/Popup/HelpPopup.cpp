@@ -67,6 +67,7 @@ bool CHelpPopup::init()
 		->addEventListener([=](Node* sender){
 		this->End(sender);
 	})
+        ->setButtonSingleUse(true)
 		->setButtonNormalImage("endIcon.png")
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setButtonPosition(Vec2(this->getContentSize().width * 0.92f, this->getContentSize().height * 0.05f))

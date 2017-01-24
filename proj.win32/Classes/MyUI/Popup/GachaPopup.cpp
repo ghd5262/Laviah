@@ -50,6 +50,7 @@ bool CGachaPopup::init()
 		->addEventListener([=](Node* sender){
 		this->End(sender);
 	})
+        ->setButtonSingleUse(true)
 		->setButtonNormalImage("endIcon.png")
 		->setButtonPosition(Vec2(bg->getContentSize().width * 0.92f, bg->getContentSize().height * 0.05f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

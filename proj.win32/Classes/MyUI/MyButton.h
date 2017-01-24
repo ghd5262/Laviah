@@ -42,6 +42,7 @@ public:
 	CMyButton* setClickSound(std::string began, std::string ended = "");
     CMyButton* setEnableSound(bool able);
 	CMyButton* setTouchEnable(bool able, cocos2d::Color3B color = cocos2d::Color3B::GRAY);
+    CMyButton* setButtonSingleUse(bool singleUse);
     CMyButton* setContents(std::string contents);
     CMyButton* setFont(cocos2d::Color3B fontColor, int fontSize);
     CMyButton* setButtonPosition(cocos2d::Vec2 position);
@@ -102,9 +103,10 @@ private:
     int m_FontSize;
     cocos2d::Vec2 m_Position;
     cocos2d::Vec2 m_AnchorPoint;
-	bool m_IsSelect;	//선택되었는지 (선택중이라도 true)
-	bool m_Touchable;	//버튼을 누를수 없는지 여부
-    bool m_Sound;       //사운드 재생 여부
+	bool m_IsSelect;	// 선택되었는지 (선택중이라도 true)
+	bool m_Touchable;	// 버튼을 누를수 없는지 여부
+    bool m_Sound;       // 사운드 재생 여부
+    bool m_SingleUse;   // 일회성 여부
 	int m_ClickedAnimationInfo;
     
     static bool m_MultiTouchesDisable;

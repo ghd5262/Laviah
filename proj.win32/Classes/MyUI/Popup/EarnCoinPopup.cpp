@@ -45,6 +45,7 @@ bool CEarnCoinPopup::init()
 		->addEventListener([=](Node* sender){
 		this->Video(sender);
 	})
+        ->setButtonSingleUse(true)
 		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 430, 150))
 		->setContents(TRANSLATE("BUTTON_WATCH"))
 		->setFont(Color3B::WHITE, 40)
@@ -57,6 +58,7 @@ bool CEarnCoinPopup::init()
 		->addEventListener([=](Node* sender){
 		this->popupClose();
 	})
+        ->setButtonSingleUse(true)
 		->setLayer(LayerColor::create(COLOR::BRIGHTRED_ALPHA, 430, 150))
 		->setContents(TRANSLATE("BUTTON_NO"))
 		->setFont(Color3B::WHITE, 40)

@@ -311,7 +311,6 @@ void CGameScene::createExitPopup(bool resume)
     ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setMessage(TRANSLATE("GAME_EXIT_CHECK"))
-    ->setMessageFont(Color3B::BLACK, 40)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);

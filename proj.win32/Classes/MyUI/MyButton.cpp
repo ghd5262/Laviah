@@ -24,6 +24,7 @@ CMyButton::CMyButton()
 , m_Touchable(true) //TODO : 뺼지 생각해봄
 , m_IsSelect(false) //TODO : 마찬가지
 , m_Sound(true)
+, m_SingleUse(false)
 , m_ClickedAnimationInfo(eCLICKED_ANIMATION::ALPHA | eCLICKED_ANIMATION::SIZEDOWN)
 {
 }
@@ -184,6 +185,12 @@ CMyButton* CMyButton::setTouchEnable(bool able, Color3B color/* = cocos2d::Color
 	return this;
 }
 
+CMyButton* CMyButton::setButtonSingleUse(bool singleUse)
+{
+    m_SingleUse = singleUse;
+    return this;
+}
+
 CMyButton* CMyButton::setContents(std::string contents)
 {
     m_Contents = contents;
@@ -292,14 +299,10 @@ bool CMyButton::onTouchBegan()
     if(m_MultiTouchesDisable) return false;
     
     // BEGIN 상태일때 호출해야할 함수가 있다면 호출
-    if(m_BeginFunctionList.size() > 0){
-        
-		std::for_each(m_BeginFunctionList.begin(), m_BeginFunctionList.end(),
-			[=](const NODE_CALLBACK &func){
-			if (func != nullptr)
-				func(this);
-		});
-    }
+    
+    for(auto func : m_BeginFunctionList)
+        if (func != nullptr) func(this);
+    
 
 	this->playButtonStartAnimation();
 
@@ -317,13 +320,10 @@ bool CMyButton::onTouchBegan()
 void CMyButton::onTouchEnded()
 {
     // END 상태일때 호출해야할 함수가 있다면 호출
-    if(m_EndFunctionList.size() > 0){
-        
-        std::for_each(m_EndFunctionList.begin(), m_EndFunctionList.end(),
-			[=](const NODE_CALLBACK &func){
-			if (func != nullptr)
-				func(this);
-		});
+    for(auto func : m_EndFunctionList)
+    {
+        if (func != nullptr) func(this);
+        if (m_SingleUse) this->setTouchEnable(false, Color3B::WHITE);
     }
     
 	// 종료 이펙트
@@ -360,10 +360,9 @@ void CMyButton::update(float delta/* = 0*/)
 	if (m_IsSelect && m_ExecuteFunctionList.size())
 	{
 		// EXECUTE 상태일때 호출해야할 함수가 있다면 호출
-		std::for_each(m_ExecuteFunctionList.begin(), m_ExecuteFunctionList.end(),
-			[=](const NODE_CALLBACK &func){
-			if (func != nullptr)
-				func(this);
-		});
+        for(auto func : m_ExecuteFunctionList)
+        {
+            if (func != nullptr) func(this);
+        }
 	}
 }
