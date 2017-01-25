@@ -57,7 +57,6 @@ public:
 
     //getter & setter
     bool getIsFirstPlay();
-	void setLastSavedTime(long long unixTime);
 	tm* getLastSavedTime();
     int getUserData_Number(std::string key);
     ARRAY_DATA getUserData_List(std::string key);
@@ -72,6 +71,7 @@ public:
 	void setUserData_ItemRemove(std::string key, int itemIdx);
     void setUserData_ItemRemoveAll(std::string key);
     void setUserData_Reset();
+    void setLastSavedTime(long long unixTime);
     bool CoinUpdate(int value);
     
     static int getUserDataSequenceFromList(std::string key, int itemIndex);

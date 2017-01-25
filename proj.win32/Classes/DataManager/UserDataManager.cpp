@@ -153,11 +153,6 @@ bool CUserDataManager::getIsFirstPlay()
     return UserDefault::getInstance()->getBoolForKey(crypto_key.c_str(), true);
 }
 
-void CUserDataManager::setLastSavedTime(long long unixTime)
-{
-	UserDefault::getInstance()->setDoubleForKey(USERDATA_KEY::LAST_SAVED_TIME.c_str(), unixTime);
-}
-
 tm* CUserDataManager::getLastSavedTime()
 {
 	std::string crypto_key = MakeCryptoString(USERDATA_KEY::LAST_SAVED_TIME, USERDATA::CRYPTO_KEY);
@@ -350,35 +345,7 @@ bool CUserDataManager::isGoogleRevisionHigher()
 	}
 
     CCLOG("Compare revision - Google : %d vs XML : %d", googleRevision, xmlRevision);
-	if (googleRevision > xmlRevision)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/, bool forceSave/* = false*/)
-{
-	setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
-	std::string jsonString = "";
-	convertUserDataToJson(jsonString);
-
-	// crypto
-	std::string crypto_key = MakeCryptoString(USERDATA::GOOGLE_DATA_KEY, USERDATA::CRYPTO_KEY);
-	std::string crypto_value = MakeCryptoString(jsonString, USERDATA::CRYPTO_KEY);
-
-	UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
-	CGoogleCloudManager::Instance()->AddDataToAutoSaveList(crypto_key.c_str(), crypto_value);
-
-	if (saveToCloud) {
-		CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
-			this->saveUserDataToGoogleCloud(crypto_key, crypto_value, forceSave);
-		});
-		CSDKUtil::Instance()->IsNetworkConnect();
-	}
+    return (googleRevision > xmlRevision);
 }
 
 void CUserDataManager::overwriteXmlByGoogleCloud(std::string valueJson)
@@ -442,6 +409,28 @@ float CUserDataManager::getItemCurrentValue(std::string key)
 
 #pragma mark -
 #pragma mark [ interface function setter ]
+
+void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/, bool forceSave/* = false*/)
+{
+    setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
+    std::string jsonString = "";
+    convertUserDataToJson(jsonString);
+    
+    // crypto
+    std::string crypto_key = MakeCryptoString(USERDATA::GOOGLE_DATA_KEY, USERDATA::CRYPTO_KEY);
+    std::string crypto_value = MakeCryptoString(jsonString, USERDATA::CRYPTO_KEY);
+    
+    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
+    CGoogleCloudManager::Instance()->AddDataToAutoSaveList(crypto_key.c_str(), crypto_value);
+    
+    if (saveToCloud) {
+        CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
+            this->saveUserDataToGoogleCloud(crypto_key, crypto_value, forceSave);
+        });
+        CSDKUtil::Instance()->IsNetworkConnect();
+    }
+}
+
 void CUserDataManager::setSaveRevision(int value)
 {
     if(m_UserData._userDataIntMap.find(USERDATA_KEY::DATA_REVISION) != m_UserData._userDataIntMap.end())
@@ -519,6 +508,11 @@ void CUserDataManager::setUserData_Reset()
     }
     
    	SaveUserData();
+}
+
+void CUserDataManager::setLastSavedTime(long long unixTime)
+{
+    UserDefault::getInstance()->setDoubleForKey(USERDATA_KEY::LAST_SAVED_TIME.c_str(), unixTime);
 }
 
 bool CUserDataManager::CoinUpdate(int value)
