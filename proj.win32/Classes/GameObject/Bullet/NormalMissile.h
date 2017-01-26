@@ -21,19 +21,9 @@ protected:
 private:
     void createTargetLine();
     void createParticle_Flame();
-    void createParticle_Explosion();
 
 	CNormalMissile();
 	virtual ~CNormalMissile(){};
 
 	CC_SYNTHESIZE(bool, m_bIsTargetMarkCreate, IsTargetMarkCreate);
-
-private:
-	cocos2d::Rect m_ScreenRect;
-
-	//불꽃 파티클
-	cocos2d::ParticleSystemQuad* m_pParticleFlame;
-
-	//충돌 파티클
-	cocos2d::ParticleSystemQuad* m_pParticleCrash;
 };

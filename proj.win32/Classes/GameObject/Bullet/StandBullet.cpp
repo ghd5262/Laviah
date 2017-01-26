@@ -26,7 +26,6 @@ using namespace STANDBULLET;
 
 CStandBullet::CStandBullet()
 : m_StayLimitTime(0)
-, m_HitWithPlanet(false)
 , m_StandUpComplete(false)
 , m_PlanetPos(m_Planet->getPosition())
 {}
@@ -102,17 +101,6 @@ void CStandBullet::StandUp(float delta)
     this->Flee(delta);
 }
 
-
-void CStandBullet::CollisionWithPlanet()
-{
-//    if (m_HitWithPlanet == false)
-//    {
-//        m_HitWithPlanet = true;
-//        this->setIsFly(false);
-//        this->setSpeed(300.f);
-//    }
-}
-
 void CStandBullet::CollisionWithPlayer()
 {
     if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
@@ -140,7 +128,7 @@ void CStandBullet::ChangeToCoin()
 {
     float distance = m_TargetVec.distance(getPosition());
 	auto bullet = CBulletCreator::CreateBullet('Y', -getRotation(), distance, false);
-    if (m_HitWithPlanet) bullet->setIsFly(false);
+    if (m_StandUpComplete) bullet->setIsFly(false);
     
     this->ReturnToMemoryBlock();
 }
@@ -149,7 +137,7 @@ void CStandBullet::ChangeToStar()
 {
 	float distance = m_TargetVec.distance(getPosition());
 	auto bullet = CBulletCreator::CreateBullet('T', -getRotation(), distance, false);
-	if (m_HitWithPlanet) bullet->setIsFly(false);
+	if (m_StandUpComplete) bullet->setIsFly(false);
 
 	this->ReturnToMemoryBlock();
 }

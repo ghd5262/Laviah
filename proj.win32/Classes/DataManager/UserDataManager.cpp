@@ -145,6 +145,7 @@ void CUserDataManager::initArrayUserDataWithDefaultValue(std::string key)
 		userArrayData->resize(userDefaultArrayData->size());
 		std::copy(std::begin(*userDefaultArrayData), std::end(*userDefaultArrayData), std::begin(*userArrayData));
 	}
+    else userArrayData->clear();
 }
 
 bool CUserDataManager::getIsFirstPlay()

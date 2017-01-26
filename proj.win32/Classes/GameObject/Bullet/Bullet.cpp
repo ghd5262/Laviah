@@ -8,6 +8,7 @@
 #include "../../AI/States/BulletStates.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/MultipleScore.h"
+#include "../../Particle/Particles.h"
 #include "../../DataManager/ChallengeDataManager.hpp"
 #include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
 
@@ -379,6 +380,20 @@ void CBullet::createScoreCurrentPos(int score)
     CMultipleScore::Instance()->AddScore(score);
 }
 
+void CBullet::createCollisionParticle()
+{
+    auto particle = CParticle_Explosion::create(m_BulletInfo._particleName);
+    if (particle != nullptr){
+        particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        particle->setAngle(-getRotation());
+        particle->setPosition(getPosition());
+        particle->setGravity(m_RotationVec);
+        particle->setSpeed(100);
+        particle->setSpeedVar(50);
+        CGameScene::getGameScene()->addChild(particle, ZORDER::BULLET);
+    }
+}
+
 void CBullet::setBoundingRadius (float data)
 {
     CGameObject::setBoundingRadius(data);
@@ -392,6 +407,7 @@ void CBullet::setDelayTime		(float data) { m_BulletInfo._delayTime		  = data; }
 void CBullet::setPower          (float data) { m_BulletInfo._power            = data; }
 void CBullet::setSymbol         (float data) { m_BulletInfo._symbol           = data; }
 void CBullet::setIsFly          (float data) { m_BulletInfo._isFly            = data; }
+void CBullet::setParticleName   (std::string data) { m_BulletInfo._particleName = data; }
 
 sBULLET_PARAM CBullet::getInfo()   const { return m_BulletInfo;                 }
 float CBullet::getBoundingRadius() const { return m_BulletInfo._boundingRadius; }

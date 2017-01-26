@@ -16,8 +16,7 @@
 
 using namespace cocos2d;
 
-CNormalBullet::CNormalBullet()
-: m_pParticleCrash(nullptr){}
+CNormalBullet::CNormalBullet(){}
 
 CNormalBullet* CNormalBullet::create()
 {
@@ -50,7 +49,7 @@ bool CNormalBullet::init()
 
 void CNormalBullet::CollisionWithPlanet()
 {
-    this->setParticle();
+    this->createCollisionParticle();
 	this->ReturnToMemoryBlock();
 }
 
@@ -92,18 +91,4 @@ void CNormalBullet::ChangeToStar()
 	CBulletCreator::CreateBullet('P', -getRotation(), distance, false);
 
 	this->ReturnToMemoryBlock();
-}
-
-void CNormalBullet::setParticle()
-{
-	m_pParticleCrash = CParticle_Explosion::create(CObjectManager::Instance()->getCharacterParam()->_normalBulletTextureName);
-    if (m_pParticleCrash != nullptr){
-        m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_pParticleCrash->setAngle(-getRotation());
-        m_pParticleCrash->setPosition(getPosition());
-        m_pParticleCrash->setGravity(m_RotationVec);
-        m_pParticleCrash->setSpeed(100);
-        m_pParticleCrash->setSpeedVar(50);
-        CGameScene::getGameScene()->addChild(m_pParticleCrash, 100);
-    }
 }

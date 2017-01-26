@@ -81,7 +81,11 @@ void CBulletPatternDataManager::initWithJson(PATTERN_LIST &list, std::string fil
 
 		sBULLET_PATTERN patternInfo;
 
-		patternInfo._index = list.size();
+        int index = int(list.size());
+        if(!valuePattern["idx"].isNull())
+            index = valuePattern["idx"].asInt();
+        
+        patternInfo._index = index;
 		patternInfo._level = valuePattern["level"].asInt();
 		patternInfo._widthPadding = valuePattern["widthAngleDistance"].asDouble();
 		const Json::Value pattern = valuePattern["pattern"];
@@ -115,10 +119,12 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getNormalPatternByIndex(int in
 
 const sBULLET_PATTERN* CBulletPatternDataManager::getMissilePatternByIndex(int index) const
 {
-	if (m_MissilePatternList.size() <= index)
-		return m_MissilePatternList.at(0);
-
-	return m_MissilePatternList.at(index);
+    auto pattern = std::find_if(m_MissilePatternList.begin(), m_MissilePatternList.end(), [=](const sBULLET_PATTERN* data){
+        return (data->_index == index);
+    });
+    
+    if(pattern == m_MissilePatternList.end()) m_MissilePatternList.at(0);
+    return *pattern;
 }
 
 const sBULLET_PATTERN* CBulletPatternDataManager::getBonusPatternByIndex(int index) const
@@ -135,9 +141,9 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getBonusPatternByIndex(int ind
 const sBULLET_PATTERN* CBulletPatternDataManager::getRandomNormalPatternByLevel(int level, bool below)
 {
     if(below){
-    return getRandomPatternFromList([=](const sBULLET_PATTERN* data){
-        return data->_level > level;
-    }, m_PatternList);
+        return getRandomPatternFromList([=](const sBULLET_PATTERN* data){
+            return data->_level > level;
+        }, m_PatternList);
     }
     else
     {

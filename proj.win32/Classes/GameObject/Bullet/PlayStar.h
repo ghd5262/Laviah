@@ -18,10 +18,6 @@ protected:
 private:
 	CPlayStar();
 	virtual ~CPlayStar(){};
-
-private:
-	//충돌 파티클
-	cocos2d::ParticleSystemQuad* m_pParticleCrash;
 };
 
 

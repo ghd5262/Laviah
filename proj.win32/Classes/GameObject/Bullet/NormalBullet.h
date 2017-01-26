@@ -16,13 +16,7 @@ public:
 protected:
 	virtual bool init() override;
 
-private:
-    void setParticle();
-    
+private:    
 	CNormalBullet();
 	virtual ~CNormalBullet(){};
-
-private:
-	//충돌 파티클
-	cocos2d::ParticleSystemQuad* m_pParticleCrash;
 };

@@ -4,13 +4,13 @@
 #include "../Player.h"
 #include "../ItemManager.h"
 #include "../../MyUI/ScoreUI.h"
+#include "../../MyUI/MultipleScore.h"
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 
 using namespace cocos2d;
 
-CPlayCoin::CPlayCoin()
-: m_pParticleCrash(nullptr){}
+CPlayCoin::CPlayCoin(){}
 
 CPlayCoin* CPlayCoin::create()
 {
@@ -44,17 +44,7 @@ void CPlayCoin::CollisionWithPlanet()
 {
 	if (this->getIsFly())
 	{
-		m_pParticleCrash = CParticle_Explosion::create("coin_5.png");
-		if (m_pParticleCrash != nullptr){
-			m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_pParticleCrash->setAngle(-getRotation());
-			m_pParticleCrash->setPosition(getPosition());
-			m_pParticleCrash->setGravity(m_RotationVec);
-			m_pParticleCrash->setSpeed(100);
-			m_pParticleCrash->setSpeedVar(50);
-			CGameScene::getGameScene()->addChild(m_pParticleCrash, 100);
-		}
-        
+        this->createCollisionParticle();
         this->ReturnToMemoryBlock();
 	}
 }
@@ -73,6 +63,7 @@ void CPlayCoin::CollisionWithPlayer()
     
     this->R_UpAndBezier(targetPos, cPos1, cPos2, time, 4.f);
     auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
+    CMultipleScore::Instance()->AddScore(value);
     GLOBAL->COIN_SCORE += value;
 	GLOBAL->COIN_COUNT += 1;
 }

@@ -46,6 +46,7 @@ void CPlayItem::CollisionWithPlanet()
 {
 	if (this->getIsFly())
 	{
+        this->createCollisionParticle();
 		this->ReturnToMemoryBlock();
 	}
 }

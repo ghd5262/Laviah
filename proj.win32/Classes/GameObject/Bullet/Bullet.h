@@ -50,6 +50,7 @@ enum eSTAR_TYPE{
 
 struct sBULLET_PARAM{
     std::string _spriteName;
+    std::string _particleName;
 	float _boundingRadius;
 	float _power;
     float _speed;
@@ -61,6 +62,7 @@ struct sBULLET_PARAM{
 
 	sBULLET_PARAM()
     : _spriteName("")
+    , _particleName("")
     , _boundingRadius(0)
     , _power(0)
     , _speed(0)
@@ -72,6 +74,7 @@ struct sBULLET_PARAM{
     
     sBULLET_PARAM(const sBULLET_PARAM& data)
     : _spriteName(data._spriteName)
+    , _particleName(data._particleName)
     , _boundingRadius(data._boundingRadius)
     , _power(data._power)
     , _speed(data._speed)
@@ -83,6 +86,7 @@ struct sBULLET_PARAM{
     
     sBULLET_PARAM(const sBULLET_PARAM* data)
     : _spriteName(data->_spriteName)
+    , _particleName(data->_particleName)
     , _boundingRadius(data->_boundingRadius)
     , _power(data->_power)
     , _speed(data->_speed)
@@ -122,6 +126,7 @@ public:
     void  setPower          (float data);
     void  setSymbol         (float data);
     void  setIsFly          (float data);
+    void  setParticleName   (std::string data);
     
     sBULLET_PARAM getInfo()   const;
     float getSpeed()          const;
@@ -148,24 +153,6 @@ public:
     
     static cocos2d::Vec2 getCirclePosition(float angle, float distance, cocos2d::Vec2 center);
     static cocos2d::Vec2 getSquarePosition(float angle, float distance);
-
-protected:
-    virtual bool init() override;
-    
-#if(USE_MEMORY_POOLING)
-	void* operator new (size_t size, const std::nothrow_t);
-	void operator delete(void* ptr){};
-#endif
-
-    CC_SYNTHESIZE(CPlayer*, m_Player, Player);
-    CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
-    CC_SYNTHESIZE(cocos2d::Vec2, m_TargetVec, TargetVec);
-    CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
-    CC_SYNTHESIZE(float, m_RotationSpeed, RotationSpeed);
-	CC_SYNTHESIZE(float, m_Time, Time);
-    CC_SYNTHESIZE(int, m_ItemFlag, ItemFlag);
-	CC_SYNTHESIZE(bool, m_bIsPlayerGet, IsPlayerGet);
-
 
     void R_UpAndBezier(cocos2d::Vec2 targetPos,
                        cocos2d::Vec2 controlPoint_1,
@@ -196,12 +183,31 @@ protected:
                             float removeTime);
     
     void StackedRL(float duration, float stackSize, int stackCount);
-
-	void Seek(float delta);
+    
+    void Seek(float delta);
     
     void Flee(float delta);
+   
+    CC_SYNTHESIZE(CPlayer*, m_Player, Player);
+    CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
+    CC_SYNTHESIZE(cocos2d::Vec2, m_TargetVec, TargetVec);
+    CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
+    CC_SYNTHESIZE(float, m_RotationSpeed, RotationSpeed);
+    CC_SYNTHESIZE(float, m_Time, Time);
+    CC_SYNTHESIZE(int, m_ItemFlag, ItemFlag);
+    CC_SYNTHESIZE(bool, m_bIsPlayerGet, IsPlayerGet);
+    
+protected:
+    virtual bool init() override;
+    
+#if(USE_MEMORY_POOLING)
+    void* operator new (size_t size, const std::nothrow_t);
+    void operator delete(void* ptr){};
+#endif
 
 	void createScoreCurrentPos(int score);
+    
+    void createCollisionParticle();
     
     CBullet();
     virtual ~CBullet();

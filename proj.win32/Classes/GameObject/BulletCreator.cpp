@@ -150,7 +150,7 @@ void CBulletCreator::CreateConstellation(const sBULLET_PATTERN* data)
 			if (symbol == ' ') continue;
 
             auto bullet = CBulletCreator::CreateBullet(symbol, width * data->_widthPadding, 0);
-			auto visible = CCDirector::getInstance()->getVisibleSize();
+			auto visible = Director::getInstance()->getVisibleSize();
 			auto pos = CBullet::getSquarePosition(width * data->_widthPadding, visible.height - (height * BULLET_STANDARD_PADDING));
             bullet->setPosition(pos);
             bullet->setLocalZOrder(ZORDER::PLAYER);
@@ -206,35 +206,39 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
 {
     std::string name = "hello.png";
     
-    if      (symbol == '1')                     name = m_CharacterInfo->_normalBulletTextureName;
-    else if (symbol == '4')                     name = m_CharacterInfo->_normalMissileTextureName;
-    else if (symbol == '5')                     name = m_CharacterInfo->_aimingMissileTextureName;
-    else if (symbol == '6')                     name = m_CharacterInfo->_stickBulletTextureName;
-    else if (symbol == '7')                     name = m_CharacterInfo->_stickBulletTextureName;
-
-    else if (symbol == 'A')                     name = "playItem_1.png";
-    else if (symbol == 'B')                     name = "playItem_2.png";
-    else if (symbol == 'C')                     name = "playItem_3.png";
-    else if (symbol == 'D')                     name = "playItem_4.png";
-    else if (symbol == 'E')                     name = "playItem_5.png";
-    else if (symbol == 'F')                     name = "playItem_6.png";
-//    else if (symbol == 'G')                     name = "playItem_7.png";
-    
-    else if (symbol == 'P')                     name = "star_1.png";
-    else if (symbol == 'Q')                     name = "star_2.png";
-    else if (symbol == 'R')                     name = "star_3.png";
-    else if (symbol == 'S')                     name = "star_4.png";
-    else if (symbol == 'T')                     name = "star_5.png";
-    
-    else if (symbol == 'U')                     name = "coin_1.png";
-    else if (symbol == 'V')                     name = "coin_2.png";
-    else if (symbol == 'W')                     name = "coin_3.png";
-    else if (symbol == 'X')                     name = "coin_4.png";
-    else if (symbol == 'Y')                     name = "coin_5.png";
-
-    else if (symbol == 'Z')                     name = "bonusLetter_0.png";
+    switch (symbol) {
+        case '1':  name = m_CharacterInfo->_normalBulletTextureName;   break;
+        case '4':  name = m_CharacterInfo->_normalMissileTextureName;  break;
+        case '5':  name = m_CharacterInfo->_aimingMissileTextureName;  break;
+        case '6':  name = m_CharacterInfo->_stickBulletTextureName;    break;
+        case '7':  name = m_CharacterInfo->_stickBulletTextureName;    break;
+            
+        case 'A':  name = "playItem_1.png";                            break;
+        case 'B':  name = "playItem_2.png";                            break;
+        case 'C':  name = "playItem_3.png";                            break;
+        case 'D':  name = "playItem_4.png";                            break;
+        case 'E':  name = "playItem_5.png";                            break;
+        case 'F':  name = "playItem_6.png";                            break;
+        case 'G':  name = "playItem_7.png";                            break;
+            
+        case 'P':  name = "star_1.png";                                break;
+        case 'Q':  name = "star_2.png";                                break;
+        case 'R':  name = "star_3.png";                                break;
+        case 'S':  name = "star_4.png";                                break;
+        case 'T':  name = "star_5.png";                                break;
+            
+        case 'U':  name = "coin_1.png";                                break;
+        case 'V':  name = "coin_2.png";                                break;
+        case 'W':  name = "coin_3.png";                                break;
+        case 'X':  name = "coin_4.png";                                break;
+        case 'Y':  name = "coin_5.png";                                break;
+            
+        case 'Z':  name = "bonusLetter_0.png";                         break;
+        default: break;
+    }
     
     data._spriteName = name;
+    data._particleName = name;
 }
 
 void CBulletCreator::Clear()

@@ -10,9 +10,7 @@
 
 using namespace cocos2d;
 
-CPlayStar::CPlayStar()
-: m_pParticleCrash(nullptr)
-{}
+CPlayStar::CPlayStar(){}
 
 CPlayStar* CPlayStar::create()
 {
@@ -45,17 +43,7 @@ void CPlayStar::CollisionWithPlanet()
 {
 	if (this->getIsFly())
 	{
-		m_pParticleCrash = CParticle_Explosion::create("coin_5.png");
-		if (m_pParticleCrash != nullptr){
-			m_pParticleCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_pParticleCrash->setAngle(-getRotation());
-			m_pParticleCrash->setPosition(getPosition());
-			m_pParticleCrash->setGravity(m_RotationVec);
-			m_pParticleCrash->setSpeed(100);
-			m_pParticleCrash->setSpeedVar(50);
-            CGameScene::getGameScene()->addChild(m_pParticleCrash, ZORDER::PLAYER);
-		}
-        
+        this->createCollisionParticle();
         this->ReturnToMemoryBlock();
 	}
 }

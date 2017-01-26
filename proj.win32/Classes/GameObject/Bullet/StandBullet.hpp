@@ -11,7 +11,6 @@ public:
     void StandUp(float delta);
     
     virtual void CollisionWithPlayer() override;
-    virtual void CollisionWithPlanet() override;
     virtual void CollisionWithBarrier() override;
     virtual void ChangeToCoin() override;
 	virtual void ChangeToStar() override;
@@ -27,7 +26,6 @@ private:
     
 private:
     float m_StayLimitTime;
-    bool m_HitWithPlanet;
     bool m_StandUpComplete;
     cocos2d::Vec2 m_PlanetPos;
 };

@@ -18,9 +18,5 @@ protected:
 private:
 	CPlayCoin();
 	virtual ~CPlayCoin(){};
-
-private:
-	//충돌 파티클
-	cocos2d::ParticleSystemQuad* m_pParticleCrash;
 };
 
