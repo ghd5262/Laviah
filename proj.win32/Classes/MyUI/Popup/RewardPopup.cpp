@@ -60,7 +60,7 @@ bool CRewardPopup::init()
 		this->addChild(btnUserCoin);
 	}
 
-	auto touchScreen = CMyButton::create()
+	CMyButton::create()
     ->addEventListener([=](Node* sender){
         if (m_RewardDP != nullptr){
             m_RewardDP->popupClose();
@@ -69,8 +69,10 @@ bool CRewardPopup::init()
         
         if (m_RewardIndex >= m_RewardList.size()){
             this->retain();
-            if(m_ExitCallback)
+            if(m_ExitCallback){
                 m_ExitCallback();
+                m_ExitCallback = nullptr;
+            }
             this->popupClose();
             this->release();
             return;
