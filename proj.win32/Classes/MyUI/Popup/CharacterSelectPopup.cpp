@@ -110,7 +110,7 @@ bool CCharacterSelectPopup::init()
 	}
 
 	auto currentCharacterParam = CCharacterDataManager::Instance()->getCharacterByIndex(currentCharacterIdx);
-	m_CenterCharacterNameLabel = Label::createWithTTF(currentCharacterParam->_name, FONT::MALGUNBD, 80);
+	m_CenterCharacterNameLabel = Label::createWithTTF(TRANSLATE(currentCharacterParam->_name), FONT::MALGUNBD, 80);
 	if (m_CenterCharacterNameLabel != nullptr)
 	{
 		m_CenterCharacterNameLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.8f));
@@ -240,7 +240,7 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
 	auto centerCharacterParam = m_CenterDP->getCharacterParam();
 
     // Change name label
-    m_CenterCharacterNameLabel->setString(centerCharacterParam->_name);
+    m_CenterCharacterNameLabel->setString(TRANSLATE(centerCharacterParam->_name));
     
 	// If already have the Center Character, Change the Button String to "Select"
 	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx))

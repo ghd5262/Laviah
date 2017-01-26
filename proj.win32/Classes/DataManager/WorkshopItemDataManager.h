@@ -2,6 +2,11 @@
 #include "../Common/HSHUtility.h"
 #include <vector>
 
+namespace WORKSHOP_DEFINE {
+	static const std::string NAME = "WORKSHOP_ITEM_NAME_%d";
+	static const std::string EXPLAIN = "WORKSHOP_ITEM_EXPLAIN_%d";
+}
+
 struct sWORKSHOPITEM_PARAM{
 	int _idx;
 	int _maxLevel;

@@ -4,13 +4,27 @@
 
 using namespace cocos2d;
 namespace TRANSLATE_DEFINE {
-    static const std::string FILENAME_LANGUAGELIST = "languageList.json";
+    static const std::string FILENAME_LANGUAGE = "language.json";
 }
 
 CTranslateManager::CTranslateManager()
 : m_CurrentSelectLanguage(Application::getInstance()->getCurrentLanguageCode())
 {
-    this->initLanguageList(m_LanguageList, TRANSLATE_DEFINE::FILENAME_LANGUAGELIST);
+	this->initLanguageList(m_LanguageList, TRANSLATE_DEFINE::FILENAME_LANGUAGE);
+}
+
+CTranslateManager::~CTranslateManager()
+{
+	auto cleanList = [=](LANGUAGE_LIST &list){
+		for (auto data : list)
+		{
+			delete data.second;
+			data.second = nullptr;
+		}
+		list.clear();
+	};
+
+	cleanList(m_LanguageList);
 }
 
 CTranslateManager* CTranslateManager::Instance()
@@ -21,86 +35,76 @@ CTranslateManager* CTranslateManager::Instance()
 
 void CTranslateManager::initLanguageList(LANGUAGE_LIST &list, std::string fileName)
 {
-    Json::Value root;
-    Json::Reader reader;
-    
-    std::string file = FileUtils::getInstance()->fullPathForFilename(fileName);
-    std::string fileData = FileUtils::getInstance()->getStringFromFile(file);
-    size_t pos = fileData.rfind("}");
-    fileData = fileData.substr(0, pos + 1);
-    
-    bool parsingSuccessful = reader.parse(fileData, root);
-    if (!parsingSuccessful)
-    {
-        CCASSERT(false, MakeString("parser failed : \n %s", fileData.c_str()).c_str());
-        return;
-    }
-    CCLOG("Language List JSON : \n %s\n", fileData.c_str());
-    
-    const Json::Value languageArray = root["languageList"];
-    
-    for (unsigned int count = 0; count < languageArray.size(); ++count)
-    {
-        const Json::Value language = languageArray[count];
-        auto key                = language["key"].asString();
-        auto contentFileName    = language["file"].asString();
-        
-        Json::Value  contentRoot;
-        Json::Reader contentReader;
-        std::string contentFile        = FileUtils::getInstance()->fullPathForFilename(contentFileName);
-        std::string contentFileData    = FileUtils::getInstance()->getStringFromFile(contentFile);
-        size_t contentPos = contentFileData.rfind("}");
-        contentFileData = contentFileData.substr(0, contentPos + 1);
-        
-        bool lParsingSuccessful = contentReader.parse(contentFileData, contentRoot);
-        if (!lParsingSuccessful)
-        {
-            CCASSERT(false, MakeString("parser failed : \n %s", contentFileData.c_str()).c_str());
-            return;
-        }
-        CCLOG("Content List JSON : \n %s\n", contentFileData.c_str());
-        
-        const Json::Value languageKey  = contentRoot["language"];
-        const Json::Value contentArray = contentRoot["contents"];
-        
-        auto contentList = this->createContentList(languageKey.asString());
-        
-        for(int index = 0; index < contentArray.size(); index++)
-        {
-            const Json::Value content = contentArray[index];
-            auto contentKey      = content["key"].asString();
-            auto contentValue    = content["content"].asString();
-            this->addContentToList(contentList, contentKey, contentValue);
-        }
-    }
+	Json::Value root;
+	Json::Reader reader;
+
+	std::string file = FileUtils::getInstance()->fullPathForFilename(fileName);
+	std::string fileData = FileUtils::getInstance()->getStringFromFile(file);
+	size_t pos = fileData.rfind("}");
+	fileData = fileData.substr(0, pos + 1);
+
+	bool parsingSuccessful = reader.parse(fileData, root);
+	if (!parsingSuccessful)
+	{
+		CCASSERT(false, MakeString("parser failed : \n %s", fileData.c_str()).c_str());
+		return;
+	}
+	CCLOG("Language JSON : \n %s\n", fileData.c_str());
+
+	const Json::Value languageKeyList = root["supports"];
+	for (auto key : languageKeyList){
+		auto languageKey = key.asString();
+		m_LanguageKeyList.emplace_back(languageKey);
+		this->createContentList(languageKey);
+	}
+
+	const Json::Value contentList = root["contents"];
+	for (auto content : contentList)
+	{
+		auto contentKey = content["key"].asString();
+		for (auto languageKey : m_LanguageKeyList)
+		{
+			this->addContentToList(getContentList(languageKey), contentKey, content[languageKey.c_str()].asString());
+		}
+	}
 }
 
-void CTranslateManager::addContentToList(CONTENT_LIST *list, std::string key, std::string content)
+void CTranslateManager::createContentList(std::string languageKey)
 {
-    auto iter = list->find(key.c_str());
-    if(iter == list->end())
-    {
-        list->emplace(std::pair<std::string, std::string>(key, content));
-    }
-    else{
-        CCLOG("Content key was duplicated : %s", key.c_str());
-        CCASSERT(false, StringUtils::format("Content key was duplicated : %s", key.c_str()).c_str());
-    }
-}
-
-CTranslateManager::CONTENT_LIST* CTranslateManager::createContentList(std::string key)
-{
-    auto iter = m_LanguageList.find(key.c_str());
+	auto iter = m_LanguageList.find(languageKey.c_str());
     if(iter == m_LanguageList.end())
     {
         auto list = new CONTENT_LIST();
-        m_LanguageList.emplace(std::pair<std::string, CONTENT_LIST*>(key, list));
-        return list;
+		m_LanguageList.emplace(std::pair<std::string, CONTENT_LIST*>(languageKey, list));
     }
     else{
-        CCLOG("Language key was duplicated : %s", key.c_str());
-        CCASSERT(false, StringUtils::format("Language key was duplicated : %s", key.c_str()).c_str());
+		CCLOG("Language key was duplicated : %s", languageKey.c_str());
+		CCASSERT(false, StringUtils::format("Language key was duplicated : %s", languageKey.c_str()).c_str());
     }
+}
+
+void CTranslateManager::addContentToList(CONTENT_LIST* list, std::string contentkey, std::string content)
+{
+	auto iter = list->find(contentkey.c_str());
+	if (iter == list->end())
+	{
+		list->emplace(std::pair<std::string, std::string>(contentkey, content));
+	}
+	else{
+		CCLOG("Content key was duplicated : %s", contentkey.c_str());
+		CCASSERT(false, StringUtils::format("Content key was duplicated : %s", contentkey.c_str()).c_str());
+	}
+}
+
+CTranslateManager::CONTENT_LIST* CTranslateManager::getContentList(std::string languageKey)
+{
+	auto list = m_LanguageList.find(languageKey);
+	if (list == m_LanguageList.end())
+	{
+		CCLOG("There is no [ %s ] key in the list.", languageKey.c_str());
+		CCASSERT(false, StringUtils::format("There is no [ %s ] key in the list.", languageKey.c_str()).c_str());
+	}
+	return list->second;
 }
 
 /*

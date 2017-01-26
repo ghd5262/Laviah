@@ -27,7 +27,6 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 	}
 	CCLOG("strWorkshopItemList JSON : \n %s\n", workshopItemListClearData.c_str());
 
-
 	// stage는 배열이다.
 	const Json::Value itemArray = root["workshopitems"];
 
@@ -37,21 +36,22 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 
 		sWORKSHOPITEM_PARAM param;
 		
-		param._idx = itemCount;
-		param._textureName = valueItem["textureName"].asString();
-		param._name = valueItem["name"].asString();
-		param._maxLevel = valueItem["max_level"].asInt();
-		param._valuePerLevel = valueItem["value_per_level"].asDouble();
-		param._explain = valueItem["explain"].asString();
-		param._isSelling = valueItem["selling"].asBool();
-        param._userDataKey = valueItem["userDataKey"].asString();
+		param._idx				= valueItem["idx"].asInt();
+		param._textureName		= valueItem["textureName"].asString();
+		param._maxLevel			= valueItem["max_level"].asInt();
+		param._valuePerLevel	= valueItem["value_per_level"].asDouble();
+		param._isSelling		= valueItem["selling"].asBool();
+        param._userDataKey		= valueItem["userDataKey"].asString();
+
+		param._name				= StringUtils::format(WORKSHOP_DEFINE::NAME.c_str(), param._idx);
+		param._explain			= StringUtils::format(WORKSHOP_DEFINE::EXPLAIN.c_str(), param._idx);
 
 		const Json::Value costPerLevelArray = valueItem["cost_per_level"];
 
 		int i = 0;
 		for (auto costIdx : costPerLevelArray)
 		{
-			CCLOG("itme name : %s level : %d : cost : %d", param._name.c_str(), i++, costIdx.asInt());
+			CCLOG("itme name : %s level : %d : cost : %d", TRANSLATE(param._name).c_str(), i++, costIdx.asInt());
 			param._costPerLevel.emplace_back(costIdx.asInt());
 		}
 

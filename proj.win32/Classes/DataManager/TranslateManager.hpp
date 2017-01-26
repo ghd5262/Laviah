@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include <map>
 class CTranslateManager{
+	typedef std::vector<std::string> LANGUAGE_KEY_LIST;
     typedef std::map<std::string, std::string>   CONTENT_LIST;
     typedef std::map<std::string, CONTENT_LIST*> LANGUAGE_LIST;
     
@@ -14,13 +15,15 @@ public:
     
 private:
     void initLanguageList(LANGUAGE_LIST &list, std::string fileName);
-    void addContentToList(CONTENT_LIST *list, std::string key, std::string content);
-    CONTENT_LIST* createContentList(std::string key);
+	void createContentList(std::string languageKey);
+	void addContentToList(CONTENT_LIST* list, std::string contentkey, std::string content);
+	CONTENT_LIST* getContentList(std::string languageKey);
 
     CTranslateManager();
-    ~CTranslateManager(){};
+    ~CTranslateManager();
     
 public:
+	LANGUAGE_KEY_LIST  m_LanguageKeyList;
     LANGUAGE_LIST m_LanguageList;
 };
 

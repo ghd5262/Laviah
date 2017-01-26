@@ -272,11 +272,17 @@ bool CResultPopup::init()
         btnHome->setVisible(false);
         btnReset->setVisible(false);
         btnEnd->setVisible(true);
+		this->setDefaultCallback([=](Node* sender){
+			this->End(sender);
+		});
     }
     else{
         btnHome->setVisible(true);
         btnReset->setVisible(true);
         btnEnd->setVisible(false);
+		this->setDefaultCallback([=](Node* sender){
+			this->GoHome(sender);
+		});
     }
         
 	this->setOpenAnimation([=](Node* sender){
@@ -330,11 +336,7 @@ bool CResultPopup::init()
         btnEnd->runAction(FadeTo::create(0.5f, 0));
 		btnUserCoin->runAction(FadeTo::create(0.5f, 0));
 	});
-    
-    this->setDefaultCallback([=](Node* sender){
-        this->GoHome(sender);
-    });
-
+   
 	return true;
 }
 

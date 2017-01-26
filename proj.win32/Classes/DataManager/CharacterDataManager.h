@@ -28,6 +28,8 @@ namespace CHARACTER_TEXTUREPACK {
 namespace CHARACTER_DEFINE {
     static const int GRADE_NORMAL = 1;
     static const int GRADE_RARE   = 2;
+	static const std::string NAME  = "CHARACTER_NAME_%d";
+	static const std::string STORY = "CHARACTER_STORY_%d";
 }
 
 

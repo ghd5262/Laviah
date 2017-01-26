@@ -135,7 +135,7 @@ void CCharacterDataManager::addCharacterToList(const Json::Value& data)
     auto initData = [=](std::string key){
         return this->initCharacterWithDefaultValue(param->_grade, key, data[key.c_str()]);
     };
-    
+
     param->_openLevel       = initData("openLevel").asInt();
     param->_cost            = initData("cost").asInt();
     param->_health          = initData("health").asInt();
@@ -149,8 +149,8 @@ void CCharacterDataManager::addCharacterToList(const Json::Value& data)
     param->_random          = initData("random").asBool();
     param->_coinType        = initData("coinType").asBool();
     
-    param->_name            = initData("name").asString();
-    param->_story           = initData("story").asString();
+	param->_name			= StringUtils::format(CHARACTER_DEFINE::NAME.c_str(), param->_idx);
+	param->_story			= StringUtils::format(CHARACTER_DEFINE::STORY.c_str(), param->_idx);
     
     this->setTextureNameByGrade(param);
     m_CharacterList.emplace(std::pair<int, const sCHARACTER_PARAM*>(param->_idx, param));
@@ -214,7 +214,7 @@ const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacterFromList(CHA
 
 	CCLOG("Pick a character :: idx %d name %s level %d",
 		picked->_idx,
-		picked->_name.c_str(),
+		TRANSLATE(picked->_name).c_str(),
 		picked->_openLevel);
 
 	return picked;
@@ -262,8 +262,8 @@ void CCharacterDataManager::PrintCharacterInfo(int index)
 	CCLOG("Stick Bullet Texture Name        : %s", character->_stickBulletTextureName.c_str());
 	CCLOG("Normal Missile Texture Name      : %s", character->_normalMissileTextureName.c_str());
 	CCLOG("Aiming Missile Texture Name      : %s", character->_aimingMissileTextureName.c_str());
-	CCLOG("Name                             : %s", character->_name.c_str());
-	CCLOG("Story                            : %s", character->_story.c_str());
+	CCLOG("Name                             : %s", TRANSLATE(character->_name).c_str());
+	CCLOG("Story                            : %s", TRANSLATE(character->_story).c_str());
     CCLOG("Texture Pack Name                : %s", character->_texturePackName.c_str());
 	CCLOG("============================================================");
 }

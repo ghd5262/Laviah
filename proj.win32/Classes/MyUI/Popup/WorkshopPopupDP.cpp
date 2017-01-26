@@ -78,7 +78,7 @@ bool CWorkshopPopupDP::init()
     }
     
     
-    auto workshopItemName = Label::createWithTTF(m_WorkshopItem._name.c_str(), FONT::MALGUNBD, 40);
+    auto workshopItemName = Label::createWithTTF(TRANSLATE(m_WorkshopItem._name), FONT::MALGUNBD, 40);
     if (workshopItemName != nullptr)
     {
         workshopItemName->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -87,17 +87,21 @@ bool CWorkshopPopupDP::init()
         dpItemBack->addChild(workshopItemName);
     }
     
-    auto workshopItemExplain = Label::createWithTTF(m_WorkshopItem._explain.c_str(), "fonts/malgun.ttf", 35);
+	auto workshopItemExplain = Label::createWithTTF(TRANSLATE(m_WorkshopItem._explain),
+		"fonts/malgun.ttf",
+		23,
+		Size(dpItemBack->getContentSize().width * 0.7f, dpItemBack->getContentSize().height * 0.45f),
+		TextHAlignment::LEFT,
+		TextVAlignment::TOP);
     if (workshopItemExplain != nullptr)
     {
         workshopItemExplain->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        workshopItemExplain->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f, dpItemBack->getContentSize().height * 0.5f));
+        workshopItemExplain->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f, dpItemBack->getContentSize().height * 0.45f));
         workshopItemExplain->setColor(COLOR::BRIGHTGRAY);
         dpItemBack->addChild(workshopItemExplain);
     }
     
-    m_LevelProgressBar = CLevelProgressBar::create(
-                                                   Size(dpItemBack->getContentSize().width * 0.7f, dpItemBack->getContentSize().height * 0.15f),
+    m_LevelProgressBar = CLevelProgressBar::create(Size(dpItemBack->getContentSize().width * 0.7f, dpItemBack->getContentSize().height * 0.1f),
                                                    m_WorkshopItem._maxLevel, currentLevel);
     if (m_LevelProgressBar != nullptr)
     {
@@ -119,7 +123,7 @@ bool CWorkshopPopupDP::init()
 
 void CWorkshopPopupDP::Buy(Node* sender)
 {
-	CCLOG("Buy Item %s", m_WorkshopItem._name.c_str());
+	CCLOG("Buy Item %s", TRANSLATE(m_WorkshopItem._name).c_str());
     
     unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
     if (CUserDataManager::Instance()->CoinUpdate(-m_WorkshopItem._costPerLevel.at(value))){
