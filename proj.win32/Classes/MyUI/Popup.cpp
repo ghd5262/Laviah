@@ -70,15 +70,21 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
     if (m_BackgroundVisible)
         this->backgroundTouchDisable();
     
-    if (m_DefaultCallBack){
-        m_DefaultCallbackStack.push_back(sDEFAULT_CALLBACK([=](Node* sender){
-            this->retain();
-            m_DefaultCallBack(this);
+	if (!m_DefaultCallBack) {
+		m_DefaultCallBack = [=](Node* sender){
+			this->popupClose();
+		};
+	}
+
+	if (m_DefaultCallBack){
+		m_DefaultCallbackStack.push_back(sDEFAULT_CALLBACK([=](Node* sender){
+			this->retain();
+			m_DefaultCallBack(this);
 			if (getDefaultCallbackCleanUp())
 				m_DefaultCallBack = nullptr;
-            this->release();
-        }, this));
-    }
+			this->release();
+		}, this));
+	}
     
 	if (m_PositiveButtonCallBack || m_NegativeButtonCallBack){
 		auto defaultBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
@@ -145,11 +151,11 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 		}
 	}
     
-	popupOpenAnimation();
-
+	this->popupOpenAnimation();
     this->setAnchorPoint(m_AnchorPoint);
     this->setPosition(m_Position);
-	parent->addChild(this, zOrder);
+	if (parent != nullptr)
+		parent->addChild(this, zOrder);
 
 	return this;
 }
@@ -376,6 +382,9 @@ void CPopup::backgroundTouchDisable()
 	//touchDisable->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	//touchDisable->setPosition(this->getContentSize() / 2);
 	//addChild(touchDisable);
+
+	if (m_EmptyBackground) return;
+
 	m_EmptyBackground = CMyButton::create()
 		->addEventListener([](Node* sender){})
 		->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)

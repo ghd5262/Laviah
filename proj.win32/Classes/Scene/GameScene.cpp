@@ -216,6 +216,15 @@ void CGameScene::ScreenFade(const FADE_CALLBACK& callback/* = nullptr*/)
                                              nullptr));
 }
 
+CPopup* CGameScene::CreateAlertPopup()
+{
+	return CPopup::create()
+		->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+		->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(m_VisibleSize / 2);
+}
+
 void CGameScene::BonusTimeStart()
 {
     this->createBonusTimeLayer();
@@ -292,28 +301,24 @@ void CGameScene::createExitPopup(bool resume)
 {
 	CSDKUtil::Instance()->AutoSave();
 
-    CPopup::create()
-    ->setPositiveButton([=](Node* sender){
-        Director::getInstance()->end();
+	this->CreateAlertPopup()
+		->setPositiveButton([=](Node* sender){
+		Director::getInstance()->end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-        exit(0);
+		exit(0);
 #endif
-    }, TRANSLATE("BUTTON_YES"))
-    ->setNegativeButton([=](Node* sender){
-        if(resume) this->GameResume();
-    }, TRANSLATE("BUTTON_NO"))
-    ->setDefaultCallback([=](Node* sender){
-        if(resume) this->GameResume();
-        
+	}, TRANSLATE("BUTTON_YES"))
+		->setNegativeButton([=](Node* sender){
+		if (resume) this->GameResume();
+	}, TRANSLATE("BUTTON_NO"))
+		->setDefaultCallback([=](Node* sender){
+		if (resume) this->GameResume();
+
 		auto popup = dynamic_cast<CPopup*>(sender);
 		popup->popupClose();
-    })
-    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-    ->setMessage(TRANSLATE("GAME_EXIT_CHECK"))
-    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+	})
+		->setMessage(TRANSLATE("GAME_EXIT_CHECK"))
+		->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createMenuLayer()

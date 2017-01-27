@@ -178,9 +178,9 @@ void CPausePopup::Help(Node* sender)
 
 void CPausePopup::Skip(CChallengePopupDP *sender, int posIndex)
 {
-    auto scene = CGameScene::getGameScene();
     auto dp = sender;
-    CPopup::create()
+
+	CGameScene::getGameScene()->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
         auto newData = CChallengeDataManager::Instance()->SkipChallenge(dp->getChallengeParam()._index);
         dp->popupClose();
@@ -188,12 +188,8 @@ void CPausePopup::Skip(CChallengePopupDP *sender, int posIndex)
     }, TRANSLATE("BUTTON_YES"))
     ->setNegativeButton([=](Node* sender){
     }, TRANSLATE("BUTTON_NO"))
-    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setMessage(TRANSLATE("CHALLENGE_SKIP_CHECK"))
-    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(scene->getContentSize() / 2)
-    ->show(scene, ZORDER::POPUP);
+	->show(CGameScene::getGameScene(), ZORDER::POPUP);
 }
 
 void CPausePopup::initChallengeList()

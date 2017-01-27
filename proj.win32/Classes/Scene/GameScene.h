@@ -18,6 +18,7 @@ class CCountDown;
 class CGameScene : public cocos2d::Layer
 {
     typedef std::function<void(void)> FADE_CALLBACK;
+	typedef std::function<void(cocos2d::Node*)> NODE_CALLBACK;
     
 public:
 	CREATE_FUNC(CGameScene);
@@ -38,6 +39,7 @@ public:
     void BonusTimeStart();
     void BonusTimeEnd();
     void ScreenFade(const FADE_CALLBACK& callback = nullptr);
+	CPopup* CreateAlertPopup();
 	CPopup* Reward();
 
 	//getter & setter

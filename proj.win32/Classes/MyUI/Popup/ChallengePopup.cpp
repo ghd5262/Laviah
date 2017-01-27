@@ -133,7 +133,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
         btnReward->setColor(COLOR::GOLD);
         btnReset->setVisible(false);
         btnHome->setVisible(false);
-        this->setDefaultCallback(nullptr);
+		this->setDefaultCallback([=](Node* sender){CCLOG("Do nothing."); });
 	}
 
 	this->setOpenAnimation([=](Node* sender){
@@ -216,22 +216,17 @@ void CChallengePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posInd
 
 void CChallengePopup::Skip(CChallengePopupDP *sender, int posIndex)
 {
-    auto scene = CGameScene::getGameScene();
     auto dp = sender;
-    CPopup::create()
-    ->setPositiveButton([=](Node* sender){
-        auto newData = CChallengeDataManager::Instance()->SkipChallenge(dp->getChallengeParam()._index);
-        dp->popupClose();
-        this->createChallengeDP(newData, posIndex, true);
-    }, TRANSLATE("BUTTON_YES"))
-    ->setNegativeButton([=](Node* sender){
-    }, TRANSLATE("BUTTON_NO"))
-    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-    ->setMessage(TRANSLATE("CHALLENGE_SKIP_CHECK"))
-    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(scene->getContentSize() / 2)
-    ->show(scene, ZORDER::POPUP);
+	CGameScene::getGameScene()->CreateAlertPopup()
+		->setPositiveButton([=](Node* sender){
+		auto newData = CChallengeDataManager::Instance()->SkipChallenge(dp->getChallengeParam()._index);
+		dp->popupClose();
+		this->createChallengeDP(newData, posIndex, true);
+	}, TRANSLATE("BUTTON_YES"))
+		->setNegativeButton([=](Node* sender){
+	}, TRANSLATE("BUTTON_NO"))
+		->setMessage(TRANSLATE("CHALLENGE_SKIP_CHECK"))
+		->show(CGameScene::getGameScene(), ZORDER::POPUP);
 }
 
 void CChallengePopup::Reset(Node* sender){

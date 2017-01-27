@@ -49,7 +49,7 @@ public:
     CPopup* setPopupAnchorPoint(cocos2d::Vec2 anchorPoint);
 	CPopup* setBackgroundColor(Color4B color);
     CPopup* setBackgroundVisible(bool visible);
-	virtual CPopup* show(Node* parent, int zOrder = 0);
+	virtual CPopup* show(Node* parent = nullptr, int zOrder = 0);
 
 	void popupOpenAnimation();
 	void popupClose();

@@ -200,7 +200,7 @@ void CCharacterSelectPopup::Select(Node* sender)
 		this->End(nullptr);
 	}
 	else{
-		CPopup::create()
+		CGameScene::getGameScene()->CreateAlertPopup()
 			->setPositiveButton([=](Node* sender){
 			m_CenterDP->Buy();
 			m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
@@ -208,12 +208,8 @@ void CCharacterSelectPopup::Select(Node* sender)
 		}, TRANSLATE("BUTTON_YES"))
 			->setNegativeButton([=](Node* sender){
 		}, TRANSLATE("BUTTON_NO"))
-			->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-			->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
 			->setMessage(TRANSLATE("CHARACTER_BUY_CHECK"))
-			->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-			->setPopupPosition(this->getContentSize() / 2)
-			->show(this);
+			->show(CGameScene::getGameScene(), ZORDER::POPUP);
 	}
 }
 

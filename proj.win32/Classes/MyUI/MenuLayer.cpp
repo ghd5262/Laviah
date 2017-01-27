@@ -42,30 +42,18 @@ bool CMenuLayer::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
 	auto createOneButtonPopup = [=](const std::function<void(Node*)> &callback, std::string message){
-        CPopup::create()
-        ->setDefaultCallback([=](Node* sender){
-            auto popup = dynamic_cast<CPopup*>(sender);
-            popup->popupClose();
-        })
+        CGameScene::getGameScene()->CreateAlertPopup()
         ->setPositiveButton(callback, TRANSLATE("BUTTON_OK"))
-        ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
         ->setMessage(message)
-        ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-        ->setPopupPosition(popupSize / 2)
-        ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-        ->show(this);
+        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
 	};
     
     auto createTwoButtonPopup = [=](const std::function<void(Node*)> &callback, std::string message){
-        CPopup::create()
+		CGameScene::getGameScene()->CreateAlertPopup()
         ->setPositiveButton(callback, TRANSLATE("BUTTON_YES"))
         ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
-        ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
         ->setMessage(message)
-        ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-        ->setPopupPosition(popupSize / 2)
-        ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-        ->show(this);
+		->show(CGameScene::getGameScene(), ZORDER::POPUP);
     };
 
 	auto createWidgetPopup = [=](CPopup* widget){
@@ -141,7 +129,7 @@ bool CMenuLayer::init()
             createTwoButtonPopup([](Node* sender){
                 CUserDataManager::Instance()->setUserData_Reset();
                 CUserDataManager::Instance()->SaveUserData(true, true);
-            }, "리셋 하시겠습니까?");
+            }, "Reset?");
         }, "R", testButtonPos[5], Size(100, 100)),
     };
     

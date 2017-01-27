@@ -47,17 +47,13 @@ bool CWorkshopPopupDP::init()
     
     m_BtnBuy = CMyButton::create()
     ->addEventListener([=](Node* sender){
-        CPopup::create()
+		CGameScene::getGameScene()->CreateAlertPopup()
         ->setPositiveButton([=](Node* sender){
                     this->Buy(sender);
         }, TRANSLATE("BUTTON_YES"))
         ->setNegativeButton([=](Node* sender){
         }, TRANSLATE("BUTTON_NO"))
-        ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-        ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
         ->setMessage(TRANSLATE("CHARACTER_BUY_CHECK"))
-        ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(CGameScene::getGameScene()->getContentSize() / 2)
         ->show(CGameScene::getGameScene(), ZORDER::POPUP);
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 260, 200))
