@@ -110,7 +110,10 @@ bool CCharacterSelectPopup::init()
 	}
 
 	auto currentCharacterParam = CCharacterDataManager::Instance()->getCharacterByIndex(currentCharacterIdx);
-	m_CenterCharacterNameLabel = Label::createWithTTF(TRANSLATE(currentCharacterParam->_name), FONT::MALGUNBD, 80);
+	m_CenterCharacterNameLabel = Label::createWithTTF(TRANSLATE(currentCharacterParam->_name), FONT::MALGUNBD, 80, 
+		Size(layerSize.width * 0.8f, layerSize.height),
+		TextHAlignment::CENTER,
+		TextVAlignment::CENTER);
 	if (m_CenterCharacterNameLabel != nullptr)
 	{
 		m_CenterCharacterNameLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.8f));
@@ -204,6 +207,7 @@ void CCharacterSelectPopup::Select(Node* sender)
 			->setPositiveButton([=](Node* sender){
 			m_CenterDP->Buy();
 			m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
+			m_CenterCharacterNameLabel->setString(TRANSLATE(centerCharacterParam->_name));
 			CObjectManager::Instance()->ChangeCharacter();
 		}, TRANSLATE("BUTTON_YES"))
 			->setNegativeButton([=](Node* sender){
