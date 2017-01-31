@@ -123,7 +123,10 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getMissilePatternByIndex(int i
         return (data->_index == index);
     });
     
-    if(pattern == m_MissilePatternList.end()) m_MissilePatternList.at(0);
+    if(pattern == m_MissilePatternList.end()) {
+        CCLOG("There is no missile pattern index %d", index);
+        pattern = m_MissilePatternList.begin();
+    }
     return *pattern;
 }
 
