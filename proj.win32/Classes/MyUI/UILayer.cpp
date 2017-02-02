@@ -6,6 +6,7 @@
 #include "MyButton.h"
 #include "CountDown.hpp"
 #include "ItemProgress.hpp"
+#include "ChallengeProgressBar.hpp"
 #include "Popup/ChallengeCompleteNoticePopup.h"
 #include "../GameObject/ItemManager.h"
 #include "../GameObject/ObjectManager.h"
@@ -109,11 +110,18 @@ bool CUILayer::init()
     for(int count = 1; count < eITEM_TYPE_MAX; count++)
 		this->createItemTimerUI((eITEM_TYPE)count, Color3B::WHITE);
     
-	CChallengeCompleteNoticePopup::create()
-		->setBackgroundVisible(false)
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f))
-		->show(this);
+    m_ChallengeProgressBar = CChallengeProgressBar::create()
+    ->setBarBGColor(COLOR::WHITEGRAY_ALPHA)
+    ->setBarColor(COLOR::GOLD)
+    ->setBarAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP)
+    ->setBarPosition(Vec2(popupSize.width * 0.5f, popupSize.height))
+    ->show(this);
+    
+//	CChallengeCompleteNoticePopup::create()
+//		->setBackgroundVisible(false)
+//		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//		->setPopupPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f))
+//		->show(this);
 
     //this->initItemTestButton();
 //    CGameScene::getGameScene()->GameResume();
@@ -157,12 +165,19 @@ void CUILayer::stop()
 {
     m_Pause = true;
     m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
+    m_ChallengeProgressBar->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                                             this->getContentSize().height * 1.1f));
 }
 
 void CUILayer::play()
 {
     m_Pause = false;
     m_PauseBtn->runAction(FadeIn::create(0.5f));
+    
+    auto move = MoveTo::create(0.5f, Vec2(this->getContentSize().width * 0.5f,
+                                          this->getContentSize().height));
+    auto exponential = EaseExponentialOut::create(move);
+    m_ChallengeProgressBar->runAction(exponential);
 }
 
 void CUILayer::onPauseButton(cocos2d::Node* sender)

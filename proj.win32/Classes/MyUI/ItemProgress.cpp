@@ -39,7 +39,7 @@ void CItemProgress::update(float delta)
         m_ProgressBar->setPercentage(this->getPercent(m_LimitTime - m_Time, m_LimitTime));
     else{
         this->retain();
-        this->processEventListner();
+        this->processEventListener();
         m_IsPause = true;
 		this->Reset();
         this->setVisible(false);
@@ -132,7 +132,7 @@ void CItemProgress::Reset()
     m_Time = 0.f;
 }
 
-void CItemProgress::processEventListner()
+void CItemProgress::processEventListener()
 {
     if(m_IsPause) return;
     

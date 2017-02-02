@@ -43,7 +43,8 @@ void CLevelProgressBar::UpdateProgress()
 {
 	if (m_CurrentLevel > m_MaxLevel){
 		m_CurrentLevel = m_MaxLevel;
-		CCASSERT(false, "LevelProgressBar : CurrentLevel > MaxLevel");
+		CCLOG("LevelProgressBar : CurrentLevel > MaxLevel");
+        return;
 	}
 
 	for (int barIdx = 0; barIdx < m_CurrentLevel; barIdx++)

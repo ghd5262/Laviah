@@ -2,6 +2,7 @@
 #include "ChallengePopupDP.h"
 #include "../MyButton.h"
 #include "../UserCoinButton.h"
+#include "../ChallengeProgressBar.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
@@ -94,6 +95,13 @@ bool CPausePopup::init()
 		btnUserCoin->setOpacity(0);
 		this->addChild(btnUserCoin);
 	}
+    
+    CChallengeProgressBar::create()
+    ->setBarBGColor(COLOR::TRANSPARENT_ALPHA)
+    ->setBarColor(COLOR::GOLD)
+    ->setBarAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM)
+    ->setBarPosition(Vec2(pauseBG->getContentSize().width * 0.5f, 0))
+    ->show(pauseBG);
 
     this->setOpenAnimation([=](Node* sender){
 

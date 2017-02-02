@@ -26,7 +26,7 @@ public:
 	CC_SYNTHESIZE(float, m_Time, Time);
     CC_SYNTHESIZE(bool, m_IsPause, IsPause);
 private:
-    void processEventListner();
+    void processEventListener();
     float getPercent(float value, float max);
     
     CItemProgress()

@@ -30,7 +30,7 @@ public:
     
 private:
     void updateContent();
-    void processEventListner();
+    void processEventListener();
     
     CCountDown()
     : m_NumberLabel(nullptr)

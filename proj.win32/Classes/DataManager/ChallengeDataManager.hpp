@@ -65,7 +65,7 @@ struct sREWARD_DATA{
 };
 
 namespace CHALLENGE {
-    static const int LIMIT_COUNT = 3;
+    static const int LIMIT_COUNT = 1;
 }
 
 typedef std::function<bool(int)> CHECKER;
