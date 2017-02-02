@@ -29,6 +29,7 @@ CPopup::CPopup()
 , m_BackgroundColor(COLOR::BRIGHT_WHITEGRAY_ALPHA)
 , m_BackgroundVisible(true)
 , m_DefaultCallbackCleanUp(true)
+, m_DefaultCallbackEnable(true)
 {
 	this->setContentSize(Director::getInstance()->getVisibleSize());
 }
@@ -70,7 +71,7 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
     if (m_BackgroundVisible)
         this->backgroundTouchDisable();
     
-	if (!m_DefaultCallBack) {
+	if (!m_DefaultCallBack && m_DefaultCallbackEnable) {
 		m_DefaultCallBack = [=](Node* sender){
 			this->popupClose();
 		};
@@ -252,6 +253,12 @@ CPopup* CPopup::setBackgroundColor(Color4B color)
 CPopup* CPopup::setBackgroundVisible(bool visible)
 {
     m_BackgroundVisible = visible;
+    return this;
+}
+
+CPopup* CPopup::setDefaultCallbackEnable(bool enable)
+{
+    m_DefaultCallbackEnable = enable;
     return this;
 }
 

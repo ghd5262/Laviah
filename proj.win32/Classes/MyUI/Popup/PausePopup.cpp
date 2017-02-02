@@ -216,6 +216,7 @@ void CPausePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posIndex)
     ->addSkipEventListner([=](CChallengePopupDP* sender, int posIdx){
         this->Skip(sender, posIdx);
     })
+    ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(posArray[posIndex])

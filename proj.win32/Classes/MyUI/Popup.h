@@ -49,6 +49,7 @@ public:
     CPopup* setPopupAnchorPoint(cocos2d::Vec2 anchorPoint);
 	CPopup* setBackgroundColor(Color4B color);
     CPopup* setBackgroundVisible(bool visible);
+    CPopup* setDefaultCallbackEnable(bool enable);
 	virtual CPopup* show(Node* parent = nullptr, int zOrder = 0);
 
 	void popupOpenAnimation();
@@ -87,6 +88,7 @@ private:
 	int m_MessageFontSize;
 	int m_ButtonFontSize;
     bool m_BackgroundVisible;
+    bool m_DefaultCallbackEnable;
 
     static CALLBACK_STACK m_DefaultCallbackStack;
 };
