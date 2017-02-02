@@ -37,6 +37,8 @@ void CChallengeProgressBar::update(float delta)
         return;
     }
     
+	if (m_ChallengeData == nullptr) this->Reset();
+
     // If current challenge is differs from previous challenge.
     {
         
@@ -97,16 +99,17 @@ CChallengeProgressBar* CChallengeProgressBar::show(cocos2d::Node* parent, int zO
         m_ProgressBar->setMidpoint(Vec2(0, 0));
         m_ProgressBar->setType(ProgressTimer::Type::BAR);
         m_ProgressBar->setBarChangeRate(Vec2(1, 0));
+		m_ProgressBar->setOpacity(255 * 0.8f);
         this->addChild(m_ProgressBar);
     }
     
     // challenge name label
     {
-        m_TitleLabel = Label::createWithTTF("", FONT::MALGUNBD, 40,
+        m_TitleLabel = Label::createWithTTF("", FONT::MALGUNBD, 35,
                                             Size(getContentSize().width * 0.9f,
-                                                 getContentSize().height),
+                                                 0),
                                             TextHAlignment::CENTER,
-                                            TextVAlignment::CENTER);
+                                            TextVAlignment::TOP);
         m_TitleLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_TitleLabel->setPosition(getContentSize() / 2);
         m_TitleLabel->setColor(COLOR::DARKGRAY);

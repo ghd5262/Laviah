@@ -370,9 +370,6 @@ void CBullet::Flee(float delta)
 
 void CBullet::createScoreCurrentPos(int score)
 {
-    GLOBAL->BARRIER_COUNT += 1;
-    GLOBAL->BARRIER_SCORE += score;
-
     auto scoreBullet = CScoreBullet::create(score);
     scoreBullet->setPosition(getPosition());
     scoreBullet->setAnchorPoint(Vec2::ZERO);

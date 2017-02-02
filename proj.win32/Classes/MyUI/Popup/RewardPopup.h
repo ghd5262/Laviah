@@ -19,6 +19,7 @@ protected:
 
 private:
 	CPopup* createRewardDP(sREWARD_DATA data);
+	void Tab();
 	CRewardPopup()
     : m_RewardDP(nullptr)
     , m_ExitCallback(nullptr)

@@ -134,6 +134,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
         btnReset->setVisible(false);
         btnHome->setVisible(false);
 		this->setDefaultCallback([=](Node* sender){CCLOG("Do nothing."); });
+		this->setDefaultCallbackCleanUp(false);
 	}
 
 	this->setOpenAnimation([=](Node* sender){

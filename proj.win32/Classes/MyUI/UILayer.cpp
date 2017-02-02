@@ -165,8 +165,19 @@ void CUILayer::stop()
 {
     m_Pause = true;
     m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
-    m_ChallengeProgressBar->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                                             this->getContentSize().height * 1.1f));
+
+	/*auto delay = DelayTime::create(0.01f);
+	auto callfunc = CallFunc::create([=](){
+		m_ChallengeProgressBar->setPosition(Vec2(this->getContentSize().width * 0.5f,
+												 this->getContentSize().height * 1.1f));
+	});
+	auto sequence = Sequence::createWithTwoActions(delay, callfunc);*/
+
+	auto move = MoveTo::create(0.01f, Vec2(this->getContentSize().width * 0.5f,
+										  this->getContentSize().height * 1.1f));
+	auto ease = EaseSineIn::create(move);
+	m_ChallengeProgressBar->runAction(ease);
+    
 }
 
 void CUILayer::play()

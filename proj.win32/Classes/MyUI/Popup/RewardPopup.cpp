@@ -62,28 +62,8 @@ bool CRewardPopup::init()
 
 	CMyButton::create()
     ->addEventListener([=](Node* sender){
-        if (m_RewardDP != nullptr){
-            m_RewardDP->popupClose();
-            m_RewardDP = nullptr;
-        }
-        
-        if (m_RewardIndex >= m_RewardList.size()){
-            this->retain();
-            if(m_ExitCallback){
-                m_ExitCallback();
-                m_ExitCallback = nullptr;
-            }
-            this->popupClose();
-            this->release();
-            return;
-        }
-        
-        auto data = m_RewardList.at(m_RewardIndex);
-        data = CChallengeDataManager::Instance()->RewardByKey(data._key, data._value);
-        m_RewardDP = this->createRewardDP(data);
-        m_RewardIndex++;
-        
-        rewardBack->setVisible(true);
+		this->Tab();
+		rewardBack->setVisible(true);
     })
     ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height))
@@ -97,6 +77,11 @@ bool CRewardPopup::init()
 
 	this->setCloseAnimation([=](Node* sender){
 		btnUserCoin->runAction(FadeTo::create(0.5f, 0));	
+	});
+
+	this->setDefaultCallback([=](Node* sender){
+		this->Tab();
+		rewardBack->setVisible(true);
 	});
 
 	return true;
@@ -117,10 +102,33 @@ void CRewardPopup::AddRewardToList(std::string key, int value)
 CPopup* CRewardPopup::createRewardDP(sREWARD_DATA data)
 {
 	return CRewardPopupDP::create(data)
+		->setDefaultCallbackEnable(false)
 		->setBackgroundVisible(false)
 		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->setPopupPosition(getContentSize() / 2)
 		->show(this, ZORDER::POPUP);
 }
 
+void CRewardPopup::Tab()
+{
+	if (m_RewardDP != nullptr){
+		m_RewardDP->popupClose();
+		m_RewardDP = nullptr;
+	}
 
+	if (m_RewardIndex >= m_RewardList.size()){
+		this->retain();
+		if (m_ExitCallback){
+			m_ExitCallback();
+			m_ExitCallback = nullptr;
+		}
+		this->popupClose();
+		this->release();
+		return;
+	}
+
+	auto data = m_RewardList.at(m_RewardIndex);
+	data = CChallengeDataManager::Instance()->RewardByKey(data._key, data._value);
+	m_RewardDP = this->createRewardDP(data);
+	m_RewardIndex++;
+}

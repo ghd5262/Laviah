@@ -38,6 +38,7 @@ CTargetMark* CTargetMark::build()
 {
     if(m_Bullet == nullptr) return nullptr;
     
+	this->setCascadeOpacityEnabled(true);
     float distance = m_Planet->getPosition().distance(m_Bullet->getPosition());
     m_DeleteTime = distance / m_Bullet->getSpeed();
     
@@ -46,7 +47,6 @@ CTargetMark* CTargetMark::build()
     this->setContentSize(sprite->getContentSize());
     sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     sprite->setPosition(this->getContentSize() / 2);
-	sprite->setOpacity(255 * 0.4f);
     this->addChild(sprite);
 
     // position init
@@ -105,6 +105,13 @@ void CTargetMark::Execute(float delta)
         if(m_pParticle == nullptr)
             this->setParticle();
     }
+
+	float time = ((m_DeleteTime + 0.2f) - m_Time);
+	time = std::max(0.f, time);
+
+	float opacity = ((255.f * 0.7f) / ((m_DeleteTime + 0.2f) - 0.5f)) * time;
+	opacity = std::min((255.f * 0.7f), opacity);
+	this->setOpacity(opacity);
     
 	if (m_Time > m_DeleteTime)
 		this->ReturnToMemoryBlock();
