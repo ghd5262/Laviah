@@ -10,6 +10,7 @@ class CChallengeProgressBar : public cocos2d::Node{
 public:
     static CChallengeProgressBar* create();
     CChallengeProgressBar* addLastEventListner(const LAST_CALLBACK &callback);
+    CChallengeProgressBar* setLabelVisible(bool visible);
     CChallengeProgressBar* setBarBGColor(cocos2d::Color4B color);
     CChallengeProgressBar* setBarColor(cocos2d::Color3B color);
     CChallengeProgressBar* setBarPosition(cocos2d::Vec2 pos);
@@ -37,7 +38,8 @@ private:
     , m_CurrentValue(0)
     , m_GoalValue(0)
     , m_CurrentChallengeIndex(0)
-    , m_Complete(false){};
+    , m_Complete(false)
+    , m_LabelVisible(true){};
     virtual ~CChallengeProgressBar(){};
     
 private:
@@ -51,4 +53,5 @@ private:
     cocos2d::Vec2 m_AnchorPoint;
     int m_CurrentChallengeIndex;
     bool m_Complete;
+    bool m_LabelVisible;
 };

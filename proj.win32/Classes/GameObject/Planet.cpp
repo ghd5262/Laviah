@@ -45,6 +45,25 @@ bool CPlanet::init()
         addChild(m_pTexture);
     }
     
+//    // blur test
+//    auto getGLProgram = [=](std::string fileName){
+//        auto fileUtiles = FileUtils::getInstance();
+//        auto fragmentFullPath = fileUtiles->fullPathForFilename(fileName);
+//        auto fragSource = fileUtiles->getStringFromFile(fragmentFullPath);
+//        auto glprogram = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert,
+//                                                         fragSource.c_str());
+//    
+//        return GLProgramState::getOrCreateWithGLProgram(glprogram);
+//    };
+//
+//    m_pTexture->setGLProgramState(getGLProgram("example_Blur.fsh"));
+//    Size size = m_pTexture->getTexture()->getContentSizeInPixels();
+//    m_pTexture->getGLProgramState()->setUniformVec2("resolution", size);
+//#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
+//    m_pTexture->getGLProgramState()->setUniformFloat("blurRadius", 10);
+//    m_pTexture->getGLProgramState()->setUniformFloat("sampleNum", 100);
+//#endif
+    
     this->setScale(PLANET_DEFINE::SCALE_SIZE);
 
     return true;

@@ -41,7 +41,11 @@ Scene* CGameScene::createScene()
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
+#if CC_USE_PHYSICS
+    scene->initWithPhysics();
+    scene->getPhysicsWorld()->setGravity(Vec2(0, -98 * 40));
 
+#endif
 	// 'layer' is an autorelease object
 	auto layer = CGameScene::create();
 	// add layer as a child to scene

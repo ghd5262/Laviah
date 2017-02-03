@@ -113,6 +113,7 @@ CChallengeProgressBar* CChallengeProgressBar::show(cocos2d::Node* parent, int zO
         m_TitleLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_TitleLabel->setPosition(getContentSize() / 2);
         m_TitleLabel->setColor(COLOR::DARKGRAY);
+        m_TitleLabel->setVisible(m_LabelVisible);
         this->addChild(m_TitleLabel);
     }
     
@@ -128,6 +129,12 @@ CChallengeProgressBar* CChallengeProgressBar::show(cocos2d::Node* parent, int zO
 CChallengeProgressBar* CChallengeProgressBar::addLastEventListner(const LAST_CALLBACK &callback)
 {
     m_EventList.emplace_back(callback);
+    return this;
+}
+
+CChallengeProgressBar* CChallengeProgressBar::setLabelVisible(bool visible)
+{
+    m_LabelVisible = visible;
     return this;
 }
 

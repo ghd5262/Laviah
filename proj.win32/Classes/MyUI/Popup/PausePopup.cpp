@@ -37,15 +37,18 @@ bool CPausePopup::init()
     m_ChallengeList.resize(CHALLENGE::LIMIT_COUNT);
     std::fill(m_ChallengeList.begin(), m_ChallengeList.end(), nullptr);
     
-    this->initChallengeList();
     
-	auto pauseBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
+//    this->createRewardBox();
+    
+    auto pauseBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
 	if (pauseBG != nullptr){
 		pauseBG->setIgnoreAnchorPointForPosition(false);
 		pauseBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		pauseBG->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f));
 		this->addChild(pauseBG);
 	}
+    
+    this->initChallengeList();
 
 	std::string btnImageName[] = {
 		"homeButton.png",
@@ -101,6 +104,7 @@ bool CPausePopup::init()
     ->setBarColor(COLOR::GOLD)
     ->setBarAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM)
     ->setBarPosition(Vec2(pauseBG->getContentSize().width * 0.5f, 0))
+    ->setLabelVisible(false)
     ->show(pauseBG);
 
     this->setOpenAnimation([=](Node* sender){
@@ -227,9 +231,47 @@ void CPausePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posIndex)
     ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(posArray[posIndex])
+    ->setPopupPosition(posArray[1])
     ->show(this, ZORDER::POPUP);
     m_ChallengeList.at(posIndex) = dp;
 }
 
+void CPausePopup::createRewardBox()
+{
+#if CC_USE_PHYSICS
 
+    auto popupSize = getContentSize();
+    auto createWall = [=](Vec2 point1, Vec2 point2){
+        auto node = Node::create();
+        node->addComponent(PhysicsBody::createEdgeSegment(point1, point2));
+        this->addChild(node);
+    };
+    
+    createWall(Vec2(popupSize.width * 0.05f,
+                    popupSize.height),
+               Vec2(popupSize.width * 0.05f,
+                    popupSize.height * 0.2f));
+    
+    createWall(Vec2(popupSize.width * 0.05f,
+                    popupSize.height * 0.2f),
+               Vec2(popupSize.width * 0.95f,
+                    popupSize.height * 0.2f));
+    
+    createWall(Vec2(popupSize.width * 0.95f,
+                    popupSize.height),
+               Vec2(popupSize.width * 0.95f,
+                    popupSize.height * 0.2f));
+
+    
+    auto box = Sprite::create("rewardIconBig.png");
+    box->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    box->setPosition(Vec2(popupSize.width * 0.5f,
+                          popupSize.height * 1.5f));
+    box->addComponent(PhysicsBody::createBox(box->getContentSize()));
+    box->setRotation(random<float>(0, 20) + 350.f);
+    box->getPhysicsBody()->setMass(30000);
+    box->getPhysicsBody()->setVelocity(Vec2(0, -98 * 20));
+    this->addChild(box);
+#endif
+    
+}

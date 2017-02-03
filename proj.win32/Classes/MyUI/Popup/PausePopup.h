@@ -15,6 +15,7 @@ private:
     void initChallengeList();
     void createChallengeDP(const sCHALLENGE_PARAM* data,
                            int posIndex);
+    void createRewardBox();
 	void Play(cocos2d::Node* sender);
 	void Reset(cocos2d::Node* sender);
 	void GoHome(cocos2d::Node* sender);
