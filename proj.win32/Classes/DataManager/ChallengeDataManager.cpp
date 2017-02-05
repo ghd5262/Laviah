@@ -103,7 +103,7 @@ bool CChallengeDataManager::CheckCompleteAll()
 
 bool CChallengeDataManager::CheckChallengeComplete(int index)
 {
-	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_LIST, index))
+	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, index))
 		return true;
 
 	auto challengeData = this->getChallengeByIndex(index);
@@ -123,14 +123,14 @@ bool CChallengeDataManager::CheckChallengeComplete(int index)
 		if (!m_Checker->checkWithGlobal(key, mtrlValue)) return false;
 
 		GLOBAL->CHALLENGE_CLEAR_COUNT += 1;
-		CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_LIST, index);
+		CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, index);
 		return true;
 	}
 
 	if (!checker->second(mtrlValue)) return false;
 
 	GLOBAL->CHALLENGE_CLEAR_COUNT += 1;
-	CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_LIST, index);
+	CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, index);
 	return true;
 }
 
@@ -301,7 +301,7 @@ CHALLENGE_LIST CChallengeDataManager::getNonCompletedChallengeList(int level,
     
     return getListByFunc([=](const sCHALLENGE_PARAM* data){
         
-        if(userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_LIST, data->_index)) return false;
+        if(userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, data->_index)) return false;
         if(userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_CUR_LIST, data->_index)) return false;
         
         if(below)           { if(data->_level > level) return false;   }

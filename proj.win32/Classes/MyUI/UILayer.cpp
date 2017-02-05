@@ -117,11 +117,11 @@ bool CUILayer::init()
     ->setBarPosition(Vec2(popupSize.width * 0.5f, popupSize.height))
     ->show(this);
     
-//	CChallengeCompleteNoticePopup::create()
-//		->setBackgroundVisible(false)
-//		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-//		->setPopupPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f))
-//		->show(this);
+	CChallengeCompleteNoticePopup::create()
+		->setBackgroundVisible(false)
+		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+		->setPopupPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f))
+		->show(this);
 
     //this->initItemTestButton();
 //    CGameScene::getGameScene()->GameResume();

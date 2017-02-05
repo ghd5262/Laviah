@@ -50,6 +50,12 @@ struct sCHALLENGE_PARAM
     {}
 };
 
+namespace CHALLENGE_DEFINE {
+	static const std::string NAME = "CHALLENGE_NORMAL_CONTENT_%d";
+	static const std::string STORY = "CHALLENGE_HIDDEN_CONTENT_%d";
+}
+
+
 struct sREWARD_DATA{
 	std::string _key;
 	int _value;
@@ -65,7 +71,7 @@ struct sREWARD_DATA{
 };
 
 namespace CHALLENGE {
-    static const int LIMIT_COUNT = 1;
+    static const int LIMIT_COUNT = 3;
 }
 
 typedef std::function<bool(int)> CHECKER;

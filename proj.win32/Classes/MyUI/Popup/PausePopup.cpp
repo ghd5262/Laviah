@@ -231,7 +231,7 @@ void CPausePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posIndex)
     ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(posArray[1])
+    ->setPopupPosition(posArray[posIndex])
     ->show(this, ZORDER::POPUP);
     m_ChallengeList.at(posIndex) = dp;
 }

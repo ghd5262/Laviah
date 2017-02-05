@@ -29,18 +29,15 @@ namespace CHARACTER_DEFINE {
     static const int GRADE_NORMAL = 1;
     static const int GRADE_RARE   = 2;
 	static const std::string NAME  = "CHARACTER_NAME_%d";
-	static const std::string STORY = "CHARACTER_STORY_%d";
 }
 
 
 struct sCHARACTER_PARAM{
     int _idx;
-    int _openLevel;
-    int _cost;
     int _grade;
-    int _health;
     bool _random;
-    bool _coinType;
+    bool _visible;
+	bool _prepared;
     float _starItemTime;
     float _coinItemTime;
     float _bonusItemTime;
@@ -55,17 +52,14 @@ struct sCHARACTER_PARAM{
     std::string _normalMissileTextureName;
     std::string _aimingMissileTextureName;
     std::string _name;
-    std::string _story;
     std::string _texturePackName;
     
     sCHARACTER_PARAM()
     : _idx(0)
-    , _openLevel(0)
-    , _cost(0)
     , _grade(0)
-    , _health(0)
     , _random(false)
-    , _coinType(false)
+	, _visible(false)
+	, _prepared(false)
     , _starItemTime(0)
     , _coinItemTime(0)
     , _bonusItemTime(0)
@@ -80,7 +74,6 @@ struct sCHARACTER_PARAM{
     , _normalMissileTextureName("")
     , _aimingMissileTextureName("")
     , _name("")
-    , _story("")
     , _texturePackName(""){}
 };
 

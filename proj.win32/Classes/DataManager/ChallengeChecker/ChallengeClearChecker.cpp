@@ -7,7 +7,7 @@ using namespace cocos2d;
 
 bool CChallengeClearChecker::continuingTypeCheck(int index)
 {
-    auto savedDataList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST);
+    /*auto savedDataList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST);
     auto challengeList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
     auto challengeData = CChallengeDataManager::Instance()->getChallengeByIndex(challengeList.at(index));
     
@@ -16,7 +16,8 @@ bool CChallengeClearChecker::continuingTypeCheck(int index)
         return true;
     }
     
-    return false;
+    return false;*/
+	return false;
 }
 
 bool CChallengeClearChecker::checkWithGlobal(std::string key, int value)

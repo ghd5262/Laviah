@@ -11,12 +11,16 @@ namespace CHALLENGE_DATA_KEY {
     const std::string BEST_COMBO          = "BEST_COMBO";
 	const std::string COIN_COUNT		  = "COIN_COUNT";
 	const std::string STAR_COUNT		  = "STAR_COUNT";
+	const std::string REVIVE_COUNT		  = "REVIVE_COUNT";
 
     const std::string CHARACTER_COLLECT   = "CHARACTER_COLLECT";
     const std::string ROCKET_COLLECT      = "ROCKET_COLLECT";
     
     const std::string CHARACTER_COUNT     = "CHARACTER_COUNT";
+	const std::string CHARACTER_RARE_COUNT= "CHARACTER_RARE_COUNT";
     const std::string ROCKET_COUNT        = "ROCKET_COUNT";
+	const std::string ROCKET_RARE_COUNT	  = "ROCKET_RARE_COUNT";
+
     
     const std::string USER_LEVEL          = "USER_LEVEL";
     const std::string COIN_ITEM_LEVEL     = "COIN_ITEM_LEVEL";
@@ -50,6 +54,10 @@ namespace CHALLENGE_DATA_KEY {
     const std::string ROCKET_COIN_COUNT   = "ROCKET_COIN_COUNT";
     const std::string COMBO               = "COMBO";
     const std::string COIN                = "COIN";
+	const std::string SAVED_RUN			  = "SAVED_RUN";
+	const std::string SAVED_SCORE		  = "SAVED_SCORE";
+	const std::string SAVED_REVIVE		  = "SAVED_REVIVE";
+
 };
 
 class CChallengeClearChecker {

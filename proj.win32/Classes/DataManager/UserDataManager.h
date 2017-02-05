@@ -20,6 +20,11 @@ namespace USERDATA_KEY {
     const std::string LEVEL                     = "USER_LEVEL";
     const std::string CHARACTER                 = "USER_CUR_CHARACTER";
     const std::string COIN                      = "USER_COIN";
+
+	const std::string SAVED_RUN					= "USER_SAVED_RUN";
+	const std::string SAVED_SCORE				= "USER_SAVED_SCORE";
+	const std::string SAVED_REVIVE				= "USER_SAVED_REVIVE";
+
     const std::string PET                       = "USER_CUR_PET";
     const std::string ROCKET                    = "USER_CUR_ROCKET";
     
@@ -42,8 +47,8 @@ namespace USERDATA_KEY {
     const std::string PET_LIST                  = "USER_PET_LIST";
     
     const std::string CHALLENGE_CUR_LIST        = "USER_CUR_CHALLENGE_LIST";
-    const std::string CHALLENGE_CUR_VALUE_LIST  = "USER_CUR_CHALLENGE_VALUE_LIST";
-    const std::string CHALLENGE_COM_LIST        = "USER_COMPLETE_CHALLENGE_LIST";
+    const std::string CHALLENGE_COM_NORMAL_LIST = "USER_COMPLETE_NORMAL_CHALLENGE_LIST";
+	const std::string CHALLENGE_COM_HIDDEN_LIST = "USER_COMPLETE_HIDDEN_CHALLENGE_LIST";
 };
 
 class CGoogleCloudManager;

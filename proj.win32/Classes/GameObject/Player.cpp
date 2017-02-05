@@ -302,7 +302,7 @@ void CPlayer::ChangeDataByCharacter()
 	m_fStarLimitTime		= m_CharacterParam->_starItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_STAR);
 	m_fBonusTimeLimitTime	= m_CharacterParam->_bonusItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_BOUNS);
 	m_fGiantLimitTime		= m_CharacterParam->_giantItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_GIANT);
-	m_fMaxLife				= m_CharacterParam->_health;
+	m_fMaxLife = 1;
 
 	m_MagnetEffect->setLimitTime(m_fMagnetLimitTime);
 	m_MagnetEffect->setOriginBoundingRadius(m_fMagnetLimitRadius);

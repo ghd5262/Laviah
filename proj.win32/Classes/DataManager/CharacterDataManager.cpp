@@ -129,16 +129,13 @@ void CCharacterDataManager::addCharacterToList(const Json::Value& data)
 {
     sCHARACTER_PARAM* param = new sCHARACTER_PARAM();
     
-    param->_idx             = data["idx"].asInt();
+    param->_idx             = data["index"].asInt();
     param->_grade           = data["grade"].asInt();
     
     auto initData = [=](std::string key){
         return this->initCharacterWithDefaultValue(param->_grade, key, data[key.c_str()]);
     };
 
-    param->_openLevel       = initData("openLevel").asInt();
-    param->_cost            = initData("cost").asInt();
-    param->_health          = initData("health").asInt();
     param->_starItemTime    = initData("defaultStarItemTime").asInt();
     param->_coinItemTime    = initData("defaultCoinItemTime").asInt();
     param->_bonusItemTime   = initData("defaultBonusItemTime").asInt();
@@ -147,10 +144,10 @@ void CCharacterDataManager::addCharacterToList(const Json::Value& data)
     param->_magnetItemSize  = initData("defaultMagnetItemSize").asInt();
     
     param->_random          = initData("random").asBool();
-    param->_coinType        = initData("coinType").asBool();
-    
+    param->_visible         = initData("visible").asBool();
+    param->_prepared        = initData("prepared").asBool();
+
 	param->_name			= StringUtils::format(CHARACTER_DEFINE::NAME.c_str(), param->_idx);
-	param->_story			= StringUtils::format(CHARACTER_DEFINE::STORY.c_str(), param->_idx);
     
     this->setTextureNameByGrade(param);
     m_CharacterList.emplace(std::pair<int, const sCHARACTER_PARAM*>(param->_idx, param));
@@ -212,10 +209,9 @@ const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacterFromList(CHA
 	auto randomIdx = random<int>(0, int(size) - 1);
 	picked = list.at(randomIdx);
 
-	CCLOG("Pick a character :: idx %d name %s level %d",
+	CCLOG("Pick a character :: idx %d name %s",
 		picked->_idx,
-		TRANSLATE(picked->_name).c_str(),
-		picked->_openLevel);
+		TRANSLATE(picked->_name).c_str());
 
 	return picked;
 }
@@ -229,9 +225,7 @@ CHARACTER_LIST CCharacterDataManager::getNonCollectedCharacterList(int level, bo
 		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, data->_idx)) return false;
         
         if (!data->_random) return false;
-        
-		if (below)           { if (data->_openLevel > level) return false; }
-		else                 { if (data->_openLevel != level) return false; }
+		if (!data->_prepared) return false;
 
 		return true;
 	}, m_CharacterList);
@@ -243,12 +237,8 @@ void CCharacterDataManager::PrintCharacterInfo(int index)
 	auto character = m_CharacterList.at(index);
 	CCLOG("=======================Character Info=======================");
 	CCLOG("Index                            : %d", character->_idx);
-    CCLOG("Open Level                       : %d", character->_openLevel);
     CCLOG("Grade                            : %d", character->_grade);
-    CCLOG("Cost                             : %d", character->_cost);
     CCLOG("Random                           : %s", character->_random ? "random" : "non-random");
-    CCLOG("Coin type                        : %s", character->_coinType ? "coin" : "cash");
-	CCLOG("Health                           : %d", character->_health);
 	CCLOG("Star Item Time                   : %f", character->_starItemTime);
 	CCLOG("Coin Item Time                   : %f", character->_coinItemTime);
 	CCLOG("Magnet Item Time                 : %f", character->_magnetItemTime);
@@ -263,7 +253,6 @@ void CCharacterDataManager::PrintCharacterInfo(int index)
 	CCLOG("Normal Missile Texture Name      : %s", character->_normalMissileTextureName.c_str());
 	CCLOG("Aiming Missile Texture Name      : %s", character->_aimingMissileTextureName.c_str());
 	CCLOG("Name                             : %s", TRANSLATE(character->_name).c_str());
-	CCLOG("Story                            : %s", TRANSLATE(character->_story).c_str());
     CCLOG("Texture Pack Name                : %s", character->_texturePackName.c_str());
 	CCLOG("============================================================");
 }

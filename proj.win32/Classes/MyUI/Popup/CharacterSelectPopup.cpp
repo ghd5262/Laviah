@@ -89,6 +89,8 @@ bool CCharacterSelectPopup::init()
 		for (auto iter : characterList)
 		{
             auto character = iter.second;
+			if (!character->_prepared) continue;
+
 			auto characterDP = CCharacterSelectPopupDP::create(character);
 			characterDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             characterDP->setDPIndex(dpIdx);
@@ -246,7 +248,7 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
 	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx))
 		m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
     else{// If do not have, Change the Button String to "buy cost"
-		m_btnSelect->changeContents(MakeString("$ %d", centerCharacterParam->_cost));
+		m_btnSelect->changeContents(TRANSLATE("CURRENCY_UNIT"));
         if(centerCharacterParam->_grade == CHARACTER_DEFINE::GRADE_RARE )
             m_CenterCharacterNameLabel->setString("???");
     }
