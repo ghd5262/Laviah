@@ -52,7 +52,10 @@ void CChallengeProgressBar::update(float delta)
 
     // calculate percent
     {
-        auto value = GLOBAL->getVariable(m_ChallengeData->_materialKey);
+        auto value = 0;
+		for (auto key : m_ChallengeData->_materialKeyList)
+			value += GLOBAL->getVariable(key);
+
         if(value != m_CurrentValue) {
             m_CurrentValue = value;
             m_ProgressBar->runAction(ProgressTo::create(0.5f, this->getPercent(value, m_GoalValue)));
@@ -61,7 +64,7 @@ void CChallengeProgressBar::update(float delta)
     
     // If challenge complete set complete flag true
     // TODO: CheckChallengeComplete -> CheckNormalChallengeComplete (noraml should be check with saved data.)
-    if(CChallengeDataManager::Instance()->CheckChallengeComplete(index))
+    if(CChallengeDataManager::Instance()->CheckChallengeComplete(index, false))
     {
         if(m_Complete) return;
         
@@ -171,8 +174,8 @@ void CChallengeProgressBar::Reset()
     }
     
     m_ChallengeData = CChallengeDataManager::Instance()->getChallengeByIndex(list.at(0));
-    m_GoalValue = m_ChallengeData->_materialValue;
-    m_TitleLabel->setString(m_ChallengeData->_contents);
+	for (auto value : m_ChallengeData->_materialValueList) m_GoalValue += value;
+	m_TitleLabel->setString(StringUtils::format(TRANSLATE(m_ChallengeData->_contents).c_str(), m_ChallengeData->_materialValueList.at(0)));
     m_ProgressBar->setColor(m_BarColor);
     m_Complete = false;
 }

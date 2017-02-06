@@ -176,9 +176,9 @@ const sCHARACTER_PARAM* CCharacterDataManager::getCharacterByIndex(int index) co
 	return data->second;
 } 
 
-const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacter(int level, bool below)
+const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacter()
 {
-	auto newList = getNonCollectedCharacterList(level, below);
+	auto newList = getNonCollectedCharacterList();
 	return getNewRandomCharacterFromList(newList);
 }
 
@@ -216,7 +216,7 @@ const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacterFromList(CHA
 	return picked;
 }
 
-CHARACTER_LIST CCharacterDataManager::getNonCollectedCharacterList(int level, bool below)
+CHARACTER_LIST CCharacterDataManager::getNonCollectedCharacterList()
 {
 	auto userDataMng = CUserDataManager::Instance();
 

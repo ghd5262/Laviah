@@ -32,12 +32,18 @@ bool CChallengePopupDP::init()
 	this->setContentSize(Size(1080, 270));
 	auto popupSize = this->getContentSize();
 
-    auto value = GLOBAL->getVariable(m_Challenge._materialKey);
-    auto mtrlValue = m_Challenge._materialValue;
-	bool complete = CChallengeDataManager::Instance()->CheckChallengeComplete(m_Challenge._index);
+	auto value = 0;
+	for (auto key : m_Challenge._materialKeyList)
+		value += GLOBAL->getVariable(key);
+
+	auto mtrlValue = 0;
+	for (auto value : m_Challenge._materialValueList)
+		mtrlValue += value;
+	
+	bool complete = CChallengeDataManager::Instance()->CheckChallengeComplete(m_Challenge._index, false);
 	if (complete) value = mtrlValue;
 
-    auto contents = m_Challenge._contents;
+	auto contents = StringUtils::format(TRANSLATE(m_Challenge._contents).c_str(), m_Challenge._materialValueList.at(0));
 	if (value > 0) contents += StringUtils::format(" (%d%%)", int(getPercent(value, mtrlValue)));
     
 	auto label = Label::createWithTTF(contents, FONT::MALGUNBD, 45, 
@@ -50,7 +56,7 @@ bool CChallengePopupDP::init()
 	this->addChild(label);
         
     if (!complete &&
-        CChallengeDataManager::Instance()->NonCompleteChallengeExist(m_Challenge._level, false)){
+        CChallengeDataManager::Instance()->NonCompleteChallengeExist()){
         
         auto skipBtn = CMyButton::create()
         ->addEventListener([=](Node* sender){

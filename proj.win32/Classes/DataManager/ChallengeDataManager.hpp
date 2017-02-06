@@ -1,60 +1,99 @@
 #pragma once
 #include "../Common/HSHUtility.h"
+#include "../json/json.h"
 #include <map>
 #include <vector>
 #include <algorithm>
+
+
+enum CHECKER_TYPE{
+	ETC = 0,
+	GLOBAL_DATA = 1,
+	SINGLE_DATA = 2,
+	ITEM_EXIST = 3,
+	ITEM_COUNT = 4,
+	CONTINUE = 5
+};
 
 class CChallengeClearChecker;
 class CChallengeRewarder;
 struct sCHALLENGE_PARAM
 {
     int _index;
-    int _level;
     bool _continuingType;
+	bool _hiddenType;
+	bool _visible;
+	bool _isHighLevel;
+	CHECKER_TYPE _checkerType;
     std::string _contents;
-    std::string _materialKey;
     std::string _rewardKey;
-    int _materialValue;
     int _rewardValue;
+	std::vector<std::string> _materialKeyList;
+	std::vector<int> _materialValueList;
+	
+	//template<class T>
+	//void copyList(std::vector<T>& inList, std::vector<T>& outList){
+	//	outList.resize(inList.size());
+	//	std::copy(inList.begin(), inList.end(), outList.begin());
+	//}
 
     sCHALLENGE_PARAM()
     : _index(-1)
-    , _level(-1)
     , _continuingType(false)
+	, _hiddenType(false)
+	, _visible(false)
+	, _isHighLevel(false)
+	, _checkerType(CHECKER_TYPE::ETC)
     , _contents("")
-    , _materialKey("")
     , _rewardKey("")
-    , _materialValue(0)
     , _rewardValue(0){}
     
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM& data)
     : _index(data._index)
-    , _level(data._level)
     , _continuingType(data._continuingType)
+	, _hiddenType(data._hiddenType)
+	, _visible(data._visible)
+	, _isHighLevel(data._isHighLevel)
+	, _checkerType(data._checkerType)
     , _contents(data._contents)
-    , _materialKey(data._materialKey)
     , _rewardKey(data._rewardKey)
-    , _materialValue(data._materialValue)
     , _rewardValue(data._rewardValue)
-    {}
+    {
+		_materialKeyList.resize(data._materialKeyList.size());
+		std::copy(data._materialKeyList.begin(), data._materialKeyList.end(), _materialKeyList.begin());
+		
+		_materialValueList.resize(data._materialValueList.size());
+		std::copy(data._materialValueList.begin(), data._materialValueList.end(), _materialValueList.begin());
+
+		
+		/*copyList(data._materialKeyList, _materialKeyList);
+		copyList(data._materialValueList, _materialValueList);*/
+	}
     
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM* data)
     : _index(data->_index)
-    , _level(data->_level)
     , _continuingType(data->_continuingType)
+	, _hiddenType(data->_hiddenType)
+	, _visible(data->_visible)
+	, _isHighLevel(data->_isHighLevel)
+	, _checkerType(data->_checkerType)
     , _contents(data->_contents)
-    , _materialKey(data->_materialKey)
     , _rewardKey(data->_rewardKey)
-    , _materialValue(data->_materialValue)
     , _rewardValue(data->_rewardValue)
-    {}
+    {
+		_materialKeyList.resize(data->_materialKeyList.size());
+		std::copy(data->_materialKeyList.begin(), data->_materialKeyList.end(), _materialKeyList.begin());
+
+		_materialValueList.resize(data->_materialValueList.size());
+		std::copy(data->_materialValueList.begin(), data->_materialValueList.end(), _materialValueList.begin());
+	}
 };
 
 namespace CHALLENGE_DEFINE {
-	static const std::string NAME = "CHALLENGE_NORMAL_CONTENT_%d";
-	static const std::string STORY = "CHALLENGE_HIDDEN_CONTENT_%d";
+	static const int LIMIT_COUNT = 3;
+	static const std::string NORMAL_CONTENT = "CHALLENGE_NORMAL_CONTENT_%d";
+	static const std::string NORMAL_HIDDEN  = "CHALLENGE_HIDDEN_CONTENT_%d";
 }
-
 
 struct sREWARD_DATA{
 	std::string _key;
@@ -70,15 +109,11 @@ struct sREWARD_DATA{
 		, _value(value){};
 };
 
-namespace CHALLENGE {
-    static const int LIMIT_COUNT = 3;
-}
-
 typedef std::function<bool(int)> CHECKER;
 typedef std::map<std::string, CHECKER> CHECKER_LIST;
 typedef std::function<sREWARD_DATA(sREWARD_DATA)> REWARDER;
 typedef std::map<std::string, REWARDER> REWARDER_LIST;
-typedef std::vector<const sCHALLENGE_PARAM*> CHALLENGE_LIST;
+typedef std::map<int, const sCHALLENGE_PARAM*> CHALLENGE_LIST;
 typedef std::function<bool(const sCHALLENGE_PARAM*)> CHALLENGE_PICK;
 
 class CChallengeDataManager
@@ -86,42 +121,44 @@ class CChallengeDataManager
 public:
     static CChallengeDataManager* Instance();
 	bool CheckCompleteAll();
-	bool CheckChallengeComplete(int index);
+	bool CheckChallengeComplete(int index, bool isHidden);
 	const sCHALLENGE_PARAM* CompleteCheckRealTime();
 
 	sREWARD_DATA Reward(int index);
 	sREWARD_DATA RewardByKey(std::string key, int value);
-    int NonCompleteChallengeExist(int level,
-                                  bool below,
-                                  bool continuingType = false);
+    int NonCompleteChallengeExist();
     void getNewChallenges();
     const sCHALLENGE_PARAM* SkipChallenge(int index);
 
     //getter & setter
     const sCHALLENGE_PARAM* getChallengeByIndex(int index) const;
-    const sCHALLENGE_PARAM* getNewRandomChallenge(int level,
-                                                  bool below,
-                                                  bool continuingType = false);
+    const sCHALLENGE_PARAM* getNewRandomChallenge();
     cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
     static CHALLENGE_LIST getListByFunc(const CHALLENGE_PICK &func, CHALLENGE_LIST list);
 
 private:
-    void initWithJson(CHALLENGE_LIST &list, std::string fileName);
-    void initMaterialKeyList();
-    void initRewardKeyList();
+    void initWithJson(std::string fileName);
+	void initETCChekerList();
+	void initRewarderList();
+	void initMaterialValueListByUserData(sCHALLENGE_PARAM* data);
+
+	const Json::Value initChallengeWithDefaultValue(bool hidden, std::string key, const Json::Value data);
+	void addChallengeToList(CHALLENGE_LIST &list, const Json::Value& data, bool hiddenType);
+
     const sCHALLENGE_PARAM* getNewRandomChallengeFromList(CHALLENGE_LIST &list);
-    CHALLENGE_LIST getNonCompletedChallengeList(int level,
-                                                bool below,
-                                                bool continuingType = false);
+    CHALLENGE_LIST getNonCompletedChallengeList();
     void removeChallengeFromUserData(int index);
     
     CChallengeDataManager();
     virtual ~CChallengeDataManager();
     
 private:
-    CHALLENGE_LIST m_ChallengeDataList;
+    CHALLENGE_LIST m_NormalChallengeDataList;
+	CHALLENGE_LIST m_HiddenChallengeDataList;
     CHECKER_LIST m_CheckerList;
     REWARDER_LIST m_RewarderList;
     CChallengeClearChecker* m_Checker;
     CChallengeRewarder* m_Rewarder;
+	Json::Value m_NormalChallengeDefaultSet;
+	Json::Value m_HiddenChallengeDefaultSet;
 };

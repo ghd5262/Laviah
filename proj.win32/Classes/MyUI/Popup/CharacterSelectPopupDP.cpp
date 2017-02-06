@@ -41,7 +41,7 @@ bool CCharacterSelectPopupDP::init()
     }
     
     if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx)){
-        if(m_Character->_grade == CHARACTER_DEFINE::GRADE_NORMAL)
+        if(m_Character->_grade == CHARACTER_GRADE::NORMAL)
             m_CharacterImg->setColor(COLOR::DARKGRAY);
         else
             m_CharacterImg->setColor(Color3B::BLACK);

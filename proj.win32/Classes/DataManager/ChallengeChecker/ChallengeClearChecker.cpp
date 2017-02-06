@@ -2,6 +2,7 @@
 #include "../UserDataManager.h"
 #include "../ChallengeDataManager.hpp"
 #include "../WorkshopItemDataManager.h"
+#include "../CharacterDataManager.h"
 
 using namespace cocos2d;
 
@@ -26,69 +27,35 @@ bool CChallengeClearChecker::checkWithGlobal(std::string key, int value)
     return value <= global;
 }
 
-bool CChallengeClearChecker::bestScoreCheck(int value) {
-    auto bestScore = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
-    return (value <= bestScore);
+bool CChallengeClearChecker::checkWithSingleUserData(std::string key, int value)
+{
+	return (value <= CUserDataManager::Instance()->getUserData_Number(key));
 }
 
-bool CChallengeClearChecker::bestComboCheck(int value) {
-    auto bestCombo = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_COMBO);
-    return (value <= bestCombo);
+bool CChallengeClearChecker::checkWithItemExist(std::string key, int value)
+{
+	return CUserDataManager::Instance()->getUserData_IsItemHave(key, value);
 }
 
-bool CChallengeClearChecker::characterCollectCheck(int value) {
-    return CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, value);
+bool CChallengeClearChecker::checkWithCount(std::string key, int value)
+{
+	return (value <= CUserDataManager::Instance()->getUserData_List(key).size());
 }
 
-bool CChallengeClearChecker::rocketCollectCheck(int value) {
-    return CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::ROCKET_LIST, value);
+bool CChallengeClearChecker::characterRareCountCheck(int value)
+{
+	auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST);
+	if (!list.size()) return false;
+
+	//auto rareList = CDataManagerUtils::getListByFunc([=](int index){
+	//	auto data = CCharacterDataManager::Instance()->getCharacterByIndex(index);
+	//	return (data->_grade == CHARACTER_GRADE::RARE);
+	//}, list);
+	//return rareList.size();
+	return false;
 }
 
-bool CChallengeClearChecker::characterCountCheck(int value) {
-    auto count = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST).size();
-	return (value <= count);
-}
-
-bool CChallengeClearChecker::rocketCountCheck(int value) {
-    auto count = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ROCKET_LIST).size();
-	return (value <= count);
-}
-
-bool CChallengeClearChecker::userLevelCheck(int value) {
-    auto level = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
-	return (value <= level);
-}
-
-bool workshopLevelCheck(std::string key, int material) {
-    auto level = CUserDataManager::Instance()->getUserData_Number(key);
-    return (material <= level);
-}
-
-bool CChallengeClearChecker::coinItemLevelCheck(int value) {
-    return workshopLevelCheck(USERDATA_KEY::ITEM_TIME_COIN, value);
-}
-
-bool CChallengeClearChecker::starItemLevelCheck(int value) {
-    return workshopLevelCheck(USERDATA_KEY::ITEM_TIME_STAR, value);
-}
-
-bool CChallengeClearChecker::bonusItemLevelCheck(int value) {
-    return workshopLevelCheck(USERDATA_KEY::ITEM_TIME_BOUNS, value);
-}
-
-bool CChallengeClearChecker::giantItemLevelCheck(int value) {
-    return workshopLevelCheck(USERDATA_KEY::ITEM_TIME_GIANT, value);
-}
-
-bool CChallengeClearChecker::magnetItemLevelCheck(int value) {
-    return workshopLevelCheck(USERDATA_KEY::ITEM_TIME_MAGNET, value);
-}
-
-bool CChallengeClearChecker::magnetSizeLevelCheck(int value) {
-    return workshopLevelCheck(USERDATA_KEY::ITEM_SIZE_MAGNET, value);
-}
-
-bool CChallengeClearChecker::coinCheck(int value) {
-    auto coin = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN);
-	return (value <= coin);
+bool CChallengeClearChecker::rocketRareCountCheck(int value)
+{
+	return false;
 }

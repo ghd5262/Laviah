@@ -25,12 +25,14 @@ namespace CHARACTER_TEXTUREPACK {
     static const std::string N_TEXTUREPACK      = "defaultTexturePack_%d";
 }
 
+enum CHARACTER_GRADE{
+	NORMAL	= 1,
+	RARE	= 2,
+};
+
 namespace CHARACTER_DEFINE {
-    static const int GRADE_NORMAL = 1;
-    static const int GRADE_RARE   = 2;
 	static const std::string NAME  = "CHARACTER_NAME_%d";
 }
-
 
 struct sCHARACTER_PARAM{
     int _idx;
@@ -87,11 +89,11 @@ public:
     //getter & setter
 	CHARACTER_LIST getCharacterList(){ return m_CharacterList; };
 	void PrintCharacterInfo(int index);
-	bool NonCollectedCharacterExist(int level, bool below);
+	bool NonCollectedCharacterExist();
 
 	//getter & setter
 	const sCHARACTER_PARAM* getCharacterByIndex(int index) const;
-	const sCHARACTER_PARAM* getNewRandomCharacter(int level, bool below);
+	const sCHARACTER_PARAM* getNewRandomCharacter();
 	static CHARACTER_LIST getListByFunc(const CHARACTER_PICK &func, CHARACTER_LIST list);
 
 private:
@@ -102,7 +104,7 @@ private:
     void addCharacterToList(const Json::Value& data);
     const Json::Value initCharacterWithDefaultValue(int grade, std::string key, const Json::Value data);
 	const sCHARACTER_PARAM* getNewRandomCharacterFromList(CHARACTER_LIST &list);
-	CHARACTER_LIST getNonCollectedCharacterList(int level, bool below);
+	CHARACTER_LIST getNonCollectedCharacterList();
 
     CCharacterDataManager();
     virtual ~CCharacterDataManager();

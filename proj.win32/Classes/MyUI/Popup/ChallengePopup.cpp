@@ -30,7 +30,7 @@ bool CChallengePopup::init()
 
 CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 {
-    m_ChallengeList.resize(CHALLENGE::LIMIT_COUNT);
+    m_ChallengeList.resize(CHALLENGE_DEFINE::LIMIT_COUNT);
     std::fill(m_ChallengeList.begin(), m_ChallengeList.end(), nullptr);
 
 	// To avoid duplicate check.
@@ -98,7 +98,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
         rewardPopup->setExitCallback([=](){
             
-			if (CChallengeDataManager::Instance()->NonCompleteChallengeExist(1, false) >= CHALLENGE::LIMIT_COUNT){
+			if (CChallengeDataManager::Instance()->NonCompleteChallengeExist() >= CHALLENGE_DEFINE::LIMIT_COUNT){
 				// Do open challenge popup again.
 				CGameScene::getGameScene()->ShowChallenge();
 				this->popupClose();

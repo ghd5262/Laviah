@@ -249,7 +249,7 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
 		m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
     else{// If do not have, Change the Button String to "buy cost"
 		m_btnSelect->changeContents(TRANSLATE("CURRENCY_UNIT"));
-        if(centerCharacterParam->_grade == CHARACTER_DEFINE::GRADE_RARE )
+        if(centerCharacterParam->_grade == CHARACTER_GRADE::RARE )
             m_CenterCharacterNameLabel->setString("???");
     }
 	

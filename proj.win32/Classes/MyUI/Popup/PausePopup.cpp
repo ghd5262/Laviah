@@ -34,7 +34,7 @@ bool CPausePopup::init()
 	if (!CPopup::init()) return false;
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-    m_ChallengeList.resize(CHALLENGE::LIMIT_COUNT);
+    m_ChallengeList.resize(CHALLENGE_DEFINE::LIMIT_COUNT);
     std::fill(m_ChallengeList.begin(), m_ChallengeList.end(), nullptr);
     
     

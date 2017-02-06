@@ -70,7 +70,7 @@ void CChallengeCompleteNoticePopup::checkChallengeCompleteOnRealTime()
 	auto data = CChallengeDataManager::Instance()->CompleteCheckRealTime();
 	if (data != nullptr) {
         m_Checkable = false;
-        m_ChallengeLabel->setString(data->_contents.c_str());
+        m_ChallengeLabel->setString(StringUtils::format(TRANSLATE(data->_contents).c_str(), data->_materialValueList.at(0)));
 		this->show();
 	}
 }

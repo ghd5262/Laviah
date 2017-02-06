@@ -14,25 +14,23 @@ CChallengeDataManager::CChallengeDataManager()
 : m_Checker(new CChallengeClearChecker())
 , m_Rewarder(new CChallengeRewarder())
 {
-	initMaterialKeyList();
-	initRewardKeyList();
-    initWithJson(m_ChallengeDataList, "challengeList_1.json");
-	initWithJson(m_ChallengeDataList, "challengeList_2.json");
-	initWithJson(m_ChallengeDataList, "challengeList_3.json");
+	initETCChekerList();
+	initRewarderList();
+    initWithJson("challengeList.json");
 }
 
 CChallengeDataManager::~CChallengeDataManager()
 {
-    auto cleanList = [=](CHALLENGE_LIST &list){
-        for (auto data : list)
-        {
-            delete data;
-            data = nullptr;
-        }
-        list.clear();
-    };
+	auto cleanList = [=](CHALLENGE_LIST &list){
+		for (auto data : list)
+		{
+			delete data.second;
+			data.second = nullptr;
+		}
+		list.clear();
+	};
     
-    cleanList(m_ChallengeDataList);
+    cleanList(m_NormalChallengeDataList);
     
     CC_SAFE_DELETE(m_Checker);
     CC_SAFE_DELETE(m_Rewarder);
@@ -44,7 +42,7 @@ CChallengeDataManager* CChallengeDataManager::Instance()
     return &instance;
 }
 
-void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileName)
+void CChallengeDataManager::initWithJson(std::string fileName)
 {
     Json::Value root;
     Json::Reader reader;
@@ -62,26 +60,22 @@ void CChallengeDataManager::initWithJson(CHALLENGE_LIST &list, std::string fileN
     }
     CCLOG("Challenge List JSON : \n %s\n", fileData.c_str());
     
-    
-    const Json::Value challengeArray = root["challenges"];
+	m_NormalChallengeDefaultSet				= root["normalChallengeDefaultSet"];
+	m_HiddenChallengeDefaultSet				= root["hiddenChallengeDefaultSet"];
+    const Json::Value normalChallengeArray	= root["normalChallenges"];
+	const Json::Value hiddenChallengeArray  = root["hiddenChallenges"];
 
-    for (unsigned int count = 0; count < challengeArray.size(); ++count)
+	for (unsigned int count = 0; count < normalChallengeArray.size(); ++count)
     {
-        const Json::Value challenge = challengeArray[count];
-        
-        sCHALLENGE_PARAM* challengeInfo = new sCHALLENGE_PARAM();
-        
-        challengeInfo->_index               = int(list.size());
-        challengeInfo->_level               = challenge["level"].asInt();
-        challengeInfo->_continuingType      = challenge["continuingType"].asBool();
-        challengeInfo->_contents            = challenge["contents"].asString();
-        challengeInfo->_materialKey         = challenge["materialKey"].asString();
-        challengeInfo->_rewardKey           = challenge["rewardKey"].asString();
-        challengeInfo->_materialValue       = challenge["materialValue"].asInt();
-        challengeInfo->_rewardValue         = challenge["rewardValue"].asInt();
-
-        list.emplace_back(challengeInfo);
+		const Json::Value valueItem = normalChallengeArray[count];
+		this->addChallengeToList(m_NormalChallengeDataList, valueItem, false);
     }
+
+	for (unsigned int count = 0; count < hiddenChallengeArray.size(); ++count)
+	{
+		const Json::Value valueItem = hiddenChallengeArray[count];
+		this->addChallengeToList(m_HiddenChallengeDataList, valueItem, true);
+	}
 }
 
 bool CChallengeDataManager::CheckCompleteAll()
@@ -96,41 +90,47 @@ bool CChallengeDataManager::CheckCompleteAll()
     
 	bool result = true;
 	for (auto index : currentList)
-		if (!CheckChallengeComplete(index)) result = false;
+		if (!CheckChallengeComplete(index, false)) result = false;
 
 	return result;
 }
 
-bool CChallengeDataManager::CheckChallengeComplete(int index)
+bool CChallengeDataManager::CheckChallengeComplete(int index, bool isHidden)
 {
-	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, index))
-		return true;
+	std::string		userDataKey = USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST;
+	if (isHidden)	userDataKey = USERDATA_KEY::CHALLENGE_COM_HIDDEN_LIST;
+	if (CUserDataManager::Instance()->getUserData_IsItemHave(userDataKey, index)) return true;
 
-	auto challengeData = this->getChallengeByIndex(index);
+	auto challengeData	= this->getChallengeByIndex(index);
+	auto keyList		= challengeData->_materialKeyList;
+	auto mtrlValueList	= challengeData->_materialValueList;
+	auto checkerType	= challengeData->_checkerType;
+	for (int idx = 0; idx < keyList.size(); idx++)
+	{
+		auto key		= keyList.at(idx);
+		auto mtrlValue	= mtrlValueList.at(idx);
+		auto checker	= m_CheckerList.find(key);
 
-	//    if(challengeData->_continuingType)
-	//    {
-	//        auto sequence = CUserDataManager::getUserDataSequenceFromList(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
-	//        if(m_Checker->continuingTypeCheck(int(sequence))) return true;
-	//        return false;
-	//    }
-
-	auto key = challengeData->_materialKey;
-	auto mtrlValue = challengeData->_materialValue;
-
-	auto checker = m_CheckerList.find(key);
-	if (checker == std::end(m_CheckerList)){
-		if (!m_Checker->checkWithGlobal(key, mtrlValue)) return false;
-
-		GLOBAL->CHALLENGE_CLEAR_COUNT += 1;
-		CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, index);
-		return true;
+		switch (checkerType){
+		case CHECKER_TYPE::ETC:
+			if (checker == m_CheckerList.end()) {
+				CCLOG("There is no checker with key %s", key.c_str());
+				CCASSERT(false, "There is no checker with key");
+				return false;
+			}
+			if (!checker->second(mtrlValue)) return false;
+			break;
+		case CHECKER_TYPE::GLOBAL_DATA: if (!m_Checker->checkWithGlobal(key, mtrlValue))		return false; break;
+		case CHECKER_TYPE::SINGLE_DATA: if (!m_Checker->checkWithSingleUserData(key, mtrlValue))return false; break;
+		case CHECKER_TYPE::ITEM_EXIST:	if (!m_Checker->checkWithItemExist(key, mtrlValue))		return false; break;
+		case CHECKER_TYPE::ITEM_COUNT:	if (!m_Checker->checkWithCount(key, mtrlValue))			return false; break;
+		case CHECKER_TYPE::CONTINUE:	CCLOG("Developed yet."); break;
+		}
 	}
 
-	if (!checker->second(mtrlValue)) return false;
-
-	GLOBAL->CHALLENGE_CLEAR_COUNT += 1;
-	CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, index);
+	CUserDataManager::Instance()->setUserData_ItemGet(userDataKey, index);
+	if (!isHidden) GLOBAL->CHALLENGE_CLEAR_COUNT += 1;
+	
 	return true;
 }
 
@@ -143,7 +143,7 @@ const sCHALLENGE_PARAM* CChallengeDataManager::CompleteCheckRealTime()
 	{
 		auto originCount = GLOBAL->CHALLENGE_CLEAR_COUNT;
 
-		if (this->CheckChallengeComplete(index)){
+		if (this->CheckChallengeComplete(index, false)){
 			if (originCount < GLOBAL->CHALLENGE_CLEAR_COUNT)
 			{
 				return this->getChallengeByIndex(index);
@@ -172,21 +172,19 @@ sREWARD_DATA CChallengeDataManager::RewardByKey(std::string key, int value)
 	return rewarder->second(sREWARD_DATA(key, value));
 }
 
-int CChallengeDataManager::NonCompleteChallengeExist(int level,
-                                                      bool below,
-                                                      bool continuingType/* = false*/)
+int CChallengeDataManager::NonCompleteChallengeExist()
 {
-    return getNonCompletedChallengeList(level, below, continuingType).size();
+    return getNonCompletedChallengeList().size();
 }
 
 void CChallengeDataManager::getNewChallenges()
 {
     auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
-    auto nonCompleteList = getNonCompletedChallengeList(1, false);
+    auto nonCompleteList = getNonCompletedChallengeList();
     
     // Challenges not completed are less than limit count.
     // then remove current list only.
-    if(nonCompleteList.size() < CHALLENGE::LIMIT_COUNT)
+    if(nonCompleteList.size() < CHALLENGE_DEFINE::LIMIT_COUNT)
     {
 		for (int index = 0; index < list.size(); index++)
 			this->removeChallengeFromUserData(list.at(index));
@@ -196,16 +194,16 @@ void CChallengeDataManager::getNewChallenges()
     
     // Current challenges are less than limit count.
     // then get new challenges until limit count.
-	if (list.size() < CHALLENGE::LIMIT_COUNT)
+	if (list.size() < CHALLENGE_DEFINE::LIMIT_COUNT)
     {
-		for (int count = 0; count < CHALLENGE::LIMIT_COUNT - list.size(); count++)
-            this->getNewRandomChallenge(1, false);
+		for (int count = 0; count < CHALLENGE_DEFINE::LIMIT_COUNT - list.size(); count++)
+            this->getNewRandomChallenge();
         
         return;
     }
     
     // There are enough challenges to skip.
-    for(int count = 0; count < CHALLENGE::LIMIT_COUNT; count++)
+	for (int count = 0; count < CHALLENGE_DEFINE::LIMIT_COUNT; count++)
     {
 		this->SkipChallenge(list.at(count));
     }
@@ -228,7 +226,7 @@ const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 //        CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST, savedData);
 //    }
     
-	auto newChallenge = this->getNewRandomChallenge(1, false);
+	auto newChallenge = this->getNewRandomChallenge();
 	this->removeChallengeFromUserData(index);
 
 //    if(newChallenge->_continuingType){
@@ -240,38 +238,37 @@ const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 
 const sCHALLENGE_PARAM* CChallengeDataManager::getChallengeByIndex(int index) const
 {
-    if (m_ChallengeDataList.size() <= index) {
+    if (m_NormalChallengeDataList.size() <= index) {
         CCLOG("Wrong index : %d", index);
         CCASSERT(false, "Wrong index");
         return nullptr;
     }
-    return m_ChallengeDataList.at(index);
+    return m_NormalChallengeDataList.at(index);
 }
 
-const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge(int level,
-                                                                     bool below,
-                                                                     bool continuingType/* = false*/)
+const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge()
 {
-    auto newList = getNonCompletedChallengeList(level, below, continuingType);
+    auto newList = getNonCompletedChallengeList();
     auto newChallenge = getNewRandomChallengeFromList(newList);
     CCLOG("Get new challenge %d", newChallenge->_index);
     CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, newChallenge->_index);
     return newChallenge;
 }
 
-CHALLENGE_LIST CChallengeDataManager::getListByFunc(const CHALLENGE_PICK &func, CHALLENGE_LIST list)
+CHALLENGE_LIST CChallengeDataManager::getListByFunc(const CHALLENGE_PICK &func, 
+													CHALLENGE_LIST list)
 {
-    for(auto iter = list.begin(); iter != list.end(); )
-    {
-        auto &item = (*iter);
-        if(item != nullptr){
-            
-            if(!func(item)) iter = list.erase(iter);
-            else            iter++;
-        }
-    }
-    
-    return list;
+	for (auto iter = list.begin(); iter != list.end();)
+	{
+		auto &item = (*iter).second;
+		if (item != nullptr){
+
+			if (!func(item)) iter = list.erase(iter);
+			else             iter++;
+		}
+	}
+
+	return list;
 }
 
 const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(CHALLENGE_LIST &list)
@@ -285,32 +282,24 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(CHA
     auto randomIdx = random<int>(0, int(size) - 1);
     picked = list.at(randomIdx);
     
-    CCLOG("Pick a challenge :: idx %d content %s level %d",
+    CCLOG("Pick a challenge :: idx %d content %s",
           picked->_index,
-          picked->_contents.c_str(),
-          picked->_level);
+          picked->_contents.c_str());
     
     return picked;
 }
 
-CHALLENGE_LIST CChallengeDataManager::getNonCompletedChallengeList(int level,
-                                                                   bool below,
-                                                                   bool continuingType/* = false*/)
+CHALLENGE_LIST CChallengeDataManager::getNonCompletedChallengeList()
 {
     auto userDataMng = CUserDataManager::Instance();
     
     return getListByFunc([=](const sCHALLENGE_PARAM* data){
         
-        if(userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, data->_index)) return false;
-        if(userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_CUR_LIST, data->_index)) return false;
-        
-        if(below)           { if(data->_level > level) return false;   }
-        else                { if(data->_level != level) return false;  }
-        
-        if(continuingType)  { if(!data->_continuingType) return false; }
-        
+        if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, data->_index)) return false;
+		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_CUR_LIST, data->_index)) return false;
+		if (data->_isHighLevel) return false;
         return true;
-    }, m_ChallengeDataList);
+    }, m_NormalChallengeDataList);
 }
 
 void CChallengeDataManager::removeChallengeFromUserData(int index)
@@ -319,32 +308,17 @@ void CChallengeDataManager::removeChallengeFromUserData(int index)
     CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
 }
 
-void CChallengeDataManager::initMaterialKeyList()
+void CChallengeDataManager::initETCChekerList()
 {
     auto initChecker = [=](std::string key, const CHECKER& func){
         m_CheckerList.emplace(std::pair<std::string, CHECKER>(key, func));
     };
-    
-    initChecker(BEST_SCORE,          CC_CALLBACK_1(CChallengeClearChecker::bestScoreCheck        , m_Checker));
-    initChecker(BEST_COMBO,          CC_CALLBACK_1(CChallengeClearChecker::bestComboCheck        , m_Checker));
-    
-    initChecker(CHARACTER_COLLECT,   CC_CALLBACK_1(CChallengeClearChecker::characterCollectCheck , m_Checker));
-    initChecker(ROCKET_COLLECT,      CC_CALLBACK_1(CChallengeClearChecker::rocketCollectCheck    , m_Checker));
-    
-    initChecker(CHARACTER_COUNT,     CC_CALLBACK_1(CChallengeClearChecker::characterCountCheck   , m_Checker));
-    initChecker(ROCKET_COUNT,        CC_CALLBACK_1(CChallengeClearChecker::rocketCountCheck      , m_Checker));
-    
-    initChecker(USER_LEVEL,          CC_CALLBACK_1(CChallengeClearChecker::userLevelCheck        , m_Checker));
-    initChecker(COIN_ITEM_LEVEL,     CC_CALLBACK_1(CChallengeClearChecker::coinItemLevelCheck    , m_Checker));
-    initChecker(STAR_ITEM_LEVEL,     CC_CALLBACK_1(CChallengeClearChecker::starItemLevelCheck    , m_Checker));
-    initChecker(BONUS_ITEM_LEVEL,    CC_CALLBACK_1(CChallengeClearChecker::bonusItemLevelCheck   , m_Checker));
-    initChecker(GIANT_ITEM_LEVEL,    CC_CALLBACK_1(CChallengeClearChecker::giantItemLevelCheck   , m_Checker));
-    initChecker(MAGNET_ITEM_LEVEL,   CC_CALLBACK_1(CChallengeClearChecker::magnetItemLevelCheck  , m_Checker));
-    initChecker(MAGNET_SIZE_LEVEL,   CC_CALLBACK_1(CChallengeClearChecker::magnetSizeLevelCheck  , m_Checker));
-    initChecker(COIN,                CC_CALLBACK_1(CChallengeClearChecker::coinCheck             , m_Checker));
+   
+	initChecker(CHARACTER_RARE_COUNT,CC_CALLBACK_1(CChallengeClearChecker::characterRareCountCheck, m_Checker));
+    initChecker(ROCKET_RARE_COUNT,   CC_CALLBACK_1(CChallengeClearChecker::rocketRareCountCheck   , m_Checker));
 }
 
-void CChallengeDataManager::initRewardKeyList()
+void CChallengeDataManager::initRewarderList()
 {
     auto initRewarder = [=](std::string key, const REWARDER& func){
         m_RewarderList.emplace(std::pair<std::string, REWARDER>(key, func));
@@ -361,7 +335,85 @@ void CChallengeDataManager::initRewardKeyList()
 	initRewarder(REWARD_PET_RANDOM,		  CC_CALLBACK_1(CChallengeRewarder::PetRewardRandom			, m_Rewarder));
 }
 
-cocos2d::Sprite* CChallengeDataManager::getRewardSprite(std::string rewardKey, int rewardValue)
+void CChallengeDataManager::initMaterialValueListByUserData(sCHALLENGE_PARAM* data)
+{
+	for (auto key : data->_materialKeyList)
+	{
+		int value = 0;
+		if     ( key == CHALLENGE_DATA_KEY::TOTAL_SCORE           ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::COIN_SCORE            ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::STAR_SCORE            ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::RUN_SCORE             ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::COIN_COUNT		      ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::STAR_COUNT		      ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::GIANT_SCORE_TOTAL     ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::GIANT_SCORE_BULLET    ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::GIANT_SCORE_MISSILE   ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::GIANT_SCORE_STICK     ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::MAGNET_SCORE          ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::GIANT_COUNT_TOTAL     ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::GIANT_COUNT_BULLET    ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::GIANT_COUNT_MISSILE   ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::GIANT_COUNT_STICK     ) value = 0;
+		else if( key == CHALLENGE_DATA_KEY::MAGNET_COUNT          ) value = 0;
+
+		data->_materialValueList.emplace_back(value);
+	}
+}
+
+const Json::Value CChallengeDataManager::initChallengeWithDefaultValue(bool hidden,
+																	   std::string key, 
+																	   const Json::Value data)
+{
+	if (data.isNull())
+	{
+		if (!hidden)	 return m_NormalChallengeDefaultSet[key.c_str()];
+		else			 return m_HiddenChallengeDefaultSet[key.c_str()];
+	}
+	return data;
+}
+
+void CChallengeDataManager::addChallengeToList(CHALLENGE_LIST &list, 
+											   const Json::Value& data, 
+											   bool hiddenType)
+{
+	sCHALLENGE_PARAM* param = new sCHALLENGE_PARAM();
+
+	param->_index			= data["index"].asInt();
+	param->_hiddenType		= hiddenType;
+
+	std::string content		= StringUtils::format(CHALLENGE_DEFINE::NORMAL_CONTENT.c_str(), param->_index);
+	if (hiddenType) content = StringUtils::format(CHALLENGE_DEFINE::NORMAL_HIDDEN.c_str(), param->_index);
+	param->_contents		= content;
+
+	auto initData = [=](std::string key){
+		return this->initChallengeWithDefaultValue(param->_hiddenType, key, data[key.c_str()]);
+	};
+	param->_checkerType		= (CHECKER_TYPE)initData("checkerType").asInt();
+	param->_rewardKey		= initData("rewardKey").asString();
+	param->_rewardValue		= initData("rewardValue").asInt();
+	param->_continuingType	= initData("continuingType").asBool();
+	param->_visible			= initData("visible").asBool();
+
+	const Json::Value materialKeyArray   = data["materialKey"];
+	const Json::Value materialValueArray = data["materialValue"];
+
+	if (hiddenType) {
+		for (auto key : materialKeyArray)
+			param->_materialKeyList.emplace_back(key.asString());
+		for (auto value : materialValueArray)
+			param->_materialValueList.emplace_back(value.asInt());
+	}
+	else {
+		param->_materialKeyList.emplace_back(materialKeyArray.asString());
+		if (materialValueArray.isNull()) this->initMaterialValueListByUserData(param);
+		else param->_materialValueList.emplace_back(materialValueArray.asInt());
+	}
+	list.emplace(std::pair<int, const sCHALLENGE_PARAM*>(param->_index, param));
+}
+
+cocos2d::Sprite* CChallengeDataManager::getRewardSprite(std::string rewardKey, 
+														int rewardValue)
 {
     auto createTitle = [=](std::string title, Sprite* parent){
         auto label  = Label::createWithTTF(title, FONT::MALGUNBD, 50);

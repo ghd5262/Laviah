@@ -197,6 +197,8 @@ void CVideoPopup::UseCoin(Node* sender){
 
 void CVideoPopup::Resume()
 {
+	GLOBAL->REVIVE_COUNT += 1;
+
     m_CountDown->Pause();
     m_CountDown->setVisible(false);
     CObjectManager::Instance()->getPlayer()->PlayerAlive();

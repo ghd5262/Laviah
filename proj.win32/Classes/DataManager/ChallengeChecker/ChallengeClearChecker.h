@@ -18,10 +18,10 @@ namespace CHALLENGE_DATA_KEY {
     
     const std::string CHARACTER_COUNT     = "CHARACTER_COUNT";
 	const std::string CHARACTER_RARE_COUNT= "CHARACTER_RARE_COUNT";
+
     const std::string ROCKET_COUNT        = "ROCKET_COUNT";
 	const std::string ROCKET_RARE_COUNT	  = "ROCKET_RARE_COUNT";
 
-    
     const std::string USER_LEVEL          = "USER_LEVEL";
     const std::string COIN_ITEM_LEVEL     = "COIN_ITEM_LEVEL";
     const std::string STAR_ITEM_LEVEL     = "STAR_ITEM_LEVEL";
@@ -62,26 +62,14 @@ namespace CHALLENGE_DATA_KEY {
 
 class CChallengeClearChecker {
 public:
-    bool continuingTypeCheck   (int index);
-    bool checkWithGlobal       (std::string key, int value);
-    
-    bool bestScoreCheck        (int value);
-    bool bestComboCheck        (int value);
-    
-    bool characterCollectCheck (int value);
-    bool rocketCollectCheck    (int value);
-    bool characterCountCheck   (int value);
-    bool rocketCountCheck      (int value);
-    
-    bool userLevelCheck        (int value);
-    bool coinItemLevelCheck    (int value);
-    bool starItemLevelCheck    (int value);
-    bool bonusItemLevelCheck   (int value);
-    bool giantItemLevelCheck   (int value);
-    bool magnetItemLevelCheck  (int value);
-    bool magnetSizeLevelCheck  (int value);
-    
-    bool coinCheck             (int value);
+    bool continuingTypeCheck	(int index);
+    bool checkWithGlobal		(std::string key, int value);
+	bool checkWithSingleUserData(std::string key, int value);
+	bool checkWithItemExist		(std::string key, int value);
+	bool checkWithCount			(std::string key, int value);
+
+	bool characterRareCountCheck(int value);
+	bool rocketRareCountCheck	(int value);
 
     CChallengeClearChecker(){};
     virtual ~CChallengeClearChecker(){};
