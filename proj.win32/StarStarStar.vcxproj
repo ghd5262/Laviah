@@ -213,6 +213,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\MyUI\Popup\CharacterSelectPopupDP.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\EarnCoinPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\HelpPopup.cpp" />
+    <ClCompile Include="Classes\MyUI\Popup\Option\OptionPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\ResultPopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\PausePopup.cpp" />
     <ClCompile Include="Classes\MyUI\Popup\PatternTestPopup.cpp" />
@@ -243,6 +244,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="Classes\MyUI\Popup\RewardPopup.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Classes\DataManager\DataManagerUtils.h" />
     <ClInclude Include="Classes\DataManager\TranslateManager.hpp" />
     <ClInclude Include="Classes\MyUI\ChallengeProgressBar.hpp" />
     <ClInclude Include="Classes\MyUI\Popup\ChallengeCompleteNoticePopup.h" />
@@ -319,6 +321,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="Classes\MyUI\Popup\CharacterSelectPopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\CharacterSelectPopupDP.h" />
     <ClInclude Include="Classes\MyUI\Popup\EarnCoinPopup.h" />
+    <ClInclude Include="Classes\MyUI\Popup\Option\OptionPopup.hpp" />
     <ClInclude Include="Classes\MyUI\Popup\PatternTestPopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\PausePopup.h" />
     <ClInclude Include="Classes\MyUI\Popup\HelpPopup.h" />

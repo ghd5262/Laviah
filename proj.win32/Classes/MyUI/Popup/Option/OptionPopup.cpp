@@ -58,11 +58,11 @@ bool COptionPopup::init()
     scrollBack->addChild(m_ContentScrollView);
     
     std::array<std::string, 5> titleArray = {
-        std::string("설정"),
-        std::string("저장"),
-        std::string("언어"),
-        std::string("기록"),
-        std::string("개발진")
+        std::string("Option"),
+        std::string("Save"),
+        std::string("Language"),
+        std::string("Challenges"),
+        std::string("Developer")
     };
     std::array<LayerColor*, 5> contentArray = {
         LayerColor::create(Color4B::BLUE    ,layerSize.width, layerSize.height * 0.6f),
