@@ -1,4 +1,5 @@
 #include "UserDataManager.h"
+#include "DataManagerUtils.h"
 #include "../Scene/GameScene.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/Popup.h"
@@ -141,10 +142,8 @@ void CUserDataManager::initArrayUserDataWithDefaultValue(std::string key)
 {
 	auto userArrayData = m_UserData._userDataListMap[key];
 	auto userDefaultArrayData = m_UserDefaultData._userDataListMap[key];
-	if (userDefaultArrayData->size() > 0){
-		userArrayData->resize(userDefaultArrayData->size());
-		std::copy(std::begin(*userDefaultArrayData), std::end(*userDefaultArrayData), std::begin(*userArrayData));
-	}
+	if (userDefaultArrayData->size() > 0)
+        DATA_MANAGER_UTILS::copyList(*userDefaultArrayData, *userArrayData);
     else userArrayData->clear();
 }
 

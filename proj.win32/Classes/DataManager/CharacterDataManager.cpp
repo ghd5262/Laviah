@@ -1,7 +1,8 @@
 #include "CharacterDataManager.h"
+#include "UserDataManager.h"
+#include "DataManagerUtils.h"
 #include "../Common/HSHUtility.h"
 #include "../SDKUtil/SDKUtil.h"
-#include "../DataManager/UserDataManager.h"
 
 using namespace cocos2d;
 using namespace CHARACTER_TEXTUREPACK;
@@ -13,16 +14,7 @@ CCharacterDataManager::CCharacterDataManager()
 
 CCharacterDataManager::~CCharacterDataManager()
 {
-	auto cleanList = [=](CHARACTER_LIST &list){
-		for (auto data : list)
-		{
-			delete data.second;
-			data.second = nullptr;
-		}
-		list.clear();
-	};
-
-	cleanList(m_CharacterList);
+    DATA_MANAGER_UTILS::mapDeleteAndClean(m_CharacterList);
 }
 
 CCharacterDataManager* CCharacterDataManager::Instance()
@@ -182,22 +174,6 @@ const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacter()
 	return getNewRandomCharacterFromList(newList);
 }
 
-CHARACTER_LIST CCharacterDataManager::getListByFunc(const CHARACTER_PICK &func,
-                                                    CHARACTER_LIST list)
-{
-	for (auto iter = list.begin(); iter != list.end();)
-	{
-		auto &item = (*iter).second;
-		if (item != nullptr){
-
-			if (!func(item)) iter = list.erase(iter);
-			else             iter++;
-		}
-	}
-
-	return list;
-}
-
 const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacterFromList(CHARACTER_LIST &list)
 {
 	auto size = list.size();
@@ -220,7 +196,7 @@ CHARACTER_LIST CCharacterDataManager::getNonCollectedCharacterList()
 {
 	auto userDataMng = CUserDataManager::Instance();
 
-	return getListByFunc([=](const sCHARACTER_PARAM* data){
+	return DATA_MANAGER_UTILS::getMapByFunc([=](const sCHARACTER_PARAM* data){
 
 		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, data->_idx)) return false;
         

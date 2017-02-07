@@ -94,7 +94,6 @@ public:
 	//getter & setter
 	const sCHARACTER_PARAM* getCharacterByIndex(int index) const;
 	const sCHARACTER_PARAM* getNewRandomCharacter();
-	static CHARACTER_LIST getListByFunc(const CHARACTER_PICK &func, CHARACTER_LIST list);
 
 private:
     void initWithJson(CHARACTER_LIST &list, std::string fileName);

@@ -1,4 +1,5 @@
 #include "BulletPatternDataManager.h"
+#include "DataManagerUtils.h"
 #include "../json/json.h"
 
 using namespace cocos2d;
@@ -25,25 +26,12 @@ CBulletPatternDataManager::CBulletPatternDataManager()
 }
 
 CBulletPatternDataManager::~CBulletPatternDataManager()
-{
-	auto cleanList = [=](PATTERN_LIST &list){
-		for (auto data : list)
-		{
-			delete data;
-			data = nullptr;
-		}
-		list.clear();
-	};
-
-	cleanList(m_PatternList);
-	cleanList(m_MissilePatternList);
-	cleanList(m_BonusTimePatternList);
-
-	if (m_TestPattern != nullptr)
-	{
-		delete m_TestPattern;
-		m_TestPattern = nullptr;
-	}
+{   
+    DATA_MANAGER_UTILS::listDeleteAndClean(m_PatternList);
+    DATA_MANAGER_UTILS::listDeleteAndClean(m_MissilePatternList);
+    DATA_MANAGER_UTILS::listDeleteAndClean(m_BonusTimePatternList);
+    
+    CC_SAFE_DELETE(m_TestPattern);
 }
 
 CBulletPatternDataManager* CBulletPatternDataManager::Instance()

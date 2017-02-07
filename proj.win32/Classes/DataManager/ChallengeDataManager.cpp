@@ -1,6 +1,7 @@
 #include "ChallengeDataManager.hpp"
 #include "UserDataManager.h"
 #include "CharacterDataManager.h"
+#include "DataManagerUtils.h"
 #include "ChallengeChecker/ChallengeClearChecker.h"
 #include "ChallengeRewarder/ChallengeRewarder.hpp"
 #include "../json/json.h"
@@ -21,16 +22,7 @@ CChallengeDataManager::CChallengeDataManager()
 
 CChallengeDataManager::~CChallengeDataManager()
 {
-	auto cleanList = [=](CHALLENGE_LIST &list){
-		for (auto data : list)
-		{
-			delete data.second;
-			data.second = nullptr;
-		}
-		list.clear();
-	};
-    
-    cleanList(m_NormalChallengeDataList);
+    DATA_MANAGER_UTILS::mapDeleteAndClean(m_NormalChallengeDataList);
     
     CC_SAFE_DELETE(m_Checker);
     CC_SAFE_DELETE(m_Rewarder);
@@ -238,12 +230,13 @@ const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 
 const sCHALLENGE_PARAM* CChallengeDataManager::getChallengeByIndex(int index) const
 {
-    if (m_NormalChallengeDataList.size() <= index) {
-        CCLOG("Wrong index : %d", index);
-        CCASSERT(false, "Wrong index");
+    auto data = m_NormalChallengeDataList.find(index);
+    if(data == m_NormalChallengeDataList.end()) {
+        CCLOG("Wrong character index : %d", index);
+        CCASSERT(false, "Wrong character index");
         return nullptr;
     }
-    return m_NormalChallengeDataList.at(index);
+    return data->second;
 }
 
 const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge()
@@ -253,22 +246,6 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge()
     CCLOG("Get new challenge %d", newChallenge->_index);
     CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, newChallenge->_index);
     return newChallenge;
-}
-
-CHALLENGE_LIST CChallengeDataManager::getListByFunc(const CHALLENGE_PICK &func, 
-													CHALLENGE_LIST list)
-{
-	for (auto iter = list.begin(); iter != list.end();)
-	{
-		auto &item = (*iter).second;
-		if (item != nullptr){
-
-			if (!func(item)) iter = list.erase(iter);
-			else             iter++;
-		}
-	}
-
-	return list;
 }
 
 const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(CHALLENGE_LIST &list)
@@ -293,7 +270,7 @@ CHALLENGE_LIST CChallengeDataManager::getNonCompletedChallengeList()
 {
     auto userDataMng = CUserDataManager::Instance();
     
-    return getListByFunc([=](const sCHALLENGE_PARAM* data){
+    return DATA_MANAGER_UTILS::getMapByFunc([=](const sCHALLENGE_PARAM* data){
         
         if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, data->_index)) return false;
 		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_CUR_LIST, data->_index)) return false;

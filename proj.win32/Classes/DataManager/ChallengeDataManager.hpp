@@ -1,4 +1,5 @@
 #pragma once
+#include "DataManagerUtils.h"
 #include "../Common/HSHUtility.h"
 #include "../json/json.h"
 #include <map>
@@ -30,12 +31,6 @@ struct sCHALLENGE_PARAM
     int _rewardValue;
 	std::vector<std::string> _materialKeyList;
 	std::vector<int> _materialValueList;
-	
-	//template<class T>
-	//void copyList(std::vector<T>& inList, std::vector<T>& outList){
-	//	outList.resize(inList.size());
-	//	std::copy(inList.begin(), inList.end(), outList.begin());
-	//}
 
     sCHALLENGE_PARAM()
     : _index(-1)
@@ -59,15 +54,8 @@ struct sCHALLENGE_PARAM
     , _rewardKey(data._rewardKey)
     , _rewardValue(data._rewardValue)
     {
-		_materialKeyList.resize(data._materialKeyList.size());
-		std::copy(data._materialKeyList.begin(), data._materialKeyList.end(), _materialKeyList.begin());
-		
-		_materialValueList.resize(data._materialValueList.size());
-		std::copy(data._materialValueList.begin(), data._materialValueList.end(), _materialValueList.begin());
-
-		
-		/*copyList(data._materialKeyList, _materialKeyList);
-		copyList(data._materialValueList, _materialValueList);*/
+        DATA_MANAGER_UTILS::copyList(data._materialKeyList,   _materialKeyList);
+        DATA_MANAGER_UTILS::copyList(data._materialValueList, _materialValueList);
 	}
     
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM* data)
@@ -81,11 +69,8 @@ struct sCHALLENGE_PARAM
     , _rewardKey(data->_rewardKey)
     , _rewardValue(data->_rewardValue)
     {
-		_materialKeyList.resize(data->_materialKeyList.size());
-		std::copy(data->_materialKeyList.begin(), data->_materialKeyList.end(), _materialKeyList.begin());
-
-		_materialValueList.resize(data->_materialValueList.size());
-		std::copy(data->_materialValueList.begin(), data->_materialValueList.end(), _materialValueList.begin());
+        DATA_MANAGER_UTILS::copyList(data->_materialKeyList,   _materialKeyList);
+        DATA_MANAGER_UTILS::copyList(data->_materialValueList, _materialValueList);
 	}
 };
 
@@ -134,7 +119,6 @@ public:
     const sCHALLENGE_PARAM* getChallengeByIndex(int index) const;
     const sCHALLENGE_PARAM* getNewRandomChallenge();
     cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
-    static CHALLENGE_LIST getListByFunc(const CHALLENGE_PICK &func, CHALLENGE_LIST list);
 
 private:
     void initWithJson(std::string fileName);

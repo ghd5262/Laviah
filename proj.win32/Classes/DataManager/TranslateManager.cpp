@@ -1,4 +1,5 @@
 #include "TranslateManager.hpp"
+#include "DataManagerUtils.h"
 #include "../Common/HSHUtility.h"
 #include "../json/json.h"
 
@@ -15,16 +16,7 @@ CTranslateManager::CTranslateManager()
 
 CTranslateManager::~CTranslateManager()
 {
-	auto cleanList = [=](LANGUAGE_LIST &list){
-		for (auto data : list)
-		{
-			delete data.second;
-			data.second = nullptr;
-		}
-		list.clear();
-	};
-
-	cleanList(m_LanguageList);
+    DATA_MANAGER_UTILS::mapDeleteAndClean(m_LanguageList);
 }
 
 CTranslateManager* CTranslateManager::Instance()

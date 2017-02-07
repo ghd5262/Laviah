@@ -3,6 +3,7 @@
 #include "../ChallengeDataManager.hpp"
 #include "../WorkshopItemDataManager.h"
 #include "../CharacterDataManager.h"
+#include "../DataManagerUtils.h"
 
 using namespace cocos2d;
 
@@ -47,12 +48,11 @@ bool CChallengeClearChecker::characterRareCountCheck(int value)
 	auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST);
 	if (!list.size()) return false;
 
-	//auto rareList = CDataManagerUtils::getListByFunc([=](int index){
-	//	auto data = CCharacterDataManager::Instance()->getCharacterByIndex(index);
-	//	return (data->_grade == CHARACTER_GRADE::RARE);
-	//}, list);
-	//return rareList.size();
-	return false;
+	auto rareList = DATA_MANAGER_UTILS::getNonPtrListByFunc([=](int index){
+		auto data = CCharacterDataManager::Instance()->getCharacterByIndex(index);
+		return (data->_grade == CHARACTER_GRADE::RARE);
+	}, list);
+	return rareList.size();
 }
 
 bool CChallengeClearChecker::rocketRareCountCheck(int value)
