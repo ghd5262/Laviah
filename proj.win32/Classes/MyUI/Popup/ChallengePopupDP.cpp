@@ -3,8 +3,10 @@
 #include "../Popup.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
+#include "ui/UIRichText.h"
 
 USING_NS_CC;
+using namespace cocos2d::ui;
 
 CChallengePopupDP* CChallengePopupDP::create(const sCHALLENGE_PARAM challenge, int posIndex)
 {
@@ -46,11 +48,15 @@ bool CChallengePopupDP::init()
 	auto contents = StringUtils::format(TRANSLATE(m_Challenge._contents).c_str(), m_Challenge._materialValueList.at(0));
 	if (value > 0) contents += StringUtils::format(" (%d%%)", int(getPercent(value, mtrlValue)));
     
+//    auto label = cocos2d::ui::RichText::createWithXML(contents);
+//    label->setContentSize(Size(popupSize.width * 0.8f, popupSize.height));
+//    label->setFontSize(80);
+//    label->setFontColor(label->stringWithColor3B(COLOR::DARKGRAY));
+    
 	auto label = Label::createWithTTF(contents, FONT::MALGUNBD, 45, 
 									  Size(popupSize.width * 0.8f, popupSize.height),
                                       TextHAlignment::CENTER,
                                       TextVAlignment::CENTER);
-	label->setColor(COLOR::DARKGRAY);
     label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     label->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.5f));
 	this->addChild(label);
@@ -76,7 +82,7 @@ bool CChallengePopupDP::init()
 	if (complete)
 	{
 		label->setOpacity(255 * 0.4f);
-
+//        label->setAnchorTextDel(true);
 		auto completeIcon = Sprite::create("completeIcon.png");
 		completeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		completeIcon->setPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f));

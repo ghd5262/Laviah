@@ -15,6 +15,7 @@ CPopup::CPopup()
 , m_OpenAnimationCallBack(nullptr)
 , m_CloseAnimationCallBack(nullptr)
 , m_EmptyBackground(nullptr)
+, m_TouchDisable(nullptr)
 , m_Message("")
 , m_PositiveButtonName("")
 , m_NegativeButtonName("")
@@ -68,6 +69,8 @@ bool CPopup::init()
 
 CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 {
+    this->popupTouchDisable();
+    
     if (m_BackgroundVisible)
         this->backgroundTouchDisable();
     
@@ -319,8 +322,12 @@ void CPopup::popupOpenAnimation()
 		auto fadeInAction = FadeTo::create(0.3f, originOpacity);
 		m_EmptyBackground->runAction(fadeInAction);
 	}
-
-	this->runAction(action);
+    
+    auto touchEnable = CallFunc::create([=](){
+        this->popupTouchEnable(true);
+    });
+    
+    this->runAction(Sequence::createWithTwoActions(action, touchEnable));
 }
 
 void CPopup::popupClose()
@@ -374,11 +381,27 @@ void CPopup::popupClose()
 		auto fadeOutAction = FadeTo::create(0.5f, 1);
 		m_EmptyBackground->runAction(fadeOutAction);
 	}
-
-	this->runAction(Sequence::create(action, DelayTime::create(delayTime), CallFunc::create([=](){
-		this->removeFromParent();
-	}), NULL));
+    
+    auto touchDisable = CallFunc::create([=](){
+        this->popupTouchEnable(false);
+    });
+    
+    auto remove = CallFunc::create([=](){
+        this->removeFromParent();
+    });
+    
+	this->runAction(Sequence::create(touchDisable,
+                                     action,
+                                     DelayTime::create(delayTime),
+                                     remove, NULL));
 	
+}
+
+void CPopup::popupTouchEnable(bool enable)
+{
+    if(!m_TouchDisable) return;
+    
+    m_TouchDisable->setVisible(!enable);
 }
 
 void CPopup::backgroundTouchDisable()
@@ -392,11 +415,24 @@ void CPopup::backgroundTouchDisable()
 
 	if (m_EmptyBackground) return;
 
-	m_EmptyBackground = CMyButton::create()
-		->addEventListener([](Node* sender){})
-		->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-		->setLayer(LayerColor::create(m_BackgroundColor, 1080, 1920))
-		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setButtonPosition(this->getContentSize() / 2)
-		->show(this, -1);
+    m_EmptyBackground = CMyButton::create()
+    ->addEventListener([](Node* sender){})
+    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+    ->setLayer(LayerColor::create(m_BackgroundColor, 1080, 1920))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(this->getContentSize() / 2)
+    ->show(this, -1);
+}
+
+void CPopup::popupTouchDisable()
+{
+    if (m_TouchDisable) return;
+    
+    m_TouchDisable = CMyButton::create()
+    ->addEventListener([](Node* sender){})
+    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080, 1920))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(this->getContentSize() / 2)
+    ->show(this, ZORDER::POPUP);
 }

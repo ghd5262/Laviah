@@ -8,7 +8,6 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Planet.h"
 #include "../../GameObject/Player.h"
-#include "ui/UIListView.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;

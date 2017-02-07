@@ -7,21 +7,6 @@
 
 using namespace cocos2d;
 
-bool CChallengeClearChecker::continuingTypeCheck(int index)
-{
-    /*auto savedDataList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST);
-    auto challengeList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
-    auto challengeData = CChallengeDataManager::Instance()->getChallengeByIndex(challengeList.at(index));
-    
-    if(challengeData->_materialValue <= savedDataList.at(index))
-    {
-        return true;
-    }
-    
-    return false;*/
-	return false;
-}
-
 bool CChallengeClearChecker::checkWithGlobal(std::string key, int value)
 {
     auto global = GLOBAL->getVariable(key);
@@ -41,6 +26,11 @@ bool CChallengeClearChecker::checkWithItemExist(std::string key, int value)
 bool CChallengeClearChecker::checkWithCount(std::string key, int value)
 {
 	return (value <= CUserDataManager::Instance()->getUserData_List(key).size());
+}
+
+bool CChallengeClearChecker::checkWithContinuingType(std::string key, int value)
+{
+    return false;
 }
 
 bool CChallengeClearChecker::characterRareCountCheck(int value)

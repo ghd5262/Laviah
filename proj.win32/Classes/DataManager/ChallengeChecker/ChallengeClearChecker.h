@@ -62,11 +62,11 @@ namespace CHALLENGE_DATA_KEY {
 
 class CChallengeClearChecker {
 public:
-    bool continuingTypeCheck	(int index);
     bool checkWithGlobal		(std::string key, int value);
 	bool checkWithSingleUserData(std::string key, int value);
 	bool checkWithItemExist		(std::string key, int value);
 	bool checkWithCount			(std::string key, int value);
+    bool checkWithContinuingType(std::string key, int value);
 
 	bool characterRareCountCheck(int value);
 	bool rocketRareCountCheck	(int value);

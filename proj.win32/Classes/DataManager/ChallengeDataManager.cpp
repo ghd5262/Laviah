@@ -92,9 +92,12 @@ bool CChallengeDataManager::CheckChallengeComplete(int index, bool isHidden)
 	std::string		userDataKey = USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST;
 	if (isHidden)	userDataKey = USERDATA_KEY::CHALLENGE_COM_HIDDEN_LIST;
 	if (CUserDataManager::Instance()->getUserData_IsItemHave(userDataKey, index)) return true;
-
-	auto challengeData	= this->getChallengeByIndex(index);
-	auto keyList		= challengeData->_materialKeyList;
+    
+    const sCHALLENGE_PARAM* challengeData = nullptr;
+    if (isHidden) challengeData = this->getHiddenChallengeByIndex(index);
+    else          challengeData = this->getNormalChallengeByIndex(index);
+    
+    auto keyList		= challengeData->_materialKeyList;
 	auto mtrlValueList	= challengeData->_materialValueList;
 	auto checkerType	= challengeData->_checkerType;
 	for (int idx = 0; idx < keyList.size(); idx++)
@@ -116,7 +119,7 @@ bool CChallengeDataManager::CheckChallengeComplete(int index, bool isHidden)
 		case CHECKER_TYPE::SINGLE_DATA: if (!m_Checker->checkWithSingleUserData(key, mtrlValue))return false; break;
 		case CHECKER_TYPE::ITEM_EXIST:	if (!m_Checker->checkWithItemExist(key, mtrlValue))		return false; break;
 		case CHECKER_TYPE::ITEM_COUNT:	if (!m_Checker->checkWithCount(key, mtrlValue))			return false; break;
-		case CHECKER_TYPE::CONTINUE:	CCLOG("Developed yet."); break;
+        case CHECKER_TYPE::CONTINUE:	if (!m_Checker->checkWithContinuingType(key, mtrlValue))return false; break;
 		}
 	}
 
@@ -138,7 +141,7 @@ const sCHALLENGE_PARAM* CChallengeDataManager::CompleteCheckRealTime()
 		if (this->CheckChallengeComplete(index, false)){
 			if (originCount < GLOBAL->CHALLENGE_CLEAR_COUNT)
 			{
-				return this->getChallengeByIndex(index);
+				return this->getNormalChallengeByIndex(index);
 			}
 		}
 	}
@@ -148,7 +151,7 @@ const sCHALLENGE_PARAM* CChallengeDataManager::CompleteCheckRealTime()
 
 sREWARD_DATA CChallengeDataManager::Reward(int index)
 {
-    auto challengeData = getChallengeByIndex(index);
+    auto challengeData = getNormalChallengeByIndex(index);
     
     auto key = challengeData->_rewardKey;
     auto rewardValue = challengeData->_rewardValue;
@@ -203,35 +206,27 @@ void CChallengeDataManager::getNewChallenges()
 
 const sCHALLENGE_PARAM* CChallengeDataManager::SkipChallenge(int index)
 {
-/** continuing type 은 기존 로직으로 처리하지 못한다.
- *  기존 로직으로 구글 클라우드 데이터에 저장해 보려했지만 
- *  현재 로직으로는 CHALLENGE_CUR_LIST와 CHALLENGE_CUR_VALUE_LIST 를 1 : 1 대응 하지 못한다.
- *  ( CHALLENGE_CUR_LIST 중 3번째가 continuing type이면 sequence가 2이지만
- *  CHALLENGE_CUR_VALUE_LIST에서는 첫번째 이기 때문)
- *  후에 challenge용으로 클라우드 데이터 저장을 따로 해야할 것 같다.
- */
-//    auto challengeData = getChallengeByIndex(index);
-//    if(challengeData->_continuingType){
-//        auto sequence = CUserDataManager::getUserDataSequenceFromList(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
-//        auto savedDataList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST);
-//        auto savedData = savedDataList->at(sequence);
-//        CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST, savedData);
-//    }
-    
-	auto newChallenge = this->getNewRandomChallenge();
+    auto newChallenge = this->getNewRandomChallenge();
 	this->removeChallengeFromUserData(index);
 
-//    if(newChallenge->_continuingType){
-//        
-//    }
-    
 	return newChallenge;
 }
 
-const sCHALLENGE_PARAM* CChallengeDataManager::getChallengeByIndex(int index) const
+const sCHALLENGE_PARAM* CChallengeDataManager::getNormalChallengeByIndex(int index) const
 {
     auto data = m_NormalChallengeDataList.find(index);
     if(data == m_NormalChallengeDataList.end()) {
+        CCLOG("Wrong character index : %d", index);
+        CCASSERT(false, "Wrong character index");
+        return nullptr;
+    }
+    return data->second;
+}
+
+const sCHALLENGE_PARAM* CChallengeDataManager::getHiddenChallengeByIndex(int index) const
+{
+    auto data = m_HiddenChallengeDataList.find(index);
+    if(data == m_HiddenChallengeDataList.end()) {
         CCLOG("Wrong character index : %d", index);
         CCASSERT(false, "Wrong character index");
         return nullptr;
@@ -255,15 +250,14 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(CHA
         CCLOG("There is no challenge anymore.");
         return nullptr;
     }
-    const sCHALLENGE_PARAM* picked;
-    auto randomIdx = random<int>(0, int(size) - 1);
-    picked = list.at(randomIdx);
+    auto picked = list.begin();
+    std::advance(picked, random<int>(0, int(list.size()-1)));
     
     CCLOG("Pick a challenge :: idx %d content %s",
-          picked->_index,
-          picked->_contents.c_str());
+          (picked->second)->_index,
+          (picked->second)->_contents.c_str());
     
-    return picked;
+    return (picked->second);
 }
 
 CHALLENGE_LIST CChallengeDataManager::getNonCompletedChallengeList()
@@ -369,7 +363,6 @@ void CChallengeDataManager::addChallengeToList(CHALLENGE_LIST &list,
 	param->_checkerType		= (CHECKER_TYPE)initData("checkerType").asInt();
 	param->_rewardKey		= initData("rewardKey").asString();
 	param->_rewardValue		= initData("rewardValue").asInt();
-	param->_continuingType	= initData("continuingType").asBool();
 	param->_visible			= initData("visible").asBool();
 
 	const Json::Value materialKeyArray   = data["materialKey"];

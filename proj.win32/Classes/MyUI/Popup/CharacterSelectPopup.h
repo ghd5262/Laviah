@@ -1,6 +1,6 @@
 #pragma once
 #include "../Popup.h"
-#include "ui/UIScrollView.h"
+#include "ui/UIListView.h"
 
 class CMyButton;
 class CUserCoinButton;
@@ -18,17 +18,14 @@ private:
 	void Select(cocos2d::Node* sender);
     void ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type);
     
-    
     CCharacterSelectPopup()
     : m_btnSelect(nullptr)
-    , m_ScrollView(nullptr)
     , m_CenterDP(nullptr)
     , m_CenterCharacterNameLabel(nullptr){};
     virtual ~CCharacterSelectPopup(){};
     
 private:
 	CMyButton* m_btnSelect;
-    cocos2d::ui::ScrollView* m_ScrollView;
     CCharacterSelectPopupDP* m_CenterDP;
-    Label* m_CenterCharacterNameLabel;
+    cocos2d::Label* m_CenterCharacterNameLabel;
 };

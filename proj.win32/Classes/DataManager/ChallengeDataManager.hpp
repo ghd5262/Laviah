@@ -21,7 +21,6 @@ class CChallengeRewarder;
 struct sCHALLENGE_PARAM
 {
     int _index;
-    bool _continuingType;
 	bool _hiddenType;
 	bool _visible;
 	bool _isHighLevel;
@@ -34,7 +33,6 @@ struct sCHALLENGE_PARAM
 
     sCHALLENGE_PARAM()
     : _index(-1)
-    , _continuingType(false)
 	, _hiddenType(false)
 	, _visible(false)
 	, _isHighLevel(false)
@@ -45,7 +43,6 @@ struct sCHALLENGE_PARAM
     
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM& data)
     : _index(data._index)
-    , _continuingType(data._continuingType)
 	, _hiddenType(data._hiddenType)
 	, _visible(data._visible)
 	, _isHighLevel(data._isHighLevel)
@@ -60,7 +57,6 @@ struct sCHALLENGE_PARAM
     
     sCHALLENGE_PARAM(const sCHALLENGE_PARAM* data)
     : _index(data->_index)
-    , _continuingType(data->_continuingType)
 	, _hiddenType(data->_hiddenType)
 	, _visible(data->_visible)
 	, _isHighLevel(data->_isHighLevel)
@@ -116,7 +112,8 @@ public:
     const sCHALLENGE_PARAM* SkipChallenge(int index);
 
     //getter & setter
-    const sCHALLENGE_PARAM* getChallengeByIndex(int index) const;
+    const sCHALLENGE_PARAM* getNormalChallengeByIndex(int index) const;
+    const sCHALLENGE_PARAM* getHiddenChallengeByIndex(int index) const;
     const sCHALLENGE_PARAM* getNewRandomChallenge();
     cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
 

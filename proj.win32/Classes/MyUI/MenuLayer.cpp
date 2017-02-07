@@ -2,6 +2,7 @@
 #include "MyButton.h"
 #include "Popup/CharacterSelectPopup.h"
 #include "Popup/WorkshopPopup.h"
+#include "Popup/Option/OptionPopup.hpp"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 #include "../GameObject/ObjectManager.h"
@@ -81,10 +82,11 @@ bool CMenuLayer::init()
 		Vec2(popupSize.width * 0.6f, popupSize.height * 0.25f),
 		Vec2(popupSize.width * 0.8f, popupSize.height * 0.25f),
         Vec2(popupSize.width * 0.1f, popupSize.height * 0.95f),
-        Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f)
+        Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f),
+        Vec2(popupSize.width * 0.3f, popupSize.height * 0.95f)
 	};
 
-    std::array<CMyButton*, 6> btnArray = {
+    std::array<CMyButton*, 7> btnArray = {
         createTestButton([=](Node* sender){
             createOneButtonPopup([](Node* sender){}, "Share is comming soon");
         }, TRANSLATE("BUTTON_MENU_SHARE"), testButtonPos[0], Size(200, 150)),
@@ -131,6 +133,10 @@ bool CMenuLayer::init()
                 CUserDataManager::Instance()->SaveUserData(true, true);
             }, "Reset?");
         }, "R", testButtonPos[5], Size(100, 100)),
+        
+        createTestButton([=](Node* sender){
+            createWidgetPopup(COptionPopup::create());
+        }, "O", testButtonPos[6], Size(100, 100)),
     };
     
     this->setDefaultCallback([=](Node* sender){

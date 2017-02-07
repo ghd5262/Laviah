@@ -54,6 +54,7 @@ public:
 
 	void popupOpenAnimation();
 	void popupClose();
+    void popupTouchEnable(bool enable);
     
     static void DefaultCallback();
 	
@@ -66,7 +67,8 @@ protected:
 
 private:
 	void backgroundTouchDisable();
-    
+    void popupTouchDisable();
+
 private:
 	NODE_CALLBACK m_PositiveButtonCallBack;
 	NODE_CALLBACK m_NegativeButtonCallBack;
@@ -75,6 +77,8 @@ private:
 	NODE_CALLBACK m_CloseAnimationCallBack;
 
 	CMyButton* m_EmptyBackground;
+    CMyButton* m_TouchDisable;
+
 	std::string m_Message;
 	std::string m_PositiveButtonName;
 	std::string m_NegativeButtonName;

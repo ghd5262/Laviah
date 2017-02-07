@@ -210,7 +210,7 @@ void CPausePopup::initChallengeList()
     auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
     for (auto index : list)
     {
-        auto challengeData = CChallengeDataManager::Instance()->getChallengeByIndex(index);
+        auto challengeData = CChallengeDataManager::Instance()->getNormalChallengeByIndex(index);
         this->createChallengeDP(challengeData, posIndex++);
     }
 }

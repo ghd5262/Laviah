@@ -181,15 +181,14 @@ const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacterFromList(CHA
 		CCLOG("There is no character anymore.");
 		return nullptr;
 	}
-	const sCHARACTER_PARAM* picked;
-	auto randomIdx = random<int>(0, int(size) - 1);
-	picked = list.at(randomIdx);
-
-	CCLOG("Pick a character :: idx %d name %s",
-		picked->_idx,
-		TRANSLATE(picked->_name).c_str());
-
-	return picked;
+    auto picked = list.begin();
+    std::advance(picked, random<int>(0, int(list.size()-1)));
+    
+    CCLOG("Pick a character :: idx %d name %s",
+          (picked->second)->_idx,
+          (picked->second)->_name.c_str());
+    
+    return (picked->second);
 }
 
 CHARACTER_LIST CCharacterDataManager::getNonCollectedCharacterList()

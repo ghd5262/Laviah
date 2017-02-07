@@ -173,7 +173,7 @@ void CChallengeProgressBar::Reset()
         return;
     }
     
-    m_ChallengeData = CChallengeDataManager::Instance()->getChallengeByIndex(list.at(0));
+    m_ChallengeData = CChallengeDataManager::Instance()->getNormalChallengeByIndex(list.at(0));
 	for (auto value : m_ChallengeData->_materialValueList) m_GoalValue += value;
 	m_TitleLabel->setString(StringUtils::format(TRANSLATE(m_ChallengeData->_contents).c_str(), m_ChallengeData->_materialValueList.at(0)));
     m_ProgressBar->setColor(m_BarColor);
