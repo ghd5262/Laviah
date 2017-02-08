@@ -50,10 +50,9 @@ bool COptionPopup::init()
     
     // Create the title scroll view
     m_TitleScrollView = createListView(Size(layerSize.width, layerSize.height * 0.2f), layerSize.width / 6,
-                                       Vec2(layerSize.width * 0.5f, layerSize.height * 0.9f));
+                                       Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
     scrollBack->addChild(m_TitleScrollView);
-    
-    m_ContentScrollView = createPageView(Size(layerSize.width, layerSize.height * 0.6f),
+    m_ContentScrollView = createPageView(Size(layerSize.width, layerSize.height * 0.5f),
                                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
     scrollBack->addChild(m_ContentScrollView);
     
@@ -72,10 +71,17 @@ bool COptionPopup::init()
         LayerColor::create(Color4B::BLACK   ,layerSize.width, layerSize.height * 0.6f),
     };
     
+    int iconIndex = 0;
     for(auto icon : iconArray)
     {
         auto iconBtn = Button::create(icon);
         iconBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        iconBtn->setTag(iconIndex++);
+        iconBtn->addClickEventListener([=](Ref* sender){
+            auto btn = dynamic_cast<Button*>(sender);
+            m_TitleScrollView->scrollToItem(btn->getTag(), Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, .5f);
+            m_ContentScrollView->scrollToItem(btn->getTag());
+        });
         m_TitleScrollView->addChild(iconBtn);
     }
     
@@ -122,6 +128,7 @@ bool COptionPopup::init()
         btnEnd->runAction(FadeIn::create(0.5f));
         btnUserCoin->runAction(FadeIn::create(0.5f));
         scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.62f))));
+        m_TitleScrollView->scrollToItem(0, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
     });
     
     this->setCloseAnimation([=](Node* sender){
@@ -155,11 +162,7 @@ void COptionPopup::TitleScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollVie
     auto centerChild    = listView->getChildren().at(centerIdx);
     auto centerIcon     = dynamic_cast<Button*>(centerChild);
     if (centerIcon == nullptr) return;
-    
-    // scroll content view
-//    if(type == ScrollView::EventType::AUTOSCROLL_ENDED)
-        m_ContentScrollView->scrollToItem(centerIdx);
-    
+
     // Center dp color change
     centerIcon->setColor(COLOR::DARKGRAY);
     
@@ -205,10 +208,8 @@ cocos2d::ui::ListView* COptionPopup::createListView(Size size, size_t distance, 
 {
     auto listView = ListView::create();
     listView->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
-    listView->setBounceEnabled(true);
-    listView->setTouchTotalTimeThreshold(500.f);
-    listView->setBackGroundImageScale9Enabled(true);
     listView->setContentSize(size);
+    listView->setTouchEnabled(false);
     listView->setScrollBarEnabled(false);
     listView->setItemsMargin(distance);
     listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -223,7 +224,6 @@ cocos2d::ui::PageView* COptionPopup::createPageView(Size size, Vec2 pos)
     auto pageView = PageView::create();
     pageView->setDirection(cocos2d::ui::PageView::Direction::HORIZONTAL);
     pageView->setBounceEnabled(true);
-//    pageView->setTouchTotalTimeThreshold(1.f);
     pageView->setContentSize(size);
     pageView->setIndicatorEnabled(true);
     pageView->setIndicatorSelectedIndexColor(COLOR::DARKGRAY);
