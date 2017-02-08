@@ -49,20 +49,20 @@ bool COptionPopup::init()
     Size layerSize = scrollBack->getContentSize();
     
     // Create the title scroll view
-    m_TitleScrollView = createListView(Size(layerSize.width, layerSize.height * 0.2f), 80,
+    m_TitleScrollView = createListView(Size(layerSize.width, layerSize.height * 0.2f), layerSize.width / 6,
                                        Vec2(layerSize.width * 0.5f, layerSize.height * 0.9f));
     scrollBack->addChild(m_TitleScrollView);
     
-    m_ContentScrollView = createListView(Size(layerSize.width, layerSize.height * 0.6f), 0,
+    m_ContentScrollView = createPageView(Size(layerSize.width, layerSize.height * 0.6f),
                                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
     scrollBack->addChild(m_ContentScrollView);
     
-    std::array<std::string, 5> titleArray = {
-        std::string("Option"),
-        std::string("Save"),
-        std::string("Language"),
-        std::string("Challenges"),
-        std::string("Developer")
+    std::array<std::string, 5> iconArray = {
+        std::string("optionIcon.png"),
+        std::string("saveIcon.png"),
+        std::string("languageIcon.png"),
+        std::string("challengeIcon.png"),
+        std::string("developerIcon.png")
     };
     std::array<LayerColor*, 5> contentArray = {
         LayerColor::create(Color4B::BLUE    ,layerSize.width, layerSize.height * 0.6f),
@@ -72,17 +72,11 @@ bool COptionPopup::init()
         LayerColor::create(Color4B::BLACK   ,layerSize.width, layerSize.height * 0.6f),
     };
     
-    for(auto title : titleArray)
+    for(auto icon : iconArray)
     {
-        auto layer = Widget::create();
-        layer->setContentSize(Size(240, 80));
-        layer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_TitleScrollView->pushBackCustomItem(layer);
-
-        auto label = Label::createWithTTF(title, FONT::MALGUNBD, 80);
-        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        label->setPosition(layer->getContentSize() / 2);
-        layer->addChild(label);
+        auto iconBtn = Button::create(icon);
+        iconBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_TitleScrollView->addChild(iconBtn);
     }
     
     for(auto content : contentArray)
@@ -151,35 +145,60 @@ void COptionPopup::End(Node* sender){
 void COptionPopup::TitleScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
 {
     ListView* listView = dynamic_cast<ListView*>(ref);
-    if (listView == nullptr || type != ScrollView::EventType::CONTAINER_MOVED) return;
+    
+    if (listView == nullptr) return;
+    if (type != ScrollView::EventType::CONTAINER_MOVED) return;
     
     // Get center dp
-    auto center = listView->getCenterItemInCurrentView();
-    auto centerIdx = listView->getIndex(center);
-    auto centerChild = listView->getChildren().at(centerIdx);
-    m_CenterDP = dynamic_cast<CPopup*>(centerChild);
-    if (m_CenterDP == nullptr) return;
+    auto center         = listView->getCenterItemInCurrentView();
+    auto centerIdx      = listView->getIndex(center);
+    auto centerChild    = listView->getChildren().at(centerIdx);
+    auto centerIcon     = dynamic_cast<Button*>(centerChild);
+    if (centerIcon == nullptr) return;
     
-    // Center dp touch enable
-    m_CenterDP->popupTouchEnable(true);
+    // scroll content view
+//    if(type == ScrollView::EventType::AUTOSCROLL_ENDED)
+        m_ContentScrollView->scrollToItem(centerIdx);
     
     // Center dp color change
-    
-    
-    // Get CenterDP's Character Param
-//    auto centerCharacterParam = m_CenterDP->getCharacterParam();
-    
-    // Change name label
-//    m_CenterCharacterNameLabel->setString(TRANSLATE(centerCharacterParam->_name));
+    centerIcon->setColor(COLOR::DARKGRAY);
     
     // touch disable the other dp
-    for (auto otherDP : listView->getChildren())
+    for (auto otherIcon : listView->getChildren())
     {
-        if (otherDP != nullptr && otherDP != center)
+        if (otherIcon != nullptr && otherIcon != center)
         {
-            dynamic_cast<CPopup*>(otherDP)->popupTouchEnable(false);
+            dynamic_cast<Button*>(otherIcon)->setColor(Color3B::WHITE);
         }
     }
+}
+
+void COptionPopup::ContentScrollCallback(cocos2d::Ref* ref, cocos2d::ui::PageView::EventType type)
+{
+    PageView* pageView = dynamic_cast<PageView*>(ref);
+    if (pageView == nullptr || type != PageView::EventType::TURNING) return;
+    
+    // Get center dp
+    auto center         = pageView->getCenterItemInCurrentView();
+    auto centerIdx      = pageView->getIndex(center);
+    auto centerChild    = pageView->getChildren().at(centerIdx);
+    auto centerContent  = dynamic_cast<CPopup*>(centerChild);
+//    if (centerContent == nullptr) return;
+    
+    // scroll title view
+    m_TitleScrollView->scrollToItem(centerIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, .5f);
+    
+    // Center dp touch enable
+//    centerContent->popupTouchEnable(true);
+    
+    // touch disable the other dp
+//    for (auto otherContent : pageView->getChildren())
+//    {
+//        if (otherContent != nullptr && otherContent != center)
+//        {
+//            dynamic_cast<CPopup*>(otherContent)->popupTouchEnable(false);
+//        }
+//    }
 }
 
 cocos2d::ui::ListView* COptionPopup::createListView(Size size, size_t distance, Vec2 pos)
@@ -187,13 +206,29 @@ cocos2d::ui::ListView* COptionPopup::createListView(Size size, size_t distance, 
     auto listView = ListView::create();
     listView->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
     listView->setBounceEnabled(true);
+    listView->setTouchTotalTimeThreshold(500.f);
     listView->setBackGroundImageScale9Enabled(true);
     listView->setContentSize(size);
-    //    listView->setScrollBarPositionFromCorner(Vec2(7, 7));
+    listView->setScrollBarEnabled(false);
     listView->setItemsMargin(distance);
     listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     listView->setPosition(pos);
     listView->setMagneticType(ListView::MagneticType::CENTER);
-    listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)CC_CALLBACK_2(COptionPopup::TitleScrollCallback, this));
+    listView->ScrollView::addEventListener((ListView::ccScrollViewCallback)CC_CALLBACK_2(COptionPopup::TitleScrollCallback, this));
     return listView;
+}
+
+cocos2d::ui::PageView* COptionPopup::createPageView(Size size, Vec2 pos)
+{
+    auto pageView = PageView::create();
+    pageView->setDirection(cocos2d::ui::PageView::Direction::HORIZONTAL);
+    pageView->setBounceEnabled(true);
+//    pageView->setTouchTotalTimeThreshold(1.f);
+    pageView->setContentSize(size);
+    pageView->setIndicatorEnabled(true);
+    pageView->setIndicatorSelectedIndexColor(COLOR::DARKGRAY);
+    pageView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    pageView->setPosition(pos);
+    pageView->addEventListener((PageView::ccPageViewCallback)CC_CALLBACK_2(COptionPopup::ContentScrollCallback, this));
+    return pageView;
 }
