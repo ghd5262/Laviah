@@ -75,6 +75,17 @@ bool CMenuLayer::init()
         btn->setCascadeOpacityEnabled(true);
         return btn;
 	};
+    
+    auto createButton = [=](const std::function<void(Node*)> &callback, std::string iconName, Vec2 pos){
+        auto btn = CMyButton::create()
+        ->addEventListener(callback)
+        ->setButtonNormalImage(iconName)
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setButtonPosition(pos)
+        ->show(this);
+        btn->setCascadeOpacityEnabled(true);
+        return btn;
+    };
 
 	Vec2 testButtonPos[] = {
 		Vec2(popupSize.width * 0.2f, popupSize.height * 0.25f),
@@ -105,39 +116,40 @@ bool CMenuLayer::init()
             createWidgetPopup(CWorkshopPopup::create());
 		}, TRANSLATE("BUTTON_MENU_WORKSHOP"), testButtonPos[3], Size(200, 150)),
 
-        createTestButton([=](Node* sender){
-			auto savedTime = CUserDataManager::Instance()->getLastSavedTime();
-            auto msg = TRANSLATE("USERDATA_SAVE_CHECK") + std::string("\n") + StringUtils::format(TRANSLATE("USERDATA_LAST_SAVED_TIME").c_str(),
-				savedTime->tm_year + 1900,
-				savedTime->tm_mon + 1,
-				savedTime->tm_mday,
-				savedTime->tm_hour,
-				savedTime->tm_min,
-				savedTime->tm_sec);
-            createTwoButtonPopup([](Node* sender){
-                //CUserDataManager::Instance()->setUserData_ItemRemoveAll(USERDATA_KEY::CHALLENGE_CUR_LIST);
-                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 0);
-                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 1);
-                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 2);
-
-				//CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, 0);
-				//CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
-                //CGameScene::getGameScene()->RandomCoin();
-				CUserDataManager::Instance()->SaveUserData(true, true);
-			}, msg);
-        }, "S", testButtonPos[4], Size(100, 100)),
+//        createTestButton([=](Node* sender){
+//			auto savedTime = CUserDataManager::Instance()->getLastSavedTime();
+//            auto msg = TRANSLATE("USERDATA_SAVE_CHECK") + std::string("\n") + StringUtils::format(TRANSLATE("USERDATA_LAST_SAVED_TIME").c_str(),
+//				savedTime->tm_year + 1900,
+//				savedTime->tm_mon + 1,
+//				savedTime->tm_mday,
+//				savedTime->tm_hour,
+//				savedTime->tm_min,
+//				savedTime->tm_sec);
+//            createTwoButtonPopup([](Node* sender){
+//                //CUserDataManager::Instance()->setUserData_ItemRemoveAll(USERDATA_KEY::CHALLENGE_CUR_LIST);
+//                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 0);
+//                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 1);
+//                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 2);
+//
+//				//CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, 0);
+//				//CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
+//                //CGameScene::getGameScene()->RandomCoin();
+//				CUserDataManager::Instance()->SaveUserData(true, true);
+//			}, msg);
+//        }, "S", testButtonPos[4], Size(100, 100)),
         
-        createTestButton([=](Node* sender){
-            createTwoButtonPopup([](Node* sender){
-                CUserDataManager::Instance()->setUserData_Reset();
-                CUserDataManager::Instance()->SaveUserData(true, true);
-            }, "Reset?");
-        }, "R", testButtonPos[5], Size(100, 100)),
-        
-        createTestButton([=](Node* sender){
-            createWidgetPopup(COptionPopup::create());
-        }, "O", testButtonPos[6], Size(100, 100)),
+//        createTestButton([=](Node* sender){
+//            createTwoButtonPopup([](Node* sender){
+//                CUserDataManager::Instance()->setUserData_Reset();
+//                CUserDataManager::Instance()->SaveUserData(true, true);
+//            }, "Reset?");
+//        }, "R", testButtonPos[5], Size(100, 100)),
     };
+    
+    createButton([=](Node* sender){
+        createWidgetPopup(COptionPopup::create());
+    }, "optionIcon.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f)
+);
     
     this->setDefaultCallback([=](Node* sender){
         CGameScene::getGameScene()->GameExit(false);

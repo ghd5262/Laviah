@@ -2,7 +2,7 @@
 #include "../../Popup.h"
 #include "ui/UIListView.h"
 #include "ui/UIPageView.h"
-class COptionPopupDP;
+
 class COptionPopup : public CPopup
 {
 public:

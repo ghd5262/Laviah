@@ -1,9 +1,10 @@
 #include "AudioManager.h"
 #include "HSHUtility.h"
-
+#include "../DataManager/UserDataManager.h"
 CAudioManager::CAudioManager()
-	: m_BGMID(0)
-	, m_EffectSoundVolume(1.f)
+: m_BGMID(0)
+, m_BGMSoundVolume(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME) / 100.f)
+, m_EffectSoundVolume(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME) / 100.f)
 {
 	PUBLIC_CLICK_SOUND = std::pair<std::string, std::string>("", "");
 }
@@ -23,6 +24,7 @@ void CAudioManager::Clear()
 {
 	AudioEngine::stopAll();
 	m_BGMID = 0;
+    m_BGMSoundVolume = 1.f;
 	m_EffectSoundVolume = 1.f;
 	m_CurrentPlayingList.clear();
 }
@@ -30,7 +32,7 @@ void CAudioManager::Clear()
 void CAudioManager::PlayEffectSound(
 	const std::string& filePath,
 	bool loop/* = false*/, 
-	float volume/* = 1.0f*/, 
+	float volume/* = -1.0f*/,
 	const AudioProfile *profile/* = nullptr*/)
 {
 	sAUDIO_INFO* audio = nullptr;
@@ -40,7 +42,8 @@ void CAudioManager::PlayEffectSound(
 	if (audio->_nCount < 10)
 	{
 		audio->_nCount++;
-		volume = m_EffectSoundVolume != 1.f ? m_EffectSoundVolume : volume;
+        volume = volume != -1.f ? volume : m_EffectSoundVolume;
+        //		volume = m_EffectSoundVolume != 1.f ? m_EffectSoundVolume : volume;
 		int id = AudioEngine::play2d(filePath, loop, volume, profile);
 		AudioEngine::setFinishCallback(id, [this](int id, const std::string& path)
 		{
@@ -54,20 +57,22 @@ void CAudioManager::PlayEffectSound(
 void CAudioManager::PlayBGM(
 	const std::string& filePath,
 	bool loop/* = false*/,
-	float volume/* = 1.0f*/,
+	float volume/* = -1.0f*/,
 	const AudioProfile *profile/* = nullptr*/)
 {
+    volume = volume != -1.f ? volume : m_BGMSoundVolume;
 	m_BGMID = AudioEngine::play2d(filePath, loop, volume, profile);
 }
 
 void CAudioManager::setBGMVolume(float volume)
 {
+    m_BGMSoundVolume = volume;
 	AudioEngine::setVolume(m_BGMID, volume);
 }
 
 float CAudioManager::getBGMVolume()
 {
-    return AudioEngine::getVolume(m_BGMID);
+    return m_BGMSoundVolume;
 }
 
 void CAudioManager::EmptyCurrentPlayingList()

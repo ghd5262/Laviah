@@ -20,8 +20,8 @@ public:
 public:
 	static CAudioManager* Instance();
 
-	void PlayEffectSound(const std::string& filePath, bool loop = false, float volume = 1.0f, const AudioProfile *profile = nullptr);
-	void PlayBGM(const std::string& filePath, bool loop = false, float volume = 1.0f, const AudioProfile *profile = nullptr);
+	void PlayEffectSound(const std::string& filePath, bool loop = false, float volume = -1.0f, const AudioProfile *profile = nullptr);
+	void PlayBGM(const std::string& filePath, bool loop = false, float volume = -1.0f, const AudioProfile *profile = nullptr);
 	void EmptyCurrentPlayingList();
 	void setBGMVolume(float volume);
     float getBGMVolume();
@@ -33,7 +33,8 @@ public:
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_EffectSoundVolume, EffectSoundVolume);
-
+    CC_SYNTHESIZE(float, m_BGMSoundVolume, BGMSoundVolume);
+    
 private:
 	// 재생하려는 오디오가 리스트에 있다면 반환 없다면 추가 후 반환
 	sAUDIO_INFO* FindAudioIndex(std::string name);

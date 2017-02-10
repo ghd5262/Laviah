@@ -593,16 +593,17 @@ void CUserDataManager::saveUserDataToGoogleCloud(std::string key, std::string da
 	{
 		if (!forceSave) return;
 
-		CGameScene::getGameScene()->CreateAlertPopup()
-			->setPositiveButton([=](Node* sender){
-			CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
-				this->saveUserDataToGoogleCloud(key, data, forceSave);
-			});
-			CSDKUtil::Instance()->IsNetworkConnect();
-		}, TRANSLATE("BUTTON_OK"))
-			->setMessage(TRANSLATE("USERDATA_NETWORK_CONNECT_CHECK"))
-			->show(CGameScene::getGameScene(), ZORDER::POPUP);
-	}
+        CGameScene::getGameScene()->CreateAlertPopup()
+        ->setPositiveButton([=](Node* sender){
+            CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
+                this->saveUserDataToGoogleCloud(key, data, forceSave);
+            });
+            CSDKUtil::Instance()->IsNetworkConnect();
+        }, TRANSLATE("BUTTON_OK"))
+        ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_CANCEL"))
+        ->setMessage(TRANSLATE("OPTION_DATASAVE_NETWORK_CHECK"))
+        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+    }
 }
 
 

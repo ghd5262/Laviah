@@ -1,4 +1,5 @@
 #include "OptionPopup.hpp"
+#include "OptionHeaders.h"
 #include "../../MyButton.h"
 #include "../../UserCoinButton.h"
 #include "../../../Scene/GameScene.h"
@@ -49,26 +50,27 @@ bool COptionPopup::init()
     Size layerSize = scrollBack->getContentSize();
     
     // Create the title scroll view
-    m_TitleScrollView = createListView(Size(layerSize.width, layerSize.height * 0.2f), layerSize.width / 6,
+    m_TitleScrollView = createListView(Size(layerSize.width, layerSize.height * 0.2f), layerSize.width / 5,
                                        Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
     scrollBack->addChild(m_TitleScrollView);
     m_ContentScrollView = createPageView(Size(layerSize.width, layerSize.height * 0.5f),
-                                         Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
+                                         Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f));
     scrollBack->addChild(m_ContentScrollView);
     
     std::array<std::string, 5> iconArray = {
-        std::string("optionIcon.png"),
+        std::string("musicIcon.png"),
         std::string("saveIcon.png"),
         std::string("languageIcon.png"),
         std::string("challengeIcon.png"),
         std::string("developerIcon.png")
     };
-    std::array<LayerColor*, 5> contentArray = {
-        LayerColor::create(Color4B::BLUE    ,layerSize.width, layerSize.height * 0.6f),
-        LayerColor::create(Color4B::GRAY    ,layerSize.width, layerSize.height * 0.6f),
-        LayerColor::create(Color4B::GREEN   ,layerSize.width, layerSize.height * 0.6f),
-        LayerColor::create(Color4B::MAGENTA ,layerSize.width, layerSize.height * 0.6f),
-        LayerColor::create(Color4B::BLACK   ,layerSize.width, layerSize.height * 0.6f),
+
+    std::array<CPopup*, 5> contentArray = {
+        COptionMusicPopup::create(),
+        COptionDataSavePopup::create(),
+        COptionLanguagePopup::create(),
+        COptionDataSavePopup::create(),
+        COptionDataSavePopup::create(),
     };
     
     int iconIndex = 0;
@@ -87,15 +89,16 @@ bool COptionPopup::init()
     
     for(auto content : contentArray)
     {
-        auto layer = Widget::create();
-        layer->setContentSize(Size(layerSize.width, layerSize.height * 0.6f));
-        layer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_ContentScrollView->pushBackCustomItem(layer);
+        auto bg = Widget::create();
+        bg->setContentSize(Size(layerSize.width, layerSize.height * 0.5f));
+        bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_ContentScrollView->pushBackCustomItem(bg);
         
-        content->setIgnoreAnchorPointForPosition(false);
-        content->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        content->setPosition(layer->getContentSize() / 2);
-        layer->addChild(content);
+        content->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setPopupPosition(bg->getContentSize() / 2)
+        ->setDefaultCallbackEnable(false)
+        ->setBackgroundVisible(false)
+        ->show(bg);
     }
         
     auto btnUserCoin = CUserCoinButton::create();
@@ -227,6 +230,7 @@ cocos2d::ui::PageView* COptionPopup::createPageView(Size size, Vec2 pos)
     pageView->setContentSize(size);
     pageView->setIndicatorEnabled(true);
     pageView->setIndicatorSelectedIndexColor(COLOR::DARKGRAY);
+    pageView->setIndicatorPositionAsAnchorPoint(Vec2(0.5f, -0.1f));
     pageView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     pageView->setPosition(pos);
     pageView->addEventListener((PageView::ccPageViewCallback)CC_CALLBACK_2(COptionPopup::ContentScrollCallback, this));

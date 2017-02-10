@@ -1,5 +1,6 @@
 #include "TranslateManager.hpp"
 #include "DataManagerUtils.h"
+#include "UserDataManager.h"
 #include "../Common/HSHUtility.h"
 #include "../json/json.h"
 
@@ -59,6 +60,10 @@ void CTranslateManager::initLanguageList(LANGUAGE_LIST &list, std::string fileNa
 			this->addContentToList(getContentList(languageKey), contentKey, content[languageKey.c_str()].asString());
 		}
 	}
+    
+    auto savedIndex = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CURRENT_LANGUAGE);
+    if(savedIndex != -1 && savedIndex < m_LanguageKeyList.size())
+        m_CurrentSelectLanguage = m_LanguageKeyList.at(savedIndex);
 }
 
 void CTranslateManager::createContentList(std::string languageKey)
@@ -122,7 +127,13 @@ CTranslateManager::CONTENT_LIST* CTranslateManager::getContentList(std::string l
  */
 std::string CTranslateManager::getContent(std::string key)
 {
-    auto LanguageList = m_LanguageList.find(m_CurrentSelectLanguage.c_str());
+    return getContentByLanguageKey(key, m_CurrentSelectLanguage);
+}
+
+std::string CTranslateManager::getContentByLanguageKey(std::string key,
+                                                       std::string languageKey)
+{
+    auto LanguageList = m_LanguageList.find(languageKey.c_str());
     if(LanguageList == m_LanguageList.end())
         LanguageList = m_LanguageList.find("en");
     

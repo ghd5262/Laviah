@@ -69,6 +69,16 @@
 		932999C61E31AD750062B92C /* TranslateManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932999C31E31AD750062B92C /* TranslateManager.cpp */; };
 		9329BAB61D75C50100878CEF /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9329BAB41D75C50100878CEF /* LoadingScene.cpp */; };
 		9329BABC1D75E47500878CEF /* AMTestScene1 in Resources */ = {isa = PBXBuildFile; fileRef = 9329BABB1D75E47500878CEF /* AMTestScene1 */; };
+		932CA1A41E4C15B400CE5110 /* OptionMusicPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1A21E4C15B400CE5110 /* OptionMusicPopup.cpp */; };
+		932CA1A51E4C15B400CE5110 /* OptionMusicPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1A21E4C15B400CE5110 /* OptionMusicPopup.cpp */; };
+		932CA1A91E4C15D200CE5110 /* OptionDataSavePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1A71E4C15D200CE5110 /* OptionDataSavePopup.cpp */; };
+		932CA1AA1E4C15D200CE5110 /* OptionDataSavePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1A71E4C15D200CE5110 /* OptionDataSavePopup.cpp */; };
+		932CA1AD1E4C161300CE5110 /* OptionLanguagePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1AB1E4C161300CE5110 /* OptionLanguagePopup.cpp */; };
+		932CA1AE1E4C161300CE5110 /* OptionLanguagePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1AB1E4C161300CE5110 /* OptionLanguagePopup.cpp */; };
+		932CA1B11E4C164D00CE5110 /* OptionTitlePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1AF1E4C164D00CE5110 /* OptionTitlePopup.cpp */; };
+		932CA1B21E4C164D00CE5110 /* OptionTitlePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1AF1E4C164D00CE5110 /* OptionTitlePopup.cpp */; };
+		932CA1B51E4C166800CE5110 /* OptionDeveloperPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1B31E4C166800CE5110 /* OptionDeveloperPopup.cpp */; };
+		932CA1B61E4C166800CE5110 /* OptionDeveloperPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1B31E4C166800CE5110 /* OptionDeveloperPopup.cpp */; };
 		933F79D91DDECEE6005F1DAF /* BulletCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F79D71DDECEE6005F1DAF /* BulletCreator.cpp */; };
 		933F79DD1DE3E4E1005F1DAF /* PatternTestPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F79DB1DE3E4E1005F1DAF /* PatternTestPopup.cpp */; };
 		9348C5AF1D868481000E8D1B /* update in Resources */ = {isa = PBXBuildFile; fileRef = 9348C5AE1D868481000E8D1B /* update */; };
@@ -158,6 +168,8 @@
 		938FF6D21E1B55FF00664426 /* ChallengeClearChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938FF6D11E1B55FF00664426 /* ChallengeClearChecker.cpp */; };
 		938FF6D31E1B55FF00664426 /* ChallengeClearChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938FF6D11E1B55FF00664426 /* ChallengeClearChecker.cpp */; };
 		93C89D2C1E2762980085D85A /* ItemProgress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93C89D2A1E2762980085D85A /* ItemProgress.cpp */; };
+		93CCBB931E498E2A00C010F3 /* OptionPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CCBB911E498E2A00C010F3 /* OptionPopup.cpp */; };
+		93CCBB941E498E2A00C010F3 /* OptionPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CCBB911E498E2A00C010F3 /* OptionPopup.cpp */; };
 		93E2317E1DDC344600899F4A /* StringUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E2317C1DDC344600899F4A /* StringUtility.cpp */; };
 		93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E2317C1DDC344600899F4A /* StringUtility.cpp */; };
 		93E73DB11E1BDCDD00F1ABC6 /* ChallengePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E73DAD1E1BDCDD00F1ABC6 /* ChallengePopup.cpp */; };
@@ -266,6 +278,7 @@
 		930C445D1DF501D10011CFA3 /* UILayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UILayer.hpp; sourceTree = "<group>"; };
 		930C44611DF54BD90011CFA3 /* CountDown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CountDown.cpp; sourceTree = "<group>"; };
 		930C44621DF54BD90011CFA3 /* CountDown.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CountDown.hpp; sourceTree = "<group>"; };
+		9311BAC91E4C522D000A6F7B /* OptionHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionHeaders.h; sourceTree = "<group>"; };
 		9312B4771D58A0A800FE954C /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
 		9312B47A1D58A10100FE954C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		9316AFCD1DFE904900432CA8 /* Global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Global.cpp; sourceTree = "<group>"; };
@@ -279,6 +292,16 @@
 		9329BAB41D75C50100878CEF /* LoadingScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadingScene.cpp; sourceTree = "<group>"; };
 		9329BAB51D75C50100878CEF /* LoadingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingScene.h; sourceTree = "<group>"; };
 		9329BABB1D75E47500878CEF /* AMTestScene1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AMTestScene1; sourceTree = "<group>"; };
+		932CA1A21E4C15B400CE5110 /* OptionMusicPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionMusicPopup.cpp; sourceTree = "<group>"; };
+		932CA1A31E4C15B400CE5110 /* OptionMusicPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OptionMusicPopup.hpp; sourceTree = "<group>"; };
+		932CA1A71E4C15D200CE5110 /* OptionDataSavePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionDataSavePopup.cpp; sourceTree = "<group>"; };
+		932CA1A81E4C15D200CE5110 /* OptionDataSavePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OptionDataSavePopup.hpp; sourceTree = "<group>"; };
+		932CA1AB1E4C161300CE5110 /* OptionLanguagePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionLanguagePopup.cpp; sourceTree = "<group>"; };
+		932CA1AC1E4C161300CE5110 /* OptionLanguagePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OptionLanguagePopup.hpp; sourceTree = "<group>"; };
+		932CA1AF1E4C164D00CE5110 /* OptionTitlePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionTitlePopup.cpp; sourceTree = "<group>"; };
+		932CA1B01E4C164D00CE5110 /* OptionTitlePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OptionTitlePopup.hpp; sourceTree = "<group>"; };
+		932CA1B31E4C166800CE5110 /* OptionDeveloperPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionDeveloperPopup.cpp; sourceTree = "<group>"; };
+		932CA1B41E4C166800CE5110 /* OptionDeveloperPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OptionDeveloperPopup.hpp; sourceTree = "<group>"; };
 		933F79D71DDECEE6005F1DAF /* BulletCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BulletCreator.cpp; sourceTree = "<group>"; };
 		933F79D81DDECEE6005F1DAF /* BulletCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletCreator.h; sourceTree = "<group>"; };
 		933F79DB1DE3E4E1005F1DAF /* PatternTestPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PatternTestPopup.cpp; sourceTree = "<group>"; };
@@ -454,6 +477,9 @@
 		9396940A1DC9CE17008B2CD2 /* NoticeDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoticeDefine.h; sourceTree = "<group>"; };
 		93C89D2A1E2762980085D85A /* ItemProgress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemProgress.cpp; sourceTree = "<group>"; };
 		93C89D2B1E2762980085D85A /* ItemProgress.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ItemProgress.hpp; sourceTree = "<group>"; };
+		93CCBB8E1E495E7800C010F3 /* DataManagerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManagerUtils.h; sourceTree = "<group>"; };
+		93CCBB911E498E2A00C010F3 /* OptionPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionPopup.cpp; sourceTree = "<group>"; };
+		93CCBB921E498E2A00C010F3 /* OptionPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OptionPopup.hpp; sourceTree = "<group>"; };
 		93E2317C1DDC344600899F4A /* StringUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtility.cpp; sourceTree = "<group>"; };
 		93E73DAD1E1BDCDD00F1ABC6 /* ChallengePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengePopup.cpp; sourceTree = "<group>"; };
 		93E73DAE1E1BDCDD00F1ABC6 /* ChallengePopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePopup.h; sourceTree = "<group>"; };
@@ -752,6 +778,7 @@
 				930304461E1390D80017C149 /* ChallengeDataManager.hpp */,
 				932999C31E31AD750062B92C /* TranslateManager.cpp */,
 				932999C41E31AD750062B92C /* TranslateManager.hpp */,
+				93CCBB8E1E495E7800C010F3 /* DataManagerUtils.h */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -899,6 +926,7 @@
 		937311171D5849C700D5EB5C /* Popup */ = {
 			isa = PBXGroup;
 			children = (
+				93CCBB901E498E0500C010F3 /* Option */,
 				93E73DB81E232DFB00F1ABC6 /* RewardPopup.cpp */,
 				93E73DBB1E232E0000F1ABC6 /* RewardPopup.h */,
 				9306AA001E24932900D4B8BC /* RewardPopupDP.cpp */,
@@ -989,6 +1017,26 @@
 				938FF6CB1E1A82A500664426 /* ChallengeClearChecker.h */,
 			);
 			path = ChallengeChecker;
+			sourceTree = "<group>";
+		};
+		93CCBB901E498E0500C010F3 /* Option */ = {
+			isa = PBXGroup;
+			children = (
+				93CCBB911E498E2A00C010F3 /* OptionPopup.cpp */,
+				93CCBB921E498E2A00C010F3 /* OptionPopup.hpp */,
+				932CA1A21E4C15B400CE5110 /* OptionMusicPopup.cpp */,
+				932CA1A31E4C15B400CE5110 /* OptionMusicPopup.hpp */,
+				932CA1A71E4C15D200CE5110 /* OptionDataSavePopup.cpp */,
+				932CA1A81E4C15D200CE5110 /* OptionDataSavePopup.hpp */,
+				932CA1AB1E4C161300CE5110 /* OptionLanguagePopup.cpp */,
+				932CA1AC1E4C161300CE5110 /* OptionLanguagePopup.hpp */,
+				932CA1AF1E4C164D00CE5110 /* OptionTitlePopup.cpp */,
+				932CA1B01E4C164D00CE5110 /* OptionTitlePopup.hpp */,
+				932CA1B31E4C166800CE5110 /* OptionDeveloperPopup.cpp */,
+				932CA1B41E4C166800CE5110 /* OptionDeveloperPopup.hpp */,
+				9311BAC91E4C522D000A6F7B /* OptionHeaders.h */,
+			);
+			path = Option;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1174,12 +1222,14 @@
 				9373117C1D5849C800D5EB5C /* Player.cpp in Sources */,
 				937311A31D5849C800D5EB5C /* Particles.cpp in Sources */,
 				9373115E1D5849C800D5EB5C /* AppDelegate.cpp in Sources */,
+				932CA1B11E4C164D00CE5110 /* OptionTitlePopup.cpp in Sources */,
 				930304471E1390D80017C149 /* ChallengeDataManager.cpp in Sources */,
 				937311A41D5849C800D5EB5C /* EmptyScene.cpp in Sources */,
 				937311991D5849C800D5EB5C /* ResultPopup.cpp in Sources */,
 				937311A81D5849C800D5EB5C /* SDKUtil.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				937311781D5849C800D5EB5C /* MenuSceneObjectManager.cpp in Sources */,
+				932CA1A91E4C15D200CE5110 /* OptionDataSavePopup.cpp in Sources */,
 				937311A21D5849C800D5EB5C /* UserCoinButton.cpp in Sources */,
 				930C44631DF54BD90011CFA3 /* CountDown.cpp in Sources */,
 				937311711D5849C800D5EB5C /* ScoreBullet.cpp in Sources */,
@@ -1224,11 +1274,13 @@
 				930304421E1248A20017C149 /* StandBullet.cpp in Sources */,
 				937311661D5849C800D5EB5C /* WorkshopItemDataManager.cpp in Sources */,
 				9373118C1D5849C800D5EB5C /* MultipleScore.cpp in Sources */,
+				932CA1B51E4C166800CE5110 /* OptionDeveloperPopup.cpp in Sources */,
 				937311631D5849C800D5EB5C /* CharacterDataManager.cpp in Sources */,
 				9373119A1D5849C800D5EB5C /* VideoPopup.cpp in Sources */,
 				9306AA021E24932900D4B8BC /* RewardPopupDP.cpp in Sources */,
 				9373116A1D5849C800D5EB5C /* Bullet.cpp in Sources */,
 				937311681D5849C800D5EB5C /* BackGround.cpp in Sources */,
+				932CA1A41E4C15B400CE5110 /* OptionMusicPopup.cpp in Sources */,
 				930C445E1DF501D10011CFA3 /* UILayer.cpp in Sources */,
 				9373118B1D5849C800D5EB5C /* LevelProgressBar.cpp in Sources */,
 				932999C51E31AD750062B92C /* TranslateManager.cpp in Sources */,
@@ -1239,6 +1291,8 @@
 				9373117A1D5849C800D5EB5C /* ObjectManager.cpp in Sources */,
 				9366457D1E1B92E800066BB4 /* ChallengeRewarder.cpp in Sources */,
 				937311691D5849C800D5EB5C /* BonusLetter.cpp in Sources */,
+				932CA1AD1E4C161300CE5110 /* OptionLanguagePopup.cpp in Sources */,
+				93CCBB931E498E2A00C010F3 /* OptionPopup.cpp in Sources */,
 				9329BAB61D75C50100878CEF /* LoadingScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1247,20 +1301,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				932CA1B61E4C166800CE5110 /* OptionDeveloperPopup.cpp in Sources */,
 				9316AFD01DFE904A00432CA8 /* Global.cpp in Sources */,
 				93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */,
 				930304431E1248A20017C149 /* StandBullet.cpp in Sources */,
+				932CA1AE1E4C161300CE5110 /* OptionLanguagePopup.cpp in Sources */,
+				932CA1A51E4C15B400CE5110 /* OptionMusicPopup.cpp in Sources */,
 				930C44641DF54BD90011CFA3 /* CountDown.cpp in Sources */,
 				930304391E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				930C445B1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */,
 				938FF6D31E1B55FF00664426 /* ChallengeClearChecker.cpp in Sources */,
+				93CCBB941E498E2A00C010F3 /* OptionPopup.cpp in Sources */,
 				9366457E1E1B92E800066BB4 /* ChallengeRewarder.cpp in Sources */,
 				930304481E1390D80017C149 /* ChallengeDataManager.cpp in Sources */,
+				932CA1B21E4C164D00CE5110 /* OptionTitlePopup.cpp in Sources */,
 				938DE0071E430DD000EE8853 /* ChallengeProgressBar.cpp in Sources */,
 				932999C61E31AD750062B92C /* TranslateManager.cpp in Sources */,
 				930C445F1DF501D10011CFA3 /* UILayer.cpp in Sources */,
 				9306AA031E24932900D4B8BC /* RewardPopupDP.cpp in Sources */,
+				932CA1AA1E4C15D200CE5110 /* OptionDataSavePopup.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -42,6 +42,11 @@ namespace USERDATA_KEY {
     const std::string SELECT_ITEM               = "USER_CUR_SELECT_ITEM";
     const std::string SELECT_KEY                = "USER_CUR_SELECT_KEY";
     
+    const std::string BGM_VOLUME                = "USER_BGM_VOLUME";
+    const std::string EFFECT_VOLUME             = "USER_EFFECT_VOLUME";
+    
+    const std::string CURRENT_LANGUAGE          = "USER_CURRENT_LANGUAGE";
+    
     const std::string CHARACTER_LIST            = "USER_CHARACTER_LIST";
     const std::string ROCKET_LIST               = "USER_ROCKET_LIST";
     const std::string PET_LIST                  = "USER_PET_LIST";

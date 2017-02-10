@@ -103,7 +103,7 @@ bool CGameScene::init()
     this->createUILayer();
     this->initKeyboardListener();
     this->OpenGameMenuLayer();
-    //CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
+    CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
     
 	return true;
 }
@@ -353,14 +353,20 @@ void CGameScene::removeBonusTimeLayer()
 
 void CGameScene::turnDownSound()
 {
-    CAudioManager::Instance()->setBGMVolume(0.1f);
-    CAudioManager::Instance()->setEffectSoundVolume(0.1f);
+    auto userBGMVolume      = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME);
+    auto userEffectVolume   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME);
+    
+    CAudioManager::Instance()->setBGMVolume((userBGMVolume / 100.f) * 0.1f);
+    CAudioManager::Instance()->setEffectSoundVolume((userEffectVolume / 100.f) * 0.1f);
 }
 
 void CGameScene::turnUpSound()
 {
-    CAudioManager::Instance()->setBGMVolume(1.f);
-    CAudioManager::Instance()->setEffectSoundVolume(1.f);
+    auto userBGMVolume      = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME);
+    auto userEffectVolume   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME);
+    
+    CAudioManager::Instance()->setBGMVolume((userBGMVolume / 100.f));
+    CAudioManager::Instance()->setEffectSoundVolume((userEffectVolume / 100.f));
 }
 
 void CGameScene::initKeyboardListener()

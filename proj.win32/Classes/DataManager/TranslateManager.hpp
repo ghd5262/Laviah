@@ -10,6 +10,8 @@ class CTranslateManager{
 public:
     static CTranslateManager* Instance();
     std::string getContent(std::string key);
+    std::string getContentByLanguageKey(std::string key, std::string languageKey);
+    LANGUAGE_KEY_LIST getLanguageKeyList() const { return m_LanguageKeyList; };
     
     CC_SYNTHESIZE(std::string, m_CurrentSelectLanguage, CurrentSelectLanguage);
     
