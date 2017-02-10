@@ -67,7 +67,7 @@ CMyButton* CMyButton::show(Node* parent, int zOrder/* = 0*/)
     auto createContentLabel = [=](Node* sender) {
         if(m_Contents != "")
         {
-            m_ContentsLabel = Label::createWithTTF(m_Contents, FONT::MALGUNBD, m_FontSize);
+            m_ContentsLabel = Label::createWithSystemFont(m_Contents, FONT::MALGUNBD, m_FontSize);
             m_ContentsLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             m_ContentsLabel->setPosition(sender->getContentSize() / 2);
             m_ContentsLabel->setColor(m_FontColor);

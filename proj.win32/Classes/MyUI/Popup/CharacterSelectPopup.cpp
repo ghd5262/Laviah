@@ -111,7 +111,7 @@ bool CCharacterSelectPopup::init()
 	}
 
 	auto currentCharacterParam = CCharacterDataManager::Instance()->getCharacterByIndex(currentCharacterIdx);
-	m_CenterCharacterNameLabel = Label::createWithTTF(TRANSLATE(currentCharacterParam->_name), FONT::MALGUNBD, 80, 
+	m_CenterCharacterNameLabel = Label::createWithSystemFont(TRANSLATE(currentCharacterParam->_name), FONT::MALGUNBD, 80,
 		Size(layerSize.width * 0.8f, layerSize.height),
 		TextHAlignment::CENTER,
 		TextVAlignment::CENTER);
@@ -140,7 +140,8 @@ bool CCharacterSelectPopup::init()
 	})
 		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 250, 150))
 		->setContents(TRANSLATE("BUTTON_SELECT"))
-		->setButtonPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.125f))
+		->setButtonPosition(Vec2(scrollBack->getContentSize().width * 0.5f,
+                                 scrollBack->getContentSize().height * 0.125f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->show(scrollBack);
 

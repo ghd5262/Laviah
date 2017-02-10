@@ -108,7 +108,7 @@ CChallengeProgressBar* CChallengeProgressBar::show(cocos2d::Node* parent, int zO
     
     // challenge name label
     {
-        m_TitleLabel = Label::createWithTTF("", FONT::MALGUNBD, 35,
+        m_TitleLabel = Label::createWithSystemFont("", FONT::MALGUNBD, 35,
                                             Size(getContentSize().width * 0.9f,
                                                  0),
                                             TextHAlignment::CENTER,

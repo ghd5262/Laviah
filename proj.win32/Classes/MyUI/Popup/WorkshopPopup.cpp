@@ -41,7 +41,7 @@ bool CWorkshopPopup::init()
 	}
 
 	/* workShop label*/
-	auto workShopLabel = Label::createWithTTF(TRANSLATE("WORKSHOP_POPUP_TITLE"), FONT::MALGUNBD, 80);
+	auto workShopLabel = Label::createWithSystemFont(TRANSLATE("WORKSHOP_POPUP_TITLE"), FONT::MALGUNBD, 80);
 	if (workShopLabel != nullptr)
 	{
 		workShopLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

@@ -74,7 +74,7 @@ bool CWorkshopPopupDP::init()
     }
     
     
-    auto workshopItemName = Label::createWithTTF(TRANSLATE(m_WorkshopItem._name), FONT::MALGUNBD, 40);
+    auto workshopItemName = Label::createWithSystemFont(TRANSLATE(m_WorkshopItem._name), FONT::MALGUNBD, 40);
     if (workshopItemName != nullptr)
     {
         workshopItemName->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);

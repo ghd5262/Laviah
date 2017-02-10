@@ -44,7 +44,7 @@ CCountDown* CCountDown::show(cocos2d::Node* parent, int zOrder/* = 0*/)
 {
     this->Reset();
     
-    m_NumberLabel = Label::createWithTTF("", m_FontName, m_FontSize);
+    m_NumberLabel = Label::createWithSystemFont("", m_FontName, m_FontSize);
     m_NumberLabel->setTextColor(m_FontColor);
     m_NumberLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_NumberLabel->setPosition(this->getContentSize() / 2);

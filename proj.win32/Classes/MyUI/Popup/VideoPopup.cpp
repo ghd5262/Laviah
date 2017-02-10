@@ -33,7 +33,7 @@ bool CVideoPopup::init()
     auto popupSize = this->getContentSize();
     
 	/* revive label*/
-	auto reviveLabel = Label::createWithTTF(TRANSLATE("REVIVE_POPUP_TITLE"), FONT::MALGUNBD, 80);
+	auto reviveLabel = Label::createWithSystemFont(TRANSLATE("REVIVE_POPUP_TITLE"), FONT::MALGUNBD, 80);
 	if (reviveLabel != nullptr)
 	{
 		reviveLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -56,7 +56,7 @@ bool CVideoPopup::init()
 		button->setCascadeOpacityEnabled(true);
         auto btnSize = button->getContentSize();
 
-		auto contentLabel = Label::createWithTTF(content, FONT::MALGUNBD, 50);
+		auto contentLabel = Label::createWithSystemFont(content, FONT::MALGUNBD, 50);
 		contentLabel->setColor(color);
 		contentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		contentLabel->setPosition(btnSize / 2);

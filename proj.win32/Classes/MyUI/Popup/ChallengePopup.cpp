@@ -61,7 +61,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		this->addChild(bg);
 	}
 
-	auto challengesLabel = Label::createWithTTF(TRANSLATE("CHALLENGE_POPUP_TITLE"), FONT::MALGUNBD, 80);
+	auto challengesLabel = Label::createWithSystemFont(TRANSLATE("CHALLENGE_POPUP_TITLE"), FONT::MALGUNBD, 80);
 	if (challengesLabel != nullptr)
 	{
 		challengesLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.85f));

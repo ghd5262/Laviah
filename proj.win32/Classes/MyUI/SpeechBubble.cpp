@@ -60,7 +60,7 @@ bool CSpeechBubble::init()
     }
     if (m_BubbleMent != "")
     {
-        m_BubbleMentLabel = Label::createWithTTF(m_BubbleMent.c_str(), m_FontPath, m_FontSize);
+        m_BubbleMentLabel = Label::createWithSystemFont(m_BubbleMent.c_str(), m_FontPath, m_FontSize);
         if (m_BubbleMentLabel != nullptr)
         {
             m_BubbleMentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

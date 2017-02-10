@@ -46,7 +46,7 @@ bool CChallengeCompleteNoticePopup::init()
 
 	auto popupSize = this->getContentSize();
 
-	m_ChallengeLabel = Label::createWithTTF("", FONT::MALGUNBD, 45,
+	m_ChallengeLabel = Label::createWithSystemFont("", FONT::MALGUNBD, 45,
 		Size(popupSize.width * 0.8f, popupSize.height),
 		TextHAlignment::CENTER,
 		TextVAlignment::CENTER);

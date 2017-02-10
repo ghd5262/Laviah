@@ -108,7 +108,7 @@ bool CResultPopup::init()
     };
     
     auto createContent = [=](Node* parent, Vec2 pos, std::string content, int fontSize){
-        auto contentLabel = Label::createWithTTF(content, FONT::MALGUNBD, fontSize);
+        auto contentLabel = Label::createWithSystemFont(content, FONT::MALGUNBD, fontSize);
         contentLabel->setColor(COLOR::DARKGRAY);
         contentLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
         contentLabel->setPosition(pos);
@@ -231,7 +231,7 @@ bool CResultPopup::init()
     
     
     /* result label*/
-    auto resultLabel = Label::createWithTTF(TRANSLATE("RESULT_POPUP_TITLE"), FONT::MALGUNBD, 80);
+    auto resultLabel = Label::createWithSystemFont(TRANSLATE("RESULT_POPUP_TITLE"), FONT::MALGUNBD, 80);
     if (resultLabel != nullptr)
     {
         resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
