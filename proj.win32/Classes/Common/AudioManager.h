@@ -24,6 +24,7 @@ public:
 	void PlayBGM(const std::string& filePath, bool loop = false, float volume = 1.0f, const AudioProfile *profile = nullptr);
 	void EmptyCurrentPlayingList();
 	void setBGMVolume(float volume);
+    float getBGMVolume();
     void AllPause();
     void AllResume();
     

@@ -65,6 +65,11 @@ void CAudioManager::setBGMVolume(float volume)
 	AudioEngine::setVolume(m_BGMID, volume);
 }
 
+float CAudioManager::getBGMVolume()
+{
+    return AudioEngine::getVolume(m_BGMID);
+}
+
 void CAudioManager::EmptyCurrentPlayingList()
 {
     for(auto audio : m_CurrentPlayingList)
