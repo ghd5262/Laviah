@@ -116,7 +116,8 @@ public:
     const sCHALLENGE_PARAM* getHiddenChallengeByIndex(int index) const;
     const sCHALLENGE_PARAM* getNewRandomChallenge();
     cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
-
+    CHALLENGE_LIST getHiddenChallengeList() const { return m_HiddenChallengeDataList; }
+    
 private:
     void initWithJson(std::string fileName);
 	void initETCChekerList();

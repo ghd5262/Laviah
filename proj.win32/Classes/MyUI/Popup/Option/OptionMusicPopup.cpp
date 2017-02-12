@@ -68,36 +68,35 @@ bool COptionMusicPopup::init()
         layer->addChild(volumeSlider);
     };
     
-    m_BGMVolume     = CAudioManager::Instance()->getBGMVolume() * 100.f;
-    m_EffectVolume  = CAudioManager::Instance()->getEffectSoundVolume() * 100.f;
-    CCLOG("COptionMusicPopup1 : BGM Volume %d", m_BGMVolume);
-    CCLOG("COptionMusicPopup1 : EFFECT Volume %d", m_EffectVolume);
+    m_BGMVolume     = int(CAudioManager::Instance()->getBGMVolume() * 100.f);
+    m_EffectVolume  = int(CAudioManager::Instance()->getEffectSoundVolume() * 100.f);
     
     
     createSlider([&](int percent){
+        if(m_BGMVolume == percent) return;
+        
         m_BGMVolume = percent;
         CAudioManager::Instance()->setBGMVolume(m_BGMVolume / 100.f);
-        CAudioManager::Instance()->PlayEffectSound("sounds/Click_1-1.mp3", false, m_BGMVolume / 100.f);
+        CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_BGMVolume / 100.f);
     }, TRANSLATE("OPTION_MUSIC_BGM"),
-                 Vec2(layer->getContentSize().width * 0.13f,
+                 Vec2(layer->getContentSize().width * 0.135f,
                       layer->getContentSize().height * 0.7f),
                  m_BGMVolume, Vec2(layer->getContentSize().width * 0.5f,
                                    layer->getContentSize().height * 0.6f));
     
     createSlider([&](int percent){
+        if(m_EffectVolume == percent) return;
+        
         m_EffectVolume = percent;
         CAudioManager::Instance()->setEffectSoundVolume(m_EffectVolume / 100.f);
-        CAudioManager::Instance()->PlayEffectSound("sounds/Click_1-1.mp3", false, m_EffectVolume / 100.f);
+        CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_EffectVolume / 100.f);
     }, TRANSLATE("OPTION_MUSIC_EFFECT"),
-                 Vec2(layer->getContentSize().width * 0.13f,
+                 Vec2(layer->getContentSize().width * 0.135f,
                       layer->getContentSize().height * 0.4f),
                  m_EffectVolume, Vec2(layer->getContentSize().width * 0.5f,
                                       layer->getContentSize().height * 0.3f));
     
     this->setOnExitCallback([=](){
-        CCLOG("COptionMusicPopup2 : BGM Volume %d", m_BGMVolume);
-        CCLOG("COptionMusicPopup2 : EFFECT Volume %d", m_EffectVolume);
-
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BGM_VOLUME, m_BGMVolume);
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::EFFECT_VOLUME, m_EffectVolume);
     });

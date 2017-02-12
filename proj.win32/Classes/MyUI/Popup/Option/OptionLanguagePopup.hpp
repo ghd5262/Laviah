@@ -1,7 +1,6 @@
 #pragma once
 #include "../../Popup.h"
 
-class CMyButton;
 class COptionLanguagePopup : public CPopup
 {
 public:

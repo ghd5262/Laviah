@@ -25,6 +25,9 @@
 #include "../MyUI/Popup/ChallengePopup.h"
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../MyUI/Popup/RewardPopup.h"
+#include "../MyUI/Popup/Option/OptionPopup.hpp"
+#include "../MyUI/Popup/WorkshopPopup.h"
+#include "../MyUI/Popup/CharacterSelectPopup.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/ChallengeDataManager.hpp"
@@ -103,7 +106,6 @@ bool CGameScene::init()
     this->createUILayer();
     this->initKeyboardListener();
     this->OpenGameMenuLayer();
-    CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
     
 	return true;
 }
@@ -122,6 +124,8 @@ void CGameScene::GameStart()
 {
 //    this->ScreenFade([=](){
         this->clearData();
+//        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
+
         this->GameResume();
         
 		m_UILayer->setVisible(true);
@@ -194,6 +198,21 @@ void CGameScene::OpenGameMenuLayer()
     });
 }
 
+void CGameScene::OpenOptionPopup(int scrollIndex/* = 0*/)
+{
+    this->createOptionPopup(scrollIndex);
+}
+
+void CGameScene::OpenWorkshopPopup()
+{
+    this->createWorkshopPopup();
+}
+
+void CGameScene::OpenCharacterSelectPopup()
+{
+    this->createCharacterSelectPopup();
+}
+
 void CGameScene::RandomCoin()
 {
     this->createRandomCoin();
@@ -249,6 +268,7 @@ CPopup* CGameScene::Reward()
 
 void CGameScene::clearData()
 {
+    CAudioManager::Instance()->Clear();
     CObjectManager::Instance()->Clear();
     CItemManager::Instance()->Clear();
     this->cleanGlobalData();
@@ -334,10 +354,35 @@ void CGameScene::createMenuLayer()
     ->show(this, ZORDER::POPUP);
 }
 
+void CGameScene::createOptionPopup(int index)
+{
+    COptionPopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
+}
+
 void CGameScene::createBonusTimeLayer()
 {
     m_BonusTimeLayer = CBonusTimeLayer::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
+}
+
+void CGameScene::createWorkshopPopup()
+{
+    CWorkshopPopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
+}
+
+
+void CGameScene::createCharacterSelectPopup()
+{
+    CCharacterSelectPopup::create()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);

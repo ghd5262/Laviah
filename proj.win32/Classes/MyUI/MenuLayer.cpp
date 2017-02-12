@@ -145,11 +145,13 @@ bool CMenuLayer::init()
 //            }, "Reset?");
 //        }, "R", testButtonPos[5], Size(100, 100)),
     };
-    
     createButton([=](Node* sender){
-        createWidgetPopup(COptionPopup::create());
-    }, "optionIcon.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f)
-);
+        CGameScene::getGameScene()->OpenWorkshopPopup();
+    }, "workshopIcon.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f));
+                 
+    createButton([=](Node* sender){
+        CGameScene::getGameScene()->OpenOptionPopup();
+    }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.95f));
     
     this->setDefaultCallback([=](Node* sender){
         CGameScene::getGameScene()->GameExit(false);

@@ -78,6 +78,8 @@ void CLoadingScene::InitLoadingSceneUI()
 
 void CLoadingScene::callbackNetworkResult()
 {
+    CCLOG("Loading Scene %s", __FUNCTION__);
+
 	// 첫 실행 이라면 인터넷 연결 하라는 팝업
 	if (CUserDataManager::Instance()->getIsFirstPlay() &&
 		!CSDKUtil::Instance()->getIsNetworkConnect())

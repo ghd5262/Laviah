@@ -69,8 +69,8 @@ bool COptionPopup::init()
         COptionMusicPopup::create(),
         COptionDataSavePopup::create(),
         COptionLanguagePopup::create(),
-        COptionDataSavePopup::create(),
-        COptionDataSavePopup::create(),
+        COptionTitlePopup::create(),
+        COptionDeveloperPopup::create(),
     };
     
     int iconIndex = 0;
@@ -131,7 +131,7 @@ bool COptionPopup::init()
         btnEnd->runAction(FadeIn::create(0.5f));
         btnUserCoin->runAction(FadeIn::create(0.5f));
         scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.62f))));
-        m_ContentScrollView->scrollToItem(0);
+        m_ContentScrollView->scrollToItem(m_InitialScrollIndex);
     });
     
     this->setCloseAnimation([=](Node* sender){
@@ -145,6 +145,12 @@ bool COptionPopup::init()
     });
     
     return true;
+}
+
+CPopup* COptionPopup::setInitialScrollIndex(int index)
+{
+    m_InitialScrollIndex = index;
+    return this;
 }
 
 void COptionPopup::End(Node* sender){

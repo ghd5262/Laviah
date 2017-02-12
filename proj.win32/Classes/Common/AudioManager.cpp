@@ -3,9 +3,17 @@
 #include "../DataManager/UserDataManager.h"
 CAudioManager::CAudioManager()
 : m_BGMID(0)
-, m_BGMSoundVolume(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME) / 100.f)
-, m_EffectSoundVolume(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME) / 100.f)
+, m_BGMSoundVolume(0)
+, m_EffectSoundVolume(0)
 {
+    // audio will be called by AppDelegate as fast than complete setting user data.
+    // So I can not operate like the code below.
+    
+//    m_BGMSoundVolume = (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME) / 100.f);
+//    m_EffectSoundVolume = (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME) / 100.f);
+//    CCLOG("COptionMusicPopup0 : BGM Volume %f", m_BGMSoundVolume);
+//    CCLOG("COptionMusicPopup0 : EFFECT Volume %f", m_EffectSoundVolume);
+    
 	PUBLIC_CLICK_SOUND = std::pair<std::string, std::string>("", "");
 }
 
@@ -24,9 +32,9 @@ void CAudioManager::Clear()
 {
 	AudioEngine::stopAll();
 	m_BGMID = 0;
-    m_BGMSoundVolume = 1.f;
-	m_EffectSoundVolume = 1.f;
-	m_CurrentPlayingList.clear();
+    m_BGMSoundVolume = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME) / 100.f;
+	m_EffectSoundVolume = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME) / 100.f;
+    this->EmptyCurrentPlayingList();
 }
 
 void CAudioManager::PlayEffectSound(
@@ -79,7 +87,8 @@ void CAudioManager::EmptyCurrentPlayingList()
 {
     for(auto audio : m_CurrentPlayingList)
     {
-        delete audio.second;
+        if(audio.second != nullptr)
+            delete audio.second;
     }
 
 	m_CurrentPlayingList.clear();

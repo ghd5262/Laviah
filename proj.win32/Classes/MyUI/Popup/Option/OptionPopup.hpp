@@ -7,6 +7,7 @@ class COptionPopup : public CPopup
 {
 public:
     static COptionPopup* create();
+    CPopup* setInitialScrollIndex(int index);
     
 protected:
     virtual bool init() override;
@@ -20,10 +21,12 @@ private:
     
     COptionPopup()
     : m_TitleScrollView(nullptr)
-    , m_ContentScrollView(nullptr){};
+    , m_ContentScrollView(nullptr)
+    , m_InitialScrollIndex(0){};
     virtual ~COptionPopup(){};
     
 private:
     cocos2d::ui::ListView* m_TitleScrollView;
     cocos2d::ui::PageView* m_ContentScrollView;
+    int m_InitialScrollIndex;
 };

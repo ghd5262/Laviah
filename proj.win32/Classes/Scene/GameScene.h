@@ -27,6 +27,9 @@ public:
 
 	void OpenGamePausePopup();
     void OpenGameMenuLayer();
+    void OpenOptionPopup(int scrollIndex = 0);
+    void OpenWorkshopPopup();
+    void OpenCharacterSelectPopup();
 	void GameStart();
     void GamePause();
 	void GameResume();
@@ -64,6 +67,9 @@ private:
 	void createHelpPopup();
     void createExitPopup(bool resume);
     void createMenuLayer();
+    void createOptionPopup(int index);
+    void createWorkshopPopup();
+    void createCharacterSelectPopup();
     void createBonusTimeLayer();
 	void createRandomCoin();
     void removeBonusTimeLayer();

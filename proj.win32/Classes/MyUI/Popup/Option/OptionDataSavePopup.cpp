@@ -69,7 +69,7 @@ bool COptionDataSavePopup::init()
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 400, 150))
     ->setContents(TRANSLATE("OPTION_DATASAVE_SAVE"))
-    ->setButtonPosition(Vec2(layer->getContentSize().width * 0.25f,
+    ->setButtonPosition(Vec2(layer->getContentSize().width * 0.265f,
                              layer->getContentSize().height * 0.2f))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(layer);
@@ -88,7 +88,7 @@ bool COptionDataSavePopup::init()
     })
     ->setLayer(LayerColor::create(COLOR::BRIGHTRED_ALPHA, 400, 150))
     ->setContents(TRANSLATE("OPTION_DATASAVE_RESET"))
-    ->setButtonPosition(Vec2(layer->getContentSize().width * 0.725f,
+    ->setButtonPosition(Vec2(layer->getContentSize().width * 0.735f,
                              layer->getContentSize().height * 0.2f))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(layer);

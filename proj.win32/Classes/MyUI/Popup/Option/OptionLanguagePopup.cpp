@@ -54,8 +54,8 @@ bool COptionLanguagePopup::init()
             auto languageKey = translateMNG->getContentByLanguageKey("LANGUAGE",
                                                                      languageKeyList.at(index));
             auto btn = this->createLanguageDP(languageKey,
-                                   Vec2((posX * (dpSize.width  + paddingSize.width )),
-                                        (posY * (dpSize.height + paddingSize.height))));
+                                   Vec2((dpSize.width * 0.5f) + (posX * (dpSize.width  + paddingSize.width )),
+                                        (dpSize.height * 0.5f) + (posY * (dpSize.height + paddingSize.height))));
             btn->show(layer);
             btn->setTag(index);
             index++;
@@ -75,11 +75,17 @@ CMyButton* COptionLanguagePopup::createLanguageDP(std::string content, Vec2 pos)
         
         CTranslateManager::Instance()->setCurrentSelectLanguage(key.at(index));
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CURRENT_LANGUAGE, index);
+        
+        // fade out and in
+        CGameScene::getGameScene()->ScreenFade([=](){
+//            this->popupClose();
+//            CGameScene::getGameScene()->OpenOptionPopup(2);
+        });
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA,
                                   getContentSize().width * 0.26f,
                                   getContentSize().height * 0.08f))
     ->setContents(content)
     ->setButtonPosition(pos)
-    ->setButtonAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE);
 }

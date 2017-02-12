@@ -41,6 +41,7 @@ CPopup::~CPopup()
         m_DefaultCallbackStack.remove_if([=](sDEFAULT_CALLBACK data){
             return data._sender == this;
         });
+        m_DefaultCallBack = nullptr;
     }
 }
 
