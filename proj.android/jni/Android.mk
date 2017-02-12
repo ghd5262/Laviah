@@ -23,6 +23,7 @@ PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/GameObject/Sh
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/json/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/MyUI/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/MyUI/Popup/*.cpp)
+PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/MyUI/Popup/Option/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/Particle/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/Scene/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../proj.win32/Classes/Task/*.cpp)
