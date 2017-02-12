@@ -147,7 +147,7 @@ bool CMenuLayer::init()
     };
     createButton([=](Node* sender){
         CGameScene::getGameScene()->OpenWorkshopPopup();
-    }, "workshopIcon.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f));
+    }, "workshopIcon_5.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f));
                  
     createButton([=](Node* sender){
         CGameScene::getGameScene()->OpenOptionPopup();
