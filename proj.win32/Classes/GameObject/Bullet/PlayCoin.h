@@ -10,7 +10,6 @@ public:
 	static CPlayCoin* create();
 
 	virtual void CollisionWithPlayer() override;
-	virtual void CollisionWithPlanet() override;
 
 protected:
 	virtual bool init() override;

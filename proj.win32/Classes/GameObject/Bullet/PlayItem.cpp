@@ -42,15 +42,6 @@ bool CPlayItem::init()
     return true;
 }
 
-void CPlayItem::CollisionWithPlanet()
-{
-	if (this->getIsFly())
-	{
-        this->createCollisionParticle();
-		this->ReturnToMemoryBlock();
-	}
-}
-
 void CPlayItem::CollisionWithPlayer()
 {
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);

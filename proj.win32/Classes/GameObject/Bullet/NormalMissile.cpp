@@ -77,11 +77,8 @@ void CNormalMissile::Execute(float delta)
 void CNormalMissile::CollisionWithPlanet()
 {
     //		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_0.mp3", false);
-    
 	m_Planet->CrushShake(0.01f, 0.3f, 0.1f, 3.0f);
-	
-    this->createCollisionParticle();
-	this->ReturnToMemoryBlock();
+    CBullet::CollisionWithPlanet();
 }
 
 void CNormalMissile::CollisionWithPlayer()

@@ -40,15 +40,6 @@ bool CPlayCoin::init()
     return true;
 }
 
-void CPlayCoin::CollisionWithPlanet()
-{
-	if (this->getIsFly())
-	{
-        this->createCollisionParticle();
-        this->ReturnToMemoryBlock();
-	}
-}
-
 void CPlayCoin::CollisionWithPlayer()
 {
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);

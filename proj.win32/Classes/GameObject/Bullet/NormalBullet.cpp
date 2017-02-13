@@ -47,12 +47,6 @@ bool CNormalBullet::init()
     return true;
 }
 
-void CNormalBullet::CollisionWithPlanet()
-{
-    this->createCollisionParticle();
-	this->ReturnToMemoryBlock();
-}
-
 void CNormalBullet::CollisionWithPlayer()
 {
 	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){

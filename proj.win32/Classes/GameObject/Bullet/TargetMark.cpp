@@ -106,10 +106,10 @@ void CTargetMark::Execute(float delta)
             this->setParticle();
     }
 
-	float time = ((m_DeleteTime + 0.2f) - m_Time);
+	float time = ((m_DeleteTime + 0.1f) - m_Time);
 	time = std::max(0.f, time);
 
-	float opacity = ((255.f * 0.7f) / ((m_DeleteTime + 0.2f) - 0.5f)) * time;
+	float opacity = ((255.f * 0.7f) / ((m_DeleteTime + 0.1f) - 0.5f)) * time;
 	opacity = std::min((255.f * 0.7f), opacity);
 	this->setOpacity(opacity);
     

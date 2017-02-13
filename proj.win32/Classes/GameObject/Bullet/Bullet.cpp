@@ -377,6 +377,14 @@ void CBullet::createScoreCurrentPos(int score)
     CMultipleScore::Instance()->AddScore(score);
 }
 
+void CBullet::CollisionWithPlanet()
+{
+    if (this->getIsFly()){
+        this->createCollisionParticle();
+        this->ReturnToMemoryBlock();
+    }
+}
+
 void CBullet::createCollisionParticle()
 {
     auto particle = CParticle_Explosion::create(m_BulletInfo._particleName);

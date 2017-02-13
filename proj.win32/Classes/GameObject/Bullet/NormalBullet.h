@@ -8,7 +8,6 @@ public:
 	static CNormalBullet* create();
 
 	virtual void CollisionWithPlayer() override;
-	virtual void CollisionWithPlanet() override;
 	virtual void CollisionWithBarrier() override;
 	virtual void ChangeToCoin() override;
 	virtual void ChangeToStar() override;

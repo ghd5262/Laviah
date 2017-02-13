@@ -39,14 +39,6 @@ bool CPlayStar::init()
     return true;
 }
 
-void CPlayStar::CollisionWithPlanet()
-{
-	if (this->getIsFly())
-	{
-        this->createCollisionParticle();
-        this->ReturnToMemoryBlock();
-	}
-}
 
 void CPlayStar::CollisionWithPlayer()
 {

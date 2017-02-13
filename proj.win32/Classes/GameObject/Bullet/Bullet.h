@@ -104,7 +104,7 @@ class CBullet : public CMover {
 public:
 	virtual void Rotation(float speed);
 	virtual void CollisionWithPlayer(){}
-	virtual void CollisionWithPlanet(){}
+    virtual void CollisionWithPlanet();
 	virtual void CollisionWithBarrier(){}
 	virtual void ChangeToCoin(){}
 	virtual void ChangeToStar(){}
