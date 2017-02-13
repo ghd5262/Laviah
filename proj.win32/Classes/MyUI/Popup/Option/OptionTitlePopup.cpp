@@ -86,12 +86,58 @@ cocos2d::ui::ListView* COptionTitlePopup::createListView(Size size, size_t dista
     listView->setBounceEnabled(true);
     listView->setBackGroundImageScale9Enabled(true);
     listView->setScrollBarPositionFromCorner(Vec2(7, 7));
-    listView->setSwallowTouches(false);
+//    listView->setSwallowTouches(false);
     listView->setContentSize(size);
     listView->setItemsMargin(distance);
     listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     listView->setPosition(pos);
     listView->setMagneticType(ListView::MagneticType::BOTH_END);
-//    listView->ScrollView::addEventListener((ListView::ccScrollViewCallback)CC_CALLBACK_2(COptionPopup::TitleScrollCallback, this));
+    listView->ScrollView::addEventListener((ListView::ccScrollViewCallback)CC_CALLBACK_2(COptionTitlePopup::TitleScrollCallback, this));
     return listView;
+}
+
+void COptionTitlePopup::TitleScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
+{
+    ListView* listView = dynamic_cast<ListView*>(ref);
+    
+    if (listView == nullptr) return;
+    
+    //switch (type) {
+//        case ScrollView::EventType::CONTAINER_MOVED:
+//        case ScrollView::EventType::SCROLL_TO_TOP:CCLOG("SCORLLTAG_SCROLL_TO_TOP");
+//            listView->setSwallowTouches(true); break;
+//
+//        case ScrollView::EventType::SCROLL_TO_BOTTOM:CCLOG("SCORLLTAG_SCROLL_TO_BOTTOM");
+//            listView->setSwallowTouches(true); break;
+//
+//        case ScrollView::EventType::SCROLL_TO_RIGHT:
+//        case ScrollView::EventType::SCROLL_TO_LEFT:CCLOG("SCORLLTAG_SCROLL_TO_LEFT");
+//            listView->setSwallowTouches(false); break;
+
+//        case ScrollView::EventType::SCROLL_TO_RIGHT:CCLOG("SCORLLTAG_SCROLL_TO_RIGHT");
+//        case ScrollView::EventType::SCROLLING:
+//            listView->setSwallowTouches(true);
+//            CCLOG("SCORLLTAG_SCROLLING");
+//            break;
+//        case ScrollView::EventType::AUTOSCROLL_ENDED:
+//            listView->setSwallowTouches(false);
+//            CCLOG("SCORLLTAG_AUTOSCROLL_ENDED");
+//            break;
+//        case ScrollView::EventType::CONTAINER_MOVED:
+//            listView->setSwallowTouches(true);
+//            CCLOG("SCORLLTAG_CONTAINER_MOVED");
+//            break;
+//        case ScrollView::EventType::BOUNCE_TOP:CCLOG("SCORLLTAG_BOUNCE_TOP"); break;
+//        case ScrollView::EventType::BOUNCE_LEFT://CCLOG("SCORLLTAG_BOUNCE_LEFT"); break;
+//        case ScrollView::EventType::BOUNCE_RIGHT://CCLOG("SCORLLTAG_BOUNCE_RIGHT"); break;
+//            listView->setSwallowTouches(false);
+//            break;
+//        case ScrollView::EventType::BOUNCE_BOTTOM:CCLOG("SCORLLTAG_BOUNCE_BOTTOM"); break;
+
+//            listView->setSwallowTouches(false); break;
+
+//        default:
+//            listView->setSwallowTouches(true);
+//            break;
+//    }
 }

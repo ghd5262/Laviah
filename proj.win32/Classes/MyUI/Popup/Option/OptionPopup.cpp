@@ -6,8 +6,12 @@
 #include "../../../DataManager/UserDataManager.h"
 #include <array>
 
+namespace OPTION_POPUP {
+    static int CONTENT_TAG = 100;
+}
 using namespace cocos2d;
 using namespace cocos2d::ui;
+using namespace OPTION_POPUP;
 
 COptionPopup* COptionPopup::create()
 {
@@ -53,7 +57,7 @@ bool COptionPopup::init()
     m_TitleScrollView = createListView(Size(layerSize.width, layerSize.height * 0.2f), layerSize.width / 5,
                                        Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
     scrollBack->addChild(m_TitleScrollView);
-    m_ContentScrollView = createPageView(Size(layerSize.width, layerSize.height * 0.5f),
+    m_ContentScrollView = createPageView(Size(layerSize.width, layerSize.height * 0.7f),
                                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f));
     scrollBack->addChild(m_ContentScrollView);
     
@@ -99,6 +103,8 @@ bool COptionPopup::init()
         ->setDefaultCallbackEnable(false)
         ->setBackgroundVisible(false)
         ->show(bg);
+        
+        content->setTag(CONTENT_TAG);
     }
         
     auto btnUserCoin = CUserCoinButton::create();
@@ -194,23 +200,25 @@ void COptionPopup::ContentScrollCallback(cocos2d::Ref* ref, cocos2d::ui::PageVie
     auto center         = pageView->getCenterItemInCurrentView();
     auto centerIdx      = pageView->getIndex(center);
     auto centerChild    = pageView->getChildren().at(centerIdx);
-    auto centerContent  = dynamic_cast<CPopup*>(centerChild);
-//    if (centerContent == nullptr) return;
+    auto centerBG       = dynamic_cast<Widget*>(centerChild);
+    auto centerContent  = dynamic_cast<CPopup*>(centerBG->getChildByTag(CONTENT_TAG));
+    if (centerContent == nullptr) return;
     
     // scroll title view
     m_TitleScrollView->scrollToItem(centerIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, .5f);
     
     // Center dp touch enable
-//    centerContent->popupTouchEnable(true);
+    centerContent->popupTouchEnable(true);
     
     // touch disable the other dp
-//    for (auto otherContent : pageView->getChildren())
-//    {
-//        if (otherContent != nullptr && otherContent != center)
-//        {
-//            dynamic_cast<CPopup*>(otherContent)->popupTouchEnable(false);
-//        }
-//    }
+    for (auto otherBG : pageView->getChildren())
+    {
+        if (otherBG != nullptr && otherBG != center)
+        {
+            auto otherContent = dynamic_cast<CPopup*>(otherBG->getChildByTag(CONTENT_TAG));
+            otherContent->popupTouchEnable(false);
+        }
+    }
 }
 
 cocos2d::ui::ListView* COptionPopup::createListView(Size size, size_t distance, Vec2 pos)
