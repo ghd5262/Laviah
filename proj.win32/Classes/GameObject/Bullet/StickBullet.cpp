@@ -49,14 +49,6 @@ bool CStickBullet::init()
 
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
     
-    float bulletSpeedAccel = this->getSpeed() * 0.15f;
-    
-    this->schedule([=](float delta){
-        
-        this->setSpeed(this->getSpeed() + bulletSpeedAccel);
-        
-    }, 0.1f, 10, 0.3f, "AccelerationUP");
-    
     return true;
 }
 

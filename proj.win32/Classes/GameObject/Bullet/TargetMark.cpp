@@ -9,9 +9,8 @@ using namespace cocos2d;
 
 CTargetMark::CTargetMark()
 : m_Bullet(nullptr)
-, m_pParticle(nullptr)
-, m_DeleteTime(0.f)
-, m_isItemTime(false){}
+, m_Particle(nullptr)
+, m_DeleteTime(0.f){}
 
 CTargetMark::~CTargetMark(){}
 
@@ -59,9 +58,7 @@ CTargetMark* CTargetMark::build()
     // rotation init
     this->setRotation(-getAngle());
 
-	auto item = CItemManager::Instance()->getCurrentItem();
-	m_isItemTime = (eITEM_FLAG_coin & item || eITEM_FLAG_star & item);
-	if (m_isItemTime) this->setParticle();
+    this->setParticle();
     
     return this;
 }
@@ -69,50 +66,41 @@ CTargetMark* CTargetMark::build()
 CTargetMark* CTargetMark::setBullet(CBullet *bullet)
 {
     m_Bullet = bullet;
-    
     return this;
-}
-
-bool CTargetMark::init()
-{
-    if (!CBullet::init()) return false;
-    
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    
-    m_ScreenRect = Rect(-visibleSize.width, 0, visibleSize.width * 3, visibleSize.height);
-    
-    return true;
 }
 
 void CTargetMark::setParticle()
 {
-	m_pParticle = CParticle_Line::create("particle_star1.png");
-    if (m_pParticle != nullptr){
-		m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_pParticle->setPosVar(Vec2(this->getContentSize().width * 0.7f, 20));
-        m_pParticle->setPosition(Vec2(this->getContentSize().width, this->getContentSize().height /2));
-        this->addChild(m_pParticle, 10);
+	m_Particle = CParticle_Line::create("particle_star1.png");
+    if (m_Particle != nullptr){
+		m_Particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_Particle->setPosVar(Vec2(this->getContentSize().width * 0.7f, 20));
+        m_Particle->setPosition(Vec2(this->getContentSize().width, this->getContentSize().height /2));
+        m_Particle->setVisible(false);
+        this->addChild(m_Particle, 10);
     }
+}
+
+void CTargetMark::setOpacityByTimer()
+{
+    float time = (m_DeleteTime - m_Time);
+    time = std::max(0.f, time);
+    float opacity = ((255.f * 0.7f) / (m_DeleteTime - 0.5f)) * time;
+    opacity = std::min((255.f * 0.7f), opacity);
+    this->setOpacity(opacity);
 }
 
 void CTargetMark::Execute(float delta)
 {
     m_Time += delta;
 
+    this->setOpacityByTimer();
+    
+    // set particle when it needs.
     auto item = CItemManager::Instance()->getCurrentItem();
     if(eITEM_FLAG_coin & item || eITEM_FLAG_star & item)
-    {
-        if(m_pParticle == nullptr)
-            this->setParticle();
-    }
-
-	float time = ((m_DeleteTime + 0.1f) - m_Time);
-	time = std::max(0.f, time);
-
-	float opacity = ((255.f * 0.7f) / ((m_DeleteTime + 0.1f) - 0.5f)) * time;
-	opacity = std::min((255.f * 0.7f), opacity);
-	this->setOpacity(opacity);
+        m_Particle->setVisible(true);
     
 	if (m_Time > m_DeleteTime)
-		this->ReturnToMemoryBlock();
+        this->ReturnToMemoryBlock();
 }

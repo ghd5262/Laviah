@@ -42,8 +42,8 @@ bool CPlayCoin::init()
 
 void CPlayCoin::CollisionWithPlayer()
 {
-//	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
-//	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
+	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto targetPos = Vec2(visibleSize.width * 0.055f, visibleSize.height * 0.925f);
     auto length = Vec2(targetPos - this->getPosition()).length();

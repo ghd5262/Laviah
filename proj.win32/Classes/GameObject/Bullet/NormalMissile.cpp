@@ -54,10 +54,7 @@ bool CNormalMissile::init()
 {
     if (!CBullet::init()) return false;
     
-	this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
-
-//    Size visibleSize = Director::getInstance()->getVisibleSize();
-//    m_ScreenRect = Rect(-visibleSize.width, 0, visibleSize.width * 3, visibleSize.height);
+    this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
 
     return true;
 }
@@ -67,7 +64,6 @@ void CNormalMissile::Execute(float delta)
 	m_Time += delta;
     if (!IsTimeUP()) return;
     if (!m_bIsTargetMarkCreate) {
-        CCLOG("Delay : %f Time : %f", getDelayTime(), m_Time);
         this->createTargetLine();
     }
     this->setVisible(true);
@@ -111,44 +107,29 @@ void CNormalMissile::CollisionWithBarrier()
 
 void CNormalMissile::ChangeToCoin()
 {
-	if (!m_bIsTargetMarkCreate)
-		return;
+	if (!m_bIsTargetMarkCreate) return;
 
 	this->setAlive(false);
-
 	auto patternIndex = CObjectManager::Instance()->getCharacterParam()->_idx;
-
 	float distance = m_TargetVec.distance(getPosition());
 
-    // TODO: 패턴 안에 있는 bullet의 데이터를 셋팅해야한다.
 	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(patternIndex, getAngle(), distance);
     
-	// 이부분 일단 작업하고 다음 리펙토링 때 autoReturnMemoryPool에 넣어야한다.
-//	this->scheduleOnce([this](float delta){
-		this->ReturnToMemoryBlock();
-//	}, 0.f, "ReturnToMemoryBlock");
+    this->ReturnToMemoryBlock();
 }
 
 void CNormalMissile::ChangeToStar()
 {
-	if (!m_bIsTargetMarkCreate)
-		return;
+	if (!m_bIsTargetMarkCreate) return;
 
 	this->setAlive(false);
-
 	auto patternIndex = CObjectManager::Instance()->getCharacterParam()->_idx;
-
 	float distance = m_TargetVec.distance(getPosition());
 
-	// TODO: 패턴 안에 있는 bullet의 데이터를 셋팅해야한다.
 	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(patternIndex, getAngle(), distance);
 
-	// 이부분 일단 작업하고 다음 리펙토링 때 autoReturnMemoryPool에 넣어야한다.
-//	this->scheduleOnce([this](float delta){
-		this->ReturnToMemoryBlock();
-//	}, 0.f, "ReturnToMemoryBlock");
+    this->ReturnToMemoryBlock();
 }
-
 
 void CNormalMissile::createTargetLine()
 {
@@ -175,7 +156,8 @@ void CNormalMissile::createParticle_Flame()
 		particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		particle->setAngle(0);
 		particle->setGravity(Vec2(90, 0));
-		particle->setPosition(Vec2(this->getContentSize().width * 1.2f,	this->getContentSize().height * 0.5f));
+		particle->setPosition(Vec2(this->getContentSize().width * 1.2f,
+                                   this->getContentSize().height * 0.5f));
 		particle->setStartSize(50);
 		particle->setLife(0.3f);
 		particle->setLifeVar(0.15f);

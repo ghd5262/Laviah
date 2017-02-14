@@ -56,12 +56,14 @@ void CItemManager::StartItemTimer(eITEM_TYPE itemType)
             break;
             
         case eITEM_TYPE_coin:
-			setTimer(itemType, player->getCoinLimitTime()); 
-			CObjectManager::Instance()->getCoinItemRange()->ItemGet(player->getCoinLimitTime());
+			setTimer(itemType, player->getCoinLimitTime());
+            // range가 target까지 커지는 시간 1.f
+			CObjectManager::Instance()->getCoinItemRange()->ItemGet(player->getCoinLimitTime()-1.f);
 			break;
         case eITEM_TYPE_star:
 			setTimer(itemType, player->getStarLimitTime());
-			CObjectManager::Instance()->getStarItemRange()->ItemGet(player->getStarLimitTime());
+            // range가 target까지 커지는 시간 1.f
+            CObjectManager::Instance()->getStarItemRange()->ItemGet(player->getStarLimitTime()-1.f);
 			break;
         case eITEM_TYPE_giant: setTimer(itemType, player->getGiantLimitTime()); break;
         case eITEM_TYPE_bonustime: setTimer(itemType, player->getBonusTimeLimitTime()); break;

@@ -10,27 +10,21 @@ public:
     static CTargetMark* create();
     
     CTargetMark* setBullet(CBullet* bullet);
-    CTargetMark* build();
+    CTargetMark* build() override;
     
 	virtual void Execute(float delta = 0.f) override;
 
-protected:
-	virtual bool init() override;
-
 private:
     void setParticle();
+    void setOpacityByTimer();
     
 	CTargetMark();
 	virtual ~CTargetMark();
 
 private:
-//	cocos2d::Vector<cocos2d::SpriteFrame*> m_AnimationFrames;
-//	cocos2d::Sprite* m_SpriteFrame;
 	CBullet* m_Bullet;              // owner missile
 	float m_DeleteTime;             // 미사일 도착시간 =  target
-	cocos2d::Rect m_ScreenRect;
-	bool m_isItemTime;
 	
 	//파티클
-	cocos2d::ParticleSystemQuad* m_pParticle;
+	cocos2d::ParticleSystemQuad* m_Particle;
 };

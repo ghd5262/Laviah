@@ -27,8 +27,7 @@ using namespace STANDBULLET;
 CStandBullet::CStandBullet()
 : m_StayLimitTime(0)
 , m_StandUpComplete(false)
-, m_PlanetPos(m_Planet->getPosition())
-{}
+, m_PlanetPos(m_Planet->getPosition()){}
 
 CStandBullet* CStandBullet::create()
 {
@@ -61,7 +60,7 @@ bool CStandBullet::init()
 CBullet* CStandBullet::build()
 {
     CBullet::build();
-    auto createDistance = BOUNDING_RADIUS * 0.6f;
+    auto createDistance = BOUNDING_RADIUS * 0.7f;
     this->setPosition(getCirclePosition(getAngle(), createDistance, m_PlanetPos));
     this->setDelayTime(BULLET_STANDARD_DELAY - ((TARGET_POS_DISTANCE - createDistance) / getSpeed()));
     return this;
