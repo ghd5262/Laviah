@@ -137,7 +137,8 @@ bool COptionPopup::init()
         btnEnd->runAction(FadeIn::create(0.5f));
         btnUserCoin->runAction(FadeIn::create(0.5f));
         scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.62f))));
-        m_ContentScrollView->scrollToItem(m_InitialScrollIndex);
+        m_TitleScrollView->jumpToItem(m_InitialScrollIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
+        m_ContentScrollView->jumpToItem(m_InitialScrollIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
     });
     
     this->setCloseAnimation([=](Node* sender){

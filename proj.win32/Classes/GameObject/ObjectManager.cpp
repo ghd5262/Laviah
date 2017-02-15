@@ -187,7 +187,11 @@ void CObjectManager::ZoomIn2()
     this->zoom(m_Planet, PLANET_DEFINE::ZOOMIN_2_POS, PLANET_DEFINE::ZOOMIN_2_SIZE);
     this->zoom(m_Player, PLAYER_DEFINE::ZOOMIN_2_POS, PLAYER_DEFINE::ZOOMIN_2_SIZE);
     m_Rocket->setVisible(false);
-    m_Player->setVisible(false);
+    m_Player->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f),
+                                                       CallFunc::create([=](){
+        m_Player->setVisible(false);
+    })));
+//    m_Player->setVisible(false);
 }
 
 void CObjectManager::ZoomOut()

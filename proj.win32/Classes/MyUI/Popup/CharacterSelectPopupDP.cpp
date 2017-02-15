@@ -68,15 +68,15 @@ bool CCharacterSelectPopupDP::init()
 
 void CCharacterSelectPopupDP::Buy()
 {
-  //  if (CUserDataManager::Instance()->CoinUpdate(-m_Character->_cost)){
-  //  
-  //      // USER Data Save
-  //      CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx);
-  //      CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_idx);
+    if (CUserDataManager::Instance()->CoinUpdate(-0)){
+    
+        // USER Data Save
+        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_idx);
 
-		//// change color to white
-		//m_CharacterImg->setColor(Color3B::WHITE);
-  //  }
+		// change color to white
+		m_CharacterImg->setColor(Color3B::WHITE);
+    }
 }
 
 void CCharacterSelectPopupDP::Select()
