@@ -111,11 +111,12 @@ bool CCharacterSelectPopup::init()
 	}
 
 	auto currentCharacterParam = CCharacterDataManager::Instance()->getCharacterByIndex(currentCharacterIdx);
-	m_CenterCharacterNameLabel = Label::createWithSystemFont(TRANSLATE(currentCharacterParam->_name), FONT::MALGUNBD, 80,
-		Size(layerSize.width * 0.8f, layerSize.height),
-		TextHAlignment::CENTER,
-		TextVAlignment::CENTER);
-	if (m_CenterCharacterNameLabel != nullptr)
+    m_CenterCharacterNameLabel = Label::createWithSystemFont(TRANSLATE(currentCharacterParam->_name),
+                                                             FONT::MALGUNBD, 80,
+                                                             Size(layerSize.width * 0.8f, layerSize.height),
+                                                             TextHAlignment::CENTER,
+                                                             TextVAlignment::CENTER);
+    if (m_CenterCharacterNameLabel != nullptr)
 	{
 		m_CenterCharacterNameLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.8f));
 		m_CenterCharacterNameLabel->setColor(COLOR::DARKGRAY);

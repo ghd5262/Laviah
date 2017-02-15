@@ -63,7 +63,6 @@ void CChallengeProgressBar::update(float delta)
     }
     
     // If challenge complete set complete flag true
-    // TODO: CheckChallengeComplete -> CheckNormalChallengeComplete (noraml should be check with saved data.)
     if(CChallengeDataManager::Instance()->CheckChallengeComplete(index, false))
     {
         if(m_Complete) return;

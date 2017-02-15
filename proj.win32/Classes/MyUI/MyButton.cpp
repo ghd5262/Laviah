@@ -64,17 +64,6 @@ bool CMyButton::init()
 
 CMyButton* CMyButton::show(Node* parent, int zOrder/* = 0*/)
 {
-    auto createContentLabel = [=](Node* sender) {
-        if(m_Contents != "")
-        {
-            m_ContentsLabel = Label::createWithSystemFont(m_Contents, FONT::MALGUNBD, m_FontSize);
-            m_ContentsLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            m_ContentsLabel->setPosition(sender->getContentSize() / 2);
-            m_ContentsLabel->setColor(m_FontColor);
-            sender->addChild(m_ContentsLabel);
-        }
-    };
-    
     if(m_Layer != nullptr)
     {
         this->setContentSize(m_Layer->getContentSize());
@@ -82,8 +71,6 @@ CMyButton* CMyButton::show(Node* parent, int zOrder/* = 0*/)
         m_Layer->setIgnoreAnchorPointForPosition(false);
         m_Layer->setPosition(this->getContentSize() / 2);
         this->addChild(m_Layer);
-        
-        createContentLabel(m_Layer);
     }
     
     if(m_ButtonNormalImage != "")
@@ -93,8 +80,17 @@ CMyButton* CMyButton::show(Node* parent, int zOrder/* = 0*/)
 		m_ButtonImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_ButtonImage->setPosition(this->getContentSize() / 2);
 		this->addChild(m_ButtonImage);
-        
-		createContentLabel(m_ButtonImage);
+    }
+    
+    if(m_Contents != "")
+    {
+        m_ContentsLabel = Label::createWithSystemFont(m_Contents, FONT::MALGUNBD, m_FontSize);
+        if(!m_Layer && m_ButtonNormalImage == "")
+            this->setContentSize(m_ContentsLabel->getContentSize() * 1.3f); // 터치 범위 보정
+        m_ContentsLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_ContentsLabel->setPosition(this->getContentSize() / 2);
+        m_ContentsLabel->setColor(m_FontColor);
+        this->addChild(m_ContentsLabel);
     }
     
     this->addTouchEventListener([=](Ref *pSender, Widget::TouchEventType type){

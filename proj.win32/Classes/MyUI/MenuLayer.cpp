@@ -7,6 +7,8 @@
 #include "../DataManager/UserDataManager.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Rocket.h"
+#include "../GameObject/Planet.h"
+#include "../GameObject/Player.h"
 #include "../AI/States/RocketStates.h"
 #include <time.h>
 #include <array>
@@ -63,16 +65,15 @@ bool CMenuLayer::init()
 			->show(this);
 	};
 
-	auto createTestButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, Size size){
+	auto createLayerButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, Size size){
 		auto btn = CMyButton::create()
 			->addEventListener(callback)
-			->setLayer(LayerColor::create(COLOR::BRIGHTRED_ALPHA, size.width, size.height))
+			->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, size.width, size.height))
 			->setContents(name)
 			->setFont(Color3B::WHITE, 40)
 			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 			->setButtonPosition(pos)
 			->show(this);
-        btn->setCascadeOpacityEnabled(true);
         return btn;
 	};
     
@@ -97,7 +98,7 @@ bool CMenuLayer::init()
         Vec2(popupSize.width * 0.3f, popupSize.height * 0.95f)
 	};
 
-    std::array<CMyButton*, 7> btnArray = {
+    /*std::array<CMyButton*, 7> btnArray = {
         createTestButton([=](Node* sender){
             createOneButtonPopup([](Node* sender){}, "Share is comming soon");
         }, TRANSLATE("BUTTON_MENU_SHARE"), testButtonPos[0], Size(200, 150)),
@@ -144,7 +145,26 @@ bool CMenuLayer::init()
 //                CUserDataManager::Instance()->SaveUserData(true, true);
 //            }, "Reset?");
 //        }, "R", testButtonPos[5], Size(100, 100)),
-    };
+    };*/
+    
+    
+    createLayerButton([=](Node* sender){
+        CGameScene::getGameScene()->OpenCharacterSelectPopup();
+    }, "", PLAYER_DEFINE::ZOOMIN_POS, Size(100, 100));
+    
+    CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        
+        CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
+        CGameScene::getGameScene()->GameStart();
+        this->popupClose();
+        
+    })
+    ->setContents("tab to start")
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f))
+    ->show(this);
+    
     createButton([=](Node* sender){
         CGameScene::getGameScene()->OpenWorkshopPopup();
     }, "workshopIcon_5.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f));
