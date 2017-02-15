@@ -43,7 +43,7 @@ bool CCharacterSelectPopup::init()
 		this->addChild(bg);
 	}
 
-	auto scrollBack = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1500.f);
+	auto scrollBack = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 2100.f);
 	if (scrollBack != nullptr){
 		scrollBack->setIgnoreAnchorPointForPosition(false);
 		scrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -76,7 +76,7 @@ bool CCharacterSelectPopup::init()
 		listView->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
 		listView->setBounceEnabled(true);
 		listView->setBackGroundImageScale9Enabled(true);
-		listView->setContentSize(Size(layerSize.width, layerSize.height * 0.5f));
+		listView->setContentSize(Size(layerSize.width, layerSize.height));
 		listView->setScrollBarPositionFromCorner(Vec2(7, 7));
         listView->setScrollBarEnabled(false);
 		listView->setItemsMargin(dpDistance);
