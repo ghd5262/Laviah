@@ -147,31 +147,44 @@ bool CMenuLayer::init()
 //        }, "R", testButtonPos[5], Size(100, 100)),
     };*/
     
-    
-    createLayerButton([=](Node* sender){
-        CGameScene::getGameScene()->OpenCharacterSelectPopup();
-    }, "", PLAYER_DEFINE::ZOOMIN_POS, Size(100, 100));
-    
-    CMyButton::create()
-    ->addEventListener([=](Node* sender){
+    std::array<CMyButton*, 4> btnArray = {
+        // character select button
+        createLayerButton([=](Node* sender){
+            CGameScene::getGameScene()->OpenCharacterSelectPopup();
+        }, "", PLAYER_DEFINE::ZOOMIN_POS, Size(100, 100)),
         
-        CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
-        CGameScene::getGameScene()->GameStart();
-        this->popupClose();
+        // start button
+        CMyButton::create()
+        ->addEventListener([=](Node* sender){
+            
+            CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
+            CGameScene::getGameScene()->GameStart();
+            this->popupClose();
+            
+        })
+        ->setContents("tab to start")
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setButtonPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f))
+        ->show(this),
         
-    })
-    ->setContents("tab to start")
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setButtonPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f))
-    ->show(this);
+        // workshop button
+        createButton([=](Node* sender){
+            CGameScene::getGameScene()->OpenWorkshopPopup();
+        }, "workshopIcon_5.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f)),
+        
+        // option button
+        createButton([=](Node* sender){
+            CGameScene::getGameScene()->OpenOptionPopup();
+        }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.95f)),
+    };
     
-    createButton([=](Node* sender){
-        CGameScene::getGameScene()->OpenWorkshopPopup();
-    }, "workshopIcon_5.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f));
-                 
-    createButton([=](Node* sender){
-        CGameScene::getGameScene()->OpenOptionPopup();
-    }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.95f));
+    this->setOpenAnimation([=](Node* sender){
+        auto delay = DelayTime::create(1.f);
+        auto fadeIn = FadeIn::create(0.5f);
+        
+        for(auto btn : btnArray)
+            btn->runAction(Sequence::createWithTwoActions(delay, fadeIn));
+    });
     
     this->setDefaultCallback([=](Node* sender){
         CGameScene::getGameScene()->GameExit(false);

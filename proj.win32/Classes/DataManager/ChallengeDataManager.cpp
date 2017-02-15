@@ -243,6 +243,19 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge()
     return newChallenge;
 }
 
+const sCHALLENGE_PARAM* CChallengeDataManager::getNonCompleteChallengeFromCurrentList()
+{
+    auto dataMNG = CUserDataManager::Instance();
+    auto currentList = dataMNG->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+    for(auto index : currentList)
+    {
+        if(!dataMNG->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, index))
+            return getNormalChallengeByIndex(index);
+    }
+    
+    return nullptr;
+}
+
 const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(CHALLENGE_LIST &list)
 {
     auto size = list.size();

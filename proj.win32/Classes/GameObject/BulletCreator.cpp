@@ -165,9 +165,10 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
     // bullet create
 	if (BULLETCREATOR::COIN_CREATE && (symbol >= 'P' && symbol <= 'T')) {
 		symbol = (cocos2d::random<int>(1, 10) < 5) ? 'U' : symbol;
+        symbol = (cocos2d::random<int>(1, 10) < 2) ? 'z' : symbol;
 		BULLETCREATOR::COIN_CREATE = false;
 	}
-    if      (symbol == 'z')                     symbol = cocos2d::random<int>('A', 'F');
+    if      (symbol == 'z')                     symbol = cocos2d::random<int>('B', 'F');
     if      (symbol >= '1' && symbol <= '3')    bullet = CNormalBullet::create();
     else if (symbol >= '4' && symbol <= '5')    bullet = CNormalMissile::create();
     else if (symbol == '6')                     bullet = CStickBullet::create();

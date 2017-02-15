@@ -31,6 +31,7 @@ private:
     
     CChallengeProgressBar()
     : m_ChallengeData(nullptr)
+    , m_BarBG(nullptr)
     , m_ProgressBar(nullptr)
     , m_TitleLabel(nullptr)
     , m_BarBGColor(COLOR::TRANSPARENT_ALPHA)
@@ -45,6 +46,7 @@ private:
 private:
     std::vector<LAST_CALLBACK> m_EventList;
     const sCHALLENGE_PARAM* m_ChallengeData;
+    cocos2d::LayerColor* m_BarBG;
     cocos2d::ProgressTimer* m_ProgressBar;
     cocos2d::Label* m_TitleLabel;
     cocos2d::Color4B m_BarBGColor;

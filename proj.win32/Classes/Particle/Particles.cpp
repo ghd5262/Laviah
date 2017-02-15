@@ -180,7 +180,7 @@ bool CParticle_Explosion::initWithTotalParticles(int numberOfParticles)
 
 		// angle
 		this->_angle = 0;
-		this->_angleVar = 90;
+		this->_angleVar = 50;
 		// life of particles
 		this->_life = 0.15f;
 		this->_lifeVar = 0.2f;

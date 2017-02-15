@@ -30,32 +30,17 @@ bool CChallengeProgressBar::init()
 
 void CChallengeProgressBar::update(float delta)
 {
-    int index = 0;
-    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
-    if(!list.size()) {
-        CChallengeDataManager::Instance()->getNewChallenges();
+	// If current challenge is differs from previous challenge.
+    auto data = CChallengeDataManager::Instance()->getNonCompleteChallengeFromCurrentList();
+    if (!data && !m_ChallengeData)  return;
+    if (m_ChallengeData != data  ){
+        this->Reset();
         return;
-    }
-    
-	if (m_ChallengeData == nullptr) this->Reset();
-
-    // If current challenge is differs from previous challenge.
-    {
-        
-        index = list.at(0);
-        if(index != m_CurrentChallengeIndex) {
-            // reset ui
-            m_CurrentChallengeIndex = index;
-            this->Reset();
-        }
     }
 
     // calculate percent
+    auto value = GLOBAL->getVariable(m_ChallengeData->_materialKeyList.at(0));
     {
-        auto value = 0;
-		for (auto key : m_ChallengeData->_materialKeyList)
-			value += GLOBAL->getVariable(key);
-
         if(value != m_CurrentValue) {
             m_CurrentValue = value;
             m_ProgressBar->runAction(ProgressTo::create(0.5f, this->getPercent(value, m_GoalValue)));
@@ -63,7 +48,7 @@ void CChallengeProgressBar::update(float delta)
     }
     
     // If challenge complete set complete flag true
-    if(CChallengeDataManager::Instance()->CheckChallengeComplete(index, false))
+    if(this->getPercent(value, m_GoalValue) >= 100.f)
     {
         if(m_Complete) return;
         
@@ -83,12 +68,12 @@ CChallengeProgressBar* CChallengeProgressBar::show(cocos2d::Node* parent, int zO
 {
     // bar bg
     {
-        auto layer = LayerColor::create(m_BarBGColor, 1080, 50);
-        this->setContentSize(layer->getContentSize());
-        layer->setIgnoreAnchorPointForPosition(false);
-        layer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        layer->setPosition(getContentSize() / 2);
-        this->addChild(layer);
+        m_BarBG = LayerColor::create(m_BarBGColor, 1080, 50);
+        this->setContentSize(m_BarBG->getContentSize());
+        m_BarBG->setIgnoreAnchorPointForPosition(false);
+        m_BarBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_BarBG->setPosition(getContentSize() / 2);
+        this->addChild(m_BarBG);
     }
     
     // bar
@@ -166,16 +151,26 @@ CChallengeProgressBar* CChallengeProgressBar::setBarAnchorPoint(Vec2 anchorPoint
 
 void CChallengeProgressBar::Reset()
 {
-    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
-    if(!list.size()) {
-        CChallengeDataManager::Instance()->getNewChallenges();
-        return;
-    }
+    //이부분은 여기서 할게 아니라 게임을 처음에 키면 동작해야할듯하다.
+//    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+//    if(!list.size()) {
+//        CChallengeDataManager::Instance()->getNewChallenges();
+//        return;
+//    }
     
-    m_ChallengeData = CChallengeDataManager::Instance()->getNormalChallengeByIndex(list.at(0));
-	for (auto value : m_ChallengeData->_materialValueList) m_GoalValue += value;
-	m_TitleLabel->setString(StringUtils::format(TRANSLATE(m_ChallengeData->_contents).c_str(), m_ChallengeData->_materialValueList.at(0)));
+    
+    m_BarBG->updateDisplayedOpacity(0);
+    m_TitleLabel->setString("");
+    m_ChallengeData = CChallengeDataManager::Instance()->getNonCompleteChallengeFromCurrentList();
+    if(!m_ChallengeData) return;
+    
+    m_CurrentChallengeIndex = m_ChallengeData->_index;
+	m_GoalValue = m_ChallengeData->_materialValueList.at(0);
+    auto content = StringUtils::format(TRANSLATE(m_ChallengeData->_contents).c_str(), m_GoalValue);
+	m_TitleLabel->setString(content);
     m_ProgressBar->setColor(m_BarColor);
+    m_ProgressBar->runAction(ProgressTo::create(0.5f, 0));
+    m_BarBG->updateDisplayedOpacity(m_BarBGColor.a);
     m_Complete = false;
 }
 

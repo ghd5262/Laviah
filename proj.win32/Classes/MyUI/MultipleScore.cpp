@@ -116,8 +116,8 @@ void CMultipleScore::AddScore(unsigned score)
 		m_ColorLevel = colorLevel;
 		m_MultipleNumberLabel->setColor(m_ColorList[m_ColorLevel]);
 		this->runAction(JumpBy::create(0.3f, Vec2(0, 0), 50, 1));
-		this->calculateScore();
-	}
+        GLOBAL->STAR_SCORE += (m_MultipleNumber / 100) * 100000;
+    }
 }
 
 void CMultipleScore::UpdateScore()

@@ -115,8 +115,11 @@ public:
     const sCHALLENGE_PARAM* getNormalChallengeByIndex(int index) const;
     const sCHALLENGE_PARAM* getHiddenChallengeByIndex(int index) const;
     const sCHALLENGE_PARAM* getNewRandomChallenge();
+    const sCHALLENGE_PARAM* getNonCompleteChallengeFromCurrentList();
     cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
-    CHALLENGE_LIST getHiddenChallengeList() const { return m_HiddenChallengeDataList; }
+    CHALLENGE_LIST getHiddenChallengeList() const {
+        return m_HiddenChallengeDataList;
+    }
     
 private:
     void initWithJson(std::string fileName);
