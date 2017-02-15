@@ -161,6 +161,7 @@ void CChallengeProgressBar::Reset()
     
     m_BarBG->updateDisplayedOpacity(0);
     m_TitleLabel->setString("");
+    m_ProgressBar->runAction(ProgressTo::create(0.5f, 0));
     m_ChallengeData = CChallengeDataManager::Instance()->getNonCompleteChallengeFromCurrentList();
     if(!m_ChallengeData) return;
     
@@ -169,7 +170,6 @@ void CChallengeProgressBar::Reset()
     auto content = StringUtils::format(TRANSLATE(m_ChallengeData->_contents).c_str(), m_GoalValue);
 	m_TitleLabel->setString(content);
     m_ProgressBar->setColor(m_BarColor);
-    m_ProgressBar->runAction(ProgressTo::create(0.5f, 0));
     m_BarBG->updateDisplayedOpacity(m_BarBGColor.a);
     m_Complete = false;
 }

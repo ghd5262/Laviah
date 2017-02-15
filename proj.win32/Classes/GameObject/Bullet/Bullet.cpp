@@ -390,8 +390,8 @@ void CBullet::createCollisionParticle()
     auto particle = CParticle_Explosion::create(m_BulletInfo._particleName);
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        particle->setStartSpin(-getRotation());
-        particle->setEndSpin(-getRotation());
+        particle->setStartSpin(getRotation());
+        particle->setEndSpin(getRotation());
         particle->setPosition(getPosition());
         particle->setGravity(m_RotationVec);
         particle->setSpeed(100);
