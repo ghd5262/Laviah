@@ -15,22 +15,31 @@
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
+CMenuLayer* CMenuLayer::m_Instance = nullptr;
 
-CMenuLayer* CMenuLayer::create()
+CMenuLayer::~CMenuLayer()
 {
-    CMenuLayer *pRet = new(std::nothrow) CMenuLayer();
-    if (pRet && pRet->init())
+    m_Instance = nullptr;
+}
+
+CMenuLayer* CMenuLayer::Instance()
+{
+    if(m_Instance != nullptr) return m_Instance;
+    
+    m_Instance = new(std::nothrow) CMenuLayer();
+    if (m_Instance && m_Instance->init())
     {
-        pRet->autorelease();
-        return pRet;
+        m_Instance->autorelease();
+        return m_Instance;
     }
     else
     {
-        delete pRet;
-        pRet = NULL;
+        delete m_Instance;
+        m_Instance = NULL;
         return NULL;
     }
 }
+
 bool CMenuLayer::init()
 {
     if (!CPopup::init()) return false;
@@ -158,9 +167,7 @@ bool CMenuLayer::init()
         ->addEventListener([=](Node* sender){
             
             CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
-            CGameScene::getGameScene()->GameStart();
-            this->popupClose();
-            
+            CGameScene::getGameScene()->GameStart();            
         })
         ->setContents("tab to start")
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -177,14 +184,6 @@ bool CMenuLayer::init()
             CGameScene::getGameScene()->OpenOptionPopup();
         }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.95f)),
     };
-    
-    this->setOpenAnimation([=](Node* sender){
-        auto delay = DelayTime::create(1.f);
-        auto fadeIn = FadeIn::create(0.5f);
-        
-        for(auto btn : btnArray)
-            btn->runAction(Sequence::createWithTwoActions(delay, fadeIn));
-    });
     
     this->setDefaultCallback([=](Node* sender){
         CGameScene::getGameScene()->GameExit(false);

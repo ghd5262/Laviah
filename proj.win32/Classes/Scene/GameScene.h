@@ -66,7 +66,6 @@ private:
 	void createResultPopup();
 	void createHelpPopup();
     void createExitPopup(bool resume);
-    void createMenuLayer();
     void createOptionPopup(int index);
     void createWorkshopPopup();
     void createCharacterSelectPopup();
@@ -87,6 +86,7 @@ private:
     void createScreenFade();
     void createItemRanges();
     void createComboUI();
+    void createMenuLayer();
     void createUILayer();
     void initMemoryPool();
 
@@ -95,6 +95,7 @@ private:
 	static cocos2d::NodeGrid* m_GridWorld;
     cocos2d::LayerColor* m_ScreenFade;
     CPopup* m_UILayer;
+    CPopup* m_MenuLayer;
     CPopup* m_BonusTimeLayer;
     CCountDown* m_CountDown;
 	cocos2d::Size m_VisibleSize;

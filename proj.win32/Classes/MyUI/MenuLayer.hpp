@@ -5,7 +5,7 @@ class CMyButton;
 class CMenuLayer : public CPopup
 {
 public:
-    static CMenuLayer* create();
+    static CMenuLayer* Instance();
 
 	bool TouchBegan(cocos2d::Touch* pTouch, cocos2d::Event* pEvent);
 	void TouchScreen(cocos2d::Touch* pTouch, cocos2d::Event* pEvent);
@@ -16,6 +16,8 @@ protected:
 private:
     
     CMenuLayer(){};
-    virtual ~CMenuLayer(){};
+    virtual ~CMenuLayer();
 
+private:
+    static CMenuLayer* m_Instance;
 };

@@ -40,6 +40,10 @@ public:
     { m_FSM->ChangeState(newState); };
     void StartBonusTime();
     void EndBonusTime();
+    void ZoomIn();
+    void ZoomIn2();
+    void ZoomOut();
+    
     
 	// 초기화
 	void Clear();
@@ -74,6 +78,9 @@ private:
     void bulletListExecute();
     void bulletListRotate();
     void setGameLevelByTimer();
+    void zoom(cocos2d::Node* obj,
+              cocos2d::Vec2 zoomPos,
+              float zoomSize);
     
     CObjectManager();
 	~CObjectManager(){};

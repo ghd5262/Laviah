@@ -8,6 +8,7 @@
 #include "ItemRange.h"
 #include "Bullet/Bullet.h"
 #include "../AI/States/GameStates.h"
+#include "../AI/States/RocketStates.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 #include <algorithm>
@@ -172,6 +173,30 @@ void CObjectManager::EndBonusTime()
     CGameScene::getGameScene()->BonusTimeEnd();
 }
 
+void CObjectManager::ZoomIn()
+{
+    this->zoom(m_Planet, PLANET_DEFINE::ZOOMIN_POS, PLANET_DEFINE::ZOOMIN_SIZE);
+    this->zoom(m_Player, PLAYER_DEFINE::ZOOMIN_POS, PLAYER_DEFINE::ZOOMIN_SIZE);
+    m_Rocket->ZoomIn();
+    m_Rocket->setVisible(true);
+    m_Player->setVisible(true);
+}
+
+void CObjectManager::ZoomIn2()
+{
+    this->zoom(m_Planet, PLANET_DEFINE::ZOOMIN_2_POS, PLANET_DEFINE::ZOOMIN_2_SIZE);
+    this->zoom(m_Player, PLAYER_DEFINE::ZOOMIN_2_POS, PLAYER_DEFINE::ZOOMIN_2_SIZE);
+    m_Rocket->setVisible(false);
+    m_Player->setVisible(false);
+}
+
+void CObjectManager::ZoomOut()
+{
+    this->zoom(m_Planet, PLANET_DEFINE::ZOOMOUT_POS, PLANET_DEFINE::SCALE_SIZE);
+    this->zoom(m_Player, PLAYER_DEFINE::ZOOMOUT_POS, PLAYER_DEFINE::ZOOMOUT_SIZE);
+    m_Rocket->ZoomOut();
+}
+
 void CObjectManager::RemoveAllObject()
 {
 #if(USE_MEMORY_POOLING)
@@ -284,4 +309,15 @@ void CObjectManager::setGameLevelByTimer()
     {
         m_GameLevel++;
     }
+}
+
+void CObjectManager::zoom(cocos2d::Node* obj,
+                          cocos2d::Vec2 zoomPos,
+                          float zoomSize)
+{
+    auto scaleAction = ScaleTo::create(1.2f, zoomSize);
+    auto moveAction  = MoveTo::create(1.2f,  zoomPos);
+    auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
+    auto exponential = EaseExponentialInOut::create(spawnAction);
+    obj->runAction(exponential);
 }

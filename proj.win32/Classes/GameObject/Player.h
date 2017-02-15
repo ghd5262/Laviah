@@ -20,6 +20,9 @@ namespace PLAYER_DEFINE{
     static const float INVINCIVILITY_TIME = 5.f;
     static const float NORMAL_ROTATION_SPEED = ((PLANET_DEFINE::BOUNDING_RADIUS / NORMAL_BOUNDING_RADIUS) * BULLETCREATOR::ROTATION_SPEED);
     static const float GIANT_ROTATION_SPEED = NORMAL_ROTATION_SPEED * 0.7f;
+    static const float ZOOMIN_SIZE = 1.5f;
+    static const float ZOOMIN_2_SIZE = 3.f;
+    static const float ZOOMOUT_SIZE = 1.f;
     static const cocos2d::Vec2 ZOOMOUT_POS
     = cocos2d::Vec2(PLANET_DEFINE::ZOOMOUT_POS.x,
                     PLANET_DEFINE::ZOOMOUT_POS.y +
@@ -30,6 +33,11 @@ namespace PLAYER_DEFINE{
                     PLANET_DEFINE::ZOOMIN_POS.y +
                     (PLANET_DEFINE::RADIUS * PLANET_DEFINE::ZOOMIN_SIZE) +
 					(NORMAL_BOUNDING_RADIUS * 0.8f));
+    static const cocos2d::Vec2 ZOOMIN_2_POS
+    = cocos2d::Vec2(PLANET_DEFINE::ZOOMIN_2_POS.x,
+                    PLANET_DEFINE::ZOOMIN_2_POS.y +
+                    (PLANET_DEFINE::RADIUS * PLANET_DEFINE::ZOOMIN_2_SIZE) +
+                    (NORMAL_BOUNDING_RADIUS * 1.6f));
 };
 
 class CScoreUI;
@@ -87,10 +95,6 @@ public:
 	void InvincibilityMode(float time);
 
 	void ChangeDataByCharacter();
-    
-    void ZoomIn();
-    
-    void ZoomOut();
     
 	//getter & setter
 	void setCharacterParam(const sCHARACTER_PARAM* data);

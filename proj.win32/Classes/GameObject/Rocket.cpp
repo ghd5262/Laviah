@@ -73,7 +73,7 @@ bool CRocket::init()
 	m_Texture->setPosition(this->getContentSize() / 2);
     addChild(m_Texture);
     
-	this->setBoundingRadius(ROCKET::BOUNDING_RADIUS);
+	this->setBoundingRadius(ROCKET_DEFINE::BOUNDING_RADIUS);
 
 	m_Gift = CMyButton::create()
 		->addEventListener([=](Node* sender){
@@ -124,7 +124,7 @@ void CRocket::FlyAround(float delta)
 
 void CRocket::FlyAway(float delta)
 {
-	m_TargetPos = CBullet::getCirclePosition(m_AwayAngle, ROCKET::FLYAWAY_DISTANCE, m_CenterPos);
+	m_TargetPos = CBullet::getCirclePosition(m_AwayAngle, ROCKET_DEFINE::FLYAWAY_DISTANCE, m_CenterPos);
 	this->arrive(delta);
 }
 
@@ -195,7 +195,7 @@ void CRocket::BonusTimeEnd()
     // return to game
     this->scheduleOnce([=](float delta){
 //        this->ChangeState(CFlyAway::Instance());
-        this->setSpeed(ROCKET::SPEED);
+        this->setSpeed(ROCKET_DEFINE::SPEED);
     }, 1.f, "BONUSTIMEEND");
 }
 
@@ -209,7 +209,7 @@ void CRocket::arrive(float delta)
 		const double DecelerationTweaker = 0.3;
 		double speed = dist / ((double)5 * DecelerationTweaker);
 
-		speed = std::min<double>(speed, ROCKET::SPEED_MAX);
+		speed = std::min<double>(speed, ROCKET_DEFINE::SPEED_MAX);
 
 		toTarget.normalize();
         Vec2 desiredVelocity = toTarget * speed;
@@ -217,7 +217,7 @@ void CRocket::arrive(float delta)
         auto steeringForce = Vec2::ZERO;
         steeringForce = (desiredVelocity - m_Velocity);
 
-		Vec2 acceleration = steeringForce / ROCKET::MASS;
+		Vec2 acceleration = steeringForce / ROCKET_DEFINE::MASS;
 		m_Velocity += (acceleration * delta);
 		auto nextPos = this->getPosition() + (m_Velocity * delta);
 		this->setPosition(nextPos);
@@ -236,7 +236,7 @@ void CRocket::seek(float delta)
     auto steeringForce = Vec2::ZERO;
     steeringForce = (desiredVelocity - m_Velocity);
 
-	Vec2 acceleration = steeringForce / ROCKET::MASS;
+	Vec2 acceleration = steeringForce / ROCKET_DEFINE::MASS;
 	m_Velocity += (acceleration * delta);
 	auto nextPos = this->getPosition() + (m_Velocity * delta);
     
@@ -253,10 +253,10 @@ void CRocket::rotateToHead()
 
 void CRocket::arriveCheck()
 {
-    auto rect = Rect(m_TargetPos.x - ROCKET::ARRIVE_RADIUS,
-                     m_TargetPos.y - ROCKET::ARRIVE_RADIUS,
-                     m_TargetPos.x + ROCKET::ARRIVE_RADIUS,
-                     m_TargetPos.y + ROCKET::ARRIVE_RADIUS);
+    auto rect = Rect(m_TargetPos.x - ROCKET_DEFINE::ARRIVE_RADIUS,
+                     m_TargetPos.y - ROCKET_DEFINE::ARRIVE_RADIUS,
+                     m_TargetPos.x + ROCKET_DEFINE::ARRIVE_RADIUS,
+                     m_TargetPos.y + ROCKET_DEFINE::ARRIVE_RADIUS);
     
 	if (!m_Arrive && rect.containsPoint(this->getPosition())){
 		m_Arrive = true;

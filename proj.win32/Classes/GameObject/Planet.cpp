@@ -118,16 +118,13 @@ void CPlanet::CrushShake(float interval, float duration, float speed, float magn
 	}, interval, CC_REPEAT_FOREVER, 0.f, "Shake");
 }
 
-void CPlanet::Execute(float delta)
-{
-}
+void CPlanet::Execute(float delta){}
 
 // Dir -1 == Left, 1 == Right
 void CPlanet::Rotation(float speed)
 {
     m_Angle = this->getRotation() + speed;
     
-//	m_Angle = this->getRotation() + (dir * m_fRotateSpeed * delta);
 //	m_Angle = static_cast<int>(m_Angle) % 360;
 	this->setRotation(m_Angle);
 }
@@ -137,22 +134,4 @@ void CPlanet::setPlanetTexture(std::string textureName)
     if(m_pTexture != nullptr){
         this->m_pTexture->setSpriteFrame(textureName);
     }
-}
-
-void CPlanet::ZoomIn()
-{
-    auto scaleAction = ScaleTo::create(1.2f, PLANET_DEFINE::ZOOMIN_SIZE);
-    auto moveAction = MoveTo::create(1.2f, PLANET_DEFINE::ZOOMIN_POS);
-    auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
-    auto exponential = EaseExponentialInOut::create(spawnAction);
-    this->runAction(exponential);
-}
-
-void CPlanet::ZoomOut()
-{
-    auto scaleAction = ScaleTo::create(1.2f, PLANET_DEFINE::SCALE_SIZE);
-    auto moveAction = MoveTo::create(1.2f, PLANET_DEFINE::ZOOMOUT_POS);
-    auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
-    auto exponential = EaseExponentialInOut::create(spawnAction);
-    this->runAction(exponential);
 }

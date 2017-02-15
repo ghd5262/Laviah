@@ -236,7 +236,7 @@ bool CResultPopup::init()
     {
         resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         resultLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.85f));
-        resultLabel->setColor(COLOR::BRIGHTGRAY);
+        resultLabel->setColor(COLOR::DARKGRAY);
         bg->addChild(resultLabel);
         resultLabel->setOpacity(0);
     }

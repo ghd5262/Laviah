@@ -66,7 +66,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 	{
 		challengesLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.85f));
         challengesLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        challengesLabel->setColor(COLOR::BRIGHTGRAY);
+        challengesLabel->setColor(COLOR::DARKGRAY);
 		challengesLabel->setOpacity(0);
 		this->addChild(challengesLabel);
 	}

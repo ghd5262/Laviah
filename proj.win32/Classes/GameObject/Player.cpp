@@ -368,23 +368,3 @@ void CPlayer::createRunParticle()
 		CGameScene::getGameScene()->addChild(m_Particle);
     }
 }
-
-void CPlayer::ZoomIn()
-{
-    auto scaleAction = ScaleTo::create(1.2f, 1.5f);
-    auto moveAction = MoveTo::create(1.2f, PLAYER_DEFINE::ZOOMIN_POS);
-    auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
-    auto exponential = EaseExponentialInOut::create(spawnAction);
-    this->runAction(exponential);
-    this->setVisible(true);
-}
-
-void CPlayer::ZoomOut()
-{
-    auto scaleAction = ScaleTo::create(1.2f, PLAYER_DEFINE::NORMAL_SCALE);
-    auto moveAction = MoveTo::create(1.2f, PLAYER_DEFINE::ZOOMOUT_POS);
-    auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
-    auto exponential = EaseExponentialInOut::create(spawnAction);
-    this->runAction(exponential);
-}
-

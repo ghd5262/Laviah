@@ -2,6 +2,7 @@
 #include "CharacterSelectPopupDP.h"
 #include "../MyButton.h"
 #include "../UserCoinButton.h"
+#include "../MenuLayer.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/CharacterDataManager.h"
 #include "../../DataManager/UserDataManager.h"
@@ -42,7 +43,7 @@ bool CCharacterSelectPopup::init()
 		this->addChild(bg);
 	}
 
-	auto scrollBack = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 1500.f);
+	auto scrollBack = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1500.f);
 	if (scrollBack != nullptr){
 		scrollBack->setIgnoreAnchorPointForPosition(false);
 		scrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -75,6 +76,7 @@ bool CCharacterSelectPopup::init()
 		listView->setBackGroundImageScale9Enabled(true);
 		listView->setContentSize(Size(layerSize.width, layerSize.height * 0.5f));
 		listView->setScrollBarPositionFromCorner(Vec2(7, 7));
+        listView->setScrollBarEnabled(false);
 		listView->setItemsMargin(dpDistance);
 		listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		listView->setPosition(layerSize / 2);
@@ -105,9 +107,9 @@ bool CCharacterSelectPopup::init()
 		}
 
 		// Scrolling to current character
-		this->scheduleOnce([=](float delta){
+//		this->scheduleOnce([=](float delta){
 			listView->scrollToItem(currentCharacterDPIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 1.5f);
-		}, 0.3f, "ScrollToItem");
+//		}, 0.3f, "ScrollToItem");
 	}
 
 	auto currentCharacterParam = CCharacterDataManager::Instance()->getCharacterByIndex(currentCharacterIdx);
@@ -118,22 +120,23 @@ bool CCharacterSelectPopup::init()
                                                              TextVAlignment::CENTER);
     if (m_CenterCharacterNameLabel != nullptr)
 	{
-		m_CenterCharacterNameLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f, scrollBack->getContentSize().height * 0.8f));
+		m_CenterCharacterNameLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f,
+                                                     bg->getContentSize().height * 0.85f));
 		m_CenterCharacterNameLabel->setColor(COLOR::DARKGRAY);
-		scrollBack->addChild(m_CenterCharacterNameLabel);
+		bg->addChild(m_CenterCharacterNameLabel);
 		m_CenterCharacterNameLabel->setOpacity(0);
 	}
 
-	auto btnUserCoin = CUserCoinButton::create();
-	if (btnUserCoin != nullptr)
-	{
-		btnUserCoin->setPosition(Vec2(bg->getContentSize().width * 0.5f,
-			bg->getContentSize().height * 0.05f));
-		btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		btnUserCoin->setCascadeOpacityEnabled(true);
-		btnUserCoin->setOpacity(0);
-		bg->addChild(btnUserCoin);
-	}
+//	auto btnUserCoin = CUserCoinButton::create();
+//	if (btnUserCoin != nullptr)
+//	{
+//		btnUserCoin->setPosition(Vec2(bg->getContentSize().width * 0.5f,
+//			bg->getContentSize().height * 0.05f));
+//		btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//		btnUserCoin->setCascadeOpacityEnabled(true);
+//		btnUserCoin->setOpacity(0);
+//		bg->addChild(btnUserCoin);
+//	}
 
 	m_btnSelect = CMyButton::create()
 		->addEventListener([=](Node* sender){
@@ -141,10 +144,10 @@ bool CCharacterSelectPopup::init()
 	})
 		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 250, 150))
 		->setContents(TRANSLATE("BUTTON_SELECT"))
-		->setButtonPosition(Vec2(scrollBack->getContentSize().width * 0.5f,
-                                 scrollBack->getContentSize().height * 0.125f))
+		->setButtonPosition(Vec2(bg->getContentSize().width * 0.5f,
+                                 bg->getContentSize().height * 0.4f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->show(scrollBack);
+		->show(bg);
 
 	m_btnSelect->setOpacity(0);
 
@@ -164,19 +167,32 @@ bool CCharacterSelectPopup::init()
 
 
 	this->setOpenAnimation([=](Node* sender){
-		m_CenterCharacterNameLabel->runAction(FadeIn::create(0.5f));
-		btnEnd->runAction(FadeIn::create(0.5f));
-		btnUserCoin->runAction(FadeIn::create(0.5f));
-		m_btnSelect->runAction(FadeIn::create(0.5f));
-		scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.62f))));
+        auto action = [=](Node* owner){
+            auto delay = DelayTime::create(1.f);
+            auto fade  = FadeIn::create(0.5f);
+            auto sequence = Sequence::createWithTwoActions(delay, fade);
+            owner->runAction(sequence);
+        };
+		action(m_CenterCharacterNameLabel);
+		action(btnEnd);
+        action(m_btnSelect);
+
+//		btnUserCoin->runAction(FadeIn::create(0.5f));
+		scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f,
+                                                                                   visibleSize.height * 0.62f))));
 	});
 
 	this->setCloseAnimation([=](Node* sender){
 		m_CenterCharacterNameLabel->runAction(FadeTo::create(0.5f, 0));
 		btnEnd->runAction(FadeTo::create(0.5f, 0));
-		btnUserCoin->runAction(FadeTo::create(0.5f, 0));
+//		btnUserCoin->runAction(FadeTo::create(0.5f, 0));
 		m_btnSelect->runAction(FadeTo::create(0.5f, 0));
-		scrollBack->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f))));
+		scrollBack->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f,
+                                                                           visibleSize.height * 1.5f))));
+        
+        auto curIndex = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
+        if(m_CenterDP->getCharacterParam()->_idx == curIndex)
+            m_CenterDP->setVisible(false);
 	});
 
     this->setDefaultCallback([=](Node* sender){
@@ -188,6 +204,8 @@ bool CCharacterSelectPopup::init()
 
 void CCharacterSelectPopup::End(Node* sender){
 	CCLOG("format popup End");
+    CObjectManager::Instance()->ZoomIn();
+    CMenuLayer::Instance()->setVisible(true);
 	this->popupClose();
 }
 
@@ -246,7 +264,7 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
     m_CenterCharacterNameLabel->setString(TRANSLATE(centerCharacterParam->_name));
     
 	// If already have the Center Character, Change the Button String to "Select"
-	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx))
+    if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx))
 		m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
     else{// If do not have, Change the Button String to "buy cost"
 		m_btnSelect->changeContents(TRANSLATE("CURRENCY_UNIT"));

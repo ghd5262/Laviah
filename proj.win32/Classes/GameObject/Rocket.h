@@ -4,7 +4,7 @@
 #include "../AI/StateMachine.h"
 #include <vector>
 
-namespace ROCKET{
+namespace ROCKET_DEFINE{
 	static float			BOUNDING_RADIUS = 80.f;
     static float            FLYAROUND_DISTANCE = 500.f;
 	static float			FLYAWAY_DISTANCE = 3000.f;

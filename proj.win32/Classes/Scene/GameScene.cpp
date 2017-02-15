@@ -61,6 +61,7 @@ Scene* CGameScene::createScene()
 
 CGameScene::CGameScene()
 : m_UILayer(nullptr)
+, m_MenuLayer(nullptr)
 , m_BonusTimeLayer(nullptr)
 , m_ScreenFade(nullptr)
 , m_CountDown(nullptr)
@@ -103,6 +104,7 @@ bool CGameScene::init()
     this->createScreenFade();
     this->createItemRanges();
     this->createComboUI();
+    this->createMenuLayer();
     this->createUILayer();
     this->initKeyboardListener();
     this->OpenGameMenuLayer();
@@ -122,20 +124,16 @@ void CGameScene::GameExit(bool resume/* = false*/)
 
 void CGameScene::GameStart()
 {
-//    this->ScreenFade([=](){
-        this->clearData();
-//        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
+    //    this->ScreenFade([=](){
+    this->clearData();
+    this->GameResume();
+    m_UILayer->setVisible(true);
+    m_MenuLayer->setVisible(false);
+    CObjectManager::Instance()->ZoomOut();
+    CObjectManager::Instance()->getPlayer()->GameStart();
+    //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 
-        this->GameResume();
-        
-		m_UILayer->setVisible(true);
-        
-        CObjectManager::Instance()->getPlanet()->ZoomOut();
-        CObjectManager::Instance()->getPlayer()->ZoomOut();
-		CObjectManager::Instance()->getRocket()->ZoomOut();
-
-        CObjectManager::Instance()->getPlayer()->GameStart();
-//    });
+    //    });
 }
 
 void CGameScene::GameResume()
@@ -186,15 +184,13 @@ void CGameScene::OpenGamePausePopup()
 void CGameScene::OpenGameMenuLayer()
 {
     this->ScreenFade([=](){
-        CObjectManager::Instance()->getPlanet()->ZoomIn();
-        CObjectManager::Instance()->getPlayer()->ZoomIn();
-		CObjectManager::Instance()->getRocket()->ZoomIn();
-
+        CObjectManager::Instance()->ZoomIn();
         CObjectManager::Instance()->getRocket()->ComebackHome();
 		CObjectManager::Instance()->getRocket()->Gift();
         this->clearData();
-        this->createMenuLayer();
         this->createRandomCoin();
+        m_UILayer->setVisible(false);
+        m_MenuLayer->setVisible(true);
     });
 }
 
@@ -210,6 +206,8 @@ void CGameScene::OpenWorkshopPopup()
 
 void CGameScene::OpenCharacterSelectPopup()
 {
+    CObjectManager::Instance()->ZoomIn2();
+    m_MenuLayer->setVisible(false);
     this->createCharacterSelectPopup();
 }
 
@@ -273,7 +271,6 @@ void CGameScene::clearData()
     CItemManager::Instance()->Clear();
     this->cleanGlobalData();
 	this->removeBonusTimeLayer();
-	m_UILayer->setVisible(false);
 }
 
 void CGameScene::cleanGlobalData()
@@ -345,15 +342,6 @@ void CGameScene::createExitPopup(bool resume)
 		->show(this, ZORDER::POPUP);
 }
 
-void CGameScene::createMenuLayer()
-{
-    CMenuLayer::create()
-	->setBackgroundVisible(false)
-    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
-}
-
 void CGameScene::createOptionPopup(int index)
 {
     COptionPopup::create()
@@ -383,6 +371,7 @@ void CGameScene::createWorkshopPopup()
 void CGameScene::createCharacterSelectPopup()
 {
     CCharacterSelectPopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
@@ -479,10 +468,10 @@ void CGameScene::createPlayer()
 void CGameScene::createRocket()
 {
     auto rocket = CRocket::create(sROCKET_PARAM());
-    rocket->setSpeed(ROCKET::SPEED);
-    rocket->setDistance(ROCKET::FLYAROUND_DISTANCE);
+    rocket->setSpeed(ROCKET_DEFINE::SPEED);
+    rocket->setDistance(ROCKET_DEFINE::FLYAROUND_DISTANCE);
     rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    rocket->setPosition(CBullet::getSquarePosition(random<int>(0, 360), ROCKET::FLYAWAY_DISTANCE));
+    rocket->setPosition(CBullet::getSquarePosition(random<int>(0, 360), ROCKET_DEFINE::FLYAWAY_DISTANCE));
     rocket->setTargetPos(CBullet::getSquarePosition(random<int>(0, 360), rocket->getDistance()));
     rocket->ChangeState(CFlyToTouchArea::Instance());
     this->addChild(rocket, ZORDER::PLAYER);
@@ -535,6 +524,15 @@ void CGameScene::createComboUI()
 {
     auto multiscore = CMultipleScore::Instance();
     this->addChild(multiscore, ZORDER::BACKGROUND);
+}
+
+void CGameScene::createMenuLayer()
+{
+    m_MenuLayer = CMenuLayer::Instance()
+    ->setBackgroundVisible(false)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createUILayer()
