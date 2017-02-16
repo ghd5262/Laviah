@@ -146,3 +146,16 @@ std::string CTranslateManager::getContentByLanguageKey(std::string key,
     
     return contentStr;
 }
+
+void CTranslateManager::ChangeLanguage(std::string languageKey)
+{
+    m_CurrentSelectLanguage = languageKey;
+    for(auto listener : m_ListenerList) listener();
+}
+
+void CTranslateManager::addTranslateEventListener(const TRANSLATE_LISTENER& listener)
+{
+    if(!listener) return;
+    
+    m_ListenerList.emplace_back(listener);
+}

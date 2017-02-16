@@ -185,6 +185,10 @@ bool CMenuLayer::init()
         }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.95f)),
     };
     
+    CTranslateManager::Instance()->addTranslateEventListener([=](){
+        btnArray[1]->changeContents(TRANSLATE("BUTTON_MENU_START"));
+    });
+    
     this->setDefaultCallback([=](Node* sender){
         CGameScene::getGameScene()->GameExit(false);
     }, false);

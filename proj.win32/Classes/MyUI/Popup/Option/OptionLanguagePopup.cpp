@@ -73,13 +73,17 @@ CMyButton* COptionLanguagePopup::createLanguageDP(std::string content, Vec2 pos)
         auto index = sender->getTag();
         if(index >= key.size()) return;
         
-        CTranslateManager::Instance()->setCurrentSelectLanguage(key.at(index));
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CURRENT_LANGUAGE, index);
-        
         // fade out and in
         CGameScene::getGameScene()->ScreenFade([=](){
+            CTranslateManager::Instance()->ChangeLanguage(key.at(index));
+            CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CURRENT_LANGUAGE, index);
+            //option popup close
+            CPopup::DefaultCallback();
+            
+            //option popup open again
+            CGameScene::getGameScene()->OpenOptionPopup(2);
+
 //            this->popupClose();
-//            CGameScene::getGameScene()->OpenOptionPopup(2);
         });
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA,
