@@ -172,7 +172,7 @@ bool CCharacterSelectPopup::init()
 		->show(bg);
 
 	btnEnd->setOpacity(0);
-
+    btnEnd->setTouchEnabled(false);
 
 	this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* owner){
@@ -192,7 +192,9 @@ bool CCharacterSelectPopup::init()
         m_CenterDP->setVisible(false);
         m_CenterDP->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f), CallFunc::create([=](){
             m_CenterDP->setVisible(true);
+            CObjectManager::Instance()->getPlayer()->setVisible(false);
             listView->setTouchEnabled(true);
+            btnEnd->setTouchEnabled(true);
         })));
 	});
 
@@ -238,8 +240,9 @@ void CCharacterSelectPopup::Select(Node* sender)
 		this->End(nullptr);
 	}
 	else{
-        auto characterName = TRANSLATE(centerCharacterParam->_name);
+        if(!centerCharacterParam->_random) return;
         
+        auto characterName = TRANSLATE(centerCharacterParam->_name);
         CGameScene::getGameScene()->CreateAlertPopup()
         ->setPositiveButton([=](Node* sender){
             m_CenterDP->Buy();

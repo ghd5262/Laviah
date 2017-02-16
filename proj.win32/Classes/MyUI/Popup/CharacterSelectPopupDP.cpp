@@ -64,9 +64,9 @@ bool CCharacterSelectPopupDP::init()
     btn->setSwallowTouches(false);
     
     auto content = TRANSLATE("CURRENCY_UNIT");
-    if(!m_Character->_random) content = TRANSLATE("CHARACTER_CANNOT_RANDOM");
+    if(!m_Character->_random) content = "?";
     m_CostLabel = Label::createWithSystemFont(content, FONT::MALGUNBD, 23,
-                                              Size(this->getContentSize().width * 2.5f,
+                                              Size(this->getContentSize().width * 2.f,
                                                    this->getContentSize().height),
                                               TextHAlignment::CENTER,
                                               TextVAlignment::CENTER);

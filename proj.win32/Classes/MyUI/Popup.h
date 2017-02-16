@@ -55,6 +55,8 @@ public:
 	void popupOpenAnimation();
 	void popupClose();
     void popupTouchEnable(bool enable);
+    void setDefaultCallbackToTopAgain();
+    void removeDefaultCallbackFromStack();
     
     static void DefaultCallback();
 	

@@ -37,12 +37,7 @@ CPopup::CPopup()
 
 CPopup::~CPopup()
 {
-    if (m_DefaultCallBack){
-        m_DefaultCallbackStack.remove_if([=](sDEFAULT_CALLBACK data){
-            return data._sender == this;
-        });
-        m_DefaultCallBack = nullptr;
-    }
+    this->removeDefaultCallbackFromStack();
 }
 
 CPopup* CPopup::create()
@@ -76,19 +71,9 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
         this->backgroundTouchDisable();
     
 	if (!m_DefaultCallBack && m_DefaultCallbackEnable) {
-		m_DefaultCallBack = [=](Node* sender){
+		this->setDefaultCallback([=](Node* sender){
 			this->popupClose();
-		};
-	}
-
-	if (m_DefaultCallBack){
-		m_DefaultCallbackStack.push_back(sDEFAULT_CALLBACK([=](Node* sender){
-			this->retain();
-			m_DefaultCallBack(this);
-			if (getDefaultCallbackCleanUp())
-				m_DefaultCallBack = nullptr;
-			this->release();
-		}, this));
+		});
 	}
     
 	if (m_PositiveButtonCallBack || m_NegativeButtonCallBack){
@@ -185,7 +170,17 @@ CPopup* CPopup::setDefaultCallback(const NODE_CALLBACK &callback, bool cleanUp/*
 {
     m_DefaultCallBack = callback;
 	m_DefaultCallbackCleanUp = cleanUp;
-
+    
+    if (m_DefaultCallBack){
+        m_DefaultCallbackStack.push_back(sDEFAULT_CALLBACK([=](Node* sender){
+            this->retain();
+            m_DefaultCallBack(this);
+            if (m_DefaultCallbackCleanUp) //cleanup 일때 stack에서는 따로 안지워도 되는지 확인바람 -> 호출 후 지우고 있음
+                m_DefaultCallBack = nullptr;
+            this->release();
+        }, this));
+    }
+    
     return this;
 }
 
@@ -436,4 +431,23 @@ void CPopup::popupTouchDisable()
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(this->getContentSize() / 2)
     ->show(this, ZORDER::POPUP);
+}
+
+void CPopup::setDefaultCallbackToTopAgain()
+{
+    if(!m_DefaultCallBack) return;
+    
+    auto callback = m_DefaultCallBack;
+    this->removeDefaultCallbackFromStack();
+    this->setDefaultCallback(callback, m_DefaultCallbackCleanUp);
+}
+
+void CPopup::removeDefaultCallbackFromStack()
+{
+    if (m_DefaultCallBack){
+        m_DefaultCallbackStack.remove_if([=](sDEFAULT_CALLBACK data){
+            return data._sender == this;
+        });
+        m_DefaultCallBack = nullptr;
+    }
 }

@@ -128,6 +128,7 @@ void CGameScene::GameStart()
     this->clearData();
     this->GameResume();
     m_UILayer->setVisible(true);
+    m_UILayer->setDefaultCallbackToTopAgain();
     m_MenuLayer->setVisible(false);
     CObjectManager::Instance()->ZoomOut();
     CObjectManager::Instance()->getPlayer()->GameStart();
@@ -191,6 +192,7 @@ void CGameScene::OpenGameMenuLayer()
         this->createRandomCoin();
         m_UILayer->setVisible(false);
         m_MenuLayer->setVisible(true);
+        m_MenuLayer->setDefaultCallbackToTopAgain();
     });
 }
 
@@ -345,6 +347,7 @@ void CGameScene::createExitPopup(bool resume)
 void CGameScene::createOptionPopup(int index)
 {
     COptionPopup::create()
+    ->setInitialScrollIndex(index)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
@@ -493,6 +496,10 @@ void CGameScene::createCountDown()
     ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(this, ZORDER::POPUP);
     m_CountDown->Pause();
+    
+    CTranslateManager::Instance()->addTranslateEventListener([=](){
+        m_CountDown->setLastContent(TRANSLATE("COUNTDOWN_LAST"));
+    });
 }
 
 void CGameScene::createScreenFade()

@@ -82,6 +82,7 @@ bool COptionPopup::init()
     {
         auto iconBtn = Button::create(icon);
         iconBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        iconBtn->setColor(COLOR::DARKGRAY);
         iconBtn->setTag(iconIndex++);
         iconBtn->addClickEventListener([=](Ref* sender){
             auto btn = dynamic_cast<Button*>(sender);
@@ -180,14 +181,17 @@ void COptionPopup::TitleScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollVie
     if (centerIcon == nullptr) return;
 
     // Center dp color change
-    centerIcon->setColor(COLOR::DARKGRAY);
+//    centerIcon->setColor(COLOR::DARKGRAY);
+    centerIcon->setOpacity(255);
+    centerIcon->setScale(2.f);
     
     // touch disable the other dp
     for (auto otherIcon : listView->getChildren())
     {
         if (otherIcon != nullptr && otherIcon != center)
         {
-            dynamic_cast<Button*>(otherIcon)->setColor(Color3B::WHITE);
+            dynamic_cast<Button*>(otherIcon)->setOpacity(255 * 0.4f);
+            dynamic_cast<Button*>(otherIcon)->setScale(1.f);
         }
     }
 }
