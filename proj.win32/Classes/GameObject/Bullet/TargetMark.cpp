@@ -44,7 +44,7 @@ CTargetMark* CTargetMark::build()
     // sprite init
     auto sprite = Sprite::createWithSpriteFrameName("test.png");
     this->setContentSize(sprite->getContentSize());
-    sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT); // 왼쪽 끝이 라인의 시작점임
     sprite->setPosition(this->getContentSize() / 2);
     this->addChild(sprite);
 
