@@ -28,7 +28,7 @@ bool CCharacterSelectPopupDP::init()
         
         bg->setIgnoreAnchorPointForPosition(false);
         bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        bg->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.5f));
+        bg->setPosition(this->getContentSize() / 2);
         this->addChild(bg);
     }
     
@@ -36,12 +36,12 @@ bool CCharacterSelectPopupDP::init()
     if (m_CharacterImg != nullptr)
     {
         m_CharacterImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_CharacterImg->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f));
+        m_CharacterImg->setPosition(this->getContentSize() / 2);
         bg->addChild(m_CharacterImg);
     }
     
     if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx)){
-        if(m_Character->_grade == CHARACTER_GRADE::NORMAL)
+        if(m_Character->_random)
             m_CharacterImg->setColor(COLOR::DARKGRAY);
         else
             m_CharacterImg->setColor(Color3B::BLACK);
@@ -63,6 +63,19 @@ bool CCharacterSelectPopupDP::init()
     btn->setPosition(this->getContentSize() / 2);
     btn->setSwallowTouches(false);
     
+    auto content = TRANSLATE("CURRENCY_UNIT");
+    if(!m_Character->_random) content = TRANSLATE("CHARACTER_CANNOT_RANDOM");
+    m_CostLabel = Label::createWithSystemFont(content, FONT::MALGUNBD, 23,
+                                              Size(this->getContentSize().width * 2.5f,
+                                                   this->getContentSize().height),
+                                              TextHAlignment::CENTER,
+                                              TextVAlignment::CENTER);
+    m_CostLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_CostLabel->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                                  this->getContentSize().height * 1.5f));
+    m_CostLabel->setVisible(false);
+    this->addChild(m_CostLabel);
+    
     return true;
 }
 
@@ -76,6 +89,7 @@ void CCharacterSelectPopupDP::Buy()
 
 		// change color to white
 		m_CharacterImg->setColor(Color3B::WHITE);
+        m_CostLabel->setVisible(false);
     }
 }
 
@@ -88,9 +102,12 @@ void CCharacterSelectPopupDP::Select()
 void CCharacterSelectPopupDP::Center()
 {
     m_CharacterImg->setScale(3.f);
+    auto alreadyHave = CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx);
+    m_CostLabel->setVisible(!alreadyHave);
 }
 
 void CCharacterSelectPopupDP::DeSelect()
 {
     m_CharacterImg->setScale(1.5f);
+    m_CostLabel->setVisible(false);
 }

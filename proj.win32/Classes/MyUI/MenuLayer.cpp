@@ -169,7 +169,7 @@ bool CMenuLayer::init()
             CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
             CGameScene::getGameScene()->GameStart();            
         })
-        ->setContents("tab to start")
+        ->setContents(TRANSLATE("BUTTON_MENU_START"))
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f))
         ->show(this),

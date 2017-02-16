@@ -35,4 +35,5 @@ private:
 private:
     const sCHARACTER_PARAM* m_Character;
     Sprite* m_CharacterImg;
+    Label* m_CostLabel;
 };

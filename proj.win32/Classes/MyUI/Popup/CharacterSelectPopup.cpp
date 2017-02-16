@@ -99,6 +99,11 @@ bool CCharacterSelectPopup::init()
             characterDP->setDPIndex(dpIdx);
             characterDP->setCascadeOpacityEnabled(true);
             characterDP->setSelectDPListener([=](int dpIndex){
+                if(m_CenterDP)
+                {
+                    if(dpIndex == m_CenterDP->getDPIndex())
+                        this->Select(m_CenterDP);
+                }
                 listView->scrollToItem(dpIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.5f);
             });
 			listView->pushBackCustomItem(characterDP);
@@ -141,18 +146,18 @@ bool CCharacterSelectPopup::init()
 //		bg->addChild(btnUserCoin);
 //	}
 
-    m_btnSelect = CMyButton::create()
-    ->addEventListener([=](Node* sender){
-        this->Select(sender);
-    })
-    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 200, 200))
-//    ->setContents(TRANSLATE("BUTTON_SELECT"))
-    ->setButtonPosition(Vec2(scrollBack->getContentSize().width * 0.5f,
-                             scrollBack->getContentSize().height * 0.5f))
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(scrollBack, ZORDER::POPUP);
-
-	m_btnSelect->setOpacity(0);
+//    m_btnSelect = CMyButton::create()
+//    ->addEventListener([=](Node* sender){
+//        this->Select(sender);
+//    })
+//    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 200, 200))
+////    ->setContents(TRANSLATE("BUTTON_SELECT"))
+//    ->setButtonPosition(Vec2(scrollBack->getContentSize().width * 0.5f,
+//                             scrollBack->getContentSize().height * 0.5f))
+//    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//    ->show(scrollBack, ZORDER::POPUP);
+//
+//	m_btnSelect->setOpacity(0);
 
 
 	auto btnEnd = CMyButton::create()
@@ -178,7 +183,7 @@ bool CCharacterSelectPopup::init()
         };
 		action(m_CenterCharacterNameLabel);
 		action(btnEnd);
-        action(m_btnSelect);
+//        action(m_btnSelect);
         
 //		btnUserCoin->runAction(FadeIn::create(0.5f));
 		scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f,
@@ -195,7 +200,7 @@ bool CCharacterSelectPopup::init()
 		m_CenterCharacterNameLabel->runAction(FadeTo::create(0.5f, 0));
 		btnEnd->runAction(FadeTo::create(0.5f, 0));
 //		btnUserCoin->runAction(FadeTo::create(0.5f, 0));
-		m_btnSelect->runAction(FadeTo::create(0.5f, 0));
+//		m_btnSelect->runAction(FadeTo::create(0.5f, 0));
 		scrollBack->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f,
                                                                            visibleSize.height * 1.5f))));
         
@@ -233,18 +238,20 @@ void CCharacterSelectPopup::Select(Node* sender)
 		this->End(nullptr);
 	}
 	else{
-		CGameScene::getGameScene()->CreateAlertPopup()
-			->setPositiveButton([=](Node* sender){
-			m_CenterDP->Buy();
-//			m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
-			m_CenterCharacterNameLabel->setString(TRANSLATE(centerCharacterParam->_name));
-			CObjectManager::Instance()->ChangeCharacter();
-		}, TRANSLATE("BUTTON_YES"))
-			->setNegativeButton([=](Node* sender){
-		}, TRANSLATE("BUTTON_NO"))
-			->setMessage(TRANSLATE("CHARACTER_BUY_CHECK"))
-			->show(CGameScene::getGameScene(), ZORDER::POPUP);
-	}
+        auto characterName = TRANSLATE(centerCharacterParam->_name);
+        
+        CGameScene::getGameScene()->CreateAlertPopup()
+        ->setPositiveButton([=](Node* sender){
+            m_CenterDP->Buy();
+            //			m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
+            m_CenterCharacterNameLabel->setString(characterName);
+            CObjectManager::Instance()->ChangeCharacter();
+        }, TRANSLATE("BUTTON_YES"))
+        ->setNegativeButton([=](Node* sender){
+        }, TRANSLATE("BUTTON_NO"))
+        ->setMessage(StringUtils::format(TRANSLATE("CHARACTER_BUY_CHECK").c_str(), characterName.c_str()))
+        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+    }
 }
 
 void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
@@ -272,12 +279,9 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
     // Change name label
     m_CenterCharacterNameLabel->setString(TRANSLATE(centerCharacterParam->_name));
     
-	// If already have the Center Character, Change the Button String to "Select"
-    if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx)){}
-//		m_btnSelect->changeContents(TRANSLATE("BUTTON_SELECT"));
-    else{// If do not have, Change the Button String to "buy cost"
-//		m_btnSelect->changeContents(TRANSLATE("CURRENCY_UNIT"));
-        if(centerCharacterParam->_grade == CHARACTER_GRADE::RARE )
+	// If do not have and no random item, Change the name string to ???
+    if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx)){
+        if(!centerCharacterParam->_random)
             m_CenterCharacterNameLabel->setString("???");
     }
 	
