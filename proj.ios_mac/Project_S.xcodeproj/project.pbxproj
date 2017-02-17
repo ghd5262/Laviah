@@ -63,6 +63,8 @@
 		9312B47C1D58A12600FE954C /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93865F3E1D588C39007ECE5A /* libiconv.tbd */; };
 		9316AFCF1DFE904900432CA8 /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9316AFCD1DFE904900432CA8 /* Global.cpp */; };
 		9316AFD01DFE904A00432CA8 /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9316AFCD1DFE904900432CA8 /* Global.cpp */; };
+		93190BE31E568E1100CF576A /* TutorialManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93190BE11E568E1100CF576A /* TutorialManager.cpp */; };
+		93190BE41E568E1100CF576A /* TutorialManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93190BE11E568E1100CF576A /* TutorialManager.cpp */; };
 		931D9DB11DB0FEBC008BA5AC /* DownloadManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */; };
 		932999C11E319F950062B92C /* ChallengeCompleteNoticePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932999BF1E319F950062B92C /* ChallengeCompleteNoticePopup.cpp */; };
 		932999C51E31AD750062B92C /* TranslateManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932999C31E31AD750062B92C /* TranslateManager.cpp */; };
@@ -283,6 +285,8 @@
 		9312B47A1D58A10100FE954C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		9316AFCD1DFE904900432CA8 /* Global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Global.cpp; sourceTree = "<group>"; };
 		9316AFCE1DFE904900432CA8 /* Global.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Global.hpp; sourceTree = "<group>"; };
+		93190BE11E568E1100CF576A /* TutorialManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TutorialManager.cpp; sourceTree = "<group>"; };
+		93190BE21E568E1100CF576A /* TutorialManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TutorialManager.hpp; sourceTree = "<group>"; };
 		931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DownloadManager.cpp; sourceTree = "<group>"; };
 		931D9DB01DB0FEBC008BA5AC /* DownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadManager.h; sourceTree = "<group>"; };
 		932999BF1E319F950062B92C /* ChallengeCompleteNoticePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChallengeCompleteNoticePopup.cpp; path = Popup/ChallengeCompleteNoticePopup.cpp; sourceTree = "<group>"; };
@@ -779,6 +783,8 @@
 				932999C31E31AD750062B92C /* TranslateManager.cpp */,
 				932999C41E31AD750062B92C /* TranslateManager.hpp */,
 				93CCBB8E1E495E7800C010F3 /* DataManagerUtils.h */,
+				93190BE11E568E1100CF576A /* TutorialManager.cpp */,
+				93190BE21E568E1100CF576A /* TutorialManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -1242,6 +1248,7 @@
 				93C89D2C1E2762980085D85A /* ItemProgress.cpp in Sources */,
 				933F79DD1DE3E4E1005F1DAF /* PatternTestPopup.cpp in Sources */,
 				9373118A1D5849C800D5EB5C /* HealthBarUI.cpp in Sources */,
+				93190BE31E568E1100CF576A /* TutorialManager.cpp in Sources */,
 				937311AB1D5849C800D5EB5C /* PoolingManager.cpp in Sources */,
 				937311741D5849C800D5EB5C /* GameObject.cpp in Sources */,
 				937311971D5849C800D5EB5C /* HelpPopup.cpp in Sources */,
@@ -1306,6 +1313,7 @@
 				93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */,
 				930304431E1248A20017C149 /* StandBullet.cpp in Sources */,
 				932CA1AE1E4C161300CE5110 /* OptionLanguagePopup.cpp in Sources */,
+				93190BE41E568E1100CF576A /* TutorialManager.cpp in Sources */,
 				932CA1A51E4C15B400CE5110 /* OptionMusicPopup.cpp in Sources */,
 				930C44641DF54BD90011CFA3 /* CountDown.cpp in Sources */,
 				930304391E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */,
