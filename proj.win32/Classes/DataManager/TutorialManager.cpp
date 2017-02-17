@@ -4,7 +4,9 @@
 #include "../json/json.h"
 
 using namespace cocos2d;
-CTutorialManager::CTutorialManager(){}
+CTutorialManager::CTutorialManager()
+: m_CurrentIndex(0)
+, m_CurrentKey(""){}
 
 CTutorialManager::~CTutorialManager(){
     DATA_MANAGER_UTILS::mapDeleteAndClean(m_TutorialList);
@@ -14,25 +16,6 @@ CTutorialManager* CTutorialManager::Instance()
 {
     static CTutorialManager instance;
     return &instance;
-}
-
-void CTutorialManager::RunAtFirst(std::string key)
-{
-    auto iter = m_TutorialList.find(key.c_str());
-    if(iter == m_TutorialList.end())
-        CCASSERT(false, StringUtils::format("There is no key for data : %s", key.c_str()).c_str());
-    
-    auto tutorial = iter->second;
-    for(auto step : *tutorial)
-    {
-        auto listener = step.getStartListener();
-        if(listener) listener();
-    }
-}
-
-void CTutorialManager::RunByIndex(std::string key, int index)
-{
-    
 }
 
 void CTutorialManager::addStepToByTutorialKey(std::string key, STEP step)
@@ -45,6 +28,52 @@ void CTutorialManager::addStepToByTutorialKey(std::string key, STEP step)
     else                                tutorial = iter->second;
     
     this->addStepToTutorial(tutorial, step);
+}
+
+void CTutorialManager::RunAtFirst(std::string key)
+{
+    this->RunByIndex(key, 0);
+}
+
+void CTutorialManager::RunByIndex(std::string key, int index)
+{
+    if(key == "") return;
+    
+    auto assertion = [=](std::string content){
+        content += (std::string(" : ") + key);
+        CCLOG("%s", content.c_str());
+        CCASSERT(false, content.c_str());
+    };
+    
+    auto iter = m_TutorialList.find(key.c_str());
+    if(iter == m_TutorialList.end()) assertion("There is no key for data");
+    
+    auto tutorial = iter->second;
+    if(tutorial->size() <= 0)        assertion("There is no tutorial step in");
+    if(tutorial->size() <= index){
+        this->Clear();
+        return;
+    }
+    
+    auto listener = (tutorial->at(index)).getStartListener();
+    if(listener) listener();
+    
+    m_CurrentIndex++;
+}
+
+void CTutorialManager::End(std::string key, int index)
+{
+    if(key   != "") m_CurrentKey   = key;
+    if(index != 0 ) m_CurrentIndex = index;
+    
+    // run next step
+    this->RunByIndex(m_CurrentKey, m_CurrentIndex);
+}
+
+void CTutorialManager::Clear()
+{
+    m_CurrentIndex = 0;
+    m_CurrentKey = "";
 }
 
 CTutorialManager::TUTORIAL* CTutorialManager::addNewTutorial(std::string key)

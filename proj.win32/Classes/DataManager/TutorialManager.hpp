@@ -22,11 +22,14 @@ class CTutorialManager{
     
 public:
     static CTutorialManager* Instance();
-    void RunAtFirst(std::string key);
-    void RunNextStep();
-    void RunByIndex(std::string key, int index);
-    void End(std::string key, int index);
     void addStepToByTutorialKey(std::string key, STEP step);
+    void RunAtFirst(std::string key);
+    void RunByIndex(std::string key, int index);
+    void End(std::string key = "", int index = 0);
+    void Clear();
+    
+    CC_SYNTHESIZE(int, m_CurrentIndex, CurrentIndex);
+    CC_SYNTHESIZE(std::string, m_CurrentKey, CurrentKey);
     
 private:
     TUTORIAL* addNewTutorial(std::string key);
