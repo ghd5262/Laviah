@@ -192,7 +192,6 @@ public:
     CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
     CC_SYNTHESIZE(cocos2d::Vec2, m_TargetVec, TargetVec);
     CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
-    CC_SYNTHESIZE(float, m_RotationSpeed, RotationSpeed);
     CC_SYNTHESIZE(float, m_Time, Time);
     CC_SYNTHESIZE(int, m_ItemFlag, ItemFlag);
     CC_SYNTHESIZE(bool, m_bIsPlayerGet, IsPlayerGet);
@@ -220,4 +219,5 @@ protected:
     
 private:
     sBULLET_PARAM m_BulletInfo;
+    float m_Speed;
 };

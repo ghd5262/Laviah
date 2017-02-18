@@ -104,7 +104,6 @@ protected:
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_Angle, Angle);
-	CC_SYNTHESIZE(float, m_fRotateSpeed, RotateSpeed);
 	CC_SYNTHESIZE(float, m_fMaxLife, MaxLife);
 	CC_SYNTHESIZE(float, m_fLife, Life);
 	CC_SYNTHESIZE(float, m_fLevel, Level);

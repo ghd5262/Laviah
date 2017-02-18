@@ -45,6 +45,8 @@
 		521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6219F0C34300D177D7 /* Default-667h@2x.png */; };
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
+		59DFB3C81E576601002CD020 /* GameEndPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59DFB3C61E576601002CD020 /* GameEndPopup.cpp */; };
+		59DFB3C91E576601002CD020 /* GameEndPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59DFB3C61E576601002CD020 /* GameEndPopup.cpp */; };
 		930304381E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304361E0A1CF80017C149 /* BonusTimeLayer.cpp */; };
 		930304391E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304361E0A1CF80017C149 /* BonusTimeLayer.cpp */; };
 		930304421E1248A20017C149 /* StandBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304401E1248A20017C149 /* StandBullet.cpp */; };
@@ -266,6 +268,8 @@
 		521A8E6219F0C34300D177D7 /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h@2x.png"; sourceTree = "<group>"; };
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		59DFB3C61E576601002CD020 /* GameEndPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameEndPopup.cpp; sourceTree = "<group>"; };
+		59DFB3C71E576601002CD020 /* GameEndPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GameEndPopup.hpp; sourceTree = "<group>"; };
 		930304361E0A1CF80017C149 /* BonusTimeLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BonusTimeLayer.cpp; sourceTree = "<group>"; };
 		930304371E0A1CF80017C149 /* BonusTimeLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BonusTimeLayer.hpp; sourceTree = "<group>"; };
 		930304401E1248A20017C149 /* StandBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StandBullet.cpp; sourceTree = "<group>"; };
@@ -963,6 +967,8 @@
 				937311331D5849C700D5EB5C /* WorkshopPopup.h */,
 				937311341D5849C700D5EB5C /* WorkshopPopupDP.cpp */,
 				937311351D5849C700D5EB5C /* WorkshopPopupDP.h */,
+				59DFB3C61E576601002CD020 /* GameEndPopup.cpp */,
+				59DFB3C71E576601002CD020 /* GameEndPopup.hpp */,
 			);
 			path = Popup;
 			sourceTree = "<group>";
@@ -1211,6 +1217,7 @@
 				9373116D1D5849C800D5EB5C /* NormalMissile.cpp in Sources */,
 				9373118D1D5849C800D5EB5C /* MyButton.cpp in Sources */,
 				932999C11E319F950062B92C /* ChallengeCompleteNoticePopup.cpp in Sources */,
+				59DFB3C81E576601002CD020 /* GameEndPopup.cpp in Sources */,
 				937311601D5849C800D5EB5C /* HSHUitlity.cpp in Sources */,
 				9348E4C61D9D62B1007DF5D9 /* GradientDataManager.cpp in Sources */,
 				937311A61D5849C800D5EB5C /* MenuScene.cpp in Sources */,
@@ -1327,6 +1334,7 @@
 				938DE0071E430DD000EE8853 /* ChallengeProgressBar.cpp in Sources */,
 				932999C61E31AD750062B92C /* TranslateManager.cpp in Sources */,
 				930C445F1DF501D10011CFA3 /* UILayer.cpp in Sources */,
+				59DFB3C91E576601002CD020 /* GameEndPopup.cpp in Sources */,
 				9306AA031E24932900D4B8BC /* RewardPopupDP.cpp in Sources */,
 				932CA1AA1E4C15D200CE5110 /* OptionDataSavePopup.cpp in Sources */,
 			);

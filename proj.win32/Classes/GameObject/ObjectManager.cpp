@@ -18,7 +18,6 @@ CObjectManager::CObjectManager()
 , m_LevelTimer(0.f)
 , m_IsGamePause(true)
 , m_RotationSpeed(0.f)
-, m_RotateAcceleration(0.f)
 , m_BulletCreator(nullptr)
 , m_Planet(nullptr)
 , m_Player(nullptr)
@@ -43,7 +42,6 @@ CObjectManager::CObjectManager()
     
     m_SpeedController = Node::create();
     if(CGameScene::getGameScene()){
-        m_SpeedController->setPositionX(BULLETCREATOR::ROTATION_SPEED);
         CGameScene::getGameScene()->addChild(m_SpeedController);
     }
     
@@ -69,10 +67,10 @@ CObjectManager* CObjectManager::Instance()
 
 void CObjectManager::Clear()
 {
-    m_RotateAcceleration = 0.f;
 	m_PatternTimer = 0.f;
     m_LevelTimer = 0.f;
     m_GameLevel = 0;
+    m_SpeedController->setPositionX(0.f);
 	m_IsGamePause = true;
     m_BulletCreator->Clear();
     m_Planet->Clear();
@@ -82,7 +80,7 @@ void CObjectManager::Clear()
 	m_CoinItemRange->Clear();
 
     this->ReturnToMemoryBlockAll();
-	this->EndBonusTime();
+//	this->EndBonusTime();
 }
 
 #if(USE_MEMORY_POOLING)

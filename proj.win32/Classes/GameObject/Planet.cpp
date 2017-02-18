@@ -24,7 +24,6 @@ CPlanet* CPlanet::create()
 
 CPlanet::CPlanet()
 : m_Angle(0.f)
-, m_fRotateSpeed(BULLETCREATOR::ROTATION_SPEED)
 , m_fElapsed(0.0f)
 {}
 

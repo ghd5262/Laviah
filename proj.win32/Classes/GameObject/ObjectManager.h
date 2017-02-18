@@ -108,5 +108,4 @@ private:
     CItemManager* m_ItemManager;
     CBulletPatternDataManager* m_PatternManager;
     float m_RotationSpeed;
-    float m_RotateAcceleration;
 };

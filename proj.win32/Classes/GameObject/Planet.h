@@ -32,7 +32,6 @@ protected:
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_Angle, Angle);
-	CC_SYNTHESIZE(float, m_fRotateSpeed, RotateSpeed);
 
 private:
 	float noise(int x, int y);

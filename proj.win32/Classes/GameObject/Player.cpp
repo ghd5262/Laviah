@@ -34,7 +34,6 @@ CPlayer* CPlayer::create()
 CPlayer::CPlayer()
 : m_CharacterParam(nullptr)
 , m_Angle(0.f)
-, m_fRotateSpeed(0.f)
 , m_fMaxLife(0)
 , m_fLife(0)
 , m_fMagnetLimitTime(0)
@@ -142,18 +141,17 @@ void CPlayer::GotSomeHealth(float health)
 
 void CPlayer::LostSomeHealth(float loseHealth)
 {
-	if (m_Invincibility) return;
+	if (m_Invincibility || !m_fLife) return;
     
-    CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
+//    CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
 	if (0.f < (m_fLife - loseHealth))
 	{
 		m_fLife -= loseHealth;
 	}
 	else{
+        m_fLife = 0.f;
 		this->PlayerDead();
         CMultipleScore::Instance()->UpdateScore();
-		m_fLife = 0.f;
-
 		if (GLOBAL->RUN_SCORE < 3000)	CGameScene::getGameScene()->GameResult();
 		else							CGameScene::getGameScene()->WatchVideo();
 	}
@@ -181,7 +179,6 @@ void CPlayer::GiantMode()
 		this->setPlayerTexture(m_CharacterParam->_giantTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
-		//this->setRotateSpeed(PLAYER_DEFINE::GIANT_ROTATION_SPEED);
 		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * GIANT_SCALE);
 		m_Particle->setEndSize(40.f);
 	}), nullptr);
@@ -198,7 +195,6 @@ void CPlayer::NormalMode()
         this->setPlayerTexture(m_CharacterParam->_normalTextureName);
 		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
-		//this->setRotateSpeed(PLAYER_DEFINE::NORMAL_ROTATION_SPEED);
 		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_Particle->setEndSize(4.f);
 	}), nullptr);

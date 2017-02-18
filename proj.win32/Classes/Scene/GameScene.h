@@ -34,6 +34,7 @@ public:
     void GamePause();
 	void GameResume();
 	void GameResult();
+    void GameEnd();
     void GameHelp();
 	void WatchVideo();
 	void ShowChallenge();
@@ -64,6 +65,7 @@ private:
 	void createVideoPopup();
 	void createChallengePopup();
 	void createResultPopup();
+    void createEndPopup();
 	void createHelpPopup();
     void createExitPopup(bool resume);
     void createOptionPopup(int index);

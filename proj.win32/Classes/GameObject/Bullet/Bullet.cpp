@@ -17,7 +17,6 @@ using namespace cocos2d;
 CBullet::CBullet()
 : m_bIsPlayerGet(false)
 , m_Time(0.f)
-, m_RotationSpeed(BULLETCREATOR::ROTATION_SPEED)
 , m_ItemFlag(eITEM_FLAG_none)
 , m_TargetVec(CObjectManager::Instance()->getPlanet()->getPosition())
 , m_Player(CObjectManager::Instance()->getPlayer())

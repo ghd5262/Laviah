@@ -28,6 +28,7 @@
 #include "../MyUI/Popup/Option/OptionPopup.hpp"
 #include "../MyUI/Popup/WorkshopPopup.h"
 #include "../MyUI/Popup/CharacterSelectPopup.h"
+#include "../MyUI/Popup/GameEndPopup.hpp"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/ChallengeDataManager.hpp"
@@ -153,6 +154,12 @@ void CGameScene::GameResult()
 {
 	this->createResultPopup();
     this->GamePause();
+}
+
+void CGameScene::GameEnd()
+{
+    this->createEndPopup();
+//    this->GamePause();
 }
 
 void CGameScene::GameHelp()
@@ -312,6 +319,14 @@ void CGameScene::createResultPopup()
 		->show(this, ZORDER::POPUP);
 }
 
+void CGameScene::createEndPopup()
+{
+    CGameEndPopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
+}
+
 void CGameScene::createHelpPopup()
 {
 	CHelpPopup::create()
@@ -458,10 +473,7 @@ void CGameScene::createPlanet()
 
 void CGameScene::createPlayer()
 {
-    auto planet = CObjectManager::Instance()->getPlanet();
     auto player = CPlayer::create();
-    player->setRotateSpeed(((planet->getContentSize().width / player->getContentSize().width) *
-                            BULLETCREATOR::ROTATION_SPEED));
     player->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
     player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     this->addChild(player, ZORDER::PLAYER);
@@ -486,6 +498,7 @@ void CGameScene::createCountDown()
     m_CountDown = CCountDown::create()
     ->addLastEventListner([=](Node* sender){
         CObjectManager::Instance()->setIsGamePause(false);
+        CObjectManager::Instance()->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     })
     ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(3)
