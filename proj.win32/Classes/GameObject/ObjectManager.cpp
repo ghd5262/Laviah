@@ -11,6 +11,8 @@
 #include "../AI/States/RocketStates.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
+#include "../DataManager/TutorialManager.hpp"
+#include "../MyUI/MyButton.h"
 #include <algorithm>
 
 CObjectManager::CObjectManager()
@@ -218,9 +220,9 @@ void CObjectManager::createBulletByTimer(float delta)
 	if (!m_BulletCreator->getIsRunning()) {
 		if (1)
 		{
-			if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))
-				m_BulletCreator->setPattern(m_PatternManager->getRandomBonusTimePattern());
-            else{
+//			if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))
+//				m_BulletCreator->setPattern(m_PatternManager->getRandomBonusTimePattern());
+            if(!CTutorialManager::Instance()->getIsRunning()){
                 auto level = m_LevelList.at(m_GameLevel)._level;
                 auto below = m_LevelList.at(m_GameLevel)._below;
                 auto data = m_PatternManager->getRandomNormalPatternByLevel(level, below);
@@ -317,4 +319,68 @@ void CObjectManager::zoom(cocos2d::Node* obj,
     auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
     auto exponential = EaseExponentialInOut::create(spawnAction);
     obj->runAction(exponential);
+}
+
+void CObjectManager::InitTutorialStep()
+{
+    CTutorialStep::create()
+    ->addEventListener([=](cocos2d::Node* sender){
+        auto data = m_PatternManager->getNormalPatternByIndex(0);
+        m_BulletCreator->setPattern(data);
+    }, TUTORIAL_EVENT::BEGIN)
+    ->addEventListener([=](cocos2d::Node* sender){
+        // calls if touching
+        
+        
+    }, TUTORIAL_EVENT::TOUCH_EXECUTE)
+    ->addEventListener([=](cocos2d::Node* sender){
+        // call every single frame
+        if(GLOBAL->STAR_COUNT > 10) {
+            CTutorialManager::Instance()->ChangeStep("step2");
+            return;
+        }
+        
+        if(GLOBAL->COLLISION_COUNT > 10)
+        {
+            CTutorialManager::Instance()->Again();
+            GLOBAL->STAR_COUNT = 0;
+            GLOBAL->COLLISION_COUNT = 0;
+        }
+//        if(m_Delta > 6.f) {
+//            CTutorialManager::Instance()->Again();
+//            GLOBAL->STAR_COUNT = 0;
+//        }
+//        
+    }, TUTORIAL_EVENT::UPDATE)
+    ->addBubble(LayerColor::create(COLOR::DARKGRAY_ALPHA, 350, 250), "별은 점수나 마찬가지에요.", m_Player)
+    ->build("step1");
+    
+    CTutorialStep::create()
+    ->addEventListener([=](cocos2d::Node* sender){
+        auto data = m_PatternManager->getNormalPatternByIndex(1);
+        m_BulletCreator->setPattern(data);
+        m_IsGamePause = true;
+    }, TUTORIAL_EVENT::BEGIN)
+    ->addEventListener([=](cocos2d::Node* sender){
+        m_IsGamePause = false;
+    }, TUTORIAL_EVENT::TOUCH_END)
+    ->addEventListener([=](cocos2d::Node* sender){
+        // calls if touching
+        
+        
+    }, TUTORIAL_EVENT::TOUCH_EXECUTE)
+    ->addEventListener([=](cocos2d::Node* sender){
+        // call every single frame
+        if(GLOBAL->STAR_COUNT > 20) {
+            CTutorialManager::Instance()->ChangeStep("step1");
+            return;
+        }
+        
+        if(m_Delta > 20.f) CTutorialManager::Instance()->Again();
+        
+    }, TUTORIAL_EVENT::UPDATE)
+    ->addBubble(LayerColor::create(COLOR::DARKGRAY_ALPHA, 350, 250), "별은 점수나 마찬가지에요.", m_Player)
+    ->build("step2");
+    
+    CTutorialManager::Instance()->ChangeStep("step1");
 }

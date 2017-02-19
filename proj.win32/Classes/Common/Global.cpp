@@ -19,6 +19,7 @@ void Global::Clear()
 	COIN_COUNT = 0;
 	STAR_COUNT = 0;
 	REVIVE_COUNT = 0;
+    COLLISION_COUNT = 0;
 
     GIANT_SCORE_TOTAL = 0;
     GIANT_SCORE_BULLET = 0;

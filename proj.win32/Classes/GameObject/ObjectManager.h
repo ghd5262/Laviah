@@ -43,7 +43,8 @@ public:
     void ZoomIn();
     void ZoomIn2();
     void ZoomOut();
-    
+    void InitTutorialStep();
+
     
 	// 초기화
 	void Clear();

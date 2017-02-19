@@ -27,6 +27,7 @@ public:
 	int COIN_COUNT;
 	int STAR_COUNT;
 	int REVIVE_COUNT;
+    int COLLISION_COUNT;
     
     int GIANT_SCORE_TOTAL;
     int GIANT_SCORE_BULLET;

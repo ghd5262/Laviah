@@ -32,6 +32,7 @@
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/ChallengeDataManager.hpp"
+#include "../DataManager/TutorialManager.hpp"
 #include "../AI/States/RocketStates.h"
 #include "../SDKUtil/SDKUtil.h"
 #include <array>
@@ -95,6 +96,8 @@ bool CGameScene::init()
 	m_GridWorld = NodeGrid::create();
 	this->addChild(m_GridWorld, 0, 1);
     
+    
+    
     this->initMemoryPool();
     this->createBulletCreator();
     this->createBackground();
@@ -109,7 +112,7 @@ bool CGameScene::init()
     this->createUILayer();
     this->initKeyboardListener();
     this->OpenGameMenuLayer();
-    
+    this->addChild(CTutorialManager::Instance());
 	return true;
 }
 
@@ -133,6 +136,7 @@ void CGameScene::GameStart()
     m_MenuLayer->setVisible(false);
     CObjectManager::Instance()->ZoomOut();
     CObjectManager::Instance()->getPlayer()->GameStart();
+    CObjectManager::Instance()->InitTutorialStep();
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 
     //    });
