@@ -18,6 +18,7 @@
 #include "../MyUI/BonusTimeLayer.hpp"
 #include "../MyUI/MultipleScore.h"
 #include "../MyUI/CountDown.hpp"
+#include "../MyUI/TutorialLayer.hpp"
 #include "../MyUI/Popup.h"
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
@@ -32,7 +33,6 @@
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/ChallengeDataManager.hpp"
-#include "../DataManager/TutorialManager.hpp"
 #include "../AI/States/RocketStates.h"
 #include "../SDKUtil/SDKUtil.h"
 #include <array>
@@ -111,8 +111,6 @@ bool CGameScene::init()
     this->createMenuLayer();
     this->createUILayer();
     this->initKeyboardListener();
-    this->OpenGameMenuLayer();
-    this->addChild(CTutorialManager::Instance());
 	return true;
 }
 
@@ -450,6 +448,13 @@ void CGameScene::createRandomCoin()
 
 
 // The following items are initialized only once.
+void CGameScene::initMemoryPool()
+{
+#if(USE_MEMORY_POOLING)
+    CPoolingManager::Instance()->CreateBulletList(600, 900);
+#endif
+}
+
 void CGameScene::createBulletCreator()
 {
     auto bulletCreator = CBulletCreator::create();
@@ -557,6 +562,8 @@ void CGameScene::createMenuLayer()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
+    
+    this->OpenGameMenuLayer();
 }
 
 void CGameScene::createUILayer()
@@ -568,9 +575,12 @@ void CGameScene::createUILayer()
     ->show(this, ZORDER::POPUP);
 }
 
-void CGameScene::initMemoryPool()
+void CGameScene::createTutorialLayer()
 {
-#if(USE_MEMORY_POOLING)
-    CPoolingManager::Instance()->CreateBulletList(600, 900);
-#endif
+    CTutorialLayer::Instance()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setDefaultCallbackEnable(false)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
 }

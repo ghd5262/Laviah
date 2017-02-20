@@ -79,6 +79,7 @@ private:
 	void initKeyboardListener();
     
     // The following items are initialized only once.
+    void initMemoryPool();
     void createBulletCreator();
     void createBackground();
     void createPlanet();
@@ -90,7 +91,7 @@ private:
     void createComboUI();
     void createMenuLayer();
     void createUILayer();
-    void initMemoryPool();
+    void createTutorialLayer();
 
 private:
 	static CGameScene* m_GameScene;
