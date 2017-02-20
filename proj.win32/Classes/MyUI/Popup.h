@@ -57,6 +57,7 @@ public:
     void popupTouchEnable(bool enable);
     void setDefaultCallbackToTopAgain();
     void removeDefaultCallbackFromStack();
+    std::string getMessage() const { return m_Message; }
     
     static void DefaultCallback();
 	

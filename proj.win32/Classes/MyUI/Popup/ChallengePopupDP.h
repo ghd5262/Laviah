@@ -8,7 +8,7 @@ class CChallengePopupDP : public CPopup
     typedef std::function<void(CChallengePopupDP*, int)> SKIP_CALLBACK;
 public:
     static CChallengePopupDP* create(const sCHALLENGE_PARAM challenge, int posIndex);
-    CPopup* addSkipEventListner(const SKIP_CALLBACK &callback);
+    CChallengePopupDP* addSkipEventListner(const SKIP_CALLBACK &callback);
     
     //setter & getter
     const sCHALLENGE_PARAM getChallengeParam() const { return m_Challenge; }

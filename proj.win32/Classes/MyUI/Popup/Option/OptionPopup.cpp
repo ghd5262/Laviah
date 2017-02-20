@@ -155,7 +155,7 @@ bool COptionPopup::init()
     return true;
 }
 
-CPopup* COptionPopup::setInitialScrollIndex(int index)
+COptionPopup* COptionPopup::setInitialScrollIndex(int index)
 {
     m_InitialScrollIndex = index;
     return this;

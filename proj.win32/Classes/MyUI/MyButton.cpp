@@ -87,6 +87,11 @@ CMyButton* CMyButton::show(Node* parent, int zOrder/* = 0*/)
         m_ContentsLabel = Label::createWithSystemFont(m_Contents, FONT::MALGUNBD, m_FontSize);
         if(!m_Layer && m_ButtonNormalImage == "")
             this->setContentSize(m_ContentsLabel->getContentSize() * 1.3f); // 터치 범위 보정
+        else{
+            m_ContentsLabel->setDimensions(this->getContentSize().width * 0.85f,
+                                           this->getContentSize().height);
+            m_ContentsLabel->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
+        }
         m_ContentsLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_ContentsLabel->setPosition(this->getContentSize() / 2);
         m_ContentsLabel->setColor(m_FontColor);

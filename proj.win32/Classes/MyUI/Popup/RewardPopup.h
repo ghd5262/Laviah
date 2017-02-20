@@ -11,7 +11,7 @@ class CRewardPopup : public CPopup
     
 public:
 	static CRewardPopup* create();
-    CPopup* setExitCallback(const EXIT_CALLBACK &callback);
+    CRewardPopup* setExitCallback(const EXIT_CALLBACK &callback);
 	void AddRewardToList(std::string key, int value);
 
 protected:

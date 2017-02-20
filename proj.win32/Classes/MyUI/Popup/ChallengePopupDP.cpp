@@ -138,7 +138,7 @@ bool CChallengePopupDP::init()
     return true;
 }
 
-CPopup* CChallengePopupDP::addSkipEventListner(const SKIP_CALLBACK &callback)
+CChallengePopupDP* CChallengePopupDP::addSkipEventListner(const SKIP_CALLBACK &callback)
 {
     m_SkipCallback = callback;
     

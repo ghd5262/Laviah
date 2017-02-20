@@ -11,7 +11,7 @@
 #include "../AI/States/RocketStates.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
-#include "../DataManager/TutorialManager.hpp"
+#include "../MyUI/TutorialLayer.hpp"
 #include "../MyUI/MyButton.h"
 #include <algorithm>
 
@@ -222,7 +222,7 @@ void CObjectManager::createBulletByTimer(float delta)
 		{
 //			if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))
 //				m_BulletCreator->setPattern(m_PatternManager->getRandomBonusTimePattern());
-            if(!CTutorialManager::Instance()->getIsRunning()){
+            if(!CTutorialLayer::Instance()->getIsRunning()){
                 auto level = m_LevelList.at(m_GameLevel)._level;
                 auto below = m_LevelList.at(m_GameLevel)._below;
                 auto data = m_PatternManager->getRandomNormalPatternByLevel(level, below);
@@ -336,23 +336,23 @@ void CObjectManager::InitTutorialStep()
     ->addEventListener([=](cocos2d::Node* sender){
         // call every single frame
         if(GLOBAL->STAR_COUNT > 10) {
-            CTutorialManager::Instance()->ChangeStep("step2");
+            CTutorialLayer::Instance()->ChangeStep("step2");
             return;
         }
         
         if(GLOBAL->COLLISION_COUNT > 10)
         {
-            CTutorialManager::Instance()->Again();
+            CTutorialLayer::Instance()->Again();
             GLOBAL->STAR_COUNT = 0;
             GLOBAL->COLLISION_COUNT = 0;
         }
 //        if(m_Delta > 6.f) {
-//            CTutorialManager::Instance()->Again();
+//            CTutorialLayer::Instance()->Again();
 //            GLOBAL->STAR_COUNT = 0;
 //        }
 //        
     }, TUTORIAL_EVENT::UPDATE)
-    ->addBubble(LayerColor::create(COLOR::DARKGRAY_ALPHA, 350, 250), "별은 점수나 마찬가지에요.", m_Player)
+    ->addMessageBox(m_Player, "별은 점수나 마찬가지에요.")
     ->build("step1");
     
     CTutorialStep::create()
@@ -372,15 +372,15 @@ void CObjectManager::InitTutorialStep()
     ->addEventListener([=](cocos2d::Node* sender){
         // call every single frame
         if(GLOBAL->STAR_COUNT > 20) {
-            CTutorialManager::Instance()->ChangeStep("step1");
+            CTutorialLayer::Instance()->ChangeStep("step1");
             return;
         }
         
-        if(m_Delta > 20.f) CTutorialManager::Instance()->Again();
+        if(m_Delta > 20.f) CTutorialLayer::Instance()->Again();
         
     }, TUTORIAL_EVENT::UPDATE)
-    ->addBubble(LayerColor::create(COLOR::DARKGRAY_ALPHA, 350, 250), "별은 점수나 마찬가지에요.", m_Player)
+    ->addMessageBox(m_Player, "별은 점수나 마찬가지에요.")
     ->build("step2");
     
-    CTutorialManager::Instance()->ChangeStep("step1");
+    CTutorialLayer::Instance()->ChangeStep("step1");
 }

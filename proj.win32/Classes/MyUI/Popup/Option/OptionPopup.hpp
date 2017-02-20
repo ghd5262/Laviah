@@ -7,7 +7,7 @@ class COptionPopup : public CPopup
 {
 public:
     static COptionPopup* create();
-    CPopup* setInitialScrollIndex(int index);
+    COptionPopup* setInitialScrollIndex(int index);
     
 protected:
     virtual bool init() override;

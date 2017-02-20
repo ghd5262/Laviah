@@ -87,7 +87,7 @@ bool CRewardPopup::init()
 	return true;
 }
 
-CPopup* CRewardPopup::setExitCallback(const EXIT_CALLBACK &callback)
+CRewardPopup* CRewardPopup::setExitCallback(const EXIT_CALLBACK &callback)
 {
     m_ExitCallback = callback;
     return this;
