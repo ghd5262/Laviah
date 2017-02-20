@@ -22,10 +22,11 @@ class CTutorialLayer : public CPopup{
 public:
     static CTutorialLayer* Instance();
     virtual void update(float delta) override;
+    void addTutorialObject(std::string key, CTutorialObject* tutorial);
     void addStepToByTutorialKey(std::string key, CTutorialStep* step);
     void ChangeTutorial(std::string key);
     void ChangeStep(int index);
-    void NextStep();
+    bool NextStep();
 
     void Again();
     void Clear();
@@ -35,7 +36,6 @@ protected:
     virtual bool init() override;
     
 private:
-    CTutorialObject* addNewTutorialObject(std::string key);
     void addStepToTutorialObject(CTutorialObject* tutorial,
                                  CTutorialStep* step);
     CTutorialObject* getTutorialObjectByKey(std::string key);
@@ -66,7 +66,7 @@ public:
     
     void Begin();
     void End();
-    void NextStep();
+    bool NextStep();
     void ChangeStep(int index);
     void Again();
 
@@ -99,7 +99,7 @@ public:
     static CTutorialStep* create();
     CTutorialStep* addEventListener(const STEP_LISTENER& listener, TUTORIAL_EVENT type);
     CTutorialStep* addMessageBox(cocos2d::Node* parent, std::string message);
-    CTutorialStep* build(std::string tutorialKey);
+    CTutorialStep* build(CTutorialObject* parent);
     
     void Begin();
     void Update() { this->callListener(m_UpdateListener);   };

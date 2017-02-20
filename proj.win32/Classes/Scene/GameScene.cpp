@@ -65,6 +65,7 @@ CGameScene::CGameScene()
 : m_UILayer(nullptr)
 , m_MenuLayer(nullptr)
 , m_BonusTimeLayer(nullptr)
+, m_TutorialLayer(nullptr)
 , m_ScreenFade(nullptr)
 , m_CountDown(nullptr)
 , m_KeyBoardSpace(false){}
@@ -110,6 +111,7 @@ bool CGameScene::init()
     this->createComboUI();
     this->createMenuLayer();
     this->createUILayer();
+    this->createTutorialLayer();
     this->initKeyboardListener();
 	return true;
 }
@@ -132,6 +134,7 @@ void CGameScene::GameStart()
     m_UILayer->setVisible(true);
     m_UILayer->setDefaultCallbackToTopAgain();
     m_MenuLayer->setVisible(false);
+    m_TutorialLayer->setVisible(true);
     CObjectManager::Instance()->ZoomOut();
     CObjectManager::Instance()->getPlayer()->GameStart();
     CObjectManager::Instance()->InitTutorialStep();
@@ -202,6 +205,7 @@ void CGameScene::OpenGameMenuLayer()
         m_UILayer->setVisible(false);
         m_MenuLayer->setVisible(true);
         m_MenuLayer->setDefaultCallbackToTopAgain();
+        m_TutorialLayer->setVisible(false);
     });
 }
 
@@ -577,7 +581,7 @@ void CGameScene::createUILayer()
 
 void CGameScene::createTutorialLayer()
 {
-    CTutorialLayer::Instance()
+    m_TutorialLayer = CTutorialLayer::Instance()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setDefaultCallbackEnable(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)

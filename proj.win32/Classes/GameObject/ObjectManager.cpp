@@ -323,6 +323,12 @@ void CObjectManager::zoom(cocos2d::Node* obj,
 
 void CObjectManager::InitTutorialStep()
 {
+    auto tutorial1 = CTutorialObject::create()
+    ->addBeginListener([=](cocos2d::Node* sender){})
+    ->addEndListener([=](cocos2d::Node* sender){})
+    ->build("first tutorial");
+    
+    
     CTutorialStep::create()
     ->addEventListener([=](cocos2d::Node* sender){
         auto data = m_PatternManager->getNormalPatternByIndex(0);
@@ -336,7 +342,7 @@ void CObjectManager::InitTutorialStep()
     ->addEventListener([=](cocos2d::Node* sender){
         // call every single frame
         if(GLOBAL->STAR_COUNT > 10) {
-            CTutorialLayer::Instance()->ChangeStep("step2");
+            CTutorialLayer::Instance()->NextStep();
             return;
         }
         
@@ -353,34 +359,42 @@ void CObjectManager::InitTutorialStep()
 //        
     }, TUTORIAL_EVENT::UPDATE)
     ->addMessageBox(m_Player, "별은 점수나 마찬가지에요.")
-    ->build("step1");
+    ->build(tutorial1);
     
-    CTutorialStep::create()
-    ->addEventListener([=](cocos2d::Node* sender){
-        auto data = m_PatternManager->getNormalPatternByIndex(1);
-        m_BulletCreator->setPattern(data);
-        m_IsGamePause = true;
-    }, TUTORIAL_EVENT::BEGIN)
-    ->addEventListener([=](cocos2d::Node* sender){
-        m_IsGamePause = false;
-    }, TUTORIAL_EVENT::TOUCH_END)
-    ->addEventListener([=](cocos2d::Node* sender){
-        // calls if touching
-        
-        
-    }, TUTORIAL_EVENT::TOUCH_EXECUTE)
-    ->addEventListener([=](cocos2d::Node* sender){
-        // call every single frame
-        if(GLOBAL->STAR_COUNT > 20) {
-            CTutorialLayer::Instance()->ChangeStep("step1");
-            return;
-        }
-        
-        if(m_Delta > 20.f) CTutorialLayer::Instance()->Again();
-        
-    }, TUTORIAL_EVENT::UPDATE)
-    ->addMessageBox(m_Player, "별은 점수나 마찬가지에요.")
-    ->build("step2");
+//    CTutorialStep::create()
+//    ->addEventListener([=](cocos2d::Node* sender){
+//        auto data = m_PatternManager->getNormalPatternByIndex(1);
+//        m_BulletCreator->setPattern(data);
+//        
+//        GLOBAL->STAR_COUNT = 0;
+//        GLOBAL->COLLISION_COUNT = 0;
+//    }, TUTORIAL_EVENT::BEGIN)
+//    ->addEventListener([=](cocos2d::Node* sender){
+//        // calls if touching
+//        
+//        
+//    }, TUTORIAL_EVENT::TOUCH_EXECUTE)
+//    ->addEventListener([=](cocos2d::Node* sender){
+//        // call every single frame
+//        if(GLOBAL->STAR_COUNT > 10) {
+//            CTutorialLayer::Instance()->NextStep();
+//            return;
+//        }
+//        
+//        if(GLOBAL->COLLISION_COUNT > 10)
+//        {
+//            CTutorialLayer::Instance()->Again();
+//            GLOBAL->STAR_COUNT = 0;
+//            GLOBAL->COLLISION_COUNT = 0;
+//        }
+//        //        if(m_Delta > 6.f) {
+//        //            CTutorialLayer::Instance()->Again();
+//        //            GLOBAL->STAR_COUNT = 0;
+//        //        }
+//        //
+//    }, TUTORIAL_EVENT::UPDATE)
+//    ->addMessageBox(m_Player, "별은 점수나 마찬가지에요.21")
+//    ->build(tutorial1);
+//    
     
-    CTutorialLayer::Instance()->ChangeStep("step1");
 }

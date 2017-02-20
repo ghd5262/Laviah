@@ -6,6 +6,10 @@
 
 using namespace cocos2d;
 
+void assertion(std::string content){
+    CCLOG("%s", content.c_str());
+    CCASSERT(false, content.c_str());
+};
 
 CTutorialLayer* CTutorialLayer::m_Instance = nullptr;
 CTutorialLayer::CTutorialLayer()
@@ -13,7 +17,6 @@ CTutorialLayer::CTutorialLayer()
 , m_IsRunning(false){}
 
 CTutorialLayer::~CTutorialLayer(){
-    DATA_MANAGER_UTILS::mapDeleteAndClean(m_TutorialList);
     m_Instance = nullptr;
 }
 
@@ -38,19 +41,13 @@ CTutorialLayer* CTutorialLayer::Instance()
 void CTutorialLayer::update(float delta)
 {
     // call update function of current step of current tutorial.
-    if(m_CurrentStep) m_CurrentStep->Update();
+    if(m_CurrentTutorial) m_CurrentTutorial->update(delta);
 }
 
-void CTutorialLayer::addStepToByTutorialKey(std::string key, CTutorialStep* step)
+void CTutorialLayer::addTutorialObject(std::string key, CTutorialObject* tutorial)
 {
-    auto iter = m_TutorialList.find(key.c_str());
-    CTutorialObject* tutorial = nullptr;
-    
-    // if there is no tutorial for the key.
-    if (iter == m_TutorialList.end())   tutorial = this->addNewTutorial(key);
-    else                                tutorial = (iter->second)._tutorial;
-    
-    this->addStepToTutorial(tutorial, step);
+    m_TutorialList.emplace(std::pair<std::string, CTutorialObject*>(key, tutorial));
+    this->addChild(tutorial);
 }
 
 void CTutorialLayer::ChangeTutorial(std::string key)
@@ -61,7 +58,7 @@ void CTutorialLayer::ChangeTutorial(std::string key)
     if(m_CurrentTutorial) m_CurrentTutorial->End();
     
     // keep new tutorial.
-    m_CurrentTutorial = this->getTutorialByKey(key);
+    m_CurrentTutorial = this->getTutorialObjectByKey(key);
 
     m_IsRunning = true;
 }
@@ -71,9 +68,13 @@ void CTutorialLayer::ChangeStep(int index)
     m_CurrentTutorial->ChangeStep(index);
 }
 
-void CTutorialLayer::NextStep()
+bool CTutorialLayer::NextStep()
 {
-    m_CurrentTutorial->NextStep();
+    if(m_CurrentTutorial->NextStep())
+        return true;
+    
+    this->Clear();
+    return false;
 }
 
 void CTutorialLayer::Again()
@@ -93,25 +94,11 @@ bool CTutorialLayer::init()
     return true;
 }
 
-CTutorialObject* CTutorialLayer::addNewTutorial(std::string key)
-{
-    
-    
-    m_TutorialList.emplace(std::pair<std::string, CTutorialObject*>(key, tutorial));
-    return tutorial;
-}
-
-void CTutorialLayer::addStepToTutorial(CTutorialObject* tutorial, CTutorialStep* step)
-{
-    this->addChild(step);
-    tutorial->emplace_back(step);
-}
-
-CTutorialObject* CTutorialLayer::getTutorialByKey(std::string key)
+CTutorialObject* CTutorialLayer::getTutorialObjectByKey(std::string key)
 {
     auto iter = m_TutorialList.find(key.c_str());
     if(iter == m_TutorialList.end())
-        DATA_MANAGER_UTILS::assertion(StringUtils::format("There is no tutorial for key : %s", key.c_str()));
+        assertion(StringUtils::format("There is no tutorial for key : %s", key.c_str()));
     
     return iter->second;
 }
@@ -137,6 +124,12 @@ CTutorialObject* CTutorialObject::create()
     }
 }
 
+CTutorialObject* CTutorialObject::build(std::string key)
+{
+    CTutorialLayer::Instance()->addTutorialObject(key, this);
+    return this;
+}
+
 CTutorialObject* CTutorialObject::addBeginListener(const TUTORIAL_LISTENER& listener)
 {
     m_BeginListener = listener;
@@ -152,21 +145,23 @@ CTutorialObject* CTutorialObject::addEndListener(const TUTORIAL_LISTENER& listen
 CTutorialObject* CTutorialObject::addTutorialStep(CTutorialStep* step)
 {
     m_StepList.emplace_back(step);
+    this->addChild(step);
     return this;
 }
 
 void CTutorialObject::update(float delta)
 {
     // call update function of current step of current tutorial.
-    if(m_CurrentStep) m_CurrentStep->Update();
+    (this->getStepByIndex(m_CurrentStepIndex))->Update();
 }
 
 CTutorialStep* CTutorialObject::getStepByIndex(int index) const
 {
-    if(index < m_StepList->size())
-        return m_StepList->at(index);
+    if(index < m_StepList.size())
+        return m_StepList.at(index);
 
-    DATA_MANAGER_UTILS::assertion(StringUtils::format("There is no step for index : %d", index));
+    assertion(StringUtils::format("There is no step for index : %d", index));
+    return nullptr;
 }
 
 void CTutorialObject::Begin()
@@ -180,12 +175,15 @@ void CTutorialObject::End()
     this->callListener(m_EndListener);
 }
 
-void CTutorialObject::NextStep()
+bool CTutorialObject::NextStep()
 {
     // if there is next step.
     // change to next.
-    if(m_CurrentStepIndex + 1 < m_StepList.size())
+    if(m_CurrentStepIndex + 1 < m_StepList.size()){
         this->ChangeStep(++m_CurrentStepIndex);
+        return true;
+    }
+    return false;
 }
 
 void CTutorialObject::ChangeStep(int index)
@@ -242,7 +240,7 @@ bool CTutorialStep::init()
     return true;
 }
 
-CTutorialStep* CTutorialStep::build(std::string tutorialKey)
+CTutorialStep* CTutorialStep::build(CTutorialObject* parent)
 {
     if(m_MessageList.size())
     {
@@ -259,9 +257,7 @@ CTutorialStep* CTutorialStep::build(std::string tutorialKey)
         m_MessageBox = dynamic_cast<CMessageBox*>(messagebox);
     }
     
-    {
-        CTutorialLayer::Instance()->addStepToByTutorialKey(tutorialKey, this);
-    }
+    parent->addTutorialStep(this);
     return this;
 }
 

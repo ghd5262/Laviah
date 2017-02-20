@@ -77,9 +77,4 @@ namespace DATA_MANAGER_UTILS {
     	outList.resize(inList.size());
     	std::copy(inList.begin(), inList.end(), outList.begin());
     }
-    
-    void assertion(std::string content){
-        CCLOG("%s", content.c_str());
-        CCASSERT(false, content.c_str());
-    };
 }

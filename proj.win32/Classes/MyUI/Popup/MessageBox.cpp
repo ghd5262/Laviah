@@ -28,7 +28,7 @@ CPopup* CMessageBox::show(Node* parent, int zOrder/* = 0*/)
 {
     if(m_LayerBG)
     {
-        this->setContentSize(m_Layer->getContentSize());
+        this->setContentSize(m_LayerBG->getContentSize());
         
         m_Layer = CMyButton::create()
         ->addEventListener([=](Node* sender){
