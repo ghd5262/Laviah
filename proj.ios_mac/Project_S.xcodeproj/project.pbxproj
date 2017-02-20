@@ -65,14 +65,11 @@
 		9312B47C1D58A12600FE954C /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93865F3E1D588C39007ECE5A /* libiconv.tbd */; };
 		9316AFCF1DFE904900432CA8 /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9316AFCD1DFE904900432CA8 /* Global.cpp */; };
 		9316AFD01DFE904A00432CA8 /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9316AFCD1DFE904900432CA8 /* Global.cpp */; };
-		93190BE31E568E1100CF576A /* TutorialManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93190BE11E568E1100CF576A /* TutorialManager.cpp */; };
-		93190BE41E568E1100CF576A /* TutorialManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93190BE11E568E1100CF576A /* TutorialManager.cpp */; };
 		931D9DB11DB0FEBC008BA5AC /* DownloadManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */; };
 		932999C11E319F950062B92C /* ChallengeCompleteNoticePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932999BF1E319F950062B92C /* ChallengeCompleteNoticePopup.cpp */; };
 		932999C51E31AD750062B92C /* TranslateManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932999C31E31AD750062B92C /* TranslateManager.cpp */; };
 		932999C61E31AD750062B92C /* TranslateManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932999C31E31AD750062B92C /* TranslateManager.cpp */; };
 		9329BAB61D75C50100878CEF /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9329BAB41D75C50100878CEF /* LoadingScene.cpp */; };
-		9329BABC1D75E47500878CEF /* AMTestScene1 in Resources */ = {isa = PBXBuildFile; fileRef = 9329BABB1D75E47500878CEF /* AMTestScene1 */; };
 		932CA1A41E4C15B400CE5110 /* OptionMusicPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1A21E4C15B400CE5110 /* OptionMusicPopup.cpp */; };
 		932CA1A51E4C15B400CE5110 /* OptionMusicPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1A21E4C15B400CE5110 /* OptionMusicPopup.cpp */; };
 		932CA1A91E4C15D200CE5110 /* OptionDataSavePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932CA1A71E4C15D200CE5110 /* OptionDataSavePopup.cpp */; };
@@ -87,6 +84,9 @@
 		933F79DD1DE3E4E1005F1DAF /* PatternTestPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F79DB1DE3E4E1005F1DAF /* PatternTestPopup.cpp */; };
 		9348C5AF1D868481000E8D1B /* update in Resources */ = {isa = PBXBuildFile; fileRef = 9348C5AE1D868481000E8D1B /* update */; };
 		9348E4C61D9D62B1007DF5D9 /* GradientDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9348E4C41D9D62B1007DF5D9 /* GradientDataManager.cpp */; };
+		93579E5B1E5A8D1300D863A0 /* TutorialLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93579E591E5A8D1300D863A0 /* TutorialLayer.cpp */; };
+		93579E5E1E5ACE7900D863A0 /* MessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93579E5C1E5ACE7900D863A0 /* MessageBox.cpp */; };
+		93579E5F1E5ACE7900D863A0 /* MessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93579E5C1E5ACE7900D863A0 /* MessageBox.cpp */; };
 		9366457D1E1B92E800066BB4 /* ChallengeRewarder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9366457B1E1B92E800066BB4 /* ChallengeRewarder.cpp */; };
 		9366457E1E1B92E800066BB4 /* ChallengeRewarder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9366457B1E1B92E800066BB4 /* ChallengeRewarder.cpp */; };
 		9373115A1D5849C800D5EB5C /* BulletStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937310A01D5849C700D5EB5C /* BulletStates.cpp */; };
@@ -163,8 +163,6 @@
 		937311AB1D5849C800D5EB5C /* PoolingManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937311571D5849C800D5EB5C /* PoolingManager.cpp */; };
 		937311B21D5849D500D5EB5C /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 937311AC1D5849D500D5EB5C /* fonts */; };
 		937311B31D5849D500D5EB5C /* imageRes in Resources */ = {isa = PBXBuildFile; fileRef = 937311AD1D5849D500D5EB5C /* imageRes */; };
-		937311B41D5849D500D5EB5C /* json in Resources */ = {isa = PBXBuildFile; fileRef = 937311AE1D5849D500D5EB5C /* json */; };
-		937311B51D5849D500D5EB5C /* jsonRes in Resources */ = {isa = PBXBuildFile; fileRef = 937311AF1D5849D500D5EB5C /* jsonRes */; };
 		937311B61D5849D500D5EB5C /* res in Resources */ = {isa = PBXBuildFile; fileRef = 937311B01D5849D500D5EB5C /* res */; };
 		937311B71D5849D500D5EB5C /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 937311B11D5849D500D5EB5C /* sounds */; };
 		938DE0061E430DD000EE8853 /* ChallengeProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938DE0041E430DD000EE8853 /* ChallengeProgressBar.cpp */; };
@@ -289,8 +287,6 @@
 		9312B47A1D58A10100FE954C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		9316AFCD1DFE904900432CA8 /* Global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Global.cpp; sourceTree = "<group>"; };
 		9316AFCE1DFE904900432CA8 /* Global.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Global.hpp; sourceTree = "<group>"; };
-		93190BE11E568E1100CF576A /* TutorialManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TutorialManager.cpp; sourceTree = "<group>"; };
-		93190BE21E568E1100CF576A /* TutorialManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TutorialManager.hpp; sourceTree = "<group>"; };
 		931D9DAF1DB0FEBC008BA5AC /* DownloadManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DownloadManager.cpp; sourceTree = "<group>"; };
 		931D9DB01DB0FEBC008BA5AC /* DownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadManager.h; sourceTree = "<group>"; };
 		932999BF1E319F950062B92C /* ChallengeCompleteNoticePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChallengeCompleteNoticePopup.cpp; path = Popup/ChallengeCompleteNoticePopup.cpp; sourceTree = "<group>"; };
@@ -299,7 +295,6 @@
 		932999C41E31AD750062B92C /* TranslateManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TranslateManager.hpp; sourceTree = "<group>"; };
 		9329BAB41D75C50100878CEF /* LoadingScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadingScene.cpp; sourceTree = "<group>"; };
 		9329BAB51D75C50100878CEF /* LoadingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingScene.h; sourceTree = "<group>"; };
-		9329BABB1D75E47500878CEF /* AMTestScene1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AMTestScene1; sourceTree = "<group>"; };
 		932CA1A21E4C15B400CE5110 /* OptionMusicPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionMusicPopup.cpp; sourceTree = "<group>"; };
 		932CA1A31E4C15B400CE5110 /* OptionMusicPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OptionMusicPopup.hpp; sourceTree = "<group>"; };
 		932CA1A71E4C15D200CE5110 /* OptionDataSavePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionDataSavePopup.cpp; sourceTree = "<group>"; };
@@ -317,6 +312,10 @@
 		9348C5AE1D868481000E8D1B /* update */ = {isa = PBXFileReference; lastKnownFileType = folder; path = update; sourceTree = "<group>"; };
 		9348E4C41D9D62B1007DF5D9 /* GradientDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GradientDataManager.cpp; sourceTree = "<group>"; };
 		9348E4C51D9D62B1007DF5D9 /* GradientDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientDataManager.h; sourceTree = "<group>"; };
+		93579E591E5A8D1300D863A0 /* TutorialLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TutorialLayer.cpp; sourceTree = "<group>"; };
+		93579E5A1E5A8D1300D863A0 /* TutorialLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TutorialLayer.hpp; sourceTree = "<group>"; };
+		93579E5C1E5ACE7900D863A0 /* MessageBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageBox.cpp; sourceTree = "<group>"; };
+		93579E5D1E5ACE7900D863A0 /* MessageBox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MessageBox.hpp; sourceTree = "<group>"; };
 		9366457B1E1B92E800066BB4 /* ChallengeRewarder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengeRewarder.cpp; sourceTree = "<group>"; };
 		9366457C1E1B92E800066BB4 /* ChallengeRewarder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChallengeRewarder.hpp; sourceTree = "<group>"; };
 		9373109C1D5849C700D5EB5C /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
@@ -471,8 +470,6 @@
 		937311581D5849C800D5EB5C /* PoolingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PoolingManager.h; sourceTree = "<group>"; };
 		937311AC1D5849D500D5EB5C /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		937311AD1D5849D500D5EB5C /* imageRes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = imageRes; sourceTree = "<group>"; };
-		937311AE1D5849D500D5EB5C /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; path = json; sourceTree = "<group>"; };
-		937311AF1D5849D500D5EB5C /* jsonRes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = jsonRes; sourceTree = "<group>"; };
 		937311B01D5849D500D5EB5C /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		937311B11D5849D500D5EB5C /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		93865F3E1D588C39007ECE5A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
@@ -623,12 +620,9 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				9329BABB1D75E47500878CEF /* AMTestScene1 */,
 				937311AC1D5849D500D5EB5C /* fonts */,
 				9348C5AE1D868481000E8D1B /* update */,
 				937311AD1D5849D500D5EB5C /* imageRes */,
-				937311AE1D5849D500D5EB5C /* json */,
-				937311AF1D5849D500D5EB5C /* jsonRes */,
 				937311B01D5849D500D5EB5C /* res */,
 				937311B11D5849D500D5EB5C /* sounds */,
 			);
@@ -787,8 +781,6 @@
 				932999C31E31AD750062B92C /* TranslateManager.cpp */,
 				932999C41E31AD750062B92C /* TranslateManager.hpp */,
 				93CCBB8E1E495E7800C010F3 /* DataManagerUtils.h */,
-				93190BE11E568E1100CF576A /* TutorialManager.cpp */,
-				93190BE21E568E1100CF576A /* TutorialManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -921,6 +913,8 @@
 				9373113F1D5849C800D5EB5C /* UIManager.h */,
 				937311401D5849C800D5EB5C /* UserCoinButton.cpp */,
 				937311411D5849C800D5EB5C /* UserCoinButton.h */,
+				93579E591E5A8D1300D863A0 /* TutorialLayer.cpp */,
+				93579E5A1E5A8D1300D863A0 /* TutorialLayer.hpp */,
 				930C44581DF501BA0011CFA3 /* MenuLayer.cpp */,
 				930C44591DF501BA0011CFA3 /* MenuLayer.hpp */,
 				930C445C1DF501D10011CFA3 /* UILayer.cpp */,
@@ -969,6 +963,8 @@
 				937311351D5849C700D5EB5C /* WorkshopPopupDP.h */,
 				59DFB3C61E576601002CD020 /* GameEndPopup.cpp */,
 				59DFB3C71E576601002CD020 /* GameEndPopup.hpp */,
+				93579E5C1E5ACE7900D863A0 /* MessageBox.cpp */,
+				93579E5D1E5ACE7900D863A0 /* MessageBox.hpp */,
 			);
 			path = Popup;
 			sourceTree = "<group>";
@@ -1158,13 +1154,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				937311B41D5849D500D5EB5C /* json in Resources */,
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
 				937311B71D5849D500D5EB5C /* sounds in Resources */,
 				937311861D5849C800D5EB5C /* json_valueiterator.inl in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				9348C5AF1D868481000E8D1B /* update in Resources */,
-				9329BABC1D75E47500878CEF /* AMTestScene1 in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
@@ -1185,7 +1179,6 @@
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
 				937311B31D5849D500D5EB5C /* imageRes in Resources */,
-				937311B51D5849D500D5EB5C /* jsonRes in Resources */,
 				521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */,
 				50EF629717ECD46A001EB2F8 /* Icon-58.png in Resources */,
 			);
@@ -1211,6 +1204,7 @@
 				937311A01D5849C800D5EB5C /* TextField.cpp in Sources */,
 				937311871D5849C800D5EB5C /* json_writer.cpp in Sources */,
 				937311721D5849C800D5EB5C /* StickBullet.cpp in Sources */,
+				93579E5E1E5ACE7900D863A0 /* MessageBox.cpp in Sources */,
 				937311A51D5849C800D5EB5C /* GameScene.cpp in Sources */,
 				937311891D5849C800D5EB5C /* BonusTimeUI.cpp in Sources */,
 				937311731D5849C800D5EB5C /* TargetMark.cpp in Sources */,
@@ -1221,6 +1215,7 @@
 				937311601D5849C800D5EB5C /* HSHUitlity.cpp in Sources */,
 				9348E4C61D9D62B1007DF5D9 /* GradientDataManager.cpp in Sources */,
 				937311A61D5849C800D5EB5C /* MenuScene.cpp in Sources */,
+				93579E5B1E5A8D1300D863A0 /* TutorialLayer.cpp in Sources */,
 				93E73DB91E232DFB00F1ABC6 /* RewardPopup.cpp in Sources */,
 				9373115D1D5849C800D5EB5C /* GameStates.cpp in Sources */,
 				9373119C1D5849C800D5EB5C /* WorkshopPopupDP.cpp in Sources */,
@@ -1255,7 +1250,6 @@
 				93C89D2C1E2762980085D85A /* ItemProgress.cpp in Sources */,
 				933F79DD1DE3E4E1005F1DAF /* PatternTestPopup.cpp in Sources */,
 				9373118A1D5849C800D5EB5C /* HealthBarUI.cpp in Sources */,
-				93190BE31E568E1100CF576A /* TutorialManager.cpp in Sources */,
 				937311AB1D5849C800D5EB5C /* PoolingManager.cpp in Sources */,
 				937311741D5849C800D5EB5C /* GameObject.cpp in Sources */,
 				937311971D5849C800D5EB5C /* HelpPopup.cpp in Sources */,
@@ -1320,7 +1314,6 @@
 				93E2317F1DDC344600899F4A /* StringUtility.cpp in Sources */,
 				930304431E1248A20017C149 /* StandBullet.cpp in Sources */,
 				932CA1AE1E4C161300CE5110 /* OptionLanguagePopup.cpp in Sources */,
-				93190BE41E568E1100CF576A /* TutorialManager.cpp in Sources */,
 				932CA1A51E4C15B400CE5110 /* OptionMusicPopup.cpp in Sources */,
 				930C44641DF54BD90011CFA3 /* CountDown.cpp in Sources */,
 				930304391E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */,
@@ -1329,6 +1322,7 @@
 				938FF6D31E1B55FF00664426 /* ChallengeClearChecker.cpp in Sources */,
 				93CCBB941E498E2A00C010F3 /* OptionPopup.cpp in Sources */,
 				9366457E1E1B92E800066BB4 /* ChallengeRewarder.cpp in Sources */,
+				93579E5F1E5ACE7900D863A0 /* MessageBox.cpp in Sources */,
 				930304481E1390D80017C149 /* ChallengeDataManager.cpp in Sources */,
 				932CA1B21E4C164D00CE5110 /* OptionTitlePopup.cpp in Sources */,
 				938DE0071E430DD000EE8853 /* ChallengeProgressBar.cpp in Sources */,
