@@ -134,10 +134,8 @@ void CGameScene::GameStart()
     m_UILayer->setVisible(true);
     m_UILayer->setDefaultCallbackToTopAgain();
     m_MenuLayer->setVisible(false);
-    m_TutorialLayer->setVisible(true);
     CObjectManager::Instance()->ZoomOut();
     CObjectManager::Instance()->getPlayer()->GameStart();
-    CObjectManager::Instance()->InitTutorialStep();
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 
     //    });
@@ -205,7 +203,6 @@ void CGameScene::OpenGameMenuLayer()
         m_UILayer->setVisible(false);
         m_MenuLayer->setVisible(true);
         m_MenuLayer->setDefaultCallbackToTopAgain();
-        m_TutorialLayer->setVisible(false);
     });
 }
 
@@ -512,6 +509,7 @@ void CGameScene::createCountDown()
     ->addLastEventListner([=](Node* sender){
         CObjectManager::Instance()->setIsGamePause(false);
         CObjectManager::Instance()->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+        CObjectManager::Instance()->InitTutorialStep();
     })
     ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(3)
@@ -581,8 +579,8 @@ void CGameScene::createUILayer()
 
 void CGameScene::createTutorialLayer()
 {
-    m_TutorialLayer = CTutorialLayer::Instance()
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    CTutorialLayer::Instance()
+    ->setBackgroundVisible(false)
     ->setDefaultCallbackEnable(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)

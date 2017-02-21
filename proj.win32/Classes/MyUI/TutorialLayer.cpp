@@ -1,5 +1,4 @@
 #include "TutorialLayer.hpp"
-#include "DataManagerUtils.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/Popup/MessageBox.hpp"
 #include "../json/json.h"
@@ -14,9 +13,14 @@ void assertion(std::string content){
 CTutorialLayer* CTutorialLayer::m_Instance = nullptr;
 CTutorialLayer::CTutorialLayer()
 : m_CurrentTutorial(nullptr)
-, m_IsRunning(false){}
+, m_IsRunning(false)
+, m_CurrentStepIndex(0){}
 
 CTutorialLayer::~CTutorialLayer(){
+    for(auto tutorial : m_TutorialList)
+        for(auto tutorialObj : *tutorial.second)
+            tutorialObj->release();
+    
     m_Instance = nullptr;
 }
 
@@ -40,14 +44,20 @@ CTutorialLayer* CTutorialLayer::Instance()
 
 void CTutorialLayer::update(float delta)
 {
+    if(!m_IsRunning) return;
     // call update function of current step of current tutorial.
-    if(m_CurrentTutorial) m_CurrentTutorial->update(delta);
+    (m_CurrentTutorial->at(m_CurrentStepIndex))->Update(delta);
 }
 
-void CTutorialLayer::addTutorialObject(std::string key, CTutorialObject* tutorial)
+void CTutorialLayer::addTutorial(std::string key, CTutorialObject* newTutorial)
 {
-    m_TutorialList.emplace(std::pair<std::string, CTutorialObject*>(key, tutorial));
-    this->addChild(tutorial);
+    auto iter = m_TutorialList.find(key);
+    TUTORIAL* tutorial = nullptr;
+    if(iter == m_TutorialList.end())    tutorial = this->addNewTutorialByKey(key);
+    else                                tutorial = this->getTutorialByKey(key);
+    
+    newTutorial->retain();
+    tutorial->emplace_back(newTutorial);
 }
 
 void CTutorialLayer::ChangeTutorial(std::string key)
@@ -55,36 +65,36 @@ void CTutorialLayer::ChangeTutorial(std::string key)
     if(key == "") return;
     
     // call end listener of current tutorial.
-    if(m_CurrentTutorial) m_CurrentTutorial->End();
+    this->stepEnd(key, m_CurrentStepIndex);
+    m_CurrentTutorial = this->getTutorialByKey(key);
+    m_CurrentStepIndex = 0;
     
-    // keep new tutorial.
-    m_CurrentTutorial = this->getTutorialObjectByKey(key);
+    this->stepBegin(key, m_CurrentStepIndex);
 
     m_IsRunning = true;
 }
 
 void CTutorialLayer::ChangeStep(int index)
 {
-    m_CurrentTutorial->ChangeStep(index);
+    if(m_CurrentTutorial->size() <= index) {
+        this->clear();
+        return;
+    }
+    
+    auto currentKey = (m_CurrentTutorial->at(m_CurrentStepIndex))->getTutorialKey();
+    this->stepEnd(currentKey, m_CurrentStepIndex);
+    m_CurrentStepIndex = index;
+    this->stepBegin(currentKey, m_CurrentStepIndex);
 }
 
-bool CTutorialLayer::NextStep()
+void CTutorialLayer::NextStep()
 {
-    if(m_CurrentTutorial->NextStep())
-        return true;
-    
-    this->Clear();
-    return false;
+    this->ChangeStep(m_CurrentStepIndex + 1);
 }
 
 void CTutorialLayer::Again()
 {
-    m_CurrentTutorial->Again();
-}
-
-void CTutorialLayer::Clear()
-{
-    m_IsRunning = false;
+    this->ChangeStep(m_CurrentStepIndex);
 }
 
 bool CTutorialLayer::init()
@@ -94,7 +104,15 @@ bool CTutorialLayer::init()
     return true;
 }
 
-CTutorialObject* CTutorialLayer::getTutorialObjectByKey(std::string key)
+CTutorialLayer::TUTORIAL* CTutorialLayer::addNewTutorialByKey(std::string key)
+{
+    TUTORIAL* newTutorial = new std::vector<CTutorialObject*>();
+    m_TutorialList.emplace(std::pair<std::string, TUTORIAL*>(key, newTutorial));
+    
+    return newTutorial;
+}
+
+CTutorialLayer::TUTORIAL* CTutorialLayer::getTutorialByKey(std::string key)
 {
     auto iter = m_TutorialList.find(key.c_str());
     if(iter == m_TutorialList.end())
@@ -103,7 +121,34 @@ CTutorialObject* CTutorialLayer::getTutorialObjectByKey(std::string key)
     return iter->second;
 }
 
+CTutorialObject* CTutorialLayer::getStepFromTutorial(std::string key, int index)
+{
+    auto tutorial = this->getTutorialByKey(key);
+    if(tutorial->size() <= index)
+        assertion(StringUtils::format("There is no step for index : %d", index));
+    return tutorial->at(index);
+}
 
+void CTutorialLayer::stepBegin(std::string key, int index)
+{
+    auto step = this->getStepFromTutorial(key, index);
+    step->Begin();
+    this->addChild(step);
+}
+
+void CTutorialLayer::stepEnd(std::string key, int index)
+{
+    auto step = this->getStepFromTutorial(key, index);
+    step->End();
+    step->removeFromParent();
+}
+
+void CTutorialLayer::clear()
+{
+    m_IsRunning = false;
+    m_CurrentStepIndex = 0;
+    m_CurrentTutorial = nullptr;
+}
 
 
 
@@ -126,200 +171,114 @@ CTutorialObject* CTutorialObject::create()
 
 CTutorialObject* CTutorialObject::build(std::string key)
 {
-    CTutorialLayer::Instance()->addTutorialObject(key, this);
+    m_TutorialKey = key;
+    this->setContentSize(_director->getWinSize());
+    CTutorialLayer::Instance()->addTutorial(m_TutorialKey, this);
     return this;
 }
 
-CTutorialObject* CTutorialObject::addBeginListener(const TUTORIAL_LISTENER& listener)
+CTutorialObject* CTutorialObject::addMessageBox(std::string message)
+{
+    m_Message = message;
+    return this;
+}
+
+CTutorialObject* CTutorialObject::addBeginListener(const SINGLE_LISTENER& listener)
 {
     m_BeginListener = listener;
     return this;
 }
 
-CTutorialObject* CTutorialObject::addEndListener(const TUTORIAL_LISTENER& listener)
+CTutorialObject* CTutorialObject::addUpdateListener(const UPDATE_LISTENER& listener)
+{
+    m_UpdateListener = listener;
+    return this;
+}
+
+CTutorialObject* CTutorialObject::addEndListener(const SINGLE_LISTENER& listener)
 {
     m_EndListener = listener;
     return this;
 }
 
-CTutorialObject* CTutorialObject::addTutorialStep(CTutorialStep* step)
+CTutorialObject* CTutorialObject::setTouchEnable(bool enable)
 {
-    m_StepList.emplace_back(step);
-    this->addChild(step);
+    m_TouchEnable = enable;
     return this;
-}
-
-void CTutorialObject::update(float delta)
-{
-    // call update function of current step of current tutorial.
-    (this->getStepByIndex(m_CurrentStepIndex))->Update();
-}
-
-CTutorialStep* CTutorialObject::getStepByIndex(int index) const
-{
-    if(index < m_StepList.size())
-        return m_StepList.at(index);
-
-    assertion(StringUtils::format("There is no step for index : %d", index));
-    return nullptr;
 }
 
 void CTutorialObject::Begin()
 {
-    m_CurrentStepIndex = 0;
+    // if there is message, create message box
+    if(m_Message != "")  this->createMessageBox();
+    if(!m_TouchEnable )  this->backgroundTouchDisable();
+    
+    // call begin function
     this->callListener(m_BeginListener);
+}
+
+void CTutorialObject::Update(float delta)
+{
+    // call update function
+    if(m_UpdateListener) m_UpdateListener(delta);
 }
 
 void CTutorialObject::End()
 {
+    if(m_MessageBox)
+    {
+        m_MessageBox->popupClose();
+        m_MessageBox = nullptr;
+    }
+    
+    if(m_BackgroundTouchDisable){
+        m_BackgroundTouchDisable->removeFromParent();
+        m_BackgroundTouchDisable = nullptr;
+    }
+    
+    // call end function
     this->callListener(m_EndListener);
 }
 
-bool CTutorialObject::NextStep()
+void CTutorialObject::createMessageBox()
 {
-    // if there is next step.
-    // change to next.
-    if(m_CurrentStepIndex + 1 < m_StepList.size()){
-        this->ChangeStep(++m_CurrentStepIndex);
-        return true;
-    }
-    return false;
-}
-
-void CTutorialObject::ChangeStep(int index)
-{
-    // call end listener of current step of tutorial.
-    (this->getStepByIndex(m_CurrentStepIndex))->End();
+    if(m_MessageBox) return;
     
-    // keep new step index
-    m_CurrentStepIndex = index;
-    
-    // call begin listener of new step
-    (this->getStepByIndex(m_CurrentStepIndex))->Begin();
-}
-
-void CTutorialObject::Again()
-{
-    this->ChangeStep(m_CurrentStepIndex);
-}
-
-void CTutorialObject::callListener(TUTORIAL_LISTENER listener)
-{
-    if(listener)
-    {
-        this->retain();
-        listener(this);
-        this->release();
-    }
-}
-
-
-
-
-CTutorialStep* CTutorialStep::create()
-{
-    CTutorialStep *pRet = new(std::nothrow) CTutorialStep();
-    if (pRet && pRet->init())
-    {
-        pRet->autorelease();
-        return pRet;
-    }
-    else
-    {
-        delete pRet;
-        pRet = NULL;
-        return NULL;
-    }
-}
-
-bool CTutorialStep::init()
-{
-    if (!Node::init()) return false;
-    this->createEventListener();
-    this->setContentSize(_director->getWinSize());
-    return true;
-}
-
-CTutorialStep* CTutorialStep::build(CTutorialObject* parent)
-{
-    if(m_MessageList.size())
-    {
-        auto messagebox = CMessageBox::create()
-        ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 430, 300))
-        ->setTailEnable(true)
-        ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-        ->setMessage("")
-        ->setPopupPosition(m_MessageBoxPosition)
-        ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM)
-        ->setDefaultCallbackEnable(false)
-        ->setBackgroundVisible(false)
-        ->show(this);
-        m_MessageBox = dynamic_cast<CMessageBox*>(messagebox);
-    }
-    
-    parent->addTutorialStep(this);
-    return this;
-}
-
-CTutorialStep* CTutorialStep::addEventListener(const STEP_LISTENER& listener,
-                                               TUTORIAL_EVENT type)
-{
-    switch (type) {
-        case TUTORIAL_EVENT::BEGIN:  m_BeginListener  = listener; break;
-        case TUTORIAL_EVENT::UPDATE: m_UpdateListener = listener; break;
-        case TUTORIAL_EVENT::END:    m_EndListener    = listener; break;
-        default: m_EventListener->addEventListener([=](Node* sender){
-            
-            // if there are message boxes. show message boxes before than listeners.
-            // call listeners after show all message boxes.
-            if(m_CurrentMessageIndex < m_MessageList.size())
-            {
-                m_MessageBox->changeMessage(m_MessageList.at(m_CurrentMessageIndex++));
-                return;
-            }
-            
-            this->callListener(listener);
-        }, (eMYBUTTON_STATE)type); break;
-    }
-    
-    return this;
-}
-
-CTutorialStep* CTutorialStep::addMessageBox(cocos2d::Node* parent,
-                                            std::string message)
-{
-    m_MessageBoxPosition = parent->convertToWorldSpace(parent->getContentSize() / 2);
-    m_MessageList.emplace_back(message);
-    return this;
-}
-
-void CTutorialStep::Begin()
-{
-    this->clear();
-    this->callListener(m_BeginListener);
-}
-
-void CTutorialStep::callListener(STEP_LISTENER listener)
-{
-    if(listener)
-    {
-        this->retain();
-        listener(this);
-        this->release();
-    }
-}
-
-void CTutorialStep::createEventListener()
-{
-    auto size = _director->getWinSize();
-    m_EventListener = CMyButton::create()
-    ->setEnableSound(false)
-    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-    ->setLayer(LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, size.width, size.height))
+    auto popup = CMessageBox::create()
+    ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 430, 300))
+    ->setTailEnable(true)
+    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+    ->setMessage(m_Message)
+    ->setPopupPosition(this->getContentSize() / 2)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM)
+    ->setDefaultCallbackEnable(false)
+    ->setBackgroundVisible(false)
     ->show(this);
+    
+    m_MessageBox = dynamic_cast<CMessageBox*>(popup);
 }
 
-void CTutorialStep::clear()
+void CTutorialObject::callListener(SINGLE_LISTENER listener)
 {
-    m_CurrentMessageIndex = 0;
+    if(listener)
+    {
+        this->retain();
+        listener(this);
+        this->release();
+    }
+}
+
+void CTutorialObject::backgroundTouchDisable()
+{
+    if(m_BackgroundTouchDisable) return;
+    
+    m_BackgroundTouchDisable = CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        CTutorialLayer::Instance()->NextStep();
+    })
+    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+    ->setLayer(LayerColor::create(COLOR::BRIGHT_WHITEGRAY_ALPHA, 1080, 1920))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(this->getContentSize() / 2)
+    ->show(this);
 }

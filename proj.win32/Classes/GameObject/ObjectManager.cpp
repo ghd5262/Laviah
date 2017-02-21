@@ -99,8 +99,8 @@ void CObjectManager::AddBullet(CBullet* bullet)
 
 void CObjectManager::Execute(float delta)
 {
-    m_Delta = delta;
-    
+    m_RotationSpeed = ((m_SpeedController->getPositionX() * delta));
+    m_Delta = MIN(delta * fabs(m_RotationSpeed), delta);    
 //    m_FSM->Execute(delta);
     
     this->inGameUpdate();
@@ -111,7 +111,7 @@ void CObjectManager::RotationObject(float dir)
 {
     if (m_IsGamePause) return;
     
-    m_RotationSpeed = (dir * (m_SpeedController->getPositionX() * m_Delta));
+    m_RotationSpeed *= dir;
     
     this->bulletListRotate();
     m_BulletCreator->Rotation(m_RotationSpeed);
@@ -214,7 +214,7 @@ void CObjectManager::ReturnToMemoryBlockAll()
 
 void CObjectManager::createBulletByTimer(float delta)
 {
-    m_PatternTimer += delta;
+    m_PatternTimer += m_Delta;
 	if (m_PatternTimer < BULLETCREATOR::PATTERN_PADDING_LIMIT) return;
 
 	if (!m_BulletCreator->getIsRunning()) {
@@ -323,24 +323,23 @@ void CObjectManager::zoom(cocos2d::Node* obj,
 
 void CObjectManager::InitTutorialStep()
 {
-    auto tutorial1 = CTutorialObject::create()
-    ->addBeginListener([=](cocos2d::Node* sender){})
-    ->addEndListener([=](cocos2d::Node* sender){})
+    CTutorialObject::create()
+    ->addBeginListener([=](Node* sender){
+        this->SpeedControl(0.5f, 3);
+    })
+    ->setTouchEnable(false)
+    ->addMessageBox("별은 점수나 마찬가지에요.")
     ->build("first tutorial");
     
-    
-    CTutorialStep::create()
-    ->addEventListener([=](cocos2d::Node* sender){
+    CTutorialObject::create()
+    ->addBeginListener([=](Node* sender){
+        GLOBAL->STAR_COUNT = 0;
+        GLOBAL->COLLISION_COUNT = 0;
         auto data = m_PatternManager->getNormalPatternByIndex(0);
         m_BulletCreator->setPattern(data);
-    }, TUTORIAL_EVENT::BEGIN)
-    ->addEventListener([=](cocos2d::Node* sender){
-        // calls if touching
-        
-        
-    }, TUTORIAL_EVENT::TOUCH_EXECUTE)
-    ->addEventListener([=](cocos2d::Node* sender){
-        // call every single frame
+        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+    })
+    ->addUpdateListener([=](float delta){
         if(GLOBAL->STAR_COUNT > 10) {
             CTutorialLayer::Instance()->NextStep();
             return;
@@ -349,52 +348,39 @@ void CObjectManager::InitTutorialStep()
         if(GLOBAL->COLLISION_COUNT > 10)
         {
             CTutorialLayer::Instance()->Again();
-            GLOBAL->STAR_COUNT = 0;
-            GLOBAL->COLLISION_COUNT = 0;
         }
-//        if(m_Delta > 6.f) {
-//            CTutorialLayer::Instance()->Again();
-//            GLOBAL->STAR_COUNT = 0;
-//        }
-//        
-    }, TUTORIAL_EVENT::UPDATE)
-    ->addMessageBox(m_Player, "별은 점수나 마찬가지에요.")
-    ->build(tutorial1);
+    })
+    ->setTouchEnable(false)
+    ->build("first tutorial");
     
-//    CTutorialStep::create()
-//    ->addEventListener([=](cocos2d::Node* sender){
-//        auto data = m_PatternManager->getNormalPatternByIndex(1);
-//        m_BulletCreator->setPattern(data);
-//        
-//        GLOBAL->STAR_COUNT = 0;
-//        GLOBAL->COLLISION_COUNT = 0;
-//    }, TUTORIAL_EVENT::BEGIN)
-//    ->addEventListener([=](cocos2d::Node* sender){
-//        // calls if touching
-//        
-//        
-//    }, TUTORIAL_EVENT::TOUCH_EXECUTE)
-//    ->addEventListener([=](cocos2d::Node* sender){
-//        // call every single frame
-//        if(GLOBAL->STAR_COUNT > 10) {
-//            CTutorialLayer::Instance()->NextStep();
-//            return;
-//        }
-//        
-//        if(GLOBAL->COLLISION_COUNT > 10)
-//        {
-//            CTutorialLayer::Instance()->Again();
-//            GLOBAL->STAR_COUNT = 0;
-//            GLOBAL->COLLISION_COUNT = 0;
-//        }
-//        //        if(m_Delta > 6.f) {
-//        //            CTutorialLayer::Instance()->Again();
-//        //            GLOBAL->STAR_COUNT = 0;
-//        //        }
-//        //
-//    }, TUTORIAL_EVENT::UPDATE)
-//    ->addMessageBox(m_Player, "별은 점수나 마찬가지에요.21")
-//    ->build(tutorial1);
-//    
+    CTutorialObject::create()
+    ->addBeginListener([=](Node* sender){
+        this->SpeedControl(0.5f, 3);
+    })
+    ->setTouchEnable(false)
+    ->addMessageBox("화면을 터치하면 반대방향으로 구를 수 있어요.")
+    ->build("first tutorial");
     
+    CTutorialObject::create()
+    ->addBeginListener([=](Node* sender){
+        GLOBAL->STAR_COUNT = 0;
+        GLOBAL->COLLISION_COUNT = 0;
+        auto data = m_PatternManager->getNormalPatternByIndex(0);
+        m_BulletCreator->setPattern(data);
+        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+    })
+    ->addUpdateListener([=](float delta){
+        if(GLOBAL->STAR_COUNT > 10) {
+            CTutorialLayer::Instance()->NextStep();
+            return;
+        }
+        
+        if(GLOBAL->COLLISION_COUNT > 10)
+        {
+            CTutorialLayer::Instance()->ChangeStep(2);
+        }
+    })
+    ->build("first tutorial");
+    
+    CTutorialLayer::Instance()->ChangeTutorial("first tutorial");
 }

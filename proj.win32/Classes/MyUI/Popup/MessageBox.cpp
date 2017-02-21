@@ -32,7 +32,9 @@ CPopup* CMessageBox::show(Node* parent, int zOrder/* = 0*/)
         
         m_Layer = CMyButton::create()
         ->addEventListener([=](Node* sender){
-            this->popupClose();
+            this->retain();
+            if(m_TouchListener) m_TouchListener(this);
+            this->release();
         })
         ->setLayer(m_LayerBG)
         ->setEnableSound(false)
@@ -49,6 +51,12 @@ CPopup* CMessageBox::show(Node* parent, int zOrder/* = 0*/)
     }
     
     return 	CPopup::show(parent, zOrder);
+}
+
+CMessageBox* CMessageBox::addTouchListener(const TOUCH_LISTENER& listener)
+{
+    m_TouchListener = listener;
+    return this;
 }
 
 CMessageBox* CMessageBox::setLayer(cocos2d::LayerColor* layer)

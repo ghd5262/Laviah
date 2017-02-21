@@ -3,133 +3,88 @@
 #include <vector>
 #include <map>
 
-enum TUTORIAL_EVENT {
-    TOUCN_BEGIN,
-    TOUCH_EXECUTE,
-    TOUCH_END,
-    BEGIN,
-    UPDATE,
-    END
-};
-
 class CMyButton;
-class CTutorialStep;
-class CTutorialObject;
 class CMessageBox;
+class CTutorialObject;
 class CTutorialLayer : public CPopup{
-    typedef std::map<std::string, CTutorialObject*> TUTORIAL_LIST;
+    typedef std::vector<CTutorialObject*>       TUTORIAL;
+    typedef std::map<std::string, TUTORIAL*>    TUTORIAL_LIST;
     
 public:
     static CTutorialLayer* Instance();
-    virtual void update(float delta) override;
-    void addTutorialObject(std::string key, CTutorialObject* tutorial);
-    void addStepToByTutorialKey(std::string key, CTutorialStep* step);
+    void addTutorial(std::string key, CTutorialObject* tutorial);
     void ChangeTutorial(std::string key);
     void ChangeStep(int index);
-    bool NextStep();
-
+    void NextStep();
     void Again();
-    void Clear();
+    
+    virtual void update(float delta) override;
     
     CC_SYNTHESIZE(bool, m_IsRunning, IsRunning);
 protected:
     virtual bool init() override;
     
 private:
-    void addStepToTutorialObject(CTutorialObject* tutorial,
-                                 CTutorialStep* step);
-    CTutorialObject* getTutorialObjectByKey(std::string key);
-    
+    TUTORIAL* addNewTutorialByKey(std::string key);
+    TUTORIAL* getTutorialByKey(std::string key);
+    CTutorialObject* getStepFromTutorial(std::string key, int index);
+    void stepBegin(std::string key, int index);
+    void stepEnd(std::string key, int index);
+    void clear();
+
     CTutorialLayer();
     virtual ~CTutorialLayer();
     
 private:
     static CTutorialLayer* m_Instance;
     TUTORIAL_LIST m_TutorialList;
-    CTutorialObject* m_CurrentTutorial;
+    TUTORIAL* m_CurrentTutorial;
+    int m_CurrentStepIndex;
 };
 
 class CTutorialObject : public cocos2d::Node{
-    typedef std::vector<CTutorialStep*> STEP_LIST;
-    typedef std::function<void(cocos2d::Node*)> TUTORIAL_LISTENER;
-    
+    typedef std::function<void(cocos2d::Node*)> SINGLE_LISTENER;
+    typedef std::function<void(float)>          UPDATE_LISTENER;
+
 public:
     static CTutorialObject* create();
-    CTutorialObject* addBeginListener(const TUTORIAL_LISTENER& listener);
-    CTutorialObject* addEndListener(const TUTORIAL_LISTENER& listener);
-    CTutorialObject* addTutorialStep(CTutorialStep* step);
+    CTutorialObject* addBeginListener(const SINGLE_LISTENER& listener);
+    CTutorialObject* addUpdateListener(const UPDATE_LISTENER& listener);
+    CTutorialObject* addEndListener(const SINGLE_LISTENER& listener);
+    CTutorialObject* addMessageBox(std::string message);
+    CTutorialObject* setTouchEnable(bool enable);
     CTutorialObject* build(std::string key);
 
-    virtual void update(float delta) override;
-    std::string getTutorialKey() const { return m_TutorialKey; }
-    CTutorialStep* getStepByIndex(int index) const;
-    
     void Begin();
+    void Update(float delta);
     void End();
-    bool NextStep();
-    void ChangeStep(int index);
-    void Again();
 
-
-    CC_SYNTHESIZE(TUTORIAL_LISTENER, m_BeginListener, BeginListener);
-    CC_SYNTHESIZE(TUTORIAL_LISTENER, m_EndListener, EndListener);
-    CC_SYNTHESIZE(int , m_CurrentStepIndex, CurrentStepIndex);
+    std::string getTutorialKey() const { return m_TutorialKey; }
 
 private:
-    void callListener(TUTORIAL_LISTENER listener);
+    void createMessageBox();
+    void callListener(SINGLE_LISTENER listener);
+    void backgroundTouchDisable();
     void clear();
     
     CTutorialObject()
     : m_BeginListener(nullptr)
     , m_EndListener(nullptr)
+    , m_UpdateListener(nullptr)
+    , m_MessageBox(nullptr)
+    , m_BackgroundTouchDisable(nullptr)
     , m_TutorialKey("")
-    , m_CurrentStepIndex(0){}
+    , m_Message("")
+    , m_TouchEnable(true){}
     virtual ~CTutorialObject(){};
     
 private:
-    STEP_LIST m_StepList;
-    std::string m_TutorialKey;
-};
-
-
-class CTutorialStep : public cocos2d::Node{
-    typedef std::function<void(cocos2d::Node*)> STEP_LISTENER;
-    
-public:
-    static CTutorialStep* create();
-    CTutorialStep* addEventListener(const STEP_LISTENER& listener, TUTORIAL_EVENT type);
-    CTutorialStep* addMessageBox(cocos2d::Node* parent, std::string message);
-    CTutorialStep* build(CTutorialObject* parent);
-    
-    void Begin();
-    void Update() { this->callListener(m_UpdateListener);   };
-    void End()    { this->callListener(m_EndListener);      };
-    
-    CC_SYNTHESIZE(STEP_LISTENER, m_BeginListener, BeginListener);
-    CC_SYNTHESIZE(STEP_LISTENER, m_UpdateListener, UpdateListener);
-    CC_SYNTHESIZE(STEP_LISTENER, m_EndListener, EndListener);
-protected:
-    virtual bool init() override;
-    
-private:
-    void callListener(STEP_LISTENER listener);
-    void createEventListener();
-    void clear();
-
-    CTutorialStep()
-    : m_MessageBox(nullptr)
-    , m_EventListener(nullptr)
-    , m_BeginListener(nullptr)
-    , m_UpdateListener(nullptr)
-    , m_EndListener(nullptr)
-    , m_MessageBoxPosition(Vec2::ZERO)
-    , m_CurrentMessageIndex(0){}
-    virtual ~CTutorialStep(){};
-    
-private:
+    SINGLE_LISTENER m_BeginListener;
+    SINGLE_LISTENER m_EndListener;
+    UPDATE_LISTENER m_UpdateListener;
     CMessageBox* m_MessageBox;
-    CMyButton* m_EventListener;
-    std::vector<std::string> m_MessageList;
-    cocos2d::Vec2 m_MessageBoxPosition;
-    int m_CurrentMessageIndex;
+    CMyButton* m_BackgroundTouchDisable;
+    std::string m_TutorialKey;
+    std::string m_Message;
+    bool m_TouchEnable;
 };
