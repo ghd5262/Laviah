@@ -323,14 +323,30 @@ void CObjectManager::zoom(cocos2d::Node* obj,
 
 void CObjectManager::InitTutorialStep()
 {
+    
     CTutorialObject::create()
+    ->addUpdateListener([=](float delta){
+        if(m_LevelTimer > 3.f)
+            CTutorialLayer::Instance()->NextStep();
+    })
+    ->setTouchEnable(false)
+    ->build("first tutorial");
+    
+    
+    
+    CTutorialObject::create()
+    ->addTouchListener([=](Node* sender){
+        CTutorialLayer::Instance()->NextStep();
+    })
     ->addBeginListener([=](Node* sender){
-        this->SpeedControl(0.5f, 3);
+        this->SpeedControl(0.5f, 0);
     })
     ->setTouchEnable(false)
     ->addMessageBox("별은 점수나 마찬가지에요.")
     ->build("first tutorial");
     
+    
+    
     CTutorialObject::create()
     ->addBeginListener([=](Node* sender){
         GLOBAL->STAR_COUNT = 0;
@@ -340,27 +356,34 @@ void CObjectManager::InitTutorialStep()
         this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     })
     ->addUpdateListener([=](float delta){
-        if(GLOBAL->STAR_COUNT > 10) {
+        if(GLOBAL->STAR_COUNT > 0) {
             CTutorialLayer::Instance()->NextStep();
             return;
         }
         
         if(GLOBAL->COLLISION_COUNT > 10)
         {
-            CTutorialLayer::Instance()->Again();
+            CTutorialLayer::Instance()->ChangeStep(1);
         }
     })
     ->setTouchEnable(false)
     ->build("first tutorial");
     
+    
+    
     CTutorialObject::create()
+    ->addTouchListener([=](Node* sender){
+        CTutorialLayer::Instance()->NextStep();
+    })
     ->addBeginListener([=](Node* sender){
-        this->SpeedControl(0.5f, 3);
+        this->SpeedControl(0.5f, 0);
     })
     ->setTouchEnable(false)
     ->addMessageBox("화면을 터치하면 반대방향으로 구를 수 있어요.")
     ->build("first tutorial");
     
+    
+    
     CTutorialObject::create()
     ->addBeginListener([=](Node* sender){
         GLOBAL->STAR_COUNT = 0;
@@ -370,17 +393,19 @@ void CObjectManager::InitTutorialStep()
         this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     })
     ->addUpdateListener([=](float delta){
-        if(GLOBAL->STAR_COUNT > 10) {
+        if(GLOBAL->STAR_COUNT > 3) {
             CTutorialLayer::Instance()->NextStep();
             return;
         }
         
         if(GLOBAL->COLLISION_COUNT > 10)
         {
-            CTutorialLayer::Instance()->ChangeStep(2);
+            CTutorialLayer::Instance()->ChangeStep(3);
         }
     })
     ->build("first tutorial");
+    
+    
     
     CTutorialLayer::Instance()->ChangeTutorial("first tutorial");
 }

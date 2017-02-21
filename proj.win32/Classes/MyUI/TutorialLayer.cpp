@@ -173,6 +173,35 @@ CTutorialObject* CTutorialObject::build(std::string key)
 {
     m_TutorialKey = key;
     this->setContentSize(_director->getWinSize());
+    
+    if(!m_TouchEnable)
+    {
+        CMyButton::create()
+        ->addEventListener([=](Node* sender){})
+        ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+        ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080, 1920))
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setButtonPosition(this->getContentSize() / 2)
+        ->show(this);
+    }
+    
+    if(m_TouchListener)
+    {
+        CMyButton::create()
+        ->addEventListener([=](Node* sender){
+            this->retain();
+            if(m_TouchListener){
+                m_TouchListener(this);
+            }
+            this->release();
+        })
+        ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+        ->setLayer(LayerColor::create(COLOR::BRIGHT_WHITEGRAY_ALPHA, 1080, 1920))
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setButtonPosition(this->getContentSize() / 2)
+        ->show(this);
+    }
+    
     CTutorialLayer::Instance()->addTutorial(m_TutorialKey, this);
     return this;
 }
@@ -180,6 +209,12 @@ CTutorialObject* CTutorialObject::build(std::string key)
 CTutorialObject* CTutorialObject::addMessageBox(std::string message)
 {
     m_Message = message;
+    return this;
+}
+
+CTutorialObject* CTutorialObject::addTouchListener(const SINGLE_LISTENER& listener)
+{
+    m_TouchListener = listener;
     return this;
 }
 
@@ -211,7 +246,6 @@ void CTutorialObject::Begin()
 {
     // if there is message, create message box
     if(m_Message != "")  this->createMessageBox();
-    if(!m_TouchEnable )  this->backgroundTouchDisable();
     
     // call begin function
     this->callListener(m_BeginListener);
@@ -227,13 +261,9 @@ void CTutorialObject::End()
 {
     if(m_MessageBox)
     {
-        m_MessageBox->popupClose();
+//        m_MessageBox->popupClose();
+        m_MessageBox->removeFromParent();
         m_MessageBox = nullptr;
-    }
-    
-    if(m_BackgroundTouchDisable){
-        m_BackgroundTouchDisable->removeFromParent();
-        m_BackgroundTouchDisable = nullptr;
     }
     
     // call end function
@@ -266,19 +296,4 @@ void CTutorialObject::callListener(SINGLE_LISTENER listener)
         listener(this);
         this->release();
     }
-}
-
-void CTutorialObject::backgroundTouchDisable()
-{
-    if(m_BackgroundTouchDisable) return;
-    
-    m_BackgroundTouchDisable = CMyButton::create()
-    ->addEventListener([=](Node* sender){
-        CTutorialLayer::Instance()->NextStep();
-    })
-    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-    ->setLayer(LayerColor::create(COLOR::BRIGHT_WHITEGRAY_ALPHA, 1080, 1920))
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setButtonPosition(this->getContentSize() / 2)
-    ->show(this);
 }

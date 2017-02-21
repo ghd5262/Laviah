@@ -48,6 +48,7 @@ class CTutorialObject : public cocos2d::Node{
 
 public:
     static CTutorialObject* create();
+    CTutorialObject* addTouchListener(const SINGLE_LISTENER& listener);
     CTutorialObject* addBeginListener(const SINGLE_LISTENER& listener);
     CTutorialObject* addUpdateListener(const UPDATE_LISTENER& listener);
     CTutorialObject* addEndListener(const SINGLE_LISTENER& listener);
@@ -64,26 +65,25 @@ public:
 private:
     void createMessageBox();
     void callListener(SINGLE_LISTENER listener);
-    void backgroundTouchDisable();
     void clear();
     
     CTutorialObject()
-    : m_BeginListener(nullptr)
+    : m_TouchListener(nullptr)
+    , m_BeginListener(nullptr)
     , m_EndListener(nullptr)
     , m_UpdateListener(nullptr)
     , m_MessageBox(nullptr)
-    , m_BackgroundTouchDisable(nullptr)
     , m_TutorialKey("")
     , m_Message("")
     , m_TouchEnable(true){}
     virtual ~CTutorialObject(){};
     
 private:
+    SINGLE_LISTENER m_TouchListener;
     SINGLE_LISTENER m_BeginListener;
     SINGLE_LISTENER m_EndListener;
     UPDATE_LISTENER m_UpdateListener;
     CMessageBox* m_MessageBox;
-    CMyButton* m_BackgroundTouchDisable;
     std::string m_TutorialKey;
     std::string m_Message;
     bool m_TouchEnable;
