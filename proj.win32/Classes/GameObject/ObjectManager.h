@@ -72,8 +72,8 @@ public:
     
 private:
 	void createBulletByTimer(float delta);
-    void inGameUpdate();
-    void inMenuUpdate();
+    void inGameUpdate(float delta);
+    void inMenuUpdate(float delta);
     void inBonusGameUpdate();
     void removeAllBullet();	// Delete함수 호출! 이유는 구현부에~
     void bulletListExecute();

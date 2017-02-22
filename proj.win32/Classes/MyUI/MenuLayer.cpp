@@ -166,7 +166,6 @@ bool CMenuLayer::init()
         CMyButton::create()
         ->addEventListener([=](Node* sender){
             
-            CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
             CGameScene::getGameScene()->GameStart();            
         })
         ->setContents(TRANSLATE("BUTTON_MENU_START"))

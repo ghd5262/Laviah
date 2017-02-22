@@ -76,13 +76,12 @@ void CTutorialLayer::ChangeTutorial(std::string key)
 
 void CTutorialLayer::ChangeStep(int index)
 {
+    auto currentKey = (m_CurrentTutorial->at(m_CurrentStepIndex))->getTutorialKey();
+    this->stepEnd(currentKey, m_CurrentStepIndex);
     if(m_CurrentTutorial->size() <= index) {
         this->clear();
         return;
     }
-    
-    auto currentKey = (m_CurrentTutorial->at(m_CurrentStepIndex))->getTutorialKey();
-    this->stepEnd(currentKey, m_CurrentStepIndex);
     m_CurrentStepIndex = index;
     this->stepBegin(currentKey, m_CurrentStepIndex);
 }

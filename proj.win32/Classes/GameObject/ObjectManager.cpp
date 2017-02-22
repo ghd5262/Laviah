@@ -99,12 +99,10 @@ void CObjectManager::AddBullet(CBullet* bullet)
 
 void CObjectManager::Execute(float delta)
 {
-    m_RotationSpeed = ((m_SpeedController->getPositionX() * delta));
-    m_Delta = MIN(delta * fabs(m_RotationSpeed), delta);    
 //    m_FSM->Execute(delta);
     
-    this->inGameUpdate();
-    this->inMenuUpdate();
+    this->inGameUpdate(delta);
+    this->inMenuUpdate(delta);
 }
 
 void CObjectManager::RotationObject(float dir)
@@ -214,7 +212,7 @@ void CObjectManager::ReturnToMemoryBlockAll()
 
 void CObjectManager::createBulletByTimer(float delta)
 {
-    m_PatternTimer += m_Delta;
+    m_PatternTimer += delta;
 	if (m_PatternTimer < BULLETCREATOR::PATTERN_PADDING_LIMIT) return;
 
 	if (!m_BulletCreator->getIsRunning()) {
@@ -243,10 +241,13 @@ void CObjectManager::createBulletByTimer(float delta)
 	m_PatternTimer = 0.f;
 }
 
-void CObjectManager::inGameUpdate()
+void CObjectManager::inGameUpdate(float delta)
 {
     m_Player->ParticleVisible(!m_IsGamePause); //;;;
     if (m_IsGamePause) return;
+    
+    m_RotationSpeed = ((m_SpeedController->getPositionX() * delta));
+    m_Delta = MIN(delta * fabs(m_RotationSpeed), delta);
     
     this->RotationObject(1);
     this->createBulletByTimer(m_Delta);
@@ -257,9 +258,9 @@ void CObjectManager::inGameUpdate()
     this->setGameLevelByTimer();
 }
 
-void CObjectManager::inMenuUpdate()
+void CObjectManager::inMenuUpdate(float delta)
 {
-    m_Rocket->Execute(m_Delta);
+    m_Rocket->Execute(delta);
 }
 
 void CObjectManager::inBonusGameUpdate()
@@ -465,15 +466,15 @@ void CObjectManager::InitTutorialStep()
     
     
     // 코인 획득시 다음스텝
-    CTutorialObject::create()
-    ->addBeginListener([=](Node* sender){
-        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
-    })
-    ->addUpdateListener([=](float delta){
-        if(GLOBAL->COIN_COUNT >= 1) CTutorialLayer::Instance()->NextStep();
-    })
-    ->build("first tutorial");
-    
+//    CTutorialObject::create()
+//    ->addBeginListener([=](Node* sender){
+//        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+//    })
+//    ->addUpdateListener([=](float delta){
+//        if(GLOBAL->COIN_COUNT >= 1) CTutorialLayer::Instance()->NextStep();
+//    })
+//    ->build("first tutorial");
+//    
     // 메시지 박스 출력 터치 시 다음 스텝
     createMessageBoxStep("코인이에요! 무엇이든 구매하거나 업그레이드 할 수 있어요!");
     

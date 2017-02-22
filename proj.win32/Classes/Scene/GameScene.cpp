@@ -137,6 +137,7 @@ void CGameScene::GameStart()
     m_MenuLayer->setVisible(false);
     CObjectManager::Instance()->ZoomOut();
     CObjectManager::Instance()->getPlayer()->GameStart();
+    CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 
     //    });
