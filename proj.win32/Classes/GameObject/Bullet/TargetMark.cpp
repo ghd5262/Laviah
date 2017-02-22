@@ -98,9 +98,7 @@ void CTargetMark::Execute(float delta)
     
     // set particle when it needs.
     auto item = CItemManager::Instance()->getCurrentItem();
-    if(eITEM_FLAG_coin & item || eITEM_FLAG_star & item)
-        m_Particle->setVisible(true);
+    m_Particle->setVisible(eITEM_FLAG_coin & item || eITEM_FLAG_star & item);
     
-	if (m_Time > m_DeleteTime)
-        this->ReturnToMemoryBlock();
+	if (m_Time > m_DeleteTime) this->ReturnToMemoryBlock();
 }

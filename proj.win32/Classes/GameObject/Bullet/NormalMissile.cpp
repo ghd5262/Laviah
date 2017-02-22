@@ -111,9 +111,10 @@ void CNormalMissile::ChangeToCoin()
 
 	this->setAlive(false);
 	auto patternIndex = CObjectManager::Instance()->getCharacterParam()->_idx;
+    auto data = CBulletPatternDataManager::Instance()->getMissilePatternByIndex(patternIndex);
 	float distance = m_TargetVec.distance(getPosition());
 
-	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(patternIndex, getAngle(), distance);
+	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(data, getAngle(), distance, eITEM_FLAG_coin);
     
     this->ReturnToMemoryBlock();
 }
@@ -124,10 +125,10 @@ void CNormalMissile::ChangeToStar()
 
 	this->setAlive(false);
 	auto patternIndex = CObjectManager::Instance()->getCharacterParam()->_idx;
-	float distance = m_TargetVec.distance(getPosition());
-
-	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(patternIndex, getAngle(), distance);
-
+    auto data = CBulletPatternDataManager::Instance()->getMissilePatternByIndex(patternIndex);
+    float distance = m_TargetVec.distance(getPosition());
+    
+    CObjectManager::Instance()->getBulletCreator()->CreateImmediately(data, getAngle(), distance, eITEM_FLAG_star);
     this->ReturnToMemoryBlock();
 }
 

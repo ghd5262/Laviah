@@ -39,6 +39,11 @@ public:
 	void CreateImmediately(int index,
 						   float angle,
 						   float distance);
+    
+    void CreateImmediately(const sBULLET_PATTERN* data,
+                           float angle,
+                           float distance,
+                           eITEM_FLAG type = eITEM_FLAG_none);
         
     static CBullet* CreateBullet(char symbol,
                                  float angle,
@@ -58,6 +63,15 @@ private:
 					   float angle,
 					   bool isDalay);
     
+    void createOneLine(std::string line,
+                       int currentHeight,
+                       float distance,
+                       float angle,
+                       bool isDalay,
+                       float widthPadding);
+    
+    std::string getOneLineOfPattern(const char* pattern, int width, int curHeight);
+  
     void setBulletDataByUserData(sBULLET_PARAM& data, char symbol);
     
     CBulletCreator();

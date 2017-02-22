@@ -94,8 +94,6 @@ void CBulletCreator::setData(const sBULLET_PATTERN* data)
 	m_LineIntervalLimit = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;
 	m_Running = true;
 	m_IsFlip = random<int>(0, 1);
-	if (m_IsFlip)
-		CCLOG("Flip");
 }
 
 void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
@@ -104,39 +102,90 @@ void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
 								   float angle,
 								   bool isDelay)
 {
-    //for(int width = 0; width < data->_width; width++)
-	for (int width = data->_width-1; width >= 0; width--)
+    auto line = this->getOneLineOfPattern(data->_pattern, data->_width, currentHeight);
+    this->createOneLine(line, currentHeight, distance, angle, isDelay, data->_widthPadding);
+//    
+//    
+//    //for(int width = 0; width < data->_width; width++)
+//	for (int width = data->_width-1; width >= 0; width--)
+//    {
+//		int index = (data->_width * currentHeight) + ((data->_width - 1) - width);
+//        auto symbol = data->_pattern[index];
+//		int w = width;
+//        if(symbol == ' ') continue;
+//        
+//        // 각 총알의 각도
+//        // width번째 총알 = (padding * width) - 프레임 간 회전 정도
+//		if (m_IsFlip) 
+//			w = ((data->_width - 1) - width);
+//
+//		float bulletAngle = (data->_widthPadding * w) - angle;
+//		bulletAngle += data->_widthPadding / 2;									 // 각도 보정 (패턴이 중앙에 오도록)
+//        bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정
+//        
+//		this->CreateBullet(symbol, bulletAngle, distance, isDelay);
+//    }
+}
+
+void CBulletCreator::createOneLine(std::string line,
+                                   int currentHeight,
+                                   float distance,
+                                   float angle,
+                                   bool isDelay,
+                                   float widthPadding)
+{
+    if(m_IsFlip) std::reverse(line.begin(), line.end());
+    
+    int width = int(line.length());
+    for(auto symbol : line)
     {
-		int index = (data->_width * currentHeight) + ((data->_width - 1) - width);
-        auto symbol = data->_pattern[index];
-		int w = width;
+        width--;
         if(symbol == ' ') continue;
         
-        // 각 총알의 각도
-        // width번째 총알 = (padding * width) - 프레임 간 회전 정도
-		if (m_IsFlip) 
-			w = ((data->_width - 1) - width);
-
-		float bulletAngle = (data->_widthPadding * w) - angle;
-		bulletAngle += data->_widthPadding / 2;									 // 각도 보정 (패턴이 중앙에 오도록)
-        bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정
+        float bulletAngle = (widthPadding * width) - angle;
+        bulletAngle += widthPadding / 2; // 각도 보정 (패턴이 중앙에 오도록)
+        bulletAngle += (90 - ((widthPadding * line.size() - 1) / 2)); // 각도 보정
         
-		this->CreateBullet(symbol, bulletAngle, distance, isDelay);
+        this->CreateBullet(symbol, bulletAngle, distance, isDelay);
     }
+}
+
+std::string CBulletCreator::getOneLineOfPattern(const char* pattern, int width, int curHeight)
+{
+    std::string line = "";
+    line.resize(width);
+    int startIdx = (width * curHeight);
+    int endIdx   = startIdx + width;
+    std::copy(pattern + startIdx, pattern + endIdx, line.begin());
+    return line;
 }
 
 void CBulletCreator::CreateImmediately(int index,
                                        float angle,
                                        float distance)
 {
-	auto data = CBulletPatternDataManager::Instance()->getMissilePatternByIndex(index);
-	m_IsFlip = false;
-	for (int height = data->_height - 1; height >= 0; height--)
-	{
-		auto distanceH = distance - (height * BULLET_STANDARD_PADDING);
-		this->createOneLine(data, height, distanceH, 90-angle, false);
-	}
+    auto data = CBulletPatternDataManager::Instance()->getMissilePatternByIndex(index);
+    this->CreateImmediately(data, angle, distance);
 }
+
+void CBulletCreator::CreateImmediately(const sBULLET_PATTERN* data,
+                                       float angle,
+                                       float distance,
+                                       eITEM_FLAG type)
+{
+    m_IsFlip = false;
+    for (int height = data->_height - 1; height >= 0; height--)
+    {
+        auto distanceH = distance - (height * BULLET_STANDARD_PADDING);
+        auto line      = this->getOneLineOfPattern(data->_pattern, data->_width, height);
+        
+        if(type == eITEM_FLAG_star)      std::replace(line.begin(), line.end(), '1', 'P');
+        else if(type == eITEM_FLAG_coin) std::replace(line.begin(), line.end(), '1', 'U');
+
+        this->createOneLine(line, height, distanceH, 90-angle, false, data->_widthPadding);
+    }
+}
+
 
 void CBulletCreator::CreateConstellation(const sBULLET_PATTERN* data)
 {
@@ -165,7 +214,7 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
     // bullet create
 	if (BULLETCREATOR::COIN_CREATE && (symbol >= 'P' && symbol <= 'T')) {
 		symbol = (cocos2d::random<int>(1, 10) < 5) ? 'U' : symbol;
-        symbol = (cocos2d::random<int>(1, 10) < 2) ? 'z' : symbol;
+        symbol = (cocos2d::random<int>(1, 10) < 3) ? 'z' : symbol;
 		BULLETCREATOR::COIN_CREATE = false;
 	}
     if      (symbol == 'z')                     symbol = cocos2d::random<int>('B', 'F');
