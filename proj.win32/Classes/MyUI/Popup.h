@@ -55,6 +55,7 @@ public:
 	void popupOpenAnimation();
 	void popupClose();
     void popupTouchEnable(bool enable);
+    void changeDefaultCallback(const NODE_CALLBACK &callback);
     void setDefaultCallbackToTopAgain();
     void removeDefaultCallbackFromStack();
     std::string getMessage() const { return m_Message; }

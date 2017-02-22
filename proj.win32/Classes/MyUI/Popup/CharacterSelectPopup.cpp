@@ -160,17 +160,17 @@ bool CCharacterSelectPopup::init()
 //	m_btnSelect->setOpacity(0);
 
 
-	auto btnEnd = CMyButton::create()
-		->addEventListener([=](Node* sender){
-		this->End(sender);
-	})
-        ->setButtonSingleUse(true)
-		->setButtonNormalImage("endIcon.png")
-		->setButtonPosition(Vec2(bg->getContentSize().width * 0.92f,
-		bg->getContentSize().height * 0.05f))
-		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->show(bg);
-
+    auto btnEnd = CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        this->End(sender);
+    })
+    ->setButtonSingleUse(true)
+    ->setButtonNormalImage("endIcon.png")
+    ->setButtonPosition(Vec2(bg->getContentSize().width * 0.92f,
+                             bg->getContentSize().height * 0.05f))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->show(bg);
+    
 	btnEnd->setOpacity(0);
     btnEnd->setTouchEnabled(false);
 
@@ -195,6 +195,10 @@ bool CCharacterSelectPopup::init()
             CObjectManager::Instance()->getPlayer()->setVisible(false);
             listView->setTouchEnabled(true);
             btnEnd->setTouchEnabled(true);
+            this->changeDefaultCallback([=](Node* sender){
+                this->End(sender);
+            });
+            this->setDefaultCallbackCleanUp(true);
         })));
 	});
 
@@ -210,10 +214,8 @@ bool CCharacterSelectPopup::init()
         if(m_CenterDP->getCharacterParam()->_idx == curIndex)
             m_CenterDP->setVisible(false);
 	});
-
-    this->setDefaultCallback([=](Node* sender){
-        this->End(sender);
-    });
+    
+    this->setDefaultCallback([=](Node* sender){}, false);
     
 	return true;
 }

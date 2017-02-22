@@ -37,6 +37,7 @@ CPopup::CPopup()
 
 CPopup::~CPopup()
 {
+    // if there is still default callback, remove it
     this->removeDefaultCallbackFromStack();
 }
 
@@ -330,7 +331,7 @@ void CPopup::popupClose()
 {
 	Vec2 OriginPosition = this->getPosition();
 	Size ScreenSize = Director::getInstance()->getVisibleSize();
-
+    
 	Vec2 posArray[] = {
 		Vec2(-ScreenSize.width + OriginPosition.x, OriginPosition.y),
 		Vec2(ScreenSize.width + OriginPosition.x, OriginPosition.y),
@@ -379,6 +380,8 @@ void CPopup::popupClose()
 	}
     
     auto touchDisable = CallFunc::create([=](){
+        // if there is still default callback, remove it (when called popupClose.)
+        this->removeDefaultCallbackFromStack();
         this->popupTouchEnable(false);
     });
     
@@ -398,6 +401,11 @@ void CPopup::popupTouchEnable(bool enable)
     if(!m_TouchDisable) return;
     
     m_TouchDisable->setVisible(!enable);
+}
+
+void CPopup::changeDefaultCallback(const NODE_CALLBACK &callback)
+{
+    if(m_DefaultCallBack) m_DefaultCallBack = callback;
 }
 
 void CPopup::backgroundTouchDisable()
