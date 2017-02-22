@@ -323,89 +323,159 @@ void CObjectManager::zoom(cocos2d::Node* obj,
 
 void CObjectManager::InitTutorialStep()
 {
+    auto createDelayStep = [=](float delay){
+        CTutorialObject::create()
+        ->addBeginListener([=](Node* sender){
+            m_LevelTimer = 0.f;
+        })
+        ->addUpdateListener([=](float delta){
+            if(m_LevelTimer > delay) CTutorialLayer::Instance()->NextStep();
+        })
+        ->setTouchEnable(false)
+        ->build("first tutorial");
+    };
     
-    CTutorialObject::create()
-    ->addUpdateListener([=](float delta){
-        if(m_LevelTimer > 3.f)
+    auto createMessageBoxStep = [=](std::string message){
+        CTutorialObject::create()
+        ->addTouchListener([=](Node* sender){
             CTutorialLayer::Instance()->NextStep();
-    })
-    ->setTouchEnable(false)
-    ->build("first tutorial");
+        })
+        ->addBeginListener([=](Node* sender){
+            this->SpeedControl(0.5f, 0);
+        })
+        ->setTouchEnable(false)
+        ->addMessageBox(message)
+        ->build("first tutorial");
+    };
     
+    // 3초 후 다음 스텝
+    createDelayStep(3.f);
+
+    // 메시지 박스 출력 터치 시 다음 스텝
+    createMessageBoxStep("별은 점수나 마찬가지에요.");
     
-    
-    CTutorialObject::create()
-    ->addTouchListener([=](Node* sender){
-        CTutorialLayer::Instance()->NextStep();
-    })
-    ->addBeginListener([=](Node* sender){
-        this->SpeedControl(0.5f, 0);
-    })
-    ->setTouchEnable(false)
-    ->addMessageBox("별은 점수나 마찬가지에요.")
-    ->build("first tutorial");
-    
-    
-    
+    // 별을 1개 이상 획득 시 다음 스텝
     CTutorialObject::create()
     ->addBeginListener([=](Node* sender){
         GLOBAL->STAR_COUNT = 0;
         GLOBAL->COLLISION_COUNT = 0;
-        auto data = m_PatternManager->getNormalPatternByIndex(0);
+        auto data = m_PatternManager->getTutorialPatternByIndex(0);
         m_BulletCreator->setPattern(data);
         this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     })
     ->addUpdateListener([=](float delta){
-        if(GLOBAL->STAR_COUNT > 0) {
+        if(GLOBAL->STAR_COUNT >= 1) {
             CTutorialLayer::Instance()->NextStep();
             return;
         }
         
-        if(GLOBAL->COLLISION_COUNT > 10)
-        {
-            CTutorialLayer::Instance()->ChangeStep(1);
-        }
+        if(GLOBAL->COLLISION_COUNT >= 5) CTutorialLayer::Instance()->ChangeStep(1);
     })
     ->setTouchEnable(false)
     ->build("first tutorial");
     
     
+    // 메시지 박스 출력 터치 시 다음 스텝
+    createMessageBoxStep("화면을 터치하면 반대방향으로 구를 수 있어요.");
     
-    CTutorialObject::create()
-    ->addTouchListener([=](Node* sender){
-        CTutorialLayer::Instance()->NextStep();
-    })
-    ->addBeginListener([=](Node* sender){
-        this->SpeedControl(0.5f, 0);
-    })
-    ->setTouchEnable(false)
-    ->addMessageBox("화면을 터치하면 반대방향으로 구를 수 있어요.")
-    ->build("first tutorial");
-    
-    
-    
+    // 별을 1개 이상 획득 시 다음 스텝
     CTutorialObject::create()
     ->addBeginListener([=](Node* sender){
         GLOBAL->STAR_COUNT = 0;
         GLOBAL->COLLISION_COUNT = 0;
-        auto data = m_PatternManager->getNormalPatternByIndex(0);
+        auto data = m_PatternManager->getTutorialPatternByIndex(1);
         m_BulletCreator->setPattern(data);
         this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     })
     ->addUpdateListener([=](float delta){
-        if(GLOBAL->STAR_COUNT > 3) {
+        if(GLOBAL->STAR_COUNT >= 1) {
             CTutorialLayer::Instance()->NextStep();
             return;
         }
         
-        if(GLOBAL->COLLISION_COUNT > 10)
-        {
-            CTutorialLayer::Instance()->ChangeStep(3);
+        if(GLOBAL->COLLISION_COUNT >= 5) CTutorialLayer::Instance()->ChangeStep(3);
+    })
+    ->build("first tutorial");
+    
+    // 1초 후 다음 스텝
+    createDelayStep(1.f);
+    
+    // 메시지 박스 출력 터치 시 다음 스텝
+    createMessageBoxStep("게임 플레이에 도움이 되는 아이템을 획득할 수 있어요!");
+    
+    // 별 아이템 획득시 다음 스텝
+    CTutorialObject::create()
+    ->addBeginListener([=](Node* sender){
+        GLOBAL->COLLISION_COUNT = 0;
+        GLOBAL->STAR_ITEM_USE = 0;
+        auto data = m_PatternManager->getTutorialPatternByIndex(2);
+        m_BulletCreator->setPattern(data);
+        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+    })
+    ->addUpdateListener([=](float delta){
+        if(GLOBAL->STAR_ITEM_USE >= 1) {
+            CTutorialLayer::Instance()->NextStep();
+            return;
         }
+        
+        if(GLOBAL->COLLISION_COUNT >= 10) CTutorialLayer::Instance()->Again();
+    })
+    ->build("first tutorial");
+    
+    // 1초 후 다음 스텝
+    createDelayStep(1.f);
+    
+    // 메시지 박스 출력 터치 시 다음 스텝
+    createMessageBoxStep("미사일은 빠르니까 특별히 조심해야해요!");
+    
+    // 미사일 피하면 다음 스텝
+    CTutorialObject::create()
+    ->addBeginListener([=](Node* sender){
+        GLOBAL->COLLISION_COUNT = 0;
+        auto data = m_PatternManager->getTutorialPatternByIndex(3);
+        m_BulletCreator->setPattern(data);
+        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+    })
+    ->addUpdateListener([=](float delta){
+        if(GLOBAL->COLLISION_COUNT >= 1)
+            CTutorialLayer::Instance()->NextStep();
     })
     ->build("first tutorial");
     
     
+    // 1초 후 다음 스텝
+    createDelayStep(1.f);
+    
+    // 메시지 박스 출력 터치 시 다음 스텝
+    createMessageBoxStep("다른 방법으로 피할 수도 있어요.");
+    
+    
+    // 미사일 피하면 다음 스텝
+    CTutorialObject::create()
+    ->addBeginListener([=](Node* sender){
+        GLOBAL->COLLISION_COUNT = 0;
+        auto data = m_PatternManager->getTutorialPatternByIndex(4);
+        m_BulletCreator->setPattern(data);
+        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+    })
+    ->addUpdateListener([=](float delta){
+        if(GLOBAL->COLLISION_COUNT >= 1) CTutorialLayer::Instance()->NextStep();
+    })
+    ->build("first tutorial");
+    
+    
+    // 코인 획득시 다음스텝
+    CTutorialObject::create()
+    ->addBeginListener([=](Node* sender){
+        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+    })
+    ->addUpdateListener([=](float delta){
+        if(GLOBAL->COIN_COUNT >= 1) CTutorialLayer::Instance()->NextStep();
+    })
+    ->build("first tutorial");
+    
+    // 메시지 박스 출력 터치 시 다음 스텝
+    createMessageBoxStep("코인이에요! 무엇이든 구매하거나 업그레이드 할 수 있어요!");
     
     CTutorialLayer::Instance()->ChangeTutorial("first tutorial");
 }

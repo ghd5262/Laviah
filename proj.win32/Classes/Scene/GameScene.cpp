@@ -68,7 +68,8 @@ CGameScene::CGameScene()
 , m_TutorialLayer(nullptr)
 , m_ScreenFade(nullptr)
 , m_CountDown(nullptr)
-, m_KeyBoardSpace(false){}
+, m_KeyBoardSpace(false)
+, m_NeedTutorial(false){}
 
 CGameScene::~CGameScene()
 {
@@ -447,6 +448,15 @@ void CGameScene::createRandomCoin()
     CBulletCreator::CreateConstellation(data);
 }
 
+void CGameScene::startTutorial()
+{
+    if(m_NeedTutorial)
+    {
+        m_NeedTutorial = false;
+        CObjectManager::Instance()->InitTutorialStep();
+    }
+}
+
 
 // The following items are initialized only once.
 void CGameScene::initMemoryPool()
@@ -509,7 +519,7 @@ void CGameScene::createCountDown()
     ->addLastEventListner([=](Node* sender){
         CObjectManager::Instance()->setIsGamePause(false);
         CObjectManager::Instance()->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
-        CObjectManager::Instance()->InitTutorialStep();
+        this->startTutorial();
     })
     ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(3)

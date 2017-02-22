@@ -62,12 +62,13 @@ public:
 	const sBULLET_PATTERN* getNormalPatternByIndex(int index) const;
 	const sBULLET_PATTERN* getMissilePatternByIndex(int index) const;
 	const sBULLET_PATTERN* getBonusPatternByIndex(int index) const;
+    const sBULLET_PATTERN* getTutorialPatternByIndex(int index) const;
 	const sBULLET_PATTERN* getRandomNormalPatternByLevel(int level, bool below);
     const sBULLET_PATTERN* getRandomConstellationPatternByLevel(int level, bool below);
     const sBULLET_PATTERN* getRandomBonusTimePattern();
     const sBULLET_PATTERN* getRandomPatternFromList(const PATTERN_PICK& callFunc,
                                                     PATTERN_LIST &list);
-
+    
 	const sBULLET_PATTERN* getTestPattern() const { return m_TestPattern; };
 	void setTestPattern(sBULLET_PATTERN data){
 		if (m_TestPattern != nullptr)
@@ -92,6 +93,7 @@ private:
 	PATTERN_LIST m_MissilePatternList;
 	PATTERN_LIST m_BonusTimePatternList;
     PATTERN_LIST m_ConstellationPatternList;
+    PATTERN_LIST m_TutorialPatternList;
 	sBULLET_PATTERN* m_TestPattern;
 };
 

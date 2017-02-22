@@ -51,7 +51,8 @@ public:
 	static cocos2d::NodeGrid* getGridWorld(){ return m_GridWorld; }
 
 	CC_SYNTHESIZE(cocos2d::Vec2, m_TouchPos, TouchPos);
-
+    CC_SYNTHESIZE(bool, m_NeedTutorial, NeedTutorial);
+    
 protected:
 	virtual bool init() override;
 
@@ -77,6 +78,7 @@ private:
     void turnDownSound();
     void turnUpSound();
 	void initKeyboardListener();
+    void startTutorial();
     
     // The following items are initialized only once.
     void initMemoryPool();

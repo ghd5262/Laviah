@@ -275,11 +275,11 @@ void CTutorialObject::createMessageBox()
     if(m_MessageBox) return;
     
     auto popup = CMessageBox::create()
-    ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 430, 300))
+    ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 600, 200))
     ->setTailEnable(true)
     ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
     ->setMessage(m_Message)
-    ->setPopupPosition(this->getContentSize() / 2)
+    ->setPopupPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.7f))
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM)
     ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)

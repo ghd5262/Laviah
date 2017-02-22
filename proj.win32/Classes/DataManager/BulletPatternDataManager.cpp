@@ -21,6 +21,8 @@ CBulletPatternDataManager::CBulletPatternDataManager()
 	initWithJson(m_BonusTimePatternList, "bonusTimePatternList.json");
     
     initWithJson(m_ConstellationPatternList, "constellationPatternList.json");
+    
+    initWithJson(m_TutorialPatternList, "tutorialPatternList.json");
 
 	m_TestPattern = new sBULLET_PATTERN();
 }
@@ -30,6 +32,8 @@ CBulletPatternDataManager::~CBulletPatternDataManager()
     DATA_MANAGER_UTILS::listDeleteAndClean(m_PatternList);
     DATA_MANAGER_UTILS::listDeleteAndClean(m_MissilePatternList);
     DATA_MANAGER_UTILS::listDeleteAndClean(m_BonusTimePatternList);
+    DATA_MANAGER_UTILS::listDeleteAndClean(m_ConstellationPatternList);
+    DATA_MANAGER_UTILS::listDeleteAndClean(m_TutorialPatternList);
     
     CC_SAFE_DELETE(m_TestPattern);
 }
@@ -98,7 +102,7 @@ void CBulletPatternDataManager::initWithJson(PATTERN_LIST &list, std::string fil
 const sBULLET_PATTERN* CBulletPatternDataManager::getNormalPatternByIndex(int index) const
 {
 	if (m_PatternList.size() <= index) {
-		CCLOG("Wrong index : %d", index);
+		CCLOG("Wrong normal pattern index : %d", index);
 		CCASSERT(false, "Wrong index");
 		return nullptr;
 	}
@@ -107,6 +111,7 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getNormalPatternByIndex(int in
 
 const sBULLET_PATTERN* CBulletPatternDataManager::getMissilePatternByIndex(int index) const
 {
+    // missile patterns have to search using index.
     auto pattern = std::find_if(m_MissilePatternList.begin(), m_MissilePatternList.end(), [=](const sBULLET_PATTERN* data){
         return (data->_index == index);
     });
@@ -121,12 +126,23 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getMissilePatternByIndex(int i
 const sBULLET_PATTERN* CBulletPatternDataManager::getBonusPatternByIndex(int index) const
 {
 	if (m_BonusTimePatternList.size() <= index) {
-		CCLOG("Wrong index : %d", index);
+		CCLOG("Wrong bonus pattern index : %d", index);
 		CCASSERT(false, "Wrong index");
 		return nullptr;
 	}
 
 	return m_BonusTimePatternList.at(index);
+}
+
+const sBULLET_PATTERN* CBulletPatternDataManager::getTutorialPatternByIndex(int index) const
+{
+    if (m_TutorialPatternList.size() <= index) {
+        CCLOG("Wrong tutorial pattern index : %d", index);
+        CCASSERT(false, "Wrong index");
+        return nullptr;
+    }
+    
+    return m_TutorialPatternList.at(index);
 }
 
 const sBULLET_PATTERN* CBulletPatternDataManager::getRandomNormalPatternByLevel(int level, bool below)

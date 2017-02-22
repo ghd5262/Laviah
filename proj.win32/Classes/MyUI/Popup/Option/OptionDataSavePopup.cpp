@@ -57,42 +57,41 @@ bool COptionDataSavePopup::init()
                             layer->getContentSize().height * 0.65f));
     layer->addChild(label);
     
-    auto saveBtn = CMyButton::create()
-    ->addEventListener([=](Node* sender){
-        CGameScene::getGameScene()->CreateAlertPopup()
-        ->setPositiveButton([](Node* sender){
-            CUserDataManager::Instance()->SaveUserData(true, true);
-        }, TRANSLATE("BUTTON_YES"))
+    auto alertCreate = [=](std::function<void(Node*)> positive, std::string content)
+    {
+        return CGameScene::getGameScene()->CreateAlertPopup()
+        ->setPositiveButton(positive, TRANSLATE("BUTTON_YES"))
         ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
-        ->setMessage(TRANSLATE("OPTION_DATASAVE_SAVE_CHECK"))
+        ->setMessage(content)
         ->show(CGameScene::getGameScene(), ZORDER::POPUP);
-    })
-    ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 400, 150))
-    ->setContents(TRANSLATE("OPTION_DATASAVE_SAVE"))
-    ->setButtonPosition(Vec2(layer->getContentSize().width * 0.265f,
-                             layer->getContentSize().height * 0.2f))
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(layer);
-    saveBtn->setSwallowTouches(false);
+    };
     
-    auto resetBtn = CMyButton::create()
-    ->addEventListener([=](Node* sender){
-        CGameScene::getGameScene()->CreateAlertPopup()
-        ->setPositiveButton([](Node* sender){
+    auto buttonCreate = [=](std::function<void(Node*)> callback, std::string content, Vec2 pos, Color4B color)
+    {
+        auto btn = CMyButton::create()
+        ->addEventListener(callback)
+        ->setLayer(LayerColor::create(color, 400, 150))
+        ->setContents(content)
+        ->setButtonPosition(pos)
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->show(layer);
+        btn->setSwallowTouches(false);
+        
+        return btn;
+    };
+    
+    buttonCreate([=](Node* sender){
+        alertCreate([](Node* sender){
+            CUserDataManager::Instance()->SaveUserData(true, true);
+        }, TRANSLATE("OPTION_DATASAVE_SAVE_CHECK"));
+    }, TRANSLATE("OPTION_DATASAVE_SAVE"), Vec2(layer->getContentSize().width * 0.265f, layer->getContentSize().height * 0.2f), COLOR::DARKGRAY_ALPHA);
+    
+    buttonCreate([=](Node* sender){
+        alertCreate([](Node* sender){
             CUserDataManager::Instance()->setUserData_Reset();
             CUserDataManager::Instance()->SaveUserData(true, true);
-        }, TRANSLATE("BUTTON_YES"))
-        ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
-        ->setMessage(TRANSLATE("OPTION_DATASAVE_RESET_CHECK"))
-        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
-    })
-    ->setLayer(LayerColor::create(COLOR::BRIGHTRED_ALPHA, 400, 150))
-    ->setContents(TRANSLATE("OPTION_DATASAVE_RESET"))
-    ->setButtonPosition(Vec2(layer->getContentSize().width * 0.735f,
-                             layer->getContentSize().height * 0.2f))
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(layer);
-    resetBtn->setSwallowTouches(false);
+        }, TRANSLATE("OPTION_DATASAVE_RESET_CHECK"));
+    }, TRANSLATE("OPTION_DATASAVE_RESET"), Vec2(layer->getContentSize().width * 0.735f, layer->getContentSize().height * 0.2f), COLOR::BRIGHTRED_ALPHA);
     
     return true;
 }

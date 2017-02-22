@@ -1,6 +1,7 @@
 #include "OptionMusicPopup.hpp"
 #include "../../MyButton.h"
 #include "../../../Common/AudioManager.h"
+#include "../../../Scene/GameScene.h"
 #include "../../../DataManager/UserDataManager.h"
 #include "ui/UISlider.h"
 #include <array>
@@ -80,9 +81,9 @@ bool COptionMusicPopup::init()
         CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_BGMVolume / 100.f);
     }, TRANSLATE("OPTION_MUSIC_BGM"),
                  Vec2(layer->getContentSize().width * 0.135f,
-                      layer->getContentSize().height * 0.7f),
+                      layer->getContentSize().height * 0.8f),
                  m_BGMVolume, Vec2(layer->getContentSize().width * 0.5f,
-                                   layer->getContentSize().height * 0.6f));
+                                   layer->getContentSize().height * 0.7f));
     
     createSlider([&](int percent){
         if(m_EffectVolume == percent) return;
@@ -92,13 +93,49 @@ bool COptionMusicPopup::init()
         CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_EffectVolume / 100.f);
     }, TRANSLATE("OPTION_MUSIC_EFFECT"),
                  Vec2(layer->getContentSize().width * 0.135f,
-                      layer->getContentSize().height * 0.4f),
+                      layer->getContentSize().height * 0.5f),
                  m_EffectVolume, Vec2(layer->getContentSize().width * 0.5f,
-                                      layer->getContentSize().height * 0.3f));
+                                      layer->getContentSize().height * 0.4f));
     
     this->setOnExitCallback([=](){
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BGM_VOLUME, m_BGMVolume);
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::EFFECT_VOLUME, m_EffectVolume);
     });
+    
+    auto alertCreate = [=](std::function<void(Node*)> positive, std::string content){
+        return CGameScene::getGameScene()->CreateAlertPopup()
+        ->setPositiveButton(positive, TRANSLATE("BUTTON_YES"))
+        ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
+        ->setMessage(content)
+        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+    };
+    
+    auto buttonCreate = [=](std::function<void(Node*)> callback, std::string content, Vec2 pos){
+        auto btn = CMyButton::create()
+        ->addEventListener(callback)
+        ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 600, 150))
+        ->setContents(content)
+        ->setButtonPosition(pos)
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->show(layer);
+        btn->setSwallowTouches(false);
+        
+        return btn;
+    };
+    
+    buttonCreate([=](Node* sender){
+        
+        alertCreate([](Node* sender){
+            CGameScene::getGameScene()->setNeedTutorial(true);
+            CGameScene::getGameScene()->ScreenFade([=](){
+                //option popup close
+                CPopup::DefaultCallback();
+                CGameScene::getGameScene()->GameStart();
+            });
+        }, TRANSLATE("OPTION_TUTORIAL_START_CHECK"));
+        
+    }, TRANSLATE("OPTION_TUTORIAL"), Vec2(layer->getContentSize().width * 0.5f,
+                                          layer->getContentSize().height * 0.2f));
+    
     return true;
 }
