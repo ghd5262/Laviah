@@ -1,6 +1,5 @@
 #include "ChallengeCompleteNoticePopup.h"
 #include "../MyButton.h"
-#include "../Popup.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../DataManager/UserDataManager.h"
@@ -67,7 +66,7 @@ void CChallengeCompleteNoticePopup::checkChallengeCompleteOnRealTime()
 	if (CObjectManager::Instance()->getIsGamePause()) return;
     if (!m_Checkable) return;
 
-	auto data = CChallengeDataManager::Instance()->CompleteCheckRealTime();
+	auto data = CChallengeDataManager::Instance()->CompleteCheckRealTime(false);
 	if (data != nullptr) {
         m_Checkable = false;
         m_ChallengeLabel->setString(StringUtils::format(TRANSLATE(data->_contents).c_str(), data->_materialValueList.at(0)));

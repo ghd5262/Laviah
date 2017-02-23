@@ -1,5 +1,4 @@
 #include "ChallengeDataManager.hpp"
-#include "UserDataManager.h"
 #include "CharacterDataManager.h"
 #include "DataManagerUtils.h"
 #include "ChallengeChecker/ChallengeClearChecker.h"
@@ -72,7 +71,7 @@ void CChallengeDataManager::initWithJson(std::string fileName)
 
 bool CChallengeDataManager::CheckCompleteAll()
 {
-	auto currentList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+	auto currentList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_NORMAL_LIST);
     if(currentList.size() <= 0) {
         /** If there are no challenges. get new challenges.
          *  If there are no non-complete challenges. Nothing do. */
@@ -124,25 +123,28 @@ bool CChallengeDataManager::CheckChallengeComplete(int index, bool isHidden)
 	}
 
 	CUserDataManager::Instance()->setUserData_ItemGet(userDataKey, index);
-	if (!isHidden) GLOBAL->CHALLENGE_CLEAR_COUNT += 1;
+	if (isHidden) GLOBAL->HIDDEN_CHALLENGE_CLEAR_COUNT += 1;
+    else          GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT += 1;
 	
 	return true;
 }
 
-const sCHALLENGE_PARAM* CChallengeDataManager::CompleteCheckRealTime()
+const sCHALLENGE_PARAM* CChallengeDataManager::CompleteCheckRealTime(bool isHidden)
 {
-	auto currentList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
-	if (currentList.size() <= 0) return nullptr;
+    ARRAY_DATA currentList;
+    this->getCurChallengeListByType(currentList, isHidden);
+
+    if (currentList.size() <= 0) return nullptr;
 	
 	for (auto index : currentList)
 	{
-		auto originCount = GLOBAL->CHALLENGE_CLEAR_COUNT;
-
-		if (this->CheckChallengeComplete(index, false)){
-			if (originCount < GLOBAL->CHALLENGE_CLEAR_COUNT)
-			{
-				return this->getNormalChallengeByIndex(index);
-			}
+		auto normalOriginCount = GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT;
+        auto hiddenOriginCount = GLOBAL->HIDDEN_CHALLENGE_CLEAR_COUNT;
+		if (this->CheckChallengeComplete(index, isHidden)){
+			if (normalOriginCount < GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT)
+                return this->getNormalChallengeByIndex(index);
+			if (hiddenOriginCount < GLOBAL->HIDDEN_CHALLENGE_CLEAR_COUNT)
+                return this->getHiddenChallengeByIndex(index);
 		}
 	}
 
@@ -174,7 +176,7 @@ int CChallengeDataManager::NonCompleteChallengeExist()
 
 void CChallengeDataManager::getNewChallenges()
 {
-    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_NORMAL_LIST);
     auto nonCompleteList = getNonCompletedChallengeList();
     
     // Challenges not completed are less than limit count.
@@ -239,14 +241,14 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallenge()
     auto newList = getNonCompletedChallengeList();
     auto newChallenge = getNewRandomChallengeFromList(newList);
     CCLOG("Get new challenge %d", newChallenge->_index);
-    CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, newChallenge->_index);
+    CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_NORMAL_LIST, newChallenge->_index);
     return newChallenge;
 }
 
 const sCHALLENGE_PARAM* CChallengeDataManager::getNonCompleteChallengeFromCurrentList()
 {
     auto dataMNG = CUserDataManager::Instance();
-    auto currentList = dataMNG->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+    auto currentList = dataMNG->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_NORMAL_LIST);
     for(auto index : currentList)
     {
         if(!dataMNG->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, index))
@@ -254,6 +256,27 @@ const sCHALLENGE_PARAM* CChallengeDataManager::getNonCompleteChallengeFromCurren
     }
     
     return nullptr;
+}
+
+void CChallengeDataManager::UpdateCurHiddenChallengeList()
+{
+    auto currentList  = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_HIDDEN_LIST);
+    auto completeList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_COM_HIDDEN_LIST);
+    auto newList      = DATA_MANAGER_UTILS::getMapByFunc([=](const sCHALLENGE_PARAM* data){
+        bool isExist = false;
+        int  newIndex= data->_index;
+        for(auto index : currentList)
+            if(index == newIndex) isExist = true;
+        for(auto index : completeList)
+            if(index == newIndex) isExist = true;
+        
+        return (isExist == false);
+    }, m_HiddenChallengeDataList);
+    
+    if(!newList.size()) return;
+    
+    for(auto data : newList)
+        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_HIDDEN_LIST, (data.second)->_index);
 }
 
 const sCHALLENGE_PARAM* CChallengeDataManager::getNewRandomChallengeFromList(CHALLENGE_LIST &list)
@@ -280,7 +303,7 @@ CHALLENGE_LIST CChallengeDataManager::getNonCompletedChallengeList()
     return DATA_MANAGER_UTILS::getMapByFunc([=](const sCHALLENGE_PARAM* data){
         
         if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST, data->_index)) return false;
-		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_CUR_LIST, data->_index)) return false;
+		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_CUR_NORMAL_LIST, data->_index)) return false;
 		if (data->_isHighLevel) return false;
         return true;
     }, m_NormalChallengeDataList);
@@ -289,7 +312,15 @@ CHALLENGE_LIST CChallengeDataManager::getNonCompletedChallengeList()
 void CChallengeDataManager::removeChallengeFromUserData(int index)
 {
     CCLOG("Remove challenge %d", index);
-    CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_LIST, index);
+    CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::CHALLENGE_CUR_NORMAL_LIST, index);
+}
+
+void CChallengeDataManager::getCurChallengeListByType(ARRAY_DATA& list, bool isHidden)
+{
+    std::string key = USERDATA_KEY::CHALLENGE_CUR_NORMAL_LIST;
+    if(isHidden)key = USERDATA_KEY::CHALLENGE_CUR_HIDDEN_LIST;
+    
+    list = CUserDataManager::Instance()->getUserData_List(key);
 }
 
 void CChallengeDataManager::initETCChekerList()

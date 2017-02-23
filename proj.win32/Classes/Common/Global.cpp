@@ -10,13 +10,14 @@ Global::Global()
 void Global::Clear()
 {
     BONUSTIME = 0;
-    COMBO = 0;
-    CHALLENGE_CLEAR_COUNT = 0;
+    
     TOTAL_SCORE = 0;
-    STAR_SCORE = 0;
     COIN_SCORE = 0;
+    STAR_SCORE = 0;
     RUN_SCORE = 0;
-	COIN_COUNT = 0;
+    COMBO_SCORE = 0;
+
+    COIN_COUNT = 0;
 	STAR_COUNT = 0;
 	REVIVE_COUNT = 0;
     COLLISION_COUNT = 0;
@@ -41,6 +42,9 @@ void Global::Clear()
     GIANT_ITEM_USE = 0;
     MAGNET_ITEM_USE = 0;
     BARRIER_ITEM_USE = 0;
+    
+    NORMAL_CHALLENGE_CLEAR_COUNT = 0;
+    HIDDEN_CHALLENGE_CLEAR_COUNT = 0;
 }
 
 Global* Global::Instance()
@@ -63,14 +67,16 @@ void Global::addVariableToList()
         m_VariableList.emplace(std::pair<std::string, int&>(key, var));
     };
     
-    addVariable( CHALLENGE_DATA_KEY::COMBO                 , COMBO                  );
     addVariable( CHALLENGE_DATA_KEY::TOTAL_SCORE           , TOTAL_SCORE            );
-    addVariable( CHALLENGE_DATA_KEY::STAR_SCORE            , STAR_SCORE             );
     addVariable( CHALLENGE_DATA_KEY::COIN_SCORE            , COIN_SCORE             );
+    addVariable( CHALLENGE_DATA_KEY::STAR_SCORE            , STAR_SCORE             );
     addVariable( CHALLENGE_DATA_KEY::RUN_SCORE             , RUN_SCORE              );
-    addVariable( CHALLENGE_DATA_KEY::STAR_COUNT            , STAR_COUNT             );
+    addVariable( CHALLENGE_DATA_KEY::COMBO_SCORE           , COMBO_SCORE            );
+
     addVariable( CHALLENGE_DATA_KEY::COIN_COUNT            , COIN_COUNT             );
+    addVariable( CHALLENGE_DATA_KEY::STAR_COUNT            , STAR_COUNT             );
     addVariable( CHALLENGE_DATA_KEY::REVIVE_COUNT          , REVIVE_COUNT           );
+    addVariable( CHALLENGE_DATA_KEY::COLLISION_COUNT       , COLLISION_COUNT        );
 
     addVariable( CHALLENGE_DATA_KEY::GIANT_SCORE_TOTAL     , GIANT_SCORE_TOTAL      );
     addVariable( CHALLENGE_DATA_KEY::GIANT_SCORE_BULLET    , GIANT_SCORE_BULLET     );

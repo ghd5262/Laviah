@@ -3,6 +3,7 @@
 #include "Popup/CharacterSelectPopup.h"
 #include "Popup/WorkshopPopup.h"
 #include "Popup/Option/OptionPopup.hpp"
+#include "Popup/TitleCompleteNoticePopup.hpp"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 #include "../GameObject/ObjectManager.h"
@@ -187,6 +188,13 @@ bool CMenuLayer::init()
     CTranslateManager::Instance()->addTranslateEventListener([=](){
         btnArray[1]->changeContents(TRANSLATE("BUTTON_MENU_START"));
     });
+    
+    CTitleCompleteNoticePopup::create()
+    ->setDefaultCallbackEnable(false)
+    ->setBackgroundVisible(false)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f))
+    ->show(this);
     
     this->setDefaultCallback([=](Node* sender){
         CGameScene::getGameScene()->GameExit(false);

@@ -186,10 +186,10 @@ bool CResultPopup::init()
 
 	auto starScoreBG	= createNormalLayer(resultIcon[0], resultContent[0], GLOBAL->STAR_SCORE, startPos[0], 50);
 	auto moveDistanceBG = createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->RUN_SCORE, startPos[1], 50);
-	auto comboBG		= createMultipleLayer(resultIcon[2], resultContent[2], GLOBAL->COMBO, startPos[2], 50, 100);
+	auto comboBG		= createMultipleLayer(resultIcon[2], resultContent[2], GLOBAL->COMBO_SCORE, startPos[2], 50, 100);
     auto coinScoreBG    = createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->COIN_SCORE, startPos[3], 50, 1000);
 //    auto bonusTimeBG	= createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->BONUSTIME, startPos[4], 50, 10000);
-	auto challengeBG	= createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->CHALLENGE_CLEAR_COUNT, startPos[4], 50, 10000);
+	auto challengeBG	= createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT, startPos[4], 50, 10000);
     
     auto totalScoreBG = createLayerBG(startPos[5]);
     totalScoreBG->setTexture("resultPopup_1.png");
@@ -199,9 +199,9 @@ bool CResultPopup::init()
     
 	auto bestCombo = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_COMBO);
 
-	if (GLOBAL->COMBO > bestCombo)
+	if (GLOBAL->COMBO_SCORE > bestCombo)
 	{
-		CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_COMBO, GLOBAL->COMBO);
+		CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_COMBO, GLOBAL->COMBO_SCORE);
 	}
 
     // total score가 best score면 저장한다.
@@ -267,7 +267,7 @@ bool CResultPopup::init()
 		btnUserCoin->setOpacity(0);
 	}
 
-	if (GLOBAL->CHALLENGE_CLEAR_COUNT || challengeAll)
+	if (GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT || challengeAll)
     {
         btnHome->setVisible(false);
         btnReset->setVisible(false);

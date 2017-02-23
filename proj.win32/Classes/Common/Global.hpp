@@ -17,16 +17,17 @@ private:
 public:
     std::map<std::string, int&> m_VariableList;
     
-    int BONUSTIME;        
-    int COMBO;         
-    int CHALLENGE_CLEAR_COUNT;
+    int BONUSTIME;
+    
     int TOTAL_SCORE;
-    int STAR_SCORE;
     int COIN_SCORE;
+    int STAR_SCORE;
     int RUN_SCORE;
-	int COIN_COUNT;
-	int STAR_COUNT;
-	int REVIVE_COUNT;
+    int COMBO_SCORE;
+    
+    int COIN_COUNT;
+    int STAR_COUNT;
+    int REVIVE_COUNT;
     int COLLISION_COUNT;
     
     int GIANT_SCORE_TOTAL;
@@ -49,6 +50,9 @@ public:
     int GIANT_ITEM_USE;
     int MAGNET_ITEM_USE;
     int BARRIER_ITEM_USE;
+    
+    int NORMAL_CHALLENGE_CLEAR_COUNT;
+    int HIDDEN_CHALLENGE_CLEAR_COUNT;
 };
 
 #define GLOBAL Global::Instance()

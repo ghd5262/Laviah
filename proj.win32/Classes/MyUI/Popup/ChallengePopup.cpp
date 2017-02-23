@@ -187,7 +187,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 void CChallengePopup::initChallengeList()
 {
     int posIndex = 0;
-    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_NORMAL_LIST);
     for (auto index : list)
     {
         auto challengeData = CChallengeDataManager::Instance()->getNormalChallengeByIndex(index);

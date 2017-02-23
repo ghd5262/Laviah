@@ -31,13 +31,13 @@ namespace USERDATA_KEY {
     const std::string BEST_COMBO                = "USER_BEST_COMBO";
     const std::string BEST_SCORE                = "USER_BEST_TOTAL_SCORE";
     
-    const std::string ITEM_HEALTH               = "USER_HEALTH_IDX";
-    const std::string ITEM_TIME_BOUNS           = "USER_BONUS_LIMIT_TIME_IDX";
-    const std::string ITEM_TIME_COIN            = "USER_COIN_LIMIT_TIME_IDX";
-    const std::string ITEM_TIME_STAR            = "USER_STAR_LIMIT_TIME_IDX";
-    const std::string ITEM_TIME_GIANT           = "USER_GIANT_LIMIT_TIME_IDX";
-    const std::string ITEM_TIME_MAGNET          = "USER_MAGNET_LIMIT_TIME_IDX";
-    const std::string ITEM_SIZE_MAGNET          = "USER_MAGNET_LIMIT_SIZE_IDX";
+    const std::string ITEM_HEALTH               = "USER_HEALTH_ITEM_LEVEL";
+    const std::string ITEM_TIME_BOUNS           = "USER_BONUS_ITEM_LEVEL";
+    const std::string ITEM_TIME_COIN            = "USER_COIN_ITEM_LEVEL";
+    const std::string ITEM_TIME_STAR            = "USER_STAR_ITEM_LEVEL";
+    const std::string ITEM_TIME_GIANT           = "USER_GIANT_ITEM_LEVEL";
+    const std::string ITEM_TIME_MAGNET          = "USER_MAGNET_ITEM_LEVEL";
+    const std::string ITEM_SIZE_MAGNET          = "USER_MAGNET_SIZE_LEVEL";
     
     const std::string SELECT_ITEM               = "USER_CUR_SELECT_ITEM";
     const std::string SELECT_KEY                = "USER_CUR_SELECT_KEY";
@@ -51,9 +51,10 @@ namespace USERDATA_KEY {
     const std::string ROCKET_LIST               = "USER_ROCKET_LIST";
     const std::string PET_LIST                  = "USER_PET_LIST";
     
-    const std::string CHALLENGE_CUR_LIST        = "USER_CUR_CHALLENGE_LIST";
-    const std::string CHALLENGE_COM_NORMAL_LIST = "USER_COMPLETE_NORMAL_CHALLENGE_LIST";
-	const std::string CHALLENGE_COM_HIDDEN_LIST = "USER_COMPLETE_HIDDEN_CHALLENGE_LIST";
+    const std::string CHALLENGE_CUR_NORMAL_LIST = "USER_CUR_NORMAL_CHALLENGE_LIST";
+    const std::string CHALLENGE_CUR_HIDDEN_LIST = "USER_CUR_HIDDEN_CHALLENGE_LIST";
+    const std::string CHALLENGE_COM_NORMAL_LIST = "USER_COM_NORMAL_CHALLENGE_LIST";
+	const std::string CHALLENGE_COM_HIDDEN_LIST = "USER_COM_HIDDEN_CHALLENGE_LIST";
 };
 
 class CGoogleCloudManager;

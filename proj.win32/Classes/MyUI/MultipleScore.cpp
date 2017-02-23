@@ -131,8 +131,8 @@ void CMultipleScore::calculateScore()
 	// 현재 점수 계산 (배수 * 저장된 점수)
 	unsigned calculatedScore = m_MultipleNumber * m_SavedScore;
 	
-	if (m_MultipleNumber > GLOBAL->COMBO)
-		GLOBAL->COMBO = m_MultipleNumber;
+	if (m_MultipleNumber > GLOBAL->COMBO_SCORE)
+		GLOBAL->COMBO_SCORE = m_MultipleNumber;
 
 	// 점수 반영
     GLOBAL->STAR_SCORE += calculatedScore;

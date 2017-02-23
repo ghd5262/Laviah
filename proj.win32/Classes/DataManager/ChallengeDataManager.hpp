@@ -1,5 +1,6 @@
 #pragma once
 #include "DataManagerUtils.h"
+#include "UserDataManager.h"
 #include "../Common/HSHUtility.h"
 #include "../json/json.h"
 #include <map>
@@ -103,7 +104,7 @@ public:
     static CChallengeDataManager* Instance();
 	bool CheckCompleteAll();
 	bool CheckChallengeComplete(int index, bool isHidden);
-	const sCHALLENGE_PARAM* CompleteCheckRealTime();
+	const sCHALLENGE_PARAM* CompleteCheckRealTime(bool isHidden);
 
 	sREWARD_DATA Reward(int index);
 	sREWARD_DATA RewardByKey(std::string key, int value);
@@ -120,6 +121,7 @@ public:
     CHALLENGE_LIST getHiddenChallengeList() const {
         return m_HiddenChallengeDataList;
     }
+    void UpdateCurHiddenChallengeList();
     
 private:
     void initWithJson(std::string fileName);
@@ -133,6 +135,8 @@ private:
     const sCHALLENGE_PARAM* getNewRandomChallengeFromList(CHALLENGE_LIST &list);
     CHALLENGE_LIST getNonCompletedChallengeList();
     void removeChallengeFromUserData(int index);
+    
+    void getCurChallengeListByType(ARRAY_DATA& list, bool isHidden);
     
     CChallengeDataManager();
     virtual ~CChallengeDataManager();
