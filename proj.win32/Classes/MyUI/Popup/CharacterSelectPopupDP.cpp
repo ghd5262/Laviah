@@ -67,7 +67,7 @@ bool CCharacterSelectPopupDP::init()
     if(!m_Character->_random) content = "?";
     m_CostLabel = Label::createWithSystemFont(content, FONT::MALGUNBD, 23,
                                               Size(this->getContentSize().width * 2.f,
-                                                   this->getContentSize().height),
+                                                   this->getContentSize().height + 1.05f),
                                               TextHAlignment::CENTER,
                                               TextVAlignment::CENTER);
     m_CostLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

@@ -271,9 +271,10 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
 	auto center = listView->getCenterItemInCurrentView();
 	auto centerIdx = listView->getIndex(center);
 	auto centerChild = listView->getChildren().at(centerIdx);
-	m_CenterDP = dynamic_cast<CCharacterSelectPopupDP*>(centerChild);
-	if (m_CenterDP == nullptr)
-		return;
+    auto centerDP = dynamic_cast<CCharacterSelectPopupDP*>(centerChild);
+    if (!centerDP) return;
+    if (centerDP == m_CenterDP) return;
+    m_CenterDP = centerDP;
 
 	// Center dp size up
 	m_CenterDP->Center();
