@@ -53,13 +53,15 @@ bool COptionPopup::init()
     
     Size layerSize = scrollBack->getContentSize();
     
+ 
+    m_ContentScrollView = createPageView(Size(layerSize.width, layerSize.height * 1.2f),
+                                         Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f));
+    scrollBack->addChild(m_ContentScrollView);
+    
     // Create the title scroll view
     m_TitleScrollView = createListView(Size(layerSize.width, layerSize.height * 0.2f), layerSize.width / 5,
                                        Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
     scrollBack->addChild(m_TitleScrollView);
-    m_ContentScrollView = createPageView(Size(layerSize.width, layerSize.height * 0.7f),
-                                         Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f));
-    scrollBack->addChild(m_ContentScrollView);
     
     std::array<std::string, 5> iconArray = {
         std::string("musicIcon.png"),
@@ -119,23 +121,33 @@ bool COptionPopup::init()
         bg->addChild(btnUserCoin);
     }
     
+    auto createButton = [=](const std::function<void(Node*)> &callback, std::string imageName, Vec2 pos)->CMyButton*{
+        auto btn = CMyButton::create()
+        ->addEventListener(callback)
+        ->setButtonSingleUse(true)
+        ->setButtonNormalImage(imageName)
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setButtonPosition(pos)
+        ->show(bg);
+        btn->setOpacity(0);
+        return btn;
+    };
     
-    auto btnEnd = CMyButton::create()
-    ->addEventListener([=](Node* sender){
+    auto btnEnd = createButton([=](Node* sender){
         this->End(sender);
-    })
-    ->setButtonSingleUse(true)
-    ->setButtonNormalImage("endIcon.png")
-    ->setButtonPosition(Vec2(bg->getContentSize().width * 0.92f,
-                             bg->getContentSize().height * 0.05f))
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(bg);
+    }, "endIcon.png", Vec2(bg->getContentSize().width * 0.92f,
+                           bg->getContentSize().height * 0.05f));
     
-    btnEnd->setOpacity(0);
+    auto btnShare = createButton([=](Node* sender){
+        this->End(sender);
+    }, "shareIcon_2.png", Vec2(bg->getContentSize().width * 0.08f,
+                           bg->getContentSize().height * 0.05f));
     
     
     this->setOpenAnimation([=](Node* sender){
         btnEnd->runAction(FadeIn::create(0.5f));
+        btnShare->runAction(FadeIn::create(0.5f));
+
         btnUserCoin->runAction(FadeIn::create(0.5f));
         scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.62f))));
         m_TitleScrollView->jumpToItem(m_InitialScrollIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
@@ -144,6 +156,8 @@ bool COptionPopup::init()
     
     this->setCloseAnimation([=](Node* sender){
         btnEnd->runAction(FadeTo::create(0.5f, 0));
+        btnShare->runAction(FadeTo::create(0.5f, 0));
+
         btnUserCoin->runAction(FadeTo::create(0.5f, 0));
         scrollBack->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f))));
     });
