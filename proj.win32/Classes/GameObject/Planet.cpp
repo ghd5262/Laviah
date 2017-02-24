@@ -32,16 +32,16 @@ bool CPlanet::init()
 	//this->DrawDebugBinding();   //for debug
     if (!Node::init()) return false;
     
-    this->setBoundingRadius(PLANET_DEFINE::BOUNDING_RADIUS);
+//    this->setBoundingRadius(PLANET_DEFINE::BOUNDING_RADIUS);
     
 	auto data = CObjectManager::Instance()->getCharacterParam();
-	m_pTexture = Sprite::createWithSpriteFrameName(data->_planetTextureName);
-    if (m_pTexture != nullptr){
-		this->setContentSize(m_pTexture->getContentSize());
-		m_pTexture->setPosition(this->getContentSize() / 2);
-        m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-        m_pTexture->setCascadeColorEnabled(true);
-        addChild(m_pTexture);
+	m_Texture = Sprite::createWithSpriteFrameName(data->_planetTextureName);
+    if (m_Texture != nullptr){
+		this->setContentSize(m_Texture->getContentSize());
+		m_Texture->setPosition(this->getContentSize() / 2);
+        m_Texture->setAnchorPoint(Vec2(0.5f, 0.5f));
+        m_Texture->setCascadeColorEnabled(true);
+        addChild(m_Texture);
     }
     
 //    // blur test
@@ -55,12 +55,12 @@ bool CPlanet::init()
 //        return GLProgramState::getOrCreateWithGLProgram(glprogram);
 //    };
 //
-//    m_pTexture->setGLProgramState(getGLProgram("example_Blur.fsh"));
-//    Size size = m_pTexture->getTexture()->getContentSizeInPixels();
-//    m_pTexture->getGLProgramState()->setUniformVec2("resolution", size);
+//    m_Texture->setGLProgramState(getGLProgram("example_Blur.fsh"));
+//    Size size = m_Texture->getTexture()->getContentSizeInPixels();
+//    m_Texture->getGLProgramState()->setUniformVec2("resolution", size);
 //#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
-//    m_pTexture->getGLProgramState()->setUniformFloat("blurRadius", 10);
-//    m_pTexture->getGLProgramState()->setUniformFloat("sampleNum", 100);
+//    m_Texture->getGLProgramState()->setUniformFloat("blurRadius", 10);
+//    m_Texture->getGLProgramState()->setUniformFloat("sampleNum", 100);
 //#endif
     
     this->setScale(PLANET_DEFINE::SCALE_SIZE);
@@ -117,7 +117,9 @@ void CPlanet::CrushShake(float interval, float duration, float speed, float magn
 	}, interval, CC_REPEAT_FOREVER, 0.f, "Shake");
 }
 
-void CPlanet::Execute(float delta){}
+void CPlanet::Execute(float delta){
+    this->setBoundingRadius(((getContentSize().width * m_Texture->getScale()) / 2) - 20.f);
+}
 
 // Dir -1 == Left, 1 == Right
 void CPlanet::Rotation(float speed)
@@ -130,7 +132,7 @@ void CPlanet::Rotation(float speed)
 
 void CPlanet::setPlanetTexture(std::string textureName)
 {
-    if(m_pTexture != nullptr){
-        this->m_pTexture->setSpriteFrame(textureName);
+    if(m_Texture != nullptr){
+        this->m_Texture->setSpriteFrame(textureName);
     }
 }

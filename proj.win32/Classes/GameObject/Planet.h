@@ -39,6 +39,6 @@ private:
 	virtual ~CPlanet(){}
 
 private:
-	cocos2d::Sprite* m_pTexture;
+	cocos2d::Sprite* m_Texture;
 	float m_fElapsed;
 };

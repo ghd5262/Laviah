@@ -254,6 +254,7 @@ void CObjectManager::inGameUpdate(float delta)
     m_ItemManager->Execute(m_Delta);
     m_BulletCreator->Update(m_Delta);
     m_Player->Execute(m_Delta);
+    m_Planet->Execute(m_Delta);
     this->bulletListExecute();
     this->setGameLevelByTimer();
 }
