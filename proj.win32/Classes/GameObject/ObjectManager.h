@@ -44,6 +44,7 @@ public:
     void ZoomIn2();
     void ZoomOut();
     void InitTutorialStep();
+    void Share();
 
     
 	// 초기화

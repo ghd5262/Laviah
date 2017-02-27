@@ -118,7 +118,7 @@ void CPlanet::CrushShake(float interval, float duration, float speed, float magn
 }
 
 void CPlanet::Execute(float delta){
-    this->setBoundingRadius(((getContentSize().width * m_Texture->getScale()) / 2) - 20.f);
+    this->setBoundingRadius(((getContentSize().width * this->getScale()) / 2));
 }
 
 // Dir -1 == Left, 1 == Right

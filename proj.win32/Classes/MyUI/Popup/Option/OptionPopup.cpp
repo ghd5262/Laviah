@@ -2,6 +2,7 @@
 #include "OptionHeaders.h"
 #include "../../MyButton.h"
 #include "../../UserCoinButton.h"
+#include "../../../GameObject/ObjectManager.h"
 #include "../../../Scene/GameScene.h"
 #include "../../../DataManager/UserDataManager.h"
 #include <array>
@@ -67,7 +68,7 @@ bool COptionPopup::init()
         std::string("musicIcon.png"),
         std::string("saveIcon.png"),
         std::string("languageIcon.png"),
-        std::string("challengeIcon_2.png"),
+        std::string("challengeIcon.png"),
         std::string("developerIcon.png")
     };
 
@@ -139,6 +140,7 @@ bool COptionPopup::init()
                            bg->getContentSize().height * 0.05f));
     
     auto btnShare = createButton([=](Node* sender){
+        CObjectManager::Instance()->Share();
         this->End(sender);
     }, "shareIcon_2.png", Vec2(bg->getContentSize().width * 0.08f,
                            bg->getContentSize().height * 0.05f));

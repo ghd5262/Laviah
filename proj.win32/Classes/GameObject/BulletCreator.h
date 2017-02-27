@@ -54,6 +54,7 @@ public:
     
     CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterInfo, CharacterInfo);
 	CC_SYNTHESIZE(float, m_RotationAngle, RotationAngle);
+    CC_SYNTHESIZE(bool, m_IsFlip, IsFlip);
 
 private:
 	void setData(const sBULLET_PATTERN* data);
@@ -85,5 +86,4 @@ private:
 	float m_LineIntervalLimit;
     int m_CurrentHeight;
     bool m_Running;
-	bool m_IsFlip;
 };

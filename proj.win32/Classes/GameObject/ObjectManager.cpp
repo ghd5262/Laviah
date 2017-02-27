@@ -363,15 +363,14 @@ void CObjectManager::InitTutorialStep()
         GLOBAL->COLLISION_COUNT = 0;
         auto data = m_PatternManager->getTutorialPatternByIndex(0);
         m_BulletCreator->setPattern(data);
+        m_BulletCreator->setIsFlip(false);
         this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     })
     ->addUpdateListener([=](float delta){
-        if(GLOBAL->STAR_COUNT >= 1) {
+        if(GLOBAL->STAR_COUNT >= 6) {
             CTutorialLayer::Instance()->NextStep();
             return;
         }
-        
-        if(GLOBAL->COLLISION_COUNT >= 5) CTutorialLayer::Instance()->ChangeStep(1);
     })
     ->setTouchEnable(false)
     ->build("first tutorial");
@@ -384,23 +383,15 @@ void CObjectManager::InitTutorialStep()
     CTutorialObject::create()
     ->addBeginListener([=](Node* sender){
         GLOBAL->STAR_COUNT = 0;
-        GLOBAL->COLLISION_COUNT = 0;
-        auto data = m_PatternManager->getTutorialPatternByIndex(1);
-        m_BulletCreator->setPattern(data);
         this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     })
     ->addUpdateListener([=](float delta){
-        if(GLOBAL->STAR_COUNT >= 1) {
+        if(GLOBAL->STAR_COUNT >= 9) {
             CTutorialLayer::Instance()->NextStep();
             return;
         }
-        
-        if(GLOBAL->COLLISION_COUNT >= 5) CTutorialLayer::Instance()->ChangeStep(3);
     })
     ->build("first tutorial");
-    
-    // 1초 후 다음 스텝
-    createDelayStep(1.f);
     
     // 메시지 박스 출력 터치 시 다음 스텝
     createMessageBoxStep("게임 플레이에 도움이 되는 아이템을 획득할 수 있어요!");
@@ -410,8 +401,6 @@ void CObjectManager::InitTutorialStep()
     ->addBeginListener([=](Node* sender){
         GLOBAL->COLLISION_COUNT = 0;
         GLOBAL->STAR_ITEM_USE = 0;
-        auto data = m_PatternManager->getTutorialPatternByIndex(2);
-        m_BulletCreator->setPattern(data);
         this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     })
     ->addUpdateListener([=](float delta){
@@ -419,13 +408,8 @@ void CObjectManager::InitTutorialStep()
             CTutorialLayer::Instance()->NextStep();
             return;
         }
-        
-        if(GLOBAL->COLLISION_COUNT >= 10) CTutorialLayer::Instance()->Again();
     })
     ->build("first tutorial");
-    
-    // 1초 후 다음 스텝
-    createDelayStep(1.f);
     
     // 메시지 박스 출력 터치 시 다음 스텝
     createMessageBoxStep("미사일은 빠르니까 특별히 조심해야해요!");
@@ -434,12 +418,10 @@ void CObjectManager::InitTutorialStep()
     CTutorialObject::create()
     ->addBeginListener([=](Node* sender){
         GLOBAL->COLLISION_COUNT = 0;
-        auto data = m_PatternManager->getTutorialPatternByIndex(3);
-        m_BulletCreator->setPattern(data);
         this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     })
     ->addUpdateListener([=](float delta){
-        if(GLOBAL->COLLISION_COUNT >= 1)
+        if(GLOBAL->COLLISION_COUNT >= 6)
             CTutorialLayer::Instance()->NextStep();
     })
     ->build("first tutorial");
@@ -451,17 +433,14 @@ void CObjectManager::InitTutorialStep()
     // 메시지 박스 출력 터치 시 다음 스텝
     createMessageBoxStep("다른 방법으로 피할 수도 있어요.");
     
-    
     // 미사일 피하면 다음 스텝
     CTutorialObject::create()
     ->addBeginListener([=](Node* sender){
-        GLOBAL->COLLISION_COUNT = 0;
-        auto data = m_PatternManager->getTutorialPatternByIndex(4);
-        m_BulletCreator->setPattern(data);
         this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
     })
     ->addUpdateListener([=](float delta){
-        if(GLOBAL->COLLISION_COUNT >= 1) CTutorialLayer::Instance()->NextStep();
+        if(GLOBAL->STAR_ITEM_USE >= 1)
+            CTutorialLayer::Instance()->NextStep();
     })
     ->build("first tutorial");
     
@@ -480,4 +459,36 @@ void CObjectManager::InitTutorialStep()
     createMessageBoxStep("코인이에요! 무엇이든 구매하거나 업그레이드 할 수 있어요!");
     
     CTutorialLayer::Instance()->ChangeTutorial("first tutorial");
+}
+
+void CObjectManager::Share()
+{
+    auto screenSize = Director::getInstance()->getWinSize();
+    
+    auto rt = RenderTexture::create(screenSize.width, screenSize.height, Texture2D::PixelFormat::RGBA8888);
+    rt->retain();
+    rt->begin();
+    CGameScene::getGameScene()->visit();
+//    m_Background->visit();
+//    m_Planet->visit();
+//    m_Player->visit();
+//    m_Rocket->visit();
+    rt->end();
+    
+    auto completionCallback = [=](RenderTexture* sender, const std::string& filename)
+    {
+        sender->release();
+        auto picture = cocos2d::ui::Button::create(filename);
+        picture->addClickEventListener([=](Ref* sender){
+            picture->removeFromParent();
+            Director::getInstance()->getTextureCache()->removeTextureForKey(filename);
+        });
+        picture->setPosition(screenSize / 2);
+        picture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        picture->setScale(0.5f);
+        CGameScene::getGameScene()->addChild(picture, ZORDER::POPUP);
+        
+    };
+    
+    rt->saveToFile("screenshot.png", true, completionCallback);
 }
