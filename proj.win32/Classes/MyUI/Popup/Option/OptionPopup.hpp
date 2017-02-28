@@ -22,7 +22,7 @@ private:
     COptionPopup()
     : m_TitleScrollView(nullptr)
     , m_ContentScrollView(nullptr)
-    , m_InitialScrollIndex(0){};
+    , m_InitialScrollIndex(1){};
     virtual ~COptionPopup(){};
     
 private:

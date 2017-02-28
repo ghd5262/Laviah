@@ -5,3 +5,4 @@
 #include "OptionLanguagePopup.hpp"
 #include "OptionTitlePopup.hpp"
 #include "OptionDeveloperPopup.hpp"
+#include "OptionMoreGamesPopup.hpp"

@@ -81,7 +81,7 @@ CMyButton* COptionLanguagePopup::createLanguageDP(std::string content, Vec2 pos)
             CPopup::DefaultCallback();
             
             //option popup open again
-            CGameScene::getGameScene()->OpenOptionPopup(2);
+            CGameScene::getGameScene()->OpenOptionPopup(3);
 
 //            this->popupClose();
         });

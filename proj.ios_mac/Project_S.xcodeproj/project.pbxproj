@@ -166,6 +166,12 @@
 		937311B31D5849D500D5EB5C /* imageRes in Resources */ = {isa = PBXBuildFile; fileRef = 937311AD1D5849D500D5EB5C /* imageRes */; };
 		937311B61D5849D500D5EB5C /* res in Resources */ = {isa = PBXBuildFile; fileRef = 937311B01D5849D500D5EB5C /* res */; };
 		937311B71D5849D500D5EB5C /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 937311B11D5849D500D5EB5C /* sounds */; };
+		9380EDD31E650FDD0079D724 /* RocketDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9380EDD11E650FDD0079D724 /* RocketDataManager.cpp */; };
+		9380EDD41E650FDD0079D724 /* RocketDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9380EDD11E650FDD0079D724 /* RocketDataManager.cpp */; };
+		9380EDD81E6566D40079D724 /* OptionMoreGamesPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9380EDD61E6566D40079D724 /* OptionMoreGamesPopup.cpp */; };
+		9380EDD91E6566D40079D724 /* OptionMoreGamesPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9380EDD61E6566D40079D724 /* OptionMoreGamesPopup.cpp */; };
+		9380EDDC1E6569FE0079D724 /* MoreGamesDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9380EDDA1E6569FE0079D724 /* MoreGamesDataManager.cpp */; };
+		9380EDDD1E6569FE0079D724 /* MoreGamesDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9380EDDA1E6569FE0079D724 /* MoreGamesDataManager.cpp */; };
 		938DE0061E430DD000EE8853 /* ChallengeProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938DE0041E430DD000EE8853 /* ChallengeProgressBar.cpp */; };
 		938DE0071E430DD000EE8853 /* ChallengeProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938DE0041E430DD000EE8853 /* ChallengeProgressBar.cpp */; };
 		938FF6D21E1B55FF00664426 /* ChallengeClearChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938FF6D11E1B55FF00664426 /* ChallengeClearChecker.cpp */; };
@@ -475,6 +481,12 @@
 		937311AD1D5849D500D5EB5C /* imageRes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = imageRes; sourceTree = "<group>"; };
 		937311B01D5849D500D5EB5C /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		937311B11D5849D500D5EB5C /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
+		9380EDD11E650FDD0079D724 /* RocketDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RocketDataManager.cpp; sourceTree = "<group>"; };
+		9380EDD21E650FDD0079D724 /* RocketDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RocketDataManager.hpp; sourceTree = "<group>"; };
+		9380EDD61E6566D40079D724 /* OptionMoreGamesPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionMoreGamesPopup.cpp; sourceTree = "<group>"; };
+		9380EDD71E6566D40079D724 /* OptionMoreGamesPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OptionMoreGamesPopup.hpp; sourceTree = "<group>"; };
+		9380EDDA1E6569FE0079D724 /* MoreGamesDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoreGamesDataManager.cpp; sourceTree = "<group>"; };
+		9380EDDB1E6569FE0079D724 /* MoreGamesDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MoreGamesDataManager.hpp; sourceTree = "<group>"; };
 		93865F3E1D588C39007ECE5A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
 		938DE0041E430DD000EE8853 /* ChallengeProgressBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengeProgressBar.cpp; sourceTree = "<group>"; };
 		938DE0051E430DD000EE8853 /* ChallengeProgressBar.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChallengeProgressBar.hpp; sourceTree = "<group>"; };
@@ -784,6 +796,10 @@
 				932999C31E31AD750062B92C /* TranslateManager.cpp */,
 				932999C41E31AD750062B92C /* TranslateManager.hpp */,
 				93CCBB8E1E495E7800C010F3 /* DataManagerUtils.h */,
+				9380EDD11E650FDD0079D724 /* RocketDataManager.cpp */,
+				9380EDD21E650FDD0079D724 /* RocketDataManager.hpp */,
+				9380EDDA1E6569FE0079D724 /* MoreGamesDataManager.cpp */,
+				9380EDDB1E6569FE0079D724 /* MoreGamesDataManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -1048,6 +1064,8 @@
 				932CA1B31E4C166800CE5110 /* OptionDeveloperPopup.cpp */,
 				932CA1B41E4C166800CE5110 /* OptionDeveloperPopup.hpp */,
 				9311BAC91E4C522D000A6F7B /* OptionHeaders.h */,
+				9380EDD61E6566D40079D724 /* OptionMoreGamesPopup.cpp */,
+				9380EDD71E6566D40079D724 /* OptionMoreGamesPopup.hpp */,
 			);
 			path = Option;
 			sourceTree = "<group>";
@@ -1217,6 +1235,7 @@
 				9373116D1D5849C800D5EB5C /* NormalMissile.cpp in Sources */,
 				9373118D1D5849C800D5EB5C /* MyButton.cpp in Sources */,
 				932999C11E319F950062B92C /* ChallengeCompleteNoticePopup.cpp in Sources */,
+				9380EDDC1E6569FE0079D724 /* MoreGamesDataManager.cpp in Sources */,
 				59DFB3C81E576601002CD020 /* GameEndPopup.cpp in Sources */,
 				937311601D5849C800D5EB5C /* HSHUitlity.cpp in Sources */,
 				9348E4C61D9D62B1007DF5D9 /* GradientDataManager.cpp in Sources */,
@@ -1234,6 +1253,7 @@
 				937311841D5849C800D5EB5C /* json_reader.cpp in Sources */,
 				938FF6D21E1B55FF00664426 /* ChallengeClearChecker.cpp in Sources */,
 				9373117C1D5849C800D5EB5C /* Player.cpp in Sources */,
+				9380EDD31E650FDD0079D724 /* RocketDataManager.cpp in Sources */,
 				937311A31D5849C800D5EB5C /* Particles.cpp in Sources */,
 				9373115E1D5849C800D5EB5C /* AppDelegate.cpp in Sources */,
 				932CA1B11E4C164D00CE5110 /* OptionTitlePopup.cpp in Sources */,
@@ -1299,6 +1319,7 @@
 				9373118B1D5849C800D5EB5C /* LevelProgressBar.cpp in Sources */,
 				932999C51E31AD750062B92C /* TranslateManager.cpp in Sources */,
 				9373119B1D5849C800D5EB5C /* WorkshopPopup.cpp in Sources */,
+				9380EDD81E6566D40079D724 /* OptionMoreGamesPopup.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				937311611D5849C800D5EB5C /* BulletDataManager.cpp in Sources */,
 				933F79D91DDECEE6005F1DAF /* BulletCreator.cpp in Sources */,
@@ -1321,7 +1342,9 @@
 				930304431E1248A20017C149 /* StandBullet.cpp in Sources */,
 				932CA1AE1E4C161300CE5110 /* OptionLanguagePopup.cpp in Sources */,
 				932CA1A51E4C15B400CE5110 /* OptionMusicPopup.cpp in Sources */,
+				9380EDD91E6566D40079D724 /* OptionMoreGamesPopup.cpp in Sources */,
 				930C44641DF54BD90011CFA3 /* CountDown.cpp in Sources */,
+				9380EDDD1E6569FE0079D724 /* MoreGamesDataManager.cpp in Sources */,
 				930304391E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				930C445B1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */,
@@ -1329,6 +1352,7 @@
 				93CCBB941E498E2A00C010F3 /* OptionPopup.cpp in Sources */,
 				9366457E1E1B92E800066BB4 /* ChallengeRewarder.cpp in Sources */,
 				93579E5F1E5ACE7900D863A0 /* MessageBox.cpp in Sources */,
+				9380EDD41E650FDD0079D724 /* RocketDataManager.cpp in Sources */,
 				930304481E1390D80017C149 /* ChallengeDataManager.cpp in Sources */,
 				932CA1B21E4C164D00CE5110 /* OptionTitlePopup.cpp in Sources */,
 				938DE0071E430DD000EE8853 /* ChallengeProgressBar.cpp in Sources */,
