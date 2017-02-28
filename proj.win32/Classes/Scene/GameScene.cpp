@@ -503,7 +503,9 @@ void CGameScene::createPlayer()
 
 void CGameScene::createRocket()
 {
-    auto rocket = CRocket::create(sROCKET_PARAM());
+    CObjectManager::Instance()->ChangeRocket();
+    
+    auto rocket = CRocket::create();
     rocket->setSpeed(ROCKET_DEFINE::SPEED);
     rocket->setDistance(ROCKET_DEFINE::FLYAROUND_DISTANCE);
     rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

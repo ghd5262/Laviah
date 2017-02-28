@@ -59,12 +59,12 @@ bool CPlayer::init()
     this->ChangeState(CPlayerNormal::Instance());
     
 	m_CharacterParam = CObjectManager::Instance()->getCharacterParam();
-    m_pTexture = Sprite::createWithSpriteFrameName(m_CharacterParam->_normalTextureName);
-    if (m_pTexture != nullptr){
-        this->setContentSize(m_pTexture->getContentSize());
-        m_pTexture->setPosition(this->getContentSize() / 2);
-        m_pTexture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		addChild(m_pTexture);
+    m_Texture = Sprite::createWithSpriteFrameName(m_CharacterParam->_normalTextureName);
+    if (m_Texture != nullptr){
+        this->setContentSize(m_Texture->getContentSize());
+        m_Texture->setPosition(this->getContentSize() / 2);
+        m_Texture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		addChild(m_Texture);
     }
     
     m_MagnetEffect = CMagnetEffect::create();
@@ -177,7 +177,7 @@ void CPlayer::GiantMode()
 		ScaleTo::create(0.5f, GIANT_SCALE),
 		CallFunc::create([=](){
 		this->setPlayerTexture(m_CharacterParam->_giantTextureName);
-		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+		this->m_Texture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
 		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * GIANT_SCALE);
 		m_Particle->setEndSize(40.f);
@@ -193,7 +193,7 @@ void CPlayer::NormalMode()
 		ScaleTo::create(0.5f, NORMAL_SCALE),
 		CallFunc::create([=](){
         this->setPlayerTexture(m_CharacterParam->_normalTextureName);
-		this->m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
+		this->m_Texture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
 		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_Particle->setEndSize(4.f);
@@ -278,10 +278,10 @@ void CPlayer::GotMagnetItem()
 
 void CPlayer::InvincibilityMode(float time)
 {
-	this->m_pTexture->setOpacity(100);
+	this->m_Texture->setOpacity(100);
 	m_Invincibility = true;
 	this->scheduleOnce([=](float delta){
-		this->m_pTexture->setOpacity(255);
+		this->m_Texture->setOpacity(255);
 		m_Invincibility = false;
 	}, time, "SetPlayerNormalMode");
 }
@@ -313,8 +313,8 @@ void CPlayer::setCharacterParam(const sCHARACTER_PARAM* data)
 
 void CPlayer::setPlayerTexture(std::string textureName)
 {
-	if (m_pTexture != nullptr){
-		m_pTexture->setSpriteFrame(textureName);
+	if (m_Texture != nullptr){
+		m_Texture->setSpriteFrame(textureName);
 	}
 
 	if (m_Particle != nullptr){

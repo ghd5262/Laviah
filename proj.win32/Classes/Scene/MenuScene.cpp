@@ -88,12 +88,12 @@ bool CMenuScene::init()
     this->addChild(player);
     CMenuSceneObjectManager::Instance()->setPlayer(player);
     
-    auto rocket = CRocket::create(sROCKET_PARAM());
-    if (rocket != nullptr)
-    {
-        this->addChild(rocket);
-        CMenuSceneObjectManager::Instance()->setRocket(rocket);
-    }
+//    auto rocket = CRocket::create(sROCKET_PARAM());
+//    if (rocket != nullptr)
+//    {
+//        this->addChild(rocket);
+//        CMenuSceneObjectManager::Instance()->setRocket(rocket);
+//    }
     
     InitMenuSceneUI();
     

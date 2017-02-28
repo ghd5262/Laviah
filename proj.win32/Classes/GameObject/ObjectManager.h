@@ -3,6 +3,7 @@
 #include "../Common/HSHUtility.h"
 #include "../AI/StateMachine.h"
 #include "../DataManager/CharacterDataManager.h"
+#include "../DataManager/RocketDataManager.hpp"
 /*------------------------------ObjectManager 클래스설명----------------------------------
 *
 * CMover를 상속받는 모든 클래스를 Execute및 Remove하는 함수이다.
@@ -36,6 +37,7 @@ public:
     void BonusTimeTouchEvent(float dir);
     void SpeedControl(float duration, float speed);
     void ChangeCharacter();
+    void ChangeRocket();
     void ChangeState(CState<CObjectManager>* newState)
     { m_FSM->ChangeState(newState); };
     void StartBonusTime();
@@ -69,6 +71,7 @@ public:
     CC_SYNTHESIZE(float, m_Delta, Delta);
 	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
 	CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterParam, CharacterParam);
+    CC_SYNTHESIZE(const sROCKET_PARAM*, m_RocketParam, RocketParam);
     CC_SYNTHESIZE(int, m_GameLevel, GameLevel);
     
 private:

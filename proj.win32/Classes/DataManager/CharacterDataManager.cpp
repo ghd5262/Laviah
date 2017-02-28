@@ -1,7 +1,6 @@
 #include "CharacterDataManager.h"
 #include "UserDataManager.h"
 #include "DataManagerUtils.h"
-#include "../Common/HSHUtility.h"
 #include "../SDKUtil/SDKUtil.h"
 
 using namespace cocos2d;

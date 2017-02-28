@@ -1,7 +1,7 @@
 #pragma once
-
 #include "GameObject.h"
 #include "../AI/StateMachine.h"
+#include "../DataManager/RocketDataManager.hpp"
 #include <vector>
 
 namespace ROCKET_DEFINE{
@@ -14,17 +14,13 @@ namespace ROCKET_DEFINE{
 	static float			ARRIVE_RADIUS = 30.f;
 };
 
-struct sROCKET_PARAM{
-	sROCKET_PARAM(){}
-};
-
 class CBullet;
 class CPlayer;
 class CMyButton;
 class CRocket : public CGameObject {
 	typedef std::function<void(cocos2d::Node*)> ARRIVE_CALLBACK;
 public:
-	static CRocket* create(sROCKET_PARAM RocketParam);
+	static CRocket* create();
 
 	virtual void Execute(float delta = 0.f) override;
     void Fly(float speed);
@@ -54,7 +50,7 @@ public:
 	CC_SYNTHESIZE(float, m_AwayAngle, AwayAngle);
 	CC_SYNTHESIZE(int, m_Direction, Direction);    
 	CC_SYNTHESIZE(bool, m_Arrive, Arrive);
-	CC_SYNTHESIZE(sROCKET_PARAM, m_RocketParam, RocketParam);
+	CC_SYNTHESIZE(const sROCKET_PARAM*, m_RocketParam, RocketParam);
 	CC_SYNTHESIZE(cocos2d::Vec2, m_Velocity, Velocity);
     CC_SYNTHESIZE(CPlayer*, m_Player, Player);
 private:
@@ -65,7 +61,7 @@ private:
     void arriveCheck();
     void createFlameParticle();
     
-	CRocket(sROCKET_PARAM RocketParam);
+	CRocket();
 	virtual ~CRocket();
 
 private:

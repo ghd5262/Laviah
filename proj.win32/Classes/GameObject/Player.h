@@ -128,7 +128,7 @@ private:
 private:
 	std::shared_ptr<CStateMachine<CPlayer>> m_FSM;
 	CMultipleScore* m_MultipleScore;
-	cocos2d::Sprite* m_pTexture;
+	cocos2d::Sprite* m_Texture;
 	cocos2d::ParticleSystemQuad* m_Particle;
     CMagnetEffect* m_MagnetEffect;
 	const sCHARACTER_PARAM* m_CharacterParam;

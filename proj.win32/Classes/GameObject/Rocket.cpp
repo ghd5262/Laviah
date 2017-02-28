@@ -14,9 +14,8 @@
 #include "../DataManager/ChallengeRewarder/ChallengeRewarder.hpp"
 using namespace cocos2d;
 
-CRocket::CRocket(sROCKET_PARAM RocketParam)
-: m_RocketParam(RocketParam)
-, m_Speed(0.f)
+CRocket::CRocket()
+: m_Speed(0.f)
 , m_Distance(0.f)
 , m_Direction(1)
 , m_Time(0.f)
@@ -32,9 +31,9 @@ CRocket::CRocket(sROCKET_PARAM RocketParam)
 
 CRocket::~CRocket(){}
 
-CRocket* CRocket::create(sROCKET_PARAM RocketParam)
+CRocket* CRocket::create()
 {
-	CRocket* pRet = new(std::nothrow)CRocket(RocketParam);
+	CRocket* pRet = new(std::nothrow)CRocket();
 
 	if (pRet && pRet->init())
 	{
@@ -67,11 +66,14 @@ bool CRocket::init()
     m_FlyLimitMax = visibleSize.width * 0.9f;
     m_FlyLimitMin = visibleSize.width * 0.1f;
     
-    m_Texture = Sprite::create("spaceship_1.png");
-	this->setContentSize(m_Texture->getContentSize());
-    m_Texture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	m_Texture->setPosition(this->getContentSize() / 2);
-    addChild(m_Texture);
+    m_RocketParam = CObjectManager::Instance()->getRocketParam();
+    m_Texture = Sprite::createWithSpriteFrameName(m_RocketParam->_textureName);
+    if (m_Texture != nullptr){
+        this->setContentSize(m_Texture->getContentSize());
+        m_Texture->setPosition(this->getContentSize() / 2);
+        m_Texture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        addChild(m_Texture);
+    }
     
 	this->setBoundingRadius(ROCKET_DEFINE::BOUNDING_RADIUS);
 

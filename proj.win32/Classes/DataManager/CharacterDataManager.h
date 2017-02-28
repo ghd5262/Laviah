@@ -1,5 +1,4 @@
 #pragma once
-#include "network/CCDownloader.h"
 #include "../Common/HSHUtility.h"
 #include "../json/json.h"
 #include <vector>

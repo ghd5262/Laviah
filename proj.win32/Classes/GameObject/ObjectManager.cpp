@@ -149,6 +149,15 @@ void CObjectManager::ChangeCharacter()
         m_BulletCreator->setCharacterInfo(m_CharacterParam);
 }
 
+void CObjectManager::ChangeRocket()
+{
+    auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::ROCKET);
+    m_RocketParam = CRocketDataManager::Instance()->getRocketByIndex(index);
+    
+    if(m_Rocket)
+        m_Rocket->setRocketParam(m_RocketParam);
+}
+
 void CObjectManager::StartBonusTime()
 {
     // Rotation speed down
@@ -468,11 +477,11 @@ void CObjectManager::Share()
     auto rt = RenderTexture::create(screenSize.width, screenSize.height, Texture2D::PixelFormat::RGBA8888);
     rt->retain();
     rt->begin();
-    CGameScene::getGameScene()->visit();
-//    m_Background->visit();
-//    m_Planet->visit();
-//    m_Player->visit();
-//    m_Rocket->visit();
+//    CGameScene::getGameScene()->visit();
+    m_Background->visit();
+    m_Planet->visit();
+    m_Player->visit();
+    m_Rocket->visit();
     rt->end();
     
     auto completionCallback = [=](RenderTexture* sender, const std::string& filename)
