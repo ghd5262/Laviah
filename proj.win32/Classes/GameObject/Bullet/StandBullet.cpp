@@ -60,7 +60,7 @@ bool CStandBullet::init()
 CBullet* CStandBullet::build()
 {
     CBullet::build();
-    auto createDistance = BOUNDING_RADIUS * 0.7f;
+    auto createDistance = BOUNDING_RADIUS * 0.83f;
     this->setPosition(getCirclePosition(getAngle(), createDistance, m_PlanetPos));
     this->setDelayTime(BULLET_STANDARD_DELAY - ((TARGET_POS_DISTANCE - createDistance) / getSpeed()));
     return this;
@@ -69,6 +69,8 @@ CBullet* CStandBullet::build()
 void CStandBullet::Execute(float delta)
 {
     m_Time += delta;
+    
+    if (m_Time >= (getDelayTime() - 1.3f)) this->setVisible(true);
     if (!IsTimeUP()) return;
     this->StandUp(delta);
     if (m_StandUpComplete) m_StayLimitTime += delta;
@@ -83,7 +85,6 @@ void CStandBullet::Execute(float delta)
             return;
         }
     }
-    this->setVisible(true);
     m_FSM->Execute(delta);
 }
 
