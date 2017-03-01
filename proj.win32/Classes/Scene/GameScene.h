@@ -79,6 +79,8 @@ private:
     void turnUpSound();
 	void initKeyboardListener();
     void startTutorial();
+    void getFreeReward();
+    
     
     // The following items are initialized only once.
     void initMemoryPool();
@@ -94,7 +96,8 @@ private:
     void createMenuLayer();
     void createUILayer();
     void createTutorialLayer();
-
+    void setTimestamp();
+    
 private:
 	static CGameScene* m_GameScene;
 	static cocos2d::NodeGrid* m_GridWorld;

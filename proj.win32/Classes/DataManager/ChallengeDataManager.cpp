@@ -151,6 +151,11 @@ const sCHALLENGE_PARAM* CChallengeDataManager::CompleteCheckRealTime(bool isHidd
 	return nullptr;
 }
 
+void CChallengeDataManager::ResetNormalChallenges()
+{
+    CUserDataManager::Instance()->setUserData_ItemRemoveAll(USERDATA_KEY::CHALLENGE_COM_NORMAL_LIST);
+}
+
 sREWARD_DATA CChallengeDataManager::Reward(int index)
 {
     auto challengeData = getNormalChallengeByIndex(index);

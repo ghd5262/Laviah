@@ -181,7 +181,7 @@ bool CMenuLayer::init()
         
         // option button
         createButton([=](Node* sender){
-            CGameScene::getGameScene()->OpenOptionPopup();
+            CGameScene::getGameScene()->OpenOptionPopup(0);
         }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.95f)),
     };
     

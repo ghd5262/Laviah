@@ -13,6 +13,7 @@ struct sUSER_DATA{
 };
 
 namespace USERDATA_KEY {
+    const std::string LAST_TIMESTAMP            = "USER_DATA_LAST_TIMESTAMP";
 	const std::string LAST_SAVED_TIME		    = "USER_DATA_LAST_SAVED_TIME";
     const std::string FIRST_LOAD			    = "USER_DATA_FIRSTLOAD";
 	const std::string DATA_REVISION				= "USER_DATA_SAVE_REVISION";
@@ -69,6 +70,7 @@ public:
     //getter & setter
     bool getIsFirstPlay();
 	tm* getLastSavedTime();
+    long long getLastTimestamp();
     int getUserData_Number(std::string key);
     ARRAY_DATA getUserData_List(std::string key);
     bool getUserData_IsItemHave(std::string key, int itemIdx);
@@ -83,6 +85,7 @@ public:
     void setUserData_ItemRemoveAll(std::string key);
     void setUserData_Reset();
     void setLastSavedTime(long long unixTime);
+    void setLastTimestamp(long long timestamp);
     bool CoinUpdate(int value);
     
     static int getUserDataSequenceFromList(std::string key, int itemIndex);

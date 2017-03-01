@@ -5,6 +5,8 @@
 #include "../../../GameObject/ObjectManager.h"
 #include "../../../Scene/GameScene.h"
 #include "../../../DataManager/UserDataManager.h"
+#include "network/HttpClient.h"
+
 #include <array>
 
 namespace OPTION_POPUP {
@@ -12,6 +14,7 @@ namespace OPTION_POPUP {
 }
 using namespace cocos2d;
 using namespace cocos2d::ui;
+using namespace cocos2d::network;
 using namespace OPTION_POPUP;
 
 COptionPopup* COptionPopup::create()
@@ -64,8 +67,8 @@ bool COptionPopup::init()
                                        Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
     scrollBack->addChild(m_TitleScrollView);
     
-    std::array<std::string, 6> iconArray = {
-        std::string("musicIcon.png"),
+    std::array<std::string, 5> iconArray = {
+//        std::string("musicIcon.png"),
         std::string("musicIcon.png"),
         std::string("saveIcon.png"),
         std::string("languageIcon.png"),
@@ -73,8 +76,8 @@ bool COptionPopup::init()
         std::string("developerIcon.png")
     };
 
-    std::array<CPopup*, 6> contentArray = {
-        COptionMoreGamesPopup::create(),
+    std::array<CPopup*, 5> contentArray = {
+//        COptionMoreGamesPopup::create(),
         COptionMusicPopup::create(),
         COptionDataSavePopup::create(),
         COptionLanguagePopup::create(),
@@ -142,8 +145,60 @@ bool COptionPopup::init()
                            bg->getContentSize().height * 0.05f));
     
     auto btnShare = createButton([=](Node* sender){
-        CObjectManager::Instance()->Share();
-        this->End(sender);
+//        CObjectManager::Instance()->Share();
+//        this->End(sender);
+        
+        HttpRequest* request = new (std::nothrow) HttpRequest();
+        request->setUrl("http://www.hshgames.com/game/test.php/");
+//        request->setUrl("https://httpbin.org/");
+        request->setRequestType(HttpRequest::Type::GET);
+        request->setResponseCallback([=](HttpClient *sender, HttpResponse *response)
+        {
+            if (!response)
+            {
+                return;
+            }
+            
+            // You can get original request type from: response->request->reqType
+            if (0 != strlen(response->getHttpRequest()->getTag()))
+            {
+                CCLOG("%s completed", response->getHttpRequest()->getTag());
+            }
+            
+            long statusCode = response->getResponseCode();
+            char statusString[64] = {};
+            sprintf(statusString, "HTTP Status Code: %ld, tag = %s", statusCode,
+                    response->getHttpRequest()->getTag());
+            CCLOG("response code: %ld", statusCode);
+            
+            if (!response->isSucceed())
+            {
+                CCLOG("response failed");
+                CCLOG("error buffer: %s", response->getErrorBuffer());
+                return;
+            }
+            
+            // dump data
+            std::vector<char> *buffer = response->getResponseData();
+            std::string responseStr = "";
+            responseStr.resize(buffer->size());
+            std::copy(buffer->begin(), buffer->end(), responseStr.begin());
+            
+            CCLOG("Http Test, dump data : %s", responseStr.c_str());
+//            for (unsigned int i = 0; i < buffer->size(); i++)
+//            {
+//                CCLOG("%c", (*buffer)[i]);
+//            }
+//            CCLOG("\n");
+            if (response->getHttpRequest()->getReferenceCount() != 2)
+            {
+                CCLOG("request ref count not 2, is %d", response->getHttpRequest()->getReferenceCount());
+            }
+        });
+        request->setTag("GET test1");
+        HttpClient::getInstance()->send(request);
+        request->release();
+        
     }, "shareIcon_2.png", Vec2(bg->getContentSize().width * 0.08f,
                            bg->getContentSize().height * 0.05f));
     

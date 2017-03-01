@@ -160,6 +160,12 @@ tm* CUserDataManager::getLastSavedTime()
 	return localtime(&timer);
 }
 
+long long CUserDataManager::getLastTimestamp()
+{
+    std::string crypto_key = MakeCryptoString(USERDATA_KEY::LAST_TIMESTAMP, USERDATA::CRYPTO_KEY);
+    return UserDefault::getInstance()->getDoubleForKey(crypto_key.c_str(), true);
+}
+
 void CUserDataManager::UserDataLoad()
 {
     this->initUserDefaultValue(m_UserDefaultData);
@@ -513,6 +519,11 @@ void CUserDataManager::setUserData_Reset()
 void CUserDataManager::setLastSavedTime(long long unixTime)
 {
     UserDefault::getInstance()->setDoubleForKey(USERDATA_KEY::LAST_SAVED_TIME.c_str(), unixTime);
+}
+
+void CUserDataManager::setLastTimestamp(long long timestamp)
+{
+    UserDefault::getInstance()->setDoubleForKey(USERDATA_KEY::LAST_TIMESTAMP.c_str(), timestamp);
 }
 
 bool CUserDataManager::CoinUpdate(int value)

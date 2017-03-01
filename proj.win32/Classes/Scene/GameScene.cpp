@@ -198,8 +198,6 @@ void CGameScene::OpenGameMenuLayer()
 {
     this->ScreenFade([=](){
         CObjectManager::Instance()->ZoomIn();
-        CObjectManager::Instance()->getRocket()->ComebackHome();
-		CObjectManager::Instance()->getRocket()->Gift();
         this->clearData();
         this->createRandomCoin();
         m_UILayer->setVisible(false);
@@ -458,6 +456,22 @@ void CGameScene::startTutorial()
     }
 }
 
+void CGameScene::getFreeReward()
+{
+    auto lastRewardTimestamp = time_t(1488375401);//getLastRewardTimestamp();
+    auto currentTimestamp    = time_t(1488375401);//CNetworkManager::Instance()->getCurrentTimestamp();
+    auto freeRewardTime      = lastRewardTimestamp + time_t(1488375401);//getCurrentFreeRewardTime();
+    
+    if(currentTimestamp - lastRewardTimestamp > freeRewardTime)
+    {
+        CObjectManager::Instance()->getRocket()->ComebackHome();
+        CObjectManager::Instance()->getRocket()->Gift();
+        
+//        freeReward();
+//        setNextFreeRewardTime();
+    }
+}
+
 
 // The following items are initialized only once.
 void CGameScene::initMemoryPool()
@@ -598,4 +612,23 @@ void CGameScene::createTutorialLayer()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
+}
+
+void CGameScene::setTimestamp()
+{
+    auto lastTimestamp    = CUserDataManager::Instance()->getLastTimestamp();
+    auto currentTimestamp = time_t(1488375401);//CNetworkManager::Instance()->getCurrentTimestamp();
+    auto tm1              = gmtime(&currentTimestamp);
+    tm*  tm2 = tm1;
+    tm2->tm_hour = 0;
+    tm2->tm_min  = 0;
+    tm2->tm_sec  = 0;
+    auto today            = mktime(tm2);
+    
+    if((currentTimestamp - lastTimestamp) > 86400){
+        CUserDataManager::Instance()->setLastTimestamp(today);
+        
+        // reset daily challenges
+        CChallengeDataManager::Instance()->ResetNormalChallenges();
+    }
 }

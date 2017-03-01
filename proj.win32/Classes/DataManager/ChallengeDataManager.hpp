@@ -105,7 +105,8 @@ public:
 	bool CheckCompleteAll();
 	bool CheckChallengeComplete(int index, bool isHidden);
 	const sCHALLENGE_PARAM* CompleteCheckRealTime(bool isHidden);
-
+    void ResetNormalChallenges();
+    
 	sREWARD_DATA Reward(int index);
 	sREWARD_DATA RewardByKey(std::string key, int value);
     int NonCompleteChallengeExist();
