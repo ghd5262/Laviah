@@ -176,6 +176,8 @@
 		938DE0071E430DD000EE8853 /* ChallengeProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938DE0041E430DD000EE8853 /* ChallengeProgressBar.cpp */; };
 		938FF6D21E1B55FF00664426 /* ChallengeClearChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938FF6D11E1B55FF00664426 /* ChallengeClearChecker.cpp */; };
 		938FF6D31E1B55FF00664426 /* ChallengeClearChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938FF6D11E1B55FF00664426 /* ChallengeClearChecker.cpp */; };
+		93B675CE1E67CC6B005CE861 /* NetworkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B675CC1E67CC6B005CE861 /* NetworkManager.cpp */; };
+		93B675CF1E67CC6B005CE861 /* NetworkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B675CC1E67CC6B005CE861 /* NetworkManager.cpp */; };
 		93C89D2C1E2762980085D85A /* ItemProgress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93C89D2A1E2762980085D85A /* ItemProgress.cpp */; };
 		93CCBB931E498E2A00C010F3 /* OptionPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CCBB911E498E2A00C010F3 /* OptionPopup.cpp */; };
 		93CCBB941E498E2A00C010F3 /* OptionPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CCBB911E498E2A00C010F3 /* OptionPopup.cpp */; };
@@ -495,6 +497,8 @@
 		938FF6D11E1B55FF00664426 /* ChallengeClearChecker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengeClearChecker.cpp; sourceTree = "<group>"; };
 		939694091DC990EF008B2CD2 /* SDKUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKUtil.h; sourceTree = "<group>"; };
 		9396940A1DC9CE17008B2CD2 /* NoticeDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoticeDefine.h; sourceTree = "<group>"; };
+		93B675CC1E67CC6B005CE861 /* NetworkManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkManager.cpp; sourceTree = "<group>"; };
+		93B675CD1E67CC6B005CE861 /* NetworkManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NetworkManager.hpp; sourceTree = "<group>"; };
 		93C89D2A1E2762980085D85A /* ItemProgress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemProgress.cpp; sourceTree = "<group>"; };
 		93C89D2B1E2762980085D85A /* ItemProgress.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ItemProgress.hpp; sourceTree = "<group>"; };
 		93CCBB8E1E495E7800C010F3 /* DataManagerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManagerUtils.h; sourceTree = "<group>"; };
@@ -800,6 +804,8 @@
 				9380EDD21E650FDD0079D724 /* RocketDataManager.hpp */,
 				9380EDDA1E6569FE0079D724 /* MoreGamesDataManager.cpp */,
 				9380EDDB1E6569FE0079D724 /* MoreGamesDataManager.hpp */,
+				93B675CC1E67CC6B005CE861 /* NetworkManager.cpp */,
+				93B675CD1E67CC6B005CE861 /* NetworkManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -1250,6 +1256,7 @@
 				9373118F1D5849C800D5EB5C /* CharacterSelectPopupDP.cpp in Sources */,
 				937311851D5849C800D5EB5C /* json_value.cpp in Sources */,
 				9373115B1D5849C800D5EB5C /* PlayerStates.cpp in Sources */,
+				93B675CE1E67CC6B005CE861 /* NetworkManager.cpp in Sources */,
 				937311841D5849C800D5EB5C /* json_reader.cpp in Sources */,
 				938FF6D21E1B55FF00664426 /* ChallengeClearChecker.cpp in Sources */,
 				9373117C1D5849C800D5EB5C /* Player.cpp in Sources */,
@@ -1356,6 +1363,7 @@
 				930304481E1390D80017C149 /* ChallengeDataManager.cpp in Sources */,
 				932CA1B21E4C164D00CE5110 /* OptionTitlePopup.cpp in Sources */,
 				938DE0071E430DD000EE8853 /* ChallengeProgressBar.cpp in Sources */,
+				93B675CF1E67CC6B005CE861 /* NetworkManager.cpp in Sources */,
 				932999C61E31AD750062B92C /* TranslateManager.cpp in Sources */,
 				930C445F1DF501D10011CFA3 /* UILayer.cpp in Sources */,
 				59DFB3C91E576601002CD020 /* GameEndPopup.cpp in Sources */,

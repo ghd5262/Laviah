@@ -33,6 +33,7 @@
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/ChallengeDataManager.hpp"
+#include "../DataManager/NetworkManager.hpp"
 #include "../AI/States/RocketStates.h"
 #include "../SDKUtil/SDKUtil.h"
 #include <array>
@@ -114,6 +115,7 @@ bool CGameScene::init()
     this->createUILayer();
     this->createTutorialLayer();
     this->initKeyboardListener();
+    this->setTimestamp();
 	return true;
 }
 
@@ -616,19 +618,21 @@ void CGameScene::createTutorialLayer()
 
 void CGameScene::setTimestamp()
 {
-    auto lastTimestamp    = CUserDataManager::Instance()->getLastTimestamp();
-    auto currentTimestamp = time_t(1488375401);//CNetworkManager::Instance()->getCurrentTimestamp();
-    auto tm1              = gmtime(&currentTimestamp);
-    tm*  tm2 = tm1;
-    tm2->tm_hour = 0;
-    tm2->tm_min  = 0;
-    tm2->tm_sec  = 0;
-    auto today            = mktime(tm2);
+    bool exist = (CChallengeDataManager::Instance()->NonCompleteChallengeExist() >= CHALLENGE_DEFINE::LIMIT_COUNT);
+    if(exist) return;
     
-    if((currentTimestamp - lastTimestamp) > 86400){
-        CUserDataManager::Instance()->setLastTimestamp(today);
+    SERVER_REQUEST([=](Json::Value data){
+        auto lastTimestamp    = CUserDataManager::Instance()->getLastTimestamp();
+        auto currentTimestamp = time_t(data["seconds"].asDouble());
+        auto tm1              = gmtime(&currentTimestamp);
+        auto today            = mktime(tm1);
         
-        // reset daily challenges
-        CChallengeDataManager::Instance()->ResetNormalChallenges();
-    }
+        if((currentTimestamp - lastTimestamp) > 86400){
+            CUserDataManager::Instance()->setLastTimestamp(today);
+            
+            // reset daily challenges
+            CChallengeDataManager::Instance()->ResetNormalChallenges();
+        }
+        
+    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
 }
