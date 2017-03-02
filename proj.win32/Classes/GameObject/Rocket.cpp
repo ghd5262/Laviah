@@ -84,6 +84,7 @@ bool CRocket::init()
 		rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 100);
 		rewardPopup->setExitCallback([=](){
 			sender->setVisible(false);
+            this->ChangeState(CFlyAway::Instance());
 		});
 	})
 		->setButtonNormalImage("rewardIcon_s.png")
@@ -91,7 +92,8 @@ bool CRocket::init()
 		->setButtonPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.65f))
 		->show(this);
 	m_Gift->setColor(COLOR::GOLD);
-
+    m_Gift->setVisible(false);
+    
     m_CenterPos = Vec2(PLANET_DEFINE::ZOOMIN_POS);
 	m_Velocity = Vec2(0, 1);
 	m_BulletList = CObjectManager::Instance()->getBulletList();

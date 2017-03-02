@@ -34,6 +34,7 @@
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/ChallengeDataManager.hpp"
 #include "../DataManager/NetworkManager.hpp"
+#include "../DataManager/FreeRewardManager.hpp"
 #include "../AI/States/RocketStates.h"
 #include "../SDKUtil/SDKUtil.h"
 #include <array>
@@ -202,6 +203,7 @@ void CGameScene::OpenGameMenuLayer()
         CObjectManager::Instance()->ZoomIn();
         this->clearData();
         this->createRandomCoin();
+        this->getFreeReward();
         m_UILayer->setVisible(false);
         m_MenuLayer->setVisible(true);
         m_MenuLayer->setDefaultCallbackToTopAgain();
@@ -460,18 +462,29 @@ void CGameScene::startTutorial()
 
 void CGameScene::getFreeReward()
 {
-    auto lastRewardTimestamp = time_t(1488375401);//getLastRewardTimestamp();
-    auto currentTimestamp    = time_t(1488375401);//CNetworkManager::Instance()->getCurrentTimestamp();
-    auto freeRewardTime      = lastRewardTimestamp + time_t(1488375401);//getCurrentFreeRewardTime();
-    
-    if(currentTimestamp - lastRewardTimestamp > freeRewardTime)
-    {
-        CObjectManager::Instance()->getRocket()->ComebackHome();
-        CObjectManager::Instance()->getRocket()->Gift();
+    SERVER_REQUEST([=](Json::Value data){
+        auto rewardTimestamp   = CUserDataManager::Instance()->getFreeRewardTimestamp();
+        auto currentTimestamp  = time_t(data["seconds"].asDouble());
+        auto freeRewardTime    = CFreeRewardManager::Instance()->getFreeRewardTimeLimit();
         
-//        freeReward();
-//        setNextFreeRewardTime();
-    }
+        if((currentTimestamp - rewardTimestamp) > freeRewardTime){
+            CObjectManager::Instance()->getRocket()->ComebackHome();
+            CObjectManager::Instance()->getRocket()->Gift();
+            
+            // reward level up
+            CFreeRewardManager::Instance()->FreeRewardLevelUP();
+            
+            // set time stamp again
+            CUserDataManager::Instance()->setFreeRewardTimestamp(currentTimestamp);
+            
+            // notice popup (for debug)
+            this->CreateAlertPopup()
+            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
+            ->setMessage("free reward")
+            ->show(this, ZORDER::POPUP);
+        }
+        
+    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
 }
 
 
@@ -628,10 +641,17 @@ void CGameScene::setTimestamp()
         auto today            = mktime(tm1);
         
         if((currentTimestamp - lastTimestamp) > 86400){
-            CUserDataManager::Instance()->setLastTimestamp(today);
-            
             // reset daily challenges
             CChallengeDataManager::Instance()->ResetNormalChallenges();
+            
+            // set time stamp again
+            CUserDataManager::Instance()->setLastTimestamp(today);
+            
+            // notice popup (for debug)
+            this->CreateAlertPopup()
+            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
+            ->setMessage("normal challenge reseted")
+            ->show(this, ZORDER::POPUP);
         }
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
