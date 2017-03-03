@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "ObjectManager.h"
 #include "BulletCreator.h"
+#include "../Scene/GameScene.h"
 
 using namespace cocos2d;
 using namespace PLANET_DEFINE;
@@ -32,8 +33,6 @@ bool CPlanet::init()
 	//this->DrawDebugBinding();   //for debug
     if (!Node::init()) return false;
     
-//    this->setBoundingRadius(PLANET_DEFINE::BOUNDING_RADIUS);
-    
 	auto data = CObjectManager::Instance()->getCharacterParam();
 	m_Texture = Sprite::createWithSpriteFrameName(data->_planetTextureName);
     if (m_Texture != nullptr){
@@ -63,7 +62,7 @@ bool CPlanet::init()
 //    m_Texture->getGLProgramState()->setUniformFloat("sampleNum", 100);
 //#endif
     
-    this->setScale(PLANET_DEFINE::SCALE_SIZE);
+//    this->setScale(PLANET_DEFINE::SCALE_SIZE);
 
     return true;
 }
@@ -83,7 +82,8 @@ void CPlanet::CrushShake(float interval, float duration, float speed, float magn
 
 	//experiment more with these four values to get a rough or smooth effect!
 	m_fElapsed = 0.0f;
-	
+    auto originPos = _director->getWinSize() / 2;
+
 	this->schedule([=](float dt) {
 		float randomStart = random(-1000.0f, 1000.0f);
 		m_fElapsed += dt;
@@ -102,16 +102,19 @@ void CPlanet::CrushShake(float interval, float duration, float speed, float magn
 
 		x *= magnitude * damper;
 		y *= magnitude * damper;
-		setPosition(PLANET_DEFINE::ZOOMOUT_POS.x + x, PLANET_DEFINE::ZOOMOUT_POS.y + y);
-		CObjectManager::Instance()->getPlayer()->setPosition(PLAYER_DEFINE::ZOOMOUT_POS.x + x,
-			PLAYER_DEFINE::ZOOMOUT_POS.y + y);
+        
+        CGameScene::getZoomLayer()->setPosition(originPos.width + x, originPos.height + y);
+        
+//		setPosition(PLANET_DEFINE::GAME_POS.x + x, PLANET_DEFINE::GAME_POS.y + y);
+//		CObjectManager::Instance()->getPlayer()->setPosition(PLAYER_DEFINE::POSITION.x + x,
+//			PLAYER_DEFINE::POSITION.y + y);
 		if (m_fElapsed >= duration)
 		{
 			m_fElapsed = 0;
 			this->unschedule("Shake");
 
-			setPosition(PLANET_DEFINE::ZOOMOUT_POS);
-			CObjectManager::Instance()->getPlayer()->setPosition( PLAYER_DEFINE::ZOOMOUT_POS );
+			CGameScene::getZoomLayer()->setPosition(originPos);
+//			CObjectManager::Instance()->getPlayer()->setPosition( PLAYER_DEFINE::POSITION );
 		}
 
 	}, interval, CC_REPEAT_FOREVER, 0.f, "Shake");

@@ -94,10 +94,11 @@ bool CRocket::init()
 	m_Gift->setColor(COLOR::GOLD);
     m_Gift->setVisible(false);
     
-    m_CenterPos = Vec2(PLANET_DEFINE::ZOOMIN_POS);
+    m_CenterPos = Vec2(visibleSize / 2);
 	m_Velocity = Vec2(0, 1);
 	m_BulletList = CObjectManager::Instance()->getBulletList();
     this->createFlameParticle();
+    this->setScale(0.65f);
     
 	return true;
 }
@@ -176,7 +177,7 @@ void CRocket::BonusTimeBegan()
 {
     this->ChangeState(CFlyToTarget::Instance());
     this->setPosition(Vec2(-50, -50));
-    this->setTargetPos(PLAYER_DEFINE::ZOOMOUT_POS);
+    this->setTargetPos(PLAYER_DEFINE::POSITION);
     this->setVelocity(Vec2(800, 300));
     this->setSpeed(800.f);
     
@@ -300,18 +301,3 @@ void CRocket::Gift()
 {
 	m_Gift->setVisible(true);
 }
-
-void CRocket::ZoomIn()
-{
-	auto scaleAction = ScaleTo::create(1.2f, 1.f);
-	auto exponential = EaseExponentialInOut::create(scaleAction);
-	this->runAction(exponential);
-}
-
-void CRocket::ZoomOut()
-{
-	auto scaleAction = ScaleTo::create(1.2f, 0.65f);
-	auto exponential = EaseExponentialInOut::create(scaleAction);
-	this->runAction(exponential);
-}
-

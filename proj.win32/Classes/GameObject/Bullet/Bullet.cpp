@@ -87,8 +87,8 @@ CBullet* CBullet::build()
 
     // rotation init
     this->setRotation(angle);
-	this->setScale(1.5f);
-	this->setBoundingRadius(this->getBoundingRadius() * 1.5f);
+//	this->setScale(1.5f);
+//	this->setBoundingRadius(this->getBoundingRadius() * 1.5f);
     
     return this;
 }
@@ -372,7 +372,7 @@ void CBullet::createScoreCurrentPos(int score)
     auto scoreBullet = CScoreBullet::create(score);
     scoreBullet->setPosition(getPosition());
     scoreBullet->setAnchorPoint(Vec2::ZERO);
-    CGameScene::getGameScene()->addChild(scoreBullet);
+    CGameScene::getZoomLayer()->addChild(scoreBullet);
     CMultipleScore::Instance()->AddScore(score);
 }
 
@@ -396,7 +396,7 @@ void CBullet::createCollisionParticle()
         particle->setGravity(m_RotationVec);
         particle->setSpeed(100);
         particle->setSpeedVar(50);
-        CGameScene::getGameScene()->addChild(particle, ZORDER::BULLET);
+        CGameScene::getZoomLayer()->addChild(particle, ZORDER::BULLET);
     }
 }
 

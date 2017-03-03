@@ -243,7 +243,7 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
     
     bullet->setVisible(false);
     
-    CGameScene::getGameScene()->addChild(bullet, ZORDER::BULLET);
+    CGameScene::getZoomLayer()->addChild(bullet, ZORDER::BULLET);
     
 #if(!USE_MEMORY_POOLING)
     CObjectManager::Instance()->AddBullet(bullet);

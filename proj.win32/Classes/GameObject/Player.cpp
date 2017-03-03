@@ -71,8 +71,8 @@ bool CPlayer::init()
     if (m_MagnetEffect != nullptr)
     {
         m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_MagnetEffect->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
-        CGameScene::getGameScene()->addChild(m_MagnetEffect);
+        m_MagnetEffect->setPosition(PLAYER_DEFINE::POSITION);
+        CGameScene::getZoomLayer()->addChild(m_MagnetEffect);
     }
     
     this->createRunParticle();
@@ -221,7 +221,7 @@ void CPlayer::TakeOffRocket()
 {
 	/*this->retain();
 	this->removeFromParent();
-	CGameScene::getGameScene()->addChild(this, ZORDER::PLAYER);*/
+	CGameScene::getZoomLayer()->addChild(this, ZORDER::PLAYER);*/
 	//this->setPosition(this->getOriginPos());
 	//m_Particle->setVisible(true);
 	//this->release();
@@ -235,7 +235,7 @@ void CPlayer::StartBonusTime()
 
 void CPlayer::EndBonusTime()
 {
-	this->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
+	this->setPosition(PLAYER_DEFINE::POSITION);
 	m_Particle->setVisible(true);
 }
 
@@ -267,7 +267,7 @@ void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, in
 			Sequence::create(
 			MoveBy::create(duration / stackCount, Vec2(stackSizeLR, -stackSizeTB)),
 			MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB)), nullptr), stackCount),
-			CallFunc::create([=](){this->setPosition(PLAYER_DEFINE::ZOOMOUT_POS); }), nullptr));
+			CallFunc::create([=](){this->setPosition(PLAYER_DEFINE::POSITION); }), nullptr));
 	}
 }
 
@@ -333,11 +333,11 @@ void CPlayer::createAliveParticle()
 	auto particle = CParticle_Explosion_2::create("whiteSquare.png");
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        particle->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
+        particle->setPosition(this->getPosition());
         particle->setStartRadius(160);
         particle->setEndRadius(0);
         particle->setDuration(0.5f);
-        CGameScene::getGameScene()->addChild(particle, ZORDER::PLAYER);
+        CGameScene::getZoomLayer()->addChild(particle, ZORDER::PLAYER);
     }
 }
 
@@ -347,7 +347,7 @@ void CPlayer::createDeadParticle()
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());
-        CGameScene::getGameScene()->addChild(particle, ZORDER::PLAYER);
+        CGameScene::getZoomLayer()->addChild(particle, ZORDER::PLAYER);
     }
 }
 
@@ -355,12 +355,12 @@ void CPlayer::createRunParticle()
 {
 	m_Particle = CParticle_Flame::create(m_CharacterParam->_normalTextureName);
     if (m_Particle != nullptr){
-        m_Particle->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
+        m_Particle->setPosition(this->getPosition());
         m_Particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_Particle->setAngle(90);
         m_Particle->setGravity(Vec2(0, -270));
         m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_Particle->setEndSize(4.f);
-		CGameScene::getGameScene()->addChild(m_Particle);
+		CGameScene::getZoomLayer()->addChild(m_Particle, ZORDER::PLAYER-1);
     }
 }

@@ -42,7 +42,7 @@
 USING_NS_CC;
 
 CGameScene* CGameScene::m_GameScene = nullptr;
-cocos2d::NodeGrid* CGameScene::m_GridWorld = nullptr;
+cocos2d::Layer* CGameScene::m_ZoomLayer = nullptr;
 
 Scene* CGameScene::createScene()
 {
@@ -95,14 +95,10 @@ bool CGameScene::init()
 	m_GameScene = this;
 	m_VisibleSize = Director::getInstance()->getVisibleSize();
 	m_TouchPos = m_VisibleSize / 2;
+    
 	this->scheduleUpdate();
-	
-	m_GridWorld = NodeGrid::create();
-	this->addChild(m_GridWorld, 0, 1);
-    
-    
-    
     this->initMemoryPool();
+    this->createZoomLayer();
     this->createBulletCreator();
     this->createBackground();
     this->createPlanet();
@@ -496,6 +492,18 @@ void CGameScene::initMemoryPool()
 #endif
 }
 
+void CGameScene::createZoomLayer()
+{
+    if(m_ZoomLayer) return;
+    
+    m_ZoomLayer = Layer::create();
+    m_ZoomLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_ZoomLayer->setContentSize(m_VisibleSize);
+    m_ZoomLayer->setIgnoreAnchorPointForPosition(false);
+    m_ZoomLayer->setPosition(m_VisibleSize / 2);
+    this->addChild(m_ZoomLayer);
+}
+
 void CGameScene::createBulletCreator()
 {
     auto bulletCreator = CBulletCreator::create();
@@ -515,18 +523,20 @@ void CGameScene::createPlanet()
     CObjectManager::Instance()->ChangeCharacter();
 
     auto planet = CPlanet::create();
-    planet->setPosition(PLANET_DEFINE::ZOOMOUT_POS);
+    planet->setPosition(m_VisibleSize / 2);
     planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    this->addChild(planet, ZORDER::PLANET);
+    m_ZoomLayer->addChild(planet, ZORDER::PLANET);
     CObjectManager::Instance()->setPlanet(planet);
 }
 
 void CGameScene::createPlayer()
 {
     auto player = CPlayer::create();
-    player->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
+    player->setPosition(Vec2(m_VisibleSize.width * 0.5f, (m_VisibleSize.height * 0.5f) +
+                             (PLANET_DEFINE::BOUNDING_RADIUS) +
+                             (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.8f)));
     player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    this->addChild(player, ZORDER::PLAYER);
+    m_ZoomLayer->addChild(player, ZORDER::PLAYER);
     CObjectManager::Instance()->setPlayer(player);
 }
 
@@ -541,7 +551,7 @@ void CGameScene::createRocket()
     rocket->setPosition(CBullet::getSquarePosition(random<int>(0, 360), ROCKET_DEFINE::FLYAWAY_DISTANCE));
     rocket->setTargetPos(CBullet::getSquarePosition(random<int>(0, 360), rocket->getDistance()));
     rocket->ChangeState(CFlyToTouchArea::Instance());
-    this->addChild(rocket, ZORDER::PLAYER);
+    m_ZoomLayer->addChild(rocket, ZORDER::PLAYER);
     CObjectManager::Instance()->setRocket(rocket);
 }
 
@@ -582,8 +592,8 @@ void CGameScene::createItemRanges()
     auto createRange = [=](std::string textureName){
         auto range = CItemRange::create()
         ->setTextureName(textureName)
-        ->show(this, ZORDER::PLAYER);
-        range->setPosition(PLAYER_DEFINE::ZOOMOUT_POS);
+        ->show(m_ZoomLayer, ZORDER::PLAYER);
+        range->setPosition(PLAYER_DEFINE::POSITION);
         range->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         return range;
     };

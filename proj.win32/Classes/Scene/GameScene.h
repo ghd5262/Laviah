@@ -48,7 +48,7 @@ public:
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
-	static cocos2d::NodeGrid* getGridWorld(){ return m_GridWorld; }
+	static cocos2d::Layer* getZoomLayer(){ return m_ZoomLayer; }
 
 	CC_SYNTHESIZE(cocos2d::Vec2, m_TouchPos, TouchPos);
     CC_SYNTHESIZE(bool, m_NeedTutorial, NeedTutorial);
@@ -84,6 +84,7 @@ private:
     
     // The following items are initialized only once.
     void initMemoryPool();
+    void createZoomLayer();
     void createBulletCreator();
     void createBackground();
     void createPlanet();
@@ -100,7 +101,7 @@ private:
     
 private:
 	static CGameScene* m_GameScene;
-	static cocos2d::NodeGrid* m_GridWorld;
+	static cocos2d::Layer* m_ZoomLayer;
     cocos2d::LayerColor* m_ScreenFade;
     CPopup* m_UILayer;
     CPopup* m_MenuLayer;

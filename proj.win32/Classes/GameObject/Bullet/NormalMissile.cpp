@@ -143,7 +143,7 @@ void CNormalMissile::createTargetLine()
 	bullet->setIsFly(false);
 	bullet->build();
 
-    CGameScene::getGameScene()->addChild(bullet, ZORDER::BACKGROUND);
+    CGameScene::getZoomLayer()->addChild(bullet, ZORDER::BACKGROUND);
 
 #if(!USE_MEMORY_POOLING)
 	CObjectManager::Instance()->AddBullet(bullet);

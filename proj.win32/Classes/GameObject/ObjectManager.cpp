@@ -182,25 +182,20 @@ void CObjectManager::EndBonusTime()
 
 void CObjectManager::ZoomIn()
 {
-    this->zoom(m_Planet, PLANET_DEFINE::ZOOMIN_POS, PLANET_DEFINE::ZOOMIN_SIZE);
-    this->zoom(m_Player, PLAYER_DEFINE::ZOOMIN_POS, PLAYER_DEFINE::ZOOMIN_SIZE);
-    m_Rocket->ZoomIn();
+    this->zoom(CGameScene::getZoomLayer(), PLANET_DEFINE::MENU_POS, PLANET_DEFINE::MENU_SIZE);
     m_Rocket->setVisible(true);
     m_Player->setVisible(true);
 }
 
 void CObjectManager::ZoomIn2()
 {
-    this->zoom(m_Planet, PLANET_DEFINE::ZOOMIN_2_POS, PLANET_DEFINE::ZOOMIN_2_SIZE);
-    this->zoom(m_Player, PLAYER_DEFINE::ZOOMIN_2_POS, PLAYER_DEFINE::ZOOMIN_2_SIZE);
+    this->zoom(CGameScene::getZoomLayer(), PLANET_DEFINE::SELECT_POS, PLANET_DEFINE::SELECT_SIZE);
     m_Rocket->setVisible(false);
 }
 
 void CObjectManager::ZoomOut()
 {
-    this->zoom(m_Planet, PLANET_DEFINE::ZOOMOUT_POS, PLANET_DEFINE::SCALE_SIZE);
-    this->zoom(m_Player, PLAYER_DEFINE::ZOOMOUT_POS, PLAYER_DEFINE::ZOOMOUT_SIZE);
-    m_Rocket->ZoomOut();
+    this->zoom(CGameScene::getZoomLayer(), PLANET_DEFINE::GAME_POS, PLANET_DEFINE::GAME_SIZE);
 }
 
 void CObjectManager::RemoveAllObject()

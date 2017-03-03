@@ -34,8 +34,6 @@ public:
     void BonusTimeEnd();
 	void ChangeState(CState<CRocket>* newState){ m_FSM->ChangeState(newState); }
 	void Gift();
-	void ZoomIn();
-	void ZoomOut();
 
 	void setArriveCallback(const ARRIVE_CALLBACK& callback){ m_ArriveCallback = callback; }
     cocos2d::Vec2 getTargetPos() const { return m_TargetPos; }
