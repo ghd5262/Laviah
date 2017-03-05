@@ -47,18 +47,35 @@ CObjectManager::CObjectManager()
         CGameScene::getGameScene()->addChild(m_SpeedController);
     }
     
-    m_LevelList.emplace_back(sLEVEL_BALANCE(20,     1));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(40,     2));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(60,     3, true));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(80,     3));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(120,    4, true));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(160,    4));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(240,    5, true));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(280,    5));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(380,    6, true));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(300,    6));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(400,    7, true));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(440,    7));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(20,  1, 1.5f, 0, PLANET_DEFINE::GAME_POS));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(40,  2, 1.f , 0, PLANET_DEFINE::GAME_POS));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(60,  3, 0.7f, 0, PLANET_DEFINE::GAME_POS, true));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(80,  3, 1.f , 30, Vec2(300, 300)));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(120, 4, 1.5f, 30, Vec2(300, 300), true));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(160, 4, 1.5f, 0, PLANET_DEFINE::GAME_POS));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(220, 5, 1.f , 180, PLANET_DEFINE::GAME_POS, true));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(240, 5, 0.7f, 0, PLANET_DEFINE::GAME_POS, true));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(280, 5, 1.5f, 0, PLANET_DEFINE::GAME_POS));
+////    m_LevelList.emplace_back(sLEVEL_BALANCE(380,    6, true));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(300, 6, 1.5f, 0, PLANET_DEFINE::GAME_POS));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(400, 7, 2.f , 0, Vec2(540, 0), true));
+//    m_LevelList.emplace_back(sLEVEL_BALANCE(440, 7, 1.5f, 215, Vec2(540, 1920)));
+    
+    
+    m_LevelList.emplace_back(sLEVEL_BALANCE(20,  1, 1.f , 0,   PLANET_DEFINE::GAME_POS));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(40,  2, 1.f , 90,  Vec2(270, 960)));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(60,  3, 1.f , 180, Vec2(540, 1248), true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(80,  3, 1.f , 270, Vec2(810, 960)));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(100, 4, 1.f , 0,   PLANET_DEFINE::GAME_POS, true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(160, 4, 1.5f, 0,   Vec2(540, -200)));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(220, 5, 1.f , 180, PLANET_DEFINE::GAME_POS, true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(240, 5, 0.7f, 0,   PLANET_DEFINE::GAME_POS, true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(280, 5, 1.5f, 0,   PLANET_DEFINE::GAME_POS));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(300, 6, 1.5f, 0,   PLANET_DEFINE::GAME_POS));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(400, 7, 2.f , 0,   Vec2(540, 0), true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(440, 7, 1.5f, 215, Vec2(540, 1920)));
+    
+    
 }
 
 CObjectManager* CObjectManager::Instance()
@@ -182,20 +199,45 @@ void CObjectManager::EndBonusTime()
 
 void CObjectManager::ZoomIn()
 {
-    this->zoom(CGameScene::getZoomLayer(), PLANET_DEFINE::MENU_POS, PLANET_DEFINE::MENU_SIZE);
+    this->zoom(CGameScene::getZoomLayer(),
+               PLANET_DEFINE::MENU_POS,
+               0,
+               PLANET_DEFINE::MENU_SIZE,
+               1.2f,
+               true);
     m_Rocket->setVisible(true);
     m_Player->setVisible(true);
 }
 
 void CObjectManager::ZoomIn2()
 {
-    this->zoom(CGameScene::getZoomLayer(), PLANET_DEFINE::SELECT_POS, PLANET_DEFINE::SELECT_SIZE);
+    this->zoom(CGameScene::getZoomLayer(),
+               PLANET_DEFINE::SELECT_POS,
+               0,
+               PLANET_DEFINE::SELECT_SIZE,
+               1.2f,
+               true);
     m_Rocket->setVisible(false);
 }
 
 void CObjectManager::ZoomOut()
 {
-    this->zoom(CGameScene::getZoomLayer(), PLANET_DEFINE::GAME_POS, PLANET_DEFINE::GAME_SIZE);
+    this->zoom(CGameScene::getZoomLayer(),
+               PLANET_DEFINE::GAME_POS,
+               0,
+               PLANET_DEFINE::GAME_SIZE,
+               1.2f,
+               true);
+}
+
+void CObjectManager::ZoomOut2()
+{
+    this->zoom(CGameScene::getZoomLayer(),
+               PLANET_DEFINE::MENU_POS,
+               0,
+               0.7f,
+               1.2f,
+               true);
 }
 
 void CObjectManager::RemoveAllObject()
@@ -225,10 +267,13 @@ void CObjectManager::createBulletByTimer(float delta)
 //			if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_bonustime))
 //				m_BulletCreator->setPattern(m_PatternManager->getRandomBonusTimePattern());
             if(!CTutorialLayer::Instance()->getIsRunning()){
-                auto level = m_LevelList.at(m_GameLevel)._level;
-                auto below = m_LevelList.at(m_GameLevel)._below;
+                auto levelData = m_LevelList.at(m_GameLevel);
+                
+                auto level = levelData._level;
+                auto below = levelData._below;
                 auto data = m_PatternManager->getRandomNormalPatternByLevel(level, below);
                 m_BulletCreator->setPattern(data);
+//                this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
 //               m_BulletCreator->setPattern("pattern_32");
 //               m_BulletCreator->setPattern(0);
             }
@@ -247,7 +292,6 @@ void CObjectManager::createBulletByTimer(float delta)
 
 void CObjectManager::inGameUpdate(float delta)
 {
-    m_Player->ParticleVisible(!m_IsGamePause); //;;;
     if (m_IsGamePause) return;
     
     m_RotationSpeed = ((m_SpeedController->getPositionX() * delta));
@@ -313,18 +357,30 @@ void CObjectManager::setGameLevelByTimer()
     if(m_LevelList.at(m_GameLevel)._time < m_LevelTimer)
     {
         m_GameLevel++;
+        auto levelData = m_LevelList.at(m_GameLevel);
+        this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
     }
 }
 
 void CObjectManager::zoom(cocos2d::Node* obj,
                           cocos2d::Vec2 zoomPos,
-                          float zoomSize)
+                          float zoomAngle,
+                          float zoomSize,
+                          float duration,
+                          bool force)
 {
-    auto scaleAction = ScaleTo::create(1.2f, zoomSize);
-    auto moveAction  = MoveTo::create(1.2f,  zoomPos);
-    auto spawnAction = Spawn::createWithTwoActions(scaleAction, moveAction);
-    auto exponential = EaseExponentialInOut::create(spawnAction);
+    if(force) obj->stopActionByTag(100);
+    if(obj->getActionByTag(100)) return;
+    
+    auto scaleAction  = ScaleTo::create(duration,  zoomSize);
+    auto moveAction   = MoveTo::create(duration,   zoomPos);
+    auto rotateAction = RotateTo::create(duration, zoomAngle);
+    auto spawnAction  = Spawn::create(scaleAction, moveAction, rotateAction, nullptr);
+    auto exponential  = EaseExponentialInOut::create(spawnAction);
+    exponential->setTag(100);
     obj->runAction(exponential);
+//    spawnAction->setTag(100);
+//    obj->runAction(spawnAction);
 }
 
 void CObjectManager::InitTutorialStep()

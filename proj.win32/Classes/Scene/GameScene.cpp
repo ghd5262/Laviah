@@ -134,7 +134,7 @@ void CGameScene::GameStart()
     m_UILayer->setVisible(true);
     m_UILayer->setDefaultCallbackToTopAgain();
     m_MenuLayer->setVisible(false);
-    CObjectManager::Instance()->ZoomOut();
+    CObjectManager::Instance()->ZoomIn();
     CObjectManager::Instance()->getPlayer()->GameStart();
     CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
@@ -151,6 +151,7 @@ void CGameScene::GameResume()
 void CGameScene::GamePause()
 {
     CObjectManager::Instance()->setIsGamePause(true);
+    CObjectManager::Instance()->getPlayer()->ParticleVisible(false); //;;;
     this->turnDownSound();
 }
 
@@ -163,7 +164,7 @@ void CGameScene::GameResult()
 void CGameScene::GameEnd()
 {
     this->createEndPopup();
-//    this->GamePause();
+    this->GamePause();
 }
 
 void CGameScene::GameHelp()
@@ -191,6 +192,7 @@ void CGameScene::OpenGamePausePopup()
     
     this->GamePause();
 	this->createPausePopup();
+    m_ZoomLayer->pause();
 }
 
 void CGameScene::OpenGameMenuLayer()
@@ -561,6 +563,8 @@ void CGameScene::createCountDown()
     ->addLastEventListner([=](Node* sender){
         CObjectManager::Instance()->setIsGamePause(false);
         CObjectManager::Instance()->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+        CObjectManager::Instance()->getPlayer()->ParticleVisible(true); //;;;
+        m_ZoomLayer->resume();
         this->startTutorial();
     })
     ->setFont(Color4B::WHITE, 65)
@@ -606,7 +610,7 @@ void CGameScene::createItemRanges()
 void CGameScene::createComboUI()
 {
     auto multiscore = CMultipleScore::Instance();
-    this->addChild(multiscore, ZORDER::BACKGROUND);
+    this->addChild(multiscore, ZORDER::POPUP);
 }
 
 void CGameScene::createMenuLayer()

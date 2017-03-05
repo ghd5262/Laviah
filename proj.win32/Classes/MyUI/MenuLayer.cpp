@@ -78,7 +78,7 @@ bool CMenuLayer::init()
 	auto createLayerButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, Size size){
 		auto btn = CMyButton::create()
 			->addEventListener(callback)
-			->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, size.width, size.height))
+			->setLayer(LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, size.width, size.height))
 			->setContents(name)
 			->setFont(Color3B::WHITE, 40)
 			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -161,9 +161,7 @@ bool CMenuLayer::init()
         // character select button
         createLayerButton([=](Node* sender){
             CGameScene::getGameScene()->OpenCharacterSelectPopup();
-        }, "", Vec2(popupSize.width * 0.5f, (popupSize.height * 0.5f) +
-                    (PLANET_DEFINE::BOUNDING_RADIUS) +
-                    (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.8f)), Size(100, 100)),
+        }, "", CObjectManager::Instance()->getPlayer()->getPosition(), Size(100, 100)),
         
         // start button
         CMyButton::create()

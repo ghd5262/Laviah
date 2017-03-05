@@ -82,8 +82,11 @@ void CPlanet::CrushShake(float interval, float duration, float speed, float magn
 
 	//experiment more with these four values to get a rough or smooth effect!
 	m_fElapsed = 0.0f;
-    auto originPos = _director->getWinSize() / 2;
-
+    auto player = CObjectManager::Instance()->getPlayer();
+    if(!player) return;
+    
+    if(this->isScheduled("Shake")) return;
+    
 	this->schedule([=](float dt) {
 		float randomStart = random(-1000.0f, 1000.0f);
 		m_fElapsed += dt;
@@ -103,18 +106,15 @@ void CPlanet::CrushShake(float interval, float duration, float speed, float magn
 		x *= magnitude * damper;
 		y *= magnitude * damper;
         
-        CGameScene::getZoomLayer()->setPosition(originPos.width + x, originPos.height + y);
         
-//		setPosition(PLANET_DEFINE::GAME_POS.x + x, PLANET_DEFINE::GAME_POS.y + y);
-//		CObjectManager::Instance()->getPlayer()->setPosition(PLAYER_DEFINE::POSITION.x + x,
-//			PLAYER_DEFINE::POSITION.y + y);
+        m_Texture->setPosition(Vec2(getContentSize() * 0.5f) + Vec2(x, y));
+        player->setTexturePos(Vec2(player->getContentSize() * 0.5f) + Vec2(x, y));
 		if (m_fElapsed >= duration)
 		{
 			m_fElapsed = 0;
 			this->unschedule("Shake");
-
-			CGameScene::getZoomLayer()->setPosition(originPos);
-//			CObjectManager::Instance()->getPlayer()->setPosition( PLAYER_DEFINE::POSITION );
+            m_Texture->setPosition(this->getContentSize() / 2);
+            player->setTexturePos(player->getContentSize() / 2);
 		}
 
 	}, interval, CC_REPEAT_FOREVER, 0.f, "Shake");

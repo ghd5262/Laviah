@@ -68,6 +68,8 @@ public:
 	
 	// 좌우로 흔들림
 	void StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount);
+    
+    void setTexturePos(cocos2d::Vec2 pos){if(m_Texture)m_Texture->setPosition(pos);};
 
 	// 게임 시작할 때
     void GameStart();

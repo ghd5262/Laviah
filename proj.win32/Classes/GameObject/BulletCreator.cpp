@@ -104,27 +104,6 @@ void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
 {
     auto line = this->getOneLineOfPattern(data->_pattern, data->_width, currentHeight);
     this->createOneLine(line, currentHeight, distance, angle, isDelay, data->_widthPadding);
-//    
-//    
-//    //for(int width = 0; width < data->_width; width++)
-//	for (int width = data->_width-1; width >= 0; width--)
-//    {
-//		int index = (data->_width * currentHeight) + ((data->_width - 1) - width);
-//        auto symbol = data->_pattern[index];
-//		int w = width;
-//        if(symbol == ' ') continue;
-//        
-//        // 각 총알의 각도
-//        // width번째 총알 = (padding * width) - 프레임 간 회전 정도
-//		if (m_IsFlip) 
-//			w = ((data->_width - 1) - width);
-//
-//		float bulletAngle = (data->_widthPadding * w) - angle;
-//		bulletAngle += data->_widthPadding / 2;									 // 각도 보정 (패턴이 중앙에 오도록)
-//        bulletAngle += (90 - ((data->_widthPadding * data->_width - 1) / 2));	 // 각도 보정
-//        
-//		this->CreateBullet(symbol, bulletAngle, distance, isDelay);
-//    }
 }
 
 void CBulletCreator::createOneLine(std::string line,

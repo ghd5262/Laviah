@@ -33,6 +33,7 @@ CPlayer* CPlayer::create()
 
 CPlayer::CPlayer()
 : m_CharacterParam(nullptr)
+, m_Texture(nullptr)
 , m_Angle(0.f)
 , m_fMaxLife(0)
 , m_fLife(0)
@@ -97,6 +98,7 @@ void CPlayer::Clear()
 
 void CPlayer::GameStart()
 {
+    m_Particle->setPosition(this->getPosition());
     if(!this->isVisible())
     {
         this->PlayerAlive();
@@ -121,6 +123,7 @@ void CPlayer::PlayerAlive()
 }
 
 void CPlayer::PlayerDead(){
+    m_Particle->setVisible(false);
 	m_MagnetEffect->setMagnetAlive(false);
     this->createDeadParticle();
     this->setVisible(false);
@@ -152,6 +155,9 @@ void CPlayer::LostSomeHealth(float loseHealth)
         m_fLife = 0.f;
 		this->PlayerDead();
         CMultipleScore::Instance()->UpdateScore();
+//        CObjectManager::Instance()->SpeedControl(0.5f, 0);
+//        CObjectManager::Instance()->ZoomIn();
+//        CGameScene::getGameScene()->GameEnd();
 		if (GLOBAL->RUN_SCORE < 3000)	CGameScene::getGameScene()->GameResult();
 		else							CGameScene::getGameScene()->WatchVideo();
 	}
@@ -260,19 +266,19 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 
 void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount)
 {
-	if (!m_Invincibility){
-		this->runAction(
-			Sequence::create(
-			Repeat::create(
-			Sequence::create(
-			MoveBy::create(duration / stackCount, Vec2(stackSizeLR, -stackSizeTB)),
-			MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB)), nullptr), stackCount),
-			CallFunc::create([=](){this->setPosition(PLAYER_DEFINE::POSITION); }), nullptr));
+    if (!m_Invincibility){
+        auto move1 = MoveBy::create(duration / stackCount, Vec2(stackSizeLR, -stackSizeTB));
+        auto move2 = MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB));
+        auto repeat = Repeat::create(Sequence::create(move1, move2, nullptr), stackCount);
+        auto function = CallFunc::create([=](){m_Texture->setPosition(this->getContentSize() / 2); });
+        auto sequence = Sequence::create(repeat, function, nullptr);
+        m_Texture->runAction(sequence);
 	}
 }
 
 void CPlayer::GotMagnetItem()
 {
+    m_MagnetEffect->setPosition(this->getPosition());
     m_MagnetEffect->GotMagnetItem();
 }
 

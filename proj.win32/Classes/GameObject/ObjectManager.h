@@ -1,9 +1,11 @@
 #pragma once
 #include <vector>
+#include "Planet.h"
 #include "../Common/HSHUtility.h"
 #include "../AI/StateMachine.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/RocketDataManager.hpp"
+
 /*------------------------------ObjectManager 클래스설명----------------------------------
 *
 * CMover를 상속받는 모든 클래스를 Execute및 Remove하는 함수이다.
@@ -45,6 +47,7 @@ public:
     void ZoomIn();
     void ZoomIn2();
     void ZoomOut();
+    void ZoomOut2();
     void InitTutorialStep();
     void Share();
 
@@ -85,7 +88,10 @@ private:
     void setGameLevelByTimer();
     void zoom(cocos2d::Node* obj,
               cocos2d::Vec2 zoomPos,
-              float zoomSize);
+              float zoomAngle,
+              float zoomSize,
+              float duration,
+              bool force = false);
     
     CObjectManager();
 	~CObjectManager(){};
@@ -93,15 +99,25 @@ private:
     struct sLEVEL_BALANCE{
         float _time;
         int   _level;
+        float _zoom;
+        int   _angle;
+        cocos2d::Vec2 _pos;
         bool  _below;
+        
         sLEVEL_BALANCE()
         : _time(0.f)
         , _level(0)
+        , _zoom(1.f)
+        , _angle(0)
+        , _pos(PLANET_DEFINE::GAME_POS)
         , _below(false){}
-        
-        sLEVEL_BALANCE(float time, int level, bool below = false)
+
+        sLEVEL_BALANCE(float time, int level, float zoom, int angle, cocos2d::Vec2 pos, bool below = false)
         : _time(time)
         , _level(level)
+        , _zoom(zoom)
+        , _angle(angle)
+        , _pos(pos)
         , _below(below){}
     };
 

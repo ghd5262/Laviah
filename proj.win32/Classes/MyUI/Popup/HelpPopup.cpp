@@ -40,23 +40,23 @@ bool CHelpPopup::init()
 	//	this->addChild(bg);
 	//}
 
-	// PageView »ý¼º
+	// PageView ï¿½ï¿½
 	auto pageview = PageView::create();
 	pageview->setTouchEnabled(true);
 	pageview->setContentSize(visibleSize);
 	pageview->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f));
 	pageview->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	for (int i = 0; i < helpImgCount; i++) {
-		// Layout »ý¼º
+		// Layout ï¿½ï¿½
 		auto layout = Layout::create();
 		layout->setSize(visibleSize);
 
-		// ImageView¸¦ »ý¼ºÇÏ°í Layout¿¡ addÇÔ
+		// ImageViewï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ Layoutï¿½ï¿½ addï¿½ï¿½
 		auto imageView = ImageView::create(StringUtils::format("helpImg_%d.png", i + 1));
 		imageView->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
 		layout->addChild(imageView);
 
-		// LayoutÀ» PageView¿¡ addÇÔ
+		// Layoutï¿½ï¿½ PageViewï¿½ï¿½ addï¿½ï¿½
 		pageview->addPage(layout);
 	}
 

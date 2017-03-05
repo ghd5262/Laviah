@@ -46,6 +46,7 @@ void CPlayCoin::CollisionWithPlayer()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto targetPos = Vec2(visibleSize.width * 0.055f, visibleSize.height * 0.925f);
+    targetPos = CGameScene::getZoomLayer()->convertToNodeSpace(targetPos);
     auto length = Vec2(targetPos - this->getPosition()).length();
     auto cPos1 = Vec2(this->getPosition().x - (length * 0.3f),
                       this->getPosition().y - 50.f);
