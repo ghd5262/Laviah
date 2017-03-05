@@ -47,6 +47,8 @@
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		59DFB3C81E576601002CD020 /* GameEndPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59DFB3C61E576601002CD020 /* GameEndPopup.cpp */; };
 		59DFB3C91E576601002CD020 /* GameEndPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59DFB3C61E576601002CD020 /* GameEndPopup.cpp */; };
+		59E52E901E68533800ABDA2C /* FreeRewardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E52E8E1E68533800ABDA2C /* FreeRewardManager.cpp */; };
+		59E52E911E68533800ABDA2C /* FreeRewardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E52E8E1E68533800ABDA2C /* FreeRewardManager.cpp */; };
 		930304381E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304361E0A1CF80017C149 /* BonusTimeLayer.cpp */; };
 		930304391E0A1CF80017C149 /* BonusTimeLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304361E0A1CF80017C149 /* BonusTimeLayer.cpp */; };
 		930304421E1248A20017C149 /* StandBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930304401E1248A20017C149 /* StandBullet.cpp */; };
@@ -277,6 +279,8 @@
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		59DFB3C61E576601002CD020 /* GameEndPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameEndPopup.cpp; sourceTree = "<group>"; };
 		59DFB3C71E576601002CD020 /* GameEndPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GameEndPopup.hpp; sourceTree = "<group>"; };
+		59E52E8E1E68533800ABDA2C /* FreeRewardManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FreeRewardManager.cpp; sourceTree = "<group>"; };
+		59E52E8F1E68533800ABDA2C /* FreeRewardManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FreeRewardManager.hpp; sourceTree = "<group>"; };
 		930304361E0A1CF80017C149 /* BonusTimeLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BonusTimeLayer.cpp; sourceTree = "<group>"; };
 		930304371E0A1CF80017C149 /* BonusTimeLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BonusTimeLayer.hpp; sourceTree = "<group>"; };
 		930304401E1248A20017C149 /* StandBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StandBullet.cpp; sourceTree = "<group>"; };
@@ -806,6 +810,8 @@
 				9380EDDB1E6569FE0079D724 /* MoreGamesDataManager.hpp */,
 				93B675CC1E67CC6B005CE861 /* NetworkManager.cpp */,
 				93B675CD1E67CC6B005CE861 /* NetworkManager.hpp */,
+				59E52E8E1E68533800ABDA2C /* FreeRewardManager.cpp */,
+				59E52E8F1E68533800ABDA2C /* FreeRewardManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -920,8 +926,8 @@
 				937311111D5849C700D5EB5C /* LevelProgressBar.cpp */,
 				937311121D5849C700D5EB5C /* LevelProgressBar.h */,
 				937311131D5849C700D5EB5C /* MultipleScore.cpp */,
-				937311141D5849C700D5EB5C /* MultipleScore.h */,
 				937311151D5849C700D5EB5C /* MyButton.cpp */,
+				937311141D5849C700D5EB5C /* MultipleScore.h */,
 				937311161D5849C700D5EB5C /* MyButton.h */,
 				937311171D5849C700D5EB5C /* Popup */,
 				937311361D5849C700D5EB5C /* Popup.cpp */,
@@ -1287,6 +1293,7 @@
 				937311741D5849C800D5EB5C /* GameObject.cpp in Sources */,
 				937311971D5849C800D5EB5C /* HelpPopup.cpp in Sources */,
 				9373119F1D5849C800D5EB5C /* SpeechBubble.cpp in Sources */,
+				59E52E901E68533800ABDA2C /* FreeRewardManager.cpp in Sources */,
 				9373115F1D5849C800D5EB5C /* AudioManager.cpp in Sources */,
 				9373119D1D5849C800D5EB5C /* Popup.cpp in Sources */,
 				9373116F1D5849C800D5EB5C /* PlayItem.cpp in Sources */,
@@ -1357,6 +1364,7 @@
 				930C445B1DF501BA0011CFA3 /* MenuLayer.cpp in Sources */,
 				938FF6D31E1B55FF00664426 /* ChallengeClearChecker.cpp in Sources */,
 				93CCBB941E498E2A00C010F3 /* OptionPopup.cpp in Sources */,
+				59E52E911E68533800ABDA2C /* FreeRewardManager.cpp in Sources */,
 				9366457E1E1B92E800066BB4 /* ChallengeRewarder.cpp in Sources */,
 				93579E5F1E5ACE7900D863A0 /* MessageBox.cpp in Sources */,
 				9380EDD41E650FDD0079D724 /* RocketDataManager.cpp in Sources */,
