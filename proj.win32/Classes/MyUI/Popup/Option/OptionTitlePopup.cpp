@@ -44,21 +44,65 @@ bool COptionTitlePopup::init()
     auto titleList = CChallengeDataManager::Instance()->getHiddenChallengeList();
     for(auto title : titleList)
     {
+        auto data       = title.second;
+        auto value      = 0;
+        
+        switch (data->_checkerType){
+//            case CHECKER_TYPE::ETC:
+//                if (checker == m_CheckerList.end()) {
+//                    CCLOG("There is no checker with key %s", key.c_str());
+//                    CCASSERT(false, "There is no checker with key");
+//                    return false;
+//                }
+//                if (!checker->second(mtrlValue)) return false;
+//                break;
+            case CHECKER_TYPE::GLOBAL_DATA:
+                for (auto key : data->_materialKeyList)
+                    value += GLOBAL->getVariable(key);
+                break;
+            case CHECKER_TYPE::SINGLE_DATA:
+                for (auto key : data->_materialKeyList)
+                    value += CUserDataManager::Instance()->getUserData_Number(key);
+                break;
+            case CHECKER_TYPE::ITEM_EXIST:
+                    value = CUserDataManager::Instance()->getUserData_IsItemHave(data->_materialKeyList.at(0), data->_materialValueList.at(0));
+                break;
+            case CHECKER_TYPE::ITEM_COUNT:
+                for (auto key : data->_materialKeyList)
+                    value += CUserDataManager::Instance()->getUserData_List(key).size();
+                break;
+        }
+        
+        
+
+        
+        
+        
+        auto mtrlValue = 0;
+        for (auto value : data->_materialValueList)
+            mtrlValue += value;
+
+        auto content = StringUtils::format("%d / %d", value, mtrlValue);
+        
         auto layer = Widget::create();
         layer->setContentSize(Size(layerSize.width * 0.9f, layerSize.height * 0.05f));
         layer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         titleScroll->pushBackCustomItem(layer);
         
-        auto btn = this->createTitleDP(TRANSLATE((title.second)->_contents));
+        auto btn = this->createTitleDP(TRANSLATE(data->_contents));
         btn->setSwallowTouches(false);
         btn->setButtonPosition(Vec2((layer->getContentSize().width * 0.5f) - 7.f,
                                     layer->getContentSize().height * 0.5f));
+        btn->addClickEventListener([=](Ref* sender){
+            btn->changeContents(content);
+            btn->scheduleOnce([=](float delta){
+                btn->changeContents(TRANSLATE(data->_contents));
+            }, 3.f, "showContent");
+        });
         btn->show(layer);
         
-        if(1){
-            btn->setTouchEnable(false, Color3B::WHITE);
-        }
-        else{
+        
+        if(CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_HIDDEN_LIST, data->_index)){
             btn->setColor(COLOR::GOLD);
         }
     }

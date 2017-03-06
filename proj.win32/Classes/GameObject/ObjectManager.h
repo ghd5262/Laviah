@@ -48,6 +48,9 @@ public:
     void ZoomIn2();
     void ZoomOut();
     void ZoomOut2();
+    void GiantMode();
+    void NormalMode();
+    
     void InitTutorialStep();
     void Share();
 

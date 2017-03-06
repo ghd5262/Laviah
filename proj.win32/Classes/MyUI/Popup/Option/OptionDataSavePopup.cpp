@@ -89,6 +89,7 @@ bool COptionDataSavePopup::init()
     buttonCreate([=](Node* sender){
         alertCreate([](Node* sender){
             CUserDataManager::Instance()->setUserData_Reset();
+            CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::COIN, 1000000);
             CUserDataManager::Instance()->SaveUserData(true, true);
         }, TRANSLATE("OPTION_DATASAVE_RESET_CHECK"));
     }, TRANSLATE("OPTION_DATASAVE_RESET"), Vec2(layer->getContentSize().width * 0.735f, layer->getContentSize().height * 0.2f), COLOR::BRIGHTRED_ALPHA);

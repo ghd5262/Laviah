@@ -179,6 +179,8 @@ void CPlayer::Rotation(float speed)
 
 void CPlayer::GiantMode()
 {
+    CObjectManager::Instance()->GiantMode();
+    
 	auto action = Sequence::create(
 		ScaleTo::create(0.5f, GIANT_SCALE),
 		CallFunc::create([=](){
@@ -193,6 +195,8 @@ void CPlayer::GiantMode()
 
 void CPlayer::NormalMode()
 {
+    CObjectManager::Instance()->NormalMode();
+    
     //1초간 무적
     InvincibilityMode(1.5f);
 	auto action = Sequence::create(

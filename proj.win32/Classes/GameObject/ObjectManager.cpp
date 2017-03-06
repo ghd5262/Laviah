@@ -240,6 +240,19 @@ void CObjectManager::ZoomOut2()
                true);
 }
 
+void CObjectManager::GiantMode()
+{
+    auto scaleAction1  = ScaleTo::create(1.f,  0.7f);
+    auto exponential1  = EaseExponentialInOut::create(scaleAction1);
+    CGameScene::getZoomLayer()->runAction(exponential1);
+}
+
+void CObjectManager::NormalMode()
+{
+    auto levelData = m_LevelList.at(m_GameLevel);
+    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 1.f);
+}
+
 void CObjectManager::RemoveAllObject()
 {
 #if(USE_MEMORY_POOLING)
