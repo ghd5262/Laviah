@@ -78,7 +78,7 @@ bool CMenuLayer::init()
 	auto createLayerButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, Size size){
 		auto btn = CMyButton::create()
 			->addEventListener(callback)
-			->setLayer(LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, size.width, size.height))
+			->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, size.width, size.height))
 			->setContents(name)
 			->setFont(Color3B::WHITE, 40)
 			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

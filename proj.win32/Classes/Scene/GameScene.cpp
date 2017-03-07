@@ -134,7 +134,11 @@ void CGameScene::GameStart()
     m_UILayer->setVisible(true);
     m_UILayer->setDefaultCallbackToTopAgain();
     m_MenuLayer->setVisible(false);
+    
+    // ver-1
     CObjectManager::Instance()->ZoomIn();
+  
+//    CObjectManager::Instance()->ZoomOut();
     CObjectManager::Instance()->getPlayer()->GameStart();
     CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);

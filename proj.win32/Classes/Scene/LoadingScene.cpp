@@ -121,7 +121,8 @@ void CLoadingScene::callbackDownloadComplete(Ref* object)
 {
 	CCLOG("Loading Scene %s", __FUNCTION__);
 
-	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
+//	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
+    if(0){
 		CSDKUtil::Instance()->GoogleLogin();
 	}
 	else{

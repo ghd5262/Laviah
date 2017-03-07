@@ -242,6 +242,7 @@ void CObjectManager::ZoomOut2()
 
 void CObjectManager::GiantMode()
 {
+    //ver-1
     auto scaleAction1  = ScaleTo::create(1.f,  0.7f);
     auto exponential1  = EaseExponentialInOut::create(scaleAction1);
     CGameScene::getZoomLayer()->runAction(exponential1);
@@ -249,6 +250,7 @@ void CObjectManager::GiantMode()
 
 void CObjectManager::NormalMode()
 {
+    //ver-1
     auto levelData = m_LevelList.at(m_GameLevel);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 1.f);
 }
@@ -370,6 +372,7 @@ void CObjectManager::setGameLevelByTimer()
     if(m_LevelList.at(m_GameLevel)._time < m_LevelTimer)
     {
         m_GameLevel++;
+        //ver-1
         auto levelData = m_LevelList.at(m_GameLevel);
         this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
     }
