@@ -89,6 +89,7 @@ private:
     void bulletListExecute();
     void bulletListRotate();
     void setGameLevelByTimer();
+    void setGameStateByLevel();
     void zoom(cocos2d::Node* obj,
               cocos2d::Vec2 zoomPos,
               float zoomAngle,
@@ -101,6 +102,7 @@ private:
     
     struct sLEVEL_BALANCE{
         float _time;
+        float _speed;
         int   _level;
         float _zoom;
         int   _angle;
@@ -109,14 +111,16 @@ private:
         
         sLEVEL_BALANCE()
         : _time(0.f)
+        , _speed(0.f)
         , _level(0)
         , _zoom(1.f)
         , _angle(0)
         , _pos(PLANET_DEFINE::GAME_POS)
         , _below(false){}
 
-        sLEVEL_BALANCE(float time, int level, float zoom, int angle, cocos2d::Vec2 pos, bool below = false)
+        sLEVEL_BALANCE(float time, float speed, int level, float zoom, int angle, cocos2d::Vec2 pos, bool below = false)
         : _time(time)
+        , _speed(speed)
         , _level(level)
         , _zoom(zoom)
         , _angle(angle)
@@ -132,4 +136,5 @@ private:
     CItemManager* m_ItemManager;
     CBulletPatternDataManager* m_PatternManager;
     float m_RotationSpeed;
+    float m_GiantSpeed;
 };

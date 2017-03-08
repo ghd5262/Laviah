@@ -44,9 +44,7 @@ CPlayerGiant* CPlayerGiant::Instance()
 }
 
 void CPlayerGiant::Enter(CPlayer* player)
-{
-    CObjectManager::Instance()->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED * 1.5f);
-    
+{    
     // change player to GiantMode
 	player->GiantMode();
 }
@@ -61,8 +59,6 @@ void CPlayerGiant::Execute(CPlayer* player, float delta)
 
 void CPlayerGiant::Exit(CPlayer* player)
 {
-    CObjectManager::Instance()->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
-    
     // change player to NormalMode
 	player->NormalMode();
 }

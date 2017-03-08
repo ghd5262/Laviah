@@ -54,6 +54,7 @@ public:
     
     CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterInfo, CharacterInfo);
 	CC_SYNTHESIZE(float, m_RotationAngle, RotationAngle);
+    CC_SYNTHESIZE(float, m_LineIntervalLimit, LineIntervalLimit);
     CC_SYNTHESIZE(bool, m_IsFlip, IsFlip);
 
 private:
@@ -83,7 +84,6 @@ private:
     CBulletDataManager* m_BulletDataManager;
 	float m_CoinTimer;
 	float m_Time;
-	float m_LineIntervalLimit;
     int m_CurrentHeight;
     bool m_Running;
 };

@@ -124,7 +124,7 @@ bool CUILayer::init()
     ->setPopupPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f))
     ->show(this);
 
-//    this->initItemTestButton();
+    this->initItemTestButton();
 //    CGameScene::getGameScene()->GameResume();
     
     this->setDefaultCallback([=](Node* sender){
