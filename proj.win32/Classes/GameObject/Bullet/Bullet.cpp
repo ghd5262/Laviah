@@ -329,17 +329,6 @@ void CBullet::R_FadeOutWithCount(int repeat, float removeTime)
 }
 
 
-void CBullet::StackedRL(float duration, float stackSize, int stackCount)
-{
-	this->runAction(
-		Repeat::create(
-		Sequence::create(
-		MoveBy::create(duration / stackCount, Vec2(stackSize, 0)),
-		MoveBy::create(duration / stackCount, Vec2(-stackSize, 0)),
-		nullptr), stackCount));
-}
-
-
 /* 조종행동 Seek - 오브젝트를 목표지점까지 이동 */
 void CBullet::Seek(float delta)
 {

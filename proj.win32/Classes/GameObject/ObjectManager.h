@@ -50,7 +50,6 @@ public:
     void ZoomOut2();
     void GiantMode();
     void NormalMode();
-    
     void InitTutorialStep();
     void Share();
 
@@ -61,6 +60,13 @@ public:
     // 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllShooter() 호출함
     void RemoveAllObject();
     void ReturnToMemoryBlockAll();
+    
+    static void Shake(float interval,
+                      float duration,
+                      float speed,
+                      float magnitude,
+                      cocos2d::Node* owner,
+                      cocos2d::Vec2 originPos);
 
 	//getter & setter
     std::vector<CBullet*>* getBulletList(){ return &m_BulletList; }

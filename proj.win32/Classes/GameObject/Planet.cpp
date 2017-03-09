@@ -72,52 +72,10 @@ void CPlanet::Clear()
     this->setRotation(0);
 }
 
-float CPlanet::noise(int x, int y) {
-	int n = x + y * 57;
-	n = (n << 13) ^ n;
-	return (1.0 - ((n * ((n * n * 15731) + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
-}
-
-void CPlanet::CrushShake(float interval, float duration, float speed, float magnitude) {
-
-	//experiment more with these four values to get a rough or smooth effect!
-	m_fElapsed = 0.0f;
-    auto player = CObjectManager::Instance()->getPlayer();
-    if(!player) return;
-    
-    if(this->isScheduled("Shake")) return;
-    
-	this->schedule([=](float dt) {
-		float randomStart = random(-1000.0f, 1000.0f);
-		m_fElapsed += dt;
-
-		float percentComplete = m_fElapsed / duration;
-
-		// We want to reduce the shake from full power to 0 starting half way through
-		float damper = 1.0f - clampf(2.0f * percentComplete - 1.0f, 0.0f, 1.0f);
-
-		// Calculate the noise parameter starting randomly and going as fast as speed allows
-		float alpha = randomStart + speed * percentComplete;
-
-		// map noise to [-1, 1]
-		float x = noise(alpha, 0.0f) * 2.0f - 1.0f;
-		float y = noise(0.0f, alpha) * 2.0f - 1.0f;
-
-		x *= magnitude * damper;
-		y *= magnitude * damper;
-        
-        
-        m_Texture->setPosition(Vec2(getContentSize() * 0.5f) + Vec2(x, y));
-        player->setTexturePos(Vec2(player->getContentSize() * 0.5f) + Vec2(x, y));
-		if (m_fElapsed >= duration)
-		{
-			m_fElapsed = 0;
-			this->unschedule("Shake");
-            m_Texture->setPosition(this->getContentSize() / 2);
-            player->setTexturePos(player->getContentSize() / 2);
-		}
-
-	}, interval, CC_REPEAT_FOREVER, 0.f, "Shake");
+void CPlanet::Crushed()
+{
+    CObjectManager::Shake(0.01f, 0.2f, 0.1f, 3.0f, m_Texture, this->getContentSize() / 2);
+    CObjectManager::Instance()->getPlayer()->Crushed();
 }
 
 void CPlanet::Execute(float delta){

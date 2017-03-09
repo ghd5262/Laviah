@@ -67,10 +67,8 @@ public:
 	float HealthCalculatorInBonusTime(float delta); // 보너스 타임에 적용되는 생명력 계산함수
 	
 	// 좌우로 흔들림
-	void StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount);
+	void Crushed();
     
-    void setTexturePos(cocos2d::Vec2 pos){if(m_Texture)m_Texture->setPosition(pos);};
-
 	// 게임 시작할 때
     void GameStart();
     
@@ -102,7 +100,7 @@ protected:
 	CC_SYNTHESIZE(float, m_fStarLimitTime, StarLimitTime);
 	CC_SYNTHESIZE(float, m_fGiantLimitTime, GiantLimitTime);
 	CC_SYNTHESIZE(float, m_fBonusTimeLimitTime, BonusTimeLimitTime);
-    
+    CC_SYNTHESIZE_READONLY(cocos2d::Sprite*, m_Texture, Texture);
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
 
@@ -117,7 +115,6 @@ private:
 private:
 	std::shared_ptr<CStateMachine<CPlayer>> m_FSM;
 	CMultipleScore* m_MultipleScore;
-	cocos2d::Sprite* m_Texture;
 	cocos2d::ParticleSystemQuad* m_Particle;
     CMagnetEffect* m_MagnetEffect;
 	const sCHARACTER_PARAM* m_CharacterParam;

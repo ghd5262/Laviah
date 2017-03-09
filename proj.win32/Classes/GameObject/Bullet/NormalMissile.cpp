@@ -73,7 +73,7 @@ void CNormalMissile::Execute(float delta)
 void CNormalMissile::CollisionWithPlanet()
 {
     //		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_0.mp3", false);
-	m_Planet->CrushShake(0.01f, 0.3f, 0.1f, 3.0f);
+	m_Planet->Crushed();
     CBullet::CollisionWithPlanet();
 }
 
@@ -88,9 +88,9 @@ void CNormalMissile::CollisionWithPlayer()
 		R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
 	}
 	else{
-		m_Player->StackedRL(0.1f, 10, 10, 5);
 		m_Player->LostSomeHealth(this->getPower());
-		m_Planet->CrushShake(0.01f, 0.2f, 0.1f, 3.0f);
+        m_Player->Crushed();
+        m_Planet->Crushed();
 
 		this->ReturnToMemoryBlock();
 	}

@@ -260,6 +260,48 @@ void CObjectManager::NormalMode()
     this->SpeedControl(1.f, levelData._speed);
 }
 
+void CObjectManager::Shake(float interval,
+                           float duration,
+                           float speed,
+                           float magnitude,
+                           cocos2d::Node* owner,
+                           cocos2d::Vec2 originPos)
+{
+    auto noise = [](int x, int y) {
+        int n = x + y * 57;
+        n = (n << 13) ^ n;
+        return (1.0 - ((n * ((n * n * 15731) + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
+    };
+    
+    //experiment more with these four values to get a rough or smooth effect!
+    if(owner->isScheduled("Shake")) return;
+    
+    owner->scheduleOnce([=](float delta){
+        owner->unschedule("Shake");
+        owner->setPosition(originPos);
+    }, duration, "ShakeLimit");
+    
+    owner->schedule([=](float dt) {
+        float randomStart = random(-1000.0f, 1000.0f);
+        float percentComplete =  0.5f;
+        
+        // We want to reduce the shake from full power to 0 starting half way through
+        float damper = 1.0f - clampf(2.0f * percentComplete - 1.0f, 0.0f, 1.0f);
+        
+        // Calculate the noise parameter starting randomly and going as fast as speed allows
+        float alpha = randomStart + speed * percentComplete;
+        
+        // map noise to [-1, 1]
+        float x = noise(alpha, 0.0f) * 2.0f - 1.0f;
+        float y = noise(0.0f, alpha) * 2.0f - 1.0f;
+        
+        x *= magnitude * damper;
+        y *= magnitude * damper;
+        
+        owner->setPosition(Vec2(originPos + Vec2(x, y)));
+    }, interval, CC_REPEAT_FOREVER, 0.f, "Shake");
+}
+
 void CObjectManager::RemoveAllObject()
 {
 #if(USE_MEMORY_POOLING)

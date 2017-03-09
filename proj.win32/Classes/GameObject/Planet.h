@@ -16,8 +16,8 @@ public:
 	static CPlanet* create();
 	
     void Clear();
+	void Crushed();
     
-	void CrushShake(float interval, float duration, float speed, float magnitude);
 	virtual void Execute(float delta = 0.f) override;
 
 	void Rotation(float speed);
@@ -32,7 +32,6 @@ protected:
 	CC_SYNTHESIZE(float, m_Angle, Angle);
 
 private:
-	float noise(int x, int y);
 	CPlanet();
 	virtual ~CPlanet(){}
 

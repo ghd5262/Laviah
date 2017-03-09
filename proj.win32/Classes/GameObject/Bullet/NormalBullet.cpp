@@ -56,7 +56,7 @@ void CNormalBullet::CollisionWithPlayer()
 		this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	}
 	else{
-		m_Player->StackedRL(0.1f, 10, 10, 5);
+		m_Player->Crushed();
 		CCLOG("Bullet Power %f", this->getPower());
 		m_Player->LostSomeHealth(this->getPower());
         this->ReturnToMemoryBlock();

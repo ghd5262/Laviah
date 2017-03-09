@@ -268,16 +268,9 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 	return (m_fLife / m_fMaxLife) * 100;
 }
 
-void CPlayer::StackedRL(float duration, float stackSizeLR, float stackSizeTB, int stackCount)
+void CPlayer::Crushed()
 {
-    if (!m_Invincibility){
-        auto move1 = MoveBy::create(duration / stackCount, Vec2(stackSizeLR, -stackSizeTB));
-        auto move2 = MoveBy::create(duration / stackCount, Vec2(-stackSizeLR, stackSizeTB));
-        auto repeat = Repeat::create(Sequence::create(move1, move2, nullptr), stackCount);
-        auto function = CallFunc::create([=](){m_Texture->setPosition(this->getContentSize() / 2); });
-        auto sequence = Sequence::create(repeat, function, nullptr);
-        m_Texture->runAction(sequence);
-	}
+    CObjectManager::Shake(0.01f, 0.2f, 0.1f, 3.0f, m_Texture, this->getContentSize() / 2);
 }
 
 void CPlayer::GotMagnetItem()

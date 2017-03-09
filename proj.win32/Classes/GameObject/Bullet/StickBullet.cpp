@@ -91,7 +91,7 @@ void CStickBullet::CollisionWithPlayer()
         this->R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
     }
     else{
-        m_Player->StackedRL(0.1f, 10, 10, 5);
+        m_Player->Crushed();
         m_Player->LostSomeHealth(this->getPower());
         this->ReturnToMemoryBlock();
     }

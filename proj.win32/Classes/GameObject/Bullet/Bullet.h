@@ -181,9 +181,7 @@ public:
     
     void R_FadeOutWithCount(int repeat,
                             float removeTime);
-    
-    void StackedRL(float duration, float stackSize, int stackCount);
-    
+        
     void Seek(float delta);
     
     void Flee(float delta);
