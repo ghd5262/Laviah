@@ -155,7 +155,6 @@ void CGameScene::GameResume()
 void CGameScene::GamePause()
 {
     CObjectManager::Instance()->setIsGamePause(true);
-    CObjectManager::Instance()->getPlayer()->ParticleVisible(false); //;;;
     this->turnDownSound();
 }
 
@@ -566,8 +565,7 @@ void CGameScene::createCountDown()
     m_CountDown = CCountDown::create()
     ->addLastEventListner([=](Node* sender){
         CObjectManager::Instance()->setIsGamePause(false);
-//        CObjectManager::Instance()->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
-        CObjectManager::Instance()->getPlayer()->ParticleVisible(true); //;;;
+        CObjectManager::Instance()->setGameStateByLevel();
         m_ZoomLayer->resume();
         this->startTutorial();
     })

@@ -52,6 +52,7 @@ public:
     void NormalMode();
     void InitTutorialStep();
     void Share();
+    void setGameStateByLevel();
 
     
 	// 초기화
@@ -67,7 +68,7 @@ public:
                       float magnitude,
                       cocos2d::Node* owner,
                       cocos2d::Vec2 originPos);
-
+    
 	//getter & setter
     std::vector<CBullet*>* getBulletList(){ return &m_BulletList; }
     CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
@@ -95,7 +96,6 @@ private:
     void bulletListExecute();
     void bulletListRotate();
     void setGameLevelByTimer();
-    void setGameStateByLevel();
     void zoom(cocos2d::Node* obj,
               cocos2d::Vec2 zoomPos,
               float zoomAngle,

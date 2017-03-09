@@ -63,18 +63,18 @@ CObjectManager::CObjectManager()
 //    m_LevelList.emplace_back(sLEVEL_BALANCE(440, 7, 1.5f, 215, Vec2(540, 1920)));
     
     
-    m_LevelList.emplace_back(sLEVEL_BALANCE(20,  70, 1, 1.f , 0,   PLANET_DEFINE::GAME_POS));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(40,  75.f, 2, 1.f , 90,  Vec2(270, 960)));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(60,  80.f, 3, 1.f , 180, Vec2(540, 1248), true));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(80,  85.f, 3, 1.f , 270, Vec2(810, 960)));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(100, 90.f, 4, 1.f , 0,   PLANET_DEFINE::GAME_POS, true));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(160, 95.f, 4, 1.5f, 0,   Vec2(540, -200)));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(220, 100.f, 5, 1.f , 180, PLANET_DEFINE::GAME_POS, true));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(240, 105.f, 5, 0.7f, 0,   PLANET_DEFINE::GAME_POS, true));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(280, 110.f, 5, 1.5f, 0,   PLANET_DEFINE::GAME_POS));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(300, 115.f, 6, 1.5f, 0,   PLANET_DEFINE::GAME_POS));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(400, 120.f, 7, 2.f , 0,   Vec2(540, 0), true));
-    m_LevelList.emplace_back(sLEVEL_BALANCE(440, 125.f, 7, 1.5f, 215, Vec2(540, 1920)));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(20,  60,   1, 1.f , 0,   PLANET_DEFINE::GAME_POS));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(40,  60.f, 2, 1.f , 90,  Vec2(270, 960)));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(60,  65.f, 3, 1.f , 180, Vec2(540, 1248), true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(80,  65.f, 3, 1.f , 270, Vec2(810, 960)));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(100, 70.f, 4, 1.f , 0,   PLANET_DEFINE::GAME_POS, true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(160, 70.f, 4, 1.2f, 0,   Vec2(540, 0)));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(220, 75.f, 5, 1.f , 180, PLANET_DEFINE::GAME_POS, true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(240, 75.f, 5, 0.8f, 0,   PLANET_DEFINE::GAME_POS, true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(280, 80.f, 5, 1.2f, 0,   PLANET_DEFINE::GAME_POS));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(300, 80.f, 6, 1.2f, 0,   PLANET_DEFINE::GAME_POS));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(400, 85.f, 7, 1.2f , 0,  Vec2(540, 0), true));
+    m_LevelList.emplace_back(sLEVEL_BALANCE(440, 90.f, 7, 1.f, 215,  PLANET_DEFINE::GAME_POS));
 }
 
 CObjectManager* CObjectManager::Instance()
@@ -98,7 +98,7 @@ void CObjectManager::Clear()
 	m_CoinItemRange->Clear();
 
     this->ReturnToMemoryBlockAll();
-    this->setGameStateByLevel();
+//    this->setGameStateByLevel();
 //	this->EndBonusTime();
 }
 
@@ -126,7 +126,6 @@ void CObjectManager::RotationObject(float dir)
 {
     if (m_IsGamePause) return;
     
-//    m_RotationSpeed += m_RotationSpeed * m_GiantSpeed;
     m_RotationSpeed *= dir;
     this->bulletListRotate();
     m_BulletCreator->Rotation(m_RotationSpeed * m_GiantSpeed);
@@ -248,6 +247,7 @@ void CObjectManager::GiantMode()
     //ver-1
     auto scaleAction1  = ScaleTo::create(1.f,  0.7f);
     auto exponential1  = EaseExponentialInOut::create(scaleAction1);
+    exponential1->setTag(100);
     CGameScene::getZoomLayer()->runAction(exponential1);
 }
 
@@ -256,8 +256,16 @@ void CObjectManager::NormalMode()
     m_GiantSpeed = 1.f;
     //ver-1
     auto levelData = m_LevelList.at(m_GameLevel);
-    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 1.f);
+    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 1.f, true);
     this->SpeedControl(1.f, levelData._speed);
+}
+
+void CObjectManager::setGameStateByLevel()
+{
+    //ver-1
+    auto levelData = m_LevelList.at(m_GameLevel);
+    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
+    this->SpeedControl(8.f, levelData._speed);
 }
 
 void CObjectManager::Shake(float interval,
@@ -354,6 +362,8 @@ void CObjectManager::createBulletByTimer(float delta)
 
 void CObjectManager::inGameUpdate(float delta)
 {
+    CObjectManager::Instance()->getPlayer()->ParticleVisible(!m_IsGamePause); //;;;
+
     if (m_IsGamePause) return;
     
     m_BulletCreator->setLineIntervalLimit((360.f / m_SpeedController->getPositionX()) / 25);
@@ -422,14 +432,6 @@ void CObjectManager::setGameLevelByTimer()
         m_GameLevel++;
         this->setGameStateByLevel();
     }
-}
-
-void CObjectManager::setGameStateByLevel()
-{
-    //ver-1
-    auto levelData = m_LevelList.at(m_GameLevel);
-    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
-    this->SpeedControl(8.f, levelData._speed);
 }
 
 void CObjectManager::zoom(cocos2d::Node* obj,
