@@ -4,6 +4,7 @@
 #include "../Popup.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../Scene/GameScene.h"
+#include "../../GameObject/ObjectManager.h"
 
 CWorkshopPopupDP* CWorkshopPopupDP::create(sWORKSHOPITEM_PARAM workshopItem)
 {
@@ -142,5 +143,8 @@ void CWorkshopPopupDP::Buy(Node* sender)
         
         // set current selected item idx
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::SELECT_ITEM, m_WorkshopItem._idx);
+        
+        // set current player data by item level
+        CObjectManager::Instance()->ChangeCharacter();
     }
 }
