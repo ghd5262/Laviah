@@ -424,13 +424,13 @@ void CObjectManager::bulletListRotate()
 
 void CObjectManager::setGameLevelByTimer()
 {
-    if(m_LevelList.size() <= m_GameLevel) return;
-    
     m_LevelTimer += m_Delta;
     if(m_LevelList.at(m_GameLevel)._time < m_LevelTimer)
     {
-        m_GameLevel++;
-        this->setGameStateByLevel();
+        if(m_LevelList.size() > m_GameLevel+1){
+            m_GameLevel++;
+            this->setGameStateByLevel();
+        }
     }
 }
 

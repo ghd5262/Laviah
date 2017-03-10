@@ -26,8 +26,8 @@ bool CWorkshopPopupDP::init()
 {
     if (!Widget::init()) return false;
     
-    unsigned currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
-    
+    auto currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+    auto itemName     = TRANSLATE(m_WorkshopItem._name);
     auto dpBack = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 200.f);
     if (dpBack != nullptr){
         this->setContentSize(dpBack->getContentSize());
@@ -54,7 +54,7 @@ bool CWorkshopPopupDP::init()
         }, TRANSLATE("BUTTON_YES"))
         ->setNegativeButton([=](Node* sender){
         }, TRANSLATE("BUTTON_NO"))
-        ->setMessage(TRANSLATE("CHARACTER_BUY_CHECK"))
+        ->setMessage(StringUtils::format(TRANSLATE("CHARACTER_BUY_CHECK").c_str(), itemName.c_str()))
         ->show(CGameScene::getGameScene(), ZORDER::POPUP);
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 260, 200))
@@ -75,7 +75,7 @@ bool CWorkshopPopupDP::init()
     }
     
     
-    auto workshopItemName = Label::createWithSystemFont(TRANSLATE(m_WorkshopItem._name), FONT::MALGUNBD, 40);
+    auto workshopItemName = Label::createWithSystemFont(itemName, FONT::MALGUNBD, 40);
     if (workshopItemName != nullptr)
     {
         workshopItemName->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -131,7 +131,7 @@ void CWorkshopPopupDP::Buy(Node* sender)
         if(value >= m_WorkshopItem._maxLevel){
             m_BtnBuy->changeContents(TRANSLATE("WORKSHOP_BUTTON_MAX_LEVEL"));
             m_BtnBuy->setTouchEnable(false);
-            m_BtnBuy->changeFontColor(Color3B::BLACK);
+            m_BtnBuy->changeFontColor(COLOR::DARKGRAY);
         }
         else{
             m_BtnBuy->changeContents(MakeString(TRANSLATE("WORKSHOP_BUTTON_BUY_LEVEL").c_str(), m_WorkshopItem._costPerLevel.at(value)));

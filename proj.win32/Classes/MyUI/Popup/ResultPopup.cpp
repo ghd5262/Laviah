@@ -41,7 +41,7 @@ bool CResultPopup::init()
 
     std::array<Vec2, 8> startPos = {
 //        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f),
-        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.4f),
+//        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.4f),
         Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.3f),
         Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.2f),
         Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.1f),
@@ -52,7 +52,7 @@ bool CResultPopup::init()
     
     std::array<Vec2, 8> targetPos = {
 //        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.7f),
-        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.65f),
+//        Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.65f),
         Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.6f),
         Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.55f),
         Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.5f),
@@ -63,7 +63,7 @@ bool CResultPopup::init()
     
     std::array<std::string, 8> resultIcon = {
 		"starIcon.png",
-        "runIcon.png",
+//        "runIcon.png",
 		"comboIcon.png",
         "coinIcon.png",
 //        "bonustimeIcon.png",
@@ -74,7 +74,7 @@ bool CResultPopup::init()
     
     std::array<std::string, 8> resultContent = {
 		TRANSLATE("RESULT_SCORE"),
-        TRANSLATE("RESULT_RUN"),
+//        TRANSLATE("RESULT_RUN"),
 		TRANSLATE("RESULT_COMBO"),
         TRANSLATE("RESULT_COIN"),
 //        TRANSLATE("RESULT_BONUSTIME"),
@@ -185,13 +185,13 @@ bool CResultPopup::init()
 	bool challengeAll = CChallengeDataManager::Instance()->CheckCompleteAll();
 
 	auto starScoreBG	= createNormalLayer(resultIcon[0], resultContent[0], GLOBAL->STAR_SCORE, startPos[0], 50);
-	auto moveDistanceBG = createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->RUN_SCORE, startPos[1], 50);
-	auto comboBG		= createMultipleLayer(resultIcon[2], resultContent[2], GLOBAL->COMBO_SCORE, startPos[2], 50, 100);
-    auto coinScoreBG    = createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->COIN_SCORE, startPos[3], 50, 1000);
+//	auto moveDistanceBG = createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->RUN_SCORE, startPos[1], 50);
+	auto comboBG		= createMultipleLayer(resultIcon[1], resultContent[1], GLOBAL->COMBO_SCORE, startPos[1], 50, 100);
+    auto coinScoreBG    = createMultipleLayer(resultIcon[2], resultContent[2], GLOBAL->COIN_SCORE,  startPos[2], 50, 1000);
 //    auto bonusTimeBG	= createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->BONUSTIME, startPos[4], 50, 10000);
-	auto challengeBG	= createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT, startPos[4], 50, 10000);
+	auto challengeBG	= createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT, startPos[3], 50, 10000);
     
-    auto totalScoreBG = createLayerBG(startPos[5]);
+    auto totalScoreBG = createLayerBG(startPos[4]);
     totalScoreBG->setTexture("resultPopup_1.png");
     
 	auto bestScore = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
@@ -225,7 +225,7 @@ bool CResultPopup::init()
     totalScoreLabel->setColor(COLOR::BRIGHTGRAY);
     
     
-    auto bestScoreBG = createNormalLayer(resultIcon[6], resultContent[6], bestScore,  startPos[6], 50);
+    auto bestScoreBG = createNormalLayer(resultIcon[5], resultContent[5], bestScore,  startPos[5], 50);
     CUserDataManager::Instance()->CoinUpdate(GLOBAL->COIN_SCORE);
     
     
@@ -235,7 +235,7 @@ bool CResultPopup::init()
     if (resultLabel != nullptr)
     {
         resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        resultLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.85f));
+        resultLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f, bg->getContentSize().height * 0.8f));
         resultLabel->setColor(COLOR::DARKGRAY);
         bg->addChild(resultLabel);
         resultLabel->setOpacity(0);
@@ -296,13 +296,13 @@ bool CResultPopup::init()
 				FadeIn::create(1.f)));
 		};
 		action(starScoreBG,		targetPos[0]);
-		action(moveDistanceBG,  targetPos[1]);
-		action(comboBG,			targetPos[2]);
-        action(coinScoreBG,     targetPos[3]);
+//		action(moveDistanceBG,  targetPos[1]);
+		action(comboBG,			targetPos[1]);
+        action(coinScoreBG,     targetPos[2]);
 //        action(bonusTimeBG,		targetPos[4]);
-		action(challengeBG,     targetPos[4]);
-		action(totalScoreBG,    targetPos[5]);
-		action(bestScoreBG,     targetPos[6]);
+		action(challengeBG,     targetPos[3]);
+		action(totalScoreBG,    targetPos[4]);
+		action(bestScoreBG,     targetPos[5]);
 
 		resultLabel->runAction(FadeIn::create(0.5f));
 		btnHome->runAction(FadeIn::create(0.5f));
@@ -322,13 +322,13 @@ bool CResultPopup::init()
 		};
 
 		action(starScoreBG,		startPos[0]);
-		action(moveDistanceBG,	startPos[1]);
-		action(comboBG,			startPos[2]);
-        action(coinScoreBG,		startPos[3]);
+//		action(moveDistanceBG,	startPos[1]);
+		action(comboBG,			startPos[1]);
+        action(coinScoreBG,		startPos[2]);
 //        action(bonusTimeBG,		startPos[4]);
-		action(challengeBG,		startPos[4]);
-		action(totalScoreBG,	startPos[5]);
-		action(bestScoreBG,		startPos[6]);
+		action(challengeBG,		startPos[3]);
+		action(totalScoreBG,	startPos[4]);
+		action(bestScoreBG,		startPos[5]);
 
 		resultLabel->runAction(FadeTo::create(0.5f, 0));
 		btnHome->runAction(FadeTo::create(0.5f, 0));

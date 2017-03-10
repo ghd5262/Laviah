@@ -64,7 +64,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 	auto challengesLabel = Label::createWithSystemFont(TRANSLATE("CHALLENGE_POPUP_TITLE"), FONT::MALGUNBD, 80);
 	if (challengesLabel != nullptr)
 	{
-		challengesLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.85f));
+		challengesLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f));
         challengesLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         challengesLabel->setColor(COLOR::DARKGRAY);
 		challengesLabel->setOpacity(0);

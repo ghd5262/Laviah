@@ -162,6 +162,7 @@ void CGameScene::GameResult()
 {
 	this->createResultPopup();
     this->GamePause();
+    m_ZoomLayer->pause();
 }
 
 void CGameScene::GameEnd()
@@ -179,6 +180,7 @@ void CGameScene::WatchVideo()
 {
 	this->createVideoPopup();
 	this->GamePause();
+    m_ZoomLayer->pause();
 }
 
 void CGameScene::ShowChallenge()

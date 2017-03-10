@@ -65,11 +65,11 @@ bool CUILayer::init()
     array<Vec2, 3> scoreUIPos = {
         Vec2(popupSize.width * 0.1f,  popupSize.height * 0.96f ),
         Vec2(popupSize.width * 0.1f,  popupSize.height * 0.925f ),
-		Vec2(popupSize.width * 0.96f, popupSize.height * 0.96f)
+//		Vec2(popupSize.width * 0.96f, popupSize.height * 0.96f)
     };
 	createScoreUI(GLOBAL->STAR_SCORE, "starIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[0]);
 	createScoreUI(GLOBAL->COIN_SCORE, "coinIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[1]);
-	createScoreUI(GLOBAL->RUN_SCORE, "runIcon_s.png", Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
+//	createScoreUI(GLOBAL->RUN_SCORE, "runIcon_s.png", Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
 
 //    auto bonusTime = CBonusTimeUI::create();
 //    bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
