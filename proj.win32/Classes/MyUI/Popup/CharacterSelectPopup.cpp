@@ -242,7 +242,7 @@ void CCharacterSelectPopup::Select(Node* sender)
 		this->End(nullptr);
 	}
 	else{
-        if(!centerCharacterParam->_random) return;
+//        if(!centerCharacterParam->_random) return;
         
         auto characterName = TRANSLATE(centerCharacterParam->_name);
         CGameScene::getGameScene()->CreateAlertPopup()

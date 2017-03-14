@@ -122,9 +122,9 @@ private:
         , _zoom(1.f)
         , _angle(0)
         , _pos(PLANET_DEFINE::GAME_POS)
-        , _below(false){}
+        , _below(true){}
 
-        sLEVEL_BALANCE(float time, float speed, int level, float zoom, int angle, cocos2d::Vec2 pos, bool below = false)
+        sLEVEL_BALANCE(float time, float speed, int level, float zoom, int angle, cocos2d::Vec2 pos, bool below = true)
         : _time(time)
         , _speed(speed)
         , _level(level)
