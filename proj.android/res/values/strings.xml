@@ -1,19 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-Copyright (C) 2014 Google Inc.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
+1475213369178890147521336917889014752133691788901475213369178890147521336917889014752133691788901475213369178890147521336917889014752133691788901475213369178890147521336917889014752133691788901475213369178890<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-
-    <string name="app_name">StarStarStar</string>
+    <string name="app_name">BangBang_Ver-1</string>
     <string name="update">Update</string>
     <string name="load">Load</string>
     <string name="migrate">Migrate</string>
@@ -43,14 +30,15 @@ limitations under the License.
     <string name="license_failed">License check failed.</string>
     <string name="unknown_error">Unknown error.</string>
     <string name="unityads_example_product_name">UnityAds 2.0</string>
-	<string name="unityads_example_initialize_text">Initialize</string>
-	<string name="unityads_example_interstitial_text">Interstitial</string>
-	<string name="unityads_example_incentivized_text">Incentivized</string>
-	<string name="select_conflicted_game">Select which game to load</string>
-	<string name="snapshotimage_description">Saved image for snapshot</string>
-  	<string name="format_days_ago">%d days ago</string>
+    <string name="unityads_example_initialize_text">Initialize</string>
+    <string name="unityads_example_interstitial_text">Interstitial</string>
+    <string name="unityads_example_incentivized_text">Incentivized</string>
+    <string name="select_conflicted_game">Select which game to load</string>
+    <string name="snapshotimage_description">Saved image for snapshot</string>
+    <string name="format_days_ago">%d days ago</string>
     <string name="format_hours_ago">%d hours ago</string>
     <string name="format_minutes_ago">%d minutes ago</string>
     <string name="format_seconds_ago">%d seconds ago</string>
     <string name="moments_ago">moments ago</string>
+    <string name="facebook_app_id">1475213369178890</string>
 </resources>
