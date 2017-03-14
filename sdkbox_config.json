@@ -1,0 +1,16 @@
+{
+    "android" : {
+        "Facebook" : {
+            "enabled" : true,
+            "debug" : true,
+            "url_scheme" : "1475213369178890",
+            "facebook_id" : "ghd5262@gmail.com"
+        }
+    },
+    "ios" : [
+        
+    ],
+    "playphone" : [
+        
+    ]
+}
