@@ -267,6 +267,8 @@ void CChallengeDataManager::UpdateCurHiddenChallengeList()
 {
     auto currentList  = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_HIDDEN_LIST);
     auto completeList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_COM_HIDDEN_LIST);
+    
+    // newList = new challenges ( no complete, no current )
     auto newList      = DATA_MANAGER_UTILS::getMapByFunc([=](const sCHALLENGE_PARAM* data){
         bool isExist = false;
         int  newIndex= data->_index;
