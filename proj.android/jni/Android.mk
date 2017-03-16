@@ -31,6 +31,7 @@ PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/Task/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/SDKUtil/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/GoogleCloud/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/Download/*.cpp)
+PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/Facebook/*.cpp)
 
 PROJECT_FILES := $(PROJECT_FILES:$(LOCAL_PATH)/%=%)
 
