@@ -35,14 +35,13 @@ PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/Download/*.cpp)
 PROJECT_FILES := $(PROJECT_FILES:$(LOCAL_PATH)/%=%)
 
 LOCAL_SRC_FILES := hellocpp/main.cpp \
-../../Classes/AppDelegate.cpp$(PROJECT_FILES)
+		    ../../Classes/AppDelegate.cpp\
+		    $(PROJECT_FILES) \
 
 LOCAL_CPPFLAGS := -DSDKBOX_ENABLED
-LOCAL_LDLIBS := -landroid \
--llog
+LOCAL_LDLIBS := -landroid -llog
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
-LOCAL_WHOLE_STATIC_LIBRARIES := PluginFacebook \
-sdkbox
+LOCAL_WHOLE_STATIC_LIBRARIES := PluginFacebook sdkbox
 
 # _COCOS_HEADER_ANDROID_BEGIN
 # _COCOS_HEADER_ANDROID_END

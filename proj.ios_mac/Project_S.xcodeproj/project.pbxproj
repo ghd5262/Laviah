@@ -162,6 +162,8 @@
 		93706FAF1E7A6891009A2CA0 /* SDKUtil_AOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706F3A1E7A6891009A2CA0 /* SDKUtil_AOS.cpp */; };
 		93706FB01E7A6891009A2CA0 /* SDKUtil_IOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706F3C1E7A6891009A2CA0 /* SDKUtil_IOS.cpp */; };
 		93706FB21E7A6891009A2CA0 /* PoolingManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706F411E7A6891009A2CA0 /* PoolingManager.cpp */; };
+		93706FBD1E7A8BF8009A2CA0 /* FacebookManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706FBB1E7A8BF8009A2CA0 /* FacebookManager.cpp */; };
+		93706FBE1E7A8BF8009A2CA0 /* FacebookManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706FBB1E7A8BF8009A2CA0 /* FacebookManager.cpp */; };
 		937311B21D5849D500D5EB5C /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 937311AC1D5849D500D5EB5C /* fonts */; };
 		937311B31D5849D500D5EB5C /* imageRes in Resources */ = {isa = PBXBuildFile; fileRef = 937311AD1D5849D500D5EB5C /* imageRes */; };
 		937311B61D5849D500D5EB5C /* res in Resources */ = {isa = PBXBuildFile; fileRef = 937311B01D5849D500D5EB5C /* res */; };
@@ -497,6 +499,8 @@
 		93706F3F1E7A6891009A2CA0 /* SDKUtil_WIN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKUtil_WIN.h; sourceTree = "<group>"; };
 		93706F411E7A6891009A2CA0 /* PoolingManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PoolingManager.cpp; sourceTree = "<group>"; };
 		93706F421E7A6891009A2CA0 /* PoolingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PoolingManager.h; sourceTree = "<group>"; };
+		93706FBB1E7A8BF8009A2CA0 /* FacebookManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookManager.cpp; sourceTree = "<group>"; };
+		93706FBC1E7A8BF8009A2CA0 /* FacebookManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FacebookManager.hpp; sourceTree = "<group>"; };
 		937311AC1D5849D500D5EB5C /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		937311AD1D5849D500D5EB5C /* imageRes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = imageRes; sourceTree = "<group>"; };
 		937311B01D5849D500D5EB5C /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
@@ -712,6 +716,7 @@
 		93706E461E7A6890009A2CA0 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				93706FBA1E7A8BF8009A2CA0 /* Facebook */,
 				93706E531E7A6890009A2CA0 /* AppDelegate.cpp */,
 				93706E541E7A6890009A2CA0 /* AppDelegate.h */,
 				93706E471E7A6890009A2CA0 /* AI */,
@@ -1091,6 +1096,15 @@
 			path = Task;
 			sourceTree = "<group>";
 		};
+		93706FBA1E7A8BF8009A2CA0 /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				93706FBB1E7A8BF8009A2CA0 /* FacebookManager.cpp */,
+				93706FBC1E7A8BF8009A2CA0 /* FacebookManager.hpp */,
+			);
+			path = Facebook;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1276,6 +1290,7 @@
 				93706F681E7A6891009A2CA0 /* BulletCreator.cpp in Sources */,
 				93706F781E7A6891009A2CA0 /* json_value.cpp in Sources */,
 				93706F631E7A6891009A2CA0 /* PlayStar.cpp in Sources */,
+				93706FBD1E7A8BF8009A2CA0 /* FacebookManager.cpp in Sources */,
 				93706F831E7A6891009A2CA0 /* MenuLayer.cpp in Sources */,
 				93706F511E7A6891009A2CA0 /* CharacterDataManager.cpp in Sources */,
 				93706F451E7A6891009A2CA0 /* PlayerStates.cpp in Sources */,
@@ -1361,6 +1376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
+				93706FBE1E7A8BF8009A2CA0 /* FacebookManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

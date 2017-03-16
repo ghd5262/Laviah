@@ -27,11 +27,6 @@ void AppDelegate::initGLContextAttrs()
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    sdkbox::init("ef9de2619b890087b6d25479565b408a", "b8b3067c0feae4bc", "googleplay");
-#endif
-    sdkbox::PluginFacebook::init();
-
     int i = 0;
     FileUtils *fileUtils = FileUtils::getInstance();
     auto searchPaths = fileUtils->getSearchPaths();
