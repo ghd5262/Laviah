@@ -37,6 +37,7 @@
 #include "../DataManager/FreeRewardManager.hpp"
 #include "../AI/States/RocketStates.h"
 #include "../SDKUtil/SDKUtil.h"
+#include "../Facebook/FacebookManager.hpp"
 #include <array>
 
 USING_NS_CC;
@@ -113,6 +114,8 @@ bool CGameScene::init()
     this->createTutorialLayer();
     this->initKeyboardListener();
     this->setTimestamp();
+    
+    this->addChild(CFacebookManager::Instance());
 	return true;
 }
 

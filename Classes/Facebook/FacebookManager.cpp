@@ -130,7 +130,6 @@ CFacebookManager* CFacebookManager::Instance()
 bool CFacebookManager::init()
 {
     if (!Node::init()) return false;
-
     
     CCLOG("Sample Startup");
     
@@ -140,27 +139,8 @@ bool CFacebookManager::init()
     _inviteableUsers.clear();
     _inviteUserIdxs.clear();
     
-    // add logo
-    auto winsize = Director::getInstance()->getWinSize();
-    auto logo = Sprite::create("Logo.png");
-    auto logoSize = logo->getContentSize();
-    logo->setPosition(Vec2(logoSize.width / 2,
-                           winsize.height - logoSize.height / 2));
-    addChild(logo);
-    
-    // add quit button
-    auto label = Label::createWithSystemFont("QUIT", "sans", 32);
-    auto quit = MenuItemLabel::create(label, [](Ref*){
-        exit(0);
-    });
-    auto labelSize = label->getContentSize();
-    auto menu = Menu::create(quit, NULL);
-    menu->setPosition(Vec2(winsize.width - labelSize.width / 2 - 16,
-                           labelSize.height / 2 + 16));
-    addChild(menu);
-    
     _iconSprite = SpriteEx::create();
-    _iconSprite->setPosition(winsize / 2);
+    _iconSprite->setPosition(_director->getWinSize() / 2);
     addChild(_iconSprite);
     
     // add test menu
