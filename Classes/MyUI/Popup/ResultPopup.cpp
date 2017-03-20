@@ -288,13 +288,14 @@ bool CResultPopup::init()
 	this->setOpenAnimation([=](Node* sender){
 		auto winSize = Director::getInstance()->getWinSize();
 
-		auto action = [=](Sprite* sprite, Vec2 pos){
-			sprite->runAction(
-				Spawn::createWithTwoActions(
-				EaseExponentialOut::create(
-				MoveTo::create(1.3f, pos)),
-				FadeIn::create(1.f)));
-		};
+        auto action = [=](Sprite* sprite, Vec2 pos){
+            auto move        = MoveTo::create(1.3f, pos);
+            auto exponential = EaseExponentialOut::create(move);
+            auto fadein      = FadeIn::create(1.f);
+            auto spawn       = Spawn::createWithTwoActions(exponential, fadein);
+            
+            sprite->runAction(spawn);
+        };
 		action(starScoreBG,		targetPos[0]);
 //		action(moveDistanceBG,  targetPos[1]);
 		action(comboBG,			targetPos[1]);
@@ -313,13 +314,14 @@ bool CResultPopup::init()
 
 	this->setCloseAnimation([=](Node* sender){
 
-		auto action = [=](Sprite* sprite, Vec2 pos){
-			sprite->runAction(
-				Spawn::createWithTwoActions(
-				EaseSineIn::create(
-				MoveTo::create(0.35f, pos)),
-				FadeTo::create(0.2f, 0)));
-		};
+        auto action = [=](Sprite* sprite, Vec2 pos){
+            auto move       = MoveTo::create(0.35f, pos);
+            auto sine       = EaseSineIn::create(move);
+            auto fadeout    = FadeTo::create(0.2f, 0);
+            auto spawn      = Spawn::createWithTwoActions(sine, fadeout);
+            
+            sprite->runAction(spawn);
+        };
 
 		action(starScoreBG,		startPos[0]);
 //		action(moveDistanceBG,	startPos[1]);

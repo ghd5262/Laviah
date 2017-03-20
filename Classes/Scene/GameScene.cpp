@@ -30,6 +30,7 @@
 #include "../MyUI/Popup/WorkshopPopup.h"
 #include "../MyUI/Popup/CharacterSelectPopup.h"
 #include "../MyUI/Popup/GameEndPopup.hpp"
+#include "../MyUI/Popup/FacebookAPITestPopup.hpp"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/ChallengeDataManager.hpp"
@@ -37,7 +38,6 @@
 #include "../DataManager/FreeRewardManager.hpp"
 #include "../AI/States/RocketStates.h"
 #include "../SDKUtil/SDKUtil.h"
-#include "../Facebook/FacebookManager.hpp"
 #include <array>
 
 USING_NS_CC;
@@ -114,9 +114,7 @@ bool CGameScene::init()
     this->createTutorialLayer();
     this->initKeyboardListener();
     this->setTimestamp();
-    
-    this->addChild(CFacebookManager::Instance());
-	return true;
+    return true;
 }
 
 void CGameScene::GameExit(bool resume/* = false*/)
@@ -231,6 +229,14 @@ void CGameScene::OpenCharacterSelectPopup()
     CObjectManager::Instance()->ZoomIn2();
     m_MenuLayer->setVisible(false);
     this->createCharacterSelectPopup();
+}
+
+void CGameScene::OpenFBTestPopup()
+{
+    CFacebookAPITestPopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::RandomCoin()

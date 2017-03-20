@@ -30,6 +30,7 @@ public:
     void OpenOptionPopup(int scrollIndex = 0);
     void OpenWorkshopPopup();
     void OpenCharacterSelectPopup();
+    void OpenFBTestPopup();
 	void GameStart();
     void GamePause();
 	void GameResume();
