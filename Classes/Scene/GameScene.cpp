@@ -38,6 +38,8 @@
 #include "../DataManager/FreeRewardManager.hpp"
 #include "../AI/States/RocketStates.h"
 #include "../SDKUtil/SDKUtil.h"
+#include "../Facebook/FacebookManager.hpp"
+
 #include <array>
 
 USING_NS_CC;
@@ -114,6 +116,10 @@ bool CGameScene::init()
     this->createTutorialLayer();
     this->initKeyboardListener();
     this->setTimestamp();
+    
+    // 이것도 노드이기 때문에 addchild해야한다. 일단 여기까지 커밋
+    this->addChild(CFacebookManager::Instance());
+
     return true;
 }
 
@@ -233,10 +239,10 @@ void CGameScene::OpenCharacterSelectPopup()
 
 void CGameScene::OpenFBTestPopup()
 {
-    CFacebookAPITestPopup::create()
-    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+//    CFacebookAPITestPopup::create()
+//    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//    ->setPopupPosition(m_VisibleSize / 2)
+//    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::RandomCoin()

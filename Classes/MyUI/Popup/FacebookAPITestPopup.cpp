@@ -135,27 +135,27 @@ bool CFacebookAPITestPopup::init()
     btnEnd->setCascadeOpacityEnabled(true);
     
     
-    CFacebookManager::Instance()->setLoginListener([=](bool isLogin, std::string error){
-        if (isLogin)
-            Login->changeContents("Logout");
-        
-        std::string title = "login ";
-        title.append((isLogin ? "success" : "failed"));
-        MessageBox(error.c_str(), title.c_str());
-    });
-    
-    CFacebookManager::Instance()->setInvitableFriendsListener([=](const sdkbox::FBInvitableFriendsInfo &friends){
-        CCLOG("Request Inviteable Friends Begin");
-        for (auto it = friends.begin(); it != friends.end(); ++it) {
-            m_InviteableUsers.push_back(*it);
-            CCLOG("Invitable friend: %s", it->getName().c_str());
-        }
-        CCLOG("Request Inviteable Friends End");
-        
-        if (!m_InviteableUsers.size()) {
-            CCLOG("WARNING! Your Invitable Friends number is 0");
-        }
-    });
+//    CFacebookManager::Instance()->setLoginListener([=](bool isLogin, std::string error){
+//        if (isLogin)
+//            Login->changeContents("Logout");
+//        
+//        std::string title = "login ";
+//        title.append((isLogin ? "success" : "failed"));
+//        MessageBox(error.c_str(), title.c_str());
+//    });
+//    
+//    CFacebookManager::Instance()->setInvitableFriendsListener([=](const sdkbox::FBInvitableFriendsInfo &friends){
+//        CCLOG("Request Inviteable Friends Begin");
+//        for (auto it = friends.begin(); it != friends.end(); ++it) {
+//            m_InviteableUsers.push_back(*it);
+//            CCLOG("Invitable friend: %s", it->getName().c_str());
+//        }
+//        CCLOG("Request Inviteable Friends End");
+//        
+//        if (!m_InviteableUsers.size()) {
+//            CCLOG("WARNING! Your Invitable Friends number is 0");
+//        }
+//    });
     
     this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* btn, Vec2 pos){
@@ -204,145 +204,165 @@ void CFacebookAPITestPopup::End(Node* sender){
 }
 
 void CFacebookAPITestPopup::Login(cocos2d::Node* sender){
-    CCLOG("##FB %s", __FUNCTION__);
-    if (PluginFacebook::isLoggedIn())
-    {
-        PluginFacebook::logout();
-        dynamic_cast<CMyButton*>(sender)->changeContents("Login");
-    }
-    else
-    {
-        std::vector<std::string> permissions;
-        permissions.push_back(sdkbox::FB_PERM_READ_EMAIL);
-        permissions.push_back(sdkbox::FB_PERM_READ_USER_FRIENDS);
-        PluginFacebook::login(permissions);
-    }
+//    CCLOG("##FB %s", __FUNCTION__);
+//    if (PluginFacebook::isLoggedIn())
+//    {
+//        PluginFacebook::logout();
+//        dynamic_cast<CMyButton*>(sender)->changeContents("Login");
+//    }
+//    else
+//    {
+//        std::vector<std::string> permissions;
+//        permissions.push_back(sdkbox::FB_PERM_READ_EMAIL);
+//        permissions.push_back(sdkbox::FB_PERM_READ_USER_FRIENDS);
+//        PluginFacebook::login(permissions);
+//    }
+    CFacebookManager::Instance()->onLoginClick(sender);
 }
 
 void CFacebookAPITestPopup::CheckStatus(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
-    CFacebookManager::CheckFacebookStatus();
+//    CFacebookManager::CheckFacebookStatus();
+    CFacebookManager::Instance()->onCheckStatus(sender);
 }
 
 void CFacebookAPITestPopup::GetMyInfo(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
     
-    sdkbox::FBAPIParam params;
-    PluginFacebook::api("me", "GET", params, "me");
+//    sdkbox::FBAPIParam params;
+//    PluginFacebook::api("me", "GET", params, "me");
+    CFacebookManager::Instance()->onGetMyInfo(sender);
 }
 
 void CFacebookAPITestPopup::GetMyFriends(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
     
-    sdkbox::PluginFacebook::fetchFriends();
+//    sdkbox::PluginFacebook::fetchFriends();
+    CFacebookManager::Instance()->onGetMyFriends(sender);
 }
 
 void CFacebookAPITestPopup::CaptureScreen(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
     
-    utils::captureScreen([=](bool yes, const std::string &outputFilename){}, "FBCapture.png");
+//    utils::captureScreen([=](bool yes, const std::string &outputFilename){}, "FBCapture.png");
+    CFacebookManager::Instance()->onCaptureScreen(sender);
 }
 
 void CFacebookAPITestPopup::ShareLink(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
     
-    FBShareInfo info;
-    info.type  = FB_LINK;
-    info.link  = "http://www.cocos2d-x.org";
-    info.title = "cocos2d-x";
-    info.text  = "Best Game Engine";
-    info.image = "http://cocos2d-x.org/images/logo.png";
-    PluginFacebook::share(info);
+//    FBShareInfo info;
+//    info.type  = FB_LINK;
+//    info.link  = "http://www.cocos2d-x.org";
+//    info.title = "cocos2d-x";
+//    info.text  = "Best Game Engine";
+//    info.image = "http://cocos2d-x.org/images/logo.png";
+//    PluginFacebook::share(info);
+    
+    CFacebookManager::Instance()->onShareLink(sender);
+
 }
 
 void CFacebookAPITestPopup::SharePhoto(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
     
-    if (!m_FacebookCapture.empty() && FileUtils::getInstance()->isFileExist(m_FacebookCapture))
-    {
-        CCLOG("##FB dialog photo: %s", m_FacebookCapture.c_str());
-        
-        FBShareInfo info;
-        info.type  = FB_PHOTO;
-        info.title = "capture screen";
-        info.image = m_FacebookCapture;
-        PluginFacebook::share(info);
-    }
-    else
-    {
-        CCLOG("##FB capture screen first");
-    }
+//    if (!m_FacebookCapture.empty() && FileUtils::getInstance()->isFileExist(m_FacebookCapture))
+//    {
+//        CCLOG("##FB dialog photo: %s", m_FacebookCapture.c_str());
+//        
+//        FBShareInfo info;
+//        info.type  = FB_PHOTO;
+//        info.title = "capture screen";
+//        info.image = m_FacebookCapture;
+//        PluginFacebook::share(info);
+//    }
+//    else
+//    {
+//        CCLOG("##FB capture screen first");
+//    }
+    
+    CFacebookManager::Instance()->onSharePhoto(sender);
+
 }
 
 void CFacebookAPITestPopup::DialogLink(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
     
-    FBShareInfo info;
-    info.type  = FB_LINK;
-    info.link  = "http://www.cocos2d-x.org";
-    info.title = "cocos2d-x";
-    info.text  = "Best Game Engine";
-    info.image = "http://cocos2d-x.org/images/logo.png";
-    PluginFacebook::dialog(info);
+//    FBShareInfo info;
+//    info.type  = FB_LINK;
+//    info.link  = "http://www.cocos2d-x.org";
+//    info.title = "cocos2d-x";
+//    info.text  = "Best Game Engine";
+//    info.image = "http://cocos2d-x.org/images/logo.png";
+//    PluginFacebook::dialog(info);
+    
+    CFacebookManager::Instance()->onDialogLink(sender);
+
 }
 
 void CFacebookAPITestPopup::DialogPhoto(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
     
-    if (!m_FacebookCapture.empty() && FileUtils::getInstance()->isFileExist(m_FacebookCapture))
-    {
-        CCLOG("dialog photo: %s", m_FacebookCapture.c_str());
-        FBShareInfo info;
-        info.type  = FB_PHOTO;
-        info.title = "capture screen";
-        info.image = m_FacebookCapture;
-        PluginFacebook::dialog(info);
-    }
-    else
-    {
-        CCLOG("##FB capture screen first");
-    }
+//    if (!m_FacebookCapture.empty() && FileUtils::getInstance()->isFileExist(m_FacebookCapture))
+//    {
+//        CCLOG("dialog photo: %s", m_FacebookCapture.c_str());
+//        FBShareInfo info;
+//        info.type  = FB_PHOTO;
+//        info.title = "capture screen";
+//        info.image = m_FacebookCapture;
+//        PluginFacebook::dialog(info);
+//    }
+//    else
+//    {
+//        CCLOG("##FB capture screen first");
+//    }
+    
+    CFacebookManager::Instance()->onDialogPhoto(sender);
+
 }
 
 void CFacebookAPITestPopup::RequestReadPermission(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
-    
-    PluginFacebook::requestReadPermissions({FB_PERM_READ_USER_FRIENDS});
+    CFacebookManager::Instance()->onRequestReadPermission(sender);
+
+//    PluginFacebook::requestReadPermissions({FB_PERM_READ_USER_FRIENDS});
 }
 
 void CFacebookAPITestPopup::RequestPublishPermission(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
-    
-    PluginFacebook::requestPublishPermissions({FB_PERM_PUBLISH_POST});
+    CFacebookManager::Instance()->onRequestPublishPermission(sender);
+
+//    PluginFacebook::requestPublishPermissions({FB_PERM_PUBLISH_POST});
 }
 
 void CFacebookAPITestPopup::InviteFriends(cocos2d::Node* sender){
-    PluginFacebook::inviteFriends(//"https://fb.me/322164761287181",
-                                  "https://fb.me/402104549959868",
-                                  "http://www.cocos2d-x.org/attachments/802/cocos2dx_landscape.png");
-
+//    PluginFacebook::inviteFriends(//"https://fb.me/322164761287181",
+//                                  "https://fb.me/402104549959868",
+//                                  "http://www.cocos2d-x.org/attachments/802/cocos2dx_landscape.png");
+    CFacebookManager::Instance()->onInviteFriends(sender);
 }
 
 void CFacebookAPITestPopup::InviteFriendsCustomUI(cocos2d::Node* sender){
-    showInviteDialog();
+//    showInviteDialog();
+    CFacebookManager::Instance()->onInviteFriendsCustomUI(sender);
 }
 
 void CFacebookAPITestPopup::showInviteDialog(){
-    if (nullptr == m_InviteDialog) {
-        createInviteDialog();
-        addChild(m_InviteDialog, 99);
-    } else {
-        m_InviteDialog->setVisible(true);
-    }
-    
-    FBAPIParam param;
-    PluginFacebook::requestInvitableFriends(param);
-    
-    //disable menu
-    auto n = dynamic_cast<Menu*>(getChildByTag(TAG_MENU));
-    if (nullptr != n) {
-        n->setEnabled(false);
-    }
+//    if (nullptr == m_InviteDialog) {
+//        createInviteDialog();
+//        addChild(m_InviteDialog, 99);
+//    } else {
+//        m_InviteDialog->setVisible(true);
+//    }
+//    
+//    FBAPIParam param;
+//    PluginFacebook::requestInvitableFriends(param);
+//    
+//    //disable menu
+//    auto n = dynamic_cast<Menu*>(getChildByTag(TAG_MENU));
+//    if (nullptr != n) {
+//        n->setEnabled(false);
+//    }
 }
 
 void CFacebookAPITestPopup::createInviteDialog() {
