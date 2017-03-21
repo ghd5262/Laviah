@@ -27,7 +27,9 @@ private:
     void RequestPublishPermission(cocos2d::Node* sender);
     void InviteFriends(cocos2d::Node* sender);
     void InviteFriendsCustomUI(cocos2d::Node* sender);
-    
+    void GetMyScore(cocos2d::Node* sender);
+    void GetFriendsScore(cocos2d::Node* sender);
+    void SetMyScore(cocos2d::Node* sender);
     
     void showInviteDialog();
     void createInviteDialog();

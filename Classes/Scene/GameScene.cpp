@@ -239,10 +239,10 @@ void CGameScene::OpenCharacterSelectPopup()
 
 void CGameScene::OpenFBTestPopup()
 {
-//    CFacebookAPITestPopup::create()
-//    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-//    ->setPopupPosition(m_VisibleSize / 2)
-//    ->show(this, ZORDER::POPUP);
+    CFacebookAPITestPopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::RandomCoin()
