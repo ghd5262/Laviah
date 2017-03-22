@@ -30,6 +30,7 @@ public:
     void OpenOptionPopup(int scrollIndex = 0);
     void OpenWorkshopPopup();
     void OpenCharacterSelectPopup();
+    void OpenRankPopup();
     void OpenFBTestPopup();
 	void GameStart();
     void GamePause();
@@ -91,6 +92,7 @@ private:
     void createPlanet();
     void createPlayer();
     void createRocket();
+    void createRank();
     void createCountDown();
     void createScreenFade();
     void createItemRanges();

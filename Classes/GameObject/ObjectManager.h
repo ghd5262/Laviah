@@ -46,6 +46,7 @@ public:
     void EndBonusTime();
     void ZoomIn();
     void ZoomIn2();
+    void ZoomInRank();
     void ZoomOut();
     void ZoomOut2();
     void GiantMode();

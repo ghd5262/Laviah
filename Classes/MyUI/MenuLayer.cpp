@@ -157,11 +157,16 @@ bool CMenuLayer::init()
 //        }, "R", testButtonPos[5], Size(100, 100)),
     };*/
     
-    std::array<CMyButton*, 5> btnArray = {
+    std::array<CMyButton*, 6> btnArray = {
         // character select button
         createLayerButton([=](Node* sender){
             CGameScene::getGameScene()->OpenCharacterSelectPopup();
         }, "", Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f), Size(100, 100)),
+        
+        // character select button
+        createLayerButton([=](Node* sender){
+            CGameScene::getGameScene()->OpenRankPopup();
+        }, "", Vec2(popupSize.width * 0.25f, popupSize.height * 0.75f), Size(100, 100)),
         
         // start button
         CMyButton::create()

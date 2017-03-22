@@ -6,9 +6,11 @@ namespace PLANET_DEFINE {
     static const float MENU_SIZE          = 1.5f;
     static const float GAME_SIZE          = 1.0f;
     static const float SELECT_SIZE        = 3.0f;
+    static const float RANK_SIZE          = 50.0f;
     static const cocos2d::Vec2 MENU_POS   = cocos2d::Vec2(540.f, 900.f);
     static const cocos2d::Vec2 GAME_POS   = cocos2d::Vec2(540.f, 672.f);
     static const cocos2d::Vec2 SELECT_POS = cocos2d::Vec2(540.f, 310.f);
+    static const cocos2d::Vec2 RANK_POS   = cocos2d::Vec2(810.f, -1215.f);
 }
 
 class CPlanet : public CGameObject {

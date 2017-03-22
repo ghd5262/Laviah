@@ -107,6 +107,7 @@ bool CGameScene::init()
     this->createPlanet();
     this->createPlayer();
     this->createRocket();
+    this->createRank();
     this->createCountDown();
     this->createScreenFade();
     this->createItemRanges();
@@ -235,6 +236,12 @@ void CGameScene::OpenCharacterSelectPopup()
     CObjectManager::Instance()->ZoomIn2();
     m_MenuLayer->setVisible(false);
     this->createCharacterSelectPopup();
+}
+
+void CGameScene::OpenRankPopup()
+{
+    CObjectManager::Instance()->ZoomInRank();
+    m_MenuLayer->setVisible(false);
 }
 
 void CGameScene::OpenFBTestPopup()
@@ -575,6 +582,16 @@ void CGameScene::createRocket()
     rocket->ChangeState(CFlyToTouchArea::Instance());
     m_ZoomLayer->addChild(rocket, ZORDER::PLAYER);
     CObjectManager::Instance()->setRocket(rocket);
+}
+
+void CGameScene::createRank()
+{
+    auto rank = Sprite::create("rank.png");
+    rank->setPosition(Vec2(m_VisibleSize.width * 0.25f,
+                           m_VisibleSize.height * 0.75f));
+    rank->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    rank->setScale(0.02f);
+    m_ZoomLayer->addChild(rank);
 }
 
 void CGameScene::createCountDown()

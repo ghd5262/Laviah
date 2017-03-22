@@ -230,6 +230,17 @@ void CObjectManager::ZoomIn2()
     m_Rocket->setVisible(false);
 }
 
+void CObjectManager::ZoomInRank()
+{
+    this->zoom(CGameScene::getZoomLayer(),
+               PLANET_DEFINE::RANK_POS * 18,
+               0,
+               PLANET_DEFINE::RANK_SIZE,
+               3.2f,
+               true);
+    m_Rocket->setVisible(false);
+}
+
 void CObjectManager::ZoomOut()
 {
     this->zoom(CGameScene::getZoomLayer(),
