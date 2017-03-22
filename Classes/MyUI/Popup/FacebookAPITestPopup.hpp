@@ -37,14 +37,12 @@ private:
     void showInviteableFriends();
     
     CFacebookAPITestPopup()
-    : m_InviteDialog(nullptr)
-    , m_FacebookCapture("")
+    : m_FacebookCapture("")
     , m_InviteTitle("")
     , m_InviteContent(""){};
     virtual ~CFacebookAPITestPopup(){};
     
 private:
-    cocos2d::Node* m_InviteDialog;
     std::string m_FacebookCapture;
     std::string m_InviteTitle;
     std::string m_InviteContent;

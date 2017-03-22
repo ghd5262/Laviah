@@ -161,7 +161,7 @@ bool CMenuLayer::init()
         // character select button
         createLayerButton([=](Node* sender){
             CGameScene::getGameScene()->OpenCharacterSelectPopup();
-        }, "", CObjectManager::Instance()->getPlayer()->getPosition(), Size(100, 100)),
+        }, "", Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f), Size(100, 100)),
         
         // start button
         CMyButton::create()

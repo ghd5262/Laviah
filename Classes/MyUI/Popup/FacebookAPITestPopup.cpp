@@ -7,11 +7,11 @@
 #include "../../Facebook/FacebookManager.hpp"
 #include "../../json/json.h"
 #include "ui/UIScrollView.h"
+#include "ui/UIListView.h"
 #include <array>
 
-#define TAG_MENU 1
-#define TAG_SCROLLVIEW 2
-#define TAG_CHECKBOX 1000
+using namespace cocos2d;
+using namespace cocos2d::ui;
 
 CFacebookAPITestPopup* CFacebookAPITestPopup::create()
 {
@@ -245,7 +245,6 @@ void CFacebookAPITestPopup::GetMyInfo(cocos2d::Node* sender){
 
 void CFacebookAPITestPopup::GetMyFriends(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
-    
     sdkbox::PluginFacebook::fetchFriends();
 }
 
@@ -348,241 +347,163 @@ void CFacebookAPITestPopup::GetFriendsScore(cocos2d::Node* sender){
 
 void CFacebookAPITestPopup::SetMyScore(cocos2d::Node* sender){
     sdkbox::FBAPIParam params;
-    
-    Json::StyledWriter writer;
-    Json::Value jsonObject;
-    jsonObject["score"] = random<int>(0, 100);
-    params["/me/scores"] = writer.write(jsonObject);
-    
+    params["score"] = StringUtils::format("%d", random<int>(0, 100));
     sdkbox::PluginFacebook::api("/me/scores", "POST", params, "/me/scores");
 }
 
 void CFacebookAPITestPopup::showInviteDialog(){
-    if (nullptr == m_InviteDialog) {
-        createInviteDialog();
-        addChild(m_InviteDialog, 99);
-    } else {
-        m_InviteDialog->setVisible(true);
-    }
+    this->createInviteDialog();
     
     sdkbox::FBAPIParam param;
     sdkbox::PluginFacebook::requestInvitableFriends(param);
-    
-    //disable menu
-    auto n = dynamic_cast<Menu*>(getChildByTag(TAG_MENU));
-    if (nullptr != n) {
-        n->setEnabled(false);
-    }
 }
 
 void CFacebookAPITestPopup::createInviteDialog() {
     
-    auto popupSize = this->getContentSize();
-    auto width  = popupSize.width  * 4 / 5;
-    auto height = popupSize.height * 3 / 5;
+    auto invitePopup = CPopup::create()
+    ->setPopupPosition(this->getContentSize() / 2)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->show(this);
     
-    m_InviteDialog = new Node();
-    m_InviteDialog->setPosition(popupSize.width/2, popupSize.height/2);
+    // create bg
+    auto bg = LayerColor::create(COLOR::DARKGRAY_ALPHA, 1080, 1500);
+    bg->ignoreAnchorPointForPosition(false);
+    bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    bg->setPosition(invitePopup->getContentSize() / 2);
+    invitePopup->addChild(bg);
     
-    //title bg
-    auto sp = Sprite::create("ui/blue_button03.png");
-    auto size = sp->getContentSize();
-    sp->setScaleX(width/size.width);
-    sp->setScaleY(1.5);
-    sp->setPosition(0, height/2 + size.height * 1.5 / 2 - 15);
-    m_InviteDialog->addChild(sp);
-    
-    //title text
-    auto label = Label::createWithSystemFont("Invite Friends", "sans", 35);
-    label->setPosition(0, height/2 + 20);
-    m_InviteDialog->addChild(label);
-    
-    //bg
-    auto bgU = Sprite::create("ui/dropdownTop.png");
-    auto heightT = bgU->getContentSize().height;
-    auto scaleX = width/bgU->getContentSize().width;
-    bgU->setScaleX(scaleX);
-    bgU->setPosition(0, height/2 - heightT/2);
-    m_InviteDialog->addChild(bgU);
-    
-    auto bgB = Sprite::create("ui/dropdownBottom.png");
-    auto heightB = bgB->getContentSize().height;
-    bgB->setScaleX(scaleX);
-    bgB->setPosition(0, -height/2 + heightB/2);
-    m_InviteDialog->addChild(bgB);
-    
-    auto bgM = Sprite::create("ui/dropdownMid.png");
-    auto heigtM = bgM->getContentSize().height;
-    bgM->setScaleX(scaleX);
-    auto pos = bgU->getPosition().y - heightT/2;
-    while (true) {
-        if (pos < -height/2 + heightB/2) {
-            break;
-        }
-        auto clone = Sprite::createWithSpriteFrame(bgM->getSpriteFrame());
-        clone->setScaleX(scaleX);
-        clone->setPosition(0, pos - heigtM/2);
-        m_InviteDialog->addChild(clone);
-        pos -= heigtM;
+    // create title
+    {
+        auto title = Label::createWithTTF("Invite Friends", FONT::MALGUNBD, 50);
+        title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        title->setPosition(Vec2(bg->getContentSize().width * 0.5f,
+                                bg->getContentSize().height * 0.95f));
+        bg->addChild(title);
     }
     
-    int padding = 10;
-    pos = height/2;
-    
-    // invite title
-    pos -= padding * 2; //padding
-    label = Label::createWithSystemFont("Title:", "sans", 20);
-    label->setTextColor(Color4B(128, 128, 128, 255));
-    label->setPosition(-width/2 + label->getContentSize().width/2 + padding * 2, pos);
-    m_InviteDialog->addChild(label);
-    pos -= label->getContentSize().height;
-    
-    pos -= padding;
-    label = Label::createWithSystemFont(m_InviteTitle, "sans", 20);
-    label->setTextColor(Color4B(64, 64, 64, 255));
-    label->setPosition(-width/2 + label->getContentSize().width/2 + padding * 2, pos);
-    m_InviteDialog->addChild(label);
-    pos -= label->getContentSize().height;
-    
-    //    pos -= padding;
-    //    sp = Sprite::create("ui/grey_sliderHorizontal.png");
-    //    sp->setPosition(0, pos);
-    //    sp->setScaleX((width - padding * 6)/sp->getContentSize().width);
-    //    m_InviteDialog->addChild(sp);
-    //    pos -= sp->getContentSize().height;
-    
-    // invite text
-    pos -= padding;
-    label = Label::createWithSystemFont("Text:", "sans", 20);
-    label->setTextColor(Color4B(128, 128, 128, 255));
-    label->setPosition(-width/2 + label->getContentSize().width/2 + padding * 2, pos);
-    m_InviteDialog->addChild(label);
-    pos -= label->getContentSize().height;
-    
-    pos -= padding;
-    label = Label::createWithSystemFont(m_InviteContent, "sans", 20);
-    label->setTextColor(Color4B(64, 64, 64, 255));
-    label->setPosition(-width/2 + label->getContentSize().width/2 + padding * 2, pos);
-    m_InviteDialog->addChild(label);
-    pos -= label->getContentSize().height;
-    
-    pos -= padding;
-    sp = Sprite::create("ui/grey_sliderHorizontal.png");
-    sp->setPosition(0, pos);
-    sp->setScaleX((width - padding * 6)/sp->getContentSize().width);
-    m_InviteDialog->addChild(sp);
-    pos -= sp->getContentSize().height;
-    
-    //invite friend
-    pos -= padding;
-    label = Label::createWithSystemFont("To:", "sans", 20);
-    label->setTextColor(Color4B(128, 128, 128, 255));
-    label->setPosition(-width/2 + label->getContentSize().width/2 + padding * 2, pos);
-    m_InviteDialog->addChild(label);
-    pos -= label->getContentSize().height;
-    
-    int buttonH = 50;
-    // scrollview for friends
-    pos -= padding;
-    ui::ScrollView* sv = ui::ScrollView::create();
-    Size svSize = Size(width - padding * 2, pos + height/2 - padding * 2 - buttonH);
-    sv->setContentSize(svSize);
-    sv->setPosition(Vec2(-width/2 + padding, -height/2 + padding + buttonH));
-    m_InviteDialog->addChild(sv);
-    sv->setTag(TAG_SCROLLVIEW);
-    pos -= svSize.height;
-    
-    //cancel ok button
-    auto button = cocos2d::ui::Button::create("ui/red_button04.png", "ui/red_button05.png");
-    button->setPosition(Vec2(- width/4, pos - buttonH/2));
-    button->setScale9Enabled(true);
-    button->setTitleText("Cancel");
-    button->setTitleFontSize(50);
-    auto btnSize = button->getContentSize();
-    btnSize.width = width/4;
-    button->setContentSize(btnSize);
-    button->addClickEventListener([=](Ref* sneder){
-        m_InviteDialog->setVisible(false);
-        auto n = dynamic_cast<Menu*>(getChildByTag(TAG_MENU));
-        if (nullptr != n) {
-            n->setEnabled(true);
-        }
-    });
-    m_InviteDialog->addChild(button);
-    
-    button = cocos2d::ui::Button::create("ui/green_button07.png", "ui/green_button08.png");
-    button->setPosition(Vec2(width/4, pos - buttonH/2));
-    button->setScale9Enabled(true);
-    button->setTitleText("Invite");
-    button->setTitleFontSize(50);
-    btnSize = button->getContentSize();
-    btnSize.width = width/4;
-    button->setContentSize(btnSize);
-    button->addClickEventListener([=](Ref* sneder){
-        if (m_InviteUserList.size() < 1) {
-            CCLOG("Must select one friend at least");
-            return;
-        }
-        std::vector<std::string> invite_ids;
-        for(auto i : m_InviteUserList) {
-            invite_ids.push_back(m_InviteableUsers[i].getUserId());
-        }
-        sdkbox::PluginFacebook::inviteFriendsWithInviteIds(invite_ids,
-                                                           m_InviteTitle,
-                                                           m_InviteContent);
-    });
-    m_InviteDialog->addChild(button);
-    
-    //add friends to srollview
-    int column = 3;
-    int x = 0, y = 0;
-    int i = 0;
-    pos = 0;
-    int userHeight = 60;
-    Size innerSize = svSize;
-    innerSize.height = m_InviteableUsers.size()/column;
-    if (0 != m_InviteableUsers.size()%column) {
-        innerSize.height += 1;
+    // create content
+    {
+        auto content = Label::createWithTTF("Come Come", FONT::MALGUNBD, 50);
+        content->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        content->setPosition(Vec2(bg->getContentSize().width * 0.5f,
+                                bg->getContentSize().height * 0.85f));
+        bg->addChild(content);
     }
-    innerSize.height *= userHeight;
-    sv->setInnerContainerSize(innerSize);
-    for (auto user : m_InviteableUsers) {
-        x = i % column;
-        y = i / column;
+    
+    // create friends list
+    {
+        auto createDP = [=](sdkbox::FBGraphUser user, int index){
+            auto dpBack = Widget::create();
+            dpBack->setContentSize(Size(900.f, 100.f));
+            dpBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            
+            auto contentBG = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 790.f, 100);
+            contentBG->setIgnoreAnchorPointForPosition(false);
+            contentBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            contentBG->setPosition(Vec2(0 + contentBG->getContentSize().width * 0.5f, 0));
+            dpBack->addChild(contentBG);
+            
+            auto checkbox = cocos2d::ui::CheckBox::create("ui/green_button06.png",
+                                                          "ui/green_checkmark.png");
+            checkbox->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            checkbox->setPosition(Vec2(dpBack->getContentSize().width -
+                                       (checkbox->getContentSize().width * 0.5f),
+                                       dpBack->getContentSize().height * 0.5f));
+            checkbox->addEventListener(std::bind(&CFacebookAPITestPopup::onCheckBoxState, this, std::placeholders::_1, std::placeholders::_2));
+            checkbox->setTag(index);
+            dpBack->addChild(checkbox);
+            
+            auto name = Label::createWithTTF(user.name, FONT::MALGUNBD, 50);
+            name->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+            name->setPosition(Vec2(contentBG->getContentSize().width * 0.4f,
+                                   contentBG->getContentSize().height * 0.9f));
+            contentBG->addChild(name);
+            
+            CUrlSprite::create()
+            ->setUrl(user.getPictureURL())
+            ->setSize(Size(contentBG->getContentSize() * 0.35f))
+            ->build(contentBG)
+            ->setPosition(Vec2(contentBG->getContentSize().width * 0.175f,
+                               contentBG->getContentSize().height * 0.5f));
+            
+            return dpBack;
+        };
         
-        Node* n = new Node();
-        n->setPosition(x * innerSize.width/column, innerSize.height - userHeight * (y + 0.5));
-        sv->addChild(n);
-        int posX = 0;
+        Size layerSize = bg->getContentSize();
+        Size dpSize = Size(900, 100);
+        size_t dpDistance = 15;
+        float spawnCount = 8;
         
-        cocos2d::ui::CheckBox* cb = cocos2d::ui::CheckBox::create("ui/green_button06.png", "ui/green_checkmark.png");
-        posX += cb->getContentSize().width/2;
-        cb->setPosition(Vec2(posX, 0));
-        n->addChild(cb);
-        posX += cb->getContentSize().width/2;
-        cb->setTag(TAG_CHECKBOX + i);
-        cb->addEventListener(std::bind(&CFacebookAPITestPopup::onCheckBoxState, this, std::placeholders::_1, std::placeholders::_2));
+        // Create the list view
+        auto listView = cocos2d::ui::ListView::create();
+        if (listView != nullptr){
+            listView->setDirection(cocos2d::ui::ScrollView::Direction::VERTICAL);
+            listView->setBounceEnabled(true);
+            listView->setBackGroundImageScale9Enabled(true);
+            listView->setContentSize(Size(bg->getContentSize().width,
+                                          (dpSize.height + dpDistance) * spawnCount));
+            listView->setScrollBarPositionFromCorner(Vec2(7, 7));
+            listView->setItemsMargin(dpDistance);
+            listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            listView->setPosition(layerSize / 2);
+            listView->setMagneticType(ListView::MagneticType::CENTER);
+            bg->addChild(listView);
+            
+            unsigned dpIdx = 0;
+            for (auto user : m_InviteableUsers)
+                listView->pushBackCustomItem(createDP(user, dpIdx++));
+            
+        }
+    }
+    
+    // create button
+    {
+        auto createButton = [=](const std::function<void(Node*)> &callback,
+                                Color4B btnColor, std::string name) {
+            
+            return CMyButton::create()
+            ->addEventListener(callback)
+            ->setButtonSingleUse(true)
+            ->setLayer(LayerColor::create(btnColor, 430, 150))
+            ->setContents(name)
+            ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+            ->show(bg);
+        };
         
-        //head image
-        sp = Sprite::create("ui/red_circle.png");
-        sp->setPosition(posX + sp->getContentSize().width/2, 0);
-        posX += sp->getContentSize().width;
-        n->addChild(sp);
+        // cancel
+        createButton([=](Node* sender){
+            // popup close
+            invitePopup->popupClose();
+        }, COLOR::DARKGRAY_ALPHA, "Cancel")
+        ->setPosition(Vec2(bg->getContentSize().width * 0.25f,
+                           bg->getContentSize().height * 0.15f));
         
-        //user name
-        label = Label::createWithSystemFont(user.getName(), "sans", 20);
-        label->setTextColor(Color4B(16, 16, 16, 255));
-        label->setPosition(posX + label->getContentSize().width/2, 0);
-        n->addChild(label);
-        
-        i++;
+        // invite
+        createButton([=](Node* sender){
+            if (m_InviteUserList.size() < 1) {
+                CCLOG("Must select one friend at least");
+                return;
+            }
+            std::vector<std::string> invite_ids;
+            for(auto i : m_InviteUserList)
+                invite_ids.push_back(m_InviteableUsers[i].getUserId());
+            
+            // invite selected friends
+            sdkbox::PluginFacebook::inviteFriendsWithInviteIds(invite_ids,
+                                                               m_InviteTitle,
+                                                               m_InviteContent);
+            // popup close
+            invitePopup->popupClose();
+        }, COLOR::BRIGHTRED_ALPHA, "Invite")
+        ->setPosition(Vec2(bg->getContentSize().width * 0.75f,
+                           bg->getContentSize().height * 0.15f));
     }
 }
 
 void CFacebookAPITestPopup::onCheckBoxState(Ref* sender, cocos2d::ui::CheckBox::EventType event){
     auto cb = dynamic_cast<cocos2d::ui::CheckBox*>(sender);
     
-    int idx = cb->getTag() - TAG_CHECKBOX;
+    int idx = cb->getTag();
     if (cocos2d::ui::CheckBox::EventType::SELECTED == event) {
         bool bExist = false;
         for (auto i : m_InviteUserList) {
@@ -601,65 +522,5 @@ void CFacebookAPITestPopup::onCheckBoxState(Ref* sender, cocos2d::ui::CheckBox::
             }
             pos++;
         }
-    }
-}
-
-void CFacebookAPITestPopup::showInviteableFriends(){
-    cocos2d::ui::ScrollView* sv = dynamic_cast<cocos2d::ui::ScrollView*>(m_InviteDialog->getChildByTag(TAG_SCROLLVIEW));
-    if (nullptr == sv) {
-        return;
-    }
-    sv->removeAllChildren();
-    
-    int column = 2;
-    int x = 0, y = 0;
-    int i = 0;
-    int userHeight = 60;
-
-    cocos2d::Label* label = nullptr;
-    Size innerSize = sv->getContentSize();
-    innerSize.height = m_InviteableUsers.size()/column;
-    if (0 != m_InviteableUsers.size()%column) {
-        innerSize.height += 1;
-    }
-    innerSize.height *= userHeight;
-    if (innerSize.height < sv->getContentSize().height) {
-        innerSize.height = sv->getContentSize().height;
-    }
-    sv->setInnerContainerSize(innerSize);
-    for (auto user : m_InviteableUsers) {
-        x = i % column;
-        y = i / column;
-        
-        Node* n = new Node();
-        n->setPosition(x * innerSize.width/column, innerSize.height - userHeight * (y + 0.5));
-        sv->addChild(n);
-        int posX = 0;
-        
-        cocos2d::ui::CheckBox* cb = cocos2d::ui::CheckBox::create("ui/green_button06.png", "ui/green_checkmark.png");
-        posX += cb->getContentSize().width/2;
-        cb->setPosition(Vec2(posX, 0));
-        n->addChild(cb);
-        posX += cb->getContentSize().width/2;
-        cb->setTag(TAG_CHECKBOX + i);
-        cb->addEventListener(std::bind(&CFacebookAPITestPopup::onCheckBoxState, this, std::placeholders::_1, std::placeholders::_2));
-        
-        //head image
-        CUrlSprite::create()
-        ->setUrl(user.getPictureURL())
-        ->setSize(Size(50, 50))
-        ->build(n)
-        ->setPosition(Vec2(posX + 50/2, 0));
-        
-        posX += 50;
-        //CCLOG("user head image: %s", user.getPictureURL().c_str());
-        
-        //user name
-        label = Label::createWithSystemFont(user.getName(), "sans", 20);
-        label->setTextColor(Color4B(16, 16, 16, 255));
-        label->setPosition(posX + label->getContentSize().width/2, 0);
-        n->addChild(label);
-        
-        i++;
     }
 }
