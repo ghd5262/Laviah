@@ -3,6 +3,16 @@
 #include "PluginFacebook/PluginFacebook.h"
 #include "ui/UICheckBox.h"
 
+struct FBFRIEND_PARAM{
+    std::string _name;
+    std::string _firstName;
+    std::string _lastName;
+    std::string _url;
+    std::string _userId;
+    bool _installed;
+    int _score;
+};
+
 class CFacebookManager : public cocos2d::Node, sdkbox::FacebookListener
 {
 public:

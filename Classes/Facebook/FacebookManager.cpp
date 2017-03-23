@@ -78,9 +78,6 @@ void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData
 {
     CCLOG("##FB onAPI: tag -> %s, json -> %s", tag.c_str(), jsonData.c_str());
     if (tag == "__fetch_picture_tag__") {
-//        picojson::value v;
-//        picojson::parse(v, jsonData);
-//        std::string url = v.get("data").get("url").to_str();
         
         Json::Value  root;
         Json::Reader reader;
@@ -93,25 +90,26 @@ void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData
             CCASSERT(false, MakeString("parser failed : \n %s", jsonDataStr.c_str()).c_str());
             return;
         }
-        std::string  url         = root["url"].asString();
+        Json::Value  data        = root["data"];
+        std::string  url         = data["url"].asString();
         
         CCLOG("picture's url = %s", url.data());
         
-        auto btn = CMyButton::create()
-        ->addEventListener([=](Node* sender){
-            sender->removeFromParent();
-        })
-        ->setButtonSingleUse(true)
-        ->setLayer(LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 430, 430))
-        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-        ->setButtonPosition(this->getContentSize() / 2)
-        ->show(this);
-        
-        CUrlSprite::create()
-        ->setUrl(url)
-        ->setSize(Size(400, 400))
-        ->build(btn)
-        ->setPosition(btn->getContentSize() / 2);
+//        auto btn = CMyButton::create()
+//        ->addEventListener([=](Node* sender){
+//            sender->removeFromParent();
+//        })
+//        ->setButtonSingleUse(true)
+//        ->setLayer(LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 430, 430))
+//        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//        ->setButtonPosition(this->getContentSize() / 2)
+//        ->show(this);
+//        
+//        CUrlSprite::create()
+//        ->setUrl(url)
+//        ->setSize(Size(400, 400))
+//        ->build(btn)
+//        ->setPosition(btn->getContentSize() / 2);
     }
 }
 
@@ -145,12 +143,7 @@ void CFacebookManager::onPermission(bool isLogin, const std::string& error)
 void CFacebookManager::onFetchFriends(bool ok, const std::string& msg)
 {
     CCLOG("##FB %s: %d = %s", __FUNCTION__, ok, msg.data());
-    
-    MenuItemFont::setFontSize(20);
-    static Menu *menu = Menu::create();
-    menu->setPositionY(20);
-    menu->cleanup();
-    
+
     const std::vector<sdkbox::FBGraphUser>& friends = sdkbox::PluginFacebook::getFriends();
     for (int i = 0; i < friends.size(); i++)
     {
@@ -163,18 +156,20 @@ void CFacebookManager::onFetchFriends(bool ok, const std::string& msg)
         CCLOG("##FB>> %s", user.isInstalled ? "app is installed" : "app is not installed");
         CCLOG("##FB");
         
-        MenuItemFont *item = MenuItemFont::create(user.name, [=](Ref*) {
-            sdkbox::FBAPIParam params;
-            params["redirect"] = "false";
-            params["type"] = "small";
-            std::string url(user.uid + "/picture");
-            sdkbox::PluginFacebook::api(url, "GET", params, "__fetch_picture_tag__");
-        });
-        menu->addChild(item);
-    }
-    if (!menu->getParent()) {
-        menu->alignItemsHorizontally();
-        addChild(menu);
+//        CMyButton::create()
+//        ->addEventListener([=](Node* sender){
+//            sender->removeFromParent();
+//            sdkbox::FBAPIParam params;
+//            params["redirect"] = "false";
+//            params["type"] = "small";
+//            std::string url(user.uid + "/picture");
+//            sdkbox::PluginFacebook::api(url, "GET", params, "__fetch_picture_tag__");
+//        })
+//        ->setButtonSingleUse(true)
+//        ->setLayer(LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 430, 430))
+//        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//        ->setButtonPosition(this->getContentSize() / 2)
+//        ->show(this);
     }
     
     MessageBox("", "fetch friends");

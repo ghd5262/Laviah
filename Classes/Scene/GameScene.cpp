@@ -590,8 +590,9 @@ void CGameScene::createRank()
     rank->setPosition(Vec2(m_VisibleSize.width * 0.25f,
                            m_VisibleSize.height * 0.75f));
     rank->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    rank->setScale(0.02f);
-    m_ZoomLayer->addChild(rank);
+    rank->setScale(0.05f);
+    this->addChild(rank);
+    CObjectManager::Instance()->setRank(rank);
 }
 
 void CGameScene::createCountDown()

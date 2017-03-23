@@ -82,8 +82,8 @@ void CUrlSprite::setTextureWithUrl(std::string url)
             texture->autorelease();
             texture->initWithImage(&img);
             
-            //            this->initWithTexture(texture);
-            this->setTexture(texture);
+            this->initWithTexture(texture);
+//            this->setTexture(texture);
             if (0 != m_Size.width) {
                 auto size = getContentSize();
                 setScaleX(m_Size.width  / size.width);

@@ -233,11 +233,16 @@ void CObjectManager::ZoomIn2()
 void CObjectManager::ZoomInRank()
 {
     this->zoom(CGameScene::getZoomLayer(),
-               PLANET_DEFINE::RANK_POS * 18,
+               Vec2(PLANET_DEFINE::RANK_POS.x * 2.5f, PLANET_DEFINE::RANK_POS.y * -5.f),
                0,
-               PLANET_DEFINE::RANK_SIZE,
-               3.2f,
+               5.f,
+               1.2f,
                true);
+    
+    this->zoom(m_Rank,
+               PLANET_DEFINE::MENU_POS,
+               0, 1.f, 2.2f, true);
+    
     m_Rocket->setVisible(false);
 }
 
@@ -259,6 +264,16 @@ void CObjectManager::ZoomOut2()
                0.7f,
                1.2f,
                true);
+}
+
+void CObjectManager::ZoomOutRank()
+{
+    this->ZoomIn();
+    this->zoom(m_Rank,
+               PLANET_DEFINE::RANK_POS,
+               0, 0.05f, 2.2f, true);
+    
+    m_Rocket->setVisible(true);
 }
 
 void CObjectManager::GiantMode()
@@ -469,7 +484,7 @@ void CObjectManager::zoom(cocos2d::Node* obj,
     auto scaleAction  = ScaleTo::create(duration,  zoomSize);
     auto moveAction   = MoveTo::create(duration,   zoomPos);
     auto rotateAction = RotateTo::create(duration, zoomAngle);
-    auto spawnAction  = Spawn::create(scaleAction, moveAction, rotateAction, nullptr);
+    auto spawnAction  = Spawn::create(moveAction, scaleAction , rotateAction, nullptr);
     auto exponential  = EaseExponentialInOut::create(spawnAction);
     exponential->setTag(100);
     obj->runAction(exponential);

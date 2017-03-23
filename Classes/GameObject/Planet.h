@@ -10,7 +10,7 @@ namespace PLANET_DEFINE {
     static const cocos2d::Vec2 MENU_POS   = cocos2d::Vec2(540.f, 900.f);
     static const cocos2d::Vec2 GAME_POS   = cocos2d::Vec2(540.f, 672.f);
     static const cocos2d::Vec2 SELECT_POS = cocos2d::Vec2(540.f, 310.f);
-    static const cocos2d::Vec2 RANK_POS   = cocos2d::Vec2(810.f, -1215.f);
+    static const cocos2d::Vec2 RANK_POS   = cocos2d::Vec2(270.f, 1215.f);
 }
 
 class CPlanet : public CGameObject {
