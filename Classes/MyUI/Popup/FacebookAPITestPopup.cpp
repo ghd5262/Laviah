@@ -238,14 +238,17 @@ void CFacebookAPITestPopup::CheckStatus(cocos2d::Node* sender){
 
 void CFacebookAPITestPopup::GetMyInfo(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
-    
     sdkbox::FBAPIParam params;
-    sdkbox::PluginFacebook::api("me", "GET", params, "me");
+    params["fields"] = "id,name,first_name,last_name,picture{is_silhouette,url},installed,scores{score}";
+    sdkbox::PluginFacebook::api("/me", "GET", params, FACEBOOK_DEFINE::TAG_API_ME);
 }
 
 void CFacebookAPITestPopup::GetMyFriends(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
-    sdkbox::PluginFacebook::fetchFriends();
+    sdkbox::FBAPIParam params;
+    params["fields"] = "id,name,first_name,last_name,picture{is_silhouette,url},installed,scores{score}";
+    params["limit"] = "30";
+    sdkbox::PluginFacebook::api("/me/friends", "GET", params, FACEBOOK_DEFINE::TAG_API_FRIENDS);
 }
 
 void CFacebookAPITestPopup::CaptureScreen(cocos2d::Node* sender){

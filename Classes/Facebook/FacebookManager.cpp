@@ -4,9 +4,9 @@
 #include "ui/UIScrollView.h"
 #include "ui/UICheckBox.h"
 #include "ui/UIButton.h"
-#include "../json/json.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/UrlSprite.hpp"
+#include "../DataManager/DataManagerUtils.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -15,6 +15,8 @@ CFacebookManager* CFacebookManager::m_Instance = nullptr;
 
 CFacebookManager::~CFacebookManager()
 {
+    DATA_MANAGER_UTILS::mapDeleteAndClean(m_FBFriendList);
+    CC_SAFE_DELETE(m_MyFacebookData);
     m_Instance = nullptr;
 }
 
@@ -60,6 +62,7 @@ bool CFacebookManager::init()
     sdkbox::PluginFacebook::setListener(this);
     sdkbox::PluginFacebook::init();
     
+    m_MyFacebookData = new FBUSER_PARAM();
     return true;
 }
 
@@ -77,23 +80,51 @@ void CFacebookManager::onLogin(bool isLogin, const std::string& error)
 void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData)
 {
     CCLOG("##FB onAPI: tag -> %s, json -> %s", tag.c_str(), jsonData.c_str());
-    if (tag == "__fetch_picture_tag__") {
-        
-        Json::Value  root;
-        Json::Reader reader;
-        std::string  jsonDataStr = jsonData;
-        
-        jsonDataStr              = jsonDataStr.substr(0, jsonDataStr.rfind("}") + 1);
-        bool parsingSuccessful   = reader.parse(jsonDataStr, root);
-        if (!parsingSuccessful)
-        {
-            CCASSERT(false, MakeString("parser failed : \n %s", jsonDataStr.c_str()).c_str());
-            return;
+    Json::Value  root;
+    Json::Reader reader;
+    std::string  jsonDataStr = jsonData;
+    
+    jsonDataStr              = jsonDataStr.substr(0, jsonDataStr.rfind("}") + 1);
+    bool parsingSuccessful   = reader.parse(jsonDataStr, root);
+    if (!parsingSuccessful)
+    {
+        CCASSERT(false, MakeString("parser failed : \n %s", jsonDataStr.c_str()).c_str());
+        return;
+    }
+
+    // if tag is "me" set my info of facebook
+    if(tag == FACEBOOK_DEFINE::TAG_API_ME)
+        this->initFacebookUserDataByJson(m_MyFacebookData, root);
+    
+    
+    // if tag is "friends" set friends info of facebook
+    if(tag == FACEBOOK_DEFINE::TAG_API_FRIENDS)
+    {
+        auto userArray = root["data"];
+        for(auto user : userArray){
+            auto userData = createNewFriendData(user["id"].asString());
+            this->initFacebookUserDataByJson(const_cast<FBUSER_PARAM*>(userData), user);
         }
-        Json::Value  data        = root["data"];
-        std::string  url         = data["url"].asString();
-        
-        CCLOG("picture's url = %s", url.data());
+    }
+    
+    
+//    if (tag == "__fetch_picture_tag__") {
+    
+//        Json::Value  root;
+//        Json::Reader reader;
+//        std::string  jsonDataStr = jsonData;
+//        
+//        jsonDataStr              = jsonDataStr.substr(0, jsonDataStr.rfind("}") + 1);
+//        bool parsingSuccessful   = reader.parse(jsonDataStr, root);
+//        if (!parsingSuccessful)
+//        {
+//            CCASSERT(false, MakeString("parser failed : \n %s", jsonDataStr.c_str()).c_str());
+//            return;
+//        }
+//        Json::Value  data        = root["data"];
+//        std::string  url         = data["url"].asString();
+//        
+//        CCLOG("picture's url = %s", url.data());
         
 //        auto btn = CMyButton::create()
 //        ->addEventListener([=](Node* sender){
@@ -110,7 +141,7 @@ void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData
 //        ->setSize(Size(400, 400))
 //        ->build(btn)
 //        ->setPosition(btn->getContentSize() / 2);
-    }
+//    }
 }
 
 void CFacebookManager::onSharedSuccess(const std::string& message)
@@ -203,6 +234,34 @@ void CFacebookManager::onGetUserInfo( const sdkbox::FBGraphUser& userInfo )
     CCLOG("installed   : %s", userInfo.isInstalled ? "installed" : "non-installed");
 }
 
+const FBUSER_PARAM* CFacebookManager::createNewFriendData(std::string id)
+{
+    auto data = m_FBFriendList.find(id);
+    if(data == m_FBFriendList.end())
+        m_FBFriendList.emplace(std::pair<std::string, const FBUSER_PARAM*>(id, new FBUSER_PARAM()));
+    
+    return (m_FBFriendList.find(id))->second;
+}
+
+void CFacebookManager::initFacebookUserDataByJson(FBUSER_PARAM* param,
+                                                  const Json::Value& data)
+{
+    param->_userId          = data["id"].asString();
+    param->_firstName       = data["first_name"].asString();
+    param->_lastName        = data["last_name"].asString();
+    
+    auto picture            = data["picture"]["data"];
+    param->_url             = picture["url"].asString();
+    param->_silhouette      = picture["is_silhouette"].asBool();
+    
+    auto score              = data["scores"]["data"];
+    if(!score.isNull()){
+        for(auto user : score){
+            if(param->_userId == user["user"]["id"].asString())
+                param->_score = user["score"].asInt();
+        }
+    }
+}
 
 
 //#define TAG_MENU 1

@@ -2,22 +2,34 @@
 #include "../Common/HSHUtility.h"
 #include "PluginFacebook/PluginFacebook.h"
 #include "ui/UICheckBox.h"
+#include "../json/json.h"
+#include <vector>
 
-struct FBFRIEND_PARAM{
+namespace FACEBOOK_DEFINE {
+    static const std::string TAG_API_ME      = "me";
+    static const std::string TAG_API_FRIENDS = "friendList";
+}
+
+struct FBUSER_PARAM{
+    std::string _userId;
     std::string _name;
     std::string _firstName;
     std::string _lastName;
     std::string _url;
-    std::string _userId;
+    bool _silhouette;
     bool _installed;
     int _score;
 };
+
+typedef std::map<std::string, const FBUSER_PARAM*> FBFRIEND_LIST;
 
 class CFacebookManager : public cocos2d::Node, sdkbox::FacebookListener
 {
 public:
     static CFacebookManager* Instance();
     static void CheckFacebookStatus();
+    
+    
     
     CC_SYNTHESIZE(std::function<void(const sdkbox::FBInvitableFriendsInfo&)>, m_InvitableFriendsListener, InvitableFriendsListener);
     CC_SYNTHESIZE(std::function<void(bool, std::string)>, m_LoginListener, LoginListener);
@@ -40,6 +52,10 @@ protected:
     virtual bool init() override;
     
 private:
+    void initFacebookUserDataByJson(FBUSER_PARAM* param,
+                                    const Json::Value& data);
+    const FBUSER_PARAM* createNewFriendData(std::string id);
+    
     CFacebookManager()
     : m_InvitableFriendsListener(nullptr)
     , m_LoginListener(nullptr){};
@@ -47,6 +63,8 @@ private:
     
 private:
     static CFacebookManager* m_Instance;
+    FBFRIEND_LIST m_FBFriendList;
+    FBUSER_PARAM* m_MyFacebookData;
 };
 
 //class SpriteEx;
