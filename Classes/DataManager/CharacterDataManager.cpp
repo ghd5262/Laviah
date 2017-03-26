@@ -110,7 +110,7 @@ void CCharacterDataManager::setTextureNameByGrade(sCHARACTER_PARAM* data)
     else{
         auto index = random<int>(0, m_DefaultTexturePackCount-1);
 //        data->_planetTextureName        = getName(N_PLANET,           index);
-        data->_planetTextureName        = getName("test_planet_%d.png", random<int>(0, 99));
+        data->_planetTextureName        = getName("test_planet_%d.png", random<int>(0, 98));
         data->_normalBulletTextureName  = getName(N_BULLET_NORMAL,    index);
         data->_stickBulletTextureName   = getName(N_BULLET_STICK,     index);
         data->_normalTextureName        = getName(N_CHARACTER_NORMAL, data->_idx);

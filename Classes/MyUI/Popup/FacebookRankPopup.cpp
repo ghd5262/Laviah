@@ -82,10 +82,12 @@ bool CFacebookRankPopup::init()
             listView->pushBackCustomItem(userDP);
         }
         
-        // Scrolling to current character
-        this->scheduleOnce([=](float delta){
-            listView->scrollToItem(sequence, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
-        }, 0.f, "ScrollToItem");
+        if(userList.size() > spawnCount){
+            // Scrolling to current character
+            this->scheduleOnce([=](float delta){
+                listView->scrollToItem(sequence, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
+            }, 0.f, "ScrollToItem");
+        }
     }
     
     auto btnEnd = CMyButton::create()
