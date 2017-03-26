@@ -74,6 +74,7 @@ private:
     void createOptionPopup(int index);
     void createWorkshopPopup();
     void createCharacterSelectPopup();
+    void createRankPopup();
     void createBonusTimeLayer();
 	void createRandomCoin();
     void removeBonusTimeLayer();

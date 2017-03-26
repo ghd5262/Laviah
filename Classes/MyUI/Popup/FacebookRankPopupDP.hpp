@@ -1,23 +1,21 @@
 #pragma once
 #include "cocos2d.h"
-#include "../../DataManager/CharacterDataManager.h"
+#include "../../Facebook/FacebookManager.hpp"
 
 USING_NS_CC;
 
 class CFacebookRankPopupDP : public cocos2d::ui::Widget
 {
 public:
-    static CFacebookRankPopupDP* create(const sCHARACTER_PARAM* character);
+    static CFacebookRankPopupDP* create(const FBUSER_PARAM* user, int sequence);
     
-    void DeSelect();
-    void Select();
-    void Center();
-    void Buy();
+    void Share();
+    void Notice();
+    void Invite();
     
     //setter & getter
-    const sCHARACTER_PARAM* getCharacterParam() const { return m_Character; }
+    const FBUSER_PARAM* getUserParam() const { return m_User; }
     
-    CC_SYNTHESIZE(int, m_DPIndex, DPIndex);
     CC_SYNTHESIZE(std::function<void(int)>, m_SelectDPListener, SelectDPListener)
     
 protected:
@@ -25,15 +23,13 @@ protected:
     
 private:
     
-    CFacebookRankPopupDP(const sCHARACTER_PARAM* character)
-    : m_Character(character)
-    , m_CharacterImg(nullptr)
-    , m_SelectDPListener(nullptr)
-    , m_DPIndex(0){};
+    CFacebookRankPopupDP(const FBUSER_PARAM* user, int sequence)
+    : m_User(user)
+    , m_Sequence(sequence)
+    , m_SelectDPListener(nullptr){};
     virtual ~CFacebookRankPopupDP(){};
     
 private:
-    const sCHARACTER_PARAM* m_Character;
-    Sprite* m_CharacterImg;
-    Label* m_CostLabel;
+    const FBUSER_PARAM* m_User;
+    int m_Sequence;
 };

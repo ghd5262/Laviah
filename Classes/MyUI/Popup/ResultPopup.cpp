@@ -9,6 +9,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
+#include "../../Facebook/FacebookManager.hpp"
 #include <array>
 
 CResultPopup* CResultPopup::create()
@@ -209,6 +210,11 @@ bool CResultPopup::init()
         totalContent = TRANSLATE("RESULT_BEST_SCORE");
         bestScore = GLOBAL->TOTAL_SCORE;
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, GLOBAL->TOTAL_SCORE);
+        
+        if(sdkbox::PluginFacebook::isLoggedIn()){
+            // save score to facebook data
+            CFacebookManager::Instance()->SaveScore(GLOBAL->TOTAL_SCORE);
+        }
     }
     auto totalLabel = createContent(totalScoreBG,
                                     Vec2(totalScoreBG->getContentSize().width * 0.08f,

@@ -14,7 +14,6 @@ protected:
     
 private:
     void End(cocos2d::Node* sender);
-    void Select(cocos2d::Node* sender);
     void ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type);
     
     CFacebookRankPopup()

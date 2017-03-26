@@ -6,8 +6,9 @@
 #include <vector>
 
 namespace FACEBOOK_DEFINE {
-    static const std::string TAG_API_ME      = "me";
-    static const std::string TAG_API_FRIENDS = "friendList";
+    static const std::string TAG_API_ME         = "me";
+    static const std::string TAG_API_FRIENDS    = "friendList";
+    static const std::string TAG_API_SAVE_SCORE = "saveScore";
 }
 
 struct FBUSER_PARAM{
@@ -22,17 +23,30 @@ struct FBUSER_PARAM{
 };
 
 typedef std::map<std::string, const FBUSER_PARAM*> FBFRIEND_LIST;
-
+typedef std::pair<std::string, const FBUSER_PARAM*> FB_PARAM_PAIR;
+typedef std::vector<FB_PARAM_PAIR> FB_USER_LIST;
+typedef std::function<void(bool)> API_LISTENER;
 class CFacebookManager : public cocos2d::Node, sdkbox::FacebookListener
 {
 public:
     static CFacebookManager* Instance();
-    static void CheckFacebookStatus();
+
+    int getMyRank();
+    const FBUSER_PARAM* getFriendByRank(int rank);
+    FB_USER_LIST getFBUserList();
     
-    
-    
+    FBFRIEND_LIST getFBFriendList() const { return m_FBFriendList; }
+    const FBUSER_PARAM* getMyFacebookData() const { return m_MyFacebookData; }
     CC_SYNTHESIZE(std::function<void(const sdkbox::FBInvitableFriendsInfo&)>, m_InvitableFriendsListener, InvitableFriendsListener);
     CC_SYNTHESIZE(std::function<void(bool, std::string)>, m_LoginListener, LoginListener);
+    CC_SYNTHESIZE(API_LISTENER, m_SaveScoreListener, SaveScoreListener);
+    CC_SYNTHESIZE(API_LISTENER, m_MyInfoListener, MyInfoListener);
+    CC_SYNTHESIZE(API_LISTENER, m_FriendListListener, FriendListListener);
+    
+    static void CheckFacebookStatus();
+    static void RequestMyInfo();
+    static void RequestFriendList();
+    static void SaveScore(int score);
     
 private:
     //Facebook callback
@@ -55,10 +69,14 @@ private:
     void initFacebookUserDataByJson(FBUSER_PARAM* param,
                                     const Json::Value& data);
     const FBUSER_PARAM* createNewFriendData(std::string id);
+    void callAPIListener(bool succeed, API_LISTENER& listener);
     
     CFacebookManager()
     : m_InvitableFriendsListener(nullptr)
-    , m_LoginListener(nullptr){};
+    , m_LoginListener(nullptr)
+    , m_SaveScoreListener(nullptr)
+    , m_MyInfoListener(nullptr)
+    , m_FriendListListener(nullptr){};
     virtual ~CFacebookManager();
     
 private:

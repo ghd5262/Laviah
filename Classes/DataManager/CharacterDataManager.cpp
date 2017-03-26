@@ -55,6 +55,10 @@ void CCharacterDataManager::initWithJson(CHARACTER_LIST &list, std::string fileN
 		const Json::Value valueItem = itemArray[itemCount];
         this->addCharacterToList(valueItem);
 	}
+    
+    // test planet init
+    for(int index = 0; index < 12; index++)
+        this->addTexturePackToCache(StringUtils::format("test_planet/test_planet_%d", index));
 }
 
 void CCharacterDataManager::addNormalCharacterTexturePack(const Json::Value& array)
@@ -105,7 +109,8 @@ void CCharacterDataManager::setTextureNameByGrade(sCHARACTER_PARAM* data)
     }
     else{
         auto index = random<int>(0, m_DefaultTexturePackCount-1);
-        data->_planetTextureName        = getName(N_PLANET,           index);
+//        data->_planetTextureName        = getName(N_PLANET,           index);
+        data->_planetTextureName        = getName("test_planet_%d.png", random<int>(0, 99));
         data->_normalBulletTextureName  = getName(N_BULLET_NORMAL,    index);
         data->_stickBulletTextureName   = getName(N_BULLET_STICK,     index);
         data->_normalTextureName        = getName(N_CHARACTER_NORMAL, data->_idx);

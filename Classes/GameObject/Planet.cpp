@@ -79,7 +79,7 @@ void CPlanet::Crushed()
 }
 
 void CPlanet::Execute(float delta){
-    this->setBoundingRadius(((getContentSize().width * this->getScale()) / 2));
+    this->setBoundingRadius(((getContentSize().width * this->getScale()) / 2) * 0.6f);
 }
 
 // Dir -1 == Left, 1 == Right

@@ -1,10 +1,12 @@
 #include "FacebookRankPopupDP.hpp"
 #include "../MyButton.h"
+#include "../UrlSprite.hpp"
 #include "../../DataManager/UserDataManager.h"
+#include "../../Common/StringUtility.h"
 
-CFacebookRankPopupDP* CFacebookRankPopupDP::create(const sCHARACTER_PARAM* character)
+CFacebookRankPopupDP* CFacebookRankPopupDP::create(const FBUSER_PARAM* user, int sequence)
 {
-    CFacebookRankPopupDP *pRet = new(std::nothrow) CFacebookRankPopupDP(character);
+    CFacebookRankPopupDP *pRet = new(std::nothrow) CFacebookRankPopupDP(user, sequence);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -22,7 +24,7 @@ bool CFacebookRankPopupDP::init()
 {
     if (!Widget::init()) return false;
     
-    auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 150.f, 150.f);
+    auto bg = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 900.f, 150.f);
     if (bg != nullptr){
         this->setContentSize(bg->getContentSize());
         
@@ -32,82 +34,76 @@ bool CFacebookRankPopupDP::init()
         this->addChild(bg);
     }
     
-    m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character->_normalTextureName.c_str());
-    if (m_CharacterImg != nullptr)
+    // create number
     {
-        m_CharacterImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_CharacterImg->setPosition(this->getContentSize() / 2);
-        bg->addChild(m_CharacterImg);
+        auto number = Label::createWithTTF(StringUtils::format("%d", m_Sequence), FONT::MALGUNBD, 80);
+        number->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        number->setPosition(Vec2(bg->getContentSize().width * 0.08f,
+                                 bg->getContentSize().height * 0.5f));
+        bg->addChild(number);
     }
     
-    if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx)){
-        if(m_Character->_random)
-            m_CharacterImg->setColor(COLOR::DARKGRAY);
-        else
-            m_CharacterImg->setColor(Color3B::BLACK);
+    // create picture
+    {
+        CUrlSprite::create()
+        ->setUrl(m_User->_url)
+        ->setSize(Size(150, 150))
+        ->build(bg)
+        ->setPosition(Vec2(bg->getContentSize().width * 0.25f,
+                           bg->getContentSize().height * 0.5f));
     }
     
-    auto btn = CMyButton::create()
-    ->addEventListener([=](Node* sender){
-        this->retain();
-        if(m_SelectDPListener)
-        {
-            m_SelectDPListener(m_DPIndex);
-        }
-        this->release();
-    })
-    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 150.f, 150.f))
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(this);
+    // create name
+    {
+        auto name = Label::createWithSystemFont(m_User->_name, FONT::MALGUNBD, 50);
+        name->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+        name->setPosition(Vec2(bg->getContentSize().width * 0.35f,
+                               bg->getContentSize().height * 0.75f));
+        bg->addChild(name);
+    }
     
-    btn->setPosition(this->getContentSize() / 2);
-    btn->setSwallowTouches(false);
+    // create score
+    {
+        auto score = Label::createWithTTF(StringUtility::toCommaString(m_User->_score), FONT::MALGUNBD, 70);
+        score->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+        score->setPosition(Vec2(bg->getContentSize().width * 0.35f,
+                                bg->getContentSize().height * 0.35f));
+        bg->addChild(score);
+    }
     
-    auto content = TRANSLATE("CURRENCY_UNIT");
-    if(!m_Character->_random) content = "?";
-    m_CostLabel = Label::createWithSystemFont(content, FONT::MALGUNBD, 23,
-                                              Size(this->getContentSize().width * 2.f,
-                                                   this->getContentSize().height + 1.05f),
-                                              TextHAlignment::CENTER,
-                                              TextVAlignment::CENTER);
-    m_CostLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_CostLabel->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                                  this->getContentSize().height * 1.5f));
-    m_CostLabel->setVisible(false);
-    this->addChild(m_CostLabel);
+    // create share button
+    {
+        
+    }
+    
+    
+//    auto btn = CMyButton::create()
+//    ->addEventListener([=](Node* sender){
+//        this->retain();
+//        if(m_SelectDPListener)
+//        {
+//            m_SelectDPListener(m_DPIndex);
+//        }
+//        this->release();
+//    })
+//    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 150.f, 150.f))
+//    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//    ->show(this);
+//    btn->setPosition(this->getContentSize() / 2);
+//    btn->setSwallowTouches(false);
+    
     
     return true;
 }
 
-void CFacebookRankPopupDP::Buy()
+void CFacebookRankPopupDP::Share()
 {
-    if (CUserDataManager::Instance()->CoinUpdate(-0)){
-        
-        // USER Data Save
-        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx);
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_idx);
-        
-        // change color to white
-        m_CharacterImg->setColor(Color3B::WHITE);
-        m_CostLabel->setVisible(false);
-    }
 }
 
-void CFacebookRankPopupDP::Select()
+void CFacebookRankPopupDP::Notice()
 {
-    // USER Data Save
-    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_idx);
 }
 
-void CFacebookRankPopupDP::Center()
+void CFacebookRankPopupDP::Invite()
 {
-    m_CharacterImg->setScale(3.f);
-    auto alreadyHave = CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx);
-    m_CostLabel->setVisible(!alreadyHave);
-}
-
-void CFacebookRankPopupDP::DeSelect()
-{
-    m_CharacterImg->setScale(1.5f);
-    m_CostLabel->setVisible(false);
 }

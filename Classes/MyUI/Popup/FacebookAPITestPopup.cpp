@@ -50,7 +50,7 @@ bool CFacebookAPITestPopup::init()
     };
     
     std::array<std::string, 16> titleArray = {
-        "Login",
+        sdkbox::PluginFacebook::isLoggedIn() ? "Logout" : "Login",
         "CheckStatus",
         "GetMyInfo",
         "GetMyFriends",
@@ -238,23 +238,20 @@ void CFacebookAPITestPopup::CheckStatus(cocos2d::Node* sender){
 
 void CFacebookAPITestPopup::GetMyInfo(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
-    sdkbox::FBAPIParam params;
-    params["fields"] = "id,name,first_name,last_name,picture{is_silhouette,url},installed,scores{score}";
-    sdkbox::PluginFacebook::api("/me", "GET", params, FACEBOOK_DEFINE::TAG_API_ME);
+    CFacebookManager::RequestMyInfo();
 }
 
 void CFacebookAPITestPopup::GetMyFriends(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
-    sdkbox::FBAPIParam params;
-    params["fields"] = "id,name,first_name,last_name,picture{is_silhouette,url},installed,scores{score}";
-    params["limit"] = "30";
-    sdkbox::PluginFacebook::api("/me/friends", "GET", params, FACEBOOK_DEFINE::TAG_API_FRIENDS);
+    CFacebookManager::RequestFriendList();
 }
 
 void CFacebookAPITestPopup::CaptureScreen(cocos2d::Node* sender){
     CCLOG("##FB %s", __FUNCTION__);
     
-    utils::captureScreen([=](bool yes, const std::string &outputFilename){}, "FBCapture.png");
+    utils::captureScreen([=](bool yes, const std::string &outputFilename){
+        m_FacebookCapture = outputFilename;
+    }, "FBCapture.png");
 }
 
 void CFacebookAPITestPopup::ShareLink(cocos2d::Node* sender){
@@ -349,9 +346,7 @@ void CFacebookAPITestPopup::GetFriendsScore(cocos2d::Node* sender){
 }
 
 void CFacebookAPITestPopup::SetMyScore(cocos2d::Node* sender){
-    sdkbox::FBAPIParam params;
-    params["score"] = StringUtils::format("%d", random<int>(0, 100));
-    sdkbox::PluginFacebook::api("/me/scores", "POST", params, "/me/scores");
+    CFacebookManager::SaveScore(random<int>(0, 100));
 }
 
 void CFacebookAPITestPopup::showInviteDialog(){

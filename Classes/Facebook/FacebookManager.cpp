@@ -38,6 +38,38 @@ CFacebookManager* CFacebookManager::Instance()
     }
 }
 
+int CFacebookManager::getMyRank()
+{
+    auto userList = getFBUserList();
+    
+    // get sequence of me.
+    auto iter     = std::find_if(userList.begin(), userList.end(), [=](FB_PARAM_PAIR data){
+        return data.second->_userId == m_MyFacebookData->_userId;
+    });
+    return (int)std::distance(userList.begin(), iter);
+}
+
+const FBUSER_PARAM* CFacebookManager::getFriendByRank(int rank)
+{
+    auto userList = getFBUserList();
+    
+    if(userList.size() > rank)  return userList.at(rank).second;
+    else                        return m_MyFacebookData;
+}
+
+FB_USER_LIST CFacebookManager::getFBUserList()
+{
+    auto userList = FB_USER_LIST(m_FBFriendList.begin(), m_FBFriendList.end());
+    
+    // sort friend list included me.
+    userList.emplace_back(FB_PARAM_PAIR(m_MyFacebookData->_userId, m_MyFacebookData));
+    std::sort(userList.begin(), userList.end(), [=](FB_PARAM_PAIR dataA, FB_PARAM_PAIR dataB ){
+        return (dataA.second->_score > dataB.second->_score);
+    });
+    
+    return userList;
+}
+
 void CFacebookManager::CheckFacebookStatus()
 {
     CCLOG("##FB> permission list: ");
@@ -48,6 +80,28 @@ void CFacebookManager::CheckFacebookStatus()
     CCLOG("##FB> access token: %s", sdkbox::PluginFacebook::getAccessToken().c_str());
     CCLOG("##FB> user id: %s", sdkbox::PluginFacebook::getUserID().c_str());
     CCLOG("##FB> FBSDK version: %s", sdkbox::PluginFacebook::getSDKVersion().c_str());
+}
+
+void CFacebookManager::RequestMyInfo()
+{
+    sdkbox::FBAPIParam params;
+    params["fields"] = "id,name,first_name,last_name,picture{is_silhouette,url},installed,scores{score}";
+    sdkbox::PluginFacebook::api("/me", "GET", params, FACEBOOK_DEFINE::TAG_API_ME);
+}
+
+void CFacebookManager::RequestFriendList()
+{
+    sdkbox::FBAPIParam params;
+    params["fields"] = "id,name,first_name,last_name,picture{is_silhouette,url},installed,scores{score}";
+    params["limit"] = "30";
+    sdkbox::PluginFacebook::api("/me/friends", "GET", params, FACEBOOK_DEFINE::TAG_API_FRIENDS);
+}
+
+void CFacebookManager::SaveScore(int score)
+{
+    sdkbox::FBAPIParam params;
+    params["score"] = StringUtils::format("%d", score);
+    sdkbox::PluginFacebook::api("/me/scores", "POST", params, FACEBOOK_DEFINE::TAG_API_SAVE_SCORE);
 }
 
 // on "init" you need to initialize your instance
@@ -61,14 +115,15 @@ bool CFacebookManager::init()
     
     sdkbox::PluginFacebook::setListener(this);
     sdkbox::PluginFacebook::init();
-    
+
     m_MyFacebookData = new FBUSER_PARAM();
+    
+    this->RequestMyInfo();
+    this->RequestFriendList();
+    
     return true;
 }
 
-/*********************
- * Facebook callbacks
- *********************/
 void CFacebookManager::onLogin(bool isLogin, const std::string& error)
 {
     if(m_LoginListener) {
@@ -93,19 +148,33 @@ void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData
     }
 
     // if tag is "me" set my info of facebook
-    if(tag == FACEBOOK_DEFINE::TAG_API_ME)
+    if(tag == FACEBOOK_DEFINE::TAG_API_ME){
         this->initFacebookUserDataByJson(m_MyFacebookData, root);
-    
+        this->callAPIListener(true, m_MyInfoListener);
+    }
     
     // if tag is "friends" set friends info of facebook
-    if(tag == FACEBOOK_DEFINE::TAG_API_FRIENDS)
-    {
+    else if(tag == FACEBOOK_DEFINE::TAG_API_FRIENDS){
         auto userArray = root["data"];
         for(auto user : userArray){
             auto userData = createNewFriendData(user["id"].asString());
             this->initFacebookUserDataByJson(const_cast<FBUSER_PARAM*>(userData), user);
         }
+        this->callAPIListener(true, m_FriendListListener);
     }
+    
+    // if tag is "save score" call listener
+    else if(tag == FACEBOOK_DEFINE::TAG_API_SAVE_SCORE){
+        this->RequestMyInfo();
+        this->setMyInfoListener([=](bool succeed){
+            this->RequestFriendList();
+            this->setFriendListListener([=](bool succeed){
+                this->callAPIListener(true, m_SaveScoreListener);
+            });
+        });
+    }
+    
+    
     
     
 //    if (tag == "__fetch_picture_tag__") {
@@ -247,6 +316,7 @@ void CFacebookManager::initFacebookUserDataByJson(FBUSER_PARAM* param,
                                                   const Json::Value& data)
 {
     param->_userId          = data["id"].asString();
+    param->_name            = data["name"].asString();
     param->_firstName       = data["first_name"].asString();
     param->_lastName        = data["last_name"].asString();
     
@@ -263,6 +333,14 @@ void CFacebookManager::initFacebookUserDataByJson(FBUSER_PARAM* param,
     }
 }
 
+void CFacebookManager::callAPIListener(bool succeed, API_LISTENER& listener)
+{
+    if(listener)
+    {
+        listener(succeed);
+        listener = nullptr;
+    }
+}
 
 //#define TAG_MENU 1
 //#define TAG_SCROLLVIEW 2
