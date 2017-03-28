@@ -53,6 +53,7 @@
 		9312B47C1D58A12600FE954C /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93865F3E1D588C39007ECE5A /* libiconv.tbd */; };
 		932C6B931E83A2710043BE02 /* FacebookRankPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932C6B911E83A2710043BE02 /* FacebookRankPopupDP.cpp */; };
 		932C6B941E83A2710043BE02 /* FacebookRankPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932C6B911E83A2710043BE02 /* FacebookRankPopupDP.cpp */; };
+		932C6B991E89FC640043BE02 /* FacebookRivalRankLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932C6B971E89FC640043BE02 /* FacebookRivalRankLayer.cpp */; };
 		933494481E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933494461E839C7900377DC2 /* FacebookRankPopup.cpp */; };
 		933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933494461E839C7900377DC2 /* FacebookRankPopup.cpp */; };
 		9348C5AF1D868481000E8D1B /* update in Resources */ = {isa = PBXBuildFile; fileRef = 9348C5AE1D868481000E8D1B /* update */; };
@@ -278,6 +279,8 @@
 		9312B47A1D58A10100FE954C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		932C6B911E83A2710043BE02 /* FacebookRankPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookRankPopupDP.cpp; sourceTree = "<group>"; };
 		932C6B921E83A2710043BE02 /* FacebookRankPopupDP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FacebookRankPopupDP.hpp; sourceTree = "<group>"; };
+		932C6B971E89FC640043BE02 /* FacebookRivalRankLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookRivalRankLayer.cpp; sourceTree = "<group>"; };
+		932C6B981E89FC640043BE02 /* FacebookRivalRankLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FacebookRivalRankLayer.hpp; sourceTree = "<group>"; };
 		933494461E839C7900377DC2 /* FacebookRankPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookRankPopup.cpp; sourceTree = "<group>"; };
 		933494471E839C7900377DC2 /* FacebookRankPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FacebookRankPopup.hpp; sourceTree = "<group>"; };
 		9348C5AE1D868481000E8D1B /* update */ = {isa = PBXFileReference; lastKnownFileType = folder; path = update; sourceTree = "<group>"; };
@@ -993,6 +996,8 @@
 				93706F281E7A6891009A2CA0 /* UserCoinButton.h */,
 				93706FCE1E7FAA21009A2CA0 /* UrlSprite.cpp */,
 				93706FCF1E7FAA21009A2CA0 /* UrlSprite.hpp */,
+				932C6B971E89FC640043BE02 /* FacebookRivalRankLayer.cpp */,
+				932C6B981E89FC640043BE02 /* FacebookRivalRankLayer.hpp */,
 			);
 			path = MyUI;
 			sourceTree = "<group>";
@@ -1313,6 +1318,7 @@
 				93706F941E7A6891009A2CA0 /* OptionMusicPopup.cpp in Sources */,
 				93706FA71E7A6891009A2CA0 /* UserCoinButton.cpp in Sources */,
 				93706F681E7A6891009A2CA0 /* BulletCreator.cpp in Sources */,
+				932C6B991E89FC640043BE02 /* FacebookRivalRankLayer.cpp in Sources */,
 				93706F781E7A6891009A2CA0 /* json_value.cpp in Sources */,
 				93706F631E7A6891009A2CA0 /* PlayStar.cpp in Sources */,
 				93706FBD1E7A8BF8009A2CA0 /* FacebookManager.cpp in Sources */,

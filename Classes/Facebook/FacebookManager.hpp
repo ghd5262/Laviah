@@ -32,6 +32,7 @@ public:
     static CFacebookManager* Instance();
 
     int getMyRank();
+    int getRankByScore(int score);
     const FBUSER_PARAM* getFriendByRank(int rank);
     FB_USER_LIST getFBUserList();
     

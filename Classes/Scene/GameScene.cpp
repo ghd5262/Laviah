@@ -19,6 +19,7 @@
 #include "../MyUI/MultipleScore.h"
 #include "../MyUI/CountDown.hpp"
 #include "../MyUI/TutorialLayer.hpp"
+#include "../MyUI/FacebookRivalRankLayer.hpp"
 #include "../MyUI/Popup.h"
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
@@ -72,6 +73,7 @@ CGameScene::CGameScene()
 , m_MenuLayer(nullptr)
 , m_BonusTimeLayer(nullptr)
 , m_TutorialLayer(nullptr)
+, m_RivalRankLayer(nullptr)
 , m_ScreenFade(nullptr)
 , m_CountDown(nullptr)
 , m_KeyBoardSpace(false)
@@ -115,6 +117,7 @@ bool CGameScene::init()
     this->createComboUI();
     this->createMenuLayer();
     this->createUILayer();
+    this->createRivalRankLayer();
     this->createTutorialLayer();
     this->initKeyboardListener();
     this->setTimestamp();
@@ -150,6 +153,7 @@ void CGameScene::GameStart()
 //    CObjectManager::Instance()->ZoomOut();
     CObjectManager::Instance()->getPlayer()->GameStart();
     CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
+    dynamic_cast<CFacebookRivalRankLayer*>( m_RivalRankLayer )->InitListView();
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
 
     //    });
@@ -680,6 +684,16 @@ void CGameScene::createUILayer()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
+}
+
+void CGameScene::createRivalRankLayer()
+{
+    m_RivalRankLayer = CFacebookRivalRankLayer::create()
+    ->setDefaultCallbackEnable(false)
+    ->setBackgroundVisible(false)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.95f))
+    ->show(m_UILayer);
 }
 
 void CGameScene::createTutorialLayer()

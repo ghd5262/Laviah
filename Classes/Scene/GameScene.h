@@ -100,6 +100,7 @@ private:
     void createComboUI();
     void createMenuLayer();
     void createUILayer();
+    void createRivalRankLayer();
     void createTutorialLayer();
     void setTimestamp();
     
@@ -111,6 +112,7 @@ private:
     CPopup* m_MenuLayer;
     CPopup* m_BonusTimeLayer;
     CPopup* m_TutorialLayer;
+    CPopup* m_RivalRankLayer;
     CCountDown* m_CountDown;
 	cocos2d::Size m_VisibleSize;
 	bool m_KeyBoardSpace;

@@ -7,6 +7,7 @@
 #include "CountDown.hpp"
 #include "ItemProgress.hpp"
 #include "ChallengeProgressBar.hpp"
+#include "FacebookRivalRankLayer.hpp"
 #include "Popup/ChallengeCompleteNoticePopup.h"
 #include "../GameObject/ItemManager.h"
 #include "../GameObject/ObjectManager.h"
@@ -123,6 +124,7 @@ bool CUILayer::init()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f))
     ->show(this);
+
 
 //    this->initItemTestButton();
 //    CGameScene::getGameScene()->GameResume();

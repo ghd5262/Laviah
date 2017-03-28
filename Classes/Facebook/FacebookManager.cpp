@@ -49,6 +49,17 @@ int CFacebookManager::getMyRank()
     return (int)std::distance(userList.begin(), iter);
 }
 
+int CFacebookManager::getRankByScore(int score)
+{
+    auto userList = getFBUserList();
+
+    // get sequence of score.
+    auto iter     = std::find_if(userList.begin(), userList.end(), [=](FB_PARAM_PAIR data){
+        return data.second->_score < score;
+    });
+    return (int)std::distance(userList.begin(), iter);
+}
+
 const FBUSER_PARAM* CFacebookManager::getFriendByRank(int rank)
 {
     auto userList = getFBUserList();
