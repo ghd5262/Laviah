@@ -78,6 +78,7 @@ void CFacebookRivalRankLayer::InitListView()
             auto score = Label::createWithTTF(StringUtility::toCommaString(user->_score), FONT::MALGUNBD, 50);
             score->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
             score->setPosition(Vec2(dpSize.width * 0.96f, dpSize.height * 0.5f));
+            score->setTag(100);
             dp->addChild(score);
             
             // picture
@@ -101,6 +102,11 @@ void CFacebookRivalRankLayer::InitListView()
         for (auto user : userList)
             m_ListView->pushBackCustomItem(createRivalsDP(user.second, index++));
         
+//        // create my dp one more.
+//        m_MyScoreLayer = createRivalsDP(CFacebookManager::Instance()->getMyFacebookData(), 1);
+//        this->addChild(m_MyScoreLayer);
+//        m_MyScoreLayer->setVisible(false);
+//        m_MyBestScore = dynamic_cast<Label*>(m_MyScoreLayer->getChildByTag(100));
         
         // Scrolling to bottom
         this->scheduleOnce([=](float delta){
@@ -117,14 +123,21 @@ void CFacebookRivalRankLayer::update(float delta)
     {
         m_PrevScore = GLOBAL->STAR_SCORE;
         auto currentRank = CFacebookManager::Instance()->getRankByScore(m_PrevScore);
-        auto nextTargetRank = currentRank - 1;
-        if(currentRank >= 10)   return;
-        if(nextTargetRank < 0) return;
-        
-        if(m_PrevRank != nextTargetRank)
-        {
-            m_PrevRank = nextTargetRank;
-            m_ListView->scrollToItem(m_PrevRank, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
+        if(currentRank <= 0){
+//            m_ListView->setVisible(false);
+//            m_MyScoreLayer->setVisible(true);
+//            m_MyBestScore->setString(StringUtility::toCommaString(m_PrevScore));
+        }
+        else{
+            auto nextTargetRank = currentRank - 1;
+            if(currentRank >= 10)   return;
+            if(nextTargetRank < 0)  nextTargetRank = 0;
+            
+            if(m_PrevRank != nextTargetRank)
+            {
+                m_PrevRank = nextTargetRank;
+                m_ListView->scrollToItem(m_PrevRank, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
+            }
         }
     }
 }
