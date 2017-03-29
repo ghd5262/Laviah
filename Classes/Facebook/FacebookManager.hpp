@@ -35,9 +35,11 @@ public:
     int getRankByScore(int score);
     const FBUSER_PARAM* getFriendByRank(int rank);
     FB_USER_LIST getFBUserList();
-    
     FBFRIEND_LIST getFBFriendList() const { return m_FBFriendList; }
     const FBUSER_PARAM* getMyFacebookData() const { return m_MyFacebookData; }
+    
+    void ClearData();
+    
     CC_SYNTHESIZE(std::function<void(const sdkbox::FBInvitableFriendsInfo&)>, m_InvitableFriendsListener, InvitableFriendsListener);
     CC_SYNTHESIZE(std::function<void(bool, std::string)>, m_LoginListener, LoginListener);
     CC_SYNTHESIZE(API_LISTENER, m_SaveScoreListener, SaveScoreListener);

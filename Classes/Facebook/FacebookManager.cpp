@@ -15,7 +15,7 @@ CFacebookManager* CFacebookManager::m_Instance = nullptr;
 
 CFacebookManager::~CFacebookManager()
 {
-    DATA_MANAGER_UTILS::mapDeleteAndClean(m_FBFriendList);
+    this->ClearData();
     CC_SAFE_DELETE(m_MyFacebookData);
     m_Instance = nullptr;
 }
@@ -68,7 +68,7 @@ const FBUSER_PARAM* CFacebookManager::getFriendByRank(int rank)
     else                        return m_MyFacebookData;
 }
 
-FB_USER_LIST CFacebookManager::getFBUserList()
+FB_USER_LIST CFacebookManager::getFBUserList() 
 {
     auto userList = FB_USER_LIST(m_FBFriendList.begin(), m_FBFriendList.end());
     
@@ -79,6 +79,11 @@ FB_USER_LIST CFacebookManager::getFBUserList()
     });
     
     return userList;
+}
+
+void CFacebookManager::ClearData()
+{
+    DATA_MANAGER_UTILS::mapDeleteAndClean(m_FBFriendList);
 }
 
 void CFacebookManager::CheckFacebookStatus()

@@ -154,6 +154,9 @@ bool CFacebookAPITestPopup::init()
         std::string title = "login ";
         title.append((isLogin ? "success" : "failed"));
         MessageBox(error.c_str(), title.c_str());
+        CFacebookManager::Instance()->ClearData();
+        CFacebookManager::RequestFriendList();
+        CFacebookManager::RequestMyInfo();
     });
     
     CFacebookManager::Instance()->setInvitableFriendsListener([=](const sdkbox::FBInvitableFriendsInfo &friends){
