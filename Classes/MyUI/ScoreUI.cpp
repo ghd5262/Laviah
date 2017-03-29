@@ -25,7 +25,11 @@ CScoreUI* CScoreUI::create(int& value)
 }
 CScoreUI* CScoreUI::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
 {
+    this->setContentSize(Size(0, m_FontSize));
+    this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    
 	m_ScoreLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
+    m_ScoreLabel->setPosition(this->getContentSize() / 2);
 	m_ScoreLabel->setAnchorPoint(m_ScoreAnchorPoint);
 	m_ScoreLabel->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 3);
 	this->addChild(m_ScoreLabel);
@@ -97,7 +101,7 @@ void CScoreUI::setIconPosition()
 {
 	if (m_Icon == nullptr) return;
 
-	m_Icon->setPosition(Vec2((m_ScoreLabel->getContentSize().width * -m_ScoreLabel->getAnchorPoint().x) - m_FontSize, 0));
+	m_Icon->setPosition(Vec2((m_ScoreLabel->getContentSize().width * -m_ScoreLabel->getAnchorPoint().x) - m_FontSize, this->getContentSize().height * 0.5f));
 }
 
 void CScoreUI::setScoreString()

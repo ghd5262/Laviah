@@ -14,18 +14,16 @@ protected:
     virtual bool init() override;
     
 private:
+    cocos2d::ui::Widget* createRankDP(int &scoreRef, std::string url, int rank);
+    
     CFacebookRivalRankLayer()
     : m_ListView(nullptr)
-    , m_MyScoreLayer(nullptr)
-    , m_MyBestScore(nullptr)
     , m_PrevScore(0)
     , m_PrevRank(0){}
     virtual ~CFacebookRivalRankLayer(){};
     
 private:
     cocos2d::ui::ListView* m_ListView;
-    cocos2d::ui::Widget* m_MyScoreLayer;
-    cocos2d::Label* m_MyBestScore;
     int m_PrevScore;
     int m_PrevRank;
 };

@@ -1,6 +1,7 @@
 #include "FacebookRivalRankLayer.hpp"
 #include "MyButton.h"
 #include "UrlSprite.hpp"
+#include "ScoreUI.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 #include "../GameObject/ObjectManager.h"
@@ -45,6 +46,7 @@ void CFacebookRivalRankLayer::InitListView()
     }
     
     auto userList   = CFacebookManager::Instance()->getFBUserList();
+    auto myData     = CFacebookManager::Instance()->getMyFacebookData();
     
     // Cut to the top 10.
     if(userList.size() > 10)
@@ -69,44 +71,17 @@ void CFacebookRivalRankLayer::InitListView()
         m_ListView->setTouchEnabled(false);
         this->addChild(m_ListView);
         
-        auto createRivalsDP = [=](const FBUSER_PARAM* user, int sequence){
-            auto dp = Widget::create();
-            dp->setContentSize(dpSize);
-            dp->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            
-            // score
-            auto score = Label::createWithTTF(StringUtility::toCommaString(user->_score), FONT::MALGUNBD, 50);
-            score->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-            score->setPosition(Vec2(dpSize.width * 0.96f, dpSize.height * 0.5f));
-            score->setTag(100);
-            dp->addChild(score);
-            
-            // picture
-            auto picture = CUrlSprite::create()
-            ->setUrl(user->_url)
-            ->setSize(Size(58.f, 58.f))
-            ->build(dp);
-            picture->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-            picture->setPosition(Vec2((dpSize.width * 0.96f) - (score->getContentSize().width + 40), dpSize.height * 0.5f));
-            
-            auto number = Label::createWithTTF(StringUtils::format("%d", sequence), FONT::MALGUNBD, 70);
-            number->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-            number->setPosition(Vec2(picture->getPosition().x - 40, dpSize.height * 0.5f));
-            dp->addChild(number);
-            
-            return dp;
-        };
+        // My score will be recorded after I pass the first record.
+        m_ListView->pushBackCustomItem(createRankDP(GLOBAL->STAR_SCORE, myData->_url, 1));
         
-        auto index = 1;
+        auto rank = 1;
         // create dp
-        for (auto user : userList)
-            m_ListView->pushBackCustomItem(createRivalsDP(user.second, index++));
+        for (auto user : userList){
+            auto data = const_cast<FBUSER_PARAM*>(user.second);
+            m_ListView->pushBackCustomItem(createRankDP(data->_score, data->_url, rank++));
+        }
         
-//        // create my dp one more.
-//        m_MyScoreLayer = createRivalsDP(CFacebookManager::Instance()->getMyFacebookData(), 1);
-//        this->addChild(m_MyScoreLayer);
-//        m_MyScoreLayer->setVisible(false);
-//        m_MyBestScore = dynamic_cast<Label*>(m_MyScoreLayer->getChildByTag(100));
+        m_PrevRank = (int)m_ListView->getChildrenCount();
         
         // Scrolling to bottom
         this->scheduleOnce([=](float delta){
@@ -123,21 +98,40 @@ void CFacebookRivalRankLayer::update(float delta)
     {
         m_PrevScore = GLOBAL->STAR_SCORE;
         auto currentRank = CFacebookManager::Instance()->getRankByScore(m_PrevScore);
-        if(currentRank <= 0){
-//            m_ListView->setVisible(false);
-//            m_MyScoreLayer->setVisible(true);
-//            m_MyBestScore->setString(StringUtility::toCommaString(m_PrevScore));
-        }
-        else{
-            auto nextTargetRank = currentRank - 1;
-            if(currentRank >= 10)   return;
-            if(nextTargetRank < 0)  nextTargetRank = 0;
-            
-            if(m_PrevRank != nextTargetRank)
-            {
-                m_PrevRank = nextTargetRank;
-                m_ListView->scrollToItem(m_PrevRank, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
-            }
+        if(currentRank >= 10) return;
+        if(m_PrevRank != currentRank)
+        {
+            m_PrevRank = currentRank;
+            m_ListView->scrollToItem(m_PrevRank, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
         }
     }
+}
+
+cocos2d::ui::Widget* CFacebookRivalRankLayer::createRankDP(int &scoreRef, std::string url, int rank)
+{
+    auto dp = Widget::create();
+    dp->setContentSize(this->getContentSize());
+    dp->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    
+    auto score = CScoreUI::create(scoreRef)
+    ->setFont(FONT::MALGUNBD, 45)
+    ->setScoreAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT)
+    ->show(dp);
+    
+    score->setPosition(Vec2(this->getContentSize().width * 0.96f,
+                            this->getContentSize().height * 0.5f));
+    
+    auto pic = CUrlSprite::create()
+    ->setUrl(url)
+    ->setSize(Size(55.f, 55.f))
+    ->build(score);
+    
+    score->setIcon(pic);
+    
+    auto number = Label::createWithTTF(StringUtils::format("%d", rank), FONT::MALGUNBD, 55);
+    number->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+    number->setPosition(Vec2(-15, 55 * 0.5f));
+    pic->addChild(number);
+    
+    return dp;
 }

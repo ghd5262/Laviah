@@ -13,6 +13,8 @@ public:
 
 	virtual void update(float delta) override;
 
+    CC_SYNTHESIZE(cocos2d::Sprite*, m_Icon, Icon);
+    
 private:
 	void setOpacityByTimer();
 	void timerReset();
@@ -33,7 +35,6 @@ private:
 
 private:
 	cocos2d::Label* m_ScoreLabel;
-	cocos2d::Sprite* m_Icon;
 	std::string m_IconName;
 	std::string m_FontName;
 	size_t m_FontSize;
