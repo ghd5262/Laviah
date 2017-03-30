@@ -39,6 +39,7 @@ bool CFacebookRankUpPopup::init()
     title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     title->setPosition(Vec2(bg->getContentSize().width * 0.5f,
                             bg->getContentSize().height * 0.9f));
+    title->setColor(COLOR::DARKGRAY);
     bg->addChild(title);
     
     auto myData    = CFacebookManager::Instance()->getMyFacebookData();

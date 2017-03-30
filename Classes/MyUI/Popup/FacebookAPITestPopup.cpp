@@ -49,7 +49,7 @@ bool CFacebookAPITestPopup::init()
         return button;
     };
     
-    std::array<std::string, 16> titleArray = {
+    std::array<std::string, 17> titleArray = {
         sdkbox::PluginFacebook::isLoggedIn() ? "Logout" : "Login",
         "CheckStatus",
         "GetMyInfo",
@@ -66,6 +66,7 @@ bool CFacebookAPITestPopup::init()
         "GetMyScore",
         "GetFriendsScore",
         "SetMyScore",
+        "RankUpDialog"
     };
     
     
@@ -85,6 +86,7 @@ bool CFacebookAPITestPopup::init()
     auto GetMyScore         = createBtn([=](Node* s){ this->GetMyScore(s);               }, titleArray[13] );
     auto GetFriendsScore    = createBtn([=](Node* s){ this->GetFriendsScore(s);          }, titleArray[14] );
     auto SetMyScore         = createBtn([=](Node* s){ this->SetMyScore(s);               }, titleArray[15] );
+    auto RankUpDialog       = createBtn([=](Node* s){ this->RankUpDialog(s);             }, titleArray[16] );
 
     struct buttonInfo {
         Node* _btn;
@@ -94,7 +96,7 @@ bool CFacebookAPITestPopup::init()
         , _pos(pos){};
     };
     
-    std::array<buttonInfo, 16> startPos = {
+    std::array<buttonInfo, 17> startPos = {
         buttonInfo(Login            , Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f)),
         buttonInfo(CheckStatus      , Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f)),
         buttonInfo(GetMyInfo        , Vec2(popupSize.width * 0.5f, popupSize.height * 0.6f)),
@@ -111,10 +113,10 @@ bool CFacebookAPITestPopup::init()
         buttonInfo(GetMyScore       , Vec2(popupSize.width * 0.5f, popupSize.height * -0.5f)),
         buttonInfo(GetFriendsScore  , Vec2(popupSize.width * 0.5f, popupSize.height * -0.6f)),
         buttonInfo(SetMyScore       , Vec2(popupSize.width * 0.5f, popupSize.height * -0.7f)),
-
+        buttonInfo(RankUpDialog     , Vec2(popupSize.width * 0.5f, popupSize.height * -0.8f)),
     };
     
-    std::array<buttonInfo, 16> targetPos = {
+    std::array<buttonInfo, 17> targetPos = {
         buttonInfo(Login            , Vec2(popupSize.width * 0.5f, popupSize.height * 0.9f)),
         buttonInfo(CheckStatus      , Vec2(popupSize.width * 0.5f, popupSize.height * 0.85f)),
         buttonInfo(GetMyInfo        , Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f)),
@@ -130,7 +132,8 @@ bool CFacebookAPITestPopup::init()
         buttonInfo(InviteFriendsUI  , Vec2(popupSize.width * 0.5f, popupSize.height * 0.3f)),
         buttonInfo(GetMyScore       , Vec2(popupSize.width * 0.5f, popupSize.height * 0.25f)),
         buttonInfo(GetFriendsScore  , Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f)),
-        buttonInfo(SetMyScore       , Vec2(popupSize.width * 0.5f, popupSize.height * 0.15f))
+        buttonInfo(SetMyScore       , Vec2(popupSize.width * 0.5f, popupSize.height * 0.15f)),
+        buttonInfo(RankUpDialog     , Vec2(popupSize.width * 0.5f, popupSize.height * 0.1f))
     };
     
     auto btnEnd = CMyButton::create()
@@ -350,6 +353,10 @@ void CFacebookAPITestPopup::GetFriendsScore(cocos2d::Node* sender){
 
 void CFacebookAPITestPopup::SetMyScore(cocos2d::Node* sender){
     CFacebookManager::SaveScore(random<int>(0, 100));
+}
+
+void CFacebookAPITestPopup::RankUpDialog(cocos2d::Node* sender){
+    CGameScene::getGameScene()->OpenRankUpPopup();
 }
 
 void CFacebookAPITestPopup::showInviteDialog(){

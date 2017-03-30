@@ -30,7 +30,8 @@ private:
     void GetMyScore(cocos2d::Node* sender);
     void GetFriendsScore(cocos2d::Node* sender);
     void SetMyScore(cocos2d::Node* sender);
-    
+    void RankUpDialog(cocos2d::Node* sender);
+
     void showInviteDialog();
     void createInviteDialog();
     void onCheckBoxState(Ref* sender, cocos2d::ui::CheckBox::EventType event);

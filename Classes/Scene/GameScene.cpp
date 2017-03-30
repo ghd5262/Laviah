@@ -224,7 +224,6 @@ void CGameScene::OpenGameMenuLayer()
         m_UILayer->setVisible(false);
         m_MenuLayer->setVisible(true);
         m_MenuLayer->setDefaultCallbackToTopAgain();
-        this->OpenRankUpPopup();
     });
 }
 
