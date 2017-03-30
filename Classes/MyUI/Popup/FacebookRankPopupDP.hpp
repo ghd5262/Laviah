@@ -7,7 +7,7 @@ USING_NS_CC;
 class CFacebookRankPopupDP : public cocos2d::ui::Widget
 {
 public:
-    static CFacebookRankPopupDP* create(const FBUSER_PARAM* user, int sequence);
+    static CFacebookRankPopupDP* create(const FBUSER_PARAM* user, int number);
     
     void Share();
     void Notice();
@@ -23,13 +23,13 @@ protected:
     
 private:
     
-    CFacebookRankPopupDP(const FBUSER_PARAM* user, int sequence)
+    CFacebookRankPopupDP(const FBUSER_PARAM* user, int number)
     : m_User(user)
-    , m_Sequence(sequence)
+    , m_Number(number)
     , m_SelectDPListener(nullptr){};
     virtual ~CFacebookRankPopupDP(){};
     
 private:
     const FBUSER_PARAM* m_User;
-    int m_Sequence;
+    int m_Number;
 };

@@ -33,6 +33,7 @@
 #include "../MyUI/Popup/GameEndPopup.hpp"
 #include "../MyUI/Popup/FacebookAPITestPopup.hpp"
 #include "../MyUI/Popup/FacebookRankPopup.hpp"
+#include "../MyUI/Popup/FacebookRankUpPopup.hpp"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/ChallengeDataManager.hpp"
@@ -223,6 +224,7 @@ void CGameScene::OpenGameMenuLayer()
         m_UILayer->setVisible(false);
         m_MenuLayer->setVisible(true);
         m_MenuLayer->setDefaultCallbackToTopAgain();
+        this->OpenRankUpPopup();
     });
 }
 
@@ -248,6 +250,13 @@ void CGameScene::OpenRankPopup()
     CObjectManager::Instance()->ZoomInRank();
     m_MenuLayer->setVisible(false);
     this->createRankPopup();
+}
+
+void CGameScene::OpenRankUpPopup()
+{
+    this->createRankUpPopup();
+    this->GamePause();
+    m_ZoomLayer->pause();
 }
 
 void CGameScene::OpenFBTestPopup()
@@ -436,6 +445,15 @@ void CGameScene::createCharacterSelectPopup()
 void CGameScene::createRankPopup()
 {
     CFacebookRankPopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
+}
+
+void CGameScene::createRankUpPopup()
+{
+    CFacebookRankUpPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)

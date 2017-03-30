@@ -31,6 +31,7 @@ public:
     void OpenWorkshopPopup();
     void OpenCharacterSelectPopup();
     void OpenRankPopup();
+    void OpenRankUpPopup();
     void OpenFBTestPopup();
 	void GameStart();
     void GamePause();
@@ -75,6 +76,7 @@ private:
     void createWorkshopPopup();
     void createCharacterSelectPopup();
     void createRankPopup();
+    void createRankUpPopup();
     void createBonusTimeLayer();
 	void createRandomCoin();
     void removeBonusTimeLayer();

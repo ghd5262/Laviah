@@ -21,6 +21,7 @@ namespace USERDATA_KEY {
 	const std::string DATA_REVISION				= "USER_DATA_SAVE_REVISION";
 
     const std::string LEVEL                     = "USER_LEVEL";
+    const std::string RANK                      = "USER_RANK";
     const std::string CHARACTER                 = "USER_CUR_CHARACTER";
     const std::string COIN                      = "USER_COIN";
 

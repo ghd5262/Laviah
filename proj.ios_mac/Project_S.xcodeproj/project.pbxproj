@@ -177,6 +177,8 @@
 		937311B31D5849D500D5EB5C /* imageRes in Resources */ = {isa = PBXBuildFile; fileRef = 937311AD1D5849D500D5EB5C /* imageRes */; };
 		937311B61D5849D500D5EB5C /* res in Resources */ = {isa = PBXBuildFile; fileRef = 937311B01D5849D500D5EB5C /* res */; };
 		937311B71D5849D500D5EB5C /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 937311B11D5849D500D5EB5C /* sounds */; };
+		93783B901E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93783B8E1E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp */; };
+		93783B911E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93783B8E1E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp */; };
 		94084000BE5507E572AA858E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803948579A13A3F02433115C /* AdSupport.framework */; };
 		BD12455B831B0397C8082B41 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE64354BDA54E796721EDAB /* FBSDKLoginKit.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
@@ -524,6 +526,8 @@
 		937311AD1D5849D500D5EB5C /* imageRes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = imageRes; sourceTree = "<group>"; };
 		937311B01D5849D500D5EB5C /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		937311B11D5849D500D5EB5C /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
+		93783B8E1E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookRankUpPopup.cpp; sourceTree = "<group>"; };
+		93783B8F1E8CB1DC009DE1CC /* FacebookRankUpPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FacebookRankUpPopup.hpp; sourceTree = "<group>"; };
 		93865F3E1D588C39007ECE5A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
 		9CE541679393BF4E1630239E /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = SOURCE_ROOT; };
 		AC264B2B9DE0F723E850460D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
@@ -1050,6 +1054,8 @@
 				933494471E839C7900377DC2 /* FacebookRankPopup.hpp */,
 				932C6B911E83A2710043BE02 /* FacebookRankPopupDP.cpp */,
 				932C6B921E83A2710043BE02 /* FacebookRankPopupDP.hpp */,
+				93783B8E1E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp */,
+				93783B8F1E8CB1DC009DE1CC /* FacebookRankUpPopup.hpp */,
 			);
 			path = Popup;
 			sourceTree = "<group>";
@@ -1366,6 +1372,7 @@
 				93706F711E7A6891009A2CA0 /* Player.cpp in Sources */,
 				93706F5C1E7A6891009A2CA0 /* BonusLetter.cpp in Sources */,
 				93706F541E7A6891009A2CA0 /* MoreGamesDataManager.cpp in Sources */,
+				93783B901E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
 				93706F521E7A6891009A2CA0 /* FreeRewardManager.cpp in Sources */,
 				93706F4C1E7A6891009A2CA0 /* BulletDataManager.cpp in Sources */,
 				93706F551E7A6891009A2CA0 /* NetworkManager.cpp in Sources */,
@@ -1410,6 +1417,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				932C6B941E83A2710043BE02 /* FacebookRankPopupDP.cpp in Sources */,
+				93783B911E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
 				93706FD11E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,

@@ -4,9 +4,9 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../Common/StringUtility.h"
 
-CFacebookRankPopupDP* CFacebookRankPopupDP::create(const FBUSER_PARAM* user, int sequence)
+CFacebookRankPopupDP* CFacebookRankPopupDP::create(const FBUSER_PARAM* user, int number)
 {
-    CFacebookRankPopupDP *pRet = new(std::nothrow) CFacebookRankPopupDP(user, sequence);
+    CFacebookRankPopupDP *pRet = new(std::nothrow) CFacebookRankPopupDP(user, number);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -36,7 +36,7 @@ bool CFacebookRankPopupDP::init()
     
     // create number
     {
-        auto number = Label::createWithTTF(StringUtils::format("%d", m_Sequence), FONT::MALGUNBD, 80);
+        auto number = Label::createWithTTF(StringUtils::format("%d", m_Number), FONT::MALGUNBD, 80);
         number->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         number->setPosition(Vec2(bg->getContentSize().width * 0.08f,
                                  bg->getContentSize().height * 0.5f));
