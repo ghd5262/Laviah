@@ -214,6 +214,12 @@ bool CResultPopup::init()
         if(sdkbox::PluginFacebook::isLoggedIn()){
             // save score to facebook data
             CFacebookManager::Instance()->SaveScore(GLOBAL->TOTAL_SCORE);
+            CFacebookManager::Instance()->setSaveScoreListener([=](bool succeed){
+                auto oldRank = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK);
+                auto newRank = CFacebookManager::Instance()->getMyRank();
+                if(oldRank != newRank)
+                    CGameScene::getGameScene()->OpenRankUpPopup();
+            });
         }
     }
     auto totalLabel = createContent(totalScoreBG,

@@ -52,26 +52,48 @@ CObjectManager::CObjectManager()
         m_LevelList.emplace_back(data);
     };
     
-//    insertLevel(sLEVEL_BALANCE(20,  50.f, 1, 1.f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(40,  55.f,  1, 1.0f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(60,  60.f, 2, 1.f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(80,  65.f,  2, 1.0f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(100, 70.f, 3, 1.f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(120, 75.f,  3, 1.0f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(140, 80.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(160, 85.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(180, 90.f,  4, 1.0f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(200, 95.f, 5, 1.f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(220, 90.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(240, 90.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(260, 100.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(290, 120.f, 5, 0.8f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(350, 90.f,  5, 1.2f, 0, Vec2(540.f, 672.f), true));
-    insertLevel(sLEVEL_BALANCE(410, 90.f,  5, 1.2f, 0, Vec2(540.f, 0.f)  , true));
-    insertLevel(sLEVEL_BALANCE(470, 90.f,  5, 1.0f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(490, 100.f, 5, 1.0f, 90,Vec2(270.f, 960.f)));
+////    insertLevel(sLEVEL_BALANCE(20,  50.f, 1, 1.f, 0, Vec2(540.f, 672.f)));
+//    insertLevel(sLEVEL_BALANCE(40,  55.f,  1, 1.0f, 0, Vec2(540.f, 672.f)));
+////    insertLevel(sLEVEL_BALANCE(60,  60.f, 2, 1.f, 0, Vec2(540.f, 672.f)));
+//    insertLevel(sLEVEL_BALANCE(80,  65.f,  2, 1.0f, 0, Vec2(540.f, 672.f)));
+////    insertLevel(sLEVEL_BALANCE(100, 70.f, 3, 1.f, 0, Vec2(540.f, 672.f)));
+//    insertLevel(sLEVEL_BALANCE(120, 75.f,  3, 1.0f, 0, Vec2(540.f, 672.f)));
+////    insertLevel(sLEVEL_BALANCE(140, 80.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
+////    insertLevel(sLEVEL_BALANCE(160, 85.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
+//    insertLevel(sLEVEL_BALANCE(180, 90.f,  4, 1.0f, 0, Vec2(540.f, 672.f)));
+////    insertLevel(sLEVEL_BALANCE(200, 95.f, 5, 1.f, 0, Vec2(540.f, 672.f)));
+////    insertLevel(sLEVEL_BALANCE(220, 90.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
+////    insertLevel(sLEVEL_BALANCE(240, 90.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
+//    insertLevel(sLEVEL_BALANCE(260, 100.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
+//    insertLevel(sLEVEL_BALANCE(290, 120.f, 5, 0.8f, 0, Vec2(540.f, 672.f)));
+//    insertLevel(sLEVEL_BALANCE(350, 90.f,  5, 1.2f, 0, Vec2(540.f, 672.f), true));
+//    insertLevel(sLEVEL_BALANCE(410, 90.f,  5, 1.2f, 0, Vec2(540.f, 0.f)  , true));
+//    insertLevel(sLEVEL_BALANCE(470, 90.f,  5, 1.0f, 0, Vec2(540.f, 672.f)));
+//    insertLevel(sLEVEL_BALANCE(490, 100.f, 5, 1.0f, 90,Vec2(270.f, 960.f)));
 
+    insertLevel(sLEVEL_BALANCE(20,  80.f,  1, 1.0f, 0, Vec2(540.f, 672.f)));
     
+    insertLevel(sLEVEL_BALANCE(30,  90.f,  2, 1.0f, 0, Vec2(540.f, 672.f)));
+    
+    insertLevel(sLEVEL_BALANCE(40,  95.f,  3, 1.0f, 0, Vec2(540.f, 672.f)));
+    
+    insertLevel(sLEVEL_BALANCE(60,  100.f, 4, 1.0f, 0, Vec2(540.f, 672.f)));
+    
+    insertLevel(sLEVEL_BALANCE(80,  100.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(90,  100.f, 5, 0.7f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(100, 100.f, 5, 1.2f, 0, Vec2(540.f, 400.f)));
+    
+    insertLevel(sLEVEL_BALANCE(110, 110.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(120, 110.f, 5, 0.7f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(130, 110.f, 5, 1.2f, 0, Vec2(540.f, 400.f)));
+    
+    insertLevel(sLEVEL_BALANCE(140, 120.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(150, 120.f, 5, 0.7f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(160, 120.f, 5, 1.2f, 0, Vec2(540.f, 400.f)));
+    
+    insertLevel(sLEVEL_BALANCE(170, 120.f, 5, 1.2f, 0, Vec2(540.f, 100.f)));
+    insertLevel(sLEVEL_BALANCE(190, 130.f, 5, 0.7f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(210, 130.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
     
     
 //    m_LevelList.emplace_back(sLEVEL_BALANCE(20,  50,   1, 1.f , 0,   PLANET_DEFINE::GAME_POS));

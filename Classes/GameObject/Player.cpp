@@ -296,7 +296,7 @@ void CPlayer::ChangeDataByCharacter()
 	};
 
 	m_fMagnetLimitTime		= m_CharacterParam->_magnetItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_MAGNET);
-	m_fMagnetLimitRadius	= m_CharacterParam->_magnetItemSize	+ getValue(USERDATA_KEY::ITEM_SIZE_MAGNET);
+	m_fMagnetLimitRadius	= 200	+ getValue(USERDATA_KEY::ITEM_SIZE_MAGNET);
 	m_fCoinLimitTime		= m_CharacterParam->_coinItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_COIN);
 	m_fStarLimitTime		= m_CharacterParam->_starItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_STAR);
 	m_fBonusTimeLimitTime	= m_CharacterParam->_bonusItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_BOUNS);

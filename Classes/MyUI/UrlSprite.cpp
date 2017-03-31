@@ -30,6 +30,7 @@ CUrlSprite* CUrlSprite::build(cocos2d::Node* parent, int zOrder/* = 0*/)
     if(m_Url != "")
         this->setTextureWithUrl(m_Url);
     
+    this->setContentSize(m_Size);
     parent->addChild(this, zOrder);
     return this;
 }

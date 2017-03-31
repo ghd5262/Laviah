@@ -71,6 +71,7 @@ bool CFacebookRankUpPopup::init()
                              bg->getContentSize().height * 0.2f))
     ->show(bg);
     
+    this->setDefaultAnimation(ePOPUP_ANIMATION::NONE, ePOPUP_ANIMATION::CLOSE_CENTER);
     this->setOpenAnimation([=](Node* sender){
         auto moveAction = [=](Node* owner, Vec2 targetPos){
             auto delay = DelayTime::create(1.f);
@@ -80,6 +81,10 @@ bool CFacebookRankUpPopup::init()
             owner->runAction(sequence);
         };
         
+        auto action = EaseElasticOut::create(ScaleTo::create(0.5f, 1.0f), 0.5f);
+        this->setScale(0.f);
+        this->runAction(action);
+ 
         moveAction(myDP, rivalDP->getPosition());
         moveAction(rivalDP, myDP->getPosition());
     });
