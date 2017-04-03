@@ -320,16 +320,16 @@ bool CParticle_Explosion_2::initWithTotalParticles(int numberOfParticles)
 		_endColor.r = 1.0f;
 		_endColor.g = 1.0f;
 		_endColor.b = 1.0f;
-		_endColor.a = 1.0f;
+		_endColor.a = 0.0f;
 		_endColorVar.r = 0.0f;
 		_endColorVar.g = 0.0f;
 		_endColorVar.b = 0.0f;
 		_endColorVar.a = 0.0f;
 
 		// size, in pixels
-		_startSize = 20.f;
+		_startSize = 40.f;
 		_startSizeVar = 0.f;
-		_endSize = 0.f;
+		_endSize = 30.f;
 
 		SpriteFrame* spriteFrame = nullptr;
 		spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(m_strTextureName);

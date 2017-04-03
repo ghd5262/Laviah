@@ -333,7 +333,7 @@ void CPlayer::setPlayerTexture(std::string textureName)
 
 void CPlayer::createAliveParticle()
 {
-	auto particle = CParticle_Explosion_2::create("whiteSquare.png");
+	auto particle = CParticle_Explosion_2::create(m_CharacterParam->_normalTextureName);
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());
@@ -346,7 +346,7 @@ void CPlayer::createAliveParticle()
 
 void CPlayer::createDeadParticle()
 {
-	auto particle = CParticle_Explosion_2::create("whiteSquare.png");
+	auto particle = CParticle_Explosion_2::create(m_CharacterParam->_normalTextureName);
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());
