@@ -57,6 +57,7 @@ void CCharacterDataManager::initWithJson(CHARACTER_LIST &list, std::string fileN
 	}
     
     // test planet init
+    // 이부분이 성능저하의 원인 다른방법을 찾아보자.
     for(int index = 0; index < 12; index++)
         this->addTexturePackToCache(StringUtils::format("test_planet/test_planet_%d", index));
 }

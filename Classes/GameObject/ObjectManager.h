@@ -76,7 +76,6 @@ public:
     CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
 	CC_SYNTHESIZE(CPlayer*, m_Player, Player);
     CC_SYNTHESIZE(CRocket*, m_Rocket, Rocket);
-    CC_SYNTHESIZE(cocos2d::Sprite*, m_Rank, Rank);
     CC_SYNTHESIZE(CBulletCreator*, m_BulletCreator, BulletCreator);
 	CC_SYNTHESIZE(CBackGround*, m_Background, Background);
 	CC_SYNTHESIZE(CItemRange*, m_BarrierItemRange, BarrierItemRange);

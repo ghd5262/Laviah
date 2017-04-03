@@ -261,10 +261,6 @@ void CObjectManager::ZoomInRank()
                1.2f,
                true);
     
-    this->zoom(m_Rank,
-               PLANET_DEFINE::MENU_POS,
-               0, 1.f, 2.2f, true);
-    
     m_Rocket->setVisible(false);
 }
 
@@ -291,9 +287,7 @@ void CObjectManager::ZoomOut2()
 void CObjectManager::ZoomOutRank()
 {
     this->ZoomIn();
-    this->zoom(m_Rank,
-               PLANET_DEFINE::RANK_POS,
-               0, 0.05f, 2.2f, true);
+
     
     m_Rocket->setVisible(true);
 }

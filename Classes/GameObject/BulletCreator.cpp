@@ -71,6 +71,14 @@ void CBulletCreator::Update(float delta)
 	m_Time = 0.0f;
 }
 
+void CBulletCreator::Clear()
+{
+    m_CurrentHeight = 0;
+    //m_RotationAngle = 0.f;
+    m_CurrentPattern = nullptr;
+    m_Running = false;
+}
+
 void CBulletCreator::Rotation(float speed)
 {
     m_RotationAngle -= speed;
@@ -201,6 +209,7 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
     else if (symbol >= '4' && symbol <= '5')    bullet = CNormalMissile::create();
     else if (symbol == '6')                     bullet = CStickBullet::create();
     else if (symbol == '7')                     bullet = CStandBullet::create();
+    else if (symbol == '8')                     bullet = CRivalBullet::create();
     else if (symbol >= 'A' && symbol <= 'F')    bullet = CPlayItem::create();
 	else if (symbol >= 'P' && symbol <= 'T')    bullet = CPlayStar::create();
 	else if (symbol >= 'U' && symbol <= 'Y')    bullet = CPlayCoin::create();
@@ -241,7 +250,8 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
         case '5':  name = m_CharacterInfo->_aimingMissileTextureName;  break;
         case '6':  name = m_CharacterInfo->_stickBulletTextureName;    break;
         case '7':  name = m_CharacterInfo->_stickBulletTextureName;    break;
-            
+        case '8':  name = m_CharacterInfo->_stickBulletTextureName;    break;
+
         case 'A':  name = "playItem_1.png";                            break;
         case 'B':  name = "playItem_2.png";                            break;
         case 'C':  name = "playItem_3.png";                            break;
@@ -268,12 +278,4 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
     
     data._spriteName = name;
     data._particleName = name;
-}
-
-void CBulletCreator::Clear()
-{
-    m_CurrentHeight = 0;
-	//m_RotationAngle = 0.f;
-    m_CurrentPattern = nullptr;
-	m_Running = false;
 }

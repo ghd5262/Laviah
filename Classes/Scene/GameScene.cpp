@@ -20,6 +20,7 @@
 #include "../MyUI/CountDown.hpp"
 #include "../MyUI/TutorialLayer.hpp"
 #include "../MyUI/FacebookRivalRankLayer.hpp"
+#include "../MyUI/UrlSprite.hpp"
 #include "../MyUI/Popup.h"
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
@@ -98,20 +99,20 @@ void CGameScene::update(float delta)
 bool CGameScene::init()
 {
 	if (!Layer::init()) return false;
-
+    
 	m_GameScene = this;
 	m_VisibleSize = Director::getInstance()->getVisibleSize();
 	m_TouchPos = m_VisibleSize / 2;
     
 	this->scheduleUpdate();
     this->initMemoryPool();
+    this->createFacebookManager();
     this->createZoomLayer();
     this->createBulletCreator();
     this->createBackground();
     this->createPlanet();
     this->createPlayer();
     this->createRocket();
-    this->createRank();
     this->createCountDown();
     this->createScreenFade();
     this->createItemRanges();
@@ -122,9 +123,6 @@ bool CGameScene::init()
     this->createTutorialLayer();
     this->initKeyboardListener();
     this->setTimestamp();
-    
-    // 이것도 노드이기 때문에 addchild해야한다. 일단 여기까지 커밋
-    this->addChild(CFacebookManager::Instance());
 
     return true;
 }
@@ -553,6 +551,14 @@ void CGameScene::initMemoryPool()
 #endif
 }
 
+void CGameScene::createFacebookManager()
+{
+    auto facebook = CFacebookManager::Instance();
+    facebook->RequestMyInfo();
+    facebook->RequestFriendList();
+    this->addChild(facebook);
+}
+
 void CGameScene::createZoomLayer()
 {
     if(m_ZoomLayer) return;
@@ -614,18 +620,6 @@ void CGameScene::createRocket()
     rocket->ChangeState(CFlyToTouchArea::Instance());
     m_ZoomLayer->addChild(rocket, ZORDER::PLAYER);
     CObjectManager::Instance()->setRocket(rocket);
-}
-
-void CGameScene::createRank()
-{
-    auto rank = Sprite::create("rank.png");
-    rank->setPosition(Vec2(m_VisibleSize.width * 0.25f,
-                           m_VisibleSize.height * 0.75f));
-    rank->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    rank->setScale(0.05f);
-    this->addChild(rank);
-    rank->setVisible(false);
-    CObjectManager::Instance()->setRank(rank);
 }
 
 void CGameScene::createCountDown()
@@ -706,6 +700,25 @@ void CGameScene::createUILayer()
 void CGameScene::createRivalRankLayer()
 {
     m_RivalRankLayer = CFacebookRivalRankLayer::create()
+    ->setRankUPListener([=](int rank){
+        // create rival bullet
+        auto data   = CFacebookManager::Instance()->getFriendByRank(rank);
+        auto bullet = CBulletCreator::CreateBullet('8', random<int>(0, 360),
+                                                   BULLETCREATOR::CREATE_DISTANCE, false);
+        
+        CUrlSprite::create()
+        ->setUrl(data->_url)
+        ->setSize(Size(55.f, 55.f))
+        ->build(bullet)
+        ->setPosition(Vec2(bullet->getContentSize().width,
+                           bullet->getContentSize().height * 0.5f));
+        
+        auto number = Label::createWithTTF(StringUtils::format("%d", rank + 1), FONT::MALGUNBD, 55);
+        number->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        number->setPosition(Vec2(bullet->getContentSize().width * 1.5f,
+                                 bullet->getContentSize().height * 0.5f));
+        bullet->addChild(number);
+    })
     ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)

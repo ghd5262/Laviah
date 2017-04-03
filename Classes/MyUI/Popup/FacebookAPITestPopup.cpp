@@ -352,7 +352,7 @@ void CFacebookAPITestPopup::GetFriendsScore(cocos2d::Node* sender){
 }
 
 void CFacebookAPITestPopup::SetMyScore(cocos2d::Node* sender){
-    CFacebookManager::SaveScore(random<int>(0, 100));
+    CFacebookManager::SaveScore(0);
 }
 
 void CFacebookAPITestPopup::RankUpDialog(cocos2d::Node* sender){

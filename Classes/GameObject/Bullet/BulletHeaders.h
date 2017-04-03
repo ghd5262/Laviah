@@ -12,3 +12,5 @@
 #include "ScoreBullet.h"
 #include "StickBullet.h"
 #include "StandBullet.hpp"
+#include "RivalBullet.hpp"
+#include "CharacterBullet.hpp"

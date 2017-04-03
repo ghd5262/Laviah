@@ -89,13 +89,13 @@ private:
     
     // The following items are initialized only once.
     void initMemoryPool();
+    void createFacebookManager();
     void createZoomLayer();
     void createBulletCreator();
     void createBackground();
     void createPlanet();
     void createPlayer();
     void createRocket();
-    void createRank();
     void createCountDown();
     void createScreenFade();
     void createItemRanges();

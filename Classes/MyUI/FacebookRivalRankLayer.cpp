@@ -38,6 +38,12 @@ bool CFacebookRivalRankLayer::init()
     return true;
 }
 
+CFacebookRivalRankLayer* CFacebookRivalRankLayer::setRankUPListener(const RANKUP_LISTENER& listener)
+{
+    m_RankUPListener = listener;
+    return this;
+}
+
 void CFacebookRivalRankLayer::InitListView()
 {
     if(m_ListView) {
@@ -95,6 +101,7 @@ void CFacebookRivalRankLayer::InitListView()
 void CFacebookRivalRankLayer::update(float delta)
 {
     if(CObjectManager::Instance()->getIsGamePause()) return;
+    if(m_ListView == nullptr) return;
     
     if(m_PrevScore != GLOBAL->STAR_SCORE)
     {
@@ -105,6 +112,7 @@ void CFacebookRivalRankLayer::update(float delta)
         {
             m_PrevRank = currentRank;
             m_ListView->scrollToItem(m_PrevRank, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
+            this->callListener(m_PrevRank);
         }
     }
 }
@@ -136,4 +144,14 @@ cocos2d::ui::Widget* CFacebookRivalRankLayer::createRankDP(int &scoreRef, std::s
     pic->addChild(number);
     
     return dp;
+}
+
+void CFacebookRivalRankLayer::callListener(int rank)
+{
+    if(!m_RankUPListener) return;
+    if(rank >= CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK)) return;
+        
+    this->retain();
+    m_RankUPListener(rank);
+    this->release();
 }

@@ -134,9 +134,6 @@ bool CFacebookManager::init()
 
     m_MyFacebookData = new FBUSER_PARAM();
     
-    this->RequestMyInfo();
-    this->RequestFriendList();
-    
     return true;
 }
 

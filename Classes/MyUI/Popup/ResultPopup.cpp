@@ -217,8 +217,10 @@ bool CResultPopup::init()
             CFacebookManager::Instance()->setSaveScoreListener([=](bool succeed){
                 auto oldRank = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK);
                 auto newRank = CFacebookManager::Instance()->getMyRank();
-                if(oldRank != newRank)
+                if(oldRank != newRank){
                     CGameScene::getGameScene()->OpenRankUpPopup();
+                    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::RANK, newRank);
+                }
             });
         }
     }

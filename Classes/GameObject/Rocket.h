@@ -11,7 +11,7 @@ namespace ROCKET_DEFINE{
 	static float			SPEED_MAX = 1500.f;
     static float            SPEED = 350.f;
     static float			MASS = 0.5f;
-	static float			ARRIVE_RADIUS = 30.f;
+	static float			ARRIVE_RADIUS = 10.f;
 };
 
 class CBullet;
