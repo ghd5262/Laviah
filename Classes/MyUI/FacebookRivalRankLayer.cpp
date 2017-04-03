@@ -89,11 +89,13 @@ void CFacebookRivalRankLayer::InitListView()
             m_ListView->pushBackCustomItem(createRankDP(data->_score, data->_url, rank++));
         }
         
-        m_PrevRank = (int)m_ListView->getChildrenCount();
+        m_PrevRank = CFacebookManager::Instance()->getMyRank();
+        m_PrevRank = (m_PrevRank == 0) ? 1 : m_PrevRank; // 0일 경우엔 이미 1위이기 때문에 나의 최고 점수를 보여준다.
+        m_PrevScore = 0;
         
         // Scrolling to bottom
         this->scheduleOnce([=](float delta){
-            m_ListView->jumpToBottom();
+            m_ListView->jumpToItem(m_PrevRank, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
         }, 0.f, "ScrollToItem");
     }
 }
@@ -108,7 +110,7 @@ void CFacebookRivalRankLayer::update(float delta)
         m_PrevScore = GLOBAL->STAR_SCORE;
         auto currentRank = CFacebookManager::Instance()->getRankByScore(m_PrevScore);
         if(currentRank >= 10) return;
-        if(m_PrevRank != currentRank)
+        if(m_PrevRank > currentRank)
         {
             m_PrevRank = currentRank;
             m_ListView->scrollToItem(m_PrevRank, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
@@ -149,8 +151,9 @@ cocos2d::ui::Widget* CFacebookRivalRankLayer::createRankDP(int &scoreRef, std::s
 void CFacebookRivalRankLayer::callListener(int rank)
 {
     if(!m_RankUPListener) return;
-    if(rank >= CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK)) return;
-        
+    if(rank >= CFacebookManager::Instance()->getMyRank()) return;
+    
+    // 나의 랭크를 갱신한 경우에만 실행함.
     this->retain();
     m_RankUPListener(rank);
     this->release();

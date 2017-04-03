@@ -5,10 +5,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../GameObject/ObjectManager.h"
-#include "../../GameObject/Planet.h"
-#include "../../GameObject/Player.h"
 #include "../../Facebook/FacebookManager.hpp"
-#include <algorithm>
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -70,7 +67,8 @@ bool CFacebookRankPopup::init()
         listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         listView->setPosition(layerSize / 2);
         listView->setMagneticType(ListView::MagneticType::BOTH_END);
-//        listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CWorkshopPopup::ScrollCallback, this, std::placeholders::_1, std::placeholders::_2));
+        listView->setCascadeOpacityEnabled(true);
+        listView->setOpacity(0);
         scrollBack->addChild(listView);
         
         auto index = 1;
@@ -79,6 +77,7 @@ bool CFacebookRankPopup::init()
         {
             auto userDP = CFacebookRankPopupDP::create(user.second, index++);
             userDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            userDP->setCascadeOpacityEnabled(true);
             listView->pushBackCustomItem(userDP);
         }
         
@@ -112,6 +111,7 @@ bool CFacebookRankPopup::init()
         };
         
         action(btnEnd);
+        action(listView);
         btnEnd->setTouchEnabled(true);
         
         // set default callback again.
@@ -120,7 +120,9 @@ bool CFacebookRankPopup::init()
     });
     
     this->setCloseAnimation([=](Node* sender){
-        btnEnd->runAction(FadeTo::create(0.5f, 0));
+        btnEnd->runAction(FadeTo::create(0.3f, 0));
+        listView->runAction(FadeTo::create(0.3f, 0));
+
     });
     
     this->setDefaultCallback([=](Node* sender){}, false);
@@ -132,43 +134,4 @@ void CFacebookRankPopup::End(Node* sender){
     CObjectManager::Instance()->ZoomOutRank();
     CMenuLayer::Instance()->setVisible(true);
     this->popupClose();
-}
-
-void CFacebookRankPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
-{
-    ListView* listView = dynamic_cast<ListView*>(ref);
-    if (listView == nullptr || type != ScrollView::EventType::CONTAINER_MOVED)
-    {
-        return;
-    }
-    
-    // Get center dp
-    auto center = listView->getCenterItemInCurrentView();
-    auto centerIdx = listView->getIndex(center);
-    auto centerChild = listView->getChildren().at(centerIdx);
-    auto centerDP = dynamic_cast<CFacebookRankPopupDP*>(centerChild);
-    if (!centerDP) return;
-    if (centerDP == m_CenterDP) return;
-    m_CenterDP = centerDP;
-    
-    // Center dp size up
-//    m_CenterDP->Center();
-    
-    // Get CenterDP's Character Param
-//    auto centerCharacterParam = m_CenterDP->getUserParam();
-    
-    // Change name label
-    
-    // If do not have and no random item, Change the name string to ???
-//    if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx)){
-//    }
-    
-    // Size down the other dp
-//    for (auto characterDP : listView->getChildren())
-//    {
-//        if (characterDP != nullptr && characterDP != center)
-//        {
-//            dynamic_cast<CFacebookRankPopupDP*>(characterDP)->DeSelect();
-//        }
-//    }
 }

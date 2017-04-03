@@ -163,11 +163,6 @@ bool CMenuLayer::init()
             CGameScene::getGameScene()->OpenCharacterSelectPopup();
         }, "", Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f), Size(100, 100)),
         
-        // character select button
-        createLayerButton([=](Node* sender){
-            CGameScene::getGameScene()->OpenRankPopup();
-        }, "", Vec2(popupSize.width * 0.25f, popupSize.height * 0.75f), Size(100, 100)),
-        
         // start button
         CMyButton::create()
         ->addEventListener([=](Node* sender){
@@ -193,6 +188,11 @@ bool CMenuLayer::init()
         createButton([=](Node* sender){
             CGameScene::getGameScene()->OpenFBTestPopup();
         }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f)),
+        
+        // option button
+        createButton([=](Node* sender){
+            CGameScene::getGameScene()->OpenRankPopup();
+        }, "rankingIcon.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f)),
     };
     
     CTranslateManager::Instance()->addTranslateEventListener([=](){

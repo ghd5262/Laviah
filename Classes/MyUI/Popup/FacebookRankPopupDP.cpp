@@ -27,7 +27,6 @@ bool CFacebookRankPopupDP::init()
     auto bg = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 900.f, 150.f);
     if (bg != nullptr){
         this->setContentSize(bg->getContentSize());
-        
         bg->setIgnoreAnchorPointForPosition(false);
         bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         bg->setPosition(this->getContentSize() / 2);
@@ -38,9 +37,9 @@ bool CFacebookRankPopupDP::init()
     {
         auto number = Label::createWithTTF(StringUtils::format("%d", m_Number), FONT::MALGUNBD, 80);
         number->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        number->setPosition(Vec2(bg->getContentSize().width * 0.08f,
-                                 bg->getContentSize().height * 0.5f));
-        bg->addChild(number);
+        number->setPosition(Vec2(this->getContentSize().width * 0.08f,
+                                 this->getContentSize().height * 0.5f));
+        this->addChild(number);
     }
     
     // create picture
@@ -48,27 +47,27 @@ bool CFacebookRankPopupDP::init()
         CUrlSprite::create()
         ->setUrl(m_User->_url)
         ->setSize(Size(150, 150))
-        ->build(bg)
-        ->setPosition(Vec2(bg->getContentSize().width * 0.25f,
-                           bg->getContentSize().height * 0.5f));
+        ->build(this)
+        ->setPosition(Vec2(this->getContentSize().width * 0.25f,
+                           this->getContentSize().height * 0.5f));
     }
     
     // create name
     {
         auto name = Label::createWithSystemFont(m_User->_name, FONT::MALGUNBD, 50);
         name->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        name->setPosition(Vec2(bg->getContentSize().width * 0.35f,
-                               bg->getContentSize().height * 0.75f));
-        bg->addChild(name);
+        name->setPosition(Vec2(this->getContentSize().width * 0.35f,
+                               this->getContentSize().height * 0.75f));
+        this->addChild(name);
     }
     
     // create score
     {
         auto score = Label::createWithTTF(StringUtility::toCommaString(m_User->_score), FONT::MALGUNBD, 70);
         score->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        score->setPosition(Vec2(bg->getContentSize().width * 0.35f,
-                                bg->getContentSize().height * 0.35f));
-        bg->addChild(score);
+        score->setPosition(Vec2(this->getContentSize().width * 0.35f,
+                                this->getContentSize().height * 0.35f));
+        this->addChild(score);
     }
     
     // create share button

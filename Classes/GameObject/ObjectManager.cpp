@@ -255,9 +255,9 @@ void CObjectManager::ZoomIn2()
 void CObjectManager::ZoomInRank()
 {
     this->zoom(CGameScene::getZoomLayer(),
-               Vec2(PLANET_DEFINE::RANK_POS.x * 2.5f, PLANET_DEFINE::RANK_POS.y * -5.f),
+               Vec2(PLANET_DEFINE::MENU_POS.x, -PLANET_DEFINE::MENU_POS.y),
                0,
-               5.f,
+               1.5f,
                1.2f,
                true);
     

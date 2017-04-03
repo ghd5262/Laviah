@@ -29,7 +29,7 @@ private:
 		, m_FontSize(50)
 		, m_ScoreAnchorPoint(cocos2d::Vec2::ANCHOR_MIDDLE_LEFT)
 		, m_ValueRef(value)
-		, m_OldValue(0)
+		, m_OldValue(-1)
 		, m_Time(0.f){};
 	virtual ~CScoreUI(){};
 

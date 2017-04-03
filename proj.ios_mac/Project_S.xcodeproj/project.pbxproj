@@ -47,6 +47,8 @@
 		521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6219F0C34300D177D7 /* Default-667h@2x.png */; };
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
+		59315BAF1E92776E00337C1C /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59315BAB1E92776E00337C1C /* CharacterBullet.cpp */; };
+		59315BB01E92776E00337C1C /* RivalBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59315BAD1E92776E00337C1C /* RivalBullet.cpp */; };
 		610E425E9DB522E05A190348 /* PluginFacebook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 392D48748E4840CC0EC39E61 /* PluginFacebook.framework */; };
 		89D8468A885D51FF77F0ED94 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C944AEBA4B542B4548E39EC /* Bolts.framework */; };
 		9312B4781D58A0A800FE954C /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9312B4771D58A0A800FE954C /* CoreText.framework */; };
@@ -275,6 +277,10 @@
 		521A8E6219F0C34300D177D7 /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h@2x.png"; sourceTree = "<group>"; };
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		59315BAB1E92776E00337C1C /* CharacterBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterBullet.cpp; sourceTree = "<group>"; };
+		59315BAC1E92776E00337C1C /* CharacterBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterBullet.hpp; sourceTree = "<group>"; };
+		59315BAD1E92776E00337C1C /* RivalBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RivalBullet.cpp; sourceTree = "<group>"; };
+		59315BAE1E92776E00337C1C /* RivalBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RivalBullet.hpp; sourceTree = "<group>"; };
 		7C944AEBA4B542B4548E39EC /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = SOURCE_ROOT; };
 		803948579A13A3F02433115C /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AdSupport.framework; sourceTree = DEVELOPER_DIR; };
 		9312B4771D58A0A800FE954C /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
@@ -897,6 +903,10 @@
 		93706E871E7A6890009A2CA0 /* Bullet */ = {
 			isa = PBXGroup;
 			children = (
+				59315BAB1E92776E00337C1C /* CharacterBullet.cpp */,
+				59315BAC1E92776E00337C1C /* CharacterBullet.hpp */,
+				59315BAD1E92776E00337C1C /* RivalBullet.cpp */,
+				59315BAE1E92776E00337C1C /* RivalBullet.hpp */,
 				93706E881E7A6890009A2CA0 /* BonusLetter.cpp */,
 				93706E891E7A6890009A2CA0 /* BonusLetter.h */,
 				93706E8A1E7A6890009A2CA0 /* Bullet.cpp */,
@@ -1314,6 +1324,7 @@
 				93706F841E7A6891009A2CA0 /* MultipleScore.cpp in Sources */,
 				93706F7D1E7A6891009A2CA0 /* BonusTimeUI.cpp in Sources */,
 				93706FB21E7A6891009A2CA0 /* PoolingManager.cpp in Sources */,
+				59315BAF1E92776E00337C1C /* CharacterBullet.cpp in Sources */,
 				93706F8D1E7A6891009A2CA0 /* GameEndPopup.cpp in Sources */,
 				93706FCB1E7F70E4009A2CA0 /* FacebookAPITestPopup.cpp in Sources */,
 				93706F9E1E7A6891009A2CA0 /* WorkshopPopup.cpp in Sources */,
@@ -1340,6 +1351,7 @@
 				93706F431E7A6891009A2CA0 /* BulletStates.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				93706FA31E7A6891009A2CA0 /* TextField.cpp in Sources */,
+				59315BB01E92776E00337C1C /* RivalBullet.cpp in Sources */,
 				93706F471E7A6891009A2CA0 /* AppDelegate.cpp in Sources */,
 				93706F6F1E7A6891009A2CA0 /* ObjectManager.cpp in Sources */,
 				93706F491E7A6891009A2CA0 /* Global.cpp in Sources */,

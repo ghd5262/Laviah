@@ -201,6 +201,7 @@ void CChallengePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posInd
     ->addSkipEventListner([=](CChallengePopupDP* sender, int posIdx){
         this->Skip(sender, posIdx);
     })
+    ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)
     ->setPopupPosition(m_DPTargetPosArray[posIndex])
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
