@@ -71,29 +71,29 @@ CObjectManager::CObjectManager()
 //    insertLevel(sLEVEL_BALANCE(470, 90.f,  5, 1.0f, 0, Vec2(540.f, 672.f)));
 //    insertLevel(sLEVEL_BALANCE(490, 100.f, 5, 1.0f, 90,Vec2(270.f, 960.f)));
 
-    insertLevel(sLEVEL_BALANCE(20,  80.f,  1, 1.0f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(20,  80.f,  1, 0.66f, 0, Vec2(540.f, 672.f)));
     
-    insertLevel(sLEVEL_BALANCE(30,  90.f,  2, 1.0f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(30,  90.f,  2, 0.66f, 0, Vec2(540.f, 672.f)));
     
-    insertLevel(sLEVEL_BALANCE(40,  95.f,  3, 1.0f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(40,  95.f,  3, 0.66f, 0, Vec2(540.f, 672.f)));
     
-    insertLevel(sLEVEL_BALANCE(60,  100.f, 4, 1.0f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(60,  100.f, 4, 0.66f, 0, Vec2(540.f, 672.f)));
     
-    insertLevel(sLEVEL_BALANCE(80,  100.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(90,  100.f, 5, 0.7f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(100, 100.f, 5, 1.2f, 0, Vec2(540.f, 400.f)));
+    insertLevel(sLEVEL_BALANCE(80,  100.f, 5, 0.66f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(90,  100.f, 5, 0.45f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(100, 100.f, 5, 0.8f,  0, Vec2(540.f, 400.f)));
     
-    insertLevel(sLEVEL_BALANCE(110, 110.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(120, 110.f, 5, 0.7f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(130, 110.f, 5, 1.2f, 0, Vec2(540.f, 400.f)));
+    insertLevel(sLEVEL_BALANCE(110, 110.f, 5, 0.66f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(120, 110.f, 5, 0.45f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(130, 110.f, 5, 0.8f,  0, Vec2(540.f, 400.f)));
     
-    insertLevel(sLEVEL_BALANCE(140, 120.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(150, 120.f, 5, 0.7f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(160, 120.f, 5, 1.2f, 0, Vec2(540.f, 400.f)));
+    insertLevel(sLEVEL_BALANCE(140, 120.f, 5, 0.66f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(150, 120.f, 5, 0.45f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(160, 120.f, 5, 0.8f,  0, Vec2(540.f, 400.f)));
     
-    insertLevel(sLEVEL_BALANCE(170, 120.f, 5, 1.2f, 0, Vec2(540.f, 100.f)));
-    insertLevel(sLEVEL_BALANCE(190, 130.f, 5, 0.7f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(210, 130.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(170, 120.f, 5, 0.8f,  0, Vec2(540.f, 100.f)));
+    insertLevel(sLEVEL_BALANCE(190, 130.f, 5, 0.45f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(210, 130.f, 5, 0.66f, 0, Vec2(540.f, 672.f)));
     
     
 //    m_LevelList.emplace_back(sLEVEL_BALANCE(20,  50,   1, 1.f , 0,   PLANET_DEFINE::GAME_POS));
@@ -257,7 +257,7 @@ void CObjectManager::ZoomInRank()
     this->zoom(CGameScene::getZoomLayer(),
                Vec2(PLANET_DEFINE::MENU_POS.x, -PLANET_DEFINE::MENU_POS.y),
                0,
-               1.5f,
+               PLANET_DEFINE::MENU_SIZE,
                1.2f,
                true);
     
@@ -287,8 +287,6 @@ void CObjectManager::ZoomOut2()
 void CObjectManager::ZoomOutRank()
 {
     this->ZoomIn();
-
-    
     m_Rocket->setVisible(true);
 }
 
@@ -298,10 +296,14 @@ void CObjectManager::GiantMode()
     
     m_GiantSpeed = 1.5f;
     //ver-1
-    auto scaleAction1  = ScaleTo::create(1.f,  0.7f);
-    auto exponential1  = EaseExponentialInOut::create(scaleAction1);
-    exponential1->setTag(100);
-    CGameScene::getZoomLayer()->runAction(exponential1);
+    
+    auto levelData = m_LevelList.at(m_GameLevel);
+    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, 0.45f, 1.f, true);
+    
+//    auto scaleAction1  = ScaleTo::create(1.f,  0.7f);
+//    auto exponential1  = EaseExponentialInOut::create(scaleAction1);
+//    exponential1->setTag(100);
+//    CGameScene::getZoomLayer()->runAction(exponential1);
 }
 
 void CObjectManager::NormalMode()
@@ -310,7 +312,7 @@ void CObjectManager::NormalMode()
     //ver-1
     auto levelData = m_LevelList.at(m_GameLevel);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 1.f, true);
-    this->SpeedControl(1.f, levelData._speed);
+//    this->SpeedControl(1.f, levelData._speed);
 }
 
 void CObjectManager::setGameStateByLevel()

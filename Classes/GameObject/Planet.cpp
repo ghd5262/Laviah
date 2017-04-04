@@ -43,6 +43,8 @@ bool CPlanet::init()
         addChild(m_Texture);
     }
     
+    this->setBoundingRadius(PLANET_DEFINE::BOUNDING_RADIUS);
+    
 //    // blur test
 //    auto getGLProgram = [=](std::string fileName){
 //        auto fileUtiles = FileUtils::getInstance();
@@ -78,9 +80,7 @@ void CPlanet::Crushed()
     CObjectManager::Instance()->getPlayer()->Crushed();
 }
 
-void CPlanet::Execute(float delta){
-    this->setBoundingRadius(((getContentSize().width * this->getScale()) / 2) * 0.6f);
-}
+void CPlanet::Execute(float delta){}
 
 // Dir -1 == Left, 1 == Right
 void CPlanet::Rotation(float speed)

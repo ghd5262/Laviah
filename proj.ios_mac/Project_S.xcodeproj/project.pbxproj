@@ -181,6 +181,10 @@
 		937311B71D5849D500D5EB5C /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 937311B11D5849D500D5EB5C /* sounds */; };
 		93783B901E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93783B8E1E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp */; };
 		93783B911E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93783B8E1E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp */; };
+		93A1166B1E91F9F600095230 /* RivalBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A116691E91F9F600095230 /* RivalBullet.cpp */; };
+		93A1166C1E91F9F600095230 /* RivalBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A116691E91F9F600095230 /* RivalBullet.cpp */; };
+		93A116701E91FA4B00095230 /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A1166E1E91FA4B00095230 /* CharacterBullet.cpp */; };
+		93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A1166E1E91FA4B00095230 /* CharacterBullet.cpp */; };
 		94084000BE5507E572AA858E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803948579A13A3F02433115C /* AdSupport.framework */; };
 		BD12455B831B0397C8082B41 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE64354BDA54E796721EDAB /* FBSDKLoginKit.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
@@ -535,6 +539,10 @@
 		93783B8E1E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookRankUpPopup.cpp; sourceTree = "<group>"; };
 		93783B8F1E8CB1DC009DE1CC /* FacebookRankUpPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FacebookRankUpPopup.hpp; sourceTree = "<group>"; };
 		93865F3E1D588C39007ECE5A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
+		93A116691E91F9F600095230 /* RivalBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RivalBullet.cpp; sourceTree = "<group>"; };
+		93A1166A1E91F9F600095230 /* RivalBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RivalBullet.hpp; sourceTree = "<group>"; };
+		93A1166E1E91FA4B00095230 /* CharacterBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterBullet.cpp; sourceTree = "<group>"; };
+		93A1166F1E91FA4B00095230 /* CharacterBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterBullet.hpp; sourceTree = "<group>"; };
 		9CE541679393BF4E1630239E /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = SOURCE_ROOT; };
 		AC264B2B9DE0F723E850460D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		B3FB4382B3AE6C8B9DE91369 /* sdkbox_config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sdkbox_config.json; path = ../Resources/sdkbox_config.json; sourceTree = SOURCE_ROOT; };
@@ -932,6 +940,10 @@
 				93706E9E1E7A6890009A2CA0 /* StickBullet.h */,
 				93706E9F1E7A6890009A2CA0 /* TargetMark.cpp */,
 				93706EA01E7A6890009A2CA0 /* TargetMark.h */,
+				93A116691E91F9F600095230 /* RivalBullet.cpp */,
+				93A1166A1E91F9F600095230 /* RivalBullet.hpp */,
+				93A1166E1E91FA4B00095230 /* CharacterBullet.cpp */,
+				93A1166F1E91FA4B00095230 /* CharacterBullet.hpp */,
 			);
 			path = Bullet;
 			sourceTree = "<group>";
@@ -1376,6 +1388,7 @@
 				93706F6A1E7A6891009A2CA0 /* ItemManager.cpp in Sources */,
 				93706FB01E7A6891009A2CA0 /* SDKUtil_IOS.cpp in Sources */,
 				93706F8F1E7A6891009A2CA0 /* MessageBox.cpp in Sources */,
+				93A116701E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
 				93706F891E7A6891009A2CA0 /* CharacterSelectPopup.cpp in Sources */,
 				93706F8E1E7A6891009A2CA0 /* HelpPopup.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
@@ -1411,6 +1424,7 @@
 				93706F881E7A6891009A2CA0 /* ChallengePopupDP.cpp in Sources */,
 				93706FAB1E7A6891009A2CA0 /* LoadingScene.cpp in Sources */,
 				93706F951E7A6891009A2CA0 /* OptionPopup.cpp in Sources */,
+				93A1166B1E91F9F600095230 /* RivalBullet.cpp in Sources */,
 				93706F441E7A6891009A2CA0 /* GameStates.cpp in Sources */,
 				93706F871E7A6891009A2CA0 /* ChallengePopup.cpp in Sources */,
 				93706FAC1E7A6891009A2CA0 /* MenuScene.cpp in Sources */,
@@ -1431,9 +1445,11 @@
 				932C6B941E83A2710043BE02 /* FacebookRankPopupDP.cpp in Sources */,
 				93783B911E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
 				93706FD11E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
+				93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				93706FCC1E7F70E4009A2CA0 /* FacebookAPITestPopup.cpp in Sources */,
+				93A1166C1E91F9F600095230 /* RivalBullet.cpp in Sources */,
 				93706FBE1E7A8BF8009A2CA0 /* FacebookManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

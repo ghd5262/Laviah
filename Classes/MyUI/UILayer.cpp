@@ -199,7 +199,7 @@ void CUILayer::createItemTimerUI(eITEM_TYPE type, Color3B color)
         if(m_TimerRunningCount > 0)
             m_TimerRunningCount--;
     })
-	->setIcon(StringUtils::format("playItem_%d.png", type))
+	->setIcon(StringUtils::format("itemBubbleIcon_%d.png", type))
     ->setBarColor(color)
     ->show(this);
     progress->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

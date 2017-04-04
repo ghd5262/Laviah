@@ -97,6 +97,7 @@ void CItemRange::Clear()
 	this->setVisible(false);
 	m_Texture->setScale(0.f);
 	m_Texture->stopAllActions();
+    m_Texture->setOpacity(255);
 	m_IsStayStatus = false;
 	m_StayTime = 0.f;
 }
@@ -105,7 +106,9 @@ void CItemRange::stayTimeUP()
 {
 	float scale = (TARGET_DISTANCE * 2) / getContentSize().width;
 	auto scaleAction = ScaleTo::create(m_TargetDuration, scale);
+    auto fadeAction  = FadeTo::create(m_TargetDuration, 0);
+    auto spawnAction = Spawn::createWithTwoActions(scaleAction, fadeAction);
 	auto callFunc = CallFunc::create([=](){	this->Clear(); });
-	auto sequence = Sequence::createWithTwoActions(scaleAction, callFunc);
+	auto sequence = Sequence::createWithTwoActions(spawnAction, callFunc);
 	m_Texture->runAction(sequence);
 }

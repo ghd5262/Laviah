@@ -2,10 +2,10 @@
 #include "GameObject.h"
 
 namespace PLANET_DEFINE {
-    static const float BOUNDING_RADIUS    = 262.5f;
-    static const float MENU_SIZE          = 1.5f;
-    static const float GAME_SIZE          = 1.0f;
-    static const float SELECT_SIZE        = 3.0f;
+    static const float BOUNDING_RADIUS    = 393.5f;
+    static const float MENU_SIZE          = 1.0f;
+    static const float GAME_SIZE          = 0.66f;
+    static const float SELECT_SIZE        = 2.0f;
     static const float RANK_SIZE          = 50.0f;
     static const cocos2d::Vec2 MENU_POS   = cocos2d::Vec2(540.f, 900.f);
     static const cocos2d::Vec2 GAME_POS   = cocos2d::Vec2(540.f, 672.f);
