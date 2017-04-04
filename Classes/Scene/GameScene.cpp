@@ -554,8 +554,6 @@ void CGameScene::initMemoryPool()
 void CGameScene::createFacebookManager()
 {
     auto facebook = CFacebookManager::Instance();
-    facebook->RequestMyInfo();
-    facebook->RequestFriendList();
     this->addChild(facebook);
 }
 

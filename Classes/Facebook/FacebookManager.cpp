@@ -42,7 +42,7 @@ int CFacebookManager::getMyRank()
 {
     auto userList = getFBUserList();
     
-    // get sequence of me.
+    // get my ranking.
     auto iter     = std::find_if(userList.begin(), userList.end(), [=](FB_PARAM_PAIR data){
         return data.second->_userId == m_MyFacebookData->_userId;
     });
@@ -314,6 +314,9 @@ void CFacebookManager::onGetUserInfo( const sdkbox::FBGraphUser& userInfo )
     CCLOG("first name  : %s", userInfo.getLastName().c_str());
     CCLOG("email       : %s", userInfo.getEmail().c_str());
     CCLOG("installed   : %s", userInfo.isInstalled ? "installed" : "non-installed");
+    
+    CFacebookManager::RequestMyInfo();
+    CFacebookManager::RequestFriendList();
 }
 
 const FBUSER_PARAM* CFacebookManager::createNewFriendData(std::string id)
