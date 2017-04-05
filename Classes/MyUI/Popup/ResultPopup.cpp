@@ -210,8 +210,11 @@ bool CResultPopup::init()
         totalContent = TRANSLATE("RESULT_BEST_SCORE");
         bestScore = GLOBAL->TOTAL_SCORE;
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, GLOBAL->TOTAL_SCORE);
-        
-        if(sdkbox::PluginFacebook::isLoggedIn()){
+    }
+    
+    if (CFacebookManager::IsScoresEnabled()){
+        auto oldScore = CFacebookManager::Instance()->getMyFacebookData()->_score;
+        if(oldScore < GLOBAL->TOTAL_SCORE){
             // save score to facebook data
             CFacebookManager::Instance()->SaveScore(GLOBAL->TOTAL_SCORE);
             CFacebookManager::Instance()->setSaveScoreListener([=](bool succeed){
@@ -224,6 +227,7 @@ bool CResultPopup::init()
             });
         }
     }
+    
     auto totalLabel = createContent(totalScoreBG,
                                     Vec2(totalScoreBG->getContentSize().width * 0.08f,
                                          totalScoreBG->getContentSize().height * 0.5f),

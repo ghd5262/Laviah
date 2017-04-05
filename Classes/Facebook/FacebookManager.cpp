@@ -120,6 +120,15 @@ void CFacebookManager::SaveScore(int score)
     sdkbox::PluginFacebook::api("/me/scores", "POST", params, FACEBOOK_DEFINE::TAG_API_SAVE_SCORE);
 }
 
+bool CFacebookManager::IsScoresEnabled()
+{
+    if(!sdkbox::PluginFacebook::isLoggedIn()) return false;
+    for(auto permission : sdkbox::PluginFacebook::getPermissionList())
+        if(permission == sdkbox::FB_PERM_PUBLISH_POST) return true;
+    
+    return false;
+}
+
 // on "init" you need to initialize your instance
 bool CFacebookManager::init()
 {

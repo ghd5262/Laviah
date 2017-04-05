@@ -50,6 +50,7 @@ public:
     static void RequestMyInfo();
     static void RequestFriendList();
     static void SaveScore(int score);
+    static bool IsScoresEnabled();
     
 private:
     //Facebook callback

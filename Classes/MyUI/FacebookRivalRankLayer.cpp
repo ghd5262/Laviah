@@ -51,7 +51,7 @@ void CFacebookRivalRankLayer::InitListView()
         m_ListView = nullptr;
     }
     
-    if(!sdkbox::PluginFacebook::isLoggedIn()) return;
+    if(!CFacebookManager::IsScoresEnabled()) return;
     
     auto userList   = CFacebookManager::Instance()->getFBUserList();
     auto myData     = CFacebookManager::Instance()->getMyFacebookData();
