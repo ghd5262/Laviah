@@ -107,18 +107,22 @@ void CStickBullet::CollisionWithBarrier()
 
 void CStickBullet::ChangeToCoin()
 {
-	float distance = m_TargetVec.distance(getPosition());
-	auto bullet = CBulletCreator::CreateBullet('Y', -getRotation(), distance, false);
-	if (m_HitWithPlanet) bullet->setIsFly(false);
-
-	this->ReturnToMemoryBlock();
+    float distance = m_TargetVec.distance(getPosition());
+    if(m_HitWithPlanet) distance = PLANET_DEFINE::BOUNDING_RADIUS;
+    
+    auto bullet = CBulletCreator::CreateBullet('Y', -getRotation(), distance, false);
+    bullet->setIsFly(!m_HitWithPlanet);
+    
+    this->ReturnToMemoryBlock();
 }
 
 void CStickBullet::ChangeToStar()
 {
-	float distance = m_TargetVec.distance(getPosition());
-	auto bullet = CBulletCreator::CreateBullet('T', -getRotation(), distance, false);
-	if (m_HitWithPlanet) bullet->setIsFly(false);
-
-	this->ReturnToMemoryBlock();
+    float distance = m_TargetVec.distance(getPosition());
+    if(m_HitWithPlanet) distance = PLANET_DEFINE::BOUNDING_RADIUS;
+    
+    auto bullet = CBulletCreator::CreateBullet('T', -getRotation(), distance, false);
+    bullet->setIsFly(!m_HitWithPlanet);
+    
+    this->ReturnToMemoryBlock();
 }

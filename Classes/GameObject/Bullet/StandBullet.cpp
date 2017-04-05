@@ -16,7 +16,7 @@
 namespace STANDBULLET{
     const static float STAY_LIMIT_TIME = 1.f;
     const static float STANDING_TARGET_RADIUS = 10.f;
-    const static float TARGET_POS_DISTANCE = PLANET_DEFINE::BOUNDING_RADIUS + 30;
+    const static float TARGET_POS_DISTANCE = PLANET_DEFINE::BOUNDING_RADIUS + 60;
 };
 
 using namespace cocos2d;
@@ -60,7 +60,7 @@ bool CStandBullet::init()
 CBullet* CStandBullet::build()
 {
     CBullet::build();
-    auto createDistance = BOUNDING_RADIUS * 0.83f;
+    auto createDistance = BOUNDING_RADIUS * 0.88f;
     this->setPosition(getCirclePosition(getAngle(), createDistance, m_PlanetPos));
     this->setDelayTime(BULLET_STANDARD_DELAY - ((TARGET_POS_DISTANCE - createDistance) / getSpeed()));
     return this;
@@ -70,6 +70,8 @@ void CStandBullet::Execute(float delta)
 {
     m_Time += delta;
     
+    // 1.3 => 움직이기 1.3초 전에 먼저 보인다.
+    // standbullet의 delaytime 은 build에서 새로 지정한다.
     if (m_Time >= (getDelayTime() - 1.3f)) this->setVisible(true);
     if (!IsTimeUP()) return;
     this->StandUp(delta);
@@ -127,8 +129,10 @@ void CStandBullet::CollisionWithBarrier()
 void CStandBullet::ChangeToCoin()
 {
     float distance = m_TargetVec.distance(getPosition());
+    if(m_StandUpComplete) distance = PLANET_DEFINE::BOUNDING_RADIUS;
+
 	auto bullet = CBulletCreator::CreateBullet('Y', -getRotation(), distance, false);
-    if (m_StandUpComplete) bullet->setIsFly(false);
+    bullet->setIsFly(!m_StandUpComplete);
     
     this->ReturnToMemoryBlock();
 }
@@ -136,8 +140,10 @@ void CStandBullet::ChangeToCoin()
 void CStandBullet::ChangeToStar()
 {
 	float distance = m_TargetVec.distance(getPosition());
+    if(m_StandUpComplete) distance = PLANET_DEFINE::BOUNDING_RADIUS;
+    
 	auto bullet = CBulletCreator::CreateBullet('T', -getRotation(), distance, false);
-	if (m_StandUpComplete) bullet->setIsFly(false);
+    bullet->setIsFly(!m_StandUpComplete);
 
 	this->ReturnToMemoryBlock();
 }
