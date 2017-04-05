@@ -33,7 +33,7 @@ private:
     , m_tempEndGradient(nullptr)
 	, m_Index(nullptr)
     , m_Time(0.f)
-    , m_fLimitTime(20.f)
+    , m_fLimitTime(30.f)
     , m_IsBonusTime(false)
     , m_IsChangying(false){}
 
