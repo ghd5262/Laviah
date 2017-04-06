@@ -15,6 +15,7 @@ CFacebookManager* CFacebookManager::m_Instance = nullptr;
 
 CFacebookManager::~CFacebookManager()
 {
+    CCLOG("Facebook destroied.");
     this->ClearData();
     CC_SAFE_DELETE(m_MyFacebookData);
     m_Instance = nullptr;

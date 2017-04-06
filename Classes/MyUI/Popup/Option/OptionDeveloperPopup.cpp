@@ -39,9 +39,9 @@ bool COptionDeveloperPopup::init()
         , _job(job){}
     };
 
-    std::array<MEMBER, 2> members = {
+    std::array<MEMBER, 1> members = {
         MEMBER("Hong Seong Hee", "Developer"),
-        MEMBER("Tiramisu", "Artist")
+//        MEMBER("Tiramisu", "Artist")
     };
     
     Size dpSize = Size(layerSize.width * 0.9f, layerSize.height * 0.05f);

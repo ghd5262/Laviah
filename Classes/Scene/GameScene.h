@@ -46,6 +46,9 @@ public:
     void BonusTimeStart();
     void BonusTimeEnd();
     void ScreenFade(const FADE_CALLBACK& callback = nullptr);
+    void MenuFadeIn();
+    void MenuFadeOut();
+    
 	CPopup* CreateAlertPopup();
 	CPopup* Reward();
 
@@ -85,7 +88,6 @@ private:
 	void initKeyboardListener();
     void startTutorial();
     void getFreeReward();
-    
     
     // The following items are initialized only once.
     void initMemoryPool();

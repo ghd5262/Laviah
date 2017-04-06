@@ -37,35 +37,27 @@ bool COptionPopup::init()
 {
     if (!CPopup::init()) return false;
     
-    Size visibleSize = this->getContentSize();
-    
     auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1920.f);
     if (bg != nullptr){
         bg->setIgnoreAnchorPointForPosition(false);
         bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        bg->setPosition(this->getContentSize() / 2);
+        bg->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                             this->getContentSize().height * 1.5f));
         this->addChild(bg);
     }
     
-    auto scrollBack = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 1500.f);
-    if (scrollBack != nullptr){
-        scrollBack->setIgnoreAnchorPointForPosition(false);
-        scrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        scrollBack->setPosition(Vec2(visibleSize.width / 2, visibleSize.height * 1.5f));
-        this->addChild(scrollBack);
-    }
-    
-    Size layerSize = scrollBack->getContentSize();
+    Size layerSize = bg->getContentSize();
     
  
-    m_ContentScrollView = createPageView(Size(layerSize.width, layerSize.height * 1.2f),
-                                         Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f));
-    scrollBack->addChild(m_ContentScrollView);
+    m_ContentScrollView = createPageView(Size(layerSize.width, layerSize.height * 0.9f),
+                                         Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
+    bg->addChild(m_ContentScrollView);
     
     // Create the title scroll view
-    m_TitleScrollView = createListView(Size(layerSize.width, layerSize.height * 0.2f), layerSize.width / 5,
+    m_TitleScrollView = createListView(Size(layerSize.width, layerSize.height * 0.2f),
+                                       layerSize.width / 5,
                                        Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
-    scrollBack->addChild(m_TitleScrollView);
+    bg->addChild(m_TitleScrollView);
     
     std::array<std::string, 5> iconArray = {
 //        std::string("musicIcon.png"),
@@ -77,12 +69,12 @@ bool COptionPopup::init()
     };
 
     std::array<CPopup*, 5> contentArray = {
-//        COptionMoreGamesPopup::create(),
         COptionMusicPopup::create(),
         COptionDataSavePopup::create(),
         COptionLanguagePopup::create(),
         COptionTitlePopup::create(),
-        COptionDeveloperPopup::create(),
+//        COptionDeveloperPopup::create(),
+        COptionMoreGamesPopup::create(),
     };
     
     int iconIndex = 0;
@@ -90,7 +82,7 @@ bool COptionPopup::init()
     {
         auto iconBtn = Button::create(icon);
         iconBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        iconBtn->setColor(COLOR::DARKGRAY);
+//        iconBtn->setColor(COLOR::DARKGRAY);
         iconBtn->setTag(iconIndex++);
         iconBtn->addClickEventListener([=](Ref* sender){
             auto btn = dynamic_cast<Button*>(sender);
@@ -102,16 +94,16 @@ bool COptionPopup::init()
     
     for(auto content : contentArray)
     {
-        auto bg = Widget::create();
-        bg->setContentSize(Size(layerSize.width, layerSize.height * 0.5f));
-        bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_ContentScrollView->pushBackCustomItem(bg);
+        auto contentBG = Widget::create();
+        contentBG->setContentSize(Size(layerSize.width, layerSize.height * 0.5f));
+        contentBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_ContentScrollView->pushBackCustomItem(contentBG);
         
         content->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-        ->setPopupPosition(bg->getContentSize() / 2)
+        ->setPopupPosition(contentBG->getContentSize() / 2)
         ->setDefaultCallbackEnable(false)
         ->setBackgroundVisible(false)
-        ->show(bg);
+        ->show(contentBG);
         
         content->setTag(CONTENT_TAG);
     }
@@ -119,12 +111,10 @@ bool COptionPopup::init()
     auto btnUserCoin = CUserCoinButton::create();
     if (btnUserCoin != nullptr)
     {
-        btnUserCoin->setPosition(Vec2(bg->getContentSize().width * 0.5f,
-                                      bg->getContentSize().height * 0.05f));
+        btnUserCoin->setPosition(Vec2(layerSize.width * 0.5f,
+                                      layerSize.height * 0.05f));
         btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        btnUserCoin->setCascadeOpacityEnabled(true);
-        btnUserCoin->setOpacity(0);
-        bg->addChild(btnUserCoin);
+        this->addChild(btnUserCoin);
     }
     
     auto createButton = [=](const std::function<void(Node*)> &callback, std::string imageName, Vec2 pos)->CMyButton*{
@@ -134,91 +124,48 @@ bool COptionPopup::init()
         ->setButtonNormalImage(imageName)
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(pos)
-        ->show(bg);
-        btn->setOpacity(0);
+        ->show(this);
         return btn;
     };
     
     auto btnEnd = createButton([=](Node* sender){
         this->End(sender);
-    }, "endIcon.png", Vec2(bg->getContentSize().width * 0.92f,
-                           bg->getContentSize().height * 0.05f));
+    }, "endIcon.png", Vec2(layerSize.width * 0.92f,
+                           layerSize.height * 0.05f));
     
     auto btnShare = createButton([=](Node* sender){
-//        CObjectManager::Instance()->Share();
-//        this->End(sender);
-        
-        HttpRequest* request = new (std::nothrow) HttpRequest();
-        request->setUrl("http://www.hshgames.com/game/test.php/");
-//        request->setUrl("https://httpbin.org/");
-        request->setRequestType(HttpRequest::Type::GET);
-        request->setResponseCallback([=](HttpClient *sender, HttpResponse *response)
-        {
-            if (!response)
-            {
-                return;
-            }
-            
-            // You can get original request type from: response->request->reqType
-            if (0 != strlen(response->getHttpRequest()->getTag()))
-            {
-                CCLOG("%s completed", response->getHttpRequest()->getTag());
-            }
-            
-            long statusCode = response->getResponseCode();
-            char statusString[64] = {};
-            sprintf(statusString, "HTTP Status Code: %ld, tag = %s", statusCode,
-                    response->getHttpRequest()->getTag());
-            CCLOG("response code: %ld", statusCode);
-            
-            if (!response->isSucceed())
-            {
-                CCLOG("response failed");
-                CCLOG("error buffer: %s", response->getErrorBuffer());
-                return;
-            }
-            
-            // dump data
-            std::vector<char> *buffer = response->getResponseData();
-            std::string responseStr = "";
-            responseStr.resize(buffer->size());
-            std::copy(buffer->begin(), buffer->end(), responseStr.begin());
-            
-            CCLOG("Http Test, dump data : %s", responseStr.c_str());
-//            for (unsigned int i = 0; i < buffer->size(); i++)
-//            {
-//                CCLOG("%c", (*buffer)[i]);
-//            }
-//            CCLOG("\n");
-            if (response->getHttpRequest()->getReferenceCount() != 2)
-            {
-                CCLOG("request ref count not 2, is %d", response->getHttpRequest()->getReferenceCount());
-            }
-        });
-        request->setTag("GET test1");
-        HttpClient::getInstance()->send(request);
-        request->release();
-        
-    }, "shareIcon_2.png", Vec2(bg->getContentSize().width * 0.08f,
-                           bg->getContentSize().height * 0.05f));
+        CObjectManager::Instance()->Share();
+        this->End(sender);
+    }, "shareIcon_2.png", Vec2(layerSize.width * 0.08f,
+                               layerSize.height * 0.05f));
     
     
     this->setOpenAnimation([=](Node* sender){
-        btnEnd->runAction(FadeIn::create(0.5f));
-        btnShare->runAction(FadeIn::create(0.5f));
-
-        btnUserCoin->runAction(FadeIn::create(0.5f));
-        scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.62f))));
+        auto action = [=](Node* owner){
+            auto delay = DelayTime::create(1.f);
+            auto fade  = FadeIn::create(0.5f);
+            auto sequence = Sequence::createWithTwoActions(delay, fade);
+            owner->setOpacity(0);
+            owner->runAction(sequence);
+        };
+        
+        action(btnEnd);
+        action(btnShare);
+        action(btnUserCoin);
+        
+        bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
+                                                                             layerSize.height * 0.5f))));
         m_TitleScrollView->jumpToItem(m_InitialScrollIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
         m_ContentScrollView->jumpToItem(m_InitialScrollIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
     });
     
     this->setCloseAnimation([=](Node* sender){
-        btnEnd->runAction(FadeTo::create(0.5f, 0));
-        btnShare->runAction(FadeTo::create(0.5f, 0));
-
-        btnUserCoin->runAction(FadeTo::create(0.5f, 0));
-        scrollBack->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f))));
+        btnEnd->runAction(FadeTo::create(0.3f, 0));
+        btnShare->runAction(FadeTo::create(0.3f, 0));
+        btnUserCoin->runAction(FadeTo::create(0.3f, 0));
+        
+        bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
+                                                                             layerSize.height * 1.5f))));
     });
     
     this->setDefaultCallback([=](Node* sender){
@@ -236,6 +183,7 @@ COptionPopup* COptionPopup::setInitialScrollIndex(int index)
 
 void COptionPopup::End(Node* sender){
     CCLOG("format popup End");
+    CObjectManager::Instance()->ZoomOutRank();
     this->popupClose();
 }
 

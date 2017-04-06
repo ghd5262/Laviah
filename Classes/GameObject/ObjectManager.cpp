@@ -206,6 +206,7 @@ void CObjectManager::ZoomIn()
                true);
     m_Rocket->setVisible(true);
     m_Player->setVisible(true);
+    CGameScene::getGameScene()->MenuFadeIn();
 }
 
 void CObjectManager::ZoomIn2()
@@ -237,8 +238,8 @@ void CObjectManager::MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir)
     Vec2 posArray[] = {
         Vec2( -winSize.width * 0.5f,  winSize.height * 0.5f),
         Vec2(  winSize.width * 1.5f,  winSize.height * 0.5f),
-        Vec2(  winSize.width * 0.5f, -winSize.height * 0.5f),
         Vec2(  winSize.width * 0.5f,  winSize.height * 1.5f),
+        Vec2(  winSize.width * 0.5f, -winSize.height * 0.5f),
         Vec2(  winSize.width * 0.5f,  winSize.height * 0.5f),
     };
     

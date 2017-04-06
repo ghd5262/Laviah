@@ -29,31 +29,32 @@ CFacebookRankPopup* CFacebookRankPopup::create()
 bool CFacebookRankPopup::init()
 {
     if (!CPopup::init()) return false;
-    
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    
+
+    Size layerSize  = this->getContentSize();
+
     auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1920.f);
     if (bg != nullptr){
         bg->setIgnoreAnchorPointForPosition(false);
         bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        bg->setPosition(this->getContentSize() / 2);
+        bg->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 1.5f));
         this->addChild(bg);
     }
     
-    auto scrollBack = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1500.f);
-    if (scrollBack != nullptr){
-        scrollBack->setIgnoreAnchorPointForPosition(false);
-        scrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        scrollBack->setPosition(visibleSize / 2);
-        this->addChild(scrollBack);
+    /* ranking label*/
+    auto rankingLabel = Label::createWithSystemFont("Record", FONT::MALGUNBD, 80);
+    if (rankingLabel != nullptr)
+    {
+        rankingLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        rankingLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f,
+                                       bg->getContentSize().height * 0.8f));
+        this->addChild(rankingLabel);
     }
-
+    
     auto userList   = CFacebookManager::Instance()->getFBUserList();
     auto sequence   = CFacebookManager::Instance()->getMyRank();
-    Size layerSize  = scrollBack->getContentSize();
-    Size dpSize     = Size(900, 150);
+    Size dpSize     = Size(1080, 200);
     size_t dpDistance = 15;
-    float spawnCount = 8;
+    float spawnCount = 3;
     
     // Create the list view
     auto listView = ListView::create();
@@ -68,8 +69,7 @@ bool CFacebookRankPopup::init()
         listView->setPosition(layerSize / 2);
         listView->setMagneticType(ListView::MagneticType::BOTH_END);
         listView->setCascadeOpacityEnabled(true);
-        listView->setOpacity(0);
-        scrollBack->addChild(listView);
+        bg->addChild(listView);
         
         auto index = 1;
         // create dp
@@ -99,39 +99,40 @@ bool CFacebookRankPopup::init()
                              bg->getContentSize().height * 0.05f))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(bg);
-    btnEnd->setOpacity(0);
-    btnEnd->setTouchEnabled(false);
     
     this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* owner){
             auto delay = DelayTime::create(1.f);
             auto fade  = FadeIn::create(0.5f);
             auto sequence = Sequence::createWithTwoActions(delay, fade);
+            owner->setOpacity(0);
             owner->runAction(sequence);
         };
         
         action(btnEnd);
-        action(listView);
-        btnEnd->setTouchEnabled(true);
-        
-        // set default callback again.
-        this->changeDefaultCallback([=](Node* sender){ this->End(sender); });
-        this->setDefaultCallbackCleanUp(true);
+//        action(listView);
+        action(rankingLabel);
+
+        bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
+                                                                             layerSize.height * 0.5f))));
     });
     
     this->setCloseAnimation([=](Node* sender){
+        bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
+                                                                             layerSize.height * 1.5f))));
         btnEnd->runAction(FadeTo::create(0.3f, 0));
-        listView->runAction(FadeTo::create(0.3f, 0));
-
+//        listView->runAction(FadeTo::create(0.5f, 0));
+        rankingLabel->runAction(FadeTo::create(0.3f, 0));
     });
     
-    this->setDefaultCallback([=](Node* sender){}, false);
+    this->changeDefaultCallback([=](Node* sender){
+        this->End(sender);
+    });
     
     return true;
 }
 
 void CFacebookRankPopup::End(Node* sender){
     CObjectManager::Instance()->ZoomOutRank();
-    CMenuLayer::Instance()->setVisible(true);
     this->popupClose();
 }

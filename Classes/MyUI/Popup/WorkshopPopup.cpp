@@ -5,6 +5,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/WorkshopItemDataManager.h"
 #include "../../DataManager/UserDataManager.h"
+#include "../../GameObject/ObjectManager.h"
 #include "ui/UIListView.h"
 
 using namespace cocos2d;
@@ -30,14 +31,14 @@ bool CWorkshopPopup::init()
 {
 	if (!CPopup::init()) return false;
 
-	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Size layerSize = this->getContentSize();
 
-	auto scrollBack = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 1500.f);
-	if (scrollBack != nullptr){
-		scrollBack->setIgnoreAnchorPointForPosition(false);
-		scrollBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		scrollBack->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f));
-		this->addChild(scrollBack);
+	auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1920.f);
+	if (bg != nullptr){
+		bg->setIgnoreAnchorPointForPosition(false);
+		bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		bg->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 1.5f));
+		this->addChild(bg);
 	}
 
 	/* workShop label*/
@@ -45,15 +46,12 @@ bool CWorkshopPopup::init()
 	if (workShopLabel != nullptr)
 	{
 		workShopLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		workShopLabel->setPosition(Vec2(scrollBack->getContentSize().width * 0.5f,
-                                        scrollBack->getContentSize().height * 0.8f));
-		workShopLabel->setColor(COLOR::DARKGRAY);
-		workShopLabel->setOpacity(0);
-		scrollBack->addChild(workShopLabel);
+		workShopLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f,
+                                        bg->getContentSize().height * 0.8f));
+		this->addChild(workShopLabel);
 	}
 
 	auto itemList = CWorkshopItemDataManager::Instance()->getSellingWorkshopItemList();
-	Size layerSize = scrollBack->getContentSize();
 	Size dpSize = Size(1080, 200);
 	size_t dpDistance = 15;
 	float spawnCount = 3;
@@ -66,14 +64,13 @@ bool CWorkshopPopup::init()
 		listView->setDirection(cocos2d::ui::ScrollView::Direction::VERTICAL);
 		listView->setBounceEnabled(true);
 		listView->setBackGroundImageScale9Enabled(true);
-		listView->setContentSize(Size(scrollBack->getContentSize().width, (dpSize.height + dpDistance) * spawnCount));
+		listView->setContentSize(Size(bg->getContentSize().width, (dpSize.height + dpDistance) * spawnCount));
 		listView->setScrollBarPositionFromCorner(Vec2(7, 7));
 		listView->setItemsMargin(dpDistance);
 		listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		listView->setPosition(layerSize / 2);
-		listView->setMagneticType(ListView::MagneticType::CENTER);
-		listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CWorkshopPopup::ScrollCallback, this, std::placeholders::_1, std::placeholders::_2));
-		scrollBack->addChild(listView);
+		listView->setMagneticType(ListView::MagneticType::BOTH_END);
+        bg->addChild(listView);
 
 		unsigned dpIdx = 0;
 		unsigned currentItemDPIdx = 0;
@@ -96,43 +93,50 @@ bool CWorkshopPopup::init()
 		}, 0.f, "ScrollToItem");
 	}
 
-	auto btnEnd = CMyButton::create()
-		->addEventListener([=](Node* sender){
-		this->End(sender);
-	})
-        ->setButtonSingleUse(true)
-		->setButtonNormalImage("endIcon.png")
-		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setButtonPosition(Vec2(this->getContentSize().width * 0.92f, this->getContentSize().height * 0.05f))
-		->show(this);
-	btnEnd->setCascadeOpacityEnabled(true);
-	btnEnd->setOpacity(0);
-
-
-	auto btnUserCoin = CUserCoinButton::create();
-	if (btnUserCoin != nullptr)
-	{
-		btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.05f));
-		btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		btnUserCoin->setCascadeOpacityEnabled(true);
-		btnUserCoin->setOpacity(0);
+    auto btnEnd = CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        this->End(sender);
+    })
+    ->setButtonSingleUse(true)
+    ->setButtonNormalImage("endIcon.png")
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(this->getContentSize().width * 0.92f,
+                             this->getContentSize().height * 0.05f))
+    ->show(this);
+    
+    auto btnUserCoin = CUserCoinButton::create();
+    if (btnUserCoin != nullptr)
+    {
+        btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                                      this->getContentSize().height * 0.05f));
+        btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		this->addChild(btnUserCoin);
 	}
 
 	this->setOpenAnimation([=](Node* sender){
-		scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.62f))));
-
-		workShopLabel->runAction(FadeIn::create(0.5f));
-		btnEnd->runAction(FadeIn::create(0.5f));
-		btnUserCoin->runAction(FadeIn::create(0.5f));
+        auto action = [=](Node* owner){
+            auto delay = DelayTime::create(1.f);
+            auto fade  = FadeIn::create(0.5f);
+            auto sequence = Sequence::createWithTwoActions(delay, fade);
+            owner->setOpacity(0);
+            owner->runAction(sequence);
+        };
+        
+        action(btnEnd);
+        action(btnUserCoin);
+        action(workShopLabel);
+        
+        bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
+                                                                             layerSize.height * 0.5f))));
 	});
 
 	this->setCloseAnimation([=](Node* sender){
-		scrollBack->runAction(EaseSineIn::create(MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f))));
+		bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
+                                                                             layerSize.height * 1.5f))));
 
-		workShopLabel->runAction(FadeTo::create(0.5f, 0));
-		btnEnd->runAction(FadeTo::create(0.5f, 0));
-		btnUserCoin->runAction(FadeTo::create(0.5f, 0));
+        btnEnd->runAction(FadeTo::create(0.3f, 0));
+        btnUserCoin->runAction(FadeTo::create(0.3f, 0));
+        workShopLabel->runAction(FadeTo::create(0.3f, 0));
 	});
     
     this->setDefaultCallback([=](Node* sender){
@@ -143,15 +147,6 @@ bool CWorkshopPopup::init()
 }
 
 void CWorkshopPopup::End(Node* sender){
-	CCLOG("format popup End");
+    CObjectManager::Instance()->ZoomOutRank();
 	this->popupClose();
-}
-
-void CWorkshopPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)
-{
-	ListView* listView = dynamic_cast<ListView*>(ref);
-	if (listView == nullptr || type != ScrollView::EventType::CONTAINER_MOVED)
-	{
-		return;
-	}
 }

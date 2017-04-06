@@ -48,7 +48,7 @@ bool COptionMusicPopup::init()
         auto label = Label::createWithSystemFont(content, FONT::MALGUNBD, 40);
         label->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
         label->setPosition(contentPos);
-        label->setColor(COLOR::DARKGRAY);
+//        label->setColor(COLOR::DARKGRAY);
         layer->addChild(label);
         
         auto volumeSlider = Slider::create();

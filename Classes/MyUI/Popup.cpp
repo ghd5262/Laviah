@@ -145,6 +145,7 @@ CPopup* CPopup::show(Node* parent, int zOrder/* = 0*/)
 	this->popupOpenAnimation();
     this->setAnchorPoint(m_AnchorPoint);
     this->setPosition(m_Position);
+    this->setCascadeOpacityEnabled(true);
 	if (parent != nullptr)
 		parent->addChild(this, zOrder);
 
@@ -351,7 +352,7 @@ void CPopup::popupClose()
 	 */
 	float delayTime = 0.0f;
 	if (m_CloseAnimationCallBack != nullptr)
-		delayTime = 0.5f;
+		delayTime = 1.3f;
 
 	switch (m_PopupCloseAnimation){
 

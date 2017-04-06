@@ -53,21 +53,21 @@ cocos2d::Layer* CGameScene::m_ZoomLayer = nullptr;
 
 Scene* CGameScene::createScene()
 {
-	// 'scene' is an autorelease object
-	auto scene = Scene::create();
+    // 'scene' is an autorelease object
+    auto scene = Scene::create();
 #if CC_USE_PHYSICS
     scene->initWithPhysics();
     scene->getPhysicsWorld()->setGravity(Vec2(0, -98 * 40));
-
+    
 #endif
-	// 'layer' is an autorelease object
-	auto layer = CGameScene::create();
-	// add layer as a child to scene
-	scene->setAnchorPoint(Vec2(0, 0));
-	layer->setAnchorPoint(Vec2(0, 0));
-	scene->addChild(layer);
-
-	return scene;
+    // 'layer' is an autorelease object
+    auto layer = CGameScene::create();
+    // add layer as a child to scene
+    scene->setAnchorPoint(Vec2(0, 0));
+    layer->setAnchorPoint(Vec2(0, 0));
+    scene->addChild(layer);
+    
+    return scene;
 }
 
 CGameScene::CGameScene()
@@ -83,28 +83,28 @@ CGameScene::CGameScene()
 
 CGameScene::~CGameScene()
 {
-	CObjectManager::Instance()->RemoveAllObject();
-	removeAllChildrenWithCleanup(true); // 이부분 검토
-	CPoolingManager::Instance()->DeleteAllMemory();
+    CObjectManager::Instance()->RemoveAllObject();
+    removeAllChildrenWithCleanup(true); // 이부분 검토
+    CPoolingManager::Instance()->DeleteAllMemory();
     CAudioManager::Instance()->Clear();
 }
 
 void CGameScene::update(float delta)
 {
-	if (m_KeyBoardSpace) CObjectManager::Instance()->RotationObject(-2.f);
-
-	CObjectManager::Instance()->Execute(delta);
+    if (m_KeyBoardSpace) CObjectManager::Instance()->RotationObject(-2.f);
+    
+    CObjectManager::Instance()->Execute(delta);
 }
 
 bool CGameScene::init()
 {
-	if (!Layer::init()) return false;
+    if (!Layer::init()) return false;
     
-	m_GameScene = this;
-	m_VisibleSize = Director::getInstance()->getVisibleSize();
-	m_TouchPos = m_VisibleSize / 2;
+    m_GameScene = this;
+    m_VisibleSize = Director::getInstance()->getVisibleSize();
+    m_TouchPos = m_VisibleSize / 2;
     
-	this->scheduleUpdate();
+    this->scheduleUpdate();
     this->initMemoryPool();
     this->createFacebookManager();
     this->createZoomLayer();
@@ -123,18 +123,18 @@ bool CGameScene::init()
     this->createTutorialLayer();
     this->initKeyboardListener();
     this->setTimestamp();
-
+    
     return true;
 }
 
 void CGameScene::GameExit(bool resume/* = false*/)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
-	return;
+    MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
+    return;
 #endif
-	this->GamePause();
-	this->createExitPopup(resume);
+    this->GamePause();
+    this->createExitPopup(resume);
 }
 
 void CGameScene::GameStart()
@@ -142,19 +142,17 @@ void CGameScene::GameStart()
     //    this->ScreenFade([=](){
     this->clearData();
     this->GameResume();
+    this->MenuFadeOut();
+    
     m_UILayer->setVisible(true);
     m_UILayer->setDefaultCallbackToTopAgain();
-    m_MenuLayer->setVisible(false);
     
-    // ver-1
     CObjectManager::Instance()->ZoomIn();
-  
-//    CObjectManager::Instance()->ZoomOut();
     CObjectManager::Instance()->getPlayer()->GameStart();
     CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
     dynamic_cast<CFacebookRivalRankLayer*>( m_RivalRankLayer )->InitListView();
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
-
+    
     //    });
 }
 
@@ -172,7 +170,7 @@ void CGameScene::GamePause()
 
 void CGameScene::GameResult()
 {
-	this->createResultPopup();
+    this->createResultPopup();
     this->GamePause();
     m_ZoomLayer->pause();
 }
@@ -185,20 +183,20 @@ void CGameScene::GameEnd()
 
 void CGameScene::GameHelp()
 {
-	this->createHelpPopup();
+    this->createHelpPopup();
 }
 
 void CGameScene::WatchVideo()
 {
-	this->createVideoPopup();
-	this->GamePause();
+    this->createVideoPopup();
+    this->GamePause();
     m_ZoomLayer->pause();
 }
 
 void CGameScene::ShowChallenge()
 {
-	this->createChallengePopup();
-	this->GamePause();
+    this->createChallengePopup();
+    this->GamePause();
 }
 
 void CGameScene::OpenGamePausePopup()
@@ -208,7 +206,7 @@ void CGameScene::OpenGamePausePopup()
         return;
     
     this->GamePause();
-	this->createPausePopup();
+    this->createPausePopup();
     m_ZoomLayer->pause();
 }
 
@@ -219,34 +217,39 @@ void CGameScene::OpenGameMenuLayer()
         this->clearData();
         this->createRandomCoin();
         this->getFreeReward();
+        this->MenuFadeIn();
         m_UILayer->setVisible(false);
-        m_MenuLayer->setVisible(true);
         m_MenuLayer->setDefaultCallbackToTopAgain();
     });
 }
 
 void CGameScene::OpenOptionPopup(int scrollIndex/* = 0*/)
 {
+    //    CObjectManager::Instance()->MoveAction(CGameScene::getZoomLayer(), MOVE_DIRECTION::RIGHT);
+    CObjectManager::Instance()->ZoomInRank();
     this->createOptionPopup(scrollIndex);
+    this->MenuFadeOut();
 }
 
 void CGameScene::OpenWorkshopPopup()
 {
+    CObjectManager::Instance()->ZoomInRank();
     this->createWorkshopPopup();
+    this->MenuFadeOut();
 }
 
 void CGameScene::OpenCharacterSelectPopup()
 {
     CObjectManager::Instance()->ZoomIn2();
-    m_MenuLayer->setVisible(false);
     this->createCharacterSelectPopup();
+    this->MenuFadeOut();
 }
 
 void CGameScene::OpenRankPopup()
 {
     CObjectManager::Instance()->ZoomInRank();
-    m_MenuLayer->setVisible(false);
     this->createRankPopup();
+    this->MenuFadeOut();
 }
 
 void CGameScene::OpenRankUpPopup()
@@ -279,24 +282,44 @@ void CGameScene::ScreenFade(const FADE_CALLBACK& callback/* = nullptr*/)
     auto delayAction = DelayTime::create(0.3f);
     auto visibleOff = CallFunc::create([=](){ m_ScreenFade->setVisible(false); });
     auto visibleOn  = CallFunc::create([=](){ m_ScreenFade->setVisible(true);  });
-
+    
     
     m_ScreenFade->runAction(Sequence::create(visibleOn,
                                              fadeIn,
                                              callFunc,
-											 delayAction,
-											 fadeOut,
+                                             delayAction,
+                                             fadeOut,
                                              visibleOff,
                                              nullptr));
 }
 
+void CGameScene::MenuFadeIn()
+{
+    m_MenuLayer->setVisible(true);
+    m_MenuLayer->setOpacity(0);
+    auto delayAction    = DelayTime::create(1.0f);
+    auto fadeAction     = FadeIn::create(0.5f);
+    auto sequenceAction = Sequence::createWithTwoActions(delayAction, fadeAction);
+    m_MenuLayer->runAction(sequenceAction);
+}
+
+void CGameScene::MenuFadeOut()
+{
+    auto fadeAction     = FadeTo::create(0.3f, 0);
+    auto callFunc       = CallFunc::create([=](){
+        m_MenuLayer->setVisible(false);
+    });
+    auto sequenceAction = Sequence::createWithTwoActions(fadeAction, callFunc);
+    m_MenuLayer->runAction(sequenceAction);
+}
+
 CPopup* CGameScene::CreateAlertPopup()
 {
-	return CPopup::create()
-		->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-		->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(m_VisibleSize / 2);
+    return CPopup::create()
+    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2);
 }
 
 void CGameScene::BonusTimeStart()
@@ -311,10 +334,10 @@ void CGameScene::BonusTimeEnd()
 
 CPopup* CGameScene::Reward()
 {
-	return CRewardPopup::create()
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(m_VisibleSize / 2)
-		->show(this, ZORDER::POPUP);
+    return CRewardPopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::clearData()
@@ -323,7 +346,7 @@ void CGameScene::clearData()
     CObjectManager::Instance()->Clear();
     CItemManager::Instance()->Clear();
     this->cleanGlobalData();
-	this->removeBonusTimeLayer();
+    this->removeBonusTimeLayer();
 }
 
 void CGameScene::cleanGlobalData()
@@ -333,34 +356,34 @@ void CGameScene::cleanGlobalData()
 
 void CGameScene::createPausePopup()
 {
-	CPausePopup::create()
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(m_VisibleSize / 2)
-        ->show(this, ZORDER::POPUP);
+    CPausePopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createVideoPopup()
 {
-	CVideoPopup::create()
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(m_VisibleSize / 2)
-		->show(this, ZORDER::POPUP);
+    CVideoPopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createChallengePopup()
 {
-	CChallengePopup::create()
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(m_VisibleSize / 2)
-		->show(this, ZORDER::POPUP);
+    CChallengePopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createResultPopup()
 {
-	CResultPopup::create()
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(m_VisibleSize / 2)
-		->show(this, ZORDER::POPUP);
+    CResultPopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createEndPopup()
@@ -373,40 +396,41 @@ void CGameScene::createEndPopup()
 
 void CGameScene::createHelpPopup()
 {
-	CHelpPopup::create()
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(m_VisibleSize / 2)
-		->show(this, ZORDER::POPUP);
+    CHelpPopup::create()
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createExitPopup(bool resume)
 {
-	CSDKUtil::Instance()->AutoSave();
-
-	this->CreateAlertPopup()
-		->setPositiveButton([=](Node* sender){
-		Director::getInstance()->end();
+    CSDKUtil::Instance()->AutoSave();
+    
+    this->CreateAlertPopup()
+    ->setPositiveButton([=](Node* sender){
+        Director::getInstance()->end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-		exit(0);
+        exit(0);
 #endif
-	}, TRANSLATE("BUTTON_YES"))
-		->setNegativeButton([=](Node* sender){
-		if (resume) this->GameResume();
-	}, TRANSLATE("BUTTON_NO"))
-		->setDefaultCallback([=](Node* sender){
-		if (resume) this->GameResume();
-
-		auto popup = dynamic_cast<CPopup*>(sender);
-		popup->popupClose();
-	})
-		->setMessage(TRANSLATE("GAME_EXIT_CHECK"))
-		->show(this, ZORDER::POPUP);
+    }, TRANSLATE("BUTTON_YES"))
+    ->setNegativeButton([=](Node* sender){
+        if (resume) this->GameResume();
+    }, TRANSLATE("BUTTON_NO"))
+    ->setDefaultCallback([=](Node* sender){
+        if (resume) this->GameResume();
+        
+        auto popup = dynamic_cast<CPopup*>(sender);
+        popup->popupClose();
+    })
+    ->setMessage(TRANSLATE("GAME_EXIT_CHECK"))
+    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::createOptionPopup(int index)
 {
     COptionPopup::create()
     ->setInitialScrollIndex(index)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
@@ -424,11 +448,11 @@ void CGameScene::createBonusTimeLayer()
 void CGameScene::createWorkshopPopup()
 {
     CWorkshopPopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
 }
-
 
 void CGameScene::createCharacterSelectPopup()
 {
@@ -485,19 +509,19 @@ void CGameScene::turnUpSound()
 
 void CGameScene::initKeyboardListener()
 {
-	EventListenerKeyboard * pListener = EventListenerKeyboard::create();
-	pListener->onKeyPressed = [=](EventKeyboard::KeyCode code, Event* pEvent)
-	{
+    EventListenerKeyboard * pListener = EventListenerKeyboard::create();
+    pListener->onKeyPressed = [=](EventKeyboard::KeyCode code, Event* pEvent)
+    {
         if(code == EventKeyboard::KeyCode::KEY_SPACE) m_KeyBoardSpace = true;
-	};
-
-	pListener->onKeyReleased = [=](EventKeyboard::KeyCode code, Event* pEvent)
-	{
+    };
+    
+    pListener->onKeyReleased = [=](EventKeyboard::KeyCode code, Event* pEvent)
+    {
         if(code == EventKeyboard::KeyCode::KEY_SPACE) m_KeyBoardSpace = false;
         if(code == EventKeyboard::KeyCode::KEY_BACK)  CPopup::DefaultCallback();
-	};
-
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
+    };
+    
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
 }
 
 void CGameScene::createRandomCoin()
@@ -542,7 +566,6 @@ void CGameScene::getFreeReward()
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
 }
 
-
 // The following items are initialized only once.
 void CGameScene::initMemoryPool()
 {
@@ -586,7 +609,7 @@ void CGameScene::createBackground()
 void CGameScene::createPlanet()
 {
     CObjectManager::Instance()->ChangeCharacter();
-
+    
     auto planet = CPlanet::create();
     planet->setPosition(m_VisibleSize / 2);
     planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

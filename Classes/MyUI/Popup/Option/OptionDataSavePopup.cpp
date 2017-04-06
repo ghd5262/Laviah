@@ -51,7 +51,7 @@ bool COptionDataSavePopup::init()
                                            layer->getContentSize().height),
                                       TextHAlignment::CENTER,
                                       TextVAlignment::CENTER);
-    label->setColor(COLOR::DARKGRAY);
+//    label->setColor(COLOR::DARKGRAY);
     label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     label->setPosition(Vec2(layer->getContentSize().width * 0.5f,
                             layer->getContentSize().height * 0.65f));

@@ -24,7 +24,7 @@ bool CFacebookRankPopupDP::init()
 {
     if (!Widget::init()) return false;
     
-    auto bg = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 900.f, 150.f);
+    auto bg = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 1080.f, 200.f);
     if (bg != nullptr){
         this->setContentSize(bg->getContentSize());
         bg->setIgnoreAnchorPointForPosition(false);
@@ -46,7 +46,7 @@ bool CFacebookRankPopupDP::init()
     {
         CUrlSprite::create()
         ->setUrl(m_User->_url)
-        ->setSize(Size(150, 150))
+        ->setSize(Size(200.f, 200.f))
         ->build(this)
         ->setPosition(Vec2(this->getContentSize().width * 0.25f,
                            this->getContentSize().height * 0.5f));
