@@ -45,7 +45,7 @@ void CItemManager::StartItemTimer(eITEM_TYPE itemType)
     auto setTimer = [=](eITEM_TYPE  type, float limitTime){
 		m_ItemTimers[type] = 0.f;
         m_ItemTimersLimit[type] = limitTime;
-        CUILayer::Instance()->setItemTimer(type, m_ItemTimersLimit[type]);
+//        CUILayer::Instance()->setItemTimer(type, m_ItemTimersLimit[type]);
     };
     
     switch (itemType) {

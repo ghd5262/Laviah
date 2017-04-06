@@ -50,7 +50,7 @@ bool CMultipleScore::init()
 	auto popupSize = this->getContentSize();
     m_Player = CObjectManager::Instance()->getPlayer();
    
-	m_MultipleNumberLabel = Label::createWithTTF("", FONT::MALGUNBD, 65,
+	m_MultipleNumberLabel = Label::createWithTTF("", FONT::MALGUNBD, 120,
 		Size(popupSize.width, popupSize.height),
 		TextHAlignment::CENTER,
 		TextVAlignment::CENTER);
@@ -109,20 +109,20 @@ void CMultipleScore::AddScore(unsigned score)
 
 	// UI visible On
 	m_MultipleNumberLabel->setVisible(true);
-	m_MultipleNumberLabel->setString(MakeString("COMBO\nx %d", m_MultipleNumber).c_str()); //1부터 시작해서 -1해준다.
+	m_MultipleNumberLabel->setString(MakeString("%d", m_MultipleNumber).c_str()); //1부터 시작해서 -1해준다.
 
 	unsigned colorLevel = m_MultipleNumber / 100;
 	if (m_ColorLevel != colorLevel && colorLevel < 25){
 		m_ColorLevel = colorLevel;
 		m_MultipleNumberLabel->setColor(m_ColorList[m_ColorLevel]);
 		this->runAction(JumpBy::create(0.3f, Vec2(0, 0), 50, 1));
-        GLOBAL->STAR_SCORE += (m_MultipleNumber / 100) * 100000;
+//        GLOBAL->STAR_SCORE += (m_MultipleNumber / 100) * 100000;
     }
 }
 
 void CMultipleScore::UpdateScore()
 {
-    this->calculateScore();
+//    this->calculateScore();
     this->multipleScoreReset();
 }
 

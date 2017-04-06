@@ -13,6 +13,14 @@
 * 이유는 Delete에서 removeFromParent()와 operator delete를 호출하여 소멸자를 호출하기 위함
 *
 *----------------------------------------------------------------------------------------*/
+
+enum MOVE_DIRECTION{
+    LEFT,
+    RIGHT,
+    TOP,
+    DOWN,
+    MIDDLE
+};
 class CBullet;
 class CPlanet;
 class CPlayer;
@@ -47,9 +55,8 @@ public:
     void ZoomIn();
     void ZoomIn2();
     void ZoomInRank();
-    void ZoomOut();
-    void ZoomOut2();
     void ZoomOutRank();
+    void MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir);
     void GiantMode();
     void NormalMode();
     void InitTutorialStep();

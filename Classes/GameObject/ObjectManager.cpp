@@ -51,25 +51,6 @@ CObjectManager::CObjectManager()
     auto insertLevel = [=](sLEVEL_BALANCE data){
         m_LevelList.emplace_back(data);
     };
-    
-////    insertLevel(sLEVEL_BALANCE(20,  50.f, 1, 1.f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(40,  55.f,  1, 1.0f, 0, Vec2(540.f, 672.f)));
-////    insertLevel(sLEVEL_BALANCE(60,  60.f, 2, 1.f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(80,  65.f,  2, 1.0f, 0, Vec2(540.f, 672.f)));
-////    insertLevel(sLEVEL_BALANCE(100, 70.f, 3, 1.f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(120, 75.f,  3, 1.0f, 0, Vec2(540.f, 672.f)));
-////    insertLevel(sLEVEL_BALANCE(140, 80.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
-////    insertLevel(sLEVEL_BALANCE(160, 85.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(180, 90.f,  4, 1.0f, 0, Vec2(540.f, 672.f)));
-////    insertLevel(sLEVEL_BALANCE(200, 95.f, 5, 1.f, 0, Vec2(540.f, 672.f)));
-////    insertLevel(sLEVEL_BALANCE(220, 90.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
-////    insertLevel(sLEVEL_BALANCE(240, 90.f, 4, 1.f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(260, 100.f, 5, 1.0f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(290, 120.f, 5, 0.8f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(350, 90.f,  5, 1.2f, 0, Vec2(540.f, 672.f), true));
-//    insertLevel(sLEVEL_BALANCE(410, 90.f,  5, 1.2f, 0, Vec2(540.f, 0.f)  , true));
-//    insertLevel(sLEVEL_BALANCE(470, 90.f,  5, 1.0f, 0, Vec2(540.f, 672.f)));
-//    insertLevel(sLEVEL_BALANCE(490, 100.f, 5, 1.0f, 90,Vec2(270.f, 960.f)));
 
     insertLevel(sLEVEL_BALANCE(20,  80.f,  1, 0.66f, 0, Vec2(540.f, 672.f)));
     
@@ -94,20 +75,6 @@ CObjectManager::CObjectManager()
     insertLevel(sLEVEL_BALANCE(170, 120.f, 5, 0.8f,  0, Vec2(540.f, 100.f)));
     insertLevel(sLEVEL_BALANCE(190, 130.f, 5, 0.45f, 0, Vec2(540.f, 672.f)));
     insertLevel(sLEVEL_BALANCE(210, 130.f, 5, 0.66f, 0, Vec2(540.f, 672.f)));
-    
-    
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(20,  50,   1, 1.f , 0,   PLANET_DEFINE::GAME_POS));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(40,  55.f, 2, 1.f , 90,  Vec2(270, 960)));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(60,  60.f, 3, 1.f , 180, Vec2(540, 1248), true));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(80,  65.f, 3, 1.f , 270, Vec2(810, 960)));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(100, 70.f, 4, 1.f , 0,   PLANET_DEFINE::GAME_POS, true));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(160, 75.f, 4, 1.2f, 0,   Vec2(540, 0)));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(220, 75.f, 5, 1.f , 180, PLANET_DEFINE::GAME_POS, true));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(240, 65.f, 5, 0.8f, 0,   PLANET_DEFINE::GAME_POS, true));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(280, 70.f, 5, 1.2f, 0,   PLANET_DEFINE::GAME_POS));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(300, 70.f, 6, 1.2f, 0,   PLANET_DEFINE::GAME_POS));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(400, 75.f, 7, 1.2f , 0,  Vec2(540, 0), true));
-//    m_LevelList.emplace_back(sLEVEL_BALANCE(440, 75.f, 7, 1.f, 215,  PLANET_DEFINE::GAME_POS));
 }
 
 CObjectManager* CObjectManager::Instance()
@@ -254,34 +221,8 @@ void CObjectManager::ZoomIn2()
 
 void CObjectManager::ZoomInRank()
 {
-    this->zoom(CGameScene::getZoomLayer(),
-               Vec2(PLANET_DEFINE::MENU_POS.x, -PLANET_DEFINE::MENU_POS.y),
-               0,
-               PLANET_DEFINE::MENU_SIZE,
-               1.2f,
-               true);
-    
+    this->MoveAction(CGameScene::getZoomLayer(), MOVE_DIRECTION::DOWN);
     m_Rocket->setVisible(false);
-}
-
-void CObjectManager::ZoomOut()
-{
-    this->zoom(CGameScene::getZoomLayer(),
-               PLANET_DEFINE::GAME_POS,
-               0,
-               PLANET_DEFINE::GAME_SIZE,
-               1.2f,
-               true);
-}
-
-void CObjectManager::ZoomOut2()
-{
-    this->zoom(CGameScene::getZoomLayer(),
-               PLANET_DEFINE::MENU_POS,
-               0,
-               0.7f,
-               1.2f,
-               true);
 }
 
 void CObjectManager::ZoomOutRank()
@@ -290,34 +231,36 @@ void CObjectManager::ZoomOutRank()
     m_Rocket->setVisible(true);
 }
 
+void CObjectManager::MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir)
+{
+    auto winSize    = Director::getInstance()->getWinSize();
+    Vec2 posArray[] = {
+        Vec2( -winSize.width * 0.5f,  winSize.height * 0.5f),
+        Vec2(  winSize.width * 1.5f,  winSize.height * 0.5f),
+        Vec2(  winSize.width * 0.5f, -winSize.height * 0.5f),
+        Vec2(  winSize.width * 0.5f,  winSize.height * 1.5f),
+        Vec2(  winSize.width * 0.5f,  winSize.height * 0.5f),
+    };
+    
+    this->zoom(owner, posArray[dir], 0, 1.f, 1.2f, true);
+}
+
 void CObjectManager::GiantMode()
 {
-//    this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED * 1.5f);
-    
     m_GiantSpeed = 1.5f;
-    //ver-1
-    
     auto levelData = m_LevelList.at(m_GameLevel);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, 0.45f, 1.f, true);
-    
-//    auto scaleAction1  = ScaleTo::create(1.f,  0.7f);
-//    auto exponential1  = EaseExponentialInOut::create(scaleAction1);
-//    exponential1->setTag(100);
-//    CGameScene::getZoomLayer()->runAction(exponential1);
 }
 
 void CObjectManager::NormalMode()
 {
     m_GiantSpeed = 1.f;
-    //ver-1
     auto levelData = m_LevelList.at(m_GameLevel);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 1.f, true);
-//    this->SpeedControl(1.f, levelData._speed);
 }
 
 void CObjectManager::setGameStateByLevel()
 {
-    //ver-1
     auto levelData = m_LevelList.at(m_GameLevel);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
     this->SpeedControl(8.f, levelData._speed);
