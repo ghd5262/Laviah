@@ -43,6 +43,37 @@ CGradientDataManager::CGradientDataManager()
         
         m_GradientList.push_back(param);
     }
+    
+    auto addColor = [=](int r, int g, int b){
+        m_ScoreColorList.emplace_back(Color3B(r, g, b));
+    };
+    
+    m_ScoreColorList.clear();
+    addColor( 255, 255, 255 );
+    addColor( 240, 222, 218 );
+    addColor( 230, 196, 193 );
+    addColor( 230, 171, 163 );
+    addColor( 242, 148, 148 );
+    addColor( 240, 142, 115 );
+    addColor( 245, 157, 91  );
+    addColor( 235, 170, 66  );
+    addColor( 240, 190, 53  );
+    addColor( 240, 218, 26  );
+    addColor( 237, 245, 24  );
+    addColor( 227, 227, 25  );
+    addColor( 201, 224, 20  );
+    addColor( 151, 242, 24  );
+    addColor( 81,  242, 22  );
+    addColor( 7,   242, 140 );
+    addColor( 0,   224, 232 );
+    addColor( 12,  186, 235 );
+    addColor( 21,  163, 235 );
+    addColor( 24,  139, 240 );
+    addColor( 29,  88,  224 );
+    addColor( 54,  22,  240 );
+    addColor( 54,  22,  240 );
+    addColor( 54,  22,  240 );
+    addColor( 54,  22,  240 );
 }
 
 CGradientDataManager::~CGradientDataManager(){}
@@ -70,4 +101,11 @@ sGRADIENT_PARAM CGradientDataManager::getNextGradient()
 	m_GradientIdx++;
 
 	return result;
+}
+
+cocos2d::Color3B CGradientDataManager::getColorByLevel(int level)
+{
+    if(level >= m_ScoreColorList.size()) return Color3B::WHITE;
+    
+    return m_ScoreColorList.at(level);
 }

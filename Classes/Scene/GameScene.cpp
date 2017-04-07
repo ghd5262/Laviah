@@ -16,7 +16,7 @@
 #include "../MyUI/MenuLayer.hpp"
 #include "../MyUI/UILayer.hpp"
 #include "../MyUI/BonusTimeLayer.hpp"
-#include "../MyUI/MultipleScore.h"
+#include "../MyUI/ComboScore.h"
 #include "../MyUI/CountDown.hpp"
 #include "../MyUI/TutorialLayer.hpp"
 #include "../MyUI/FacebookRivalRankLayer.hpp"
@@ -694,7 +694,7 @@ void CGameScene::createItemRanges()
 
 void CGameScene::createComboUI()
 {
-    auto multiscore = CMultipleScore::Instance();
+    auto multiscore = CComboScore::Instance();
     this->addChild(multiscore, ZORDER::POPUP);
 }
 

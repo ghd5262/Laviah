@@ -187,10 +187,10 @@ bool CResultPopup::init()
 
 	auto starScoreBG	= createNormalLayer(resultIcon[0], resultContent[0], GLOBAL->STAR_SCORE, startPos[0], 50);
 //	auto moveDistanceBG = createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->RUN_SCORE, startPos[1], 50);
-	auto comboBG		= createMultipleLayer(resultIcon[1], resultContent[1], GLOBAL->COMBO_SCORE, startPos[1], 50, 100);
-    auto coinScoreBG    = createMultipleLayer(resultIcon[2], resultContent[2], GLOBAL->COIN_SCORE,  startPos[2], 50, 1000);
+	auto comboBG		= createMultipleLayer(resultIcon[1], resultContent[1], GLOBAL->COMBO_SCORE, startPos[1], 50, 10);
+    auto coinScoreBG    = createMultipleLayer(resultIcon[2], resultContent[2], GLOBAL->COIN_SCORE,  startPos[2], 50, 100);
 //    auto bonusTimeBG	= createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->BONUSTIME, startPos[4], 50, 10000);
-	auto challengeBG	= createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT, startPos[3], 50, 10000);
+	auto challengeBG	= createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT, startPos[3], 50, 1000);
     
     auto totalScoreBG = createLayerBG(startPos[4]);
     totalScoreBG->setTexture("resultPopup_1.png");

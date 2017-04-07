@@ -16,7 +16,8 @@ void Global::Clear()
     STAR_SCORE = 0;
     RUN_SCORE = 0;
     COMBO_SCORE = 0;
-
+    COMBO_LEVEL = 0;
+    
     COIN_COUNT = 0;
 	STAR_COUNT = 0;
 	REVIVE_COUNT = 0;

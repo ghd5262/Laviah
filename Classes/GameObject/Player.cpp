@@ -10,7 +10,7 @@
 #include "../Scene/GameScene.h"
 #include "../MyUI/ScoreUI.h"
 #include "../DataManager/UserDataManager.h"
-#include "../MyUI/MultipleScore.h"
+#include "../MyUI/ComboScore.h"
 
 using namespace cocos2d;
 using namespace PLAYER_DEFINE;
@@ -43,7 +43,7 @@ CPlayer::CPlayer()
 , m_Particle(nullptr)
 , m_MagnetEffect(nullptr)
 , m_Invincibility(false)
-, m_MultipleScore(nullptr)
+, m_ComboScore(nullptr)
 {}
 
 bool CPlayer::init()
@@ -93,7 +93,7 @@ void CPlayer::Clear()
     this->TakeOffRocket();
     this->setRotation(0);
     m_Particle->setGravity(Vec2(0, -270));
-    CMultipleScore::Instance()->UpdateScore();
+    CComboScore::Instance()->ComboScoreReset();
 }
 
 void CPlayer::GameStart()
@@ -154,7 +154,7 @@ void CPlayer::LostSomeHealth(float loseHealth)
 	else{
         m_fLife = 0.f;
 		this->PlayerDead();
-        CMultipleScore::Instance()->UpdateScore();
+        CComboScore::Instance()->ComboScoreReset();
 //        CObjectManager::Instance()->SpeedControl(0.5f, 0);
 //        CObjectManager::Instance()->ZoomIn();
 //        CGameScene::getGameScene()->GameEnd();

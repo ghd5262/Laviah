@@ -75,10 +75,6 @@ void CRivalBullet::CollisionWithPlanet()
 
 void CRivalBullet::CollisionWithPlayer()
 {
-    auto scoreBullet = CScoreBullet::create(50000);
-    scoreBullet->setPosition(getPosition());
-    scoreBullet->setAnchorPoint(Vec2::ZERO);
-    CGameScene::getZoomLayer()->addChild(scoreBullet);
-    GLOBAL->STAR_SCORE += 50000;
+    this->createScoreCurrentPos(100);
     this->R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
 }

@@ -99,6 +99,7 @@ bool CCharacterSelectPopup::init()
             characterDP->setDPIndex(dpIdx);
             characterDP->setCascadeOpacityEnabled(true);
             characterDP->setSelectDPListener([=](int dpIndex){
+                if(!listView->isTouchEnabled()) return;
                 if(m_CenterDP)
                 {
                     if(dpIndex == m_CenterDP->getDPIndex())
@@ -193,8 +194,8 @@ bool CCharacterSelectPopup::init()
         m_CenterDP->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f), CallFunc::create([=](){
             m_CenterDP->setVisible(true);
             CObjectManager::Instance()->getPlayer()->setVisible(false);
-            listView->setTouchEnabled(true);
             btnEnd->setTouchEnabled(true);
+            listView->setTouchEnabled(true);
             this->changeDefaultCallback([=](Node* sender){
                 this->End(sender);
             });

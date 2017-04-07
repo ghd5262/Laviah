@@ -7,7 +7,7 @@
 #include "../../GameObject/Player.h"
 #include "../../AI/States/BulletStates.h"
 #include "../../Scene/GameScene.h"
-#include "../../MyUI/MultipleScore.h"
+#include "../../MyUI/ComboScore.h"
 #include "../../Particle/Particles.h"
 #include "../../DataManager/ChallengeDataManager.hpp"
 #include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
@@ -34,6 +34,7 @@ CBullet::CBullet()
 		m_FSM->ChangeState(CBulletNormal::Instance());
 	}
     setCascadeOpacityEnabled(true);
+    setCascadeColorEnabled(true);
 }
 
 CBullet::~CBullet(){
@@ -362,7 +363,8 @@ void CBullet::createScoreCurrentPos(int score)
     scoreBullet->setPosition(getPosition());
     scoreBullet->setAnchorPoint(Vec2::ZERO);
     CGameScene::getZoomLayer()->addChild(scoreBullet);
-    CMultipleScore::Instance()->AddScore(score);
+    CComboScore::Instance()->AddCombo();
+    GLOBAL->STAR_SCORE += score;
 }
 
 void CBullet::CollisionWithPlanet()

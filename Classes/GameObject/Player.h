@@ -30,7 +30,7 @@ namespace PLAYER_DEFINE{
 class CScoreUI;
 class CItemRange;
 class CMagnetEffect;
-class CMultipleScore;
+class CComboScore;
 class CPlayer : public CGameObject {
 public:
 	static CPlayer* create();
@@ -114,7 +114,7 @@ private:
 
 private:
 	std::shared_ptr<CStateMachine<CPlayer>> m_FSM;
-	CMultipleScore* m_MultipleScore;
+	CComboScore* m_ComboScore;
 	cocos2d::ParticleSystemQuad* m_Particle;
     CMagnetEffect* m_MagnetEffect;
 	const sCHARACTER_PARAM* m_CharacterParam;

@@ -125,6 +125,7 @@ bool COptionPopup::init()
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(pos)
         ->show(this);
+        btn->setTouchEnable(false);
         return btn;
     };
     
@@ -153,8 +154,19 @@ bool COptionPopup::init()
         action(btnShare);
         action(btnUserCoin);
         
-        bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
-                                                                             layerSize.height * 0.5f))));
+        auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
+        auto easeAction = EaseExponentialInOut::create(moveAction);
+        auto callFunc   = CallFunc::create([=](){
+            btnEnd->setTouchEnable(true);
+            btnShare->setTouchEnable(true);
+            
+            this->changeDefaultCallback([=](Node* sender){ this->End(sender); });
+            this->setDefaultCallbackCleanUp(true);
+        });
+        auto sequance   = Sequence::createWithTwoActions(easeAction, callFunc);
+        
+        bg->runAction(sequance);
+        
         m_TitleScrollView->jumpToItem(m_InitialScrollIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
         m_ContentScrollView->jumpToItem(m_InitialScrollIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
     });
@@ -168,10 +180,8 @@ bool COptionPopup::init()
                                                                              layerSize.height * 1.5f))));
     });
     
-    this->setDefaultCallback([=](Node* sender){
-        this->End(sender);
-    });
-    
+    this->setDefaultCallback([=](Node* sender){}, false);
+        
     return true;
 }
 

@@ -38,6 +38,7 @@ public:
     //getter & setter
     sGRADIENT_PARAM getRandomGradient() const;
 	sGRADIENT_PARAM getNextGradient();
+    cocos2d::Color3B getColorByLevel(int level);
 
 	CC_SYNTHESIZE(int, m_GradientIdx, GradientIdx);
 private:
@@ -46,4 +47,5 @@ private:
     
 private:
     std::vector<sGRADIENT_PARAM> m_GradientList;
+    std::vector<cocos2d::Color3B> m_ScoreColorList;
 };

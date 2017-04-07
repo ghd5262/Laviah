@@ -10,7 +10,7 @@
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/ScoreUI.h"
-#include "../../MyUI/MultipleScore.h"
+#include "../../MyUI/ComboScore.h"
 #include "../../DataManager/ChallengeDataManager.hpp"
 #include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
 
@@ -66,8 +66,8 @@ void CNormalBullet::CollisionWithPlayer()
 void CNormalBullet::CollisionWithBarrier()
 {
     GLOBAL->BARRIER_COUNT += 1;
-	GLOBAL->BARRIER_SCORE += 10;
-	this->createScoreCurrentPos(10);
+	GLOBAL->BARRIER_SCORE += (GLOBAL->COMBO_LEVEL * 2);
+	this->createScoreCurrentPos(GLOBAL->COMBO_LEVEL * 2);
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 }
 

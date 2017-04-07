@@ -51,12 +51,14 @@ bool CFacebookRankUpPopup::init()
     rivalDP->setPosition(Vec2(bg->getContentSize().width * 0.5f,
                               bg->getContentSize().height * 0.7f));
     rivalDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    rivalDP->setScale(0.78f);
     bg->addChild(rivalDP);
     
     auto myDP      = CFacebookRankPopupDP::create(myData, myRank + 1);
     myDP->setPosition(Vec2(bg->getContentSize().width * 0.5f,
                            bg->getContentSize().height * 0.48f));
     myDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    myDP->setScale(0.78f);
     bg->addChild(myDP);
     
     CMyButton::create()

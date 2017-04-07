@@ -11,7 +11,7 @@
 #include "../../MyUI/ScoreUI.h"
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
-#include "../../MyUI/MultipleScore.h"
+#include "../../MyUI/ComboScore.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/ChallengeDataManager.hpp"
 #include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
@@ -83,8 +83,8 @@ void CNormalMissile::CollisionWithPlayer()
     
 	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
         GLOBAL->GIANT_COUNT_MISSILE += 1;
-        GLOBAL->GIANT_SCORE_MISSILE += 30;
-		this->createScoreCurrentPos(30);
+        GLOBAL->GIANT_SCORE_MISSILE += (GLOBAL->COMBO_LEVEL * 2);
+		this->createScoreCurrentPos(GLOBAL->COMBO_LEVEL * 2);
 		R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
 	}
 	else{
@@ -99,8 +99,8 @@ void CNormalMissile::CollisionWithPlayer()
 void CNormalMissile::CollisionWithBarrier()
 {
     GLOBAL->BARRIER_COUNT += 1;
-	GLOBAL->BARRIER_SCORE += 30;
-	this->createScoreCurrentPos(30);
+	GLOBAL->BARRIER_SCORE += (GLOBAL->COMBO_LEVEL * 2);
+	this->createScoreCurrentPos(GLOBAL->COMBO_LEVEL * 2);
     this->createCollisionParticle();
 	this->ReturnToMemoryBlock();
 }

@@ -2,7 +2,7 @@
 #include "HealthBarUI.h"
 #include "BonusTimeUI.h"
 #include "ScoreUI.h"
-#include "MultipleScore.h"
+#include "ComboScore.h"
 #include "MyButton.h"
 #include "CountDown.hpp"
 #include "../GameObject/ItemManager.h"

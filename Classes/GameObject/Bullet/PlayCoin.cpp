@@ -4,7 +4,7 @@
 #include "../Player.h"
 #include "../ItemManager.h"
 #include "../../MyUI/ScoreUI.h"
-#include "../../MyUI/MultipleScore.h"
+#include "../../MyUI/ComboScore.h"
 #include "../../Particle/Particles.h"
 #include "../../Scene/GameScene.h"
 
@@ -55,7 +55,7 @@ void CPlayCoin::CollisionWithPlayer()
     
     this->R_UpAndBezier(targetPos, cPos1, cPos2, time, 4.f);
     auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
-    CMultipleScore::Instance()->AddScore(value);
+    CComboScore::Instance()->AddCombo();
     GLOBAL->COIN_SCORE += value;
 	GLOBAL->COIN_COUNT += 1;
 }

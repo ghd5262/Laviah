@@ -10,13 +10,16 @@ public:
     static CPlayStar* create();
 
 	virtual void CollisionWithPlayer() override;
-
+    virtual void Execute(float delta) override;
 protected:
 	virtual bool init() override;
 
 private:
 	CPlayStar();
 	virtual ~CPlayStar(){};
+    
+private:
+    int m_OldLevel;
 };
 
 
