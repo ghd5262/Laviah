@@ -122,7 +122,7 @@
 		93706F811E7A6891009A2CA0 /* ItemProgress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706ED81E7A6890009A2CA0 /* ItemProgress.cpp */; };
 		93706F821E7A6891009A2CA0 /* LevelProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EDA1E7A6890009A2CA0 /* LevelProgressBar.cpp */; };
 		93706F831E7A6891009A2CA0 /* MenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EDC1E7A6890009A2CA0 /* MenuLayer.cpp */; };
-		93706F841E7A6891009A2CA0 /* MultipleScore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EDE1E7A6890009A2CA0 /* MultipleScore.cpp */; };
+		93706F841E7A6891009A2CA0 /* ComboScore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EDE1E7A6890009A2CA0 /* ComboScore.cpp */; };
 		93706F851E7A6891009A2CA0 /* MyButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE01E7A6890009A2CA0 /* MyButton.cpp */; };
 		93706F861E7A6891009A2CA0 /* ChallengeCompleteNoticePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE31E7A6890009A2CA0 /* ChallengeCompleteNoticePopup.cpp */; };
 		93706F871E7A6891009A2CA0 /* ChallengePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE51E7A6890009A2CA0 /* ChallengePopup.cpp */; };
@@ -429,8 +429,8 @@
 		93706EDB1E7A6890009A2CA0 /* LevelProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelProgressBar.h; sourceTree = "<group>"; };
 		93706EDC1E7A6890009A2CA0 /* MenuLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuLayer.cpp; sourceTree = "<group>"; };
 		93706EDD1E7A6890009A2CA0 /* MenuLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MenuLayer.hpp; sourceTree = "<group>"; };
-		93706EDE1E7A6890009A2CA0 /* MultipleScore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultipleScore.cpp; sourceTree = "<group>"; };
-		93706EDF1E7A6890009A2CA0 /* MultipleScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultipleScore.h; sourceTree = "<group>"; };
+		93706EDE1E7A6890009A2CA0 /* ComboScore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComboScore.cpp; sourceTree = "<group>"; };
+		93706EDF1E7A6890009A2CA0 /* ComboScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboScore.h; sourceTree = "<group>"; };
 		93706EE01E7A6890009A2CA0 /* MyButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyButton.cpp; sourceTree = "<group>"; };
 		93706EE11E7A6890009A2CA0 /* MyButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyButton.h; sourceTree = "<group>"; };
 		93706EE31E7A6890009A2CA0 /* ChallengeCompleteNoticePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengeCompleteNoticePopup.cpp; sourceTree = "<group>"; };
@@ -994,8 +994,8 @@
 				93706EDB1E7A6890009A2CA0 /* LevelProgressBar.h */,
 				93706EDC1E7A6890009A2CA0 /* MenuLayer.cpp */,
 				93706EDD1E7A6890009A2CA0 /* MenuLayer.hpp */,
-				93706EDE1E7A6890009A2CA0 /* MultipleScore.cpp */,
-				93706EDF1E7A6890009A2CA0 /* MultipleScore.h */,
+				93706EDE1E7A6890009A2CA0 /* ComboScore.cpp */,
+				93706EDF1E7A6890009A2CA0 /* ComboScore.h */,
 				93706EE01E7A6890009A2CA0 /* MyButton.cpp */,
 				93706EE11E7A6890009A2CA0 /* MyButton.h */,
 				93706EE21E7A6890009A2CA0 /* Popup */,
@@ -1328,7 +1328,7 @@
 				93706F5E1E7A6891009A2CA0 /* ItemBubble.cpp in Sources */,
 				93706F8A1E7A6891009A2CA0 /* CharacterSelectPopupDP.cpp in Sources */,
 				93706F611E7A6891009A2CA0 /* PlayCoin.cpp in Sources */,
-				93706F841E7A6891009A2CA0 /* MultipleScore.cpp in Sources */,
+				93706F841E7A6891009A2CA0 /* ComboScore.cpp in Sources */,
 				93706F7D1E7A6891009A2CA0 /* BonusTimeUI.cpp in Sources */,
 				93706FB21E7A6891009A2CA0 /* PoolingManager.cpp in Sources */,
 				59315BAF1E92776E00337C1C /* CharacterBullet.cpp in Sources */,
