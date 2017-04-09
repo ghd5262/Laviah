@@ -62,10 +62,14 @@ bool CNormalMissile::init()
 void CNormalMissile::Execute(float delta)
 {
 	m_Time += delta;
-    if (!IsTimeUP()) return;
-    if (!m_bIsTargetMarkCreate) {
-        this->createTargetLine();
+    if (m_Time >= (getDelayTime() - 0.5f))
+    {
+        if (!m_bIsTargetMarkCreate) {
+            this->createTargetLine();
+        }
     }
+
+    if (!IsTimeUP()) return;
     this->setVisible(true);
     m_FSM->Execute(delta);
 }
