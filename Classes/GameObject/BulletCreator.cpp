@@ -250,7 +250,7 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
         case '5':  name = m_CharacterInfo->_aimingMissileTextureName;  break;
         case '6':  name = m_CharacterInfo->_stickBulletTextureName;    break;
         case '7':  name = m_CharacterInfo->_stickBulletTextureName;    break;
-        case '8':  name = m_CharacterInfo->_stickBulletTextureName;    break;
+        case '8':  name = "flag.png";                                  break;
 
         case 'A':  name = "playItem_1.png";                            break;
         case 'B':  name = "playItem_2.png";                            break;

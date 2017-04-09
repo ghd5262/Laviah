@@ -63,6 +63,7 @@ CBullet* CStandBullet::build()
     auto createDistance = BOUNDING_RADIUS * 0.88f;
     this->setPosition(getCirclePosition(getAngle(), createDistance, m_PlanetPos));
     this->setDelayTime(BULLET_STANDARD_DELAY - ((TARGET_POS_DISTANCE - createDistance) / getSpeed()));
+    this->getBulletSprite()->setRotation(180);
     return this;
 }
 

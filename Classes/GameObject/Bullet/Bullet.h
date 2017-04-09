@@ -188,6 +188,7 @@ public:
    
     CC_SYNTHESIZE(CPlayer*, m_Player, Player);
     CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
+    CC_SYNTHESIZE(cocos2d::Sprite*, m_BulletSprite, BulletSprite);
     CC_SYNTHESIZE(cocos2d::Vec2, m_TargetVec, TargetVec);
     CC_SYNTHESIZE(cocos2d::Vec2, m_RotationVec, RotationVec);
     CC_SYNTHESIZE(float, m_Time, Time);

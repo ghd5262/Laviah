@@ -21,6 +21,7 @@ CBullet::CBullet()
 , m_TargetVec(CObjectManager::Instance()->getPlanet()->getPosition())
 , m_Player(CObjectManager::Instance()->getPlayer())
 , m_Planet(CObjectManager::Instance()->getPlanet())
+, m_BulletSprite(nullptr)
 {
 #if(!USE_MEMORY_POOLING)
     m_FSM = nullptr;
@@ -49,11 +50,11 @@ CBullet* CBullet::build()
     // sprite init
     if(m_BulletInfo._spriteName != "")
     {
-        auto sprite = Sprite::createWithSpriteFrameName(m_BulletInfo._spriteName);
-        this->setContentSize(sprite->getContentSize());
-        sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        sprite->setPosition(this->getContentSize() / 2);
-        this->addChild(sprite);
+        m_BulletSprite = Sprite::createWithSpriteFrameName(m_BulletInfo._spriteName);
+        this->setContentSize(m_BulletSprite->getContentSize());
+        m_BulletSprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_BulletSprite->setPosition(this->getContentSize() / 2);
+        this->addChild(m_BulletSprite);
     }
 
 	//auto debug = LayerColor::create(Color4B::MAGENTA, this->getContentSize().width, this->getContentSize().height);

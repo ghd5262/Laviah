@@ -39,7 +39,7 @@ CTargetMark* CTargetMark::build()
     
 	this->setCascadeOpacityEnabled(true);
     float distance = m_Planet->getPosition().distance(m_Bullet->getPosition());
-    m_DeleteTime = distance / m_Bullet->getSpeed();
+    m_DeleteTime = (distance / m_Bullet->getSpeed()) + 0.5f;
     
     // sprite init
     auto sprite = Sprite::createWithSpriteFrameName("test.png");

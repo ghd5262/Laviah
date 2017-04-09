@@ -101,13 +101,13 @@ void CCharacterSelectPopupDP::Select()
 
 void CCharacterSelectPopupDP::Center()
 {
-    m_CharacterImg->setScale(3.f);
+    m_CharacterImg->setScale(2.f);
     auto alreadyHave = CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx);
     m_CostLabel->setVisible(!alreadyHave);
 }
 
 void CCharacterSelectPopupDP::DeSelect()
 {
-    m_CharacterImg->setScale(1.5f);
+    m_CharacterImg->setScale(1.f);
     m_CostLabel->setVisible(false);
 }

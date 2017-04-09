@@ -11,11 +11,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{67,55}</string>
+                <string>{80,80}</string>
                 <key>spriteSourceSize</key>
-                <string>{67,55}</string>
+                <string>{80,80}</string>
                 <key>textureRect</key>
-                <string>{{0,0},{67,55}}</string>
+                <string>{{5,5},{80,80}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -24,13 +24,13 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,0}</string>
+                <string>{6,0}</string>
                 <key>spriteSize</key>
-                <string>{120,90}</string>
+                <string>{188,108}</string>
                 <key>spriteSourceSize</key>
-                <string>{120,90}</string>
+                <string>{200,120}</string>
                 <key>textureRect</key>
-                <string>{{67,0},{120,90}}</string>
+                <string>{{303,5},{188,108}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -39,13 +39,13 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,0}</string>
+                <string>{1,0}</string>
                 <key>spriteSize</key>
-                <string>{180,105}</string>
+                <string>{198,84}</string>
                 <key>spriteSourceSize</key>
-                <string>{180,105}</string>
+                <string>{200,100}</string>
                 <key>textureRect</key>
-                <string>{{187,0},{180,105}}</string>
+                <string>{{95,5},{198,84}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -54,13 +54,13 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,0}</string>
+                <string>{1,0}</string>
                 <key>spriteSize</key>
-                <string>{180,105}</string>
+                <string>{198,84}</string>
                 <key>spriteSourceSize</key>
-                <string>{180,105}</string>
+                <string>{200,100}</string>
                 <key>textureRect</key>
-                <string>{{367,0},{180,105}}</string>
+                <string>{{95,5},{198,84}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -69,15 +69,15 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,0}</string>
+                <string>{-7,0}</string>
                 <key>spriteSize</key>
-                <string>{525,525}</string>
+                <string>{766,778}</string>
                 <key>spriteSourceSize</key>
-                <string>{525,525}</string>
+                <string>{950,950}</string>
                 <key>textureRect</key>
-                <string>{{0,105},{525,525}}</string>
+                <string>{{5,123},{766,778}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
         </dict>
         <key>metadata</key>
@@ -91,9 +91,9 @@
             <key>realTextureFileName</key>
             <string>defaultTexturePack_1.png</string>
             <key>size</key>
-            <string>{547,630}</string>
+            <string>{788,894}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:34319f34d1d451a03229b13b46ce7bbd:b385bec2b8a00c970831cea667f964e4:e484c1fc0a492c52677c9ecd03edd9b9$</string>
+            <string>$TexturePacker:SmartUpdate:dd9731d3ef03a5a27a14caba02aa8bf7:2ebc76c1c3819719752be54c5c02b7a7:75b966cfea6fa149dbe141a5bef833a8$</string>
             <key>textureFileName</key>
             <string>defaultTexturePack_1.png</string>
         </dict>
