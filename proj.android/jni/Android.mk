@@ -24,6 +24,7 @@ PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/GameObject/Shooter/*.cpp
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/json/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/MyUI/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/MyUI/Popup/*.cpp)
+PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/MyUI/Tutorial/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/MyUI/Popup/Option/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/Particle/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/Scene/*.cpp)

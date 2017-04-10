@@ -58,6 +58,8 @@
 		933494481E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933494461E839C7900377DC2 /* FacebookRankPopup.cpp */; };
 		933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933494461E839C7900377DC2 /* FacebookRankPopup.cpp */; };
 		9348C5AF1D868481000E8D1B /* update in Resources */ = {isa = PBXBuildFile; fileRef = 9348C5AE1D868481000E8D1B /* update */; };
+		936D4C8A1E9B34AB003786E6 /* Tutorial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936D4C881E9B34AB003786E6 /* Tutorial.cpp */; };
+		936D4C8B1E9B34AB003786E6 /* Tutorial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936D4C881E9B34AB003786E6 /* Tutorial.cpp */; };
 		93706F431E7A6891009A2CA0 /* BulletStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E4A1E7A6890009A2CA0 /* BulletStates.cpp */; };
 		93706F441E7A6891009A2CA0 /* GameStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E4C1E7A6890009A2CA0 /* GameStates.cpp */; };
 		93706F451E7A6891009A2CA0 /* PlayerStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E4E1E7A6890009A2CA0 /* PlayerStates.cpp */; };
@@ -293,6 +295,8 @@
 		933494461E839C7900377DC2 /* FacebookRankPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookRankPopup.cpp; sourceTree = "<group>"; };
 		933494471E839C7900377DC2 /* FacebookRankPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FacebookRankPopup.hpp; sourceTree = "<group>"; };
 		9348C5AE1D868481000E8D1B /* update */ = {isa = PBXFileReference; lastKnownFileType = folder; path = update; sourceTree = "<group>"; };
+		936D4C881E9B34AB003786E6 /* Tutorial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tutorial.cpp; sourceTree = "<group>"; };
+		936D4C891E9B34AB003786E6 /* Tutorial.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tutorial.hpp; sourceTree = "<group>"; };
 		93706E481E7A6890009A2CA0 /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
 		93706E4A1E7A6890009A2CA0 /* BulletStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BulletStates.cpp; sourceTree = "<group>"; };
 		93706E4B1E7A6890009A2CA0 /* BulletStates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletStates.h; sourceTree = "<group>"; };
@@ -747,6 +751,15 @@
 			path = ios;
 			sourceTree = SOURCE_ROOT;
 		};
+		936D4C861E9B344A003786E6 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				936D4C881E9B34AB003786E6 /* Tutorial.cpp */,
+				936D4C891E9B34AB003786E6 /* Tutorial.hpp */,
+			);
+			path = Tutorial;
+			sourceTree = "<group>";
+		};
 		93706E461E7A6890009A2CA0 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -978,6 +991,7 @@
 		93706ECD1E7A6890009A2CA0 /* MyUI */ = {
 			isa = PBXGroup;
 			children = (
+				936D4C861E9B344A003786E6 /* Tutorial */,
 				93706ECE1E7A6890009A2CA0 /* BonusTimeLayer.cpp */,
 				93706ECF1E7A6890009A2CA0 /* BonusTimeLayer.hpp */,
 				93706ED01E7A6890009A2CA0 /* BonusTimeUI.cpp */,
@@ -1391,6 +1405,7 @@
 				93706F711E7A6891009A2CA0 /* Player.cpp in Sources */,
 				93706F5C1E7A6891009A2CA0 /* BonusLetter.cpp in Sources */,
 				93706F541E7A6891009A2CA0 /* MoreGamesDataManager.cpp in Sources */,
+				936D4C8A1E9B34AB003786E6 /* Tutorial.cpp in Sources */,
 				93783B901E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
 				93706F521E7A6891009A2CA0 /* FreeRewardManager.cpp in Sources */,
 				93706F4C1E7A6891009A2CA0 /* BulletDataManager.cpp in Sources */,
@@ -1437,6 +1452,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				932C6B941E83A2710043BE02 /* FacebookRankPopupDP.cpp in Sources */,
+				936D4C8B1E9B34AB003786E6 /* Tutorial.cpp in Sources */,
 				93783B911E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
 				93706FD11E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
 				93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
