@@ -568,6 +568,20 @@ bool CUserDataManager::CoinUpdate(int value)
     return result;
 }
 
+void CUserDataManager::ExpAdd(int exp)
+{
+    auto oldExp   = this->getUserData_Number(USERDATA_KEY::EXP);
+    auto oldLevel = this->getUserData_Number(USERDATA_KEY::LEVEL);
+    
+    auto newExp   = oldExp + exp;
+    auto newlevel = std::min(1, 300/newExp);
+    
+    this->setUserData_Number(USERDATA_KEY::EXP, newExp);
+    
+    if(oldLevel < newlevel)
+        this->setUserData_Number(USERDATA_KEY::LEVEL, newlevel);
+}
+
 int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex)
 {
     auto curList = CUserDataManager::Instance()->getUserData_List(key);

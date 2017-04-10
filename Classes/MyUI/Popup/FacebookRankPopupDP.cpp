@@ -44,19 +44,19 @@ bool CFacebookRankPopupDP::init()
     
     // create picture
     {
-        CUrlSprite::create()
+        auto pic = CUrlSprite::create()
         ->setUrl(m_User->_url)
         ->setSize(Size(200.f, 200.f))
-        ->build(this)
-        ->setPosition(Vec2(this->getContentSize().width * 0.25f,
-                           this->getContentSize().height * 0.5f));
+        ->build(this);
+        pic->setPosition(Vec2(this->getContentSize().width * 0.25f,
+                              this->getContentSize().height * 0.5f));
     }
     
     // create name
     {
         auto name = Label::createWithSystemFont(m_User->_name, FONT::MALGUNBD, 50);
         name->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        name->setPosition(Vec2(this->getContentSize().width * 0.35f,
+        name->setPosition(Vec2(this->getContentSize().width * 0.38f,
                                this->getContentSize().height * 0.75f));
         this->addChild(name);
     }
@@ -65,9 +65,20 @@ bool CFacebookRankPopupDP::init()
     {
         auto score = Label::createWithTTF(StringUtility::toCommaString(m_User->_score), FONT::MALGUNBD, 70);
         score->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        score->setPosition(Vec2(this->getContentSize().width * 0.35f,
+        score->setPosition(Vec2(this->getContentSize().width * 0.38f,
                                 this->getContentSize().height * 0.35f));
         this->addChild(score);
+    }
+    
+    // create level
+    {
+        auto userLevel = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
+        auto level     = Label::createWithTTF(StringUtils::format("%d", userLevel), FONT::MALGUNBD, 35);
+        level->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+        level->setPosition(Vec2(this->getContentSize().width * 0.92f,
+                                this->getContentSize().height * 0.5f));
+        level->enableOutline(COLOR::WHITEGRAY_ALPHA, 1);
+        this->addChild(level);
     }
     
     // create share button

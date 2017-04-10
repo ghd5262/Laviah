@@ -21,6 +21,7 @@ namespace USERDATA_KEY {
 	const std::string DATA_REVISION				= "USER_DATA_SAVE_REVISION";
 
     const std::string LEVEL                     = "USER_LEVEL";
+    const std::string EXP                       = "USER_EXP";
     const std::string RANK                      = "USER_RANK";
     const std::string CHARACTER                 = "USER_CUR_CHARACTER";
     const std::string COIN                      = "USER_COIN";
@@ -92,6 +93,7 @@ public:
     void setLastTimestamp(long long timestamp);
     void setFreeRewardTimestamp(long long timestamp);
     bool CoinUpdate(int value);
+    void ExpAdd(int exp);
     
     static int getUserDataSequenceFromList(std::string key, int itemIndex);
     

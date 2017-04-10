@@ -51,11 +51,22 @@ void CChallengeDataManager::initWithJson(std::string fileName)
     }
     CCLOG("Challenge List JSON : \n %s\n", fileData.c_str());
     
+    const Json::Value materialValueArray    = root["materialValueList"];
+    
+    for (unsigned int count = 0; count < materialValueArray.size(); ++count)
+    {
+        const Json::Value valueItem = materialValueArray[count];
+        this->addValueListToMap(valueItem);
+    }
+    
 	m_NormalChallengeDefaultSet				= root["normalChallengeDefaultSet"];
 	m_HiddenChallengeDefaultSet				= root["hiddenChallengeDefaultSet"];
     const Json::Value normalChallengeArray	= root["normalChallenges"];
 	const Json::Value hiddenChallengeArray  = root["hiddenChallenges"];
 
+    auto level = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
+    MessageBox(StringUtils::format("Get material value from data of %d level.", level).c_str(), "NOTICE");
+    
 	for (unsigned int count = 0; count < normalChallengeArray.size(); ++count)
     {
 		const Json::Value valueItem = normalChallengeArray[count];
@@ -330,6 +341,32 @@ void CChallengeDataManager::getCurChallengeListByType(ARRAY_DATA& list, bool isH
     list = CUserDataManager::Instance()->getUserData_List(key);
 }
 
+int CChallengeDataManager::getMaterialValueByLevel(std::string key, int level)
+{
+    auto message = [=](std::string msg){
+        MessageBox(StringUtils::format("%s key : %s", msg.c_str(), key.c_str()).c_str(), "WARNING");
+    };
+    
+    auto data = m_ValueMap.find(key);
+    if(data == m_ValueMap.end()){
+        message("No mtrl value list in the map.");
+        return 0;
+    }
+    
+    auto list = data->second;
+    if(!list.size()){
+        message("No value on the list.");
+        return 0;
+    }
+    
+    if(list.size() <= level){
+        message("No more data.");
+        return list.back();
+    }
+    
+    return list.at(level);
+}
+
 void CChallengeDataManager::initETCChekerList()
 {
     auto initChecker = [=](std::string key, const CHECKER& func){
@@ -346,41 +383,15 @@ void CChallengeDataManager::initRewarderList()
         m_RewarderList.emplace(std::pair<std::string, REWARDER>(key, func));
     };
     
-   	initRewarder(REWARD_COIN,			  CC_CALLBACK_1(CChallengeRewarder::coinReward				, m_Rewarder));
-	initRewarder(REWARD_CHARACTER,		  CC_CALLBACK_1(CChallengeRewarder::characterReward			, m_Rewarder));
-	initRewarder(REWARD_ROCKET,			  CC_CALLBACK_1(CChallengeRewarder::RocketReward			, m_Rewarder));
-	initRewarder(REWARD_PET,			  CC_CALLBACK_1(CChallengeRewarder::PetReward				, m_Rewarder));
+   	initRewarder(REWARD_COIN,			  CC_CALLBACK_1(CChallengeRewarder::coinReward			  , m_Rewarder));
+	initRewarder(REWARD_CHARACTER,		  CC_CALLBACK_1(CChallengeRewarder::characterReward       , m_Rewarder));
+	initRewarder(REWARD_ROCKET,			  CC_CALLBACK_1(CChallengeRewarder::RocketReward          , m_Rewarder));
+	initRewarder(REWARD_PET,			  CC_CALLBACK_1(CChallengeRewarder::PetReward             , m_Rewarder));
 
-	initRewarder(REWARD_COIN_RANDOM,	  CC_CALLBACK_1(CChallengeRewarder::coinRewardRandom		, m_Rewarder));
-	initRewarder(REWARD_CHARACTER_RANDOM, CC_CALLBACK_1(CChallengeRewarder::characterRewardRandom	, m_Rewarder));
-	initRewarder(REWARD_ROCKET_RANDOM,	  CC_CALLBACK_1(CChallengeRewarder::RocketRewardRandom		, m_Rewarder));
-	initRewarder(REWARD_PET_RANDOM,		  CC_CALLBACK_1(CChallengeRewarder::PetRewardRandom			, m_Rewarder));
-}
-
-void CChallengeDataManager::initMaterialValueListByUserData(sCHALLENGE_PARAM* data)
-{
-	for (auto key : data->_materialKeyList)
-	{
-		int value = 0;
-		if     ( key == CHALLENGE_DATA_KEY::TOTAL_SCORE           ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::COIN_SCORE            ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::STAR_SCORE            ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::RUN_SCORE             ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::COIN_COUNT		      ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::STAR_COUNT		      ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::GIANT_SCORE_TOTAL     ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::GIANT_SCORE_BULLET    ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::GIANT_SCORE_MISSILE   ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::GIANT_SCORE_STICK     ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::MAGNET_SCORE          ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::GIANT_COUNT_TOTAL     ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::GIANT_COUNT_BULLET    ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::GIANT_COUNT_MISSILE   ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::GIANT_COUNT_STICK     ) value = 0;
-		else if( key == CHALLENGE_DATA_KEY::MAGNET_COUNT          ) value = 0;
-
-		data->_materialValueList.emplace_back(value);
-	}
+	initRewarder(REWARD_COIN_RANDOM,	  CC_CALLBACK_1(CChallengeRewarder::coinRewardRandom      , m_Rewarder));
+	initRewarder(REWARD_CHARACTER_RANDOM, CC_CALLBACK_1(CChallengeRewarder::characterRewardRandom , m_Rewarder));
+	initRewarder(REWARD_ROCKET_RANDOM,	  CC_CALLBACK_1(CChallengeRewarder::RocketRewardRandom    , m_Rewarder));
+	initRewarder(REWARD_PET_RANDOM,		  CC_CALLBACK_1(CChallengeRewarder::PetRewardRandom       , m_Rewarder));
 }
 
 const Json::Value CChallengeDataManager::initChallengeWithDefaultValue(bool hidden,
@@ -426,14 +437,29 @@ void CChallengeDataManager::addChallengeToList(CHALLENGE_LIST &list,
 			param->_materialValueList.emplace_back(value.asInt());
 	}
 	else {
+        auto level = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
+        auto key   = materialKeyArray.asString();
+        auto value = this->getMaterialValueByLevel(key, std::max(0, level - 1));
+        
 		param->_materialKeyList.emplace_back(materialKeyArray.asString());
-		if (materialValueArray.isNull()) this->initMaterialValueListByUserData(param);
-		else param->_materialValueList.emplace_back(materialValueArray.asInt());
+        param->_materialValueList.emplace_back(value);
 	}
 	list.emplace(std::pair<int, const sCHALLENGE_PARAM*>(param->_index, param));
 }
 
-cocos2d::Sprite* CChallengeDataManager::getRewardSprite(std::string rewardKey, 
+void CChallengeDataManager::addValueListToMap(const Json::Value data)
+{
+    const Json::Value materialKey = data["materialKey"];
+    const Json::Value valueArray  = data["valueList"];
+    std::vector<int>  valueList;
+    
+    for(auto value : valueArray)
+        valueList.emplace_back(value.asInt());
+    
+    m_ValueMap.emplace(std::pair<std::string, std::vector<int>>(materialKey.asString(), valueList));
+}
+
+cocos2d::Sprite* CChallengeDataManager::getRewardSprite(std::string rewardKey,
 														int rewardValue)
 {
     auto createTitle = [=](std::string title, Sprite* parent){

@@ -97,7 +97,8 @@ typedef std::function<sREWARD_DATA(sREWARD_DATA)> REWARDER;
 typedef std::map<std::string, REWARDER> REWARDER_LIST;
 typedef std::map<int, const sCHALLENGE_PARAM*> CHALLENGE_LIST;
 typedef std::function<bool(const sCHALLENGE_PARAM*)> CHALLENGE_PICK;
-
+typedef std::vector<int> NORMAL_CHALLENGE_VALUE_LIST;
+typedef std::map<std::string, NORMAL_CHALLENGE_VALUE_LIST> VALUE_MAP;
 class CChallengeDataManager
 {
 public:
@@ -112,7 +113,7 @@ public:
     int NonCompleteChallengeExist();
     void getNewChallenges();
     const sCHALLENGE_PARAM* SkipChallenge(int index);
-
+    
     //getter & setter
     const sCHALLENGE_PARAM* getNormalChallengeByIndex(int index) const;
     const sCHALLENGE_PARAM* getHiddenChallengeByIndex(int index) const;
@@ -123,22 +124,23 @@ public:
         return m_HiddenChallengeDataList;
     }
     void UpdateCurHiddenChallengeList();
-    
+
 private:
     void initWithJson(std::string fileName);
 	void initETCChekerList();
 	void initRewarderList();
-	void initMaterialValueListByUserData(sCHALLENGE_PARAM* data);
-
+    
 	const Json::Value initChallengeWithDefaultValue(bool hidden, std::string key, const Json::Value data);
 	void addChallengeToList(CHALLENGE_LIST &list, const Json::Value& data, bool hiddenType);
+    void addValueListToMap(const Json::Value data);
 
     const sCHALLENGE_PARAM* getNewRandomChallengeFromList(CHALLENGE_LIST &list);
     CHALLENGE_LIST getNonCompletedChallengeList();
     void removeChallengeFromUserData(int index);
     
     void getCurChallengeListByType(ARRAY_DATA& list, bool isHidden);
-    
+    int getMaterialValueByLevel(std::string key, int level);
+
     CChallengeDataManager();
     virtual ~CChallengeDataManager();
     
@@ -149,6 +151,7 @@ private:
     REWARDER_LIST m_RewarderList;
     CChallengeClearChecker* m_Checker;
     CChallengeRewarder* m_Rewarder;
+    VALUE_MAP m_ValueMap;
 	Json::Value m_NormalChallengeDefaultSet;
 	Json::Value m_HiddenChallengeDefaultSet;
 };

@@ -228,6 +228,15 @@ bool CResultPopup::init()
         }
     }
     
+    // get exp
+    {
+        CUserDataManager::Instance()->ExpAdd(std::max(1, GLOBAL->TOTAL_SCORE / 100));
+        MessageBox(StringUtils::format("Get exp : %d, total : exp %d, level : %d",
+                                       std::max(1, GLOBAL->TOTAL_SCORE / 100),
+                                       CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EXP),
+                                       CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL)).c_str(), "NOTICE");
+    }
+    
     auto totalLabel = createContent(totalScoreBG,
                                     Vec2(totalScoreBG->getContentSize().width * 0.08f,
                                          totalScoreBG->getContentSize().height * 0.5f),
