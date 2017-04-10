@@ -12,7 +12,6 @@ CComboScore::CComboScore()
 : m_ComboLabel(nullptr)
 , m_Time(0.f)
 , m_OldLevel(0)
-, m_ComboCount(0)
 {}
 
 CComboScore::~CComboScore()
@@ -68,13 +67,13 @@ void CComboScore::AddCombo()
 	m_Time = 0.f;
 
     GLOBAL->STAR_SCORE  += GLOBAL->COMBO_LEVEL;
-    m_ComboCount += 1;
+    GLOBAL->COMBO_SCORE += 1;
     
 	// UI visible On
 	m_ComboLabel->setVisible(true);
-    m_ComboLabel->setString(StringUtils::format("%d", m_ComboCount).c_str());
+    m_ComboLabel->setString(StringUtils::format("%d", GLOBAL->COMBO_SCORE).c_str());
 
-	GLOBAL->COMBO_LEVEL = (int(m_ComboCount / 50)) + 1;
+	GLOBAL->COMBO_LEVEL = (int(GLOBAL->COMBO_SCORE / 50)) + 1;
     if(m_OldLevel != GLOBAL->COMBO_LEVEL){
         m_OldLevel = GLOBAL->COMBO_LEVEL;
         m_ComboLabel->setColor(CGradientDataManager::Instance()->getColorByLevel(m_OldLevel));
@@ -86,9 +85,9 @@ void CComboScore::AddCombo()
 void CComboScore::ComboScoreReset()
 {
     GLOBAL->COMBO_LEVEL = 1;
-    if(m_ComboCount > GLOBAL->COMBO_SCORE)
-        GLOBAL->COMBO_SCORE = m_ComboCount;
-    m_ComboCount = 0;
+    if(GLOBAL->COMBO_SCORE > GLOBAL->BEST_COMBO)
+        GLOBAL->BEST_COMBO = GLOBAL->COMBO_SCORE;
+    GLOBAL->COMBO_SCORE = 0;
 	m_ComboLabel->setVisible(false);// UI visible Off
 }
 

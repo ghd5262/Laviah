@@ -187,7 +187,7 @@ bool CResultPopup::init()
 
 	auto starScoreBG	= createNormalLayer(resultIcon[0], resultContent[0], GLOBAL->STAR_SCORE, startPos[0], 50);
 //	auto moveDistanceBG = createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->RUN_SCORE, startPos[1], 50);
-	auto comboBG		= createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->COMBO_SCORE, startPos[1], 50);
+	auto comboBG		= createNormalLayer(resultIcon[1], resultContent[1], GLOBAL->BEST_COMBO, startPos[1], 50);
     auto coinScoreBG    = createMultipleLayer(resultIcon[2], resultContent[2], GLOBAL->COIN_SCORE,  startPos[2], 50, 10);
 //    auto bonusTimeBG	= createMultipleLayer(resultIcon[4], resultContent[4], GLOBAL->BONUSTIME, startPos[4], 50, 10000);
 	auto challengeBG	= createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT, startPos[3], 50, 100);
@@ -200,9 +200,9 @@ bool CResultPopup::init()
     
 	auto bestCombo = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_COMBO);
 
-	if (GLOBAL->COMBO_SCORE > bestCombo)
+	if (GLOBAL->BEST_COMBO > bestCombo)
 	{
-		CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_COMBO, GLOBAL->COMBO_SCORE);
+		CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_COMBO, GLOBAL->BEST_COMBO);
 	}
 
     // total score가 best score면 저장한다.
@@ -231,10 +231,10 @@ bool CResultPopup::init()
     // get exp
     {
         CUserDataManager::Instance()->ExpAdd(std::max(1, GLOBAL->TOTAL_SCORE / 100));
-        MessageBox(StringUtils::format("Get exp : %d, total : exp %d, level : %d",
-                                       std::max(1, GLOBAL->TOTAL_SCORE / 100),
-                                       CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EXP),
-                                       CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL)).c_str(), "NOTICE");
+//        MessageBox(StringUtils::format("Get exp : %d, total : exp %d, level : %d",
+//                                       std::max(1, GLOBAL->TOTAL_SCORE / 100),
+//                                       CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EXP),
+//                                       CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL)).c_str(), "NOTICE");
     }
     
     auto totalLabel = createContent(totalScoreBG,

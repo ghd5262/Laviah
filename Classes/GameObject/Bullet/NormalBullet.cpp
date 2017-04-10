@@ -50,7 +50,9 @@ bool CNormalBullet::init()
 void CNormalBullet::CollisionWithPlayer()
 {
 	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
+        GLOBAL->GIANT_COUNT_TOTAL += 1;
         GLOBAL->GIANT_COUNT_BULLET += 1;
+        GLOBAL->GIANT_SCORE_TOTAL += 10;
         GLOBAL->GIANT_SCORE_BULLET += 10;
 		createScoreCurrentPos(10);
 		this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);

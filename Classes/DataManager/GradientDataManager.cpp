@@ -105,7 +105,7 @@ sGRADIENT_PARAM CGradientDataManager::getNextGradient()
 
 cocos2d::Color3B CGradientDataManager::getColorByLevel(int level)
 {
-    if(level >= m_ScoreColorList.size()) return Color3B::WHITE;
+    if(level >= m_ScoreColorList.size()) return m_ScoreColorList.back();
     
     return m_ScoreColorList.at(level);
 }

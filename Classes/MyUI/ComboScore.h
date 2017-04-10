@@ -27,5 +27,4 @@ private:
 	cocos2d::Label* m_ComboLabel;
 	float m_Time;
     int m_OldLevel;
-    int m_ComboCount;
 };
