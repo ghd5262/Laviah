@@ -264,7 +264,7 @@ void CObjectManager::setGameStateByLevel()
 {
     auto levelData = m_LevelList.at(m_GameLevel);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
-    this->SpeedControl(8.f, levelData._speed);
+    this->SpeedControl(1.f, levelData._speed);
 }
 
 void CObjectManager::Shake(float interval,
@@ -450,8 +450,6 @@ void CObjectManager::zoom(cocos2d::Node* obj,
     auto exponential  = EaseExponentialInOut::create(spawnAction);
     exponential->setTag(100);
     obj->runAction(exponential);
-//    spawnAction->setTag(100);
-//    obj->runAction(spawnAction);
 }
 
 void CObjectManager::InitTutorialStep()
