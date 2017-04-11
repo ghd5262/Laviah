@@ -194,7 +194,7 @@ COptionPopup* COptionPopup::setInitialScrollIndex(int index)
 void COptionPopup::End(Node* sender){
     CCLOG("format popup End");
     CObjectManager::Instance()->ZoomOutRank();
-    this->popupClose();
+    this->popupClose(1.3f);
 }
 
 void COptionPopup::TitleScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type)

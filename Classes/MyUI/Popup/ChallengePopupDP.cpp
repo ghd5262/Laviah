@@ -148,6 +148,6 @@ CChallengePopupDP* CChallengePopupDP::addSkipEventListner(const SKIP_CALLBACK &c
 float CChallengePopupDP::getPercent(float value, float max)
 {
     if(value != 0 && max != 0)
-        return (value / max) * 100.f;
+        return std::min(100.f, (value / max) * 100.f);
     return 0.f;
 }

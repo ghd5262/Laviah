@@ -185,7 +185,6 @@ void CPlayer::GiantMode()
 		ScaleTo::create(0.5f, GIANT_SCALE),
 		CallFunc::create([=](){
 		this->setPlayerTexture(m_CharacterParam->_giantTextureName);
-		this->m_Texture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
 		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * GIANT_SCALE);
 		m_Particle->setEndSize(40.f);
@@ -203,7 +202,6 @@ void CPlayer::NormalMode()
 		ScaleTo::create(0.5f, NORMAL_SCALE),
 		CallFunc::create([=](){
         this->setPlayerTexture(m_CharacterParam->_normalTextureName);
-		this->m_Texture->setAnchorPoint(Vec2(0.5f, 0.5f));
 		this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
 		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_Particle->setEndSize(4.f);
@@ -281,6 +279,9 @@ void CPlayer::GotMagnetItem()
 
 void CPlayer::InvincibilityMode(float time)
 {
+    if(this->isScheduled("SetPlayerNormalMode"))
+        this->unschedule("SetPlayerNormalMode");
+        
 	this->m_Texture->setOpacity(100);
 	m_Invincibility = true;
 	this->scheduleOnce([=](float delta){

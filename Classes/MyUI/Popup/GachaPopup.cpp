@@ -63,7 +63,8 @@ bool CGachaPopup::init()
 	})
 		->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 250, 150))
 		->setContents(MakeString("Get -%d", g_coinToGacha))
-		->setButtonPosition(Vec2(gachaBG->getContentSize().width * 0.5f, gachaBG->getContentSize().height * 0.15f))
+		->setButtonPosition(Vec2(gachaBG->getContentSize().width * 0.5f,
+                                 gachaBG->getContentSize().height * 0.15f))
 		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 		->show(gachaBG);
 
@@ -81,14 +82,16 @@ bool CGachaPopup::init()
 	this->setOpenAnimation([=](Node* sender){
 		btnExit->runAction(FadeIn::create(0.5f));
 		btnUserCoin->runAction(FadeIn::create(0.5f));
-		gachaBG->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.62f))));
+		gachaBG->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f,
+                                                                                visibleSize.height * 0.62f))));
 
 	});
 
 	this->setCloseAnimation([=](Node* sender){
 		btnExit->runAction(FadeTo::create(0.5f, 0));
 		btnUserCoin->runAction(FadeTo::create(0.5f, 0));
-		gachaBG->runAction(	EaseSineIn::create(	MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.5f))));
+		gachaBG->runAction(	EaseSineIn::create(	MoveTo::create(0.4f, Vec2(visibleSize.width * 0.5f,
+                                                                          visibleSize.height * 1.5f))));
 	});
     
     this->setDefaultCallback([=](Node* sender){

@@ -52,9 +52,9 @@ void CNormalBullet::CollisionWithPlayer()
 	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
         GLOBAL->GIANT_COUNT_TOTAL += 1;
         GLOBAL->GIANT_COUNT_BULLET += 1;
-        GLOBAL->GIANT_SCORE_TOTAL += 10;
-        GLOBAL->GIANT_SCORE_BULLET += 10;
-		createScoreCurrentPos(10);
+        GLOBAL->GIANT_SCORE_TOTAL += GLOBAL->COMBO_LEVEL;
+        GLOBAL->GIANT_SCORE_BULLET += GLOBAL->COMBO_LEVEL;
+		createScoreCurrentPos(GLOBAL->COMBO_LEVEL);
 		this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 	}
 	else{

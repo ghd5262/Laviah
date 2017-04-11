@@ -110,7 +110,7 @@ void CBulletMagnetItem::Enter(CBullet* bullet)
 	bullet->setTargetVec(bullet->getPlanet()->getPosition());
 
     GLOBAL->MAGNET_COUNT += 1;
-    GLOBAL->MAGNET_SCORE += 30;
+    GLOBAL->MAGNET_SCORE += (GLOBAL->COMBO_LEVEL * 2);
 }
 
 void CBulletMagnetItem::Execute(CBullet* bullet, float delta)

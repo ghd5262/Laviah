@@ -328,7 +328,7 @@ void CPopup::popupOpenAnimation()
     this->runAction(Sequence::createWithTwoActions(action, touchEnable));
 }
 
-void CPopup::popupClose()
+void CPopup::popupClose(float delayTime/* = 0.5f*/)
 {
 	Vec2 OriginPosition = this->getPosition();
 	Size ScreenSize = Director::getInstance()->getVisibleSize();
@@ -346,14 +346,9 @@ void CPopup::popupClose()
 
 	FiniteTimeAction* action = nullptr;
 
-	/* custom open animation일 경우 
-	 * 애니메이션이 완료될 때까지 기다림
-	 * 대략 0.5초
-	 */
-	float delayTime = 0.0f;
-	if (m_CloseAnimationCallBack != nullptr)
-		delayTime = 1.3f;
-
+    if (m_CloseAnimationCallBack == nullptr)
+        delayTime = 0.f;
+    
 	switch (m_PopupCloseAnimation){
 
 	case ePOPUP_ANIMATION::NONE:

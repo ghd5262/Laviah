@@ -86,6 +86,7 @@ CMyButton* COptionLanguagePopup::createLanguageDP(std::string content, Vec2 pos)
 //            this->popupClose();
         });
     })
+    ->setButtonSingleUse(true)
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA,
                                   getContentSize().width * 0.26f,
                                   getContentSize().height * 0.08f))

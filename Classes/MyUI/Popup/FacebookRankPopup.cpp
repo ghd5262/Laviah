@@ -140,5 +140,5 @@ bool CFacebookRankPopup::init()
 
 void CFacebookRankPopup::End(Node* sender){
     CObjectManager::Instance()->ZoomOutRank();
-    this->popupClose();
+    this->popupClose(1.3f);
 }

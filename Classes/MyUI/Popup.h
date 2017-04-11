@@ -53,7 +53,7 @@ public:
 	virtual CPopup* show(Node* parent = nullptr, int zOrder = 0);
 
 	void popupOpenAnimation();
-	void popupClose();
+	void popupClose(float delayTime = 0.5f);
     void popupTouchEnable(bool enable);
     void changeDefaultCallback(const NODE_CALLBACK &callback);
     void setDefaultCallbackToTopAgain();

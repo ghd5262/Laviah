@@ -225,7 +225,7 @@ void CCharacterSelectPopup::End(Node* sender){
 	CCLOG("format popup End");
     CObjectManager::Instance()->ZoomIn();
     CMenuLayer::Instance()->setVisible(true);
-	this->popupClose();
+	this->popupClose(1.3f);
 }
 
 // When touch the select or buy button

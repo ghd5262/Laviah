@@ -65,7 +65,7 @@ void CChallengeDataManager::initWithJson(std::string fileName)
 	const Json::Value hiddenChallengeArray  = root["hiddenChallenges"];
 
     auto level = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
-    MessageBox(StringUtils::format("Get material value from data of %d level.", level).c_str(), "NOTICE");
+//    MessageBox(StringUtils::format("Get material value from data of %d level.", level).c_str(), "NOTICE");
     
 	for (unsigned int count = 0; count < normalChallengeArray.size(); ++count)
     {
@@ -117,19 +117,33 @@ bool CChallengeDataManager::CheckChallengeComplete(int index, bool isHidden)
 		auto checker	= m_CheckerList.find(key);
 
 		switch (checkerType){
-		case CHECKER_TYPE::ETC:
-			if (checker == m_CheckerList.end()) {
-				CCLOG("There is no checker with key %s", key.c_str());
-				CCASSERT(false, "There is no checker with key");
-				return false;
-			}
-			if (!checker->second(mtrlValue)) return false;
-			break;
-		case CHECKER_TYPE::GLOBAL_DATA: if (!m_Checker->checkWithGlobal(key, mtrlValue))		return false; break;
-		case CHECKER_TYPE::SINGLE_DATA: if (!m_Checker->checkWithSingleUserData(key, mtrlValue))return false; break;
-		case CHECKER_TYPE::ITEM_EXIST:	if (!m_Checker->checkWithItemExist(key, mtrlValue))		return false; break;
-		case CHECKER_TYPE::ITEM_COUNT:	if (!m_Checker->checkWithCount(key, mtrlValue))			return false; break;
-        case CHECKER_TYPE::CONTINUE:	if (!m_Checker->checkWithContinuingType(key, mtrlValue))return false; break;
+            case CHECKER_TYPE::ETC:
+                if (checker == m_CheckerList.end()) {
+                    CCLOG("There is no checker with key %s", key.c_str());
+                    CCASSERT(false, "There is no checker with key");
+                    return false;
+                }
+                if (!checker->second(mtrlValue)) return false;
+                break;
+            case CHECKER_TYPE::GLOBAL_DATA:
+                if (!m_Checker->checkWithGlobal(key, mtrlValue))
+                    return false; else break;
+                
+            case CHECKER_TYPE::SINGLE_DATA:
+                if (!m_Checker->checkWithSingleUserData(key, mtrlValue))
+                    return false; else break;
+                
+            case CHECKER_TYPE::ITEM_EXIST:
+                if (!m_Checker->checkWithItemExist(key, mtrlValue))
+                    return false; else break;
+                
+            case CHECKER_TYPE::ITEM_COUNT:
+                if (!m_Checker->checkWithCount(key, mtrlValue))
+                    return false; else break;
+                
+            case CHECKER_TYPE::CONTINUE:
+                if (!m_Checker->checkWithContinuingType(key, mtrlValue))
+                    return false; else break;
 		}
 	}
 
@@ -360,7 +374,7 @@ int CChallengeDataManager::getMaterialValueByLevel(std::string key, int level)
     }
     
     if(list.size() <= level){
-        message("No more data.");
+//        message("No more data.");
         return list.back();
     }
     

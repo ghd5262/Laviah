@@ -156,5 +156,5 @@ bool CWorkshopPopup::init()
 
 void CWorkshopPopup::End(Node* sender){
     CObjectManager::Instance()->ZoomOutRank();
-	this->popupClose();
+	this->popupClose(1.3f);
 }
