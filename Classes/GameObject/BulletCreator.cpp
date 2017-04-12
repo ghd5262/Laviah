@@ -97,6 +97,8 @@ void CBulletCreator::setPattern(const sBULLET_PATTERN* data)
 
 void CBulletCreator::setData(const sBULLET_PATTERN* data)
 {
+    if(m_Running) return;
+    
 	m_CurrentPattern = data;
 	m_CurrentHeight = data->_height;
 //	m_LineIntervalLimit = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;

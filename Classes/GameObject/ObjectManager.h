@@ -92,7 +92,8 @@ public:
     CC_SYNTHESIZE(float, m_LevelTimer, LevelTimer);
     CC_SYNTHESIZE(float, m_Delta, Delta);
 	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
-	CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterParam, CharacterParam);
+    CC_SYNTHESIZE(bool, m_IsTutorial, m_IsTutorial);
+    CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterParam, CharacterParam);
     CC_SYNTHESIZE(const sROCKET_PARAM*, m_RocketParam, RocketParam);
     CC_SYNTHESIZE(int, m_GameLevel, GameLevel);
     
