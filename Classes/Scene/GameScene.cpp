@@ -18,7 +18,7 @@
 #include "../MyUI/BonusTimeLayer.hpp"
 #include "../MyUI/ComboScore.h"
 #include "../MyUI/CountDown.hpp"
-#include "../MyUI/TutorialLayer.hpp"
+#include "../MyUI/Tutorial/TutorialHelper.hpp"
 #include "../MyUI/FacebookRivalRankLayer.hpp"
 #include "../MyUI/UrlSprite.hpp"
 #include "../MyUI/Popup.h"
@@ -749,12 +749,12 @@ void CGameScene::createRivalRankLayer()
 
 void CGameScene::createTutorialLayer()
 {
-    CTutorialLayer::Instance()
-    ->setBackgroundVisible(false)
-    ->setDefaultCallbackEnable(false)
-    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+//    CTutorialLayer::Instance()
+//    ->setBackgroundVisible(false)
+//    ->setDefaultCallbackEnable(false)
+//    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//    ->setPopupPosition(m_VisibleSize / 2)
+//    ->show(this, ZORDER::POPUP);
 }
 
 void CGameScene::setTimestamp()

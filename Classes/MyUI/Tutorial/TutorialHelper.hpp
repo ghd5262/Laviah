@@ -5,7 +5,7 @@
 #include <iostream>
 
 namespace TUTORIAL_KEY {
-    std::string BEGINER        = "TUTORIAL_BEGINER";
+    const std::string BEGINER        = "TUTORIAL_BEGINER";
 };
 
 class CTutorialHelper{

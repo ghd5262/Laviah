@@ -13,8 +13,7 @@ CTutorialManager* CTutorialManager::m_Instance = nullptr;
 CTutorialManager::CTutorialManager()
 : m_CurrentTutorial(nullptr)
 , m_IsRunning(false)
-, m_CurrentStepIndex(0)
-, m_Time(0.f){}
+, m_CurrentStepIndex(0){}
 
 CTutorialManager::~CTutorialManager(){
     for(auto tutorial : m_TutorialList)
