@@ -51,7 +51,11 @@ void CMoreGamesDataManager::addMoreGamesToList(const Json::Value& data)
     sMOREGAMES_PARAM* param = new sMOREGAMES_PARAM();
     
     param->_idx             = data["index"].asInt();
-    param->_url             = data["url"].asString();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    param->_url             = data["androidUrl"].asString();
+#else
+    param->_url             = data["iosUrl"].asString();
+#endif
     param->_textureName     = StringUtils::format(MOREGAMES_DEFINE::TEXTURE_NAME.c_str(), param->_idx);
     
     m_MoreGamesList.emplace(std::pair<int, const sMOREGAMES_PARAM*>(param->_idx, param));

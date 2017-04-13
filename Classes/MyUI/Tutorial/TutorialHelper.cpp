@@ -1,5 +1,6 @@
 #include "TutorialHelper.hpp"
 #include "../../GameObject/ObjectManager.h"
+#include "../../Scene/GameScene.h"
 
 using namespace cocos2d;
 
@@ -21,17 +22,24 @@ void CTutorialHelper::CreateMessageBox(std::string msg, std::string key)
     })
     ->addBeginListener([=](Node* sender){
         CObjectManager::Instance()->SpeedControl(0.3f, 1);
+        CGameScene::getZoomLayer()->pause();
+    })
+    ->addEndListener([](Node* sender){
+        CGameScene::getZoomLayer()->resume();
     })
     ->addMessageBox(msg)
-    ->build(key);
+    ->build(key)
+    ->setBackgroundVisible(false);
 }
 
 void CTutorialHelper::NextStepAfterDelay(float delay, std::string key)
 {
     CTutorialStep* step = CTutorialStep::create()
-    ->addUpdateListener([=](float delta){
-        if(step->getTime() > delay)
+    ->addUpdateListener([=](float delta, CTutorialStep* sender){
+        
+        if(sender->getTime() > delay)
             CTutorialManager::Instance()->NextStep();
     })
     ->build(key);
+    step->setBackgroundVisible(false);
 }

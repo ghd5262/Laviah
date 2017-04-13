@@ -1,8 +1,8 @@
 #include "../Popup.h"
 
 class CTutorialStep : public CPopup {
-    typedef std::function<void(cocos2d::Node*)> SINGLE_LISTENER;
-    typedef std::function<void(float)>          UPDATE_LISTENER;
+    typedef std::function<void(CTutorialStep*)>        SINGLE_LISTENER;
+    typedef std::function<void(float, CTutorialStep*)> UPDATE_LISTENER;
     
 public:
     static CTutorialStep* create();
@@ -33,7 +33,8 @@ private:
     , m_UpdateListener(nullptr)
     , m_MessageLayer(nullptr)
     , m_TutorialKey("")
-    , m_Message(""){}
+    , m_Message("")
+    , m_Time(0.f){}
     virtual ~CTutorialStep(){};
     
 private:

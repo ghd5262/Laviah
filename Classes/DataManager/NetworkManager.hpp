@@ -3,7 +3,9 @@
 #include "../json/json.h"
 
 namespace NETWORK_DEFINE {
-    static const std::string URL = "http://www.hshgames.com/game/project_s/";
+    static const std::string URL            = "http://www.hshgames.com/game/project_s/";
+    static const std::string URL_PHP        = URL + "php/";
+    static const std::string URL_DOWNLOAD   = URL + "download/";
 }
 
 namespace SERVER_REQUEST_KEY {

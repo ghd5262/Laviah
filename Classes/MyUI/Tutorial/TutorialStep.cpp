@@ -22,7 +22,7 @@ CTutorialStep* CTutorialStep::build(std::string key)
 {
     m_TutorialKey = key;
     this->setContentSize(_director->getWinSize());
-    
+
     if(m_TouchListener)
     {
         CMyButton::create()
@@ -86,8 +86,10 @@ void CTutorialStep::Begin()
 
 void CTutorialStep::Update(float delta)
 {
+    m_Time += delta;
+    
     // call update function
-    if(m_UpdateListener) m_UpdateListener(delta);
+    if(m_UpdateListener) m_UpdateListener(delta, this);
 }
 
 void CTutorialStep::End()
@@ -103,8 +105,8 @@ void CTutorialStep::createMessageBox()
     m_MessageLayer = LayerColor::create(COLOR::DARKGRAY_ALPHA, 600, 200);
     m_MessageLayer->setIgnoreAnchorPointForPosition(false);
     m_MessageLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_MessageLayer->setPosition(Vec2(this->getContentSize() * 0.5f,
-                                     this->getContentSize() * 0.7f));
+    m_MessageLayer->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                                     this->getContentSize().height * 0.7f));
     this->addChild(m_MessageLayer);
 
     auto label = Label::createWithSystemFont(m_Message, FONT::MALGUNBD, 50,

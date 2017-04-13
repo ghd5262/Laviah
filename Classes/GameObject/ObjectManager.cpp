@@ -439,112 +439,148 @@ void CObjectManager::zoom(cocos2d::Node* obj,
 
 void CObjectManager::InitTutorialStep()
 {
+    CTutorialStep::create()
+    ->addBeginListener([=](CTutorialStep* sender){
+        m_IsTutorial = true;
+        CTutorialManager::Instance()->NextStep();
+    })
+    ->build(TUTORIAL_KEY::BEGINER)
+    ->setBackgroundVisible(false);
+    
     // 3초 후 다음 스텝
     CTutorialHelper::Instance()->NextStepAfterDelay(3.f, TUTORIAL_KEY::BEGINER);
 
     // 메시지 박스 출력 터치 시 다음 스텝
     CTutorialHelper::Instance()->CreateMessageBox("별은 점수나 마찬가지에요.", TUTORIAL_KEY::BEGINER);
     
-    // 별을 1개 이상 획득 시 다음 스텝
     CTutorialStep::create()
-    ->addBeginListener([=](Node* sender){
+    ->addBeginListener([=](CTutorialStep* sender){
         GLOBAL->STAR_COUNT = 0;
         GLOBAL->COLLISION_COUNT = 0;
+        this->SpeedControl(0.5f, 50);
+
         auto data = m_PatternManager->getTutorialPatternByIndex(0);
-        m_BulletCreator->setPattern(data);
-        m_BulletCreator->setIsFlip(false);
-        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+        m_BulletCreator->CreateImmediately(data, 60, 1000.f);
     })
-    ->addUpdateListener([=](float delta){
-        if(GLOBAL->STAR_COUNT >= 6) {
+    ->addUpdateListener([=](float delta, CTutorialStep* sender){
+        if(GLOBAL->STAR_COUNT >= 6)
             CTutorialManager::Instance()->NextStep();
-            return;
-        }
-    })
-    ->build(TUTORIAL_KEY::BEGINER);
     
-    
-    // 메시지 박스 출력 터치 시 다음 스텝
-    CTutorialHelper::Instance()->CreateMessageBox("화면을 터치하면 반대방향으로 구를 수 있어요.", TUTORIAL_KEY::BEGINER);
-    
-    // 별을 1개 이상 획득 시 다음 스텝
-    CTutorialStep::create()
-    ->addBeginListener([=](Node* sender){
-        GLOBAL->STAR_COUNT = 0;
-        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
-    })
-    ->addUpdateListener([=](float delta){
-        if(GLOBAL->STAR_COUNT >= 9) {
-            CTutorialManager::Instance()->NextStep();
-            return;
-        }
-    })
-    ->build(TUTORIAL_KEY::BEGINER);
-    
-    // 메시지 박스 출력 터치 시 다음 스텝
-    CTutorialHelper::Instance()->CreateMessageBox("게임 플레이에 도움이 되는 아이템을 획득할 수 있어요!", TUTORIAL_KEY::BEGINER);
-
-    // 별 아이템 획득시 다음 스텝
-    CTutorialStep::create()
-    ->addBeginListener([=](Node* sender){
-        GLOBAL->COLLISION_COUNT = 0;
-        GLOBAL->STAR_ITEM_USE = 0;
-        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
-    })
-    ->addUpdateListener([=](float delta){
-        if(GLOBAL->STAR_ITEM_USE >= 1) {
-            CTutorialManager::Instance()->NextStep();
-            return;
-        }
-    })
-    ->build(TUTORIAL_KEY::BEGINER);
-    
-    // 메시지 박스 출력 터치 시 다음 스텝
-    CTutorialHelper::Instance()->CreateMessageBox("미사일은 빠르니까 특별히 조심해야해요!", TUTORIAL_KEY::BEGINER);
-
-    // 미사일 피하면 다음 스텝
-    CTutorialStep::create()
-    ->addBeginListener([=](Node* sender){
-        GLOBAL->COLLISION_COUNT = 0;
-        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
-    })
-    ->addUpdateListener([=](float delta){
         if(GLOBAL->COLLISION_COUNT >= 6)
-            CTutorialManager::Instance()->NextStep();
+            CTutorialManager::Instance()->Again();
     })
-    ->build(TUTORIAL_KEY::BEGINER);
+    ->build(TUTORIAL_KEY::BEGINER)
+    ->setBackgroundVisible(false);
+ 
+    CTutorialHelper::Instance()->CreateMessageBox("안녕하세요.", TUTORIAL_KEY::BEGINER);
     
-    
-    // 1초 후 다음 스텝
-    CTutorialHelper::Instance()->NextStepAfterDelay(1.f, TUTORIAL_KEY::BEGINER);
-    
-    // 메시지 박스 출력 터치 시 다음 스텝
-    CTutorialHelper::Instance()->CreateMessageBox("다른 방법으로 피할 수도 있어요.", TUTORIAL_KEY::BEGINER);
-
-    // 미사일 피하면 다음 스텝
     CTutorialStep::create()
     ->addBeginListener([=](Node* sender){
-        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+        m_IsTutorial = false;
+        CTutorialManager::Instance()->NextStep();
     })
-    ->addUpdateListener([=](float delta){
-        if(GLOBAL->STAR_ITEM_USE >= 1)
-            CTutorialManager::Instance()->NextStep();
-    })
-    ->build(TUTORIAL_KEY::BEGINER);
-    
-    
-    // 코인 획득시 다음스텝
+    ->build(TUTORIAL_KEY::BEGINER)
+    ->setBackgroundVisible(false);
+//    // 별을 1개 이상 획득 시 다음 스텝
+//    CTutorialStep::create()
+//    ->addBeginListener([=](Node* sender){
+//        GLOBAL->STAR_COUNT = 0;
+//        GLOBAL->COLLISION_COUNT = 0;
+//        auto data = m_PatternManager->getTutorialPatternByIndex(0);
+//        m_BulletCreator->setPattern(data);
+//        m_BulletCreator->setIsFlip(false);
+//        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+//    })
+//    ->addUpdateListener([=](float delta){
+//        if(GLOBAL->STAR_COUNT >= 6) {
+//            CTutorialManager::Instance()->NextStep();
+//            return;
+//        }
+//    })
+//    ->build(TUTORIAL_KEY::BEGINER);
+//    
+//    
+//    // 메시지 박스 출력 터치 시 다음 스텝
+//    CTutorialHelper::Instance()->CreateMessageBox("화면을 터치하면 반대방향으로 구를 수 있어요.", TUTORIAL_KEY::BEGINER);
+//    
+//    // 별을 1개 이상 획득 시 다음 스텝
+//    CTutorialStep::create()
+//    ->addBeginListener([=](Node* sender){
+//        GLOBAL->STAR_COUNT = 0;
+//        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+//    })
+//    ->addUpdateListener([=](float delta){
+//        if(GLOBAL->STAR_COUNT >= 9) {
+//            CTutorialManager::Instance()->NextStep();
+//            return;
+//        }
+//    })
+//    ->build(TUTORIAL_KEY::BEGINER);
+//    
+//    // 메시지 박스 출력 터치 시 다음 스텝
+//    CTutorialHelper::Instance()->CreateMessageBox("게임 플레이에 도움이 되는 아이템을 획득할 수 있어요!", TUTORIAL_KEY::BEGINER);
+//
+//    // 별 아이템 획득시 다음 스텝
+//    CTutorialStep::create()
+//    ->addBeginListener([=](Node* sender){
+//        GLOBAL->COLLISION_COUNT = 0;
+//        GLOBAL->STAR_ITEM_USE = 0;
+//        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+//    })
+//    ->addUpdateListener([=](float delta){
+//        if(GLOBAL->STAR_ITEM_USE >= 1) {
+//            CTutorialManager::Instance()->NextStep();
+//            return;
+//        }
+//    })
+//    ->build(TUTORIAL_KEY::BEGINER);
+//    
+//    // 메시지 박스 출력 터치 시 다음 스텝
+//    CTutorialHelper::Instance()->CreateMessageBox("미사일은 빠르니까 특별히 조심해야해요!", TUTORIAL_KEY::BEGINER);
+//
+//    // 미사일 피하면 다음 스텝
+//    CTutorialStep::create()
+//    ->addBeginListener([=](Node* sender){
+//        GLOBAL->COLLISION_COUNT = 0;
+//        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+//    })
+//    ->addUpdateListener([=](float delta){
+//        if(GLOBAL->COLLISION_COUNT >= 6)
+//            CTutorialManager::Instance()->NextStep();
+//    })
+//    ->build(TUTORIAL_KEY::BEGINER);
+//    
+//    
+//    // 1초 후 다음 스텝
+//    CTutorialHelper::Instance()->NextStepAfterDelay(1.f, TUTORIAL_KEY::BEGINER);
+//    
+//    // 메시지 박스 출력 터치 시 다음 스텝
+//    CTutorialHelper::Instance()->CreateMessageBox("다른 방법으로 피할 수도 있어요.", TUTORIAL_KEY::BEGINER);
+//
+//    // 미사일 피하면 다음 스텝
 //    CTutorialStep::create()
 //    ->addBeginListener([=](Node* sender){
 //        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
 //    })
 //    ->addUpdateListener([=](float delta){
-//        if(GLOBAL->COIN_COUNT >= 1) CTutorialManager::Instance()->NextStep();
+//        if(GLOBAL->STAR_ITEM_USE >= 1)
+//            CTutorialManager::Instance()->NextStep();
 //    })
 //    ->build(TUTORIAL_KEY::BEGINER);
 //    
-    // 메시지 박스 출력 터치 시 다음 스텝
-    CTutorialHelper::Instance()->CreateMessageBox("코인이에요! 무엇이든 구매하거나 업그레이드 할 수 있어요!", TUTORIAL_KEY::BEGINER);
+//    
+//    // 코인 획득시 다음스텝
+////    CTutorialStep::create()
+////    ->addBeginListener([=](Node* sender){
+////        this->SpeedControl(0.5f, BULLETCREATOR::ROTATION_SPEED);
+////    })
+////    ->addUpdateListener([=](float delta){
+////        if(GLOBAL->COIN_COUNT >= 1) CTutorialManager::Instance()->NextStep();
+////    })
+////    ->build(TUTORIAL_KEY::BEGINER);
+////    
+//    // 메시지 박스 출력 터치 시 다음 스텝
+//    CTutorialHelper::Instance()->CreateMessageBox("코인이에요! 무엇이든 구매하거나 업그레이드 할 수 있어요!", TUTORIAL_KEY::BEGINER);
     
     CTutorialManager::Instance()->ChangeTutorial(TUTORIAL_KEY::BEGINER);
 }

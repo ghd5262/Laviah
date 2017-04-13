@@ -1,7 +1,9 @@
 #include "OptionMoreGamesPopup.hpp"
 #include "../../MyButton.h"
+#include "../../UrlSprite.hpp"
 #include "../../../Scene/GameScene.h"
 #include "../../../DataManager/MoreGamesDataManager.hpp"
+#include "../../../DataManager/NetworkManager.hpp"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -40,23 +42,30 @@ bool COptionMoreGamesPopup::init()
         layer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         gamesScroll->pushBackCustomItem(layer);
         
-        auto btn = this->createGameDP(game.second->_textureName, game.second->_url);
+        auto btn = this->createGameDP(game.second->_url);
         btn->setSwallowTouches(false);
         btn->setButtonPosition(Vec2((layer->getContentSize().width * 0.5f) - 7.f,
                                     layer->getContentSize().height * 0.5f));
         btn->show(layer);
+        
+        CUrlSprite::create()
+        ->setUrl(NETWORK_DEFINE::URL_DOWNLOAD + game.second->_textureName)
+        ->setSize(btn->getContentSize())
+        ->build(btn);
     }
     
     return true;
 }
 
-CMyButton* COptionMoreGamesPopup::createGameDP(std::string image, std::string url)
+CMyButton* COptionMoreGamesPopup::createGameDP(std::string url)
 {
     return CMyButton::create()
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA,
+                                  this->getContentSize().width * 0.9f,
+                                  this->getContentSize().height * 0.15f))
     ->addEventListener([=](Node* sender){
         Application::getInstance()->openURL(url);
     })
-    ->setButtonNormalImage(image)
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE);
 }
 

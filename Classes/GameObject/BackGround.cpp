@@ -31,7 +31,7 @@ bool CBackGround::init()
     if (m_Gradient != nullptr)
         addChild(m_Gradient);
     
-    auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
+    auto gradientTo = CGradientDataManager::Instance()->getNextGradient();
     
     m_tempStartGradient = Sprite::create();
     if (m_tempStartGradient != nullptr){

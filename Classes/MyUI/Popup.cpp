@@ -330,6 +330,8 @@ void CPopup::popupOpenAnimation()
 
 void CPopup::popupClose(float delayTime/* = 0.5f*/)
 {
+    if(!this->getParent()) return; 
+    
 	Vec2 OriginPosition = this->getPosition();
 	Size ScreenSize = Director::getInstance()->getVisibleSize();
     

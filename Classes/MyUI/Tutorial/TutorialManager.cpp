@@ -41,6 +41,14 @@ CTutorialManager* CTutorialManager::Instance()
     }
 }
 
+bool CTutorialManager::init()
+{
+    if (!Node::init()) return false;
+    this->scheduleUpdate();
+    this->setContentSize(_director->getWinSize());
+    return true;
+}
+
 void CTutorialManager::update(float delta)
 {
     if(!m_IsRunning) return;
@@ -99,12 +107,6 @@ void CTutorialManager::Again()
     this->ChangeStep(m_CurrentStepIndex);
 }
 
-bool CTutorialManager::init()
-{
-    if (!Node::init()) return false;
-    this->scheduleUpdate();
-    return true;
-}
 
 CTutorialManager::TUTORIAL* CTutorialManager::addNewTutorialByKey(std::string key)
 {
@@ -136,7 +138,9 @@ void CTutorialManager::stepBegin(std::string key, int index)
 {
     auto step = this->getStepFromTutorial(key, index);
     step->Begin();
-    step->show(this);
+    step->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(this->getContentSize() / 2)
+    ->show(this);
 }
 
 void CTutorialManager::stepEnd(std::string key, int index)

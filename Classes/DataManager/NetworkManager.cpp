@@ -20,7 +20,7 @@ void CNetworkManager::Request(const NETWORK_CALLBACK& callback, std::string key)
         CCASSERT(false, content.c_str());
     };
 
-    auto url = NETWORK_DEFINE::URL + key;
+    auto url = NETWORK_DEFINE::URL_PHP + key;
     auto tag = key;
     tag.replace(tag.find(std::string(".php")), std::string(".php").size(), std::string(""));
     

@@ -11,7 +11,7 @@ protected:
     virtual bool init() override;
     
 private:
-    CMyButton* createGameDP(std::string image, std::string url);
+    CMyButton* createGameDP(std::string url);
     cocos2d::ui::ListView* createListView(Size size, size_t distance, Vec2 pos);
     
     COptionMoreGamesPopup(){};

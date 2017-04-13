@@ -749,12 +749,10 @@ void CGameScene::createRivalRankLayer()
 
 void CGameScene::createTutorialLayer()
 {
-//    CTutorialLayer::Instance()
-//    ->setBackgroundVisible(false)
-//    ->setDefaultCallbackEnable(false)
-//    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-//    ->setPopupPosition(m_VisibleSize / 2)
-//    ->show(this, ZORDER::POPUP);
+    auto tutorialMananger = CTutorialManager::Instance();
+    tutorialMananger->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    tutorialMananger->setPosition(m_VisibleSize / 2);
+    this->addChild(tutorialMananger);
 }
 
 void CGameScene::setTimestamp()
