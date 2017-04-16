@@ -45,7 +45,7 @@ public:
     void Execute(float delta);
 	void RotationObject(float dir);
     void BonusTimeTouchEvent(float dir);
-    void SpeedControl(float duration, float speed);
+    void SpeedControl(float duration, float speed, bool force = false);
     void ChangeCharacter();
     void ChangeRocket();
     void ChangeState(CState<CObjectManager>* newState)

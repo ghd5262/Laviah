@@ -10,7 +10,7 @@ public:
     CTutorialStep* addBeginListener(const SINGLE_LISTENER& listener);
     CTutorialStep* addUpdateListener(const UPDATE_LISTENER& listener);
     CTutorialStep* addEndListener(const SINGLE_LISTENER& listener);
-    CTutorialStep* addMessageBox(std::string message);
+    CTutorialStep* addMessageBox(std::string message, bool tailEnable = false);
     CTutorialStep* build(std::string key);
     
     void Begin();
@@ -34,9 +34,12 @@ private:
     , m_MessageLayer(nullptr)
     , m_TutorialKey("")
     , m_Message("")
-    , m_Time(0.f){}
+    , m_Time(0.f)
+    , m_MessageBoxTail(false){}
+
+public:
     virtual ~CTutorialStep(){};
-    
+
 private:
     SINGLE_LISTENER m_TouchListener;
     SINGLE_LISTENER m_BeginListener;
@@ -44,4 +47,5 @@ private:
     UPDATE_LISTENER m_UpdateListener;
     std::string m_TutorialKey;
     std::string m_Message;
+    bool m_MessageBoxTail;
 };

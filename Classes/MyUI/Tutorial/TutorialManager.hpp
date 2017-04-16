@@ -17,6 +17,7 @@ public:
     void ChangeStep(int index);
     void NextStep();
     void Again();
+    void Clear();
     
     virtual void update(float delta) override;
     
@@ -30,7 +31,7 @@ private:
     CTutorialStep* getStepFromTutorial(std::string key, int index);
     void stepBegin(std::string key, int index);
     void stepEnd(std::string key, int index);
-    void clear();
+    void reset();
 
     CTutorialManager();
     virtual ~CTutorialManager();

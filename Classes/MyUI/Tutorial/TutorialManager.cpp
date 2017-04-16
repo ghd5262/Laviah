@@ -1,6 +1,8 @@
 #include "TutorialManager.hpp"
 #include "TutorialStep.hpp"
 #include "../../MyUI/MyButton.h"
+#include "../../DataManager/DataManagerUtils.h"
+#include "../../GameObject/ObjectManager.h"
 
 using namespace cocos2d;
 
@@ -16,9 +18,7 @@ CTutorialManager::CTutorialManager()
 , m_CurrentStepIndex(0){}
 
 CTutorialManager::~CTutorialManager(){
-    for(auto tutorial : m_TutorialList)
-        for(auto tutorialObj : *tutorial.second)
-            tutorialObj->release();
+    this->Clear();
     
     m_Instance = nullptr;
 }
@@ -51,6 +51,7 @@ bool CTutorialManager::init()
 
 void CTutorialManager::update(float delta)
 {
+    if(CObjectManager::Instance()->getIsGamePause()) return;
     if(!m_IsRunning) return;
     
     // call update function of current step of current tutorial.
@@ -90,7 +91,7 @@ void CTutorialManager::ChangeStep(int index)
     
     this->stepEnd(currentKey, m_CurrentStepIndex);
     if(m_CurrentTutorial->size() <= index) {
-        this->clear();
+        this->reset();
         return;
     }
     m_CurrentStepIndex = index;
@@ -104,9 +105,21 @@ void CTutorialManager::NextStep()
 
 void CTutorialManager::Again()
 {
+    auto step = m_CurrentTutorial->at(m_CurrentStepIndex);
+    step->removeFromParent(); // 같은 포인터를 다시 show하기 때문에 parent를 초기화 해줘야한다.
     this->ChangeStep(m_CurrentStepIndex);
 }
 
+void CTutorialManager::Clear()
+{
+    this->reset();
+    
+    for(auto data : m_TutorialList){
+        auto tutorial = *data.second;
+        DATA_MANAGER_UTILS::listDeleteAndClean(tutorial);
+    }
+    DATA_MANAGER_UTILS::mapDeleteAndClean(m_TutorialList);
+}
 
 CTutorialManager::TUTORIAL* CTutorialManager::addNewTutorialByKey(std::string key)
 {
@@ -139,6 +152,8 @@ void CTutorialManager::stepBegin(std::string key, int index)
     auto step = this->getStepFromTutorial(key, index);
     step->Begin();
     step->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::NONE)
+    ->setDefaultCallbackEnable(false)
     ->setPopupPosition(this->getContentSize() / 2)
     ->show(this);
 }
@@ -150,8 +165,12 @@ void CTutorialManager::stepEnd(std::string key, int index)
     step->popupClose();
 }
 
-void CTutorialManager::clear()
+void CTutorialManager::reset()
 {
+    if(m_IsRunning){
+        auto currentStep = m_CurrentTutorial->at(m_CurrentStepIndex);
+        currentStep->removeFromParent();
+    }
     m_IsRunning = false;
     m_CurrentStepIndex = 0;
     m_CurrentTutorial = nullptr;

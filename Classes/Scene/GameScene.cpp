@@ -345,6 +345,7 @@ void CGameScene::clearData()
     CAudioManager::Instance()->Clear();
     CObjectManager::Instance()->Clear();
     CItemManager::Instance()->Clear();
+    CTutorialManager::Instance()->Clear();
     this->cleanGlobalData();
     this->removeBonusTimeLayer();
 }
@@ -647,10 +648,10 @@ void CGameScene::createCountDown()
 {
     m_CountDown = CCountDown::create()
     ->addLastEventListner([=](Node* sender){
+        this->startTutorial();
         CObjectManager::Instance()->setIsGamePause(false);
         CObjectManager::Instance()->setGameStateByLevel();
         m_ZoomLayer->resume();
-        this->startTutorial();
     })
     ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(3)
@@ -752,7 +753,7 @@ void CGameScene::createTutorialLayer()
     auto tutorialMananger = CTutorialManager::Instance();
     tutorialMananger->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     tutorialMananger->setPosition(m_VisibleSize / 2);
-    this->addChild(tutorialMananger);
+    this->addChild(tutorialMananger, ZORDER::POPUP);
 }
 
 void CGameScene::setTimestamp()

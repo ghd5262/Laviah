@@ -12,8 +12,18 @@ class CTutorialHelper{
 public:
     static CTutorialHelper* Instance();
     
-    void CreateMessageBox(std::string msg, std::string key);
-    void NextStepAfterDelay(float delay, std::string key);
+    void CreateMessageBox(std::string key,
+                          std::string msg,
+                          bool backgroundVisible,
+                          bool tailEnable);
+    
+    void NextStepAfterDelay(std::string key,
+                            bool backgroundVisible,
+                            float delay);
+    
+    void CreateBulletPattern(std::string key,
+                             bool backgroundVisible,
+                             int tutorialPatternIdx);
     
 private:
     CTutorialHelper();

@@ -149,17 +149,17 @@ void CLoadingScene::createMenuScene()
 {
 	CCLOG("Loading Scene %s", __FUNCTION__);
 
-	Director::getInstance()->getScheduler()->schedule([=](float delta){
+//	Director::getInstance()->getScheduler()->schedule([=](float delta){
 
-		auto tempScene = CEmptyScene::createScene();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
+//		auto tempScene = CEmptyScene::createScene();
+//		Director::getInstance()->replaceScene(TransitionFade::create(0.8f, tempScene));
 
-		Director::getInstance()->getScheduler()->schedule([=](float delta){
+//		Director::getInstance()->getScheduler()->schedule([=](float delta){
 			auto Scene = CGameScene::createScene();
 			Director::getInstance()->replaceScene(TransitionFade::create(0.8f, Scene));
-		}, Director::getInstance(), 0.f, 0, 1.f, false, "createGameScene");
+//		}, Director::getInstance(), 0.f, 0, 1.2f, false, "createGameScene");
 
-	}, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
+//	}, Director::getInstance(), 0.f, 0, 0.f, false, "createEmptyScene");
 }
 
 void CLoadingScene::createNetworkConnectPopup()

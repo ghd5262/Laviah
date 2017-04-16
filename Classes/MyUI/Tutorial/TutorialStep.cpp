@@ -34,7 +34,7 @@ CTutorialStep* CTutorialStep::build(std::string key)
             this->release();
         })
         ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-        ->setLayer(LayerColor::create(COLOR::BRIGHT_WHITEGRAY_ALPHA, 1080, 1920))
+        ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080, 1920))
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(this->getContentSize() / 2)
         ->show(this);
@@ -48,9 +48,10 @@ CTutorialStep* CTutorialStep::build(std::string key)
     return this;
 }
 
-CTutorialStep* CTutorialStep::addMessageBox(std::string message)
+CTutorialStep* CTutorialStep::addMessageBox(std::string message, bool tailEnable/* = false*/)
 {
     m_Message = message;
+    m_MessageBoxTail = tailEnable;
     return this;
 }
 
@@ -106,7 +107,7 @@ void CTutorialStep::createMessageBox()
     m_MessageLayer->setIgnoreAnchorPointForPosition(false);
     m_MessageLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_MessageLayer->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                                     this->getContentSize().height * 0.7f));
+                                     this->getContentSize().height * 0.85f));
     this->addChild(m_MessageLayer);
 
     auto label = Label::createWithSystemFont(m_Message, FONT::MALGUNBD, 50,
@@ -115,6 +116,16 @@ void CTutorialStep::createMessageBox()
     label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     label->setPosition(m_MessageLayer->getContentSize() / 2);
     m_MessageLayer->addChild(label);
+    
+    if(m_MessageBoxTail)
+    {
+        auto tail = Sprite::create("messageBoxTail.png");
+        tail->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+        tail->setPosition(Vec2(m_MessageLayer->getContentSize().width * 0.5f, 0));
+        tail->setColor(m_MessageLayer->getColor());
+        tail->setOpacity(m_MessageLayer->getOpacity());
+        m_MessageLayer->addChild(tail);
+    }
 }
 
 void CTutorialStep::callListener(SINGLE_LISTENER listener)
