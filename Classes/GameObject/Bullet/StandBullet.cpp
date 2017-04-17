@@ -16,7 +16,7 @@
 namespace STANDBULLET{
     const static float STAY_LIMIT_TIME = 1.f;
     const static float STANDING_TARGET_RADIUS = 10.f;
-    const static float TARGET_POS_DISTANCE = PLANET_DEFINE::BOUNDING_RADIUS + 60;
+    const static float TARGET_POS_DISTANCE = PLANET_DEFINE::BOUNDING_RADIUS + 50;
 };
 
 using namespace cocos2d;

@@ -31,7 +31,7 @@ bool CBackGround::init()
     if (m_Gradient != nullptr)
         addChild(m_Gradient);
     
-    auto gradientTo = CGradientDataManager::Instance()->getNextGradient();
+    auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
     
     m_tempStartGradient = Sprite::create();
     if (m_tempStartGradient != nullptr){
@@ -52,11 +52,11 @@ bool CBackGround::init()
     this->createBottomParticleNormal();
     
 
-    m_Index = Label::createWithTTF(StringUtils::format("%d", CGradientDataManager::Instance()->getGradientIdx()), FONT::MALGUNBD, 60);
-    m_Index->setPosition(Vec2(this->getContentSize().width * 0.9f, this->getContentSize().height * 0.1f));
-    m_Index->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_Index->setTextColor(COLOR::WHITEGRAY_ALPHA);
-    addChild(m_Index);
+//    m_Index = Label::createWithTTF(StringUtils::format("%d", CGradientDataManager::Instance()->getGradientIdx()), FONT::MALGUNBD, 60);
+//    m_Index->setPosition(Vec2(this->getContentSize().width * 0.9f, this->getContentSize().height * 0.1f));
+//    m_Index->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//    m_Index->setTextColor(COLOR::WHITEGRAY_ALPHA);
+//    addChild(m_Index);
     
     return true;
 }
@@ -97,8 +97,8 @@ void CBackGround::changeBackground()
     if (m_tempStartGradient == nullptr || m_tempEndGradient == nullptr) return;
     
     m_IsChangying = true;
-//    auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
-    auto gradientTo = CGradientDataManager::Instance()->getNextGradient();
+    auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
+//    auto gradientTo = CGradientDataManager::Instance()->getNextGradient();
     
     auto data = sGRADIENT_PARAM(gradientTo._idx, gradientTo._leftColor, gradientTo._rightColor);
     if (random<int>(0, 1)) //flip
@@ -113,7 +113,7 @@ void CBackGround::changeBackground()
         m_IsChangying = false;
     }), nullptr));
     
-    m_Index->setString(StringUtils::format("%d", CGradientDataManager::Instance()->getGradientIdx()));
+//    m_Index->setString(StringUtils::format("%d", CGradientDataManager::Instance()->getGradientIdx()));
 }
 
 void CBackGround::createBackParticleNormal()

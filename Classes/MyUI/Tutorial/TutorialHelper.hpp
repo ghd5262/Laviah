@@ -14,16 +14,16 @@ public:
     
     void CreateMessageBox(std::string key,
                           std::string msg,
-                          bool backgroundVisible,
-                          bool tailEnable);
+                          bool tailEnable = true,
+                          bool backgroundVisible = false);
     
     void NextStepAfterDelay(std::string key,
-                            bool backgroundVisible,
-                            float delay);
+                            float delay,
+                            bool backgroundVisible = false);
     
     void CreateBulletPattern(std::string key,
-                             bool backgroundVisible,
-                             int tutorialPatternIdx);
+                             int tutorialPatternIdx,
+                             bool backgroundVisible = false);
     
 private:
     CTutorialHelper();

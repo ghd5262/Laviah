@@ -103,7 +103,8 @@ void CBulletCreator::setData(const sBULLET_PATTERN* data)
 	m_CurrentHeight = data->_height;
 //	m_LineIntervalLimit = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;
 	m_Running = true;
-	m_IsFlip = random<int>(0, 1);
+    if (!CObjectManager::Instance()->getIsTutorial())
+        m_IsFlip = random<int>(0, 1);
 }
 
 void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
@@ -202,9 +203,11 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
 
     // bullet create
 	if (BULLETCREATOR::COIN_CREATE && (symbol >= 'P' && symbol <= 'T')) {
-		symbol = (cocos2d::random<int>(1, 10) < 5) ? 'U' : symbol;
-        symbol = (cocos2d::random<int>(1, 10) < 3) ? 'z' : symbol;
-		BULLETCREATOR::COIN_CREATE = false;
+        if (!CObjectManager::Instance()->getIsTutorial()){
+            symbol = (cocos2d::random<int>(1, 10) < 5) ? 'U' : symbol;
+            symbol = (cocos2d::random<int>(1, 10) < 3) ? 'z' : symbol;
+        }
+        BULLETCREATOR::COIN_CREATE = false;
 	}
     if      (symbol == 'z')                     symbol = cocos2d::random<int>('B', 'F');
     if      (symbol >= '1' && symbol <= '3')    bullet = CNormalBullet::create();

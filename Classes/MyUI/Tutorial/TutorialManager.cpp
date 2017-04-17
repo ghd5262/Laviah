@@ -152,7 +152,6 @@ void CTutorialManager::stepBegin(std::string key, int index)
     auto step = this->getStepFromTutorial(key, index);
     step->Begin();
     step->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::NONE)
     ->setDefaultCallbackEnable(false)
     ->setPopupPosition(this->getContentSize() / 2)
     ->show(this);

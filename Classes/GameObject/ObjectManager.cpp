@@ -446,89 +446,123 @@ void CObjectManager::InitTutorialStep()
 {
     m_IsTutorial = true;
 
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "바이킹이 바짝 쫒아 왔어요!!", true, true);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "이제 이 행성도 더 이상 안전하지 않아요.", true, true);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "어서 빨리 탈출하세요!!", true, true);
+    CTutorialStep::create()
+    ->addBeginListener([=](CTutorialStep* sender){
+        this->zoom(CGameScene::getZoomLayer(),
+                   PLANET_DEFINE::GAME_POS,
+                   0,
+                   0.8f,
+                   2.f,
+                   true);
+    })
+    ->addUpdateListener([=](float delta, CTutorialStep* sender){
+        if(sender->getTime() > 2.2)
+            CTutorialManager::Instance()->NextStep();
+    })
+    ->build(TUTORIAL_KEY::BEGINER)
+    ->setBackgroundVisible(true)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
     
     
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, true, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, true, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "적들의 총알은 모두 피해야 해요!!", true, true);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, true, 1.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "바이킹이 여기까지 쫒아 왔어요!!");
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "이 행성도 더 이상 안전하지 않은 것 같아요!!");
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "어서 빨리 탈출하세요!!");
     
     
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, true, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, true, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "화면을 길게 누르면 반대 방향으로 피할 수 있어요!!", false, true);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 3.f);
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 0);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 5.f, true);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "이건 바이킹이 쏘는 총알이에요!!", true);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "한번이라도 맞으면 끝이니까 조심해야해요!!", true);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 1.f, true);
+    
+    
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 1);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 4.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "화면을 길게 누르면 반대 방향으로 피할 수 있어요!!");
+    
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 2);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 5.f);
 
     
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, false, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "하얀색 빛은 곧 미사일이 떨어진다는 표시이니 주의 해야해요.", true, true);
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 3);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 4.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "하얀색 빛은 곧 미사일이 떨어진다는 표시이니 주의 해야해요.");
+    
+    
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 4);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 4.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "엇!! 우주에 떠다니는 크리스탈 운석이에요!! 부딪히지 않도록 주의하세요.");
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 0.5f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "땅에 떨어지고 나서도 잠시동안 유지되니 조심하세요!");
+    
+    
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 5);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 4.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "행성이 불안정하기 때문에 땅에서 위험한 것들이 솟아나기도 하니까 조심 해야해요.");
 
     
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, false, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "별이에요!! 별은 곧 점수나 마찬가지에요!!", true, true);
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 6);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 4.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "오! 별이에요!! 별은 곧 점수나 마찬가지에요.");
     
     
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, false, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "별을 연속해서 먹을수록 콤보가 올라가요.", true, true);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "콤보가 높을수록 별의 점수가 높아지니 놓치지 말아야겠죠??", true, true);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 2.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "별을 연속해서 먹을수록 콤보가 올라가요.");
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "콤보가 높을수록 별 한개 당 점수가 높아져요.");
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "콤보가 끊기지 않도록 별을 놓치지 않는 것이 중요해요!!");
+ 
     
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 7);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 3.5f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "이제 아이템을 설명할 차례네요.");
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "아이템은 공격을 피하는데 큰 도움이 될거에요.");
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "먼저 모든 것을 별로 바꿔주는 별마법 아이템이에요.");
     
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, false, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "엇!! 우주에 떠다니는 크리스탈 운석이에요!", true, true);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 0.5f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "땅에 떨어지고 나서도 잠시동안 유지되니 주의하세요!", true, true);
-    
-    
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, false, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "행성이 불안정하기 때문에 땅에서 위험한 것들이 솟아나기도 하니까 조심 해야해요.", true, true);
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 8);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 5.f);
 
     
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, false, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "이제 아이템을 설명할 차례네요.", true, true);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "아이템은 공격을 피하는데 큰 도움이 될거에요.", true, true);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "먼저 모든 것을 별로 바꿔주는 별마법 아이템이에요.", true, true);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 2.f);
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 9);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 3.5f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "다음은 모든 것을 코인으로 바꿔주는 코인마법 아이템이에요.");
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "코인으로 아이템 능력을 업그레이드 시킬수도 있다는 것 잊지마세요.");
+    
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 10);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 5.f);
 
     
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, false, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "다음은 모든 것을 코인으로 바꿔주는 코인마법 아이템이에요.", true, true);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "코인으로 아이템 능력을 업그레이드 시킬수도 있다는 것 잊지마세요.", true, true);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 2.f);
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 11);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 4.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "엇!! 이번엔 정말로 위험한 것 같은데요?!");
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 1.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "걱정하지 마시라!! 이게 바로 방어마법 아이템의 능력이죠!!");
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "방어도 하고 콤보도 올리고!! 이게 바로 일석이조!!");
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 1.f);
 
     
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, false, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "엇!! 이번엔 정말로 위험한 것 같은데요?!", true, true);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "걱정하지 마시라!! 이게 바로 방어마법 아이템의 능력이죠!!", true, true);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "방어한 공격에 대해서는 콤보도 올라가는 효과가 있죠.", true, true);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 2.f);
+    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, 12);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 4.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "자!! 이제 마지막 거인마법 아이템으로 모두 날려 버리세요!!");
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 5.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "마찬가지로 날려버린 것들에 대해서 콤보가 올라갑니다.");
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 2.f);
 
     
-    CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, false, 0);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "자!! 이제 마지막 거인마법 아이템으로 모두 날려 버리세요!!", true, true);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 5.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "마찬가지로 날려버린 공격에 대해서 콤보가 올라갑니다.", true, true);
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 2.f);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 5.f);
+    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "이제 튜토리얼은 끝났습니다. 튜토리얼을 다시 보고 싶다면 설정에서 다시보기 버튼을 눌러주세요!!");
 
     
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, false, 1.f);
-    CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "이제 튜토리얼은 끝났습니다. 튜토리얼을 다시 보고 싶다면 설정에서 다시보기 버튼을 눌러주세요!!", true, true);
-
-    
-    
-
+    CTutorialStep::create()
+    ->addBeginListener([=](CTutorialStep* sender){
+        m_IsTutorial = false;
+    })
+    ->addUpdateListener([=](float delta, CTutorialStep* sender){
+        if(sender->getTime() > 2.f)
+            CTutorialManager::Instance()->NextStep();
+    })
+    ->build(TUTORIAL_KEY::BEGINER)
+    ->setBackgroundVisible(true)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
     
     
     CTutorialManager::Instance()->ChangeTutorial(TUTORIAL_KEY::BEGINER);

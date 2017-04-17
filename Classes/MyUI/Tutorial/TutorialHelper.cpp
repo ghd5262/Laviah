@@ -16,18 +16,21 @@ CTutorialHelper* CTutorialHelper::Instance()
     return &instance;
 }
 
-void CTutorialHelper::CreateMessageBox(std::string key, std::string msg, bool backgroundVisible, bool tailEnable)
+void CTutorialHelper::CreateMessageBox(std::string key,
+                                       std::string msg,
+                                       bool tailEnable/* = true */,
+                                       bool backgroundVisible/* = false */)
 {
     CTutorialStep::create()
     ->addTouchListener([=](Node* sender){
         CTutorialManager::Instance()->NextStep();
     })
     ->addBeginListener([=](Node* sender){
-        CObjectManager::Instance()->SpeedControl(0.5f, 1, true);
+        CObjectManager::Instance()->SpeedControl(0, 0, true);
         CGameScene::getZoomLayer()->pause();
     })
     ->addEndListener([](Node* sender){
-        CObjectManager::Instance()->SpeedControl(0.5f, 90, true);
+        CObjectManager::Instance()->SpeedControl(0, 90, true);
         CGameScene::getZoomLayer()->resume();
     })
     ->addMessageBox(msg, tailEnable)
@@ -36,9 +39,14 @@ void CTutorialHelper::CreateMessageBox(std::string key, std::string msg, bool ba
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
 }
 
-void CTutorialHelper::NextStepAfterDelay(std::string key, bool backgroundVisible, float delay)
+void CTutorialHelper::NextStepAfterDelay(std::string key,
+                                         float delay,
+                                         bool backgroundVisible/* = false */)
 {
     CTutorialStep::create()
+    ->addBeginListener([=](CTutorialStep* sender){
+        sender->setTime(0);
+    })
     ->addUpdateListener([=](float delta, CTutorialStep* sender){
         
         if(sender->getTime() > delay)
@@ -49,12 +57,14 @@ void CTutorialHelper::NextStepAfterDelay(std::string key, bool backgroundVisible
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
 }
 
-void CTutorialHelper::CreateBulletPattern(std::string key, bool backgroundVisible, int tutorialPatternIdx)
+void CTutorialHelper::CreateBulletPattern(std::string key,
+                                          int tutorialPatternIdx,
+                                          bool backgroundVisible/* = false */)
 {
     CTutorialStep::create()
     ->addBeginListener([=](CTutorialStep* sender){
         auto data = CBulletPatternDataManager::Instance()->getTutorialPatternByIndex(tutorialPatternIdx);
-        CObjectManager::Instance()->getBulletCreator()->CreateImmediately(data, 90, 2000);
+        CObjectManager::Instance()->getBulletCreator()->setPattern(data);
     })
     ->addUpdateListener([=](float delta, CTutorialStep* sender){
             CTutorialManager::Instance()->NextStep();

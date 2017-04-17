@@ -25,8 +25,9 @@ CTutorialStep* CTutorialStep::build(std::string key)
 
     if(m_TouchListener)
     {
-        CMyButton::create()
+        auto btn = CMyButton::create()
         ->addEventListener([=](Node* sender){
+            CCLOG("Tutorial step touched");
             this->retain();
             if(m_TouchListener){
                 m_TouchListener(this);
@@ -38,11 +39,25 @@ CTutorialStep* CTutorialStep::build(std::string key)
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(this->getContentSize() / 2)
         ->show(this);
+        
+        btn->setSwallowTouches(false);
     }
     
     // if there is message, create message box
-    if(m_Message != "")
+    if(m_Message != ""){
         this->createMessageBox();
+        m_MessageLayer->setScale(0.f);
+        this->setOpenAnimation([=](Node* sender){
+            m_MessageLayer->runAction(EaseElasticOut::create(ScaleTo::create(0.5f, 1.0f), 0.5f));
+        });
+        
+        this->setCloseAnimation([=](Node* sender){
+            auto scale   = ScaleTo::create(0.5f, 0.2f);
+            auto elastic = EaseElasticIn::create(scale, 1);
+            m_MessageLayer->runAction(elastic);
+            this->popupTouchEnable(true);
+        });
+    }
     
     CTutorialManager::Instance()->addTutorial(m_TutorialKey, this);
     return this;
@@ -103,16 +118,24 @@ void CTutorialStep::createMessageBox()
 {
     if(m_MessageLayer != nullptr) return;
     
-    m_MessageLayer = LayerColor::create(COLOR::DARKGRAY_ALPHA, 600, 200);
+    auto label  = Label::createWithSystemFont(m_Message, FONT::MALGUNBD, 40);
+    auto size   = label->getContentSize();
+    auto width  = 600;
+    auto line   = (int)((size.width / width) + 2);
+    line        =  std::max<int>(3, line);
+    auto height = line * 65;
+    
+    m_MessageLayer = LayerColor::create(COLOR::DARKGRAY_ALPHA, width, height);
+    m_MessageLayer->setOpacity(255);
     m_MessageLayer->setIgnoreAnchorPointForPosition(false);
     m_MessageLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_MessageLayer->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                                     this->getContentSize().height * 0.85f));
+                                     this->getContentSize().height * 0.65f));
     this->addChild(m_MessageLayer);
 
-    auto label = Label::createWithSystemFont(m_Message, FONT::MALGUNBD, 50,
-                                             m_MessageLayer->getContentSize() * 0.9f,
-                                             TextHAlignment::CENTER, TextVAlignment::CENTER);
+    label->setAlignment(TextHAlignment::LEFT, TextVAlignment::CENTER);
+    label->setDimensions(m_MessageLayer->getContentSize().width * 0.9f,
+                         m_MessageLayer->getContentSize().height * 0.9f);
     label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     label->setPosition(m_MessageLayer->getContentSize() / 2);
     m_MessageLayer->addChild(label);
