@@ -36,7 +36,7 @@ bool CPlayCoin::init()
     if (!CBullet::init()) return false;
     
     this->setItemEffect(eITEM_FLAG_magnet);
-      
+    this->setColor(COLOR::GOLD);
     return true;
 }
 

@@ -5,7 +5,7 @@ namespace HSHDefine{
 }
 
 namespace COLOR {
-    const cocos2d::Color3B GOLD(255, 255, 166);                 //Gold(255, 255, 166)
+    const cocos2d::Color3B GOLD(255, 223, 0);                 //Gold(255, 255, 166)
     const cocos2d::Color3B DARKGRAY(36, 36, 36);                //Dark Gray(36, 36, 36)
     const cocos2d::Color3B BRIGHTGRAY(255, 255, 255 - 14);      //Bright Gray_1(255, 255, 255 - 14)
     

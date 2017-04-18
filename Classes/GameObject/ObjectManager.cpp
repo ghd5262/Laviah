@@ -506,7 +506,7 @@ void CObjectManager::InitTutorialStep()
     CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "오! 별이에요!! 별은 곧 점수나 마찬가지에요.");
     
     
-    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 2.f);
+    CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 2.5f);
     CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "별을 연속해서 먹을수록 콤보가 올라가요.");
     CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "콤보가 높을수록 별 한개 당 점수가 높아져요.");
     CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "콤보가 끊기지 않도록 별을 놓치지 않는 것이 중요해요!!");
