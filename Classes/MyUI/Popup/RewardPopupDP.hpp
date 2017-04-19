@@ -16,7 +16,9 @@ protected:
     virtual bool init() override;
     
 private:
-    void initReward();
+    void goldReward();
+    void characterReward();
+    
 	CRewardPopupDP(const sREWARD_DATA reward)
 		: m_Reward(reward){};
     virtual ~CRewardPopupDP(){};

@@ -5,6 +5,8 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/ChallengeDataManager.hpp"
 #include "../../DataManager/ChallengeRewarder/ChallengeRewarder.hpp"
+#include "../../DataManager/CharacterDataManager.h"
+#include "../../GameObject/BulletCreator.h"
 
 USING_NS_CC;
 
@@ -27,28 +29,81 @@ CRewardPopupDP* CRewardPopupDP::create(const sREWARD_DATA reward)
 bool CRewardPopupDP::init()
 {
     if (!CPopup::init()) return false;
+    this->setContentSize(_director->getWinSize());
     
-    this->setCascadeOpacityEnabled(true);
-    this->setScale(0.2f);
-    this->initReward();
+    
+    auto rewardKey      = m_Reward._key;
+    auto rewardValue    = m_Reward._value;
+    std::string value   = "";
+    
+    if (CHALLENGE_REWARD_KEY::REWARD_COIN == rewardKey){
+        value = StringUtils::format("%d Gold", rewardValue);
+        this->goldReward();
+    }
+    if (CHALLENGE_REWARD_KEY::REWARD_CHARACTER == rewardKey){
+        auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
+        value = StringUtils::format("%s", data->_name.c_str());
+        
+    }
+    
+    // create title
+    auto title = Label::createWithSystemFont(value, FONT::MALGUNBD, 80,
+                                             Size(this->getContentSize().width * 0.8f,
+                                                  this->getContentSize().height),
+                                             TextHAlignment::CENTER,
+                                             TextVAlignment::CENTER);
+    title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    title->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                            this->getContentSize().height * 0.8f));
+    this->addChild(title);
 
+    
     this->setOpenAnimation([=](Node* sender){
 
-        auto scaleUp    = ScaleTo::create(0.3f, 1.f);
-		auto jumpAction = JumpBy::create(0.3f, Vec2(0, 0), 150, 1);
-        auto spawn      = Spawn::createWithTwoActions(scaleUp, jumpAction);
+        auto action = [=](Node* owner){
+            auto fade  = FadeIn::create(0.5f);
+            owner->setOpacity(0);
+            owner->runAction(fade);
+        };
         
-        this->runAction(spawn);
+        action(title);
     });
     
+    this->setCloseAnimation([=](Node* sender){
+        
+        title->runAction(FadeTo::create(0.3f, 0));
+    });
     return true;
 }
 
-void CRewardPopupDP::initReward()
+void CRewardPopupDP::goldReward()
 {
-	auto sprite = CChallengeDataManager::Instance()->getRewardSprite(m_Reward._key, m_Reward._value);
-    this->setContentSize(sprite->getContentSize());
-    sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    sprite->setPosition(this->getContentSize() / 2);
-    this->addChild(sprite);
+    auto action = [=](CBullet* sender){
+        auto layerSize = this->getContentSize();
+        sender->setPosition(layerSize.width * 0.5f,
+                            layerSize.height * 0.3f);
+        sender->setRotation(random<float>(0.f, 360.f));
+        
+        auto moveAction = MoveTo::create(0.5f, CBullet::getSquarePosition(random<int>(30, 330),
+                                                                          random<int>(50 , layerSize.height - 50)));
+        auto easeAction = EaseExponentialInOut::create(moveAction);
+        auto callFunc   = CallFunc::create([=](){
+            sender->R_UpAndBezier();
+        });
+        auto sequence   = Sequence::createWithTwoActions(easeAction, callFunc);
+        sender->runAction(sequence);
+    };
+    
+    auto limit = std::min(50, m_Reward._value);
+    for(int count = 0; count < limit; count++)
+    {
+        auto gold = CBulletCreator::CreateBullet('U', 1, 1);
+        gold->setLocalZOrder(ZORDER::POPUP);
+        action(gold);
+    }
+}
+
+void CRewardPopupDP::characterReward()
+{
+    
 }

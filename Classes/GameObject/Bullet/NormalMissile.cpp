@@ -91,7 +91,7 @@ void CNormalMissile::CollisionWithPlayer()
         GLOBAL->GIANT_SCORE_TOTAL += (GLOBAL->COMBO_LEVEL * 2);
         GLOBAL->GIANT_SCORE_MISSILE += (GLOBAL->COMBO_LEVEL * 2);
 		this->createScoreCurrentPos(GLOBAL->COMBO_LEVEL * 2);
-		R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
+		R_BezierWithRotation(Vec2(2000, 3000), Vec2(540, 1500), Vec2(900, 2000), 1.f);
 	}
 	else{
 		m_Player->LostSomeHealth(this->getPower());

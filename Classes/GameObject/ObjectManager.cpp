@@ -34,7 +34,6 @@ CObjectManager::CObjectManager()
 , m_Delta(0.f)
 , m_GameLevel(0)
 , m_GiantSpeed(1.f)
-, m_IsTutorial(false)
 {
 //    m_FSM = std::shared_ptr<CStateMachine<CObjectManager>>(new CStateMachine<CObjectManager>(this),
 //                                                           [=](CStateMachine<CObjectManager>* fsm){
@@ -266,7 +265,7 @@ void CObjectManager::NormalMode()
 
 void CObjectManager::setGameStateByLevel()
 {
-    if(m_IsTutorial) return;
+    if(CTutorialManager::Instance()->getIsRunning()) return;
     
     auto levelData = m_LevelList.at(m_GameLevel);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
@@ -333,7 +332,7 @@ void CObjectManager::ReturnToMemoryBlockAll()
 
 void CObjectManager::createBulletByTimer(float delta)
 {
-    if(m_IsTutorial) return;
+    if(CTutorialManager::Instance()->getIsRunning()) return;
     
     m_PatternTimer += delta;
 	if (m_PatternTimer < BULLETCREATOR::PATTERN_PADDING_LIMIT) return;
@@ -411,7 +410,7 @@ void CObjectManager::bulletListRotate()
 
 void CObjectManager::setGameLevelByTimer()
 {
-    if(m_IsTutorial) return;
+    if(CTutorialManager::Instance()->getIsRunning()) return;
     
     m_LevelTimer += m_Delta;
     if(m_LevelList.at(m_GameLevel)._time < m_LevelTimer)
@@ -444,8 +443,6 @@ void CObjectManager::zoom(cocos2d::Node* obj,
 
 void CObjectManager::InitTutorialStep()
 {
-    m_IsTutorial = true;
-
     CTutorialStep::create()
     ->addBeginListener([=](CTutorialStep* sender){
         this->zoom(CGameScene::getZoomLayer(),
@@ -550,20 +547,6 @@ void CObjectManager::InitTutorialStep()
     
     CTutorialHelper::Instance()->NextStepAfterDelay(TUTORIAL_KEY::BEGINER, 5.f);
     CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, "이제 튜토리얼은 끝났습니다. 튜토리얼을 다시 보고 싶다면 설정에서 다시보기 버튼을 눌러주세요!!");
-
-    
-    CTutorialStep::create()
-    ->addBeginListener([=](CTutorialStep* sender){
-        m_IsTutorial = false;
-    })
-    ->addUpdateListener([=](float delta, CTutorialStep* sender){
-        if(sender->getTime() > 2.f)
-            CTutorialManager::Instance()->NextStep();
-    })
-    ->build(TUTORIAL_KEY::BEGINER)
-    ->setBackgroundVisible(true)
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
-    
     
     CTutorialManager::Instance()->ChangeTutorial(TUTORIAL_KEY::BEGINER);
 }

@@ -154,11 +154,7 @@ public:
     static cocos2d::Vec2 getCirclePosition(float angle, float distance, cocos2d::Vec2 center);
     static cocos2d::Vec2 getSquarePosition(float angle, float distance);
 
-    void R_UpAndBezier(cocos2d::Vec2 targetPos,
-                       cocos2d::Vec2 controlPoint_1,
-                       cocos2d::Vec2 controlPoint_2,
-                       float time,
-                       float scale);
+    void R_UpAndBezier();
     
     
     void R_BezierWithScale(cocos2d::Vec2 targetPos,

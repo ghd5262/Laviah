@@ -196,7 +196,7 @@ sREWARD_DATA CChallengeDataManager::RewardByKey(std::string key, int value)
 	auto rewarder = m_RewarderList.find(key);
 	if (rewarder == std::end(m_RewarderList)) return sREWARD_DATA();
 
-	return rewarder->second(sREWARD_DATA(key, value));
+	return rewarder->second(sREWARD_DATA(key, value)); // call function by reward type.
 }
 
 int CChallengeDataManager::NonCompleteChallengeExist()

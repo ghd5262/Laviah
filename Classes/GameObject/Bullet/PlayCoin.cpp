@@ -43,17 +43,7 @@ bool CPlayCoin::init()
 void CPlayCoin::CollisionWithPlayer()
 {
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
-
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto targetPos = Vec2(visibleSize.width * 0.055f, visibleSize.height * 0.925f);
-    targetPos = CGameScene::getZoomLayer()->convertToNodeSpace(targetPos);
-    auto length = Vec2(targetPos - this->getPosition()).length();
-    auto cPos1 = Vec2(this->getPosition().x - (length * 0.3f),
-                      this->getPosition().y - 50.f);
-    auto cPos2 = Vec2(targetPos.x, targetPos.y - (length * 0.3f));
-    auto time = std::max<float>(0.5f, (length / visibleSize.height) * 1.3f);
-    
-    this->R_UpAndBezier(targetPos, cPos1, cPos2, time, 4.f);
+    this->R_UpAndBezier();
     auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
     CComboScore::Instance()->AddCombo();
     GLOBAL->COIN_SCORE += value;

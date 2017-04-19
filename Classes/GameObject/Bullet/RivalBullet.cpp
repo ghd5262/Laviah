@@ -76,5 +76,5 @@ void CRivalBullet::CollisionWithPlanet()
 void CRivalBullet::CollisionWithPlayer()
 {
     this->createScoreCurrentPos(100);
-    this->R_BezierWithRotation(Vec2(1180, 2020), Vec2(350, 900), Vec2(450, 1200), 0.5f);
+    this->R_BezierWithRotation(Vec2(2000, 3000), Vec2(540, 1500), Vec2(900, 2000), 1.f);
 }

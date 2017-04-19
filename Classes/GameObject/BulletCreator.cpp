@@ -5,6 +5,7 @@
 #include "../DataManager/UserDataManager.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/ItemManager.h"
+#include "../MyUI/Tutorial/TutorialManager.hpp"
 
 
 using namespace cocos2d;
@@ -77,6 +78,7 @@ void CBulletCreator::Clear()
     //m_RotationAngle = 0.f;
     m_CurrentPattern = nullptr;
     m_Running = false;
+    m_IsFlip = false;
 }
 
 void CBulletCreator::Rotation(float speed)
@@ -103,7 +105,7 @@ void CBulletCreator::setData(const sBULLET_PATTERN* data)
 	m_CurrentHeight = data->_height;
 //	m_LineIntervalLimit = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;
 	m_Running = true;
-    if (!CObjectManager::Instance()->getIsTutorial())
+    if (!CTutorialManager::Instance()->getIsRunning())
         m_IsFlip = random<int>(0, 1);
 }
 
@@ -203,7 +205,7 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
 
     // bullet create
 	if (BULLETCREATOR::COIN_CREATE && (symbol >= 'P' && symbol <= 'T')) {
-        if (!CObjectManager::Instance()->getIsTutorial()){
+        if (!CTutorialManager::Instance()->getIsRunning()){
             symbol = (cocos2d::random<int>(1, 10) < 5) ? 'U' : symbol;
             symbol = (cocos2d::random<int>(1, 10) < 3) ? 'z' : symbol;
         }

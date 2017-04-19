@@ -199,11 +199,7 @@ void CBullet::Rotation(float speed)
     setRotation(-getAngle());
 }
 
-void CBullet::R_UpAndBezier(cocos2d::Vec2 targetPos,
-                   cocos2d::Vec2 controlPoint_1,
-                   cocos2d::Vec2 controlPoint_2,
-                   float time,
-                   float scale)
+void CBullet::R_UpAndBezier()
 {
     // do not execute
     this->setAlive(false);
@@ -212,26 +208,42 @@ void CBullet::R_UpAndBezier(cocos2d::Vec2 targetPos,
     this->setLocalZOrder(ZORDER::POPUP);
     
     // create action
-    ccBezierConfig bezier;
-    bezier.controlPoint_1 = Vec2(controlPoint_1);
-    bezier.controlPoint_2 = Vec2(controlPoint_2);
-    bezier.endPosition    = Vec2(targetPos);
     auto upActin      = MoveTo::create(0.6f, Vec2(getPositionX(), getPositionY() + 150.f));
     auto sineAction   = EaseExponentialOut::create(upActin);
     auto delayAction  = DelayTime::create(0.5f);
-    auto bezierAction = BezierTo::create(time, bezier);
-    auto exponential  = EaseSineIn::create(bezierAction);
-    auto scaleAction  = ScaleTo::create(0.4f, scale);
-    auto fadeAction   = FadeTo::create(0.4f, 1);
-    auto spawn = Spawn::create(scaleAction, fadeAction, nullptr);
     
     auto action = Sequence::create(sineAction,
                                    delayAction,
-                                   exponential,
-                                   spawn,
                                    CallFunc::create([=](){
         
-        this->ReturnToMemoryBlock();
+        // create bezier action config
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        auto targetPos   = Vec2(visibleSize.width * 0.055f, visibleSize.height * 0.925f);
+        targetPos        = CGameScene::getZoomLayer()->convertToNodeSpace(targetPos);
+        auto length      = Vec2(targetPos - this->getPosition()).length();
+        auto cPos1       = Vec2(this->getPosition().x - (length * 0.3f),
+                                this->getPosition().y - 100.f);
+        auto cPos2       = Vec2(targetPos.x, targetPos.y - (length * 0.3f));
+        auto time        = std::max<float>(0.5f, (length / visibleSize.height) * 1.3f);
+        auto scale       = 3.f;
+        
+        // create bezier action
+        ccBezierConfig bezier;
+        bezier.controlPoint_1 = Vec2(cPos1);
+        bezier.controlPoint_2 = Vec2(cPos2);
+        bezier.endPosition    = Vec2(targetPos);
+        
+        auto bezierAction = BezierTo::create(time, bezier);
+        auto exponential  = EaseSineIn::create(bezierAction);
+        auto scaleAction  = ScaleTo::create(0.4f, scale);
+        auto fadeAction   = FadeTo::create(0.4f, 1);
+        auto spawn        = Spawn::create(scaleAction, fadeAction, nullptr);
+        
+        this->runAction(Sequence::create(exponential,
+                                         spawn,
+                                         CallFunc::create([=](){
+            this->ReturnToMemoryBlock();
+        }), nullptr));
         
     }), nullptr);
     
@@ -285,7 +297,7 @@ void CBullet::R_BezierWithRotation(Vec2 targetPos, Vec2 controlPoint_1, Vec2 con
 	bezier.controlPoint_2 = Vec2(controlPoint_2);
 	bezier.endPosition    = Vec2(targetPos);
 	auto bezierAction = BezierTo::create(time, bezier);
-    auto rotateAction = RotateBy::create(0.5f, 720.f);
+    auto rotateAction = RotateBy::create(1.f, 720.f);
     auto spawn = Spawn::create(rotateAction, bezierAction, nullptr);
 	auto action = Sequence::create(spawn,
                                    CallFunc::create([=](){

@@ -81,7 +81,8 @@ bool CRocket::init()
 		->addEventListener([=](Node* sender){
 		auto popup = CGameScene::getGameScene()->Reward();
 		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
-		rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 100);
+		rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 0);
+        rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
 		rewardPopup->setExitCallback([=](){
 			sender->setVisible(false);
             this->ChangeState(CFlyAway::Instance());
@@ -159,16 +160,9 @@ void CRocket::CollisionCheckAtHome()
 
         if (bullet->IsHit(this))
         {
-            auto visibleSize = Director::getInstance()->getVisibleSize();
-            auto targetPos = Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.96f);
-            auto length = Vec2(targetPos - bullet->getPosition()).length();
-            auto cPos1 = Vec2(bullet->getPosition().x - (length * 0.3f),
-                              bullet->getPosition().y - 50.f);
-            auto cPos2 = Vec2(targetPos.x, targetPos.y - (length * 0.3f));
-            auto time = std::max<float>(0.4f, (length / visibleSize.height) * 1.3f);
 			auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(bullet->getSymbol() - 'U' + 1));
 			CUserDataManager::Instance()->CoinUpdate(value);
-            bullet->R_UpAndBezier(targetPos, cPos1, cPos2, time, 4.f);
+            bullet->R_UpAndBezier();
         }
     }
 }

@@ -42,7 +42,7 @@ sREWARD_DATA CChallengeRewarder::coinRewardRandom(sREWARD_DATA data) {
 sREWARD_DATA CChallengeRewarder::characterRewardRandom(sREWARD_DATA data) {
     
 	auto characterData = CCharacterDataManager::Instance()->getNewRandomCharacter();
-	if (characterData == nullptr) return coinRewardRandom(sREWARD_DATA(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 100));
+	if (characterData == nullptr) return coinRewardRandom(sREWARD_DATA(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 0));
 
 	data._value = characterData->_idx;
     
@@ -53,7 +53,7 @@ sREWARD_DATA CChallengeRewarder::characterRewardRandom(sREWARD_DATA data) {
 sREWARD_DATA CChallengeRewarder::RocketRewardRandom(sREWARD_DATA data) {
 
     auto rocketData = CRocketDataManager::Instance()->getNewRandomRocket();
-    if (rocketData == nullptr) return coinRewardRandom(sREWARD_DATA(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 100));
+    if (rocketData == nullptr) return coinRewardRandom(sREWARD_DATA(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 0));
     
     data._value = rocketData->_idx;
 
