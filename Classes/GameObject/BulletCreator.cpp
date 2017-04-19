@@ -190,7 +190,7 @@ void CBulletCreator::CreateConstellation(const sBULLET_PATTERN* data)
 			
 			if (symbol == ' ') continue;
 
-            auto bullet = CBulletCreator::CreateBullet(symbol, width * data->_widthPadding, 0);
+            auto bullet = CBulletCreator::CreateBullet(symbol, width * data->_widthPadding, 0, false);
 			auto visible = Director::getInstance()->getVisibleSize();
 			auto pos = CBullet::getSquarePosition(width * data->_widthPadding, visible.height - (height * BULLET_STANDARD_PADDING));
             bullet->setPosition(pos);
@@ -236,7 +236,7 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
     ->setBulletInfo(data)
     ->build();
     
-    bullet->setVisible(false);
+    bullet->setVisible(!isDelay);
     
     CGameScene::getZoomLayer()->addChild(bullet, ZORDER::BULLET);
     

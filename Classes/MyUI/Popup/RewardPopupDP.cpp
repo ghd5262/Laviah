@@ -42,7 +42,7 @@ bool CRewardPopupDP::init()
     }
     if (CHALLENGE_REWARD_KEY::REWARD_CHARACTER == rewardKey){
         auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
-        value = StringUtils::format("%s", data->_name.c_str());
+        value = TRANSLATE(data->_name);
         
     }
     
@@ -79,25 +79,26 @@ bool CRewardPopupDP::init()
 void CRewardPopupDP::goldReward()
 {
     auto action = [=](CBullet* sender){
-        auto layerSize = this->getContentSize();
+        auto layerSize   = this->getContentSize();
         sender->setPosition(layerSize.width * 0.5f,
                             layerSize.height * 0.3f);
         sender->setRotation(random<float>(0.f, 360.f));
         
-        auto moveAction = MoveTo::create(0.5f, CBullet::getSquarePosition(random<int>(30, 330),
+        auto moveAction  = MoveTo::create(1.f, CBullet::getSquarePosition(random<int>(30, 330),
                                                                           random<int>(50 , layerSize.height - 50)));
-        auto easeAction = EaseExponentialInOut::create(moveAction);
-        auto callFunc   = CallFunc::create([=](){
+        auto easeAction  = EaseExponentialInOut::create(moveAction);
+        auto delayAction = DelayTime::create(random<float>(1.f, 3.f));
+        auto callFunc    = CallFunc::create([=](){
             sender->R_UpAndBezier();
         });
-        auto sequence   = Sequence::createWithTwoActions(easeAction, callFunc);
+        auto sequence    = Sequence::create(easeAction, delayAction, callFunc, nullptr);
         sender->runAction(sequence);
     };
     
     auto limit = std::min(50, m_Reward._value);
     for(int count = 0; count < limit; count++)
     {
-        auto gold = CBulletCreator::CreateBullet('U', 1, 1);
+        auto gold = CBulletCreator::CreateBullet('U', 1, 1, false);
         gold->setLocalZOrder(ZORDER::POPUP);
         action(gold);
     }

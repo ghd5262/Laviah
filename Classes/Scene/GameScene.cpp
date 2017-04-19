@@ -215,7 +215,7 @@ void CGameScene::OpenGameMenuLayer()
     this->ScreenFade([=](){
         CObjectManager::Instance()->ZoomIn();
         this->clearData();
-        this->createRandomCoin();
+//        this->createRandomCoin();
         this->getFreeReward();
         this->MenuFadeIn();
         m_UILayer->setVisible(false);
