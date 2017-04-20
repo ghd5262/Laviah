@@ -334,7 +334,11 @@ void CGameScene::BonusTimeEnd()
 
 CPopup* CGameScene::Reward()
 {
+    CObjectManager::Instance()->ZoomInRank();
+    this->MenuFadeOut();
+
     return CRewardPopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);

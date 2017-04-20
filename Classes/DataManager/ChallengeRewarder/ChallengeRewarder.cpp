@@ -34,7 +34,7 @@ sREWARD_DATA CChallengeRewarder::PetReward(sREWARD_DATA data) {
 }
 
 sREWARD_DATA CChallengeRewarder::coinRewardRandom(sREWARD_DATA data) {
-	data._value = cocos2d::random<int>(data._value, data._value + 100);
+	data._value = cocos2d::random<int>(data._value, data._value + 50);
 	CCLOG("COIN REWARD RADNOM %d", data._value);
 	return coinReward(data);
 }

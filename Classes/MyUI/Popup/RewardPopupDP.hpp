@@ -18,6 +18,9 @@ protected:
 private:
     void goldReward();
     void characterReward();
+    void characterCreator1(cocos2d::Sprite* character);
+    void characterCreator2(cocos2d::Sprite* character);
+    void characterCreator3(cocos2d::Sprite* character);
     
 	CRewardPopupDP(const sREWARD_DATA reward)
 		: m_Reward(reward){};

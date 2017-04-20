@@ -81,11 +81,11 @@ bool CRocket::init()
 		->addEventListener([=](Node* sender){
 		auto popup = CGameScene::getGameScene()->Reward();
 		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
-		rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 0);
-        rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+		rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 50);
+        rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_CHARACTER_RANDOM, 50);
 		rewardPopup->setExitCallback([=](){
-			sender->setVisible(false);
-            this->ChangeState(CFlyAway::Instance());
+//			sender->setVisible(false);
+//            this->ChangeState(CFlyAway::Instance());
 		});
 	})
 		->setButtonNormalImage("rewardIcon_s.png")
