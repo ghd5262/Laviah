@@ -156,5 +156,7 @@ bool CWorkshopPopup::init()
 
 void CWorkshopPopup::End(Node* sender){
     CObjectManager::Instance()->ZoomOutRank();
+    CGameScene::getGameScene()->MenuFadeIn();
+    
 	this->popupClose(1.3f);
 }

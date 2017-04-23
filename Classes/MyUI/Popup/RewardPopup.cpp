@@ -163,5 +163,7 @@ void CRewardPopup::open()
 void CRewardPopup::end()
 {
     CObjectManager::Instance()->ZoomOutRank();
+    CGameScene::getGameScene()->MenuFadeIn();
+    
     this->popupClose(1.3f);
 }

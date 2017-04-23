@@ -158,8 +158,8 @@ void CPlayer::LostSomeHealth(float loseHealth)
 //        CObjectManager::Instance()->SpeedControl(0.5f, 0);
 //        CObjectManager::Instance()->ZoomIn();
 //        CGameScene::getGameScene()->GameEnd();
-		if (GLOBAL->RUN_SCORE < 3000)	CGameScene::getGameScene()->GameResult();
-		else							CGameScene::getGameScene()->WatchVideo();
+		if (GLOBAL->RUN_SCORE < 0 || GLOBAL->REVIVE_COUNT)	CGameScene::getGameScene()->GameResult();
+		else                                                CGameScene::getGameScene()->WatchVideo();
 	}
 }
 

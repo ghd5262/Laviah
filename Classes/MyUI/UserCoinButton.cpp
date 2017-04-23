@@ -42,7 +42,7 @@ bool CUserCoinButton::init()
 		this->addChild(m_CoinLabel);
 	}
 
-	m_CoinIcon = Sprite::create("coinIcon_2.png");
+	m_CoinIcon = Sprite::create("coinIcon_s.png");
 	if (m_CoinIcon != nullptr){
 		m_CoinIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		m_CoinIcon->setColor(COLOR::GOLD);

@@ -53,7 +53,6 @@ bool CChallengePopupDP::init()
                                       TextVAlignment::CENTER);
     label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     label->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.5f));
-    label->setColor(COLOR::DARKGRAY);
 	this->addChild(label);
         
     if (!complete &&
@@ -72,7 +71,6 @@ bool CChallengePopupDP::init()
 		->setButtonPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f))
 		->show(this);
 
-		skipBtn->setColor(COLOR::DARKGRAY);
     }
 	if (complete)
 	{

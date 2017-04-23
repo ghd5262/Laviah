@@ -170,9 +170,9 @@ void CGameScene::GamePause()
 
 void CGameScene::GameResult()
 {
+    CObjectManager::Instance()->ZoomInRank();    
     this->createResultPopup();
     this->GamePause();
-    m_ZoomLayer->pause();
 }
 
 void CGameScene::GameEnd()
@@ -378,6 +378,7 @@ void CGameScene::createVideoPopup()
 void CGameScene::createChallengePopup()
 {
     CChallengePopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
@@ -386,6 +387,7 @@ void CGameScene::createChallengePopup()
 void CGameScene::createResultPopup()
 {
     CResultPopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);

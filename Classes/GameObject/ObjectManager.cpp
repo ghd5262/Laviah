@@ -209,7 +209,6 @@ void CObjectManager::ZoomIn()
                true);
     m_Rocket->setVisible(true);
     m_Player->setVisible(true);
-    CGameScene::getGameScene()->MenuFadeIn();
 }
 
 void CObjectManager::ZoomIn2()
