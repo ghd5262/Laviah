@@ -142,7 +142,6 @@ void CRewardPopupDP::characterCreator1(cocos2d::Sprite* character)
         particle->setStartSize(80);
         particle->setStartSizeVar(70);
         particle->setEndSize(0);
-        particle->setSpeed(200);
         particle->setTotalParticles(100);
         particle->setAngle(random<int>(0, 360));
         particle->setStartColor(Color4F::BLACK);

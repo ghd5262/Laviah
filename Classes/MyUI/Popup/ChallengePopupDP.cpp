@@ -78,7 +78,6 @@ bool CChallengePopupDP::init()
 		auto completeIcon = Sprite::create("completeIcon.png");
 		completeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		completeIcon->setPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f));
-		completeIcon->setColor(COLOR::DARKGRAY);
 		this->addChild(completeIcon);
 
 
