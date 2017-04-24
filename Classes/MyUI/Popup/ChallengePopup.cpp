@@ -97,6 +97,8 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
         rewardPopup->setExitCallback([=](){
             
+            // If there are more non-completed challenges than limit count.
+            // Set challenges until non-exist.
 			if (CChallengeDataManager::Instance()->NonCompleteChallengeExist() >= CHALLENGE_DEFINE::LIMIT_COUNT){
 				// Do open challenge popup again.
 				CGameScene::getGameScene()->ShowChallenge();

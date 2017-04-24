@@ -4,6 +4,7 @@
 using namespace cocos2d;
 
 CFreeRewardManager::CFreeRewardManager()
+: m_RewardAble(false)
 {
     m_LimitTimeList.emplace_back(0LL);
     m_LimitTimeList.emplace_back(60LL);

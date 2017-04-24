@@ -179,6 +179,7 @@ void CGameScene::GameEnd()
 {
     this->createEndPopup();
     this->GamePause();
+    m_ZoomLayer->pause();
 }
 
 void CGameScene::GameHelp()
@@ -396,6 +397,7 @@ void CGameScene::createResultPopup()
 void CGameScene::createEndPopup()
 {
     CGameEndPopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
@@ -554,8 +556,9 @@ void CGameScene::getFreeReward()
         auto freeRewardTime    = CFreeRewardManager::Instance()->getFreeRewardTimeLimit();
         
         if((currentTimestamp - rewardTimestamp) > freeRewardTime){
-            CObjectManager::Instance()->getRocket()->ComebackHome();
-            CObjectManager::Instance()->getRocket()->Gift();
+            CFreeRewardManager::Instance()->setRewardAble(true);
+//            CObjectManager::Instance()->getRocket()->ComebackHome();
+//            CObjectManager::Instance()->getRocket()->Gift();
             
             // reward level up
             CFreeRewardManager::Instance()->FreeRewardLevelUP();

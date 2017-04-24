@@ -33,7 +33,7 @@ public:
     void BonusTimeBegan();
     void BonusTimeEnd();
 	void ChangeState(CState<CRocket>* newState){ m_FSM->ChangeState(newState); }
-	void Gift();
+//	void Gift();
 
 	void setArriveCallback(const ARRIVE_CALLBACK& callback){ m_ArriveCallback = callback; }
     cocos2d::Vec2 getTargetPos() const { return m_TargetPos; }
@@ -71,7 +71,7 @@ private:
     cocos2d::Vec2 m_CenterPos;
     cocos2d::Vec2 m_PlayerPos;
     cocos2d::Vec2 m_TargetPos;
-	CMyButton* m_Gift;
+//	CMyButton* m_Gift;
     float m_FlyLimitMax;
     float m_FlyLimitMin;
     float m_Time;

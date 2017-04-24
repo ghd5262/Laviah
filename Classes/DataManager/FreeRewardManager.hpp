@@ -11,6 +11,7 @@ public:
     long long getFreeRewardTimeLimit();
     void FreeRewardLevelUP();
     
+    CC_SYNTHESIZE(bool, m_RewardAble, RewardAble);
 private:
     CFreeRewardManager();
     virtual ~CFreeRewardManager();

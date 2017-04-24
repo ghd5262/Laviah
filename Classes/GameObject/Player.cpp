@@ -154,13 +154,8 @@ void CPlayer::LostSomeHealth(float loseHealth)
 	else{
         m_fLife = 0.f;
 		this->PlayerDead();
-        CComboScore::Instance()->ComboScoreReset();
-//        CObjectManager::Instance()->SpeedControl(0.5f, 0);
-//        CObjectManager::Instance()->ZoomIn();
-//        CGameScene::getGameScene()->GameEnd();
-		if (GLOBAL->RUN_SCORE < 0 || GLOBAL->REVIVE_COUNT)	CGameScene::getGameScene()->GameResult();
-		else                                                CGameScene::getGameScene()->WatchVideo();
-	}
+        CGameScene::getGameScene()->GameEnd();
+    }
 }
 
 // Dir -1 == Left, 1 == Right

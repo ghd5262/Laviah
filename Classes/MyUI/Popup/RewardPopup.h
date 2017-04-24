@@ -27,7 +27,8 @@ private:
     , m_ExitCallback(nullptr)
     , m_BtnEnd(nullptr)
     , m_BG(nullptr)
-    , m_RewardIndex(0){};
+    , m_RewardIndex(0)
+    , m_OpenEnable(true){};
 	virtual ~CRewardPopup(){};
 
 private:
@@ -37,4 +38,5 @@ private:
     CMyButton* m_BtnEnd;
     cocos2d::LayerColor* m_BG;
 	int m_RewardIndex;
+    bool m_OpenEnable;
 };

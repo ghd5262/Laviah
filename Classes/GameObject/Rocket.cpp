@@ -25,7 +25,7 @@ CRocket::CRocket()
 , m_PlayerPos(Vec2::ZERO)
 , m_Arrive(false)
 , m_ArriveCallback(nullptr)
-, m_Gift(nullptr)
+//, m_Gift(nullptr)
 , m_Player(CObjectManager::Instance()->getPlayer())
 {}
 
@@ -77,23 +77,23 @@ bool CRocket::init()
     
 	this->setBoundingRadius(ROCKET_DEFINE::BOUNDING_RADIUS);
 
-	m_Gift = CMyButton::create()
-		->addEventListener([=](Node* sender){
-		auto popup = CGameScene::getGameScene()->Reward();
-		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
-		rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 50);
-        rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_CHARACTER_RANDOM, 50);
-		rewardPopup->setExitCallback([=](){
-//			sender->setVisible(false);
-//            this->ChangeState(CFlyAway::Instance());
-		});
-	})
-		->setButtonNormalImage("rewardIcon_s.png")
-		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setButtonPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.65f))
-		->show(this);
-	m_Gift->setColor(COLOR::GOLD);
-    m_Gift->setVisible(false);
+//	m_Gift = CMyButton::create()
+//		->addEventListener([=](Node* sender){
+//		auto popup = CGameScene::getGameScene()->Reward();
+//		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
+//		rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 50);
+//        rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_CHARACTER_RANDOM, 50);
+//		rewardPopup->setExitCallback([=](){
+////			sender->setVisible(false);
+////            this->ChangeState(CFlyAway::Instance());
+//		});
+//	})
+//		->setButtonNormalImage("rewardIcon_s.png")
+//		->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//		->setButtonPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.65f))
+//		->show(this);
+//	m_Gift->setColor(COLOR::GOLD);
+//    m_Gift->setVisible(false);
     
     m_CenterPos = Vec2(visibleSize / 2);
 	m_Velocity = Vec2(0, 1);
@@ -291,7 +291,7 @@ void CRocket::createFlameParticle()
 	this->addChild(m_ParticleFlame);
 }
 
-void CRocket::Gift()
-{
-	m_Gift->setVisible(true);
-}
+//void CRocket::Gift()
+//{
+//	m_Gift->setVisible(true);
+//}

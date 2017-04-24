@@ -97,9 +97,9 @@ bool CRewardPopup::init()
     });
     
     this->setCloseAnimation([=](Node* sender){
-        m_BG->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(popupSize.width * 0.5f,
-                                                                             popupSize.height * 1.5f))));
-        
+//        m_BG->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(popupSize.width * 0.5f,
+//                                                                             popupSize.height * 1.5f))));
+        m_BG->runAction(FadeTo::create(0.3f, 0));
         btnUserCoin->runAction(FadeTo::create(0.3f, 0));
         m_BtnEnd->runAction(FadeTo::create(0.3f, 0));
     });
@@ -133,13 +133,21 @@ CPopup* CRewardPopup::createRewardDP(sREWARD_DATA data)
 
 void CRewardPopup::open()
 {
+    if(!m_OpenEnable) return;
+    m_OpenEnable = false;
+    
+    // Open enable after 5 seconds.
+    this->scheduleOnce([=](float delta){
+        m_OpenEnable = true;
+    }, 5.f, "RewardOpenAble");
+    
     this->changeDefaultCallback([=](Node* sender){ this->open(); });
     this->setDefaultCallbackCleanUp(false);
     m_BtnEnd->setTouchEnable(false);
     m_BtnEnd->runAction(FadeTo::create(0.3f, 0));
     
 	if (m_RewardDP != nullptr){
-		m_RewardDP->popupClose(1.3f);
+		m_RewardDP->popupClose();
 		m_RewardDP = nullptr;
 	}
 
@@ -162,8 +170,8 @@ void CRewardPopup::open()
 
 void CRewardPopup::end()
 {
-    CObjectManager::Instance()->ZoomOutRank();
-    CGameScene::getGameScene()->MenuFadeIn();
+//    CObjectManager::Instance()->ZoomOutRank();
+//    CGameScene::getGameScene()->MenuFadeIn();
     
-    this->popupClose(1.3f);
+    this->popupClose();
 }
