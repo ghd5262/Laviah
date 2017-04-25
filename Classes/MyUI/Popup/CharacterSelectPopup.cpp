@@ -83,7 +83,6 @@ bool CCharacterSelectPopup::init()
 		listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		listView->setPosition(layerSize / 2);
 		listView->setMagneticType(ListView::MagneticType::CENTER);
-        listView->setTouchEnabled(false);
 		listView->ScrollView::addEventListener((ui::ListView::ccScrollViewCallback)std::bind(&CCharacterSelectPopup::ScrollCallback, this, std::placeholders::_1, std::placeholders::_2));
 		scrollBack->addChild(listView);
 
@@ -173,7 +172,6 @@ bool CCharacterSelectPopup::init()
     ->show(bg);
     
 	btnEnd->setOpacity(0);
-    btnEnd->setTouchEnabled(false);
 
 	this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* owner){
@@ -194,14 +192,8 @@ bool CCharacterSelectPopup::init()
         m_CenterDP->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f), CallFunc::create([=](){
             m_CenterDP->setVisible(true);
             CObjectManager::Instance()->getPlayer()->setVisible(false);
-            btnEnd->setTouchEnabled(true);
-            listView->setTouchEnabled(true);
-            this->changeDefaultCallback([=](Node* sender){
-                this->End(sender);
-            });
-            this->setDefaultCallbackCleanUp(true);
         })));
-	});
+	}, 1.f);
 
 	this->setCloseAnimation([=](Node* sender){
 		m_CenterCharacterNameLabel->runAction(FadeTo::create(0.5f, 0));
@@ -216,7 +208,9 @@ bool CCharacterSelectPopup::init()
             m_CenterDP->setVisible(false);
 	});
     
-    this->setDefaultCallback([=](Node* sender){}, false);
+    this->setDefaultCallback([=](Node* sender){
+        this->End(sender);
+    });
     
 	return true;
 }

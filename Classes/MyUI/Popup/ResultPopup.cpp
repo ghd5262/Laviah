@@ -47,6 +47,15 @@ bool CResultPopup::init()
 	}
     auto layerSize = bg->getContentSize();
     
+    std::array<Vec2, 6> posDown  = {
+        Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * 0.3f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * 0.1f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * 0.0f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * -.1f),
+    };
+    
     std::array<Vec2, 6> posArray = {
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.7f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.65f),
@@ -162,12 +171,30 @@ bool CResultPopup::init()
     
     CComboScore::Instance()->ComboScoreReset();
 	bool challengeAll    = CChallengeDataManager::Instance()->CheckCompleteAll();
-    bool rewardPopupOpen = (GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT || challengeAll);
+    m_ChallengePopupOpen = (GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT || challengeAll);
     
-	createNormalLayer(resultIcon[0],   resultContent[0], GLOBAL->STAR_SCORE,   posArray[0], 50);
-	createNormalLayer(resultIcon[1],   resultContent[1], GLOBAL->BEST_COMBO,   posArray[1], 50);
-    createMultipleLayer(resultIcon[2], resultContent[2], GLOBAL->COIN_SCORE,   posArray[2], 50, 10);
-	createMultipleLayer(resultIcon[3], resultContent[3], GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT, posArray[3], 50, 100);
+    // score layer array
+    std::array<Node*, 6> scoreLayerArray;
+    
+	scoreLayerArray.at(0) = createNormalLayer(resultIcon[0],
+                                              resultContent[0],
+                                              GLOBAL->STAR_SCORE,
+                                              posArray[0], 50);
+    
+	scoreLayerArray.at(1) = createNormalLayer(resultIcon[1],
+                                              resultContent[1],
+                                              GLOBAL->BEST_COMBO,
+                                              posArray[1], 50);
+    
+    scoreLayerArray.at(2) = createMultipleLayer(resultIcon[2],
+                                                resultContent[2],
+                                                GLOBAL->COIN_SCORE,
+                                                posArray[2], 50, 10);
+    
+	scoreLayerArray.at(3) = createMultipleLayer(resultIcon[3],
+                                                resultContent[3],
+                                                GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT,
+                                                posArray[3], 50, 100);
     
     // combo가 user best combo면 저장한다.
 	auto bestCombo = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_COMBO);
@@ -202,7 +229,8 @@ bool CResultPopup::init()
         }
     }
     
-    auto totalScoreBG = createLayerBG(posArray[4], "resultPopup_1.png");
+    auto totalScoreBG     = createLayerBG(posArray[4], "resultPopup_1.png");
+    scoreLayerArray.at(4) = totalScoreBG;
     
     // create total score content label
     createContent(totalScoreBG, Vec2(totalScoreBG->getContentSize().width * 0.08f,
@@ -217,7 +245,12 @@ bool CResultPopup::init()
     ->setColor(COLOR::BRIGHTGRAY);
     
     // create my best score layer
-    createNormalLayer(resultIcon[5], resultContent[5], bestScore,  posArray[5], 50);
+    scoreLayerArray.at(5) = createNormalLayer(resultIcon[5],
+                                              resultContent[5],
+                                              bestScore,
+                                              posArray[5], 50);
+    
+    // update coin
     CUserDataManager::Instance()->CoinUpdate(GLOBAL->COIN_SCORE);
     
     // get exp
@@ -233,7 +266,6 @@ bool CResultPopup::init()
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(pos)
         ->show(this);
-        button->setTouchEnable(false);
         button->setVisible(visible);
         return button;
     };
@@ -266,9 +298,9 @@ bool CResultPopup::init()
     };
     
     std::array<bool, 6> btnVisibleArray = {
-        (!rewardPopupOpen),
-        (!rewardPopupOpen),
-        ( rewardPopupOpen),
+        (!m_ChallengePopupOpen),
+        (!m_ChallengePopupOpen),
+        ( m_ChallengePopupOpen),
         ( true ),
         ( CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1000 ),
         ( CFreeRewardManager::Instance()->getRewardAble() ),
@@ -305,19 +337,7 @@ bool CResultPopup::init()
         
         auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
         auto easeAction = EaseExponentialInOut::create(moveAction);
-        auto callFunc   = CallFunc::create([=](){
-            
-            for(auto btn : btnArray)
-                btn->setTouchEnable(true);
-            
-            // if there are some reward from challenge. open reward popup after end of result popup.
-            if ( rewardPopupOpen )  this->changeDefaultCallback([=](Node* sender){ this->End(sender);    });
-            else                    this->changeDefaultCallback([=](Node* sender){ this->GoHome(sender); });
-    
-            this->setDefaultCallbackCleanUp(true);
-        });
-        auto sequance   = Sequence::createWithTwoActions(easeAction, callFunc);
-        bg->runAction(sequance);
+        bg->runAction(easeAction);
         
         
         auto action = [=](Node* owner){
@@ -333,7 +353,7 @@ bool CResultPopup::init()
         
         action(resultLabel);
         action(btnUserCoin);
-    });
+    }, 1.2f);
     
 	this->setCloseAnimation([=](Node* sender){
 
@@ -343,35 +363,48 @@ bool CResultPopup::init()
 		resultLabel->runAction(FadeTo::create(0.3f, 0));
 		btnUserCoin->runAction(FadeTo::create(0.3f, 0));
         
-        auto action = [=](Node* owner){
+        if( m_ChallengePopupOpen ){
+            auto action = [=](Node* sprite, Vec2 pos){
+                auto move       = MoveTo::create(0.35f, pos);
+                auto sine       = EaseSineIn::create(move);
+                auto fadeout    = FadeTo::create(0.2f, 0);
+                auto spawn      = Spawn::createWithTwoActions(sine, fadeout);
+                
+                sprite->runAction(spawn);
+            };
+            
+            for(int index = 0; index < scoreLayerArray.size(); index++){
+                action(scoreLayerArray.at(index), posDown.at(index));
+            }
+        }
+        else {
             auto move = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
                                                   layerSize.height * 1.5f));
             auto ease = EaseExponentialInOut::create(move);
-            owner->runAction(ease);
-        };
-        
-        if( rewardPopupOpen )   bg->runAction(FadeTo::create(0.3f, 0));
-        else                    action(bg);
+            bg->runAction(ease);
+        }
 	});
    
-    this->setDefaultCallback([=](Node* sender){}, false);
+    // if there are some reward from challenge. open reward popup after end of result popup.
+    if ( m_ChallengePopupOpen ) this->setDefaultCallback([=](Node* sender){ this->End(sender);    });
+    else                        this->setDefaultCallback([=](Node* sender){ this->GoHome(sender); });
     
 	return true;
 }
 
 void CResultPopup::Reset(Node* sender){
 	CGameScene::getGameScene()->GameStart();
-    this->popupClose(1.3f);
+    this->exit();
 }
 
 void CResultPopup::GoHome(Node* sender){
 	CGameScene::getGameScene()->OpenGameMenuLayer();
-	this->popupClose(1.3f);
+    this->exit();
 }
 
 void CResultPopup::End(Node* sender){
     CGameScene::getGameScene()->ShowChallenge();
-    this->popupClose(1.3f);
+    this->exit();
 }
 
 void CResultPopup::GetCoinFromVideo(cocos2d::Node* sender)
@@ -397,4 +430,10 @@ void CResultPopup::createRewardPopup(std::string key, int value)
     auto popup = CGameScene::getGameScene()->Reward();
     auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
     rewardPopup->AddRewardToList(key, value);
+}
+
+void CResultPopup::exit()
+{
+    if(m_ChallengePopupOpen) this->popupClose();
+    else                     this->popupClose(1.3f);
 }

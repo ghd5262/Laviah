@@ -31,6 +31,7 @@ CPopup::CPopup()
 , m_BackgroundVisible(true)
 , m_DefaultCallbackCleanUp(true)
 , m_DefaultCallbackEnable(true)
+, m_TouchEnableDelayTime(0.f)
 {
 	this->setContentSize(Director::getInstance()->getVisibleSize());
 }
@@ -177,7 +178,7 @@ CPopup* CPopup::setDefaultCallback(const NODE_CALLBACK &callback, bool cleanUp/*
         m_DefaultCallbackStack.push_back(sDEFAULT_CALLBACK([=](Node* sender){
             this->retain();
             m_DefaultCallBack(this);
-            if (m_DefaultCallbackCleanUp) //cleanup 일때 stack에서는 따로 안지워도 되는지 확인바람 -> 호출 후 지우고 있음
+            if (m_DefaultCallbackCleanUp) //cleanup 일 경우 호출 후 stack에서 삭제함
                 m_DefaultCallBack = nullptr;
             this->release();
         }, this));
@@ -186,10 +187,11 @@ CPopup* CPopup::setDefaultCallback(const NODE_CALLBACK &callback, bool cleanUp/*
     return this;
 }
 
-CPopup* CPopup::setOpenAnimation(const NODE_CALLBACK &callback)
+CPopup* CPopup::setOpenAnimation(const NODE_CALLBACK &callback, float delay/* = 0.f*/)
 {
 	m_OpenAnimationCallBack = callback;
-
+    m_TouchEnableDelayTime = delay;
+    
 	return this;
 }
 
@@ -291,29 +293,29 @@ void CPopup::popupOpenAnimation()
 	};
 
 	FiniteTimeAction* action = nullptr;
-
-	switch (m_PopupOpenAnimation){
-
-	case ePOPUP_ANIMATION::NONE:
-		action = CallFunc::create([=](){
-			if (m_OpenAnimationCallBack != nullptr){
-				this->retain();
-				m_OpenAnimationCallBack(this);
-				this->release();
-			}
-		}); break;
-	case ePOPUP_ANIMATION::OPEN_LEFT: action = expotential(posArray[0]); break;
-	case ePOPUP_ANIMATION::OPEN_RIGHT:action = expotential(posArray[1]); break;
-	case ePOPUP_ANIMATION::OPEN_DOWN: action = expotential(posArray[2]); break;
-	case ePOPUP_ANIMATION::OPEN_UP:   action = expotential(posArray[3]); break;
-	case ePOPUP_ANIMATION::OPEN_CENTER:
-	{
-		this->setScale(0.f);
-		action = EaseElasticOut::create(ScaleTo::create(0.5f, 1.0f), 0.5f);
-	} break;
-	}
-
-	if (m_BackgroundVisible)
+    switch (m_PopupOpenAnimation){
+            
+        case ePOPUP_ANIMATION::NONE:{
+            action = CallFunc::create([=](){
+                if (m_OpenAnimationCallBack != nullptr){
+                    this->retain();
+                    m_OpenAnimationCallBack(this);
+                    this->release();
+                }
+            });
+        } break;
+        case ePOPUP_ANIMATION::OPEN_LEFT: action = expotential(posArray[0]); break;
+        case ePOPUP_ANIMATION::OPEN_RIGHT:action = expotential(posArray[1]); break;
+        case ePOPUP_ANIMATION::OPEN_DOWN: action = expotential(posArray[2]); break;
+        case ePOPUP_ANIMATION::OPEN_UP:   action = expotential(posArray[3]); break;
+        case ePOPUP_ANIMATION::OPEN_CENTER:
+        {
+            this->setScale(0.f);
+            action = EaseElasticOut::create(ScaleTo::create(0.5f, 1.0f), 0.5f);
+        } break;
+    }
+    
+    if (m_BackgroundVisible)
 	{
 		auto originOpacity = m_EmptyBackground->getOpacity();
 		m_EmptyBackground->setOpacity(0);
@@ -321,11 +323,26 @@ void CPopup::popupOpenAnimation()
 		m_EmptyBackground->runAction(fadeInAction);
 	}
     
+    // empty default callback for delay.
+    auto originCallback         = m_DefaultCallBack;
+    auto originCleanup          = m_DefaultCallbackCleanUp;
+    m_DefaultCallBack           = [=](Node* sender){};
+    m_DefaultCallbackCleanUp    = false;
+    
+    // Enable touch after open animation.
     auto touchEnable = CallFunc::create([=](){
         this->popupTouchEnable(true);
+        
+        // Enable default callback after open animation.
+        // Set default callback by the one originally set.
+        this->changeDefaultCallback(originCallback);
+        this->setDefaultCallbackCleanUp(originCleanup);
     });
     
-    this->runAction(Sequence::createWithTwoActions(action, touchEnable));
+    this->runAction(Sequence::create(action,
+                                     DelayTime::create(m_TouchEnableDelayTime),
+                                     touchEnable,
+                                     nullptr));
 }
 
 void CPopup::popupClose(float delayTime/* = 0.5f*/)

@@ -131,7 +131,7 @@ void CWorkshopPopupDP::Buy(Node* sender)
         if(value >= m_WorkshopItem._maxLevel){
             m_BtnBuy->changeContents(TRANSLATE("WORKSHOP_BUTTON_MAX_LEVEL"));
             m_BtnBuy->setTouchEnable(false);
-            m_BtnBuy->changeFontColor(COLOR::DARKGRAY);
+            m_BtnBuy->changeFontColor(Color3B::GRAY);
         }
         else{
             m_BtnBuy->changeContents(MakeString(TRANSLATE("WORKSHOP_BUTTON_BUY_LEVEL").c_str(), m_WorkshopItem._costPerLevel.at(value)));

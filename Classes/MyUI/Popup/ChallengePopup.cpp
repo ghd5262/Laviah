@@ -123,20 +123,6 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
         
 	}, "rewardIcon.png", m_DPStartPosArray[3])
     ->setTouchEnable(false, Color3B::WHITE);
-    
-    this->setDefaultCallback([=](Node* sender){
-        this->GoHome(sender);
-    });
-    
-    // Do below when challenge was completed all.
-	if (CChallengeDataManager::Instance()->CheckCompleteAll()){
-        btnReward->setTouchEnable(true);
-        btnReward->setColor(COLOR::GOLD);
-        btnReset->setVisible(false);
-        btnHome->setVisible(false);
-		this->setDefaultCallback([=](Node* sender){CCLOG("Do nothing."); });
-		this->setDefaultCallbackCleanUp(false);
-	}
 
 	this->setOpenAnimation([=](Node* sender){
 		auto action = [=](Node* btn, Vec2 pos){
@@ -157,7 +143,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
         btnReset->runAction(FadeIn::create(0.5f));
         btnHome->runAction(FadeIn::create(0.5f));
         challengesLabel->runAction(FadeIn::create(0.5f));
-	});
+	}, 1.3f);
 
 	this->setCloseAnimation([=](Node* sender){
 
@@ -182,7 +168,21 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
         challengesLabel->runAction(FadeTo::create(0.5f, 0));
     });
 
-	return 	CPopup::show(parent, zOrder);
+    this->setDefaultCallback([=](Node* sender){
+        this->GoHome(sender);
+    });
+    
+    // Do below when challenge was completed all.
+    if (CChallengeDataManager::Instance()->CheckCompleteAll()){
+        btnReward->setTouchEnable(true);
+        btnReward->setColor(COLOR::GOLD);
+        btnReset->setVisible(false);
+        btnHome->setVisible(false);
+        this->setDefaultCallback([=](Node* sender){});
+        this->setDefaultCallbackCleanUp(false);
+    }
+    
+    return 	CPopup::show(parent, zOrder);
 }
 
 void CChallengePopup::initChallengeList()

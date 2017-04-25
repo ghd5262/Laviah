@@ -99,7 +99,6 @@ bool CFacebookRankPopup::init()
                              bg->getContentSize().height * 0.05f))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(bg);
-    btnEnd->setTouchEnable(false);
     
     this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* owner){
@@ -115,16 +114,9 @@ bool CFacebookRankPopup::init()
 
         auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
         auto easeAction = EaseExponentialInOut::create(moveAction);
-        auto callFunc   = CallFunc::create([=](){
-            btnEnd->setTouchEnable(true);
-            
-            this->changeDefaultCallback([=](Node* sender){ this->End(sender); });
-            this->setDefaultCallbackCleanUp(true);
-        });
-        auto sequance   = Sequence::createWithTwoActions(easeAction, callFunc);
 
-        bg->runAction(sequance);
-    });
+        bg->runAction(easeAction);
+    }, 1.2f);
     
     this->setCloseAnimation([=](Node* sender){
         bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
@@ -133,7 +125,9 @@ bool CFacebookRankPopup::init()
         rankingLabel->runAction(FadeTo::create(0.3f, 0));
     });
     
-    this->setDefaultCallback([=](Node* sender){}, false);
+    this->setDefaultCallback([=](Node* sender){
+        this->End(sender);
+    });
     
     return true;
 }

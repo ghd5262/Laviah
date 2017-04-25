@@ -39,7 +39,7 @@ public:
 	CPopup* setPositiveButton(const NODE_CALLBACK &callback, std::string btnName);
 	CPopup* setNegativeButton(const NODE_CALLBACK &callback, std::string btnName);
 	CPopup* setDefaultCallback(const NODE_CALLBACK &callback, bool cleanUp = true);
-	CPopup* setOpenAnimation(const NODE_CALLBACK &callback);
+	CPopup* setOpenAnimation(const NODE_CALLBACK &callback, float delay = 0.f);
 	CPopup* setCloseAnimation(const NODE_CALLBACK &callback);
 	CPopup* setDefaultAnimation(ePOPUP_ANIMATION open, ePOPUP_ANIMATION close);
 	CPopup* setMessage(std::string message);
@@ -57,9 +57,8 @@ public:
     void popupTouchEnable(bool enable);
     void changeDefaultCallback(const NODE_CALLBACK &callback);
     void setDefaultCallbackToTopAgain();
-    void removeDefaultCallbackFromStack();
     std::string getMessage() const { return m_Message; }
-    
+
     static void DefaultCallback();
 	
 	CC_SYNTHESIZE(bool, m_DefaultCallbackCleanUp, DefaultCallbackCleanUp);
@@ -72,6 +71,7 @@ protected:
 private:
 	void backgroundTouchDisable();
     void popupTouchDisable();
+    void removeDefaultCallbackFromStack();
 
 private:
 	NODE_CALLBACK m_PositiveButtonCallBack;
@@ -93,6 +93,7 @@ private:
     Vec2 m_AnchorPoint;
     ePOPUP_ANIMATION m_PopupOpenAnimation;
     ePOPUP_ANIMATION m_PopupCloseAnimation;
+    float m_TouchEnableDelayTime;
 	int m_MessageFontSize;
 	int m_ButtonFontSize;
     bool m_BackgroundVisible;

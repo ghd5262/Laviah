@@ -38,7 +38,7 @@ bool CRewardPopup::init()
         this->addChild(m_BG);
     }
     
-    auto tab = CMyButton::create()
+    CMyButton::create()
     ->addEventListener([=](Node* sender){
         this->open();
     })
@@ -47,7 +47,6 @@ bool CRewardPopup::init()
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(this->getContentSize() / 2)
     ->show(this);
-    tab->setTouchEnable(false);
     
     m_BtnEnd = CMyButton::create()
     ->addEventListener([=](Node* sender){
@@ -59,7 +58,6 @@ bool CRewardPopup::init()
     ->setButtonPosition(Vec2(this->getContentSize().width * 0.92f,
                              this->getContentSize().height * 0.05f))
     ->show(this);
-    m_BtnEnd->setTouchEnable(false);
     
     auto btnUserCoin = CUserCoinButton::create();
     if (btnUserCoin != nullptr)
@@ -84,17 +82,9 @@ bool CRewardPopup::init()
         
         auto moveAction = MoveTo::create(1.2f, Vec2(popupSize.width * 0.5f, popupSize.height * 0.5f));
         auto easeAction = EaseExponentialInOut::create(moveAction);
-        auto callFunc   = CallFunc::create([=](){
-            tab->setTouchEnable(true);
-            m_BtnEnd->setTouchEnable(true);
-            
-            this->changeDefaultCallback([=](Node* sender){ this->end(); });
-            this->setDefaultCallbackCleanUp(true);
-        });
-        auto sequance   = Sequence::createWithTwoActions(easeAction, callFunc);
+        m_BG->runAction(easeAction);
         
-        m_BG->runAction(sequance);
-    });
+    }, 1.2f);
     
     this->setCloseAnimation([=](Node* sender){
 //        m_BG->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(popupSize.width * 0.5f,
@@ -104,7 +94,9 @@ bool CRewardPopup::init()
         m_BtnEnd->runAction(FadeTo::create(0.3f, 0));
     });
     
-    this->setDefaultCallback([=](Node* sender){}, false);
+    this->setDefaultCallback([=](Node* sender){
+        this->end(); 
+    });
 
     return true;
 }

@@ -125,7 +125,7 @@ bool CPausePopup::init()
 		btnExit->runAction(FadeIn::create(0.5f));
 		btnPlay->runAction(FadeIn::create(0.5f));
 		btnUserCoin->runAction(FadeIn::create(0.5f));
-	});
+	}, 1.f);
 
 	this->setCloseAnimation([=](Node* sender){
 

@@ -190,7 +190,7 @@ bool CFacebookAPITestPopup::init()
             action(targetPos.at(index)._btn, targetPos.at(index)._pos);
         }
         btnEnd->runAction(FadeIn::create(0.5f));
-    });
+    }, 1.3f);
     
     this->setCloseAnimation([=](Node* sender){
         

@@ -157,7 +157,7 @@ bool CVideoPopup::init()
         btnEnd->runAction(FadeIn::create(0.5f));
         reviveLabel->runAction(FadeIn::create(0.5f));
         btnUserCoin->runAction(FadeIn::create(0.5f));
-    });
+    }, 1.3f);
     
     this->setCloseAnimation([=](Node* sender){
         

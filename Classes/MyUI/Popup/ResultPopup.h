@@ -20,8 +20,12 @@ private:
     void GetFreeReward(cocos2d::Node* sender);
     
     void createRewardPopup(std::string key, int value);
-
-	CResultPopup(){};
+    void exit();
+    
+	CResultPopup()
+    : m_ChallengePopupOpen(false){};
 	virtual ~CResultPopup(){};
 
+private:
+    bool m_ChallengePopupOpen;
 };

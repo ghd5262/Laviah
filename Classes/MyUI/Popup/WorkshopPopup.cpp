@@ -103,7 +103,6 @@ bool CWorkshopPopup::init()
     ->setButtonPosition(Vec2(this->getContentSize().width * 0.92f,
                              this->getContentSize().height * 0.05f))
     ->show(this);
-    btnEnd->setTouchEnable(false);
     
     auto btnUserCoin = CUserCoinButton::create();
     if (btnUserCoin != nullptr)
@@ -129,16 +128,9 @@ bool CWorkshopPopup::init()
         
         auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
         auto easeAction = EaseExponentialInOut::create(moveAction);
-        auto callFunc   = CallFunc::create([=](){
-            btnEnd->setTouchEnable(true);
-            
-            this->changeDefaultCallback([=](Node* sender){ this->End(sender); });
-            this->setDefaultCallbackCleanUp(true);
-        });
-        auto sequance   = Sequence::createWithTwoActions(easeAction, callFunc);
+        bg->runAction(easeAction);
         
-        bg->runAction(sequance);
-	});
+	}, 1.2f);
 
 	this->setCloseAnimation([=](Node* sender){
 		bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
@@ -149,7 +141,9 @@ bool CWorkshopPopup::init()
         workShopLabel->runAction(FadeTo::create(0.3f, 0));
 	});
     
-    this->setDefaultCallback([=](Node* sender){}, false);
+    this->setDefaultCallback([=](Node* sender){
+        this->End(sender);
+    });
 
 	return true;
 }

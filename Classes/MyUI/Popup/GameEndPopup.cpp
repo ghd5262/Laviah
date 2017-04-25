@@ -50,11 +50,11 @@ bool CGameEndPopup::init()
     btnScreen->addChild(labelCrashTip);
     
     this->setOpenAnimation([=](Node* sender){
-        auto delay = DelayTime::create(1.f);
+        auto delay = DelayTime::create(0.5f);
         auto fade  = FadeIn::create(0.5f);
         auto sequence = Sequence::createWithTwoActions(delay, fade);
         btnScreen->runAction(sequence);
-    });
+    }, 1.f);
     
     this->setCloseAnimation([=](Node* sender){
         btnScreen->runAction(FadeTo::create(0.5f, 0));

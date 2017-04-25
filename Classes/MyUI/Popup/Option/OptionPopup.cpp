@@ -118,15 +118,13 @@ bool COptionPopup::init()
     }
     
     auto createButton = [=](const std::function<void(Node*)> &callback, std::string imageName, Vec2 pos)->CMyButton*{
-        auto btn = CMyButton::create()
+        return CMyButton::create()
         ->addEventListener(callback)
         ->setButtonSingleUse(true)
         ->setButtonNormalImage(imageName)
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(pos)
         ->show(this);
-        btn->setTouchEnable(false);
-        return btn;
     };
     
     auto btnEnd = createButton([=](Node* sender){
@@ -156,20 +154,12 @@ bool COptionPopup::init()
         
         auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
         auto easeAction = EaseExponentialInOut::create(moveAction);
-        auto callFunc   = CallFunc::create([=](){
-            btnEnd->setTouchEnable(true);
-            btnShare->setTouchEnable(true);
-            
-            this->changeDefaultCallback([=](Node* sender){ this->End(sender); });
-            this->setDefaultCallbackCleanUp(true);
-        });
-        auto sequance   = Sequence::createWithTwoActions(easeAction, callFunc);
         
-        bg->runAction(sequance);
+        bg->runAction(easeAction);
         
         m_TitleScrollView->jumpToItem(m_InitialScrollIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
         m_ContentScrollView->jumpToItem(m_InitialScrollIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
-    });
+    }, 1.2f);
     
     this->setCloseAnimation([=](Node* sender){
         btnEnd->runAction(FadeTo::create(0.3f, 0));
@@ -180,7 +170,9 @@ bool COptionPopup::init()
                                                                              layerSize.height * 1.5f))));
     });
     
-    this->setDefaultCallback([=](Node* sender){}, false);
+    this->setDefaultCallback([=](Node* sender){
+        this->End(sender);
+    });
         
     return true;
 }
