@@ -7,10 +7,11 @@
 #include "../GameObject/ItemManager.h"
 #include "../MyUI/Tutorial/TutorialManager.hpp"
 
-
 using namespace cocos2d;
 using namespace BULLETCREATOR;
 using namespace PLANET_DEFINE;
+
+#define PERFORMANCETEST 0
 
 CBulletCreator::CBulletCreator()
 : m_CurrentPattern(nullptr)
@@ -116,7 +117,10 @@ void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
 								   bool isDelay)
 {
     auto line = this->getOneLineOfPattern(data->_pattern, data->_width, currentHeight);
-    this->createOneLine(line, currentHeight, distance, angle, isDelay, data->_widthPadding);
+    
+    if(PERFORMANCETEST) this->createOneLine("111111111111111111111111111111111111111111111111111111111111", currentHeight, distance, angle, false, 6);
+    else                this->createOneLine(line, currentHeight, distance, angle, isDelay, data->_widthPadding);
+
 }
 
 void CBulletCreator::createOneLine(std::string line,
@@ -227,6 +231,9 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
     data._distance = distance;
     data._angle = angle;
     data._isFly = true;
+    if(PERFORMANCETEST)
+        data._power = 0;
+    
 	if (isDelay && data._speed > BULLET_STANDARD_SPEED)
         data._delayTime = (BULLET_STANDARD_DELAY - ((CREATE_DISTANCE - BOUNDING_RADIUS) / data._speed));
 

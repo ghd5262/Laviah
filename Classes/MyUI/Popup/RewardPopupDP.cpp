@@ -53,6 +53,7 @@ bool CRewardPopupDP::init()
                                                   this->getContentSize().height),
                                              TextHAlignment::CENTER,
                                              TextVAlignment::CENTER);
+    title->setColor(COLOR::DARKGRAY);
     title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     title->setPosition(Vec2(this->getContentSize().width * 0.5f,
                             this->getContentSize().height * 0.8f));
@@ -67,12 +68,12 @@ bool CRewardPopupDP::init()
             owner->runAction(fade);
         };
         
-        action(title);
+        action(this);
     });
     
     this->setCloseAnimation([=](Node* sender){
         
-        title->runAction(FadeTo::create(0.3f, 0));
+        this->runAction(FadeTo::create(0.3f, 0));
     });
     return true;
 }
@@ -113,6 +114,7 @@ void CRewardPopupDP::characterReward()
     character->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     character->setPosition(this->getContentSize() / 2);
     character->setScale(2.5f);
+    character->setCascadeOpacityEnabled(true);
     this->addChild(character);
     
     switch (random<int>(1, 2)) {

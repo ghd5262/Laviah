@@ -34,7 +34,7 @@ bool CRewardPopup::init()
     if (m_BG != nullptr){
         m_BG->setIgnoreAnchorPointForPosition(false);
         m_BG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_BG->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 1.5f));
+        m_BG->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.5f));
         this->addChild(m_BG);
     }
     
@@ -79,19 +79,19 @@ bool CRewardPopup::init()
         
         action(m_BtnEnd);
         action(btnUserCoin);
-        
-        auto moveAction = MoveTo::create(1.2f, Vec2(popupSize.width * 0.5f, popupSize.height * 0.5f));
-        auto easeAction = EaseExponentialInOut::create(moveAction);
-        m_BG->runAction(easeAction);
+        m_BG->runAction(FadeTo::create(0.5f, 255 * 0.9f));
+//        auto moveAction = MoveTo::create(1.2f, Vec2(popupSize.width * 0.5f, popupSize.height * 0.5f));
+//        auto easeAction = EaseExponentialInOut::create(moveAction);
+//        m_BG->runAction(easeAction);
         
     }, 1.2f);
     
     this->setCloseAnimation([=](Node* sender){
 //        m_BG->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(popupSize.width * 0.5f,
 //                                                                             popupSize.height * 1.5f))));
-        m_BG->runAction(FadeTo::create(0.3f, 0));
         btnUserCoin->runAction(FadeTo::create(0.3f, 0));
         m_BtnEnd->runAction(FadeTo::create(0.3f, 0));
+        m_BG->runAction(FadeTo::create(0.3f, 0));
     });
     
     this->setDefaultCallback([=](Node* sender){

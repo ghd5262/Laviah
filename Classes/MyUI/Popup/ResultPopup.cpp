@@ -88,6 +88,7 @@ bool CResultPopup::init()
     
     auto createLayerBG = [=](Vec2 pos, std::string spriteName){
         auto layerBG = Sprite::create(spriteName);
+        layerBG->setCascadeOpacityEnabled(true);
         layerBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         layerBG->setPosition(pos);
         bg->addChild(layerBG);
