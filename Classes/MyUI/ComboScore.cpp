@@ -1,5 +1,6 @@
 #include "ComboScore.h"
 #include "ScoreUI.h"
+#include "UILayer.hpp"
 #include "../Scene/GameScene.h"
 #include "../GameObject/ObjectManager.h"
 #include "../DataManager/GradientDataManager.h"
@@ -73,6 +74,9 @@ void CComboScore::AddCombo()
 	m_ComboLabel->setVisible(true);
     m_ComboLabel->setString(StringUtils::format("%d", GLOBAL->COMBO_SCORE).c_str());
 
+    // Star score ui action
+    CUILayer::Instance()->ScoreAction(GLOBAL->COMBO_LEVEL);
+    
 	GLOBAL->COMBO_LEVEL = (int(GLOBAL->COMBO_SCORE / 50)) + 1;
     if(m_OldLevel != GLOBAL->COMBO_LEVEL){
         m_OldLevel = GLOBAL->COMBO_LEVEL;

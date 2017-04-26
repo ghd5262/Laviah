@@ -31,6 +31,7 @@ CUrlSprite* CUrlSprite::build(cocos2d::Node* parent, int zOrder/* = 0*/)
         this->setTextureWithUrl(m_Url);
     
     this->setContentSize(m_Size);
+    this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     parent->addChild(this, zOrder);
     return this;
 }

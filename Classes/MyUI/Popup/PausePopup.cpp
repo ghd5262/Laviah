@@ -94,7 +94,6 @@ bool CPausePopup::init()
 	{
 		btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.05f));
 		btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		btnUserCoin->setCascadeOpacityEnabled(true);
 		btnUserCoin->setOpacity(0);
 		this->addChild(btnUserCoin);
 	}

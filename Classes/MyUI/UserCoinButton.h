@@ -14,8 +14,6 @@ protected:
 	virtual void update(float delta) override;
 
 private:
-	void EarnCoin();
-
 	CUserCoinButton()
 		: m_CoinLabel(nullptr)
 		, m_CoinIcon(nullptr)

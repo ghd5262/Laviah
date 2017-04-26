@@ -130,7 +130,7 @@ cocos2d::ui::Widget* CFacebookRivalRankLayer::createRankDP(int &scoreRef, std::s
     ->setScoreAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT)
     ->show(dp);
     
-    score->setPosition(Vec2(this->getContentSize().width * 0.96f,
+    score->setPosition(Vec2(this->getContentSize().width * 0.975f,
                             this->getContentSize().height * 0.5f));
     
     auto pic = CUrlSprite::create()

@@ -101,7 +101,6 @@ void CRewardPopupDP::goldReward()
     for(int count = 0; count < limit; count++)
     {
         auto gold = CBulletCreator::CreateBullet('U', 1, 1, false);
-        gold->setLocalZOrder(ZORDER::POPUP);
         action(gold);
     }
 }

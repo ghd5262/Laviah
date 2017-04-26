@@ -25,12 +25,15 @@ CScoreUI* CScoreUI::create(int& value)
 }
 CScoreUI* CScoreUI::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
 {
-    this->setContentSize(Size(0, m_FontSize));
-    this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_BG = LayerColor::create(m_BGColor, m_FontSize, m_FontSize * 2);
+    m_BG->setIgnoreAnchorPointForPosition(false);
+    m_BG->setAnchorPoint(m_ScoreAnchorPoint);
+    this->addChild(m_BG);
     
 	m_ScoreLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
-    m_ScoreLabel->setPosition(this->getContentSize() / 2);
-	m_ScoreLabel->setAnchorPoint(m_ScoreAnchorPoint);
+    m_ScoreLabel->setPosition(Vec2(m_FontSize * 2, m_FontSize));
+    m_ScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    m_ScoreLabel->setColor(m_FontColor);
 	m_ScoreLabel->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 3);
 	this->addChild(m_ScoreLabel);
 
@@ -38,21 +41,23 @@ CScoreUI* CScoreUI::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
 	{
 		m_Icon = Sprite::create(m_IconName);
 		m_Icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_Icon->setColor(m_FontColor);
 		this->addChild(m_Icon);
 	}
 
 	this->scheduleUpdate();
-	this->setCascadeOpacityEnabled(true);
-	this->setOpacityByTimer();
-	this->setIconPosition();
+    this->setAnchorPoint(m_ScoreAnchorPoint);
+    this->setCascadeOpacityEnabled(true);
+    
 	parent->addChild(this, zOrder);
 	return this;
 }
 
-CScoreUI* CScoreUI::setFont(std::string fontName, size_t fontSize)
+CScoreUI* CScoreUI::setFont(std::string fontName, size_t fontSize, Color3B fontColor/* = WHITE*/)
 {
-	m_FontName = fontName;
-	m_FontSize = fontSize;
+	m_FontName  = fontName;
+	m_FontSize  = fontSize;
+    m_FontColor = fontColor;
 	return this;
 }
 
@@ -60,6 +65,12 @@ CScoreUI* CScoreUI::setIcon(std::string iconName)
 {
 	m_IconName = iconName;
 	return this;
+}
+
+CScoreUI* CScoreUI::setBGColor(cocos2d::Color4B color)
+{
+    m_BGColor = color;
+    return this;
 }
 
 CScoreUI* CScoreUI::setScoreAnchorPoint(cocos2d::Vec2 anchorPoint)
@@ -78,6 +89,7 @@ void CScoreUI::update(float delta)
 
 	this->timerReset();
 	this->setScoreString();
+    this->setBGPosition();
 	this->setIconPosition();
 }
 
@@ -99,9 +111,9 @@ void CScoreUI::timerReset()
 
 void CScoreUI::setIconPosition()
 {
-	if (m_Icon == nullptr) return;
-
-	m_Icon->setPosition(Vec2((m_ScoreLabel->getContentSize().width * -m_ScoreLabel->getAnchorPoint().x) - m_FontSize, this->getContentSize().height * 0.5f));
+    if (m_Icon == nullptr) return;
+    
+    m_Icon->setPosition(Vec2(m_FontSize, this->getContentSize().height * 0.5f));
 }
 
 void CScoreUI::setScoreString()
@@ -109,3 +121,14 @@ void CScoreUI::setScoreString()
 	auto valueStr = StringUtility::toCommaString(m_OldValue);
 	m_ScoreLabel->setString(valueStr);
 }
+
+void CScoreUI::setBGPosition()
+{
+    this->setContentSize(Size((m_FontSize * 2.5f) + m_ScoreLabel->getContentSize().width,
+                              m_FontSize * 2.f));
+    m_BG->setContentSize(this->getContentSize());
+    m_BG->setPosition(Vec2(this->getContentSize().width * m_ScoreAnchorPoint.x,
+                           this->getContentSize().height * 0.5f));
+}
+
+

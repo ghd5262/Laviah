@@ -14,6 +14,7 @@
 #include "../GameObject/Player.h"
 #include "../Scene/GameScene.h"
 #include "../AI/States/GameStates.h"
+#include "../DataManager/GradientDataManager.h"
 #include <array>
 
 using namespace std;
@@ -54,23 +55,25 @@ bool CUILayer::init()
     this->setCascadeOpacityEnabled(true);
     
     auto createScoreUI = [=](int& score, string iconImg, Vec2 labelAnchor, Vec2 pos){
-		auto scoreUI = CScoreUI::create(score)
-			->setFont(FONT::MALGUNBD, 45)
-			->setIcon(iconImg)
-			->setScoreAnchorPoint(labelAnchor)
-			->show(this);
+        auto scoreUI = CScoreUI::create(score)
+        ->setFont(FONT::MALGUNBD, 45)
+        ->setIcon(iconImg)
+        ->setScoreAnchorPoint(labelAnchor)
+        ->show(this);
         scoreUI->setPosition(pos);
+        scoreUI->setOpacity(255 * 0.8f);
+//        scoreUI->setAnchorPoint(labelAnchor);
         return scoreUI;
     };
     
     array<Vec2, 3> scoreUIPos = {
-        Vec2(popupSize.width * 0.1f,  popupSize.height * 0.96f ),
-        Vec2(popupSize.width * 0.1f,  popupSize.height * 0.925f ),
-//		Vec2(popupSize.width * 0.96f, popupSize.height * 0.96f)
+        Vec2(popupSize.width * 0.025f, popupSize.height * 0.96f ),
+        Vec2(popupSize.width * 0.025f, popupSize.height * 0.925f ),
+		Vec2(popupSize.width * 0.9f,   popupSize.height * 0.96f)
     };
-	createScoreUI(GLOBAL->STAR_SCORE, "starIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[0]);
+	m_StarScoreUI = createScoreUI(GLOBAL->STAR_SCORE, "starIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[0]);
 	createScoreUI(GLOBAL->COIN_SCORE, "coinIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[1]);
-//	createScoreUI(GLOBAL->RUN_SCORE, "runIcon_s.png", Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
+//	createScoreUI(GLOBAL->RUN_SCORE, "runIcon_s.png", Vec2::ANCHOR_MIDDLE, scoreUIPos[2]);
 
 //    auto bonusTime = CBonusTimeUI::create();
 //    bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -78,6 +81,10 @@ bool CUILayer::init()
 //    this->addChild(bonusTime, 102);
 //    if (!CUIManager::Instance()->AddUIWithName(bonusTime, "BonusTime"))
 //        CCASSERT(false, "BonusTime CAN NOT INIT");
+    
+    m_StarScoreLabel = Label::createWithTTF("", FONT::MALGUNBD, 40);
+    m_StarScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    this->addChild(m_StarScoreLabel);
     
     CMyButton::create()
     ->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -2.f), eMYBUTTON_STATE::EXECUTE)
@@ -134,6 +141,26 @@ bool CUILayer::init()
     }, false);
     
     return true;
+}
+
+void CUILayer::ScoreAction(int score)
+{
+    if(!m_StarScoreLabel) return;
+    if(m_StarScoreLabel->getActionByTag(100))
+        m_StarScoreLabel->stopActionByTag(100);
+    
+    auto uiPos  = m_StarScoreUI->getPosition();
+    auto uiSize = m_StarScoreUI->getContentSize();
+    
+    m_StarScoreLabel->setString(StringUtils::format("+ %d", score));
+    m_StarScoreLabel->setPosition(Vec2(uiPos.x + uiSize.width, uiPos.y));
+    m_StarScoreLabel->setColor(CGradientDataManager::Instance()->getColorByLevel(GLOBAL->COMBO_LEVEL));
+    auto fadeIn   = FadeTo::create(0.3f, 255 * 0.8);
+    auto delay    = DelayTime::create(0.3f);
+    auto fadeTo   = FadeTo::create(0.3f, 0);
+    auto sequence = Sequence::create(fadeIn, delay, fadeTo, NULL);
+    sequence->setTag(100);
+    m_StarScoreLabel->runAction(sequence);
 }
 
 void CUILayer::setItemTimer(eITEM_TYPE type, float limitTime)

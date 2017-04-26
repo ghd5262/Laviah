@@ -51,29 +51,9 @@ bool CUserCoinButton::init()
 
 	this->setCascadeOpacityEnabled(true);
 	this->scheduleUpdate();
-	this->update(0.f);
-	//auto earnCoinBtn = CMyButton::create("coinPlusIcon.png", END, std::bind(&CUserCoinButton::EarnCoin, this), EFFECT_SIZEDOWN);
-	//if (earnCoinBtn != nullptr){
-	//	earnCoinBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	//	earnCoinBtn->setPosition(Vec2(coinLabel->getContentSize().width + (coinIcon->getContentSize().width * 3.f), coinLabelLayer->getContentSize().height * 0.5f));
-	//	earnCoinBtn->setColor(COLOR::GOLD);
-	//	coinLabelLayer->addChild(earnCoinBtn);
-	//}		
+	this->update(0.f);	
 
 	return true;
-}
-
-void CUserCoinButton::EarnCoin()
-{
-	CCLOG("EarnCoin");
-
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	CEarnCoinPopup::create()
-		->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-		->setPopupPosition(visibleSize / 2)
-		->show(Director::getInstance()->getRunningScene(), 102);
 }
 
 void CUserCoinButton::update(float delta)
