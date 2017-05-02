@@ -75,9 +75,7 @@
 		93706F4B1E7A6891009A2CA0 /* StringUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E5F1E7A6890009A2CA0 /* StringUtility.cpp */; };
 		93706F4C1E7A6891009A2CA0 /* BulletDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E621E7A6890009A2CA0 /* BulletDataManager.cpp */; };
 		93706F4D1E7A6891009A2CA0 /* BulletPatternDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E641E7A6890009A2CA0 /* BulletPatternDataManager.cpp */; };
-		93706F4E1E7A6891009A2CA0 /* ChallengeClearChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E671E7A6890009A2CA0 /* ChallengeClearChecker.cpp */; };
-		93706F4F1E7A6891009A2CA0 /* ChallengeDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E691E7A6890009A2CA0 /* ChallengeDataManager.cpp */; };
-		93706F501E7A6891009A2CA0 /* ChallengeRewarder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E6C1E7A6890009A2CA0 /* ChallengeRewarder.cpp */; };
+		93706F4F1E7A6891009A2CA0 /* AchievementDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E691E7A6890009A2CA0 /* AchievementDataManager.cpp */; };
 		93706F511E7A6891009A2CA0 /* CharacterDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E6E1E7A6890009A2CA0 /* CharacterDataManager.cpp */; };
 		93706F521E7A6891009A2CA0 /* FreeRewardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E711E7A6890009A2CA0 /* FreeRewardManager.cpp */; };
 		93706F531E7A6891009A2CA0 /* GradientDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706E731E7A6890009A2CA0 /* GradientDataManager.cpp */; };
@@ -122,7 +120,7 @@
 		93706F7B1E7A6891009A2CA0 /* sconscript in Resources */ = {isa = PBXBuildFile; fileRef = 93706ECA1E7A6890009A2CA0 /* sconscript */; };
 		93706F7C1E7A6891009A2CA0 /* BonusTimeLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706ECE1E7A6890009A2CA0 /* BonusTimeLayer.cpp */; };
 		93706F7D1E7A6891009A2CA0 /* BonusTimeUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706ED01E7A6890009A2CA0 /* BonusTimeUI.cpp */; };
-		93706F7E1E7A6891009A2CA0 /* ChallengeProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706ED21E7A6890009A2CA0 /* ChallengeProgressBar.cpp */; };
+		93706F7E1E7A6891009A2CA0 /* AchievementProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706ED21E7A6890009A2CA0 /* AchievementProgressBar.cpp */; };
 		93706F7F1E7A6891009A2CA0 /* CountDown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706ED41E7A6890009A2CA0 /* CountDown.cpp */; };
 		93706F801E7A6891009A2CA0 /* HealthBarUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706ED61E7A6890009A2CA0 /* HealthBarUI.cpp */; };
 		93706F811E7A6891009A2CA0 /* ItemProgress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706ED81E7A6890009A2CA0 /* ItemProgress.cpp */; };
@@ -130,9 +128,9 @@
 		93706F831E7A6891009A2CA0 /* MenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EDC1E7A6890009A2CA0 /* MenuLayer.cpp */; };
 		93706F841E7A6891009A2CA0 /* ComboScore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EDE1E7A6890009A2CA0 /* ComboScore.cpp */; };
 		93706F851E7A6891009A2CA0 /* MyButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE01E7A6890009A2CA0 /* MyButton.cpp */; };
-		93706F861E7A6891009A2CA0 /* ChallengeCompleteNoticePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE31E7A6890009A2CA0 /* ChallengeCompleteNoticePopup.cpp */; };
-		93706F871E7A6891009A2CA0 /* ChallengePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE51E7A6890009A2CA0 /* ChallengePopup.cpp */; };
-		93706F881E7A6891009A2CA0 /* ChallengePopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE71E7A6890009A2CA0 /* ChallengePopupDP.cpp */; };
+		93706F861E7A6891009A2CA0 /* AchievementCompleteNoticePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE31E7A6890009A2CA0 /* AchievementCompleteNoticePopup.cpp */; };
+		93706F871E7A6891009A2CA0 /* GoalPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE51E7A6890009A2CA0 /* GoalPopup.cpp */; };
+		93706F881E7A6891009A2CA0 /* GoalPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE71E7A6890009A2CA0 /* GoalPopupDP.cpp */; };
 		93706F891E7A6891009A2CA0 /* CharacterSelectPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE91E7A6890009A2CA0 /* CharacterSelectPopup.cpp */; };
 		93706F8A1E7A6891009A2CA0 /* CharacterSelectPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EEB1E7A6890009A2CA0 /* CharacterSelectPopupDP.cpp */; };
 		93706F8B1E7A6891009A2CA0 /* EarnCoinPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EED1E7A6890009A2CA0 /* EarnCoinPopup.cpp */; };
@@ -189,6 +187,8 @@
 		93A1166C1E91F9F600095230 /* RivalBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A116691E91F9F600095230 /* RivalBullet.cpp */; };
 		93A116701E91FA4B00095230 /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A1166E1E91FA4B00095230 /* CharacterBullet.cpp */; };
 		93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A1166E1E91FA4B00095230 /* CharacterBullet.cpp */; };
+		93B7F4481EB81E1A0019D36C /* AchievementClearChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B7F4431EB81E1A0019D36C /* AchievementClearChecker.cpp */; };
+		93B7F4491EB81E1A0019D36C /* AchievementRewarder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B7F4461EB81E1A0019D36C /* AchievementRewarder.cpp */; };
 		94084000BE5507E572AA858E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803948579A13A3F02433115C /* AdSupport.framework */; };
 		BD12455B831B0397C8082B41 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE64354BDA54E796721EDAB /* FBSDKLoginKit.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
@@ -330,12 +330,8 @@
 		93706E631E7A6890009A2CA0 /* BulletDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletDataManager.h; sourceTree = "<group>"; };
 		93706E641E7A6890009A2CA0 /* BulletPatternDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BulletPatternDataManager.cpp; sourceTree = "<group>"; };
 		93706E651E7A6890009A2CA0 /* BulletPatternDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletPatternDataManager.h; sourceTree = "<group>"; };
-		93706E671E7A6890009A2CA0 /* ChallengeClearChecker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengeClearChecker.cpp; sourceTree = "<group>"; };
-		93706E681E7A6890009A2CA0 /* ChallengeClearChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeClearChecker.h; sourceTree = "<group>"; };
-		93706E691E7A6890009A2CA0 /* ChallengeDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengeDataManager.cpp; sourceTree = "<group>"; };
-		93706E6A1E7A6890009A2CA0 /* ChallengeDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChallengeDataManager.hpp; sourceTree = "<group>"; };
-		93706E6C1E7A6890009A2CA0 /* ChallengeRewarder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengeRewarder.cpp; sourceTree = "<group>"; };
-		93706E6D1E7A6890009A2CA0 /* ChallengeRewarder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChallengeRewarder.hpp; sourceTree = "<group>"; };
+		93706E691E7A6890009A2CA0 /* AchievementDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AchievementDataManager.cpp; sourceTree = "<group>"; };
+		93706E6A1E7A6890009A2CA0 /* AchievementDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AchievementDataManager.hpp; sourceTree = "<group>"; };
 		93706E6E1E7A6890009A2CA0 /* CharacterDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterDataManager.cpp; sourceTree = "<group>"; };
 		93706E6F1E7A6890009A2CA0 /* CharacterDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterDataManager.h; sourceTree = "<group>"; };
 		93706E701E7A6890009A2CA0 /* DataManagerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManagerUtils.h; sourceTree = "<group>"; };
@@ -428,8 +424,8 @@
 		93706ECF1E7A6890009A2CA0 /* BonusTimeLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BonusTimeLayer.hpp; sourceTree = "<group>"; };
 		93706ED01E7A6890009A2CA0 /* BonusTimeUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BonusTimeUI.cpp; sourceTree = "<group>"; };
 		93706ED11E7A6890009A2CA0 /* BonusTimeUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BonusTimeUI.h; sourceTree = "<group>"; };
-		93706ED21E7A6890009A2CA0 /* ChallengeProgressBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengeProgressBar.cpp; sourceTree = "<group>"; };
-		93706ED31E7A6890009A2CA0 /* ChallengeProgressBar.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChallengeProgressBar.hpp; sourceTree = "<group>"; };
+		93706ED21E7A6890009A2CA0 /* AchievementProgressBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AchievementProgressBar.cpp; sourceTree = "<group>"; };
+		93706ED31E7A6890009A2CA0 /* AchievementProgressBar.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AchievementProgressBar.hpp; sourceTree = "<group>"; };
 		93706ED41E7A6890009A2CA0 /* CountDown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CountDown.cpp; sourceTree = "<group>"; };
 		93706ED51E7A6890009A2CA0 /* CountDown.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CountDown.hpp; sourceTree = "<group>"; };
 		93706ED61E7A6890009A2CA0 /* HealthBarUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HealthBarUI.cpp; sourceTree = "<group>"; };
@@ -444,12 +440,12 @@
 		93706EDF1E7A6890009A2CA0 /* ComboScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboScore.h; sourceTree = "<group>"; };
 		93706EE01E7A6890009A2CA0 /* MyButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyButton.cpp; sourceTree = "<group>"; };
 		93706EE11E7A6890009A2CA0 /* MyButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyButton.h; sourceTree = "<group>"; };
-		93706EE31E7A6890009A2CA0 /* ChallengeCompleteNoticePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengeCompleteNoticePopup.cpp; sourceTree = "<group>"; };
-		93706EE41E7A6890009A2CA0 /* ChallengeCompleteNoticePopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeCompleteNoticePopup.h; sourceTree = "<group>"; };
-		93706EE51E7A6890009A2CA0 /* ChallengePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengePopup.cpp; sourceTree = "<group>"; };
-		93706EE61E7A6890009A2CA0 /* ChallengePopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePopup.h; sourceTree = "<group>"; };
-		93706EE71E7A6890009A2CA0 /* ChallengePopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChallengePopupDP.cpp; sourceTree = "<group>"; };
-		93706EE81E7A6890009A2CA0 /* ChallengePopupDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePopupDP.h; sourceTree = "<group>"; };
+		93706EE31E7A6890009A2CA0 /* AchievementCompleteNoticePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AchievementCompleteNoticePopup.cpp; sourceTree = "<group>"; };
+		93706EE41E7A6890009A2CA0 /* AchievementCompleteNoticePopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AchievementCompleteNoticePopup.h; sourceTree = "<group>"; };
+		93706EE51E7A6890009A2CA0 /* GoalPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoalPopup.cpp; sourceTree = "<group>"; };
+		93706EE61E7A6890009A2CA0 /* GoalPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoalPopup.h; sourceTree = "<group>"; };
+		93706EE71E7A6890009A2CA0 /* GoalPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoalPopupDP.cpp; sourceTree = "<group>"; };
+		93706EE81E7A6890009A2CA0 /* GoalPopupDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoalPopupDP.h; sourceTree = "<group>"; };
 		93706EE91E7A6890009A2CA0 /* CharacterSelectPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterSelectPopup.cpp; sourceTree = "<group>"; };
 		93706EEA1E7A6890009A2CA0 /* CharacterSelectPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterSelectPopup.h; sourceTree = "<group>"; };
 		93706EEB1E7A6890009A2CA0 /* CharacterSelectPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterSelectPopupDP.cpp; sourceTree = "<group>"; };
@@ -549,6 +545,10 @@
 		93A1166A1E91F9F600095230 /* RivalBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RivalBullet.hpp; sourceTree = "<group>"; };
 		93A1166E1E91FA4B00095230 /* CharacterBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterBullet.cpp; sourceTree = "<group>"; };
 		93A1166F1E91FA4B00095230 /* CharacterBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterBullet.hpp; sourceTree = "<group>"; };
+		93B7F4431EB81E1A0019D36C /* AchievementClearChecker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AchievementClearChecker.cpp; sourceTree = "<group>"; };
+		93B7F4441EB81E1A0019D36C /* AchievementClearChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AchievementClearChecker.h; sourceTree = "<group>"; };
+		93B7F4461EB81E1A0019D36C /* AchievementRewarder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AchievementRewarder.cpp; sourceTree = "<group>"; };
+		93B7F4471EB81E1A0019D36C /* AchievementRewarder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AchievementRewarder.hpp; sourceTree = "<group>"; };
 		9CE541679393BF4E1630239E /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = SOURCE_ROOT; };
 		AC264B2B9DE0F723E850460D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		B3FB4382B3AE6C8B9DE91369 /* sdkbox_config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sdkbox_config.json; path = ../Resources/sdkbox_config.json; sourceTree = SOURCE_ROOT; };
@@ -837,14 +837,14 @@
 		93706E611E7A6890009A2CA0 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				93B7F4421EB81E1A0019D36C /* AchievementChecker */,
+				93B7F4451EB81E1A0019D36C /* AchievementRewarder */,
 				93706E621E7A6890009A2CA0 /* BulletDataManager.cpp */,
 				93706E631E7A6890009A2CA0 /* BulletDataManager.h */,
 				93706E641E7A6890009A2CA0 /* BulletPatternDataManager.cpp */,
 				93706E651E7A6890009A2CA0 /* BulletPatternDataManager.h */,
-				93706E661E7A6890009A2CA0 /* ChallengeChecker */,
-				93706E691E7A6890009A2CA0 /* ChallengeDataManager.cpp */,
-				93706E6A1E7A6890009A2CA0 /* ChallengeDataManager.hpp */,
-				93706E6B1E7A6890009A2CA0 /* ChallengeRewarder */,
+				93706E691E7A6890009A2CA0 /* AchievementDataManager.cpp */,
+				93706E6A1E7A6890009A2CA0 /* AchievementDataManager.hpp */,
 				93706E6E1E7A6890009A2CA0 /* CharacterDataManager.cpp */,
 				93706E6F1E7A6890009A2CA0 /* CharacterDataManager.h */,
 				93706E701E7A6890009A2CA0 /* DataManagerUtils.h */,
@@ -866,24 +866,6 @@
 				93706E801E7A6890009A2CA0 /* WorkshopItemDataManager.h */,
 			);
 			path = DataManager;
-			sourceTree = "<group>";
-		};
-		93706E661E7A6890009A2CA0 /* ChallengeChecker */ = {
-			isa = PBXGroup;
-			children = (
-				93706E671E7A6890009A2CA0 /* ChallengeClearChecker.cpp */,
-				93706E681E7A6890009A2CA0 /* ChallengeClearChecker.h */,
-			);
-			path = ChallengeChecker;
-			sourceTree = "<group>";
-		};
-		93706E6B1E7A6890009A2CA0 /* ChallengeRewarder */ = {
-			isa = PBXGroup;
-			children = (
-				93706E6C1E7A6890009A2CA0 /* ChallengeRewarder.cpp */,
-				93706E6D1E7A6890009A2CA0 /* ChallengeRewarder.hpp */,
-			);
-			path = ChallengeRewarder;
 			sourceTree = "<group>";
 		};
 		93706E811E7A6890009A2CA0 /* Download */ = {
@@ -1005,8 +987,8 @@
 				93706ECF1E7A6890009A2CA0 /* BonusTimeLayer.hpp */,
 				93706ED01E7A6890009A2CA0 /* BonusTimeUI.cpp */,
 				93706ED11E7A6890009A2CA0 /* BonusTimeUI.h */,
-				93706ED21E7A6890009A2CA0 /* ChallengeProgressBar.cpp */,
-				93706ED31E7A6890009A2CA0 /* ChallengeProgressBar.hpp */,
+				93706ED21E7A6890009A2CA0 /* AchievementProgressBar.cpp */,
+				93706ED31E7A6890009A2CA0 /* AchievementProgressBar.hpp */,
 				93706ED41E7A6890009A2CA0 /* CountDown.cpp */,
 				93706ED51E7A6890009A2CA0 /* CountDown.hpp */,
 				93706ED61E7A6890009A2CA0 /* HealthBarUI.cpp */,
@@ -1047,12 +1029,12 @@
 		93706EE21E7A6890009A2CA0 /* Popup */ = {
 			isa = PBXGroup;
 			children = (
-				93706EE31E7A6890009A2CA0 /* ChallengeCompleteNoticePopup.cpp */,
-				93706EE41E7A6890009A2CA0 /* ChallengeCompleteNoticePopup.h */,
-				93706EE51E7A6890009A2CA0 /* ChallengePopup.cpp */,
-				93706EE61E7A6890009A2CA0 /* ChallengePopup.h */,
-				93706EE71E7A6890009A2CA0 /* ChallengePopupDP.cpp */,
-				93706EE81E7A6890009A2CA0 /* ChallengePopupDP.h */,
+				93706EE31E7A6890009A2CA0 /* AchievementCompleteNoticePopup.cpp */,
+				93706EE41E7A6890009A2CA0 /* AchievementCompleteNoticePopup.h */,
+				93706EE51E7A6890009A2CA0 /* GoalPopup.cpp */,
+				93706EE61E7A6890009A2CA0 /* GoalPopup.h */,
+				93706EE71E7A6890009A2CA0 /* GoalPopupDP.cpp */,
+				93706EE81E7A6890009A2CA0 /* GoalPopupDP.h */,
 				93706EE91E7A6890009A2CA0 /* CharacterSelectPopup.cpp */,
 				93706EEA1E7A6890009A2CA0 /* CharacterSelectPopup.h */,
 				93706EEB1E7A6890009A2CA0 /* CharacterSelectPopupDP.cpp */,
@@ -1176,6 +1158,24 @@
 				93706FBC1E7A8BF8009A2CA0 /* FacebookManager.hpp */,
 			);
 			path = Facebook;
+			sourceTree = "<group>";
+		};
+		93B7F4421EB81E1A0019D36C /* AchievementChecker */ = {
+			isa = PBXGroup;
+			children = (
+				93B7F4431EB81E1A0019D36C /* AchievementClearChecker.cpp */,
+				93B7F4441EB81E1A0019D36C /* AchievementClearChecker.h */,
+			);
+			path = AchievementChecker;
+			sourceTree = "<group>";
+		};
+		93B7F4451EB81E1A0019D36C /* AchievementRewarder */ = {
+			isa = PBXGroup;
+			children = (
+				93B7F4461EB81E1A0019D36C /* AchievementRewarder.cpp */,
+				93B7F4471EB81E1A0019D36C /* AchievementRewarder.hpp */,
+			);
+			path = AchievementRewarder;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1336,10 +1336,11 @@
 				93706FA91E7A6891009A2CA0 /* EmptyScene.cpp in Sources */,
 				93706F921E7A6891009A2CA0 /* OptionLanguagePopup.cpp in Sources */,
 				93706F4A1E7A6891009A2CA0 /* HSHUitlity.cpp in Sources */,
-				93706F4F1E7A6891009A2CA0 /* ChallengeDataManager.cpp in Sources */,
+				93706F4F1E7A6891009A2CA0 /* AchievementDataManager.cpp in Sources */,
 				93706F481E7A6891009A2CA0 /* AudioManager.cpp in Sources */,
 				93706F531E7A6891009A2CA0 /* GradientDataManager.cpp in Sources */,
 				93706F931E7A6891009A2CA0 /* OptionMoreGamesPopup.cpp in Sources */,
+				93B7F4481EB81E1A0019D36C /* AchievementClearChecker.cpp in Sources */,
 				93706F651E7A6891009A2CA0 /* StandBullet.cpp in Sources */,
 				93706F911E7A6891009A2CA0 /* OptionDeveloperPopup.cpp in Sources */,
 				93706F9A1E7A6891009A2CA0 /* RewardPopup.cpp in Sources */,
@@ -1358,7 +1359,6 @@
 				93706FCB1E7F70E4009A2CA0 /* FacebookAPITestPopup.cpp in Sources */,
 				93706F9E1E7A6891009A2CA0 /* WorkshopPopup.cpp in Sources */,
 				93706F9D1E7A6891009A2CA0 /* VideoPopup.cpp in Sources */,
-				93706F501E7A6891009A2CA0 /* ChallengeRewarder.cpp in Sources */,
 				93706F571E7A6891009A2CA0 /* TranslateManager.cpp in Sources */,
 				93706F941E7A6891009A2CA0 /* OptionMusicPopup.cpp in Sources */,
 				93706FA71E7A6891009A2CA0 /* UserCoinButton.cpp in Sources */,
@@ -1368,6 +1368,7 @@
 				93706F631E7A6891009A2CA0 /* PlayStar.cpp in Sources */,
 				93706FBD1E7A8BF8009A2CA0 /* FacebookManager.cpp in Sources */,
 				93706F831E7A6891009A2CA0 /* MenuLayer.cpp in Sources */,
+				93B7F4491EB81E1A0019D36C /* AchievementRewarder.cpp in Sources */,
 				93706F511E7A6891009A2CA0 /* CharacterDataManager.cpp in Sources */,
 				93706F451E7A6891009A2CA0 /* PlayerStates.cpp in Sources */,
 				93706F6B1E7A6891009A2CA0 /* ItemRange.cpp in Sources */,
@@ -1388,7 +1389,6 @@
 				93706F691E7A6891009A2CA0 /* GameObject.cpp in Sources */,
 				93706F641E7A6891009A2CA0 /* ScoreBullet.cpp in Sources */,
 				93706F961E7A6891009A2CA0 /* OptionTitlePopup.cpp in Sources */,
-				93706F4E1E7A6891009A2CA0 /* ChallengeClearChecker.cpp in Sources */,
 				93706F561E7A6891009A2CA0 /* RocketDataManager.cpp in Sources */,
 				93706FAA1E7A6891009A2CA0 /* GameScene.cpp in Sources */,
 				93706FAF1E7A6891009A2CA0 /* SDKUtil_AOS.cpp in Sources */,
@@ -1420,7 +1420,7 @@
 				93706F6E1E7A6891009A2CA0 /* Mover.cpp in Sources */,
 				93706F991E7A6891009A2CA0 /* ResultPopup.cpp in Sources */,
 				93706F981E7A6891009A2CA0 /* PausePopup.cpp in Sources */,
-				93706F861E7A6891009A2CA0 /* ChallengeCompleteNoticePopup.cpp in Sources */,
+				93706F861E7A6891009A2CA0 /* AchievementCompleteNoticePopup.cpp in Sources */,
 				93706F5D1E7A6891009A2CA0 /* Bullet.cpp in Sources */,
 				93706F671E7A6891009A2CA0 /* TargetMark.cpp in Sources */,
 				93706F821E7A6891009A2CA0 /* LevelProgressBar.cpp in Sources */,
@@ -1438,19 +1438,19 @@
 				93706FA01E7A6891009A2CA0 /* Popup.cpp in Sources */,
 				93706FA61E7A6891009A2CA0 /* UIManager.cpp in Sources */,
 				936D4C9D1E9E0875003786E6 /* TutorialStep.cpp in Sources */,
-				93706F881E7A6891009A2CA0 /* ChallengePopupDP.cpp in Sources */,
+				93706F881E7A6891009A2CA0 /* GoalPopupDP.cpp in Sources */,
 				93706FAB1E7A6891009A2CA0 /* LoadingScene.cpp in Sources */,
 				93706F951E7A6891009A2CA0 /* OptionPopup.cpp in Sources */,
 				93A1166B1E91F9F600095230 /* RivalBullet.cpp in Sources */,
 				93706F441E7A6891009A2CA0 /* GameStates.cpp in Sources */,
-				93706F871E7A6891009A2CA0 /* ChallengePopup.cpp in Sources */,
+				93706F871E7A6891009A2CA0 /* GoalPopup.cpp in Sources */,
 				93706FAC1E7A6891009A2CA0 /* MenuScene.cpp in Sources */,
 				93706F701E7A6891009A2CA0 /* Planet.cpp in Sources */,
 				93706F601E7A6891009A2CA0 /* NormalMissile.cpp in Sources */,
 				93706F811E7A6891009A2CA0 /* ItemProgress.cpp in Sources */,
 				93706F8B1E7A6891009A2CA0 /* EarnCoinPopup.cpp in Sources */,
 				93706F461E7A6891009A2CA0 /* RocketStates.cpp in Sources */,
-				93706F7E1E7A6891009A2CA0 /* ChallengeProgressBar.cpp in Sources */,
+				93706F7E1E7A6891009A2CA0 /* AchievementProgressBar.cpp in Sources */,
 				93706F9B1E7A6891009A2CA0 /* RewardPopupDP.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
