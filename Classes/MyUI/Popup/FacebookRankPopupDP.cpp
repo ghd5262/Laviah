@@ -1,12 +1,14 @@
 #include "FacebookRankPopupDP.hpp"
+#include "../Popup.h"
 #include "../MyButton.h"
 #include "../UrlSprite.hpp"
 #include "../../DataManager/UserDataManager.h"
 #include "../../Common/StringUtility.h"
+#include "../../Scene/GameScene.h"
 
-CFacebookRankPopupDP* CFacebookRankPopupDP::create(const FBUSER_PARAM* user, int number)
+CFacebookRankPopupDP* CFacebookRankPopupDP::create(const FBUSER_PARAM* user, int number, bool me/* = false*/)
 {
-    CFacebookRankPopupDP *pRet = new(std::nothrow) CFacebookRankPopupDP(user, number);
+    CFacebookRankPopupDP *pRet = new(std::nothrow) CFacebookRankPopupDP(user, number, me);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -33,6 +35,40 @@ bool CFacebookRankPopupDP::init()
         this->addChild(bg);
     }
     
+    if(!m_IsMyData){
+        CMyButton::create()
+        ->addEventListener([=](Node* sender){
+            CGameScene::getGameScene()->CreateAlertPopup()
+            ->setPositiveButton([=](Node* sender){
+                this->FBShare();
+            }, TRANSLATE("BUTTON_YES"))
+            ->setNegativeButton([=](Node* sender){
+            }, TRANSLATE("BUTTON_NO"))
+            ->setMessage("페이스북 친구들과 공유하시겠습니까?")
+            ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+        })
+        ->setButtonNormalImage("facebookShareIcon.png")
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setButtonPosition(Vec2(bg->getContentSize().width * 0.91f, bg->getContentSize().height * 0.5f))
+        ->show(bg);
+        
+        CMyButton::create()
+        ->addEventListener([=](Node* sender){
+            CGameScene::getGameScene()->CreateAlertPopup()
+            ->setPositiveButton([=](Node* sender){
+                this->TWShare();
+            }, TRANSLATE("BUTTON_YES"))
+            ->setNegativeButton([=](Node* sender){
+            }, TRANSLATE("BUTTON_NO"))
+            ->setMessage("트윗 하시겠습니까?")
+            ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+        })
+        ->setButtonNormalImage("twitterShareIcon.png")
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setButtonPosition(Vec2(bg->getContentSize().width * 0.75f, bg->getContentSize().height * 0.5f))
+        ->show(bg);
+    }
+    
     // create number
     {
         auto number = Label::createWithTTF(StringUtils::format("%d", m_Number), FONT::MALGUNBD, 80);
@@ -46,7 +82,7 @@ bool CFacebookRankPopupDP::init()
     {
         auto pic = CUrlSprite::create()
         ->setUrl(m_User->_url)
-        ->setSize(Size(200.f, 200.f))
+        ->setSize(Size(150.f, 150.f))
         ->build(this);
         pic->setPosition(Vec2(this->getContentSize().width * 0.25f,
                               this->getContentSize().height * 0.5f));
@@ -71,11 +107,12 @@ bool CFacebookRankPopupDP::init()
     }
     
     // create level
+    if(m_IsMyData)
     {
         auto userLevel = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
         auto level     = Label::createWithTTF(StringUtils::format("%d", userLevel), FONT::MALGUNBD, 35);
         level->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-        level->setPosition(Vec2(this->getContentSize().width * 0.92f,
+        level->setPosition(Vec2(this->getContentSize().width * 0.6f,
                                 this->getContentSize().height * 0.5f));
         level->enableOutline(COLOR::WHITEGRAY_ALPHA, 1);
         this->addChild(level);
@@ -106,7 +143,11 @@ bool CFacebookRankPopupDP::init()
     return true;
 }
 
-void CFacebookRankPopupDP::Share()
+void CFacebookRankPopupDP::FBShare()
+{
+}
+
+void CFacebookRankPopupDP::TWShare()
 {
 }
 

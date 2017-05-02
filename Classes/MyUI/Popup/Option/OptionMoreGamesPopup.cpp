@@ -51,7 +51,8 @@ bool COptionMoreGamesPopup::init()
         CUrlSprite::create()
         ->setUrl(NETWORK_DEFINE::URL_DOWNLOAD + game.second->_textureName)
         ->setSize(btn->getContentSize())
-        ->build(btn);
+        ->build(btn)
+        ->setPosition(btn->getContentSize() / 2);
     }
     
     return true;

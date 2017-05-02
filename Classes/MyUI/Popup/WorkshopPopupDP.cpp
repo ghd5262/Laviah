@@ -42,7 +42,7 @@ bool CWorkshopPopupDP::init()
     if (dpItemBack != nullptr){
         dpItemBack->setIgnoreAnchorPointForPosition(false);
         dpItemBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        dpItemBack->setPosition(Vec2(0 + dpItemBack->getContentSize().width * 0.5f, 0));
+        dpItemBack->setPosition(Vec2(dpItemBack->getContentSize().width * 0.5f, 0));
         dpBack->addChild(dpItemBack);
     }
     

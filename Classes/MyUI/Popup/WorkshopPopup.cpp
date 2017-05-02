@@ -54,7 +54,7 @@ bool CWorkshopPopup::init()
 	auto itemList = CWorkshopItemDataManager::Instance()->getSellingWorkshopItemList();
 	Size dpSize = Size(1080, 200);
 	size_t dpDistance = 15;
-	float spawnCount = 3;
+	float spawnCount = 4;
 
 	unsigned currentItemIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::SELECT_ITEM);
 

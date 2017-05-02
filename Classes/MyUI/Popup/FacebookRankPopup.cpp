@@ -54,7 +54,7 @@ bool CFacebookRankPopup::init()
     auto sequence   = CFacebookManager::Instance()->getMyRank();
     Size dpSize     = Size(1080, 200);
     size_t dpDistance = 15;
-    float spawnCount = 3;
+    float spawnCount = 4;
     
     // Create the list view
     auto listView = ListView::create();
@@ -71,14 +71,16 @@ bool CFacebookRankPopup::init()
         listView->setCascadeOpacityEnabled(true);
         bg->addChild(listView);
         
-        auto index = 1;
+        int index = 1;
         // create dp
         for (auto user : userList)
         {
-            auto userDP = CFacebookRankPopupDP::create(user.second, index++);
+            bool isPlayer = ((sequence+1) == index);
+            auto userDP   = CFacebookRankPopupDP::create(user.second, index, isPlayer);
             userDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             userDP->setCascadeOpacityEnabled(true);
             listView->pushBackCustomItem(userDP);
+            index++;
         }
         
         if(userList.size() > spawnCount){
