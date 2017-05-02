@@ -23,9 +23,9 @@ private:
     void exit();
     
 	CResultPopup()
-    : m_ChallengePopupOpen(false){};
+    : m_GoalPopupOpen(false){};
 	virtual ~CResultPopup(){};
 
 private:
-    bool m_ChallengePopupOpen;
+    bool m_GoalPopupOpen;
 };

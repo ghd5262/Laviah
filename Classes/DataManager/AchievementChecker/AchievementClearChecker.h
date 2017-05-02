@@ -1,7 +1,7 @@
 #pragma once
 #include "../../Common/HSHUtility.h"
 
-namespace CHALLENGE_DATA_KEY {
+namespace ACHIEVEMENT_DATA_KEY {
 
     const std::string TOTAL_SCORE          = "TOTAL_SCORE";
     const std::string COIN_SCORE           = "COIN_SCORE";
@@ -60,11 +60,11 @@ namespace CHALLENGE_DATA_KEY {
     const std::string SAVED_RUN			   = "USER_SAVED_RUN";
     const std::string SAVED_SCORE		   = "USER_SAVED_SCORE";
     const std::string SAVED_REVIVE		   = "USER_SAVED_REVIVE";
-    const std::string NORMAL_CLEAR_COUNT   = "USER_COM_NORMAL_CHALLENGE_LIST";
-    const std::string HIDDEN_CLEAR_COUNT   = "USER_COM_HIDDEN_CHALLENGE_LIST";
+    const std::string NORMAL_CLEAR_COUNT   = "USER_COM_NORMAL_ACHIEVEMENT_LIST";
+    const std::string HIDDEN_CLEAR_COUNT   = "USER_COM_HIDDEN_ACHIEVEMENT_LIST";
 };
 
-class CChallengeClearChecker {
+class CAchievementClearChecker {
 public:
     bool checkWithGlobal		(std::string key, int value);
 	bool checkWithSingleUserData(std::string key, int value);
@@ -75,6 +75,6 @@ public:
 	bool characterRareCountCheck(int value);
 	bool rocketRareCountCheck	(int value);
 
-    CChallengeClearChecker(){};
-    virtual ~CChallengeClearChecker(){};
+    CAchievementClearChecker(){};
+    virtual ~CAchievementClearChecker(){};
 };

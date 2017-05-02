@@ -3,8 +3,8 @@
 #include "../Popup.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
-#include "../../DataManager/ChallengeDataManager.hpp"
-#include "../../DataManager/ChallengeRewarder/ChallengeRewarder.hpp"
+#include "../../DataManager/AchievementDataManager.hpp"
+#include "../../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 #include "../../DataManager/CharacterDataManager.h"
 #include "../../GameObject/BulletCreator.h"
 #include "../../Particle/Particles.h"
@@ -37,11 +37,11 @@ bool CRewardPopupDP::init()
     auto rewardValue    = m_Reward._value;
     std::string value   = "";
     
-    if (CHALLENGE_REWARD_KEY::REWARD_COIN == rewardKey){
+    if (ACHIEVEMENT_REWARD_KEY::REWARD_COIN == rewardKey){
         value = StringUtils::format("%d Gold", rewardValue);
         this->goldReward();
     }
-    if (CHALLENGE_REWARD_KEY::REWARD_CHARACTER == rewardKey){
+    if (ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER == rewardKey){
         auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
         value = TRANSLATE(data->_name);
         this->characterReward();

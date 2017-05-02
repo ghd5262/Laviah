@@ -29,7 +29,7 @@ private:
     
     CUILayer()
     : m_PauseBtn(nullptr)
-    , m_ChallengeProgressBar(nullptr)
+    , m_AchievementProgressBar(nullptr)
     , m_StarScoreUI(nullptr)
     , m_StarScoreLabel(nullptr)
     , m_TimerRunningCount(0)
@@ -39,7 +39,7 @@ private:
 private:
     static CUILayer* m_Instance;
     CMyButton* m_PauseBtn;
-    cocos2d::Node* m_ChallengeProgressBar;
+    cocos2d::Node* m_AchievementProgressBar;
     cocos2d::Node* m_StarScoreUI;
     cocos2d::Label* m_StarScoreLabel;
     PROGRESS_LIST m_ProgressList;

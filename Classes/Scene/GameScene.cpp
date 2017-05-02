@@ -25,7 +25,7 @@
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
 #include "../MyUI/Popup/VideoPopup.h"
-#include "../MyUI/Popup/ChallengePopup.h"
+#include "../MyUI/Popup/GoalPopup.h"
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../MyUI/Popup/RewardPopup.h"
 #include "../MyUI/Popup/Option/OptionPopup.hpp"
@@ -37,7 +37,7 @@
 #include "../MyUI/Popup/FacebookRankUpPopup.hpp"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
-#include "../DataManager/ChallengeDataManager.hpp"
+#include "../DataManager/AchievementDataManager.hpp"
 #include "../DataManager/NetworkManager.hpp"
 #include "../DataManager/FreeRewardManager.hpp"
 #include "../AI/States/RocketStates.h"
@@ -194,9 +194,9 @@ void CGameScene::WatchVideo()
     m_ZoomLayer->pause();
 }
 
-void CGameScene::ShowChallenge()
+void CGameScene::ShowAchievement()
 {
-    this->createChallengePopup();
+    this->createGoalPopup();
     this->GamePause();
 }
 
@@ -376,9 +376,9 @@ void CGameScene::createVideoPopup()
     ->show(this, ZORDER::POPUP);
 }
 
-void CGameScene::createChallengePopup()
+void CGameScene::createGoalPopup()
 {
-    CChallengePopup::create()
+    CGoalPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
@@ -767,7 +767,7 @@ void CGameScene::createTutorialLayer()
 
 void CGameScene::setTimestamp()
 {
-    bool exist = (CChallengeDataManager::Instance()->NonCompleteChallengeExist() >= CHALLENGE_DEFINE::LIMIT_COUNT);
+    bool exist = (CAchievementDataManager::Instance()->NonCompleteAchievementExist() >= ACHIEVEMENT_DEFINE::LIMIT_COUNT);
     if(exist) return;
     
     SERVER_REQUEST([=](Json::Value data){
@@ -777,8 +777,8 @@ void CGameScene::setTimestamp()
         auto today            = mktime(tm1);
         
         if((currentTimestamp - lastTimestamp) > 86400){
-            // reset daily challenges
-            CChallengeDataManager::Instance()->ResetNormalChallenges();
+            // reset daily achievements
+            CAchievementDataManager::Instance()->ResetNormalAchievements();
             
             // set time stamp again
             CUserDataManager::Instance()->setLastTimestamp(today);
@@ -786,7 +786,7 @@ void CGameScene::setTimestamp()
             // notice popup (for debug)
             this->CreateAlertPopup()
             ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-            ->setMessage("normal challenge reseted")
+            ->setMessage("normal achievement reseted")
             ->show(this, ZORDER::POPUP);
         }
         

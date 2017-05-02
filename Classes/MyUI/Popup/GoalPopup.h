@@ -1,34 +1,34 @@
 #pragma once
 #include "../Popup.h"
-#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/AchievementDataManager.hpp"
 #include <array>
 
-class CChallengePopupDP;
-class CChallengePopup : public CPopup
+class CGoalPopupDP;
+class CGoalPopup : public CPopup
 {
 public:
-	static CChallengePopup* create();
+	static CGoalPopup* create();
 	virtual CPopup* show(Node* parent, int zOrder = 0) override;
 
 protected:
 	virtual bool init() override;
 
 private:
-    void initChallengeList();
-    void createChallengeDP(const sCHALLENGE_PARAM* data,
+    void initAchievementList();
+    void createAchievementDP(const sACHIEVEMENT_PARAM* data,
                            int posIndex,
                            bool isSkip);
     
     void Reset(cocos2d::Node* sender);
     void GoHome(cocos2d::Node* sender);
-    void Skip(CChallengePopupDP* sender, int posIndex);
+    void Skip(CGoalPopupDP* sender, int posIndex);
     
     
-	CChallengePopup(){};
-	virtual ~CChallengePopup(){};
+	CGoalPopup(){};
+	virtual ~CGoalPopup(){};
     
 private:
-    std::vector<CPopup*> m_ChallengeList;
+    std::vector<CPopup*> m_AchievementList;
     std::array<Vec2, 4> m_DPStartPosArray;
     std::array<Vec2, 4> m_DPTargetPosArray;
 };

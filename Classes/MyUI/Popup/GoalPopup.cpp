@@ -1,14 +1,14 @@
-#include "ChallengePopup.h"
-#include "ChallengePopupDP.h"
+#include "GoalPopup.h"
+#include "GoalPopupDP.h"
 #include "RewardPopup.h"
 #include "../MyButton.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../Scene/GameScene.h"
 #include <array>
 
-CChallengePopup* CChallengePopup::create()
+CGoalPopup* CGoalPopup::create()
 {
-	CChallengePopup *pRet = new(std::nothrow) CChallengePopup();
+	CGoalPopup *pRet = new(std::nothrow) CGoalPopup();
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -22,16 +22,16 @@ CChallengePopup* CChallengePopup::create()
 	}
 }
 
-bool CChallengePopup::init()
+bool CGoalPopup::init()
 {
 	if (!CPopup::init()) return false;
 	return true;
 }
 
-CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
+CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
 {
-    m_ChallengeList.resize(CHALLENGE_DEFINE::LIMIT_COUNT);
-    std::fill(m_ChallengeList.begin(), m_ChallengeList.end(), nullptr);
+    m_AchievementList.resize(ACHIEVEMENT_DEFINE::LIMIT_COUNT);
+    std::fill(m_AchievementList.begin(), m_AchievementList.end(), nullptr);
 
 	// To avoid duplicate check.
 	GLOBAL->Clear();
@@ -51,7 +51,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
         Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f)
     };
     
-    this->initChallengeList();
+    this->initAchievementList();
     
 	auto bg = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1920.f);
 	if (bg != nullptr){
@@ -61,13 +61,13 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		this->addChild(bg);
 	}
 
-	auto challengesLabel = Label::createWithSystemFont(TRANSLATE("CHALLENGE_POPUP_TITLE"), FONT::MALGUNBD, 80);
-	if (challengesLabel != nullptr)
+	auto achievementsLabel = Label::createWithSystemFont(TRANSLATE("GOAL_POPUP_TITLE"), FONT::MALGUNBD, 80);
+	if (achievementsLabel != nullptr)
 	{
-		challengesLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f));
-        challengesLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		challengesLabel->setOpacity(0);
-		this->addChild(challengesLabel);
+		achievementsLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f));
+        achievementsLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		achievementsLabel->setOpacity(0);
+		this->addChild(achievementsLabel);
 	}
 
 	auto createBtn = [=](const std::function<void(Node*)> &callback, std::string icon, Vec2 pos){
@@ -97,11 +97,11 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
         rewardPopup->setExitCallback([=](){
             
-            // If there are more non-completed challenges than limit count.
-            // Set challenges until non-exist.
-			if (CChallengeDataManager::Instance()->NonCompleteChallengeExist() >= CHALLENGE_DEFINE::LIMIT_COUNT){
-				// Do open challenge popup again.
-				CGameScene::getGameScene()->ShowChallenge();
+            // If there are more non-completed achievements than limit count.
+            // Set achievements until non-exist.
+			if (CAchievementDataManager::Instance()->NonCompleteAchievementExist() >= ACHIEVEMENT_DEFINE::LIMIT_COUNT){
+				// Do open achievement popup again.
+				CGameScene::getGameScene()->ShowAchievement();
 				this->popupClose();
 			}
 			else{
@@ -109,17 +109,17 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 			}
         });
         
-		for (auto node : m_ChallengeList)
+		for (auto node : m_AchievementList)
 		{
             if(node == nullptr) continue;
             
-			auto dp = dynamic_cast<CChallengePopupDP*>(node);
-			auto data = dp->getChallengeParam();
+			auto dp = dynamic_cast<CGoalPopupDP*>(node);
+			auto data = dp->getAchievementParam();
 			rewardPopup->AddRewardToList(data._rewardKey, data._rewardValue);
 		}
         
-        // TODO: If there are no more challenges. do not open challenge popup
-        CChallengeDataManager::Instance()->getNewChallenges();
+        // TODO: If there are no more achievements. do not open achievement popup
+        CAchievementDataManager::Instance()->getNewAchievements();
         
 	}, "rewardIcon.png", m_DPStartPosArray[3])
     ->setTouchEnable(false, Color3B::WHITE);
@@ -133,7 +133,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 				FadeIn::create(1.f)));
 		};
 		int dpIndex = 0;
-        for (auto dp : m_ChallengeList) {
+        for (auto dp : m_AchievementList) {
             if(dp == nullptr) continue;
             
             action(dp, m_DPTargetPosArray[dpIndex++]);
@@ -142,7 +142,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
         action(btnReward, m_DPTargetPosArray[3]);
         btnReset->runAction(FadeIn::create(0.5f));
         btnHome->runAction(FadeIn::create(0.5f));
-        challengesLabel->runAction(FadeIn::create(0.5f));
+        achievementsLabel->runAction(FadeIn::create(0.5f));
 	}, 1.3f);
 
 	this->setCloseAnimation([=](Node* sender){
@@ -156,7 +156,7 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		};
 
 		int dpIndex = 0;
-        for (auto dp : m_ChallengeList){
+        for (auto dp : m_AchievementList){
             if(dp == nullptr) continue;
             
             action(dp, m_DPStartPosArray[dpIndex++]);
@@ -165,15 +165,15 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
 		action(btnReward, m_DPStartPosArray[3]);
         btnReset->runAction(FadeTo::create(0.5f, 0));
         btnHome->runAction(FadeTo::create(0.5f, 0));
-        challengesLabel->runAction(FadeTo::create(0.5f, 0));
+        achievementsLabel->runAction(FadeTo::create(0.5f, 0));
     });
 
     this->setDefaultCallback([=](Node* sender){
         this->GoHome(sender);
     });
     
-    // Do below when challenge was completed all.
-    if (CChallengeDataManager::Instance()->CheckCompleteAll()){
+    // Do below when achievement was completed all.
+    if (CAchievementDataManager::Instance()->CheckCompleteAll()){
         btnReward->setTouchEnable(true);
         btnReward->setColor(COLOR::GOLD);
         btnReset->setVisible(false);
@@ -185,21 +185,21 @@ CPopup* CChallengePopup::show(Node* parent, int zOrder/* = 0*/)
     return 	CPopup::show(parent, zOrder);
 }
 
-void CChallengePopup::initChallengeList()
+void CGoalPopup::initAchievementList()
 {
     int posIndex = 0;
-    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_NORMAL_LIST);
+    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST);
     for (auto index : list)
     {
-        auto challengeData = CChallengeDataManager::Instance()->getNormalChallengeByIndex(index);
-        this->createChallengeDP(challengeData, posIndex++, false);
+        auto achievementData = CAchievementDataManager::Instance()->getNormalAchievementByIndex(index);
+        this->createAchievementDP(achievementData, posIndex++, false);
     }
 }
 
-void CChallengePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posIndex, bool isSkip)
+void CGoalPopup::createAchievementDP(const sACHIEVEMENT_PARAM* data, int posIndex, bool isSkip)
 {
-    auto dp = CChallengePopupDP::create(data, posIndex)
-    ->addSkipEventListner([=](CChallengePopupDP* sender, int posIdx){
+    auto dp = CGoalPopupDP::create(data, posIndex)
+    ->addSkipEventListner([=](CGoalPopupDP* sender, int posIdx){
         this->Skip(sender, posIdx);
     })
     ->setDefaultCallbackEnable(false)
@@ -214,30 +214,30 @@ void CChallengePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posInd
         dp->setCloseAnimation(nullptr);
     }
     
-    m_ChallengeList.at(posIndex) = dp;
+    m_AchievementList.at(posIndex) = dp;
 }
 
-void CChallengePopup::Skip(CChallengePopupDP *sender, int posIndex)
+void CGoalPopup::Skip(CGoalPopupDP *sender, int posIndex)
 {
     auto dp = sender;
 	CGameScene::getGameScene()->CreateAlertPopup()
 		->setPositiveButton([=](Node* sender){
-		auto newData = CChallengeDataManager::Instance()->SkipChallenge(dp->getChallengeParam()._index);
+		auto newData = CAchievementDataManager::Instance()->SkipAchievement(dp->getAchievementParam()._index);
 		dp->popupClose();
-		this->createChallengeDP(newData, posIndex, true);
+		this->createAchievementDP(newData, posIndex, true);
 	}, TRANSLATE("BUTTON_YES"))
 		->setNegativeButton([=](Node* sender){
 	}, TRANSLATE("BUTTON_NO"))
-		->setMessage(TRANSLATE("CHALLENGE_SKIP_CHECK"))
+		->setMessage(TRANSLATE("GOAL_SKIP_CHECK"))
 		->show(CGameScene::getGameScene(), ZORDER::POPUP);
 }
 
-void CChallengePopup::Reset(Node* sender){
+void CGoalPopup::Reset(Node* sender){
     CGameScene::getGameScene()->GameStart();
     this->popupClose();
 }
 
-void CChallengePopup::GoHome(Node* sender){
+void CGoalPopup::GoHome(Node* sender){
     CGameScene::getGameScene()->OpenGameMenuLayer();
     this->popupClose();
 }

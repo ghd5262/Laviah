@@ -1,39 +1,39 @@
-#include "ChallengeClearChecker.h"
+#include "AchievementClearChecker.h"
 #include "../UserDataManager.h"
-#include "../ChallengeDataManager.hpp"
+#include "../AchievementDataManager.hpp"
 #include "../WorkshopItemDataManager.h"
 #include "../CharacterDataManager.h"
 #include "../DataManagerUtils.h"
 
 using namespace cocos2d;
 
-bool CChallengeClearChecker::checkWithGlobal(std::string key, int value)
+bool CAchievementClearChecker::checkWithGlobal(std::string key, int value)
 {
     auto global = GLOBAL->getVariable(key);
     return value <= global;
 }
 
-bool CChallengeClearChecker::checkWithSingleUserData(std::string key, int value)
+bool CAchievementClearChecker::checkWithSingleUserData(std::string key, int value)
 {
 	return (value <= CUserDataManager::Instance()->getUserData_Number(key));
 }
 
-bool CChallengeClearChecker::checkWithItemExist(std::string key, int value)
+bool CAchievementClearChecker::checkWithItemExist(std::string key, int value)
 {
 	return CUserDataManager::Instance()->getUserData_IsItemHave(key, value);
 }
 
-bool CChallengeClearChecker::checkWithCount(std::string key, int value)
+bool CAchievementClearChecker::checkWithCount(std::string key, int value)
 {
 	return (value <= CUserDataManager::Instance()->getUserData_List(key).size());
 }
 
-bool CChallengeClearChecker::checkWithContinuingType(std::string key, int value)
+bool CAchievementClearChecker::checkWithContinuingType(std::string key, int value)
 {
     return false;
 }
 
-bool CChallengeClearChecker::characterRareCountCheck(int value)
+bool CAchievementClearChecker::characterRareCountCheck(int value)
 {
 	auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST);
 	if (!list.size()) return false;
@@ -45,7 +45,7 @@ bool CChallengeClearChecker::characterRareCountCheck(int value)
 	return rareList.size();
 }
 
-bool CChallengeClearChecker::rocketRareCountCheck(int value)
+bool CAchievementClearChecker::rocketRareCountCheck(int value)
 {
 	return false;
 }

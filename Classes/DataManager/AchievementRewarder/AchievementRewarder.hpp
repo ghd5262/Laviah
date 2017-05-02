@@ -1,8 +1,8 @@
 #pragma once
 #include "../../Common/HSHUtility.h"
-#include "../ChallengeDataManager.hpp"
+#include "../AchievementDataManager.hpp"
 
-namespace CHALLENGE_REWARD_KEY {
+namespace ACHIEVEMENT_REWARD_KEY {
     
 	const std::string REWARD_COIN				= "REWARD_COIN";
 	const std::string REWARD_CHARACTER			= "REWARD_CHARACTER";
@@ -15,7 +15,7 @@ namespace CHALLENGE_REWARD_KEY {
 	const std::string REWARD_PET_RANDOM			= "REWARD_PET_RANDOM";
 };
 
-class CChallengeRewarder{
+class CAchievementRewarder{
 public:
 	sREWARD_DATA coinReward				(sREWARD_DATA data);
 	sREWARD_DATA characterReward		(sREWARD_DATA data);
@@ -27,6 +27,6 @@ public:
 	sREWARD_DATA RocketRewardRandom		(sREWARD_DATA data);
 	sREWARD_DATA PetRewardRandom		(sREWARD_DATA data);
 
-    CChallengeRewarder(){};
-    virtual ~CChallengeRewarder(){};
+    CAchievementRewarder(){};
+    virtual ~CAchievementRewarder(){};
 };

@@ -1,20 +1,20 @@
-#include "ChallengeCompleteNoticePopup.h"
+#include "AchievementCompleteNoticePopup.h"
 #include "../MyButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../DataManager/UserDataManager.h"
-#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/AchievementDataManager.hpp"
 USING_NS_CC;
 
-namespace CHALLENGE_COMPLETE_NOTICE{
-	static const std::string TAG_UPDATE = "checkChallengeCompleteOnRealTime";
-	static const std::string TAG_SHOW   = "challengeNoticeShow";
+namespace ACHIEVEMENT_COMPLETE_NOTICE{
+	static const std::string TAG_UPDATE = "checkAchievementCompleteOnRealTime";
+	static const std::string TAG_SHOW   = "achievementNoticeShow";
     static const float STAY_LIMIT_TIME  = 3.f;
 };
 
-CChallengeCompleteNoticePopup* CChallengeCompleteNoticePopup::create()
+CAchievementCompleteNoticePopup* CAchievementCompleteNoticePopup::create()
 {
-	CChallengeCompleteNoticePopup *pRet = new(std::nothrow) CChallengeCompleteNoticePopup();
+	CAchievementCompleteNoticePopup *pRet = new(std::nothrow) CAchievementCompleteNoticePopup();
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();
@@ -28,12 +28,12 @@ CChallengeCompleteNoticePopup* CChallengeCompleteNoticePopup::create()
 	}
 }
 
-bool CChallengeCompleteNoticePopup::init()
+bool CAchievementCompleteNoticePopup::init()
 {
 	if (!CPopup::init()) return false;
 	this->schedule([=](float delta){
-		this->checkChallengeCompleteOnRealTime();
-	}, 0.5f, CHALLENGE_COMPLETE_NOTICE::TAG_UPDATE);
+		this->checkAchievementCompleteOnRealTime();
+	}, 0.5f, ACHIEVEMENT_COMPLETE_NOTICE::TAG_UPDATE);
 
 	m_LayerBG = Sprite::create("resultPopup_2.png");
 	this->setContentSize(m_LayerBG->getContentSize());
@@ -45,13 +45,13 @@ bool CChallengeCompleteNoticePopup::init()
 
 	auto popupSize = this->getContentSize();
 
-	m_ChallengeLabel = Label::createWithSystemFont("", FONT::MALGUNBD, 45,
+	m_AchievementLabel = Label::createWithSystemFont("", FONT::MALGUNBD, 45,
 		Size(popupSize.width * 0.8f, popupSize.height),
 		TextHAlignment::CENTER,
 		TextVAlignment::CENTER);
-	m_ChallengeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	m_ChallengeLabel->setPosition(popupSize / 2);
-	m_LayerBG->addChild(m_ChallengeLabel);
+	m_AchievementLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	m_AchievementLabel->setPosition(popupSize / 2);
+	m_LayerBG->addChild(m_AchievementLabel);
 
 	auto completeIcon = Sprite::create("completeIcon.png");
 	completeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -61,20 +61,20 @@ bool CChallengeCompleteNoticePopup::init()
 	return true;
 }
 
-void CChallengeCompleteNoticePopup::checkChallengeCompleteOnRealTime()
+void CAchievementCompleteNoticePopup::checkAchievementCompleteOnRealTime()
 {
 	if (CObjectManager::Instance()->getIsGamePause()) return;
     if (!m_Checkable) return;
 
-	auto data = CChallengeDataManager::Instance()->CompleteCheckRealTime(false);
+	auto data = CAchievementDataManager::Instance()->CompleteCheckRealTime(false);
 	if (data != nullptr) {
         m_Checkable = false;
-        m_ChallengeLabel->setString(StringUtils::format(TRANSLATE(data->_contents).c_str(), data->_materialValueList.at(0)));
+        m_AchievementLabel->setString(StringUtils::format(TRANSLATE(data->_contents).c_str(), data->_materialValueList.at(0)));
 		this->show();
 	}
 }
 
-void CChallengeCompleteNoticePopup::show()
+void CAchievementCompleteNoticePopup::show()
 {
 	this->scheduleOnce([=](float delta){
 
@@ -87,7 +87,7 @@ void CChallengeCompleteNoticePopup::show()
 			EaseExponentialOut::create(
 			MoveTo::create(0.5f, targetPos)),
 			FadeTo::create(0.3f, 255 * 0.8f));
-		auto delayAction = DelayTime::create(CHALLENGE_COMPLETE_NOTICE::STAY_LIMIT_TIME);
+		auto delayAction = DelayTime::create(ACHIEVEMENT_COMPLETE_NOTICE::STAY_LIMIT_TIME);
 		auto upAction = Spawn::createWithTwoActions(
 			EaseSineIn::create(
 			MoveTo::create(0.3f, startPos)),
@@ -99,6 +99,6 @@ void CChallengeCompleteNoticePopup::show()
 
 		m_LayerBG->runAction(sequenceAction);
 
-	}, 0.f, CHALLENGE_COMPLETE_NOTICE::TAG_SHOW);
+	}, 0.f, ACHIEVEMENT_COMPLETE_NOTICE::TAG_SHOW);
 }
 

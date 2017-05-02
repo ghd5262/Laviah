@@ -40,7 +40,7 @@ public:
     void GameEnd();
     void GameHelp();
 	void WatchVideo();
-	void ShowChallenge();
+	void ShowAchievement();
     void GameExit(bool resume = false);
     void RandomCoin();
     void BonusTimeStart();
@@ -70,7 +70,7 @@ private:
     void cleanGlobalData();
 	void createPausePopup();
 	void createVideoPopup();
-	void createChallengePopup();
+	void createGoalPopup();
 	void createResultPopup();
     void createEndPopup();
 	void createHelpPopup();

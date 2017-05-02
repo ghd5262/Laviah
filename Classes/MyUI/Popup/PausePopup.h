@@ -1,8 +1,8 @@
 #pragma once
-#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/AchievementDataManager.hpp"
 #include "../Popup.h"
 
-class CChallengePopupDP;
+class CGoalPopupDP;
 class CPausePopup : public CPopup
 {
 public:
@@ -12,8 +12,8 @@ protected:
 	virtual bool init() override;
 
 private:
-    void initChallengeList();
-    void createChallengeDP(const sCHALLENGE_PARAM* data,
+    void initAchievementList();
+    void createAchievementDP(const sACHIEVEMENT_PARAM* data,
                            int posIndex);
     void createRewardBox();
 	void Play(cocos2d::Node* sender);
@@ -21,11 +21,11 @@ private:
 	void GoHome(cocos2d::Node* sender);
 	void GameExit(cocos2d::Node* sender);
 	void Help(cocos2d::Node* sender);
-    void Skip(CChallengePopupDP* sender, int sequence);
+    void Skip(CGoalPopupDP* sender, int sequence);
 
 	CPausePopup();
 	virtual ~CPausePopup();
     
 private:
-    std::vector<CPopup*> m_ChallengeList;
+    std::vector<CPopup*> m_AchievementList;
 };

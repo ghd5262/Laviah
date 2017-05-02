@@ -17,9 +17,9 @@ enum CHECKER_TYPE{
 	CONTINUE = 5
 };
 
-class CChallengeClearChecker;
-class CChallengeRewarder;
-struct sCHALLENGE_PARAM
+class CAchievementClearChecker;
+class CAchievementRewarder;
+struct sACHIEVEMENT_PARAM
 {
     int _index;
 	bool _hiddenType;
@@ -32,7 +32,7 @@ struct sCHALLENGE_PARAM
 	std::vector<std::string> _materialKeyList;
 	std::vector<int> _materialValueList;
 
-    sCHALLENGE_PARAM()
+    sACHIEVEMENT_PARAM()
     : _index(-1)
 	, _hiddenType(false)
 	, _visible(false)
@@ -42,7 +42,7 @@ struct sCHALLENGE_PARAM
     , _rewardKey("")
     , _rewardValue(0){}
     
-    sCHALLENGE_PARAM(const sCHALLENGE_PARAM& data)
+    sACHIEVEMENT_PARAM(const sACHIEVEMENT_PARAM& data)
     : _index(data._index)
 	, _hiddenType(data._hiddenType)
 	, _visible(data._visible)
@@ -56,7 +56,7 @@ struct sCHALLENGE_PARAM
         DATA_MANAGER_UTILS::copyList(data._materialValueList, _materialValueList);
 	}
     
-    sCHALLENGE_PARAM(const sCHALLENGE_PARAM* data)
+    sACHIEVEMENT_PARAM(const sACHIEVEMENT_PARAM* data)
     : _index(data->_index)
 	, _hiddenType(data->_hiddenType)
 	, _visible(data->_visible)
@@ -71,10 +71,10 @@ struct sCHALLENGE_PARAM
 	}
 };
 
-namespace CHALLENGE_DEFINE {
+namespace ACHIEVEMENT_DEFINE {
 	static const int LIMIT_COUNT = 3;
-	static const std::string NORMAL_CONTENT = "CHALLENGE_NORMAL_CONTENT_%d";
-	static const std::string NORMAL_HIDDEN  = "CHALLENGE_HIDDEN_CONTENT_%d";
+	static const std::string NORMAL_CONTENT = "ACHIEVEMENT_NORMAL_CONTENT_%d";
+	static const std::string NORMAL_HIDDEN  = "ACHIEVEMENT_HIDDEN_CONTENT_%d";
 }
 
 struct sREWARD_DATA{
@@ -95,63 +95,63 @@ typedef std::function<bool(int)> CHECKER;
 typedef std::map<std::string, CHECKER> CHECKER_LIST;
 typedef std::function<sREWARD_DATA(sREWARD_DATA)> REWARDER;
 typedef std::map<std::string, REWARDER> REWARDER_LIST;
-typedef std::map<int, const sCHALLENGE_PARAM*> CHALLENGE_LIST;
-typedef std::function<bool(const sCHALLENGE_PARAM*)> CHALLENGE_PICK;
-typedef std::vector<int> NORMAL_CHALLENGE_VALUE_LIST;
-typedef std::map<std::string, NORMAL_CHALLENGE_VALUE_LIST> VALUE_MAP;
-class CChallengeDataManager
+typedef std::map<int, const sACHIEVEMENT_PARAM*> ACHIEVEMENT_LIST;
+typedef std::function<bool(const sACHIEVEMENT_PARAM*)> ACHIEVEMENT_PICK;
+typedef std::vector<int> NORMAL_ACHIEVEMENT_VALUE_LIST;
+typedef std::map<std::string, NORMAL_ACHIEVEMENT_VALUE_LIST> VALUE_MAP;
+class CAchievementDataManager
 {
 public:
-    static CChallengeDataManager* Instance();
+    static CAchievementDataManager* Instance();
 	bool CheckCompleteAll();
-	bool CheckChallengeComplete(int index, bool isHidden);
-	const sCHALLENGE_PARAM* CompleteCheckRealTime(bool isHidden);
-    void ResetNormalChallenges();
+	bool CheckAchievementComplete(int index, bool isHidden);
+	const sACHIEVEMENT_PARAM* CompleteCheckRealTime(bool isHidden);
+    void ResetNormalAchievements();
     
 	sREWARD_DATA Reward(int index);
 	sREWARD_DATA RewardByKey(std::string key, int value);
-    int NonCompleteChallengeExist();
-    void getNewChallenges();
-    const sCHALLENGE_PARAM* SkipChallenge(int index);
+    int NonCompleteAchievementExist();
+    void getNewAchievements();
+    const sACHIEVEMENT_PARAM* SkipAchievement(int index);
     
     //getter & setter
-    const sCHALLENGE_PARAM* getNormalChallengeByIndex(int index) const;
-    const sCHALLENGE_PARAM* getHiddenChallengeByIndex(int index) const;
-    const sCHALLENGE_PARAM* getNewRandomChallenge();
-    const sCHALLENGE_PARAM* getNonCompleteChallengeFromCurrentList();
+    const sACHIEVEMENT_PARAM* getNormalAchievementByIndex(int index) const;
+    const sACHIEVEMENT_PARAM* getHiddenAchievementByIndex(int index) const;
+    const sACHIEVEMENT_PARAM* getNewRandomAchievement();
+    const sACHIEVEMENT_PARAM* getNonCompleteAchievementFromCurrentList();
     cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
-    CHALLENGE_LIST getHiddenChallengeList() const {
-        return m_HiddenChallengeDataList;
+    ACHIEVEMENT_LIST getHiddenAchievementList() const {
+        return m_HiddenAchievementDataList;
     }
-    void UpdateCurHiddenChallengeList();
+    void UpdateCurHiddenAchievementList();
 
 private:
     void initWithJson(std::string fileName);
 	void initETCChekerList();
 	void initRewarderList();
     
-	const Json::Value initChallengeWithDefaultValue(bool hidden, std::string key, const Json::Value data);
-	void addChallengeToList(CHALLENGE_LIST &list, const Json::Value& data, bool hiddenType);
+	const Json::Value initAchievementWithDefaultValue(bool hidden, std::string key, const Json::Value data);
+	void addAchievementToList(ACHIEVEMENT_LIST &list, const Json::Value& data, bool hiddenType);
     void addValueListToMap(const Json::Value data);
 
-    const sCHALLENGE_PARAM* getNewRandomChallengeFromList(CHALLENGE_LIST &list);
-    CHALLENGE_LIST getNonCompletedChallengeList();
-    void removeChallengeFromUserData(int index);
+    const sACHIEVEMENT_PARAM* getNewRandomAchievementFromList(ACHIEVEMENT_LIST &list);
+    ACHIEVEMENT_LIST getNonCompletedAchievementList();
+    void removeAchievementFromUserData(int index);
     
-    void getCurChallengeListByType(ARRAY_DATA& list, bool isHidden);
+    void getCurAchievementListByType(ARRAY_DATA& list, bool isHidden);
     int getMaterialValueByLevel(std::string key, int level);
 
-    CChallengeDataManager();
-    virtual ~CChallengeDataManager();
+    CAchievementDataManager();
+    virtual ~CAchievementDataManager();
     
 private:
-    CHALLENGE_LIST m_NormalChallengeDataList;
-	CHALLENGE_LIST m_HiddenChallengeDataList;
+    ACHIEVEMENT_LIST m_NormalAchievementDataList;
+	ACHIEVEMENT_LIST m_HiddenAchievementDataList;
     CHECKER_LIST m_CheckerList;
     REWARDER_LIST m_RewarderList;
-    CChallengeClearChecker* m_Checker;
-    CChallengeRewarder* m_Rewarder;
+    CAchievementClearChecker* m_Checker;
+    CAchievementRewarder* m_Rewarder;
     VALUE_MAP m_ValueMap;
-	Json::Value m_NormalChallengeDefaultSet;
-	Json::Value m_HiddenChallengeDefaultSet;
+	Json::Value m_NormalAchievementDefaultSet;
+	Json::Value m_HiddenAchievementDefaultSet;
 };

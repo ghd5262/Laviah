@@ -1,8 +1,8 @@
 #include "PausePopup.h"
-#include "ChallengePopupDP.h"
+#include "GoalPopupDP.h"
 #include "../MyButton.h"
 #include "../UserCoinButton.h"
-#include "../ChallengeProgressBar.hpp"
+#include "../AchievementProgressBar.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
@@ -34,8 +34,8 @@ bool CPausePopup::init()
 	if (!CPopup::init()) return false;
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-    m_ChallengeList.resize(CHALLENGE_DEFINE::LIMIT_COUNT);
-    std::fill(m_ChallengeList.begin(), m_ChallengeList.end(), nullptr);
+    m_AchievementList.resize(ACHIEVEMENT_DEFINE::LIMIT_COUNT);
+    std::fill(m_AchievementList.begin(), m_AchievementList.end(), nullptr);
     
     
 //    this->createRewardBox();
@@ -48,7 +48,7 @@ bool CPausePopup::init()
 		this->addChild(pauseBG);
 	}
     
-    this->initChallengeList();
+    this->initAchievementList();
 
 	std::string btnImageName[] = {
 		"homeButton.png",
@@ -98,7 +98,7 @@ bool CPausePopup::init()
 		this->addChild(btnUserCoin);
 	}
     
-    CChallengeProgressBar::create()
+    CAchievementProgressBar::create()
     ->setBarBGColor(COLOR::TRANSPARENT_ALPHA)
     ->setBarColor(COLOR::GOLD)
     ->setBarAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM)
@@ -148,7 +148,7 @@ bool CPausePopup::init()
 				MoveTo::create(0.3f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f))), NULL));
 		}, 0.1f, "PausePopupClose");
 
-        for (auto dp : m_ChallengeList){
+        for (auto dp : m_AchievementList){
             if(dp == nullptr) continue;
             
             dp->popupClose();
@@ -187,34 +187,34 @@ void CPausePopup::Help(Node* sender)
 	CGameScene::getGameScene()->GameHelp();
 }
 
-void CPausePopup::Skip(CChallengePopupDP *sender, int posIndex)
+void CPausePopup::Skip(CGoalPopupDP *sender, int posIndex)
 {
     auto dp = sender;
 
 	CGameScene::getGameScene()->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
-        auto newData = CChallengeDataManager::Instance()->SkipChallenge(dp->getChallengeParam()._index);
+        auto newData = CAchievementDataManager::Instance()->SkipAchievement(dp->getAchievementParam()._index);
         dp->popupClose();
-        this->createChallengeDP(newData, posIndex);
+        this->createAchievementDP(newData, posIndex);
     }, TRANSLATE("BUTTON_YES"))
     ->setNegativeButton([=](Node* sender){
     }, TRANSLATE("BUTTON_NO"))
-    ->setMessage(TRANSLATE("CHALLENGE_SKIP_CHECK"))
+    ->setMessage(TRANSLATE("GOAL_SKIP_CHECK"))
 	->show(CGameScene::getGameScene(), ZORDER::POPUP);
 }
 
-void CPausePopup::initChallengeList()
+void CPausePopup::initAchievementList()
 {
     int posIndex = 0;
-    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_NORMAL_LIST);
+    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST);
     for (auto index : list)
     {
-        auto challengeData = CChallengeDataManager::Instance()->getNormalChallengeByIndex(index);
-        this->createChallengeDP(challengeData, posIndex++);
+        auto achievementData = CAchievementDataManager::Instance()->getNormalAchievementByIndex(index);
+        this->createAchievementDP(achievementData, posIndex++);
     }
 }
 
-void CPausePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posIndex)
+void CPausePopup::createAchievementDP(const sACHIEVEMENT_PARAM* data, int posIndex)
 {
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 posArray[] = {
@@ -223,8 +223,8 @@ void CPausePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posIndex)
         Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.35f)
     };
     
-    auto dp = CChallengePopupDP::create(data, posIndex)
-    ->addSkipEventListner([=](CChallengePopupDP* sender, int posIdx){
+    auto dp = CGoalPopupDP::create(data, posIndex)
+    ->addSkipEventListner([=](CGoalPopupDP* sender, int posIdx){
         this->Skip(sender, posIdx);
     })
     ->setDefaultCallbackEnable(false)
@@ -232,7 +232,7 @@ void CPausePopup::createChallengeDP(const sCHALLENGE_PARAM* data, int posIndex)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(posArray[posIndex])
     ->show(this, ZORDER::POPUP);
-    m_ChallengeList.at(posIndex) = dp;
+    m_AchievementList.at(posIndex) = dp;
 }
 
 void CPausePopup::createRewardBox()

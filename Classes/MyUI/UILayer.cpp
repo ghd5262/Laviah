@@ -6,9 +6,9 @@
 #include "MyButton.h"
 #include "CountDown.hpp"
 #include "ItemProgress.hpp"
-#include "ChallengeProgressBar.hpp"
+#include "AchievementProgressBar.hpp"
 #include "FacebookRivalRankLayer.hpp"
-#include "Popup/ChallengeCompleteNoticePopup.h"
+#include "Popup/AchievementCompleteNoticePopup.h"
 #include "../GameObject/ItemManager.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Player.h"
@@ -118,14 +118,14 @@ bool CUILayer::init()
     for(int count = 1; count < eITEM_TYPE_MAX; count++)
 		this->createItemTimerUI((eITEM_TYPE)count, Color3B::WHITE);
     
-    m_ChallengeProgressBar = CChallengeProgressBar::create()
+    m_AchievementProgressBar = CAchievementProgressBar::create()
     ->setBarBGColor(COLOR::WHITEGRAY_ALPHA)
     ->setBarColor(COLOR::GOLD)
     ->setBarAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP)
     ->setBarPosition(Vec2(popupSize.width * 0.5f, popupSize.height))
     ->show(this);
     
-	CChallengeCompleteNoticePopup::create()
+	CAchievementCompleteNoticePopup::create()
     ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -199,7 +199,7 @@ void CUILayer::stop()
 	auto move = MoveTo::create(0.01f, Vec2(this->getContentSize().width * 0.5f,
 										  this->getContentSize().height * 1.1f));
 	auto ease = EaseSineIn::create(move);
-	m_ChallengeProgressBar->runAction(ease);
+	m_AchievementProgressBar->runAction(ease);
     
 }
 
@@ -211,7 +211,7 @@ void CUILayer::play()
     auto move = MoveTo::create(0.5f, Vec2(this->getContentSize().width * 0.5f,
                                           this->getContentSize().height));
     auto exponential = EaseExponentialOut::create(move);
-    m_ChallengeProgressBar->runAction(exponential);
+    m_AchievementProgressBar->runAction(exponential);
 }
 
 void CUILayer::onPauseButton(cocos2d::Node* sender)

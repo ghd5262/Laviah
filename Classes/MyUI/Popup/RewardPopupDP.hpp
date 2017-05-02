@@ -2,7 +2,7 @@
 #include "cocos2d.h"
 #include "RewardPopup.h"
 #include "../Popup.h"
-#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/AchievementDataManager.hpp"
 
 class CRewardPopupDP : public CPopup
 {

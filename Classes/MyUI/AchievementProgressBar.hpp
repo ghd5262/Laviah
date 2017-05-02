@@ -2,20 +2,20 @@
 #include "cocos2d.h"
 #include <vector>
 #include "../Common/HSHUtility.h"
-#include "../DataManager/ChallengeDataManager.hpp"
+#include "../DataManager/AchievementDataManager.hpp"
 
-class CChallengeProgressBar : public cocos2d::Node{
+class CAchievementProgressBar : public cocos2d::Node{
     typedef std::function<void(cocos2d::Node*)> LAST_CALLBACK;
     
 public:
-    static CChallengeProgressBar* create();
-    CChallengeProgressBar* addLastEventListner(const LAST_CALLBACK &callback);
-    CChallengeProgressBar* setLabelVisible(bool visible);
-    CChallengeProgressBar* setBarBGColor(cocos2d::Color4B color);
-    CChallengeProgressBar* setBarColor(cocos2d::Color3B color);
-    CChallengeProgressBar* setBarPosition(cocos2d::Vec2 pos);
-    CChallengeProgressBar* setBarAnchorPoint(cocos2d::Vec2 anchorPoint);
-    CChallengeProgressBar* show(cocos2d::Node* parent, int zOrder = 0);
+    static CAchievementProgressBar* create();
+    CAchievementProgressBar* addLastEventListner(const LAST_CALLBACK &callback);
+    CAchievementProgressBar* setLabelVisible(bool visible);
+    CAchievementProgressBar* setBarBGColor(cocos2d::Color4B color);
+    CAchievementProgressBar* setBarColor(cocos2d::Color3B color);
+    CAchievementProgressBar* setBarPosition(cocos2d::Vec2 pos);
+    CAchievementProgressBar* setBarAnchorPoint(cocos2d::Vec2 anchorPoint);
+    CAchievementProgressBar* show(cocos2d::Node* parent, int zOrder = 0);
     
     virtual void update(float delta) override;
     virtual bool init() override;
@@ -29,8 +29,8 @@ private:
     void processEventListener();
     float getPercent(float value, float max);
     
-    CChallengeProgressBar()
-    : m_ChallengeData(nullptr)
+    CAchievementProgressBar()
+    : m_AchievementData(nullptr)
     , m_BarBG(nullptr)
     , m_ProgressBar(nullptr)
     , m_TitleLabel(nullptr)
@@ -38,14 +38,14 @@ private:
     , m_BarColor(cocos2d::Color3B::WHITE)
     , m_CurrentValue(0)
     , m_GoalValue(0)
-    , m_CurrentChallengeIndex(0)
+    , m_CurrentAchievementIndex(0)
     , m_Complete(false)
     , m_LabelVisible(true){};
-    virtual ~CChallengeProgressBar(){};
+    virtual ~CAchievementProgressBar(){};
     
 private:
     std::vector<LAST_CALLBACK> m_EventList;
-    const sCHALLENGE_PARAM* m_ChallengeData;
+    const sACHIEVEMENT_PARAM* m_AchievementData;
     cocos2d::LayerColor* m_BarBG;
     cocos2d::ProgressTimer* m_ProgressBar;
     cocos2d::Label* m_TitleLabel;
@@ -53,7 +53,7 @@ private:
     cocos2d::Color3B m_BarColor;
     cocos2d::Vec2 m_Position;
     cocos2d::Vec2 m_AnchorPoint;
-    int m_CurrentChallengeIndex;
+    int m_CurrentAchievementIndex;
     bool m_Complete;
     bool m_LabelVisible;
 };

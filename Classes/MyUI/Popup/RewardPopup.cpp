@@ -3,7 +3,7 @@
 #include "../MyButton.h"
 #include "../UserCoinButton.h"
 #include "../../DataManager/UserDataManager.h"
-#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/AchievementDataManager.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include <array>
@@ -155,7 +155,7 @@ void CRewardPopup::open()
 	}
 
 	auto data = m_RewardList.at(m_RewardIndex);
-	data = CChallengeDataManager::Instance()->RewardByKey(data._key, data._value);
+	data = CAchievementDataManager::Instance()->RewardByKey(data._key, data._value);
 	m_RewardDP = this->createRewardDP(data);
 	m_RewardIndex++;
 }

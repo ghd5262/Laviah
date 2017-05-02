@@ -137,10 +137,10 @@ bool CMenuLayer::init()
 //				savedTime->tm_min,
 //				savedTime->tm_sec);
 //            createTwoButtonPopup([](Node* sender){
-//                //CUserDataManager::Instance()->setUserData_ItemRemoveAll(USERDATA_KEY::CHALLENGE_CUR_LIST);
-//                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 0);
-//                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 1);
-//                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHALLENGE_CUR_LIST, 2);
+//                //CUserDataManager::Instance()->setUserData_ItemRemoveAll(USERDATA_KEY::ACHIEVEMENT_CUR_LIST);
+//                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::ACHIEVEMENT_CUR_LIST, 0);
+//                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::ACHIEVEMENT_CUR_LIST, 1);
+//                //CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::ACHIEVEMENT_CUR_LIST, 2);
 //
 //				//CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, 0);
 //				//CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());

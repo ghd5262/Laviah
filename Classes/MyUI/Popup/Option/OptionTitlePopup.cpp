@@ -2,7 +2,7 @@
 #include "../../MyButton.h"
 #include "../../../Scene/GameScene.h"
 #include "../../../DataManager/UserDataManager.h"
-#include "../../../DataManager/ChallengeDataManager.hpp"
+#include "../../../DataManager/AchievementDataManager.hpp"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -41,7 +41,7 @@ bool COptionTitlePopup::init()
                                       this->getContentSize() / 2);
     this->addChild(titleScroll);
     
-    auto titleList = CChallengeDataManager::Instance()->getHiddenChallengeList();
+    auto titleList = CAchievementDataManager::Instance()->getHiddenAchievementList();
     for(auto title : titleList)
     {
         auto data       = title.second;
@@ -102,7 +102,7 @@ bool COptionTitlePopup::init()
         btn->show(layer);
         
         
-        if(CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHALLENGE_COM_HIDDEN_LIST, data->_index)){
+        if(CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::ACHIEVEMENT_COM_HIDDEN_LIST, data->_index)){
             btn->setColor(COLOR::GOLD);
         }
     }

@@ -10,8 +10,8 @@
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/ComboScore.h"
 #include "../BulletCreator.h"
-#include "../../DataManager/ChallengeDataManager.hpp"
-#include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
+#include "../../DataManager/AchievementDataManager.hpp"
+#include "../../DataManager/AchievementChecker/AchievementClearChecker.h"
 
 namespace STANDBULLET{
     const static float STAY_LIMIT_TIME = 1.f;

@@ -1,11 +1,11 @@
-#include "ChallengeProgressBar.hpp"
+#include "AchievementProgressBar.hpp"
 #include "../DataManager/UserDataManager.h"
 
 using namespace cocos2d;
 
-CChallengeProgressBar* CChallengeProgressBar::create()
+CAchievementProgressBar* CAchievementProgressBar::create()
 {
-    CChallengeProgressBar *pRet = new(std::nothrow) CChallengeProgressBar();
+    CAchievementProgressBar *pRet = new(std::nothrow) CAchievementProgressBar();
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -19,7 +19,7 @@ CChallengeProgressBar* CChallengeProgressBar::create()
     }
 }
 
-bool CChallengeProgressBar::init()
+bool CAchievementProgressBar::init()
 {
     if(!Node::init()) return false;
     
@@ -28,18 +28,18 @@ bool CChallengeProgressBar::init()
     return true;
 }
 
-void CChallengeProgressBar::update(float delta)
+void CAchievementProgressBar::update(float delta)
 {
-	// If current challenge is differs from previous challenge.
-    auto data = CChallengeDataManager::Instance()->getNonCompleteChallengeFromCurrentList();
-    if (!data && !m_ChallengeData)  return;
-    if (m_ChallengeData != data  ){
+	// If current achievement is differs from previous achievement.
+    auto data = CAchievementDataManager::Instance()->getNonCompleteAchievementFromCurrentList();
+    if (!data && !m_AchievementData)  return;
+    if (m_AchievementData != data  ){
         this->Reset();
         return;
     }
 
     // calculate percent
-    auto value = GLOBAL->getVariable(m_ChallengeData->_materialKeyList.at(0));
+    auto value = GLOBAL->getVariable(m_AchievementData->_materialKeyList.at(0));
     {
         if(value != m_CurrentValue) {
             m_CurrentValue = value;
@@ -47,7 +47,7 @@ void CChallengeProgressBar::update(float delta)
         }
     }
     
-    // If challenge complete set complete flag true
+    // If achievement complete set complete flag true
     if(this->getPercent(value, m_GoalValue) >= 100.f)
     {
         if(m_Complete) return;
@@ -64,7 +64,7 @@ void CChallengeProgressBar::update(float delta)
     }
 }
 
-CChallengeProgressBar* CChallengeProgressBar::show(cocos2d::Node* parent, int zOrder/* = 0*/)
+CAchievementProgressBar* CAchievementProgressBar::show(cocos2d::Node* parent, int zOrder/* = 0*/)
 {
     // bar bg
     {
@@ -78,7 +78,7 @@ CChallengeProgressBar* CChallengeProgressBar::show(cocos2d::Node* parent, int zO
     
     // bar
     {
-        auto bar = Sprite::create("challengeProgress.png");
+        auto bar = Sprite::create("achievementProgress.png");
         bar->setColor(m_BarColor);
         m_ProgressBar = ProgressTimer::create(bar);
         m_ProgressBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -90,7 +90,7 @@ CChallengeProgressBar* CChallengeProgressBar::show(cocos2d::Node* parent, int zO
         this->addChild(m_ProgressBar);
     }
     
-    // challenge name label
+    // achievement name label
     {
         m_TitleLabel = Label::createWithSystemFont("", FONT::MALGUNBD, 35,
                                             Size(getContentSize().width * 0.9f,
@@ -113,48 +113,48 @@ CChallengeProgressBar* CChallengeProgressBar::show(cocos2d::Node* parent, int zO
     return this;
 }
 
-CChallengeProgressBar* CChallengeProgressBar::addLastEventListner(const LAST_CALLBACK &callback)
+CAchievementProgressBar* CAchievementProgressBar::addLastEventListner(const LAST_CALLBACK &callback)
 {
     m_EventList.emplace_back(callback);
     return this;
 }
 
-CChallengeProgressBar* CChallengeProgressBar::setLabelVisible(bool visible)
+CAchievementProgressBar* CAchievementProgressBar::setLabelVisible(bool visible)
 {
     m_LabelVisible = visible;
     return this;
 }
 
-CChallengeProgressBar* CChallengeProgressBar::setBarBGColor(cocos2d::Color4B color)
+CAchievementProgressBar* CAchievementProgressBar::setBarBGColor(cocos2d::Color4B color)
 {
     m_BarBGColor = color;
     return this;
 }
 
-CChallengeProgressBar* CChallengeProgressBar::setBarColor(cocos2d::Color3B color)
+CAchievementProgressBar* CAchievementProgressBar::setBarColor(cocos2d::Color3B color)
 {
     m_BarColor = color;
     return this;
 }
 
-CChallengeProgressBar* CChallengeProgressBar::setBarPosition(Vec2 pos)
+CAchievementProgressBar* CAchievementProgressBar::setBarPosition(Vec2 pos)
 {
     m_Position = pos;
     return this;
 }
 
-CChallengeProgressBar* CChallengeProgressBar::setBarAnchorPoint(Vec2 anchorPoint)
+CAchievementProgressBar* CAchievementProgressBar::setBarAnchorPoint(Vec2 anchorPoint)
 {
     m_AnchorPoint = anchorPoint;
     return this;
 }
 
-void CChallengeProgressBar::Reset()
+void CAchievementProgressBar::Reset()
 {
     //이부분은 여기서 할게 아니라 게임을 처음에 키면 동작해야할듯하다.
-//    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHALLENGE_CUR_LIST);
+//    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ACHIEVEMENT_CUR_LIST);
 //    if(!list.size()) {
-//        CChallengeDataManager::Instance()->getNewChallenges();
+//        CAchievementDataManager::Instance()->getNewAchievements();
 //        return;
 //    }
     
@@ -162,24 +162,24 @@ void CChallengeProgressBar::Reset()
     m_BarBG->updateDisplayedOpacity(0);
     m_TitleLabel->setString("");
     m_ProgressBar->runAction(ProgressTo::create(0.5f, 0));
-    m_ChallengeData = CChallengeDataManager::Instance()->getNonCompleteChallengeFromCurrentList();
-    if(!m_ChallengeData) return;
+    m_AchievementData = CAchievementDataManager::Instance()->getNonCompleteAchievementFromCurrentList();
+    if(!m_AchievementData) return;
     
-    m_CurrentChallengeIndex = m_ChallengeData->_index;
-	m_GoalValue = m_ChallengeData->_materialValueList.at(0);
-    auto content = StringUtils::format(TRANSLATE(m_ChallengeData->_contents).c_str(), m_GoalValue);
+    m_CurrentAchievementIndex = m_AchievementData->_index;
+	m_GoalValue = m_AchievementData->_materialValueList.at(0);
+    auto content = StringUtils::format(TRANSLATE(m_AchievementData->_contents).c_str(), m_GoalValue);
 	m_TitleLabel->setString(content);
     m_ProgressBar->setColor(m_BarColor);
     m_BarBG->updateDisplayedOpacity(m_BarBGColor.a);
     m_Complete = false;
 }
 
-void CChallengeProgressBar::setCompletionUI()
+void CAchievementProgressBar::setCompletionUI()
 {
     m_ProgressBar->setColor(COLOR::GOLD);
 }
 
-void CChallengeProgressBar::processEventListener()
+void CAchievementProgressBar::processEventListener()
 {
     if(m_Complete) return;
     
@@ -189,7 +189,7 @@ void CChallengeProgressBar::processEventListener()
     }
 }
 
-float CChallengeProgressBar::getPercent(float value, float max)
+float CAchievementProgressBar::getPercent(float value, float max)
 {
     if(value != 0 && max != 0)
         if(value >= max) return 100.f;

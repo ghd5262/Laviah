@@ -11,7 +11,7 @@
 #include "../DataManager/UserDataManager.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/Popup/RewardPopup.h"
-#include "../DataManager/ChallengeRewarder/ChallengeRewarder.hpp"
+#include "../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 using namespace cocos2d;
 
 CRocket::CRocket()
@@ -81,8 +81,8 @@ bool CRocket::init()
 //		->addEventListener([=](Node* sender){
 //		auto popup = CGameScene::getGameScene()->Reward();
 //		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
-//		rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 50);
-//        rewardPopup->AddRewardToList(CHALLENGE_REWARD_KEY::REWARD_CHARACTER_RANDOM, 50);
+//		rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 50);
+//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 50);
 //		rewardPopup->setExitCallback([=](){
 ////			sender->setVisible(false);
 ////            this->ChangeState(CFlyAway::Instance());

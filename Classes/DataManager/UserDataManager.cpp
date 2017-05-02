@@ -655,8 +655,8 @@ ARRAY_DATA* CUserDataManager::getUserData_ListRef(std::string key)
 
 void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& compare)
 {
-//    if(key == USERDATA_KEY::CHALLENGE_CUR_VALUE_LIST ||
-//       key == USERDATA_KEY::CHALLENGE_CUR_LIST) return;
+//    if(key == USERDATA_KEY::ACHIEVEMENT_CUR_VALUE_LIST ||
+//       key == USERDATA_KEY::ACHIEVEMENT_CUR_LIST) return;
     
     auto list = CUserDataManager::Instance()->getUserData_ListRef(key);
     std::sort(list->begin(), list->end(), compare);

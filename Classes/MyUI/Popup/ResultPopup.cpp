@@ -8,8 +8,8 @@
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/FreeRewardManager.hpp"
-#include "../../DataManager/ChallengeDataManager.hpp"
-#include "../../DataManager/ChallengeRewarder/ChallengeRewarder.hpp"
+#include "../../DataManager/AchievementDataManager.hpp"
+#include "../../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 #include "../../Common/StringUtility.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
@@ -69,7 +69,7 @@ bool CResultPopup::init()
 		"starIcon.png",
 		"comboIcon.png",
         "coinIcon.png",
-        "challengeIcon_2.png",
+        "achievementIcon_2.png",
         "",
         "bestScoreIcon.png"
     };
@@ -78,7 +78,7 @@ bool CResultPopup::init()
 		TRANSLATE("RESULT_SCORE"),
 		TRANSLATE("RESULT_COMBO"),
         TRANSLATE("RESULT_COIN"),
-        TRANSLATE("RESULT_CHALLENGE"),
+        TRANSLATE("RESULT_GOAL"),
         "",
         TRANSLATE("RESULT_BEST_SCORE")
     };
@@ -171,8 +171,8 @@ bool CResultPopup::init()
 	};
     
     CComboScore::Instance()->ComboScoreReset();
-	bool challengeAll    = CChallengeDataManager::Instance()->CheckCompleteAll();
-    m_ChallengePopupOpen = (GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT || challengeAll);
+	bool achievementAll    = CAchievementDataManager::Instance()->CheckCompleteAll();
+    m_GoalPopupOpen = (GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT || achievementAll);
     
     // score layer array
     std::array<Node*, 6> scoreLayerArray;
@@ -194,7 +194,7 @@ bool CResultPopup::init()
     
 	scoreLayerArray.at(3) = createMultipleLayer(resultIcon[3],
                                                 resultContent[3],
-                                                GLOBAL->NORMAL_CHALLENGE_CLEAR_COUNT,
+                                                GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT,
                                                 posArray[3], 50, 100);
     
     // combo가 user best combo면 저장한다.
@@ -299,9 +299,9 @@ bool CResultPopup::init()
     };
     
     std::array<bool, 6> btnVisibleArray = {
-        (!m_ChallengePopupOpen),
-        (!m_ChallengePopupOpen),
-        ( m_ChallengePopupOpen),
+        (!m_GoalPopupOpen),
+        (!m_GoalPopupOpen),
+        ( m_GoalPopupOpen),
         ( true ),
         ( CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1000 ),
         ( CFreeRewardManager::Instance()->getRewardAble() ),
@@ -364,7 +364,7 @@ bool CResultPopup::init()
 		resultLabel->runAction(FadeTo::create(0.3f, 0));
 		btnUserCoin->runAction(FadeTo::create(0.3f, 0));
         
-        if( m_ChallengePopupOpen ){
+        if( m_GoalPopupOpen ){
             auto action = [=](Node* sprite, Vec2 pos){
                 auto move       = MoveTo::create(0.35f, pos);
                 auto sine       = EaseSineIn::create(move);
@@ -386,8 +386,8 @@ bool CResultPopup::init()
         }
 	});
    
-    // if there are some reward from challenge. open reward popup after end of result popup.
-    if ( m_ChallengePopupOpen ) this->setDefaultCallback([=](Node* sender){ this->End(sender);    });
+    // if there are some reward from achievement. open reward popup after end of result popup.
+    if ( m_GoalPopupOpen ) this->setDefaultCallback([=](Node* sender){ this->End(sender);    });
     else                        this->setDefaultCallback([=](Node* sender){ this->GoHome(sender); });
     
 	return true;
@@ -404,25 +404,25 @@ void CResultPopup::GoHome(Node* sender){
 }
 
 void CResultPopup::End(Node* sender){
-    CGameScene::getGameScene()->ShowChallenge();
+    CGameScene::getGameScene()->ShowAchievement();
     this->exit();
 }
 
 void CResultPopup::GetCoinFromVideo(cocos2d::Node* sender)
 {
     CSDKUtil::Instance()->ShowRewardUnityAds([=](){
-        this->createRewardPopup(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 50);
+        this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 50);
     });
 }
 
 void CResultPopup::GetNewCharacter(cocos2d::Node* sender)
 {
-    this->createRewardPopup(CHALLENGE_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+    this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
 }
 
 void CResultPopup::GetFreeReward(cocos2d::Node* sender)
 {
-    this->createRewardPopup(CHALLENGE_REWARD_KEY::REWARD_COIN_RANDOM, 150);
+    this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 150);
     CFreeRewardManager::Instance()->setRewardAble(false);
 }
 
@@ -435,6 +435,6 @@ void CResultPopup::createRewardPopup(std::string key, int value)
 
 void CResultPopup::exit()
 {
-    if(m_ChallengePopupOpen) this->popupClose();
+    if(m_GoalPopupOpen) this->popupClose();
     else                     this->popupClose(1.3f);
 }

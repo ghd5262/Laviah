@@ -1,4 +1,4 @@
-#include "ChallengePopupDP.h"
+#include "GoalPopupDP.h"
 #include "../MyButton.h"
 #include "../Popup.h"
 #include "../../Scene/GameScene.h"
@@ -7,9 +7,9 @@
 USING_NS_CC;
 using namespace cocos2d::ui;
 
-CChallengePopupDP* CChallengePopupDP::create(const sCHALLENGE_PARAM challenge, int posIndex)
+CGoalPopupDP* CGoalPopupDP::create(const sACHIEVEMENT_PARAM achievement, int posIndex)
 {
-    CChallengePopupDP *pRet = new(std::nothrow) CChallengePopupDP(challenge, posIndex);
+    CGoalPopupDP *pRet = new(std::nothrow) CGoalPopupDP(achievement, posIndex);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -23,7 +23,7 @@ CChallengePopupDP* CChallengePopupDP::create(const sCHALLENGE_PARAM challenge, i
     }
 }
 
-bool CChallengePopupDP::init()
+bool CGoalPopupDP::init()
 {
     if (!CPopup::init()) return false;
 
@@ -34,17 +34,17 @@ bool CChallengePopupDP::init()
 	auto popupSize = this->getContentSize();
 
 	auto value = 0;
-	for (auto key : m_Challenge._materialKeyList)
+	for (auto key : m_Achievement._materialKeyList)
 		value += GLOBAL->getVariable(key);
 
 	auto mtrlValue = 0;
-	for (auto value : m_Challenge._materialValueList)
+	for (auto value : m_Achievement._materialValueList)
 		mtrlValue += value;
 	
-	bool complete = CChallengeDataManager::Instance()->CheckChallengeComplete(m_Challenge._index, false);
+	bool complete = CAchievementDataManager::Instance()->CheckAchievementComplete(m_Achievement._index, false);
 	if (complete) value = mtrlValue;
 
-	auto contents = StringUtils::format(TRANSLATE(m_Challenge._contents).c_str(), m_Challenge._materialValueList.at(0));
+	auto contents = StringUtils::format(TRANSLATE(m_Achievement._contents).c_str(), m_Achievement._materialValueList.at(0));
 	if (value > 0) contents += StringUtils::format(" (%d%%)", int(getPercent(value, mtrlValue)));
     
 	auto label = Label::createWithSystemFont(contents, FONT::MALGUNBD, 45, 
@@ -56,7 +56,7 @@ bool CChallengePopupDP::init()
 	this->addChild(label);
         
     if (!complete &&
-        CChallengeDataManager::Instance()->NonCompleteChallengeExist()){
+        CAchievementDataManager::Instance()->NonCompleteAchievementExist()){
         
         auto skipBtn = CMyButton::create()
         ->addEventListener([=](Node* sender){
@@ -135,14 +135,14 @@ bool CChallengePopupDP::init()
     return true;
 }
 
-CChallengePopupDP* CChallengePopupDP::addSkipEventListner(const SKIP_CALLBACK &callback)
+CGoalPopupDP* CGoalPopupDP::addSkipEventListner(const SKIP_CALLBACK &callback)
 {
     m_SkipCallback = callback;
     
     return this;
 }
 
-float CChallengePopupDP::getPercent(float value, float max)
+float CGoalPopupDP::getPercent(float value, float max)
 {
     if(value != 0 && max != 0)
         return std::min(100.f, (value / max) * 100.f);

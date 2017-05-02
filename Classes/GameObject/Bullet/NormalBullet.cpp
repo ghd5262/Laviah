@@ -11,8 +11,8 @@
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/ScoreUI.h"
 #include "../../MyUI/ComboScore.h"
-#include "../../DataManager/ChallengeDataManager.hpp"
-#include "../../DataManager/ChallengeChecker/ChallengeClearChecker.h"
+#include "../../DataManager/AchievementDataManager.hpp"
+#include "../../DataManager/AchievementChecker/AchievementClearChecker.h"
 
 using namespace cocos2d;
 

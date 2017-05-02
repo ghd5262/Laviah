@@ -4,12 +4,12 @@
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../DataManager/UserDataManager.h"
-#include "../../DataManager/ChallengeDataManager.hpp"
+#include "../../DataManager/AchievementDataManager.hpp"
 USING_NS_CC;
 
 namespace TITLE_COMPLETE_NOTICE{
     static const std::string TAG_UPDATE = "checkTitleCompleteOnRealTime";
-    static const std::string TAG_SHOW   = "challengeNoticeShow";
+    static const std::string TAG_SHOW   = "achievementNoticeShow";
     static const float STAY_LIMIT_TIME  = 3.f;
 };
 
@@ -33,7 +33,7 @@ bool CTitleCompleteNoticePopup::init()
 {
     if (!CPopup::init()) return false;
     this->schedule([=](float delta){
-        this->checkChallengeCompleteOnRealTime();
+        this->checkAchievementCompleteOnRealTime();
     }, 0.5f, TITLE_COMPLETE_NOTICE::TAG_UPDATE);
     
     m_LayerBG = Sprite::create("resultPopup_2.png");
@@ -46,33 +46,33 @@ bool CTitleCompleteNoticePopup::init()
     
     auto popupSize = this->getContentSize();
     
-    m_ChallengeLabel = Label::createWithSystemFont("", FONT::MALGUNBD, 45,
+    m_AchievementLabel = Label::createWithSystemFont("", FONT::MALGUNBD, 45,
                                                    Size(popupSize.width * 0.8f, popupSize.height),
                                                    TextHAlignment::CENTER,
                                                    TextVAlignment::CENTER);
-    m_ChallengeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_ChallengeLabel->setPosition(popupSize / 2);
-    m_LayerBG->addChild(m_ChallengeLabel);
+    m_AchievementLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_AchievementLabel->setPosition(popupSize / 2);
+    m_LayerBG->addChild(m_AchievementLabel);
     
     auto completeIcon = Sprite::create("completeIcon.png");
     completeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     completeIcon->setPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f));
     m_LayerBG->addChild(completeIcon);
     
-    CChallengeDataManager::Instance()->UpdateCurHiddenChallengeList();
+    CAchievementDataManager::Instance()->UpdateCurHiddenAchievementList();
     
     return true;
 }
 
-void CTitleCompleteNoticePopup::checkChallengeCompleteOnRealTime()
+void CTitleCompleteNoticePopup::checkAchievementCompleteOnRealTime()
 {
     if (!CObjectManager::Instance()->getIsGamePause()) return;
     if (!m_Checkable) return;
     
-    auto data = CChallengeDataManager::Instance()->CompleteCheckRealTime(true);
+    auto data = CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
     if (data != nullptr) {
         m_Checkable = false;
-        m_ChallengeLabel->setString(TRANSLATE(data->_contents));
+        m_AchievementLabel->setString(TRANSLATE(data->_contents));
         this->show();
     }
 }
