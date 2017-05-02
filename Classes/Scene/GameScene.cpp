@@ -35,6 +35,7 @@
 #include "../MyUI/Popup/FacebookAPITestPopup.hpp"
 #include "../MyUI/Popup/FacebookRankPopup.hpp"
 #include "../MyUI/Popup/FacebookRankUpPopup.hpp"
+#include "../MyUI/Popup/AchievementPopup.hpp"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/AchievementDataManager.hpp"
@@ -268,6 +269,13 @@ void CGameScene::OpenFBTestPopup()
     ->show(this, ZORDER::POPUP);
 }
 
+void CGameScene::OpenAchievementPopup()
+{
+    CObjectManager::Instance()->ZoomInRank();
+    this->createAchievementPopup();
+    this->MenuFadeOut();
+}
+
 void CGameScene::RandomCoin()
 {
     this->createRandomCoin();
@@ -484,6 +492,15 @@ void CGameScene::createRankPopup()
 void CGameScene::createRankUpPopup()
 {
     CFacebookRankUpPopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(this, ZORDER::POPUP);
+}
+
+void CGameScene::createAchievementPopup()
+{
+    CAchievementPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)

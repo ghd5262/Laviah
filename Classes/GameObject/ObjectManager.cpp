@@ -13,6 +13,7 @@
 #include "../DataManager/UserDataManager.h"
 #include "../MyUI/Tutorial/TutorialHelper.hpp"
 #include "../MyUI/MyButton.h"
+#include "../MyUI/UILayer.hpp"
 #include <algorithm>
 
 CObjectManager::CObjectManager()
@@ -32,8 +33,8 @@ CObjectManager::CObjectManager()
 , m_ItemManager(CItemManager::Instance())
 , m_PatternManager(CBulletPatternDataManager::Instance())
 , m_Delta(0.f)
-, m_GameLevel(0)
 , m_GiantSpeed(1.f)
+, m_BulletPatternPaddingLimit(0.f)
 {
 //    m_FSM = std::shared_ptr<CStateMachine<CObjectManager>>(new CStateMachine<CObjectManager>(this),
 //                                                           [=](CStateMachine<CObjectManager>* fsm){
@@ -87,7 +88,8 @@ void CObjectManager::Clear()
 {
 	m_PatternTimer = 0.f;
     m_LevelTimer = 0.f;
-    m_GameLevel = 0;
+    m_BulletPatternPaddingLimit = 0.f;
+    GLOBAL->STAGE_LEVEL = 0;
     m_SpeedController->setPositionX(0.f);
 	m_IsGamePause = true;
     m_BulletCreator->Clear();
@@ -251,14 +253,14 @@ void CObjectManager::MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir)
 void CObjectManager::GiantMode()
 {
     m_GiantSpeed = 1.5f;
-    auto levelData = m_LevelList.at(m_GameLevel);
+    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, 0.45f, 1.f, true);
 }
 
 void CObjectManager::NormalMode()
 {
     m_GiantSpeed = 1.f;
-    auto levelData = m_LevelList.at(m_GameLevel);
+    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 1.f, true);
 }
 
@@ -266,7 +268,7 @@ void CObjectManager::setGameStateByLevel()
 {
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
-    auto levelData = m_LevelList.at(m_GameLevel);
+    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
     this->SpeedControl(1.f, levelData._speed);
 }
@@ -333,15 +335,17 @@ void CObjectManager::createBulletByTimer(float delta)
 {
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
-    m_PatternTimer += delta;
-	if (m_PatternTimer < BULLETCREATOR::PATTERN_PADDING_LIMIT) return;
+    if(!m_BulletCreator->getIsRunning())
+        m_PatternTimer += delta;
+	if (m_PatternTimer < m_BulletPatternPaddingLimit) return;
 
-    auto levelData = m_LevelList.at(m_GameLevel);
+    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
     auto level = levelData._level;
     auto below = levelData._below;
     auto data = m_PatternManager->getRandomNormalPatternByLevel(level, below);
     m_BulletCreator->setPattern(data);
     
+    m_BulletPatternPaddingLimit = BULLETCREATOR::PATTERN_PADDING_LIMIT;
 	m_PatternTimer = 0.f;
 }
 
@@ -412,11 +416,13 @@ void CObjectManager::setGameLevelByTimer()
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
     m_LevelTimer += m_Delta;
-    if(m_LevelList.at(m_GameLevel)._time < m_LevelTimer)
+    if(m_LevelList.at(GLOBAL->STAGE_LEVEL)._time < m_LevelTimer)
     {
-        if(m_LevelList.size() > m_GameLevel+1){
-            m_GameLevel++;
+        if(m_LevelList.size() > GLOBAL->STAGE_LEVEL+1){
+            GLOBAL->STAGE_LEVEL++;
+            CUILayer::Instance()->StageLevelUpdate();
             this->setGameStateByLevel();
+            m_BulletPatternPaddingLimit = 3.f;
         }
     }
 }

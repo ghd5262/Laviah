@@ -189,6 +189,10 @@
 		93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A1166E1E91FA4B00095230 /* CharacterBullet.cpp */; };
 		93B7F4481EB81E1A0019D36C /* AchievementClearChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B7F4431EB81E1A0019D36C /* AchievementClearChecker.cpp */; };
 		93B7F4491EB81E1A0019D36C /* AchievementRewarder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B7F4461EB81E1A0019D36C /* AchievementRewarder.cpp */; };
+		93B7F44C1EB843DD0019D36C /* AchievementPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B7F44A1EB843DD0019D36C /* AchievementPopup.cpp */; };
+		93B7F44D1EB843DD0019D36C /* AchievementPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B7F44A1EB843DD0019D36C /* AchievementPopup.cpp */; };
+		93B7F4501EB845890019D36C /* AchievementPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B7F44E1EB845890019D36C /* AchievementPopupDP.cpp */; };
+		93B7F4511EB845890019D36C /* AchievementPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B7F44E1EB845890019D36C /* AchievementPopupDP.cpp */; };
 		94084000BE5507E572AA858E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803948579A13A3F02433115C /* AdSupport.framework */; };
 		BD12455B831B0397C8082B41 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE64354BDA54E796721EDAB /* FBSDKLoginKit.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
@@ -549,6 +553,10 @@
 		93B7F4441EB81E1A0019D36C /* AchievementClearChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AchievementClearChecker.h; sourceTree = "<group>"; };
 		93B7F4461EB81E1A0019D36C /* AchievementRewarder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AchievementRewarder.cpp; sourceTree = "<group>"; };
 		93B7F4471EB81E1A0019D36C /* AchievementRewarder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AchievementRewarder.hpp; sourceTree = "<group>"; };
+		93B7F44A1EB843DD0019D36C /* AchievementPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AchievementPopup.cpp; sourceTree = "<group>"; };
+		93B7F44B1EB843DD0019D36C /* AchievementPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AchievementPopup.hpp; sourceTree = "<group>"; };
+		93B7F44E1EB845890019D36C /* AchievementPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AchievementPopupDP.cpp; sourceTree = "<group>"; };
+		93B7F44F1EB845890019D36C /* AchievementPopupDP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AchievementPopupDP.hpp; sourceTree = "<group>"; };
 		9CE541679393BF4E1630239E /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = SOURCE_ROOT; };
 		AC264B2B9DE0F723E850460D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		B3FB4382B3AE6C8B9DE91369 /* sdkbox_config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sdkbox_config.json; path = ../Resources/sdkbox_config.json; sourceTree = SOURCE_ROOT; };
@@ -1076,6 +1084,10 @@
 				932C6B921E83A2710043BE02 /* FacebookRankPopupDP.hpp */,
 				93783B8E1E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp */,
 				93783B8F1E8CB1DC009DE1CC /* FacebookRankUpPopup.hpp */,
+				93B7F44A1EB843DD0019D36C /* AchievementPopup.cpp */,
+				93B7F44B1EB843DD0019D36C /* AchievementPopup.hpp */,
+				93B7F44E1EB845890019D36C /* AchievementPopupDP.cpp */,
+				93B7F44F1EB845890019D36C /* AchievementPopupDP.hpp */,
 			);
 			path = Popup;
 			sourceTree = "<group>";
@@ -1333,6 +1345,7 @@
 			files = (
 				93706F8C1E7A6891009A2CA0 /* GachaPopup.cpp in Sources */,
 				93706F9F1E7A6891009A2CA0 /* WorkshopPopupDP.cpp in Sources */,
+				93B7F44C1EB843DD0019D36C /* AchievementPopup.cpp in Sources */,
 				93706FA91E7A6891009A2CA0 /* EmptyScene.cpp in Sources */,
 				93706F921E7A6891009A2CA0 /* OptionLanguagePopup.cpp in Sources */,
 				93706F4A1E7A6891009A2CA0 /* HSHUitlity.cpp in Sources */,
@@ -1445,6 +1458,7 @@
 				93706F441E7A6891009A2CA0 /* GameStates.cpp in Sources */,
 				93706F871E7A6891009A2CA0 /* GoalPopup.cpp in Sources */,
 				93706FAC1E7A6891009A2CA0 /* MenuScene.cpp in Sources */,
+				93B7F4501EB845890019D36C /* AchievementPopupDP.cpp in Sources */,
 				93706F701E7A6891009A2CA0 /* Planet.cpp in Sources */,
 				93706F601E7A6891009A2CA0 /* NormalMissile.cpp in Sources */,
 				93706F811E7A6891009A2CA0 /* ItemProgress.cpp in Sources */,
@@ -1464,10 +1478,12 @@
 				93706FD11E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
 				93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
+				93B7F44D1EB843DD0019D36C /* AchievementPopup.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				93706FCC1E7F70E4009A2CA0 /* FacebookAPITestPopup.cpp in Sources */,
 				936D4C9E1E9E0875003786E6 /* TutorialStep.cpp in Sources */,
 				936D4C9C1E9E0875003786E6 /* TutorialManager.cpp in Sources */,
+				93B7F4511EB845890019D36C /* AchievementPopupDP.cpp in Sources */,
 				93A1166C1E91F9F600095230 /* RivalBullet.cpp in Sources */,
 				93706FBE1E7A8BF8009A2CA0 /* FacebookManager.cpp in Sources */,
 				936D4CA21E9E2578003786E6 /* TutorialHelper.cpp in Sources */,

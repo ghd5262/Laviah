@@ -18,7 +18,8 @@ void Global::Clear()
     COMBO_SCORE = 0;
     COMBO_LEVEL = 0;
     BEST_COMBO = 0;
-    
+    STAGE_LEVEL = 0;
+
     COIN_COUNT = 0;
 	STAR_COUNT = 0;
 	REVIVE_COUNT = 0;

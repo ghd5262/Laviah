@@ -157,7 +157,7 @@ bool CMenuLayer::init()
 //        }, "R", testButtonPos[5], Size(100, 100)),
     };*/
     
-    std::array<CMyButton*, 6> btnArray = {
+    std::array<CMyButton*, 7> btnArray = {
         // character select button
         createLayerButton([=](Node* sender){
             CGameScene::getGameScene()->OpenCharacterSelectPopup();
@@ -193,6 +193,11 @@ bool CMenuLayer::init()
         createButton([=](Node* sender){
             CGameScene::getGameScene()->OpenRankPopup();
         }, "rankingIcon.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f)),
+        
+        // option button
+        createButton([=](Node* sender){
+            CGameScene::getGameScene()->OpenAchievementPopup();
+        }, "achievementIcon_2.png", Vec2(popupSize.width * 0.32f, popupSize.height * 0.95f)),
     };
     
     CTranslateManager::Instance()->addTranslateEventListener([=](){

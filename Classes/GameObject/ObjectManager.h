@@ -94,7 +94,6 @@ public:
 	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
     CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterParam, CharacterParam);
     CC_SYNTHESIZE(const sROCKET_PARAM*, m_RocketParam, RocketParam);
-    CC_SYNTHESIZE(int, m_GameLevel, GameLevel);
     
 private:
 	void createBulletByTimer(float delta);
@@ -152,4 +151,5 @@ private:
     CBulletPatternDataManager* m_PatternManager;
     float m_RotationSpeed;
     float m_GiantSpeed;
+    float m_BulletPatternPaddingLimit;
 };

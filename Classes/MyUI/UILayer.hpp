@@ -12,6 +12,7 @@ class CUILayer : public CPopup
 public:
     static CUILayer* Instance();
     void ScoreAction(int score);
+    void StageLevelUpdate();
 
 	void setItemTimer(eITEM_TYPE type, float limitTime);
     virtual void update(float delta) override;
@@ -32,6 +33,7 @@ private:
     , m_AchievementProgressBar(nullptr)
     , m_StarScoreUI(nullptr)
     , m_StarScoreLabel(nullptr)
+    , m_StageLevelLabel(nullptr)
     , m_TimerRunningCount(0)
     , m_Pause(false){};
     virtual ~CUILayer();
@@ -42,6 +44,7 @@ private:
     cocos2d::Node* m_AchievementProgressBar;
     cocos2d::Node* m_StarScoreUI;
     cocos2d::Label* m_StarScoreLabel;
+    cocos2d::Label* m_StageLevelLabel;
     PROGRESS_LIST m_ProgressList;
     std::array<cocos2d::Vec2, eITEM_TYPE_MAX> m_ProgressPosArray;
     int m_TimerRunningCount;

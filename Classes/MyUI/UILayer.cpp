@@ -86,6 +86,11 @@ bool CUILayer::init()
     m_StarScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     this->addChild(m_StarScoreLabel);
     
+    m_StageLevelLabel = Label::createWithTTF("", FONT::MALGUNBD, 150);
+    m_StageLevelLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_StageLevelLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.825f));
+    this->addChild(m_StageLevelLabel);
+    
     CMyButton::create()
     ->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -2.f), eMYBUTTON_STATE::EXECUTE)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height))
@@ -132,7 +137,6 @@ bool CUILayer::init()
     ->setPopupPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f))
     ->show(this);
 
-
 //    this->initItemTestButton();
 //    CGameScene::getGameScene()->GameResume();
     
@@ -161,6 +165,26 @@ void CUILayer::ScoreAction(int score)
     auto sequence = Sequence::create(fadeIn, delay, fadeTo, NULL);
     sequence->setTag(100);
     m_StarScoreLabel->runAction(sequence);
+}
+
+void CUILayer::StageLevelUpdate()
+{
+    if(!m_StageLevelLabel) return;
+    
+    Vec2 startPos  = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.9f);
+    Vec2 targetPos = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.8f);
+    
+    auto delayAction1 = DelayTime::create(4.f);
+    auto moveDown     = EaseExponentialOut::create(MoveTo::create(0.5f, targetPos));
+    auto downAction   = Spawn::createWithTwoActions(moveDown, FadeTo::create(0.3f, 255 * 0.8f));
+    auto delayAction2 = DelayTime::create(2.f);
+    auto moveUp       = EaseSineIn::create(MoveTo::create(0.3f, startPos));
+    auto upAction     = Spawn::createWithTwoActions(moveUp, FadeTo::create(0.1f, 0));
+    
+    auto sequenceAction = Sequence::create(delayAction1, downAction, delayAction2, upAction, nullptr);
+    m_StageLevelLabel->setOpacity(0);
+    m_StageLevelLabel->setString(StringUtils::format("Stage %d", GLOBAL->STAGE_LEVEL+1));
+    m_StageLevelLabel->runAction(sequenceAction);
 }
 
 void CUILayer::setItemTimer(eITEM_TYPE type, float limitTime)
@@ -200,7 +224,6 @@ void CUILayer::stop()
 										  this->getContentSize().height * 1.1f));
 	auto ease = EaseSineIn::create(move);
 	m_AchievementProgressBar->runAction(ease);
-    
 }
 
 void CUILayer::play()
