@@ -7,7 +7,7 @@ struct sACHIEVEMENT_PARAM;
 class CAchievementPopupDP : public cocos2d::ui::Widget
 {
 public:
-    static CAchievementPopupDP* create(const sACHIEVEMENT_PARAM* achievement);
+    static CAchievementPopupDP* create(const sACHIEVEMENT_PARAM* achievement, int level, int maxLevel);
     
     void Share();
     void Notice();
@@ -23,11 +23,15 @@ protected:
     
 private:
     
-    CAchievementPopupDP(const sACHIEVEMENT_PARAM* achievement)
+    CAchievementPopupDP(const sACHIEVEMENT_PARAM* achievement, int level, int maxLevel)
     : m_Achievement(achievement)
+    , m_AchievementLevel(level)
+    , m_AchievementMaxLevel(maxLevel)
     , m_SelectDPListener(nullptr){};
     virtual ~CAchievementPopupDP(){};
     
 private:
     const sACHIEVEMENT_PARAM* m_Achievement;
+    int m_AchievementLevel;
+    int m_AchievementMaxLevel;
 };

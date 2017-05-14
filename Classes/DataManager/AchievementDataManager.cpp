@@ -430,8 +430,14 @@ void CAchievementDataManager::addAchievementToList(ACHIEVEMENT_LIST &list,
 	param->_hiddenType		= hiddenType;
 
 	std::string content		= StringUtils::format(ACHIEVEMENT_DEFINE::NORMAL_CONTENT.c_str(), param->_index);
-	if (hiddenType) content = StringUtils::format(ACHIEVEMENT_DEFINE::NORMAL_HIDDEN.c_str(), param->_index);
-	param->_contents		= content;
+    std::string title       = "";
+    if (hiddenType) {
+        content             = StringUtils::format(ACHIEVEMENT_DEFINE::HIDDEN_CONTENT.c_str(), param->_index);
+        title               = StringUtils::format(ACHIEVEMENT_DEFINE::HIDDEN_TITLE.c_str(),   param->_index);
+    }
+    
+    param->_title           = title;
+    param->_contents		= content;
 
 	auto initData = [=](std::string key){
 		return this->initAchievementWithDefaultValue(param->_hiddenType, key, data[key.c_str()]);

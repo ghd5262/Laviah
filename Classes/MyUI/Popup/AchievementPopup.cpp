@@ -50,10 +50,10 @@ bool CAchievementPopup::init()
         this->addChild(rankingLabel);
     }
     
-    auto achievementList = CAchievementDataManager::Instance()->getHiddenAchievementList();
-    Size dpSize          = Size(1080, 200);
-    size_t dpDistance    = 15;
-    float spawnCount     = 4;
+    auto achievementList  = CAchievementDataManager::Instance()->getHiddenAchievementList();
+    Size dpSize           = Size(1080, 200);
+    size_t dpDistance     = 15;
+    float spawnCount      = 4;
     
     // Create the list view
     auto listView = ListView::create();
@@ -70,13 +70,41 @@ bool CAchievementPopup::init()
         listView->setCascadeOpacityEnabled(true);
         bg->addChild(listView);
         
-        // create dp
-        for (auto achievement : achievementList)
+        int index = 0;
+        for(auto achievement : achievementList)
+//        for(int index = 0; index < achievementCount; index+=5)
         {
-            auto achievementDP = CAchievementPopupDP::create(achievement.second);
+//            auto  iter                          = achievementList.find(index);
+//            if(iter == achievementList.end())   continue;
+            
+            const sACHIEVEMENT_PARAM* lastData  = achievement.second;
+            int                       lastLevel = 0;
+            int                       maxLevel  = 0;
+
+            for(int level = 0; level < 5; level++)
+            {
+                int  idx      = index + level;
+                auto dataIter = achievementList.find(idx);
+                if(dataIter  == achievementList.end()) continue;
+                
+                maxLevel++;
+                auto data     = dataIter->second;
+                
+                if(data->_visible){
+                    if(CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::ACHIEVEMENT_COM_HIDDEN_LIST, idx))
+                    {
+                        lastData  = data;
+                        lastLevel = level + 1;
+                    }
+                }
+            }
+            std::cout<<lastLevel<<std::endl;
+            auto achievementDP = CAchievementPopupDP::create(lastData, lastLevel, maxLevel);
             achievementDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             achievementDP->setCascadeOpacityEnabled(true);
             listView->pushBackCustomItem(achievementDP);
+            
+            index += 5;
         }
     }
     

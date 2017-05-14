@@ -26,6 +26,7 @@ struct sACHIEVEMENT_PARAM
 	bool _visible;
 	bool _isHighLevel;
 	CHECKER_TYPE _checkerType;
+    std::string _title;
     std::string _contents;
     std::string _rewardKey;
     int _rewardValue;
@@ -38,6 +39,7 @@ struct sACHIEVEMENT_PARAM
 	, _visible(false)
 	, _isHighLevel(false)
 	, _checkerType(CHECKER_TYPE::ETC)
+    , _title("")
     , _contents("")
     , _rewardKey("")
     , _rewardValue(0){}
@@ -48,6 +50,7 @@ struct sACHIEVEMENT_PARAM
 	, _visible(data._visible)
 	, _isHighLevel(data._isHighLevel)
 	, _checkerType(data._checkerType)
+    , _title(data._title)
     , _contents(data._contents)
     , _rewardKey(data._rewardKey)
     , _rewardValue(data._rewardValue)
@@ -62,6 +65,7 @@ struct sACHIEVEMENT_PARAM
 	, _visible(data->_visible)
 	, _isHighLevel(data->_isHighLevel)
 	, _checkerType(data->_checkerType)
+    , _title(data->_title)
     , _contents(data->_contents)
     , _rewardKey(data->_rewardKey)
     , _rewardValue(data->_rewardValue)
@@ -74,7 +78,8 @@ struct sACHIEVEMENT_PARAM
 namespace ACHIEVEMENT_DEFINE {
 	static const int LIMIT_COUNT = 3;
 	static const std::string NORMAL_CONTENT = "ACHIEVEMENT_NORMAL_CONTENT_%d";
-	static const std::string NORMAL_HIDDEN  = "ACHIEVEMENT_HIDDEN_CONTENT_%d";
+    static const std::string HIDDEN_CONTENT = "ACHIEVEMENT_HIDDEN_CONTENT_%d";
+	static const std::string HIDDEN_TITLE   = "ACHIEVEMENT_HIDDEN_TITLE_%d";
 }
 
 struct sREWARD_DATA{

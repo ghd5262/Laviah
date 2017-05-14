@@ -5,9 +5,9 @@
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../Common/StringUtility.h"
 
-CAchievementPopupDP* CAchievementPopupDP::create(const sACHIEVEMENT_PARAM* achievement)
+CAchievementPopupDP* CAchievementPopupDP::create(const sACHIEVEMENT_PARAM* achievement, int level, int maxLevel)
 {
-    CAchievementPopupDP *pRet = new(std::nothrow) CAchievementPopupDP(achievement);
+    CAchievementPopupDP *pRet = new(std::nothrow) CAchievementPopupDP(achievement, level, maxLevel);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -44,27 +44,40 @@ bool CAchievementPopupDP::init()
 //                              this->getContentSize().height * 0.5f));
     }
     
-    // create name
+    // create title
     {
-        auto name = Label::createWithSystemFont(TRANSLATE(m_Achievement->_contents), FONT::MALGUNBD, 50);
+        auto name = Label::createWithSystemFont(TRANSLATE(m_Achievement->_title), FONT::MALGUNBD, 50);
         name->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        name->setPosition(Vec2(this->getContentSize().width * 0.38f,
+        name->setPosition(Vec2(this->getContentSize().width * 0.25f,
                                this->getContentSize().height * 0.75f));
         this->addChild(name);
     }
     
-    // create score
+    // create content
     {
-        auto score = Label::createWithTTF("", FONT::MALGUNBD, 70);
-        score->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        score->setPosition(Vec2(this->getContentSize().width * 0.38f,
-                                this->getContentSize().height * 0.35f));
-        this->addChild(score);
+        auto contents = StringUtils::format(TRANSLATE(m_Achievement->_contents).c_str(), m_Achievement->_materialValueList.at(0));
+        auto content = Label::createWithSystemFont(contents, FONT::MALGUNBD, 35);
+        content->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+        content->setPosition(Vec2(this->getContentSize().width * 0.25f,
+                                  this->getContentSize().height * 0.5f));
+        this->addChild(content);
     }
     
-    // create share button
+    // create star
     {
-        
+        for(int count = 0; count < m_AchievementMaxLevel; count++)
+        {
+            auto star = Sprite::create("starIcon_s.png");
+            star->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+            star->setPosition(Vec2((this->getContentSize().width * 0.25f) + (count * 50),
+                                    this->getContentSize().height * 0.25f));
+            this->addChild(star);
+            
+            if(count < m_AchievementLevel)
+                star->setColor(COLOR::GOLD);
+            else
+                star->setOpacity(255 * 0.4f);
+        }
     }
     
     
