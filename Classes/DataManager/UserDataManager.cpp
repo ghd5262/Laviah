@@ -34,10 +34,11 @@ int compare (int a, int b)
 
 namespace USERDATA{
 	//d8d56d34a90de34339f8a174523adaae - texturepacker global key
-	static const std::string CRYPTO_KEY			= "sktjdgmlq1024!";
-	static const std::string SINGLE_DATA_KEY	= "userDefaultDatas_Number";
-	static const std::string ARRAY_DATA_KEY		= "userDefaultDatas_List";
-	static const std::string GOOGLE_DATA_KEY	= "USER_DATA";
+	static const std::string CRYPTO_KEY			 = "sktjdgmlq1024!";
+	static const std::string SINGLE_DATA_KEY	 = "userDefaultDatas_Number";
+	static const std::string ARRAY_DATA_KEY		 = "userDefaultDatas_List";
+    static const std::string PAIR_ARRAY_DATA_KEY = "userDefaultDatas_Pair";
+	static const std::string GOOGLE_DATA_KEY	 = "USER_DATA";
 };
 
 CUserDataManager::CUserDataManager()
@@ -50,15 +51,27 @@ CUserDataManager::CUserDataManager()
 
 CUserDataManager::~CUserDataManager()
 {
-	auto deleteList = [=](std::map<std::string, ARRAY_DATA*> list){
-		for (auto dataList : list)
-		{
-			if (dataList.second) delete dataList.second;
-		}
-	};
-
-	deleteList(m_UserData._userDataListMap);
-	deleteList(m_UserDefaultData._userDataListMap);
+//	auto deleteList = [=](std::map<std::string, ARRAY_DATA*> list){
+//		for (auto dataList : list)
+//		{
+//			if (dataList.second) delete dataList.second;
+//		}
+//	};
+//
+//	deleteList(m_UserData._userDataListMap);
+//	deleteList(m_UserDefaultData._userDataListMap);
+    
+    auto cleanUserData = [=](sUSER_DATA& data){
+        DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataListMap);
+        
+        for(auto pairArray : data._userDataPairListMap)
+            DATA_MANAGER_UTILS::listDeleteAndClean(*pairArray.second);
+        
+        DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataPairListMap);
+    };
+    
+    cleanUserData(m_UserData);
+    cleanUserData(m_UserDefaultData);
 }
 
 CUserDataManager* CUserDataManager::Instance()
@@ -87,32 +100,55 @@ void CUserDataManager::initUserDefaultValue(sUSER_DATA &data)
     CCLOG("strUserDefaultDataList JSON : \n %s\n", userDefaultDataListClearData.c_str());
     
     
-    const Json::Value numberDataArray = root[USERDATA::SINGLE_DATA_KEY];
-    
-    for (int dataCount = 0; dataCount < numberDataArray.size(); ++dataCount)
+    // initializing single data ( number data )
     {
-        const Json::Value valueItem = numberDataArray[dataCount];
-        
-        std::string dataKey = valueItem["dataKey"].asString();
-        int defaultValue = valueItem["defaultValue"].asInt();
-
-		data._userDataIntMap.emplace(std::pair<std::string, int>(dataKey, defaultValue));
+        const Json::Value numberDataArray       = root[USERDATA::SINGLE_DATA_KEY];
+        for (auto valueItem : numberDataArray)
+        {
+            std::string dataKey                 = valueItem["dataKey"].asString();
+            int defaultValue                    = valueItem["defaultValue"].asInt();
+            
+            data._userDataIntMap.emplace(std::pair<std::string, int>(dataKey, defaultValue));
+        }
     }
     
-    const Json::Value listDataArray = root[USERDATA::ARRAY_DATA_KEY];
-    
-    for (int dataCount = 0; dataCount < listDataArray.size(); ++dataCount)
+    // initializing array data ( list data )
     {
-        const Json::Value valueItem = listDataArray[dataCount];
-        
-        std::string dataKey = valueItem["dataKey"].asString();
-        const Json::Value defaultValueArray = valueItem["defaultValue"];
-       
-		auto emptyList = new ARRAY_DATA();        
-		data._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(dataKey, emptyList));
-
-        for(int valueCount = 0; valueCount < defaultValueArray.size(); valueCount++)
-            emptyList->emplace_back(defaultValueArray[valueCount].asInt());
+        const Json::Value listDataArray         = root[USERDATA::ARRAY_DATA_KEY];
+        for (auto valueItem : listDataArray)
+        {
+            std::string dataKey                 = valueItem["dataKey"].asString();
+            const Json::Value defaultValueArray = valueItem["defaultValue"];
+            
+            auto emptyList                      = new ARRAY_DATA();
+            data._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(dataKey, emptyList));
+            
+            for(auto value : defaultValueArray)
+                emptyList->emplace_back(value.asInt());
+        }
+    }
+    
+    // initializing pair data
+    {
+        const Json::Value pairDataArray         = root[USERDATA::PAIR_ARRAY_DATA_KEY];
+        for (auto valueItem : pairDataArray)
+        {
+            std::string dataKey                 = valueItem["dataKey"].asString();
+            const Json::Value defaultValueArray = valueItem["defaultValue"];
+            
+            auto emptyPairArray                 = new PAIR_DATA_ARRAY();
+            data._userDataPairListMap.emplace(std::pair<std::string, PAIR_DATA_ARRAY*>(dataKey, emptyPairArray));
+            
+            for(auto pairArray : defaultValueArray)
+            {
+                auto emptyPair                  = new PAIR_DATA();
+                int index = 0;
+                emptyPairArray->emplace(std::pair<int, PAIR_DATA*>(pairArray[index].asInt(), emptyPair));
+                
+                for(auto pair : pairArray)
+                    emptyPair->emplace_back(pair.asInt());
+            }
+        }
     }
 }
 
@@ -121,10 +157,11 @@ void CUserDataManager::initUserDataKey(sUSER_DATA &data)
 	for (auto singleData : data._userDataIntMap)
 		this->addKey(USERDATA::SINGLE_DATA_KEY, singleData.first);
 	
-
 	for (auto arrayData : data._userDataListMap)
 		this->addKey(USERDATA::ARRAY_DATA_KEY, arrayData.first);
 
+    for (auto pairArrayData : data._userDataPairListMap)
+        this->addKey(USERDATA::PAIR_ARRAY_DATA_KEY, pairArrayData.first);
 
 	if (!m_UserDataKeyList.size())
 	{
@@ -140,11 +177,25 @@ void CUserDataManager::initSingleUserDataWithDefaultValue(std::string key)
 
 void CUserDataManager::initArrayUserDataWithDefaultValue(std::string key)
 {
-	auto userArrayData = m_UserData._userDataListMap[key];
-	auto userDefaultArrayData = m_UserDefaultData._userDataListMap[key];
+	auto userArrayData              = m_UserData._userDataListMap[key];
+	auto userDefaultArrayData       = m_UserDefaultData._userDataListMap[key];
 	if (userDefaultArrayData->size() > 0)
         DATA_MANAGER_UTILS::copyList(*userDefaultArrayData, *userArrayData);
     else userArrayData->clear();
+}
+
+void CUserDataManager::initPairArrayUserDataWithDefaultValue(std::string key)
+{
+    auto userPairArrayData          = m_UserData._userDataPairListMap[key];
+    auto userDefaultPairArrayData   = m_UserDefaultData._userDataPairListMap[key];
+    if (userDefaultPairArrayData->size() > 0){
+//        for(auto pairArray : *userDefaultPairArrayData)
+//        {
+//            
+//        }
+        DATA_MANAGER_UTILS::copyList(*userDefaultPairArrayData, *userPairArrayData);
+    }
+    else userPairArrayData->clear();
 }
 
 bool CUserDataManager::getIsFirstPlay()
@@ -315,7 +366,58 @@ void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string value
 				this->sortUserDataList(key, compare);
 			}
 		}
-	}
+        else if (keyKind == USERDATA::PAIR_ARRAY_DATA_KEY)
+        {
+            const Json::Value pairArrayValue = dataArray[key.c_str()];
+            
+            auto iter = data._userDataPairListMap.find(key);
+            if (iter == data._userDataPairListMap.end()){
+                auto emptyPairArray = new PAIR_DATA_ARRAY();
+                data._userDataPairListMap.emplace(std::pair<std::string, PAIR_DATA_ARRAY*>(key, emptyPairArray));
+            }
+            /** if there isn't data about the key.
+             * set user data from the default data. */
+            if (pairArrayValue.isNull())
+            {
+                this->initPairArrayUserDataWithDefaultValue(key);
+                continue;
+            }
+            
+//            for(auto pairArray : pairArrayValue)
+//            {
+//                auto emptyPair                  = new PAIR_DATA();
+//                emptyPairArray->push_back(emptyPair);
+//                
+//                for(auto pair : pairArray)
+//                    emptyPair->emplace_back(pair.asInt());
+//            }
+            
+            
+            for (auto pair : pairArrayValue)
+            {
+                auto pairList                   = data._userDataPairListMap[key];
+                auto emptyPair                  = new PAIR_DATA();
+                int index = 0;
+                pairList->emplace(std::pair<int, PAIR_DATA*>(pair[index].asInt(), emptyPair));
+                
+                for (auto pairValue : pair)
+                    emptyPair->emplace_back(pairValue.asInt());
+                    
+                
+                
+                int itemIdx = value.asInt();
+                
+                if (getUserData_IsItemHave(key, itemIdx))
+                {
+                    CCLOG("Item get : Already have %s", key.c_str());
+                    continue;
+                }
+                
+                data._userDataListMap[key]->push_back(itemIdx);
+                this->sortUserDataList(key, compare);
+            }
+        }
+    }
 }
 
 bool CUserDataManager::isGoogleRevisionHigher()
@@ -388,6 +490,12 @@ ARRAY_DATA CUserDataManager::getUserData_List(std::string key)
 {
     auto list = getUserData_ListRef(key);
     return *list;
+}
+
+PAIR_DATA_ARRAY CUserDataManager::getUserData_PairList(std::string key)
+{
+    auto pairList = getUserData_PairListRef(key);
+    return *pairList;
 }
 
 bool CUserDataManager::getUserData_IsItemHave(std::string key, int itemIdx)
@@ -517,6 +625,10 @@ void CUserDataManager::setUserData_Reset()
         {
             this->initArrayUserDataWithDefaultValue(key);
         }
+        else if (keyKind == USERDATA::PAIR_ARRAY_DATA_KEY)
+        {
+            this->initPairArrayUserDataWithDefaultValue(key);
+        }
     }
     
    	SaveUserData();
@@ -616,6 +728,22 @@ void CUserDataManager::convertUserDataToJson(std::string &valueJson)
 			}
 			dataArray[key.c_str()] = jsonItemList;
 		}
+        else if (keyKind == USERDATA::PAIR_ARRAY_DATA_KEY)
+        {
+            Json::Value jsonPairItemList;
+            auto pairList = getUserData_PairList(key);
+            
+            for(auto pair : pairList)
+            {
+                Json::Value jsonPair;
+                for(auto data : *pair.second)
+                {
+                    jsonPair.append(static_cast<int>(data));
+                }
+                jsonPairItemList.append(jsonPair);
+            }
+            dataArray[key.c_str()] = jsonPairItemList;
+        }
 	}
 	root["data"] = dataArray;
 	valueJson = writer.write(root);
@@ -647,6 +775,16 @@ ARRAY_DATA* CUserDataManager::getUserData_ListRef(std::string key)
 {
     if(m_UserData._userDataListMap.find(key) != m_UserData._userDataListMap.end()){
         auto list = m_UserData._userDataListMap.find(key)->second;
+        return list;
+    }
+    CCLOG("There is no user data key : %s", key.c_str());
+    CCASSERT(false, "Wrong Key");
+}
+
+PAIR_DATA_ARRAY* CUserDataManager::getUserData_PairListRef(std::string key)
+{
+    if(m_UserData._userDataPairListMap.find(key) != m_UserData._userDataPairListMap.end()){
+        auto list = m_UserData._userDataPairListMap.find(key)->second;
         return list;
     }
     CCLOG("There is no user data key : %s", key.c_str());
