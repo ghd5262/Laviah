@@ -3,21 +3,21 @@
 #include <vector>
 #include <map>
 
-typedef std::map<std::string, int>              SINGLE_DATA_LIST;
+typedef std::map<std::string, int>               SINGLE_DATA_LIST;
 
-typedef std::vector<int>                        ARRAY_DATA;
-typedef std::map<std::string, ARRAY_DATA*>      ARRAY_DATA_LIST;
+typedef std::vector<int>                         ARRAY_DATA;
+typedef std::map<std::string, ARRAY_DATA*>       ARRAY_DATA_LIST;
 
-typedef std::vector<int>                        PAIR_DATA;
-typedef std::map<int, PAIR_DATA*>               PAIR_DATA_ARRAY;
-typedef std::map<std::string, PAIR_DATA_ARRAY*> PAIR_DATA_ARRAY_LIST;
+typedef std::vector<int>                         PARAM_DATA;
+typedef std::map<int, PARAM_DATA*>               PARAM_DATA_ARRAY;
+typedef std::map<std::string, PARAM_DATA_ARRAY*> PARAM_DATA_ARRAY_LIST;
 
-typedef std::map<std::string, std::string>      USERDATA_KEY_LIST;
+typedef std::map<std::string, std::string>       USERDATA_KEY_LIST;
 
 struct sUSER_DATA{
-	SINGLE_DATA_LIST     _userDataIntMap;      ///< { key, 0 }
-	ARRAY_DATA_LIST      _userDataListMap;     ///< { key, {0, 1, 2, 3} }
-    PAIR_DATA_ARRAY_LIST _userDataPairListMap; ///< { key, {0, 0}, {1, 1}, {2, 2} }
+	SINGLE_DATA_LIST      _userDataIntMap;      ///< { key, 0 }
+	ARRAY_DATA_LIST       _userDataListMap;     ///< { key, {0, 1, 2, 3} }
+    PARAM_DATA_ARRAY_LIST _userDataParamListMap; ///< { key, {0, 0}, {1, 1}, {2, 2} }
 };
 
 namespace USERDATA_KEY {
@@ -86,7 +86,8 @@ public:
     long long getFreeRewardTimestamp();
     int getUserData_Number(std::string key);
     ARRAY_DATA getUserData_List(std::string key);
-    PAIR_DATA_ARRAY getUserData_PairList(std::string key);
+    PARAM_DATA_ARRAY getUserData_ParamList(std::string key);
+    int getUserData_ParamData(std::string key, int index, int paramIdx);
     bool getUserData_IsItemHave(std::string key, int itemIdx);
     float getItemCurrentValue(std::string key);
 	USERDATA_KEY_LIST getKeyList() { return m_UserDataKeyList; }
@@ -95,6 +96,7 @@ public:
     void setSaveRevision(int value);
     void setUserData_Number(std::string key, int value);
     void setUserData_ItemGet(std::string key, int itemIdx);
+    void setUserData_ItemParam(std::string key, int itemIdx, int paramIdx, int value);
 	void setUserData_ItemRemove(std::string key, int itemIdx);
     void setUserData_ItemRemoveAll(std::string key);
     void setUserData_Reset();
@@ -115,7 +117,7 @@ private:
 
 	void initArrayUserDataWithDefaultValue(std::string key);
 
-    void initPairArrayUserDataWithDefaultValue(std::string key);
+    void initParamArrayUserDataWithDefaultValue(std::string key);
 
 	void dataLoadFromXML();
 
@@ -137,7 +139,7 @@ private:
 
     ARRAY_DATA* getUserData_ListRef(std::string key);
     
-    PAIR_DATA_ARRAY* getUserData_PairListRef(std::string key);
+    PARAM_DATA_ARRAY* getUserData_ParamListRef(std::string key);
 
     static void sortUserDataList(std::string key, const LIST_COMPARE& compare);
 	

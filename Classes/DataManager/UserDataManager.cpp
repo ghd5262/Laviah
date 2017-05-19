@@ -37,7 +37,7 @@ namespace USERDATA{
 	static const std::string CRYPTO_KEY			 = "sktjdgmlq1024!";
 	static const std::string SINGLE_DATA_KEY	 = "userDefaultDatas_Number";
 	static const std::string ARRAY_DATA_KEY		 = "userDefaultDatas_List";
-    static const std::string PAIR_ARRAY_DATA_KEY = "userDefaultDatas_Pair";
+    static const std::string PARAM_ARRAY_DATA_KEY = "userDefaultDatas_Param";
 	static const std::string GOOGLE_DATA_KEY	 = "USER_DATA";
 };
 
@@ -64,10 +64,10 @@ CUserDataManager::~CUserDataManager()
     auto cleanUserData = [=](sUSER_DATA& data){
         DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataListMap);
         
-        for(auto pairArray : data._userDataPairListMap)
-            DATA_MANAGER_UTILS::mapDeleteAndClean(*pairArray.second);
+        for(auto paramArray : data._userDataParamListMap)
+            DATA_MANAGER_UTILS::mapDeleteAndClean(*paramArray.second);
         
-        DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataPairListMap);
+        DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataParamListMap);
     };
     
     cleanUserData(m_UserData);
@@ -128,25 +128,25 @@ void CUserDataManager::initUserDefaultValue(sUSER_DATA &data)
         }
     }
     
-    // initializing pair data
+    // initializing param data
     {
-        const Json::Value pairDataArray         = root[USERDATA::PAIR_ARRAY_DATA_KEY];
-        for (auto valueItem : pairDataArray)
+        const Json::Value paramDataArray        = root[USERDATA::PARAM_ARRAY_DATA_KEY];
+        for (auto valueItem : paramDataArray)
         {
             std::string dataKey                 = valueItem["dataKey"].asString();
             const Json::Value defaultValueArray = valueItem["defaultValue"];
             
-            auto emptyPairArray                 = new PAIR_DATA_ARRAY();
-            data._userDataPairListMap.emplace(std::pair<std::string, PAIR_DATA_ARRAY*>(dataKey, emptyPairArray));
+            auto emptyParamArray                = new PARAM_DATA_ARRAY();
+            data._userDataParamListMap.emplace(std::pair<std::string, PARAM_DATA_ARRAY*>(dataKey, emptyParamArray));
             
-            for(auto pairArray : defaultValueArray)
+            for(auto paramArray : defaultValueArray)
             {
-                auto emptyPair                  = new PAIR_DATA();
+                auto emptyParam                 = new PARAM_DATA();
                 int index = 0;
-                emptyPairArray->emplace(std::pair<int, PAIR_DATA*>(pairArray[index].asInt(), emptyPair));
+                emptyParamArray->emplace(std::pair<int, PARAM_DATA*>(paramArray[index].asInt(), emptyParam));
                 
-                for(auto pair : pairArray)
-                    emptyPair->emplace_back(pair.asInt());
+                for(auto param : paramArray)
+                    emptyParam->emplace_back(param.asInt());
             }
         }
     }
@@ -160,8 +160,8 @@ void CUserDataManager::initUserDataKey(sUSER_DATA &data)
 	for (auto arrayData : data._userDataListMap)
 		this->addKey(USERDATA::ARRAY_DATA_KEY, arrayData.first);
 
-    for (auto pairArrayData : data._userDataPairListMap)
-        this->addKey(USERDATA::PAIR_ARRAY_DATA_KEY, pairArrayData.first);
+    for (auto paramArrayData : data._userDataParamListMap)
+        this->addKey(USERDATA::PARAM_ARRAY_DATA_KEY, paramArrayData.first);
 
 	if (!m_UserDataKeyList.size())
 	{
@@ -184,21 +184,21 @@ void CUserDataManager::initArrayUserDataWithDefaultValue(std::string key)
     else userArrayData->clear();
 }
 
-void CUserDataManager::initPairArrayUserDataWithDefaultValue(std::string key)
+void CUserDataManager::initParamArrayUserDataWithDefaultValue(std::string key)
 {
-    auto userPairArrayData          = m_UserData._userDataPairListMap[key];
-    auto userDefaultPairArrayData   = m_UserDefaultData._userDataPairListMap[key];
-    if (userDefaultPairArrayData->size() > 0){
-        for(auto pairList : *userDefaultPairArrayData)
+    auto userParamArrayData         = m_UserData._userDataParamListMap[key];
+    auto userDefaultParamArrayData  = m_UserDefaultData._userDataParamListMap[key];
+    if (userDefaultParamArrayData->size() > 0){
+        for(auto paramList : *userDefaultParamArrayData)
         {
-            auto emptyPair          = new PAIR_DATA();
-            userPairArrayData->emplace(std::pair<int, PAIR_DATA*>(pairList.first, emptyPair));
+            auto emptyParam         = new PARAM_DATA();
+            userParamArrayData->emplace(std::pair<int, PARAM_DATA*>(paramList.first, emptyParam));
             
-            for(auto pair : *pairList.second)
-                emptyPair->emplace_back(pair);
+            for(auto param : *paramList.second)
+                emptyParam->emplace_back(param);
         }
     }
-    else userPairArrayData->clear();
+    else userParamArrayData->clear();
 }
 
 bool CUserDataManager::getIsFirstPlay()
@@ -369,38 +369,38 @@ void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string value
 				this->sortUserDataList(key, compare);
 			}
 		}
-        else if (keyKind == USERDATA::PAIR_ARRAY_DATA_KEY)
+        else if (keyKind == USERDATA::PARAM_ARRAY_DATA_KEY)
         {
-            const Json::Value pairArrayValue = dataArray[key.c_str()];
+            const Json::Value paramArrayValue = dataArray[key.c_str()];
             
-            auto iter = data._userDataPairListMap.find(key);
-            if (iter == data._userDataPairListMap.end()){
-                auto emptyPairArray = new PAIR_DATA_ARRAY();
-                data._userDataPairListMap.emplace(std::pair<std::string, PAIR_DATA_ARRAY*>(key, emptyPairArray));
+            auto iter = data._userDataParamListMap.find(key);
+            if (iter == data._userDataParamListMap.end()){
+                auto emptyParamArray = new PARAM_DATA_ARRAY();
+                data._userDataParamListMap.emplace(std::pair<std::string, PARAM_DATA_ARRAY*>(key, emptyParamArray));
             }
             /** if there isn't data about the key.
              * set user data from the default data. */
-            if (pairArrayValue.isNull())
+            if (paramArrayValue.isNull())
             {
-                this->initPairArrayUserDataWithDefaultValue(key);
+                this->initParamArrayUserDataWithDefaultValue(key);
                 continue;
             }
             
-            for (auto pair : pairArrayValue)
+            for (auto param : paramArrayValue)
             {
-                auto pairList                   = data._userDataPairListMap[key];
-                auto emptyPair                  = new PAIR_DATA();
+                auto paramList                   = data._userDataParamListMap[key];
+                auto emptyParam                  = new PARAM_DATA();
                 int index = 0;
                 
-                if(pairList->find(pair[index].asInt()) != pairList->end()){
+                if(paramList->find(param[index].asInt()) != paramList->end()){
                     CCLOG("Item get : Already have %s", key.c_str());
                     continue;
                 }
                 
-                pairList->emplace(std::pair<int, PAIR_DATA*>(pair[index].asInt(), emptyPair));
+                paramList->emplace(std::pair<int, PARAM_DATA*>(param[index].asInt(), emptyParam));
                 
-                for (auto pairValue : pair)
-                    emptyPair->emplace_back(pairValue.asInt());
+                for (auto paramValue : param)
+                    emptyParam->emplace_back(paramValue.asInt());
             }
         }
     }
@@ -478,10 +478,32 @@ ARRAY_DATA CUserDataManager::getUserData_List(std::string key)
     return *list;
 }
 
-PAIR_DATA_ARRAY CUserDataManager::getUserData_PairList(std::string key)
+PARAM_DATA_ARRAY CUserDataManager::getUserData_ParamList(std::string key)
 {
-    auto pairList = getUserData_PairListRef(key);
-    return *pairList;
+    auto paramList = getUserData_ParamListRef(key);
+    return *paramList;
+}
+
+int CUserDataManager::getUserData_ParamData(std::string key, int index, int paramIdx)
+{
+    // Find the list as the key.
+    auto list = this->getUserData_ParamList(key);
+    
+    // Find the PARAM_DATA as the index.
+    auto iter = list.find(index);
+    if(iter == list.end()) {
+        CCLOG("There is no param data matched index : %d", index);
+        CCASSERT(false, "Wrong Index");
+    }
+    
+    // Find the parameter as the paramIdx.
+    auto paramDataList = iter->second;
+    if(paramDataList->size() <= paramIdx) {
+        CCLOG("The parameter index is wrong indexed : %d", paramIdx);
+        CCASSERT(false, "No param data");
+    }
+    
+    return paramDataList->at(paramIdx);
 }
 
 bool CUserDataManager::getUserData_IsItemHave(std::string key, int itemIdx)
@@ -570,6 +592,30 @@ void CUserDataManager::setUserData_ItemGet(std::string key, int itemIdx)
 	SaveUserData();
 }
 
+void CUserDataManager::setUserData_ItemParam(std::string key, int itemIdx, int paramIdx, int value)
+{
+    PARAM_DATA* paramData = nullptr;
+    
+    // Find the PARAM_DATA as the index.
+    auto paramListMap  = this->getUserData_ParamListRef(key);
+    auto iter = paramListMap->find(itemIdx);
+    if (iter == paramListMap->end()) {
+        // TODO : add param to list.
+        paramData  = new PARAM_DATA();
+        paramListMap->emplace(std::pair<int, PARAM_DATA*>(itemIdx, paramData));
+    }
+    else paramData = iter->second;
+
+    // Find the parameter as the paramIdx.
+    // TODO : If it is the first time of setting param. It will be assert. (have to fix it)
+    if(paramData->size() <= paramIdx) {
+        CCLOG("The parameter index is wrong indexed : %d", paramIdx);
+        CCASSERT(false, "No param data");
+    }
+    
+    paramData->at(paramIdx) = value;
+}
+
 void CUserDataManager::setUserData_ItemRemove(std::string key, int itemIdx)
 {
 	if (!getUserData_IsItemHave(key, itemIdx))
@@ -611,9 +657,9 @@ void CUserDataManager::setUserData_Reset()
         {
             this->initArrayUserDataWithDefaultValue(key);
         }
-        else if (keyKind == USERDATA::PAIR_ARRAY_DATA_KEY)
+        else if (keyKind == USERDATA::PARAM_ARRAY_DATA_KEY)
         {
-            this->initPairArrayUserDataWithDefaultValue(key);
+            this->initParamArrayUserDataWithDefaultValue(key);
         }
     }
     
@@ -714,21 +760,21 @@ void CUserDataManager::convertUserDataToJson(std::string &valueJson)
 			}
 			dataArray[key.c_str()] = jsonItemList;
 		}
-        else if (keyKind == USERDATA::PAIR_ARRAY_DATA_KEY)
+        else if (keyKind == USERDATA::PARAM_ARRAY_DATA_KEY)
         {
-            Json::Value jsonPairItemList;
-            auto pairList = getUserData_PairList(key);
+            Json::Value jsonParamItemList;
+            auto paramList = getUserData_ParamList(key);
             
-            for(auto pair : pairList)
+            for(auto param : paramList)
             {
-                Json::Value jsonPair;
-                for(auto data : *pair.second)
+                Json::Value jsonParam;
+                for(auto data : *param.second)
                 {
-                    jsonPair.append(static_cast<int>(data));
+                    jsonParam.append(static_cast<int>(data));
                 }
-                jsonPairItemList.append(jsonPair);
+                jsonParamItemList.append(jsonParam);
             }
-            dataArray[key.c_str()] = jsonPairItemList;
+            dataArray[key.c_str()] = jsonParamItemList;
         }
 	}
 	root["data"] = dataArray;
@@ -767,10 +813,10 @@ ARRAY_DATA* CUserDataManager::getUserData_ListRef(std::string key)
     CCASSERT(false, "Wrong Key");
 }
 
-PAIR_DATA_ARRAY* CUserDataManager::getUserData_PairListRef(std::string key)
+PARAM_DATA_ARRAY* CUserDataManager::getUserData_ParamListRef(std::string key)
 {
-    if(m_UserData._userDataPairListMap.find(key) != m_UserData._userDataPairListMap.end()){
-        auto list = m_UserData._userDataPairListMap.find(key)->second;
+    if(m_UserData._userDataParamListMap.find(key) != m_UserData._userDataParamListMap.end()){
+        auto list = m_UserData._userDataParamListMap.find(key)->second;
         return list;
     }
     CCLOG("There is no user data key : %s", key.c_str());
