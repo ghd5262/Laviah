@@ -65,7 +65,7 @@ CUserDataManager::~CUserDataManager()
         DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataListMap);
         
         for(auto pairArray : data._userDataPairListMap)
-            DATA_MANAGER_UTILS::listDeleteAndClean(*pairArray.second);
+            DATA_MANAGER_UTILS::mapDeleteAndClean(*pairArray.second);
         
         DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataPairListMap);
     };
@@ -189,11 +189,14 @@ void CUserDataManager::initPairArrayUserDataWithDefaultValue(std::string key)
     auto userPairArrayData          = m_UserData._userDataPairListMap[key];
     auto userDefaultPairArrayData   = m_UserDefaultData._userDataPairListMap[key];
     if (userDefaultPairArrayData->size() > 0){
-//        for(auto pairArray : *userDefaultPairArrayData)
-//        {
-//            
-//        }
-        DATA_MANAGER_UTILS::copyList(*userDefaultPairArrayData, *userPairArrayData);
+        for(auto pairList : *userDefaultPairArrayData)
+        {
+            auto emptyPair          = new PAIR_DATA();
+            userPairArrayData->emplace(std::pair<int, PAIR_DATA*>(pairList.first, emptyPair));
+            
+            for(auto pair : *pairList.second)
+                emptyPair->emplace_back(pair);
+        }
     }
     else userPairArrayData->clear();
 }
@@ -383,38 +386,21 @@ void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string value
                 continue;
             }
             
-//            for(auto pairArray : pairArrayValue)
-//            {
-//                auto emptyPair                  = new PAIR_DATA();
-//                emptyPairArray->push_back(emptyPair);
-//                
-//                for(auto pair : pairArray)
-//                    emptyPair->emplace_back(pair.asInt());
-//            }
-            
-            
             for (auto pair : pairArrayValue)
             {
                 auto pairList                   = data._userDataPairListMap[key];
                 auto emptyPair                  = new PAIR_DATA();
                 int index = 0;
-                pairList->emplace(std::pair<int, PAIR_DATA*>(pair[index].asInt(), emptyPair));
                 
-                for (auto pairValue : pair)
-                    emptyPair->emplace_back(pairValue.asInt());
-                    
-                
-                
-                int itemIdx = value.asInt();
-                
-                if (getUserData_IsItemHave(key, itemIdx))
-                {
+                if(pairList->find(pair[index].asInt()) != pairList->end()){
                     CCLOG("Item get : Already have %s", key.c_str());
                     continue;
                 }
                 
-                data._userDataListMap[key]->push_back(itemIdx);
-                this->sortUserDataList(key, compare);
+                pairList->emplace(std::pair<int, PAIR_DATA*>(pair[index].asInt(), emptyPair));
+                
+                for (auto pairValue : pair)
+                    emptyPair->emplace_back(pairValue.asInt());
             }
         }
     }
