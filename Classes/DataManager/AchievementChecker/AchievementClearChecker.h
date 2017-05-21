@@ -45,12 +45,7 @@ namespace ACHIEVEMENT_DATA_KEY {
     const std::string ROCKET_RARE_COUNT	   = "ROCKET_RARE_COUNT";
     
     const std::string USER_LEVEL           = "USER_LEVEL";
-    const std::string BONUS_ITEM_LEVEL     = "USER_BONUS_ITEM_LEVEL";
-    const std::string COIN_ITEM_LEVEL      = "USER_COIN_ITEM_LEVEL";
-    const std::string STAR_ITEM_LEVEL      = "USER_STAR_ITEM_LEVEL";
-    const std::string GIANT_ITEM_LEVEL     = "USER_GIANT_ITEM_LEVEL";
-    const std::string MAGNET_ITEM_LEVEL    = "USER_MAGNET_ITEM_LEVEL";
-    const std::string MAGNET_SIZE_LEVEL    = "USER_MAGNET_SIZE_LEVEL";
+    const std::string ITEM_LEVEL           = "USER_ITEM_LEVEL";
     
     const std::string ROCKET_COIN_COUNT    = "ROCKET_COIN_COUNT";
     
@@ -60,8 +55,8 @@ namespace ACHIEVEMENT_DATA_KEY {
     const std::string SAVED_RUN			   = "USER_SAVED_RUN";
     const std::string SAVED_SCORE		   = "USER_SAVED_SCORE";
     const std::string SAVED_REVIVE		   = "USER_SAVED_REVIVE";
-    const std::string NORMAL_CLEAR_COUNT   = "USER_COM_NORMAL_ACHIEVEMENT_LIST";
-    const std::string HIDDEN_CLEAR_COUNT   = "USER_COM_HIDDEN_ACHIEVEMENT_LIST";
+    const std::string NORMAL_CLEAR_COUNT   = "USER_NORMAL_ACHIEVEMENT_LIST";
+    const std::string HIDDEN_CLEAR_COUNT   = "USER_HIDDEN_ACHIEVEMENT_LIST";
 };
 
 class CAchievementClearChecker {

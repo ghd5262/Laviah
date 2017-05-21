@@ -16,7 +16,8 @@ CAchievementDataManager::CAchievementDataManager()
 {
 	initETCChekerList();
 	initRewarderList();
-    initWithJson("achievementList.json");
+    initWithJson(m_NormalAchievementDataList, "normalAchievementList.json");
+    initWithJson(m_HiddenAchievementDataList, "hiddenAchievementList.json");
 }
 
 CAchievementDataManager::~CAchievementDataManager()
@@ -33,7 +34,7 @@ CAchievementDataManager* CAchievementDataManager::Instance()
     return &instance;
 }
 
-void CAchievementDataManager::initWithJson(std::string fileName)
+void CAchievementDataManager::initWithJson(ACHIEVEMENT_LIST &list, std::string fileName)
 {
     Json::Value root;
     Json::Reader reader;
@@ -51,33 +52,40 @@ void CAchievementDataManager::initWithJson(std::string fileName)
     }
     CCLOG("Achievement List JSON : \n %s\n", fileData.c_str());
     
-    const Json::Value materialValueArray    = root["materialValueList"];
+//    const Json::Value materialValueArray        = root["materialValueList"];
     
-    for (unsigned int count = 0; count < materialValueArray.size(); ++count)
-    {
-        const Json::Value valueItem = materialValueArray[count];
-        this->addValueListToMap(valueItem);
-    }
+//    for (unsigned int count = 0; count < materialValueArray.size(); ++count)
+//    {
+//        const Json::Value valueItem = materialValueArray[count];
+//        this->addValueListToMap(valueItem);
+//    }
     
-	m_NormalAchievementDefaultSet				= root["normalAchievementDefaultSet"];
-	m_HiddenAchievementDefaultSet				= root["hiddenAchievementDefaultSet"];
-    const Json::Value normalAchievementArray	= root["normalAchievements"];
-	const Json::Value hiddenAchievementArray    = root["hiddenAchievements"];
+//	m_NormalAchievementDefaultSet				= root["normalAchievementDefaultSet"];
+//	m_HiddenAchievementDefaultSet				= root["hiddenAchievementDefaultSet"];
+//    const Json::Value normalAchievementArray	= root["normalAchievements"];
+	const Json::Value achievementArray    = root["achievements"];
 
-    auto level = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
+    for (unsigned int count = 0; count < achievementArray.size(); ++count)
+    {
+        const Json::Value valueItem = achievementArray[count];
+        this->addAchievementToList(list, valueItem);
+    }
+
+//    auto level = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
 //    MessageBox(StringUtils::format("Get material value from data of %d level.", level).c_str(), "NOTICE");
     
-	for (unsigned int count = 0; count < normalAchievementArray.size(); ++count)
-    {
-		const Json::Value valueItem = normalAchievementArray[count];
-		this->addAchievementToList(m_NormalAchievementDataList, valueItem, false);
-    }
-
-	for (unsigned int count = 0; count < hiddenAchievementArray.size(); ++count)
-	{
-		const Json::Value valueItem = hiddenAchievementArray[count];
-		this->addAchievementToList(m_HiddenAchievementDataList, valueItem, true);
-	}
+//	for (unsigned int count = 0; count < normalAchievementArray.size(); ++count)
+//    {
+//		const Json::Value valueItem = normalAchievementArray[count];
+//		this->addAchievementToList(m_NormalAchievementDataList, valueItem, false);
+//    }
+//
+//	for (unsigned int count = 0; count < hiddenAchievementArray.size(); ++count)
+//	{
+//		const Json::Value valueItem = hiddenAchievementArray[count];
+//		this->addAchievementToList(m_HiddenAchievementDataList, valueItem, true);
+//	}
+    
 }
 
 bool CAchievementDataManager::CheckCompleteAll()
@@ -85,7 +93,7 @@ bool CAchievementDataManager::CheckCompleteAll()
 	auto currentList = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST);
     if(currentList.size() <= 0) {
         /** If there are no achievements. get new achievements.
-         *  If there are no non-complete achievements. Nothing do. */
+         *  If there are no non-complete achievements. Do nothing. */
         this->getNewAchievements();
         return false;
     }
@@ -336,7 +344,6 @@ ACHIEVEMENT_LIST CAchievementDataManager::getNonCompletedAchievementList()
         
         if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::ACHIEVEMENT_COM_NORMAL_LIST, data->_index)) return false;
 		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST, data->_index)) return false;
-		if (data->_isHighLevel) return false;
         return true;
     }, m_NormalAchievementDataList);
 }
@@ -355,31 +362,31 @@ void CAchievementDataManager::getCurAchievementListByType(ARRAY_DATA& list, bool
     list = CUserDataManager::Instance()->getUserData_List(key);
 }
 
-int CAchievementDataManager::getMaterialValueByLevel(std::string key, int level)
-{
-    auto message = [=](std::string msg){
-        MessageBox(StringUtils::format("%s key : %s", msg.c_str(), key.c_str()).c_str(), "WARNING");
-    };
-    
-    auto data = m_ValueMap.find(key);
-    if(data == m_ValueMap.end()){
-        message("No mtrl value list in the map.");
-        return 0;
-    }
-    
-    auto list = data->second;
-    if(!list.size()){
-        message("No value on the list.");
-        return 0;
-    }
-    
-    if(list.size() <= level){
-//        message("No more data.");
-        return list.back();
-    }
-    
-    return list.at(level);
-}
+//int CAchievementDataManager::getMaterialValueByLevel(std::string key, int level)
+//{
+//    auto message = [=](std::string msg){
+//        MessageBox(StringUtils::format("%s key : %s", msg.c_str(), key.c_str()).c_str(), "WARNING");
+//    };
+//    
+//    auto data = m_ValueMap.find(key);
+//    if(data == m_ValueMap.end()){
+//        message("No mtrl value list in the map.");
+//        return 0;
+//    }
+//    
+//    auto list = data->second;
+//    if(!list.size()){
+//        message("No value on the list.");
+//        return 0;
+//    }
+//    
+//    if(list.size() <= level){
+////        message("No more data.");
+//        return list.back();
+//    }
+//    
+//    return list.at(level);
+//}
 
 void CAchievementDataManager::initETCChekerList()
 {
@@ -397,7 +404,7 @@ void CAchievementDataManager::initRewarderList()
         m_RewarderList.emplace(std::pair<std::string, REWARDER>(key, func));
     };
     
-   	initRewarder(REWARD_COIN,			  CC_CALLBACK_1(CAchievementRewarder::coinReward			  , m_Rewarder));
+   	initRewarder(REWARD_COIN,			  CC_CALLBACK_1(CAchievementRewarder::coinReward			, m_Rewarder));
 	initRewarder(REWARD_CHARACTER,		  CC_CALLBACK_1(CAchievementRewarder::characterReward       , m_Rewarder));
 	initRewarder(REWARD_ROCKET,			  CC_CALLBACK_1(CAchievementRewarder::RocketReward          , m_Rewarder));
 	initRewarder(REWARD_PET,			  CC_CALLBACK_1(CAchievementRewarder::PetReward             , m_Rewarder));
@@ -408,62 +415,65 @@ void CAchievementDataManager::initRewarderList()
 	initRewarder(REWARD_PET_RANDOM,		  CC_CALLBACK_1(CAchievementRewarder::PetRewardRandom       , m_Rewarder));
 }
 
-const Json::Value CAchievementDataManager::initAchievementWithDefaultValue(bool hidden,
-																	   std::string key, 
-																	   const Json::Value data)
-{
-	if (data.isNull())
-	{
-		if (!hidden)	 return m_NormalAchievementDefaultSet[key.c_str()];
-		else			 return m_HiddenAchievementDefaultSet[key.c_str()];
-	}
-	return data;
-}
+//const Json::Value CAchievementDataManager::initAchievementWithDefaultValue(bool hidden,
+//																	   std::string key, 
+//																	   const Json::Value data)
+//{
+//	if (data.isNull())
+//	{
+//		if (!hidden)	 return m_NormalAchievementDefaultSet[key.c_str()];
+//		else			 return m_HiddenAchievementDefaultSet[key.c_str()];
+//	}
+//	return data;
+//}
 
 void CAchievementDataManager::addAchievementToList(ACHIEVEMENT_LIST &list, 
-											   const Json::Value& data, 
-											   bool hiddenType)
+											   const Json::Value& data)
 {
 	sACHIEVEMENT_PARAM* param = new sACHIEVEMENT_PARAM();
 
 	param->_index			= data["index"].asInt();
-	param->_hiddenType		= hiddenType;
+    param->_checkerType     = (CHECKER_TYPE)data["checkerType"].asInt();
+	param->_hiddenType		= data["hiddenType"].asBool();
 
-	std::string content		= StringUtils::format(ACHIEVEMENT_DEFINE::NORMAL_CONTENT.c_str(), param->_index);
-    std::string title       = "";
-    if (hiddenType) {
-        content             = StringUtils::format(ACHIEVEMENT_DEFINE::HIDDEN_CONTENT.c_str(), param->_index);
-        title               = StringUtils::format(ACHIEVEMENT_DEFINE::HIDDEN_TITLE.c_str(),   param->_index);
-    }
+//	std::string content		= StringUtils::format(ACHIEVEMENT_DEFINE::NORMAL_CONTENT.c_str(), param->_index);
+//    std::string title       = "";
+//    if (hiddenType) {
+//        content             = StringUtils::format(ACHIEVEMENT_DEFINE::HIDDEN_CONTENT.c_str(), param->_index);
+//        title               = StringUtils::format(ACHIEVEMENT_DEFINE::HIDDEN_TITLE.c_str(),   param->_index);
+//    }
     
-    param->_title           = title;
-    param->_contents		= content;
+//    param->_title           = title;
+//    param->_contents		= content;
 
-	auto initData = [=](std::string key){
-		return this->initAchievementWithDefaultValue(param->_hiddenType, key, data[key.c_str()]);
-	};
-	param->_checkerType		= (CHECKER_TYPE)initData("checkerType").asInt();
-	param->_rewardKey		= initData("rewardKey").asString();
-	param->_rewardValue		= initData("rewardValue").asInt();
-	param->_visible			= initData("visible").asBool();
+//	auto initData = [=](std::string key){
+//		return this->initAchievementWithDefaultValue(param->_hiddenType, key, data[key.c_str()]);
+//	};
+//	param->_checkerType		= (CHECKER_TYPE)initData("checkerType").asInt();
+//	param->_rewardValue		= initData("rewardValue").asInt();
+	param->_visible			= data["visible"].asBool();
+    param->_rewardKey		= data["rewardKey"].asString();
+    param->_valueIndex      = data["valueIndex"].asInt();
 
 	const Json::Value materialKeyArray   = data["materialKey"];
 	const Json::Value materialValueArray = data["materialValue"];
-
-	if (hiddenType) {
-		for (auto key : materialKeyArray)
-			param->_materialKeyList.emplace_back(key.asString());
-		for (auto value : materialValueArray)
-			param->_materialValueList.emplace_back(value.asInt());
-	}
-	else {
-        auto level = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
-        auto key   = materialKeyArray.asString();
-        auto value = this->getMaterialValueByLevel(key, std::max(0, level - 1));
-        
-		param->_materialKeyList.emplace_back(materialKeyArray.asString());
-        param->_materialValueList.emplace_back(value);
-	}
+    const Json::Value rewardValueArray   = data["rewardValue"];
+//	if (hiddenType) {
+    for (auto key : materialKeyArray)
+        param->_materialKeyList.emplace_back(key.asString());
+    for (auto value : materialValueArray)
+        param->_materialValueList.emplace_back(value.asInt());
+    for (auto reward : rewardValueArray)
+        param->_rewardValueList.emplace_back(reward.asInt());
+//	}
+//	else {
+//        auto level = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
+//        auto key   = materialKeyArray.asString();
+//        auto value = this->getMaterialValueByLevel(key, std::max(0, level - 1));
+//        
+//		param->_materialKeyList.emplace_back(materialKeyArray.asString());
+//        param->_materialValueList.emplace_back(value);
+//	}
 	list.emplace(std::pair<int, const sACHIEVEMENT_PARAM*>(param->_index, param));
 }
 
@@ -478,31 +488,31 @@ void CAchievementDataManager::addValueListToMap(const Json::Value data)
     
     m_ValueMap.emplace(std::pair<std::string, std::vector<int>>(materialKey.asString(), valueList));
 }
-
-cocos2d::Sprite* CAchievementDataManager::getRewardSprite(std::string rewardKey,
-														int rewardValue)
-{
-    auto createTitle = [=](std::string title, Sprite* parent){
-        auto label  = Label::createWithTTF(title, FONT::MALGUNBD, 50);
-        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-        label->setPosition(Vec2(parent->getContentSize().width * 0.5f,
-                                parent->getContentSize().height * 0.9f));
-        label->setColor(COLOR::DARKGRAY);
-        parent->addChild(label);
-    };
-    
-    Sprite* sprite = nullptr;
-    
-    if (REWARD_COIN == rewardKey){
-        sprite = Sprite::create("workshopCoinTime.png");
-        createTitle(StringUtils::format("%d", rewardValue), sprite);
-        
-    }
-	if (REWARD_CHARACTER == rewardKey){
-		auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
-        sprite = Sprite::createWithSpriteFrameName(data->_normalTextureName);
-        createTitle(StringUtils::format("%s", data->_name.c_str()), sprite);
-	}
-    sprite->setScale(1.5f);
-    return sprite;
-}
+//
+//cocos2d::Sprite* CAchievementDataManager::getRewardSprite(std::string rewardKey,
+//														int rewardValue)
+//{
+//    auto createTitle = [=](std::string title, Sprite* parent){
+//        auto label  = Label::createWithTTF(title, FONT::MALGUNBD, 50);
+//        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+//        label->setPosition(Vec2(parent->getContentSize().width * 0.5f,
+//                                parent->getContentSize().height * 0.9f));
+//        label->setColor(COLOR::DARKGRAY);
+//        parent->addChild(label);
+//    };
+//    
+//    Sprite* sprite = nullptr;
+//    
+//    if (REWARD_COIN == rewardKey){
+//        sprite = Sprite::create("workshopCoinTime.png");
+//        createTitle(StringUtils::format("%d", rewardValue), sprite);
+//        
+//    }
+//	if (REWARD_CHARACTER == rewardKey){
+//		auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
+//        sprite = Sprite::createWithSpriteFrameName(data->_normalTextureName);
+//        createTitle(StringUtils::format("%s", data->_name.c_str()), sprite);
+//	}
+//    sprite->setScale(1.5f);
+//    return sprite;
+//}

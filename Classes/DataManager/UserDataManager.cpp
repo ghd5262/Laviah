@@ -600,18 +600,15 @@ void CUserDataManager::setUserData_ItemParam(std::string key, int itemIdx, int p
     auto paramListMap  = this->getUserData_ParamListRef(key);
     auto iter = paramListMap->find(itemIdx);
     if (iter == paramListMap->end()) {
-        // TODO : add param to list.
+        // Add param to list.
         paramData  = new PARAM_DATA();
         paramListMap->emplace(std::pair<int, PARAM_DATA*>(itemIdx, paramData));
     }
     else paramData = iter->second;
 
     // Find the parameter as the paramIdx.
-    // TODO : If it is the first time of setting param. It will be assert. (have to fix it)
-    if(paramData->size() <= paramIdx) {
-        CCLOG("The parameter index is wrong indexed : %d", paramIdx);
-        CCASSERT(false, "No param data");
-    }
+    if(paramData->size() <= paramIdx)
+        paramData->resize(paramIdx+1);
     
     paramData->at(paramIdx) = value;
 }

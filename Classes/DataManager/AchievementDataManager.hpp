@@ -14,7 +14,8 @@ enum CHECKER_TYPE{
 	SINGLE_DATA = 2,
 	ITEM_EXIST = 3,
 	ITEM_COUNT = 4,
-	CONTINUE = 5
+    PARAM_DATA = 5,
+	CONTINUE = 6
 };
 
 class CAchievementClearChecker;
@@ -24,54 +25,54 @@ struct sACHIEVEMENT_PARAM
     int _index;
 	bool _hiddenType;
 	bool _visible;
-	bool _isHighLevel;
-	CHECKER_TYPE _checkerType;
+    CHECKER_TYPE _checkerType;
     std::string _title;
     std::string _contents;
     std::string _rewardKey;
-    int _rewardValue;
+    int _valueIndex;
 	std::vector<std::string> _materialKeyList;
 	std::vector<int> _materialValueList;
+    std::vector<int> _rewardValueList;
 
     sACHIEVEMENT_PARAM()
     : _index(-1)
 	, _hiddenType(false)
 	, _visible(false)
-	, _isHighLevel(false)
 	, _checkerType(CHECKER_TYPE::ETC)
     , _title("")
     , _contents("")
     , _rewardKey("")
-    , _rewardValue(0){}
+    , _valueIndex(-1){}
     
     sACHIEVEMENT_PARAM(const sACHIEVEMENT_PARAM& data)
     : _index(data._index)
 	, _hiddenType(data._hiddenType)
 	, _visible(data._visible)
-	, _isHighLevel(data._isHighLevel)
 	, _checkerType(data._checkerType)
     , _title(data._title)
     , _contents(data._contents)
     , _rewardKey(data._rewardKey)
-    , _rewardValue(data._rewardValue)
+    , _valueIndex(data._valueIndex)
     {
         DATA_MANAGER_UTILS::copyList(data._materialKeyList,   _materialKeyList);
         DATA_MANAGER_UTILS::copyList(data._materialValueList, _materialValueList);
+        DATA_MANAGER_UTILS::copyList(data._rewardValueList,   _rewardValueList);
+
 	}
     
     sACHIEVEMENT_PARAM(const sACHIEVEMENT_PARAM* data)
     : _index(data->_index)
 	, _hiddenType(data->_hiddenType)
 	, _visible(data->_visible)
-	, _isHighLevel(data->_isHighLevel)
 	, _checkerType(data->_checkerType)
     , _title(data->_title)
     , _contents(data->_contents)
     , _rewardKey(data->_rewardKey)
-    , _rewardValue(data->_rewardValue)
+    , _valueIndex(data->_valueIndex)
     {
         DATA_MANAGER_UTILS::copyList(data->_materialKeyList,   _materialKeyList);
         DATA_MANAGER_UTILS::copyList(data->_materialValueList, _materialValueList);
+        DATA_MANAGER_UTILS::copyList(data->_rewardValueList,   _rewardValueList);
 	}
 };
 
@@ -79,7 +80,7 @@ namespace ACHIEVEMENT_DEFINE {
 	static const int LIMIT_COUNT = 3;
 	static const std::string NORMAL_CONTENT = "ACHIEVEMENT_NORMAL_CONTENT_%d";
     static const std::string HIDDEN_CONTENT = "ACHIEVEMENT_HIDDEN_CONTENT_%d";
-	static const std::string HIDDEN_TITLE   = "ACHIEVEMENT_HIDDEN_TITLE_%d";
+	static const std::string HIDDEN_TITLE   = "ACHIEVEMENT_HIDDEN_TITLE_%d_%d";
 }
 
 struct sREWARD_DATA{
@@ -124,19 +125,19 @@ public:
     const sACHIEVEMENT_PARAM* getHiddenAchievementByIndex(int index) const;
     const sACHIEVEMENT_PARAM* getNewRandomAchievement();
     const sACHIEVEMENT_PARAM* getNonCompleteAchievementFromCurrentList();
-    cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
+//    cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
     ACHIEVEMENT_LIST getHiddenAchievementList() const {
         return m_HiddenAchievementDataList;
     }
     void UpdateCurHiddenAchievementList();
 
 private:
-    void initWithJson(std::string fileName);
+    void initWithJson(ACHIEVEMENT_LIST &list, std::string fileName);
 	void initETCChekerList();
 	void initRewarderList();
     
-	const Json::Value initAchievementWithDefaultValue(bool hidden, std::string key, const Json::Value data);
-	void addAchievementToList(ACHIEVEMENT_LIST &list, const Json::Value& data, bool hiddenType);
+//	const Json::Value initAchievementWithDefaultValue(bool hidden, std::string key, const Json::Value data);
+	void addAchievementToList(ACHIEVEMENT_LIST &list, const Json::Value& data);
     void addValueListToMap(const Json::Value data);
 
     const sACHIEVEMENT_PARAM* getNewRandomAchievementFromList(ACHIEVEMENT_LIST &list);
@@ -144,7 +145,7 @@ private:
     void removeAchievementFromUserData(int index);
     
     void getCurAchievementListByType(ARRAY_DATA& list, bool isHidden);
-    int getMaterialValueByLevel(std::string key, int level);
+//    int getMaterialValueByLevel(std::string key, int level);
 
     CAchievementDataManager();
     virtual ~CAchievementDataManager();
