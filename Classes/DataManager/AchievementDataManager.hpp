@@ -14,8 +14,25 @@ enum CHECKER_TYPE{
 	SINGLE_DATA = 2,
 	ITEM_EXIST = 3,
 	ITEM_COUNT = 4,
-    PARAM_DATA = 5,
-	CONTINUE = 6
+    ITEM_PARAM = 5,
+	CONTINUE = 6,
+};
+
+enum USERDATA_PARAM_ACHIEVEMENT_NORMAL{
+    NORMAL_INDEX = 0,
+    STATE = 1, ///< 0: non-completed, 1: running, 2: finished, 3: completed
+};
+
+enum ACHIEVEMENT_NORMAL_STATE{
+    NONE_COMPLETED = 0,
+    RUNNING,
+    FINISHED,
+    COMPLETED,
+};
+
+enum USERDATA_PARAM_ACHIEVEMENT_HIDDEN{
+    HIDDEN_INDEX = 0,
+    LEVEL = 1,
 };
 
 class CAchievementClearChecker;
@@ -124,7 +141,7 @@ public:
     const sACHIEVEMENT_PARAM* getNormalAchievementByIndex(int index) const;
     const sACHIEVEMENT_PARAM* getHiddenAchievementByIndex(int index) const;
     const sACHIEVEMENT_PARAM* getNewRandomAchievement();
-    const sACHIEVEMENT_PARAM* getNonCompleteAchievementFromCurrentList();
+    const sACHIEVEMENT_PARAM* getFirstFromNonCompleted();
 //    cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
     ACHIEVEMENT_LIST getHiddenAchievementList() const {
         return m_HiddenAchievementDataList;
@@ -142,6 +159,9 @@ private:
 
     const sACHIEVEMENT_PARAM* getNewRandomAchievementFromList(ACHIEVEMENT_LIST &list);
     ACHIEVEMENT_LIST getNonCompletedAchievementList();
+    ACHIEVEMENT_LIST getPickedAchievementList();
+    ACHIEVEMENT_LIST getRunnnigAchievementList();
+
     void removeAchievementFromUserData(int index);
     
     void getCurAchievementListByType(ARRAY_DATA& list, bool isHidden);

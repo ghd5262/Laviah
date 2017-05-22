@@ -28,6 +28,14 @@ bool CAchievementClearChecker::checkWithCount(std::string key, int value)
 	return (value <= CUserDataManager::Instance()->getUserData_List(key).size());
 }
 
+bool CAchievementClearChecker::checkWithItemParam(std::string key, int itemIndex,
+                                                  int paramIndex, int value)
+{
+    return (value <= CUserDataManager::Instance()->getUserData_ParamData(key,
+                                                                         itemIndex,
+                                                                         paramIndex));
+}
+
 bool CAchievementClearChecker::checkWithContinuingType(std::string key, int value)
 {
     return false;

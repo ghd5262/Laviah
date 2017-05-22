@@ -65,6 +65,8 @@ public:
 	bool checkWithSingleUserData(std::string key, int value);
 	bool checkWithItemExist		(std::string key, int value);
 	bool checkWithCount			(std::string key, int value);
+    bool checkWithItemParam     (std::string key, int itemIndex,
+                                 int paramIndex,  int value);
     bool checkWithContinuingType(std::string key, int value);
 
 	bool characterRareCountCheck(int value);
