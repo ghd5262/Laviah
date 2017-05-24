@@ -59,7 +59,7 @@ bool CTitleCompleteNoticePopup::init()
     completeIcon->setPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f));
     m_LayerBG->addChild(completeIcon);
     
-    CAchievementDataManager::Instance()->UpdateCurHiddenAchievementList();
+//    CAchievementDataManager::Instance()->UpdateCurHiddenAchievementList();
     
     return true;
 }

@@ -15,7 +15,7 @@ protected:
 
 private:
     void initAchievementList();
-    void createAchievementDP(const sACHIEVEMENT_PARAM* data,
+    void createAchievementDP(const ACHIEVEMENT* data,
                            int posIndex,
                            bool isSkip);
     

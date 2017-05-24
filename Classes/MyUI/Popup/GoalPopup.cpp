@@ -196,7 +196,7 @@ void CGoalPopup::initAchievementList()
     }
 }
 
-void CGoalPopup::createAchievementDP(const sACHIEVEMENT_PARAM* data, int posIndex, bool isSkip)
+void CGoalPopup::createAchievementDP(const ACHIEVEMENT* data, int posIndex, bool isSkip)
 {
     auto dp = CGoalPopupDP::create(data, posIndex)
     ->addSkipEventListner([=](CGoalPopupDP* sender, int posIdx){

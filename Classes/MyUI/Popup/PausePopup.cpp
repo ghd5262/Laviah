@@ -214,7 +214,7 @@ void CPausePopup::initAchievementList()
     }
 }
 
-void CPausePopup::createAchievementDP(const sACHIEVEMENT_PARAM* data, int posIndex)
+void CPausePopup::createAchievementDP(const ACHIEVEMENT* data, int posIndex)
 {
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 posArray[] = {

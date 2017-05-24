@@ -7,11 +7,11 @@ class CGoalPopupDP : public CPopup
 {
     typedef std::function<void(CGoalPopupDP*, int)> SKIP_CALLBACK;
 public:
-    static CGoalPopupDP* create(const sACHIEVEMENT_PARAM achievement, int posIndex);
+    static CGoalPopupDP* create(const ACHIEVEMENT achievement, int posIndex);
     CGoalPopupDP* addSkipEventListner(const SKIP_CALLBACK &callback);
     
     //setter & getter
-    const sACHIEVEMENT_PARAM getAchievementParam() const { return m_Achievement; }
+    const ACHIEVEMENT getAchievementParam() const { return m_Achievement; }
     
     CC_SYNTHESIZE(int, m_PosIndex, PosIndex);
 protected:
@@ -19,13 +19,13 @@ protected:
     
 private:
     float getPercent(float value, float max);
-    CGoalPopupDP(const sACHIEVEMENT_PARAM achievement, int posIndex)
+    CGoalPopupDP(const ACHIEVEMENT achievement, int posIndex)
     : m_Achievement(achievement)
     , m_SkipCallback(nullptr)
     , m_PosIndex(posIndex){};
     virtual ~CGoalPopupDP(){};
     
 private:
-    const sACHIEVEMENT_PARAM m_Achievement;
+    const ACHIEVEMENT m_Achievement;
     SKIP_CALLBACK m_SkipCallback;
 };

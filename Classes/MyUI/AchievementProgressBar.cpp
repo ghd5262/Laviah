@@ -31,7 +31,7 @@ bool CAchievementProgressBar::init()
 void CAchievementProgressBar::update(float delta)
 {
 	// If current achievement is differs from previous achievement.
-    auto data = CAchievementDataManager::Instance()->getNonCompleteAchievementFromCurrentList();
+    auto data = CAchievementDataManager::Instance()->getFirstFromNonCompleted();
     if (!data && !m_AchievementData)  return;
     if (m_AchievementData != data  ){
         this->Reset();

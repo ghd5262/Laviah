@@ -45,7 +45,7 @@ private:
     
 private:
     std::vector<LAST_CALLBACK> m_EventList;
-    const sACHIEVEMENT_PARAM* m_AchievementData;
+    const ACHIEVEMENT* m_AchievementData;
     cocos2d::LayerColor* m_BarBG;
     cocos2d::ProgressTimer* m_ProgressBar;
     cocos2d::Label* m_TitleLabel;

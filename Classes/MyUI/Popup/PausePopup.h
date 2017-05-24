@@ -13,8 +13,8 @@ protected:
 
 private:
     void initAchievementList();
-    void createAchievementDP(const sACHIEVEMENT_PARAM* data,
-                           int posIndex);
+    void createAchievementDP(const ACHIEVEMENT* data,
+                             int posIndex);
     void createRewardBox();
 	void Play(cocos2d::Node* sender);
 	void Reset(cocos2d::Node* sender);

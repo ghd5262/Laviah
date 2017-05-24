@@ -530,7 +530,7 @@ bool CUserDataManager::getUserData_IsItemHave(std::string key, int itemIdx)
 float CUserDataManager::getItemCurrentValue(std::string key)
 {
     sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey(key.c_str());
-    float limitTime = item._valuePerLevel * getUserData_Number(key.c_str());
+    float limitTime = item._valuePerLevel * this->getUserData_ParamData(key, index, level);
     return limitTime;
 }
 

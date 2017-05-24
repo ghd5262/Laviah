@@ -7,7 +7,7 @@
 USING_NS_CC;
 using namespace cocos2d::ui;
 
-CGoalPopupDP* CGoalPopupDP::create(const sACHIEVEMENT_PARAM achievement, int posIndex)
+CGoalPopupDP* CGoalPopupDP::create(const ACHIEVEMENT achievement, int posIndex)
 {
     CGoalPopupDP *pRet = new(std::nothrow) CGoalPopupDP(achievement, posIndex);
     if (pRet && pRet->init())
