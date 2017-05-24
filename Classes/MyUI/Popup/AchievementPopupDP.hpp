@@ -3,18 +3,18 @@
 #include "../../Common/HSHUtility.h"
 
 USING_NS_CC;
-struct sACHIEVEMENT_PARAM;
+struct ACHIEVEMENT;
 class CAchievementPopupDP : public cocos2d::ui::Widget
 {
 public:
-    static CAchievementPopupDP* create(const sACHIEVEMENT_PARAM* achievement, int level, int maxLevel);
+    static CAchievementPopupDP* create(const ACHIEVEMENT* data);
     
     void Share();
     void Notice();
     void Invite();
     
     //setter & getter
-    const sACHIEVEMENT_PARAM* getAchievementParam() const { return m_Achievement; }
+    const ACHIEVEMENT* getAchievementData() const { return m_AchievementData; }
     
     CC_SYNTHESIZE(std::function<void(int)>, m_SelectDPListener, SelectDPListener)
     
@@ -23,15 +23,11 @@ protected:
     
 private:
     
-    CAchievementPopupDP(const sACHIEVEMENT_PARAM* achievement, int level, int maxLevel)
-    : m_Achievement(achievement)
-    , m_AchievementLevel(level)
-    , m_AchievementMaxLevel(maxLevel)
+    CAchievementPopupDP(const ACHIEVEMENT* data)
+    : m_AchievementData(data)
     , m_SelectDPListener(nullptr){};
     virtual ~CAchievementPopupDP(){};
     
 private:
-    const sACHIEVEMENT_PARAM* m_Achievement;
-    int m_AchievementLevel;
-    int m_AchievementMaxLevel;
+    const ACHIEVEMENT* m_AchievementData;
 };

@@ -151,8 +151,7 @@ bool CAchievementDataManager::CheckAchievementComplete(int index, bool isHidden)
     std::string userDataKey = "";
     if(!isHidden) {
         userDataKey = USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST;
-        auto state  = CUserDataManager::Instance()->getUserData_ParamData(userDataKey, index,
-                                                                         USERDATA_PARAM_ACHIEVEMENT_NORMAL::STATE);
+        auto state  = this->getAchievementStateByIndex(index);
         if (state == ACHIEVEMENT_NORMAL_STATE::FINISHED)  return true;
         if (state == ACHIEVEMENT_NORMAL_STATE::COMPLETED) return true;
         
@@ -160,8 +159,7 @@ bool CAchievementDataManager::CheckAchievementComplete(int index, bool isHidden)
     }
     else {
         userDataKey = USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST;
-        checkLevel  = CUserDataManager::Instance()->getUserData_ParamData(userDataKey, index,
-                                                                         USERDATA_PARAM_ACHIEVEMENT_HIDDEN::LEVEL);
+        checkLevel  = this->getAchievementLevelByIndex(index);
         //TODO: Return false, If the level got max.
     }
     
@@ -462,6 +460,91 @@ const ACHIEVEMENT* CAchievementDataManager::getFirstFromNonCompleted()
 //    return nullptr;
 }
 
+ACHIEVEMENT_LEVEL CAchievementDataManager::getCurLevelDataByIndex(int index, bool isHidden)
+{
+    int level = 0;
+    if(isHidden) level = this->getAchievementLevelByIndex(index);
+    else         level = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
+
+    return this->getLevelDataFromAchievement(index, level, isHidden);
+}
+
+std::string CAchievementDataManager::getAchievementTitleByIndex(int index)
+{
+    auto level = this->getAchievementLevelByIndex(index);
+    auto title = StringUtils::format(ACHIEVEMENT_DEFINE::HIDDEN_TITLE.c_str(), index, level);
+    return TRANSLATE(title);
+}
+
+std::string CAchievementDataManager::getAchievementContentsByIndex(int index, bool isHidden)
+{
+    std::string  key = ACHIEVEMENT_DEFINE::NORMAL_CONTENT;
+    if(isHidden) key = ACHIEVEMENT_DEFINE::HIDDEN_CONTENT;
+    
+    auto levelData   = this->getCurLevelDataByIndex(index, isHidden);
+    auto contentsKey = StringUtils::format(key.c_str(), index);
+    auto contents    = StringUtils::format(contentsKey.c_str(), levelData._contentsValue);
+    return TRANSLATE(contents);
+}
+
+ACHIEVEMENT_LIST CAchievementDataManager::getHiddenAchievementList() const
+{
+    return m_HiddenAchievementDataList;
+}
+
+ACHIEVEMENT_LIST CAchievementDataManager::getNonCompletedAchievementList() const
+{
+    return DATA_MANAGER_UTILS::getMapByFunc([=](const ACHIEVEMENT* data){
+        
+        auto state = this->getAchievementStateByIndex(data->_index);
+        if(state == ACHIEVEMENT_NORMAL_STATE::NONE_COMPLETED) return true;
+        return false;
+    }, m_NormalAchievementDataList);
+    
+    
+    //    return DATA_MANAGER_UTILS::getMapByFunc([=](const ACHIEVEMENT* data){
+    //        if()
+    //        if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::ACHIEVEMENT_COM_NORMAL_LIST, data->_index)) return false;
+    //		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST, data->_index)) return false;
+    //        return true;
+    //    }, m_NormalAchievementDataList);
+}
+
+ACHIEVEMENT_LIST CAchievementDataManager::getPickedAchievementList() const
+{
+    return DATA_MANAGER_UTILS::getMapByFunc([=](const ACHIEVEMENT* data){
+        
+        auto state = this->getAchievementStateByIndex(data->_index);
+        if(state == ACHIEVEMENT_NORMAL_STATE::RUNNING)  return true;
+        if(state == ACHIEVEMENT_NORMAL_STATE::FINISHED) return true;
+        return false;
+    }, m_NormalAchievementDataList);
+}
+
+ACHIEVEMENT_LIST CAchievementDataManager::getRunnnigAchievementList() const
+{
+    return DATA_MANAGER_UTILS::getMapByFunc([=](const ACHIEVEMENT* data){
+        
+        auto state = this->getAchievementStateByIndex(data->_index);
+        if(state == ACHIEVEMENT_NORMAL_STATE::RUNNING)  return true;
+        return false;
+    }, m_NormalAchievementDataList);
+}
+
+int CAchievementDataManager::getAchievementLevelByIndex(int index)
+{
+    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST,
+                                                               index,
+                                                               USERDATA_PARAM_ACHIEVEMENT_HIDDEN::LEVEL);
+}
+
+int CAchievementDataManager::getAchievementStateByIndex(int index)
+{
+    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST,
+                                                               index,
+                                                               USERDATA_PARAM_ACHIEVEMENT_NORMAL::STATE);
+}
+
 //void CAchievementDataManager::UpdateCurHiddenAchievementList()
 //{
 ////    auto currentList  = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ACHIEVEMENT_CUR_HIDDEN_LIST);
@@ -497,56 +580,9 @@ const ACHIEVEMENT* CAchievementDataManager::getNewRandomAchievementFromList(ACHI
     auto picked = list.begin();
     std::advance(picked, random<int>(0, int(list.size()-1)));
     
-    CCLOG("Pick a achievement :: idx %d content %s",
-          (picked->second)->_index,
-          (picked->second)->_contents.c_str());
+    CCLOG("Pick a achievement :: idx %d", (picked->second)->_index);
     
     return (picked->second);
-}
-
-ACHIEVEMENT_LIST CAchievementDataManager::getNonCompletedAchievementList()
-{
-    return DATA_MANAGER_UTILS::getMapByFunc([](const ACHIEVEMENT* data){
-        
-        auto state = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST,
-                                                                         data->_index,
-                                                                         USERDATA_PARAM_ACHIEVEMENT_NORMAL::STATE);
-        if(state == ACHIEVEMENT_NORMAL_STATE::NONE_COMPLETED) return true;
-        return false;
-    }, m_NormalAchievementDataList);
-    
-    
-//    return DATA_MANAGER_UTILS::getMapByFunc([=](const ACHIEVEMENT* data){
-//        if()
-//        if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::ACHIEVEMENT_COM_NORMAL_LIST, data->_index)) return false;
-//		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST, data->_index)) return false;
-//        return true;
-//    }, m_NormalAchievementDataList);
-}
-
-ACHIEVEMENT_LIST CAchievementDataManager::getPickedAchievementList()
-{
-    return DATA_MANAGER_UTILS::getMapByFunc([](const ACHIEVEMENT* data){
-        
-        auto state = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST,
-                                                                         data->_index,
-                                                                         USERDATA_PARAM_ACHIEVEMENT_NORMAL::STATE);
-        if(state == ACHIEVEMENT_NORMAL_STATE::RUNNING)  return true;
-        if(state == ACHIEVEMENT_NORMAL_STATE::FINISHED) return true;
-        return false;
-    }, m_NormalAchievementDataList);
-}
-
-ACHIEVEMENT_LIST CAchievementDataManager::getRunnnigAchievementList()
-{
-    return DATA_MANAGER_UTILS::getMapByFunc([](const ACHIEVEMENT* data){
-        
-        auto state = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST,
-                                                                         data->_index,
-                                                                         USERDATA_PARAM_ACHIEVEMENT_NORMAL::STATE);
-        if(state == ACHIEVEMENT_NORMAL_STATE::RUNNING)  return true;
-        return false;
-    }, m_NormalAchievementDataList);
 }
 
 ACHIEVEMENT_LEVEL CAchievementDataManager::getLevelDataFromAchievement(int index, int level, bool isHidden)
@@ -702,9 +738,10 @@ void CAchievementDataManager::addLevelToAchievement(ACHIEVEMENT_LEVEL_LIST &list
 {
     ACHIEVEMENT_LEVEL level;
     
-    level._rewardKey    = data["rewardKey"].asString();
-    level._rewardValue  = data["rewardValue"].asInt();
-    level._checkerType  = (CHECKER_TYPE)data["checkerType"].asInt();
+    level._rewardKey        = data["rewardKey"].asString();
+    level._rewardValue      = data["rewardValue"].asInt();
+    level._contentsValue    = data["contentsValue"].asInt();
+    level._checkerType      = (CHECKER_TYPE)data["checkerType"].asInt();
     
     this->addMaterialToLevel(level._materialList, data["material"]);
     
@@ -715,8 +752,8 @@ void CAchievementDataManager::addMaterialToLevel(MATERIAL_LIST &list, const Json
 {
     ACHIEVEMENT_MATERIAL material;
     
-    material._materialKey = data["materialKey"].asString();
-    auto valueList        = data["materialValue"];
+    material._materialKey   = data["materialKey"].asString();
+    auto valueList          = data["materialValue"];
     
     for(auto value : valueList)
         material._materialValues.emplace_back(value.asInt());

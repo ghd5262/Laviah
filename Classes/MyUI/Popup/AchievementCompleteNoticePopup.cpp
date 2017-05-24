@@ -68,8 +68,9 @@ void CAchievementCompleteNoticePopup::checkAchievementCompleteOnRealTime()
 
 	auto data = CAchievementDataManager::Instance()->CompleteCheckRealTime(false);
 	if (data != nullptr) {
-        m_Checkable = false;
-        m_AchievementLabel->setString(StringUtils::format(TRANSLATE(data->_contents).c_str(), data->_materialValueList.at(0)));
+        auto contents = CAchievementDataManager::Instance()->getAchievementContentsByIndex(data->_index, false);
+        m_Checkable   = false;
+        m_AchievementLabel->setString(contents);
 		this->show();
 	}
 }

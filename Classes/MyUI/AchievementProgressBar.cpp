@@ -39,7 +39,8 @@ void CAchievementProgressBar::update(float delta)
     }
 
     // calculate percent
-    auto value = GLOBAL->getVariable(m_AchievementData->_materialKeyList.at(0));
+    auto levelData = CAchievementDataManager::Instance()->getCurLevelDataByIndex(m_AchievementData->_index, false);
+    auto value = GLOBAL->getVariable(levelData._materialList.at(0)._materialKey);
     {
         if(value != m_CurrentValue) {
             m_CurrentValue = value;
@@ -162,12 +163,14 @@ void CAchievementProgressBar::Reset()
     m_BarBG->updateDisplayedOpacity(0);
     m_TitleLabel->setString("");
     m_ProgressBar->runAction(ProgressTo::create(0.5f, 0));
-    m_AchievementData = CAchievementDataManager::Instance()->getNonCompleteAchievementFromCurrentList();
+    m_AchievementData = CAchievementDataManager::Instance()->getFirstFromNonCompleted();
     if(!m_AchievementData) return;
     
     m_CurrentAchievementIndex = m_AchievementData->_index;
-	m_GoalValue = m_AchievementData->_materialValueList.at(0);
-    auto content = StringUtils::format(TRANSLATE(m_AchievementData->_contents).c_str(), m_GoalValue);
+    auto levelData = CAchievementDataManager::Instance()->getCurLevelDataByIndex(m_CurrentAchievementIndex, false);
+	m_GoalValue    = levelData._contentsValue;
+    auto content   = CAchievementDataManager::Instance()->getAchievementContentsByIndex(m_CurrentAchievementIndex,
+                                                                                        false);
 	m_TitleLabel->setString(content);
     m_ProgressBar->setColor(m_BarColor);
     m_BarBG->updateDisplayedOpacity(m_BarBGColor.a);

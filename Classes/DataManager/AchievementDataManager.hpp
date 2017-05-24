@@ -46,10 +46,13 @@ struct ACHIEVEMENT_MATERIAL {
 
 typedef std::vector<ACHIEVEMENT_MATERIAL> MATERIAL_LIST;
 struct ACHIEVEMENT_LEVEL {
-    MATERIAL_LIST _materialList;
+    std::string _title;
+    std::string _contents;
     std::string _rewardKey;
     int _rewardValue;
+    int _contentsValue;
     CHECKER_TYPE _checkerType;
+    MATERIAL_LIST _materialList;
 };
 
 typedef std::vector<ACHIEVEMENT_LEVEL> ACHIEVEMENT_LEVEL_LIST;
@@ -57,8 +60,6 @@ struct ACHIEVEMENT {
     int _index;
     bool _hiddenType;
     bool _visibleType;
-    std::string _title;
-    std::string _contents;
     ACHIEVEMENT_LEVEL_LIST _levelList;
 };
 //
@@ -165,6 +166,7 @@ public:
 	bool CheckAchievementComplete(int index, bool isHidden);
 	const ACHIEVEMENT* CompleteCheckRealTime(bool isHidden);
     void ResetNormalAchievements();
+
     
 	sREWARD_DATA Reward(int index);
 	sREWARD_DATA RewardByKey(std::string key, int value);
@@ -177,11 +179,19 @@ public:
     const ACHIEVEMENT* getHiddenAchievementByIndex(int index) const;
     const ACHIEVEMENT* getNewRandomAchievement();
     const ACHIEVEMENT* getFirstFromNonCompleted();
+    
+    ACHIEVEMENT_LEVEL  getCurLevelDataByIndex(int index, bool isHidden);
+    std::string getAchievementTitleByIndex(int index);
+    std::string getAchievementContentsByIndex(int index, bool isHidden);
 //    cocos2d::Sprite* getRewardSprite(std::string rewardKey, int rewardValue);
-    ACHIEVEMENT_LIST getHiddenAchievementList() const {
-        return m_HiddenAchievementDataList;
-    }
+    ACHIEVEMENT_LIST getHiddenAchievementList() const;
+    ACHIEVEMENT_LIST getNonCompletedAchievementList() const;
+    ACHIEVEMENT_LIST getPickedAchievementList() const;
+    ACHIEVEMENT_LIST getRunnnigAchievementList() const;
 //    void UpdateCurHiddenAchievementList();
+    
+    static int getAchievementLevelByIndex(int index);
+    static int getAchievementStateByIndex(int index);
 
 private:
     void initWithJson(ACHIEVEMENT_LIST &list, std::string fileName);
@@ -197,16 +207,13 @@ private:
 //    void addValueListToMap(const Json::Value data);
 
     const ACHIEVEMENT* getNewRandomAchievementFromList(ACHIEVEMENT_LIST &list);
-    ACHIEVEMENT_LIST getNonCompletedAchievementList();
-    ACHIEVEMENT_LIST getPickedAchievementList();
-    ACHIEVEMENT_LIST getRunnnigAchievementList();
 
     ACHIEVEMENT_LEVEL getLevelDataFromAchievement(int index, int level, bool isHidden);
     
     void removeAchievementFromUserData(int index);
     
     void getAchievementParamListByType(PARAM_DATA_ARRAY& list,
-                                     bool isHidden);
+                                       bool isHidden);
 //    int getMaterialValueByLevel(std::string key, int level);
 
     CAchievementDataManager();

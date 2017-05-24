@@ -206,9 +206,11 @@ void CPausePopup::Skip(CGoalPopupDP *sender, int posIndex)
 void CPausePopup::initAchievementList()
 {
     int posIndex = 0;
-    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST);
-    for (auto index : list)
+//    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST);
+    auto pickedList = CAchievementDataManager::Instance()->getPickedAchievementList();
+    for (auto achievement : pickedList)
     {
+        auto index = achievement.second->_index;
         auto achievementData = CAchievementDataManager::Instance()->getNormalAchievementByIndex(index);
         this->createAchievementDP(achievementData, posIndex++);
     }
@@ -223,7 +225,7 @@ void CPausePopup::createAchievementDP(const ACHIEVEMENT* data, int posIndex)
         Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.35f)
     };
     
-    auto dp = CGoalPopupDP::create(data, posIndex)
+    auto dp = CGoalPopupDP::create(*data, posIndex)
     ->addSkipEventListner([=](CGoalPopupDP* sender, int posIdx){
         this->Skip(sender, posIdx);
     })

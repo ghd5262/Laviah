@@ -71,8 +71,9 @@ void CTitleCompleteNoticePopup::checkAchievementCompleteOnRealTime()
     
     auto data = CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
     if (data != nullptr) {
-        m_Checkable = false;
-        m_AchievementLabel->setString(TRANSLATE(data->_title));
+        auto contents = CAchievementDataManager::Instance()->getAchievementContentsByIndex(data->_index, true);
+        m_Checkable   = false;
+        m_AchievementLabel->setString(contents);
         this->show();
     }
 }

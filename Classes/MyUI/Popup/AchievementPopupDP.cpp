@@ -5,9 +5,9 @@
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../Common/StringUtility.h"
 
-CAchievementPopupDP* CAchievementPopupDP::create(const sACHIEVEMENT_PARAM* achievement, int level, int maxLevel)
+CAchievementPopupDP* CAchievementPopupDP::create(const ACHIEVEMENT* data)
 {
-    CAchievementPopupDP *pRet = new(std::nothrow) CAchievementPopupDP(achievement, level, maxLevel);
+    CAchievementPopupDP *pRet = new(std::nothrow) CAchievementPopupDP(data);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -25,6 +25,9 @@ bool CAchievementPopupDP::init()
 {
     if (!Widget::init()) return false;
     
+    auto index     = m_AchievementData->_index;
+    auto levelData = CAchievementDataManager::Instance()->getCurLevelDataByIndex(index, true);
+
     auto bg = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 1080.f, 200.f);
     if (bg != nullptr){
         this->setContentSize(bg->getContentSize());
@@ -44,9 +47,11 @@ bool CAchievementPopupDP::init()
 //                              this->getContentSize().height * 0.5f));
     }
     
+    
     // create title
     {
-        auto name = Label::createWithSystemFont(TRANSLATE(m_Achievement->_title), FONT::MALGUNBD, 50);
+        auto title = CAchievementDataManager::Instance()->getAchievementTitleByIndex(index);
+        auto name  = Label::createWithSystemFont(title, FONT::MALGUNBD, 50);
         name->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
         name->setPosition(Vec2(this->getContentSize().width * 0.25f,
                                this->getContentSize().height * 0.75f));
@@ -55,8 +60,8 @@ bool CAchievementPopupDP::init()
     
     // create content
     {
-        auto contents = StringUtils::format(TRANSLATE(m_Achievement->_contents).c_str(), m_Achievement->_materialValueList.at(0));
-        auto content = Label::createWithSystemFont(contents, FONT::MALGUNBD, 35);
+        auto contents = CAchievementDataManager::Instance()->getAchievementContentsByIndex(index, true);
+        auto content  = Label::createWithSystemFont(contents, FONT::MALGUNBD, 35);
         content->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
         content->setPosition(Vec2(this->getContentSize().width * 0.25f,
                                   this->getContentSize().height * 0.5f));
@@ -65,7 +70,9 @@ bool CAchievementPopupDP::init()
     
     // create star
     {
-        for(int count = 0; count < m_AchievementMaxLevel; count++)
+        auto maxLevel = m_AchievementData->_levelList.size();
+        auto curLevel = CAchievementDataManager::getAchievementLevelByIndex(index);
+        for(int count = 0; count < maxLevel; count++)
         {
             auto star = Sprite::create("starIcon_s.png");
             star->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -73,10 +80,8 @@ bool CAchievementPopupDP::init()
                                     this->getContentSize().height * 0.25f));
             this->addChild(star);
             
-            if(count < m_AchievementLevel)
-                star->setColor(COLOR::GOLD);
-            else
-                star->setOpacity(255 * 0.4f);
+            if(count < curLevel)    star->setColor(COLOR::GOLD);
+            else                    star->setOpacity(255 * 0.4f);
         }
     }
     

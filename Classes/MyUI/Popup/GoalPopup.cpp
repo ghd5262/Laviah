@@ -113,9 +113,10 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
 		{
             if(node == nullptr) continue;
             
-			auto dp = dynamic_cast<CGoalPopupDP*>(node);
-			auto data = dp->getAchievementParam();
-			rewardPopup->AddRewardToList(data._rewardKey, data._rewardValue);
+			auto dp         = dynamic_cast<CGoalPopupDP*>(node);
+			auto data       = dp->getAchievementParam();
+            auto levelData  = CAchievementDataManager::Instance()->getCurLevelDataByIndex(data._index, false);
+			rewardPopup->AddRewardToList(levelData._rewardKey, levelData._rewardValue);
 		}
         
         // TODO: If there are no more achievements. do not open achievement popup
@@ -188,9 +189,11 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
 void CGoalPopup::initAchievementList()
 {
     int posIndex = 0;
-    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST);
-    for (auto index : list)
+    //    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST);
+    auto pickedList = CAchievementDataManager::Instance()->getPickedAchievementList();
+    for (auto achievement : pickedList)
     {
+        auto index = achievement.second->_index;
         auto achievementData = CAchievementDataManager::Instance()->getNormalAchievementByIndex(index);
         this->createAchievementDP(achievementData, posIndex++, false);
     }
@@ -198,7 +201,7 @@ void CGoalPopup::initAchievementList()
 
 void CGoalPopup::createAchievementDP(const ACHIEVEMENT* data, int posIndex, bool isSkip)
 {
-    auto dp = CGoalPopupDP::create(data, posIndex)
+    auto dp = CGoalPopupDP::create(*data, posIndex)
     ->addSkipEventListner([=](CGoalPopupDP* sender, int posIdx){
         this->Skip(sender, posIdx);
     })

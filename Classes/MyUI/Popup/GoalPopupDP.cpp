@@ -31,20 +31,25 @@ bool CGoalPopupDP::init()
 	this->setCascadeOpacityEnabled(true);
 	this->setOpacity(0);
 	this->setContentSize(Size(1080, 270));
+    
 	auto popupSize = this->getContentSize();
-
-	auto value = 0;
-	for (auto key : m_Achievement._materialKeyList)
-		value += GLOBAL->getVariable(key);
-
-	auto mtrlValue = 0;
-	for (auto value : m_Achievement._materialValueList)
-		mtrlValue += value;
+    auto index = m_Achievement._index;
+    auto levelData = CAchievementDataManager::Instance()->getCurLevelDataByIndex(index, false);
+    auto value = GLOBAL->getVariable(levelData._materialList.at(0)._materialKey);
+    auto mtrlValue = levelData._contentsValue;
+//    
+//	auto value = 0;
+//	for (auto key : m_Achievement._materialKeyList)
+//		value += GLOBAL->getVariable(key);
+//
+//	auto mtrlValue = 0;
+//	for (auto value : m_Achievement._materialValueList)
+//		mtrlValue += value;
 	
-	bool complete = CAchievementDataManager::Instance()->CheckAchievementComplete(m_Achievement._index, false);
+	bool complete = CAchievementDataManager::Instance()->CheckAchievementComplete(index, false);
 	if (complete) value = mtrlValue;
 
-	auto contents = StringUtils::format(TRANSLATE(m_Achievement._contents).c_str(), m_Achievement._materialValueList.at(0));
+    auto contents = CAchievementDataManager::Instance()->getAchievementContentsByIndex(index, false);
 	if (value > 0) contents += StringUtils::format(" (%d%%)", int(getPercent(value, mtrlValue)));
     
 	auto label = Label::createWithSystemFont(contents, FONT::MALGUNBD, 45, 
