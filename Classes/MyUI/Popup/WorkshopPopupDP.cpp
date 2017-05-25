@@ -26,7 +26,12 @@ bool CWorkshopPopupDP::init()
 {
     if (!Widget::init()) return false;
     
-    auto currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+//    auto currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+    auto currentLevel = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
+                                                                            m_WorkshopItem._idx,
+                                                                            USERDATA_PARAM_WORKSHOP::WORKSHOP_ITEM_LEVEL);
+    if(currentLevel < 0) currentLevel = 0;
+    
     auto itemName     = TRANSLATE(m_WorkshopItem._name);
     auto dpBack = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 200.f);
     if (dpBack != nullptr){
@@ -122,10 +127,19 @@ void CWorkshopPopupDP::Buy(Node* sender)
 {
 	CCLOG("Buy Item %s", TRANSLATE(m_WorkshopItem._name).c_str());
     
-    unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+//    unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+    
+    auto value = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
+                                                                     m_WorkshopItem._idx,
+                                                                     USERDATA_PARAM_WORKSHOP::WORKSHOP_ITEM_LEVEL);
+    if(value < 0) value = 0;
+    
     if (CUserDataManager::Instance()->CoinUpdate(-m_WorkshopItem._costPerLevel.at(value))){
 		value += 1;
-        CUserDataManager::Instance()->setUserData_Number(m_WorkshopItem._userDataKey, value);
+        CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::ITEM_LEVEL,
+                                                            m_WorkshopItem._idx,
+                                                            USERDATA_PARAM_WORKSHOP::WORKSHOP_ITEM_LEVEL,
+                                                            value);
         
         // Update button ui
         if(value >= m_WorkshopItem._maxLevel){

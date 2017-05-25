@@ -318,6 +318,7 @@ void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string json)
             
             // clean list
             emptyList->clear();
+            if(valueArray.isNull()) continue;
             for(auto value : valueArray)
                 emptyList->emplace_back(value.asInt());
         }
@@ -341,9 +342,12 @@ void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string json)
             
             // clean list
             DATA_MANAGER_UTILS::mapDeleteAndClean(*emptyParamArray);
+            if(paramArray.isNull()) continue;
             for(auto param : paramArray){
                 auto emptyParam = new PARAM_DATA();
                 auto index      = 0;
+                
+                //TODO: Fix - param저장할때 해당 데이터만 저장하고 인덱스 같은건 저장안하니까 같은 인덱스(인덱스 0)로 저장되서 로드할때 문제가 생김
                 emptyParamArray->emplace(std::pair<int, PARAM_DATA*>(paramArray[index].asInt(), emptyParam));
                 
                 for(auto param : paramArray)
@@ -371,9 +375,9 @@ void CUserDataManager::convertUserDataToJson(sUSER_DATA &data, std::string &valu
 {
     Json::StyledWriter writer;
     Json::Value root;
-    Json::Value singleDataArray = root[USERDATA::SINGLE_DATA_KEY];
-    Json::Value listDataArray   = root[USERDATA::ARRAY_DATA_KEY];
-    Json::Value paramDataArray  = root[USERDATA::PARAM_ARRAY_DATA_KEY];
+//    Json::Value singleDataArray; //= root[USERDATA::SINGLE_DATA_KEY];
+//    Json::Value listDataArray;  //= root[USERDATA::ARRAY_DATA_KEY];
+//    Json::Value paramDataArray;  //= root[USERDATA::PARAM_ARRAY_DATA_KEY];
     
     // add single data ( number data )
     {
@@ -383,8 +387,9 @@ void CUserDataManager::convertUserDataToJson(sUSER_DATA &data, std::string &valu
             singleJsonValue["dataKey"] = singleData.first;
             singleJsonValue["value"]   = singleData.second;
             
-            singleDataArray.append(singleJsonValue);
+            root[USERDATA::SINGLE_DATA_KEY].append(singleJsonValue);
         }
+//        root[USERDATA::SINGLE_DATA_KEY].append(singleDataArray);
     }
     
     // add array data ( list data )
@@ -397,8 +402,9 @@ void CUserDataManager::convertUserDataToJson(sUSER_DATA &data, std::string &valu
             for(auto index : *listData.second)
                 listJsonValue["value"].append(static_cast<int>(index));
             
-            listDataArray.append(listJsonValue);
+            root[USERDATA::ARRAY_DATA_KEY].append(listJsonValue);
         }
+//        root[USERDATA::ARRAY_DATA_KEY].append(listDataArray);
     }
     
     // add param data
@@ -416,8 +422,9 @@ void CUserDataManager::convertUserDataToJson(sUSER_DATA &data, std::string &valu
                 
                 paramListJsonValue["value"].append(paramJsonValue);
             }
-            paramDataArray.append(paramListJsonValue);
+            root[USERDATA::PARAM_ARRAY_DATA_KEY].append(paramListJsonValue);
         }
+//        root[USERDATA::PARAM_ARRAY_DATA_KEY].append(paramDataArray);
     }
     
     //	for (auto keyInfo : m_UserDataKeyList)
