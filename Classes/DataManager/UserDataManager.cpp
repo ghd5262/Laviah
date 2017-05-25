@@ -11,20 +11,20 @@
 #include "../Common/NoticeDefine.h"
 #include <algorithm>     /* qsort */
 
-#define JSONREADER_CREATE \
-	Json::Value root; \
-	Json::Reader reader; \
-	bool parsingSuccessful = reader.parse(valueJson, root); \
-	if (!parsingSuccessful) \
-	{ \
-		CCLOG("Error : Failed to parse configuration\n %s", reader.getFormatedErrorMessages().c_str()); \
-		return; \
-	}
-
-#define JSONWRITER_CREATE \
-	Json::Value root; \
-	Json::Value data; \
-	Json::StyledWriter writer;
+//#define JSONREADER_CREATE \
+//	Json::Value root; \
+//	Json::Reader reader; \
+//	bool parsingSuccessful = reader.parse(valueJson, root); \
+//	if (!parsingSuccessful) \
+//	{ \
+//		CCLOG("Error : Failed to parse configuration\n %s", reader.getFormatedErrorMessages().c_str()); \
+//		return; \
+//	}
+//
+//#define JSONWRITER_CREATE \
+//	Json::Value root; \
+//	Json::Value data; \
+//	Json::StyledWriter writer;
 
 // 오름차순 compare
 int compare (int a, int b)
@@ -34,11 +34,11 @@ int compare (int a, int b)
 
 namespace USERDATA{
 	//d8d56d34a90de34339f8a174523adaae - texturepacker global key
-	static const std::string CRYPTO_KEY			 = "sktjdgmlq1024!";
-	static const std::string SINGLE_DATA_KEY	 = "userDefaultDatas_Number";
-	static const std::string ARRAY_DATA_KEY		 = "userDefaultDatas_List";
+	static const std::string CRYPTO_KEY			  = "sktjdgmlq1024!";
+	static const std::string SINGLE_DATA_KEY	  = "userDefaultDatas_Number";
+	static const std::string ARRAY_DATA_KEY		  = "userDefaultDatas_List";
     static const std::string PARAM_ARRAY_DATA_KEY = "userDefaultDatas_Param";
-	static const std::string GOOGLE_DATA_KEY	 = "USER_DATA";
+	static const std::string GOOGLE_DATA_KEY	  = "USER_DATA";
 };
 
 CUserDataManager::CUserDataManager()
@@ -71,7 +71,7 @@ CUserDataManager::~CUserDataManager()
     };
     
     cleanUserData(m_UserData);
-    cleanUserData(m_UserDefaultData);
+//    cleanUserData(m_UserDefaultData);
 }
 
 CUserDataManager* CUserDataManager::Instance()
@@ -82,124 +82,117 @@ CUserDataManager* CUserDataManager::Instance()
 
 void CUserDataManager::initUserDefaultValue(sUSER_DATA &data)
 {
-    Json::Value root;
-    Json::Reader reader;
+//    Json::Value root;
+//    Json::Reader reader;
     
     // userDefaultDataList.json 읽음
-    std::string strUserDefaultDataList = FileUtils::getInstance()->fullPathForFilename("userDefaultDataList.json");
-    std::string userDefaultDataListClearData = FileUtils::getInstance()->getStringFromFile(strUserDefaultDataList);
-    size_t pos = userDefaultDataListClearData.rfind("}");
-    userDefaultDataListClearData = userDefaultDataListClearData.substr(0, pos + 1);
+    std::string jsonFile   = FileUtils::getInstance()->fullPathForFilename("userDefaultDataList.json");
+    std::string jsonString = FileUtils::getInstance()->getStringFromFile(jsonFile);
+    size_t pos = jsonString.rfind("}");
+    jsonString = jsonString.substr(0, pos + 1);
+    this->convertJsonToUserData(data, jsonString);
     
-    bool parsingSuccessful = reader.parse(userDefaultDataListClearData, root);
-    if (!parsingSuccessful)
-    {
-        CCASSERT(false, MakeString("parser failed : \n %s", userDefaultDataListClearData.c_str()).c_str());
-        return;
-    }
-    CCLOG("strUserDefaultDataList JSON : \n %s\n", userDefaultDataListClearData.c_str());
-    
-    
-    // initializing single data ( number data )
-    {
-        const Json::Value numberDataArray       = root[USERDATA::SINGLE_DATA_KEY];
-        for (auto valueItem : numberDataArray)
-        {
-            std::string dataKey                 = valueItem["dataKey"].asString();
-            int defaultValue                    = valueItem["defaultValue"].asInt();
-            
-            data._userDataIntMap.emplace(std::pair<std::string, int>(dataKey, defaultValue));
-        }
-    }
-    
-    // initializing array data ( list data )
-    {
-        const Json::Value listDataArray         = root[USERDATA::ARRAY_DATA_KEY];
-        for (auto valueItem : listDataArray)
-        {
-            std::string dataKey                 = valueItem["dataKey"].asString();
-            const Json::Value defaultValueArray = valueItem["defaultValue"];
-            
-            auto emptyList                      = new ARRAY_DATA();
-            data._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(dataKey, emptyList));
-            
-            for(auto value : defaultValueArray)
-                emptyList->emplace_back(value.asInt());
-        }
-    }
-    
-    // initializing param data
-    {
-        const Json::Value paramDataArray        = root[USERDATA::PARAM_ARRAY_DATA_KEY];
-        for (auto valueItem : paramDataArray)
-        {
-            std::string dataKey                 = valueItem["dataKey"].asString();
-            const Json::Value defaultValueArray = valueItem["defaultValue"];
-            
-            auto emptyParamArray                = new PARAM_DATA_ARRAY();
-            data._userDataParamListMap.emplace(std::pair<std::string, PARAM_DATA_ARRAY*>(dataKey, emptyParamArray));
-            
-            for(auto paramArray : defaultValueArray)
-            {
-                auto emptyParam                 = new PARAM_DATA();
-                int index = 0;
-                emptyParamArray->emplace(std::pair<int, PARAM_DATA*>(paramArray[index].asInt(), emptyParam));
-                
-                for(auto param : paramArray)
-                    emptyParam->emplace_back(param.asInt());
-            }
-        }
-    }
+//    
+//    // initializing single data ( number data )
+//    {
+//        const Json::Value numberDataArray       = root[USERDATA::SINGLE_DATA_KEY];
+//        for (auto valueItem : numberDataArray)
+//        {
+//            std::string dataKey                 = valueItem["dataKey"].asString();
+//            int defaultValue                    = valueItem["defaultValue"].asInt();
+//            
+//            data._userDataIntMap.emplace(std::pair<std::string, int>(dataKey, defaultValue));
+//        }
+//    }
+//    
+//    // initializing array data ( list data )
+//    {
+//        const Json::Value listDataArray         = root[USERDATA::ARRAY_DATA_KEY];
+//        for (auto valueItem : listDataArray)
+//        {
+//            std::string dataKey                 = valueItem["dataKey"].asString();
+//            const Json::Value defaultValueArray = valueItem["defaultValue"];
+//            
+//            auto emptyList                      = new ARRAY_DATA();
+//            data._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(dataKey, emptyList));
+//            
+//            for(auto value : defaultValueArray)
+//                emptyList->emplace_back(value.asInt());
+//        }
+//    }
+//    
+//    // initializing param data
+//    {
+//        const Json::Value paramDataArray        = root[USERDATA::PARAM_ARRAY_DATA_KEY];
+//        for (auto valueItem : paramDataArray)
+//        {
+//            std::string dataKey                 = valueItem["dataKey"].asString();
+//            const Json::Value defaultValueArray = valueItem["defaultValue"];
+//            
+//            auto emptyParamArray                = new PARAM_DATA_ARRAY();
+//            data._userDataParamListMap.emplace(std::pair<std::string, PARAM_DATA_ARRAY*>(dataKey, emptyParamArray));
+//            
+//            for(auto paramArray : defaultValueArray)
+//            {
+//                auto emptyParam                 = new PARAM_DATA();
+//                int index = 0;
+//                emptyParamArray->emplace(std::pair<int, PARAM_DATA*>(paramArray[index].asInt(), emptyParam));
+//                
+//                for(auto param : paramArray)
+//                    emptyParam->emplace_back(param.asInt());
+//            }
+//        }
+//    }
 }
 
-void CUserDataManager::initUserDataKey(sUSER_DATA &data)
-{
-	for (auto singleData : data._userDataIntMap)
-		this->addKey(USERDATA::SINGLE_DATA_KEY, singleData.first);
-	
-	for (auto arrayData : data._userDataListMap)
-		this->addKey(USERDATA::ARRAY_DATA_KEY, arrayData.first);
-
-    for (auto paramArrayData : data._userDataParamListMap)
-        this->addKey(USERDATA::PARAM_ARRAY_DATA_KEY, paramArrayData.first);
-
-	if (!m_UserDataKeyList.size())
-	{
-		CCLOG("WARNNING : There is no key of game data");
-		CCASSERT(false, "No Key");
-	}
-}
-
-void CUserDataManager::initSingleUserDataWithDefaultValue(std::string key)
-{
-	m_UserData._userDataIntMap[key] = m_UserDefaultData._userDataIntMap[key];
-}
-
-void CUserDataManager::initArrayUserDataWithDefaultValue(std::string key)
-{
-	auto userArrayData              = m_UserData._userDataListMap[key];
-	auto userDefaultArrayData       = m_UserDefaultData._userDataListMap[key];
-	if (userDefaultArrayData->size() > 0)
-        DATA_MANAGER_UTILS::copyList(*userDefaultArrayData, *userArrayData);
-    else userArrayData->clear();
-}
-
-void CUserDataManager::initParamArrayUserDataWithDefaultValue(std::string key)
-{
-    auto userParamArrayData         = m_UserData._userDataParamListMap[key];
-    auto userDefaultParamArrayData  = m_UserDefaultData._userDataParamListMap[key];
-    if (userDefaultParamArrayData->size() > 0){
-        for(auto paramList : *userDefaultParamArrayData)
-        {
-            auto emptyParam         = new PARAM_DATA();
-            userParamArrayData->emplace(std::pair<int, PARAM_DATA*>(paramList.first, emptyParam));
-            
-            for(auto param : *paramList.second)
-                emptyParam->emplace_back(param);
-        }
-    }
-    else userParamArrayData->clear();
-}
+//void CUserDataManager::initUserDataKey(sUSER_DATA &data)
+//{
+//	for (auto singleData : data._userDataIntMap)
+//		this->addKey(USERDATA::SINGLE_DATA_KEY, singleData.first);
+//	
+//	for (auto arrayData : data._userDataListMap)
+//		this->addKey(USERDATA::ARRAY_DATA_KEY, arrayData.first);
+//
+//    for (auto paramArrayData : data._userDataParamListMap)
+//        this->addKey(USERDATA::PARAM_ARRAY_DATA_KEY, paramArrayData.first);
+//
+//	if (!m_UserDataKeyList.size())
+//	{
+//		CCLOG("WARNNING : There is no key of game data");
+//		CCASSERT(false, "No Key");
+//	}
+//}
+//
+//void CUserDataManager::initSingleUserDataWithDefaultValue(std::string key)
+//{
+//	m_UserData._userDataIntMap[key] = m_UserDefaultData._userDataIntMap[key];
+//}
+//
+//void CUserDataManager::initArrayUserDataWithDefaultValue(std::string key)
+//{
+//	auto userArrayData              = m_UserData._userDataListMap[key];
+//	auto userDefaultArrayData       = m_UserDefaultData._userDataListMap[key];
+//	if (userDefaultArrayData->size() > 0)
+//        DATA_MANAGER_UTILS::copyList(*userDefaultArrayData, *userArrayData);
+//    else userArrayData->clear();
+//}
+//
+//void CUserDataManager::initParamArrayUserDataWithDefaultValue(std::string key)
+//{
+//    auto userParamArrayData         = m_UserData._userDataParamListMap[key];
+//    auto userDefaultParamArrayData  = m_UserDefaultData._userDataParamListMap[key];
+//    if (userDefaultParamArrayData->size() > 0){
+//        for(auto paramList : *userDefaultParamArrayData)
+//        {
+//            auto emptyParam         = new PARAM_DATA();
+//            userParamArrayData->emplace(std::pair<int, PARAM_DATA*>(paramList.first, emptyParam));
+//            
+//            for(auto param : *paramList.second)
+//                emptyParam->emplace_back(param);
+//        }
+//    }
+//    else userParamArrayData->clear();
+//}
 
 bool CUserDataManager::getIsFirstPlay()
 {
@@ -228,26 +221,28 @@ long long CUserDataManager::getFreeRewardTimestamp()
 
 void CUserDataManager::UserDataLoad()
 {
-    this->initUserDefaultValue(m_UserDefaultData);
-    this->initUserDataKey(m_UserDefaultData);
+//    this->initUserDefaultValue(m_UserDefaultData);
+//    this->initUserDataKey(m_UserDefaultData);
     
-	if (getIsFirstPlay() &&
+    this->initUserDefaultValue(m_UserData);
+    
+	if (this->getIsFirstPlay() &&
         CGoogleCloudManager::Instance()->getIsConnected() &&
         CSDKUtil::Instance()->getIsNetworkConnect())
 	{
         CSDKUtil::Instance()->Toast("This is first play");
         
 		// 첫 로드일 경우 구글 클라우드 로드를 기다린다.
-		dataLoadFromGoogleCloud();
-		dataLoadFromXML();
+		this->dataLoadFromGoogleCloud();
+		this->dataLoadFromXML();
 	}
 	else
 	{
         CSDKUtil::Instance()->Toast("This is not first play");
         
 		// 첫 로드가 아닐 경우 xml에서 로드
-		dataLoadFromXML();
-		convertJsonToUserData(m_UserData, m_JsonUserDataFromXML);
+		this->dataLoadFromXML();
+		this->convertJsonToUserData(m_UserData, m_JsonUserDataFromXML);
         __NotificationCenter::getInstance()->postNotification(NOTICE::USERDATA_LOAD_FINISH, NULL);
 	}
 }
@@ -270,140 +265,342 @@ void CUserDataManager::dataLoadFromGoogleCloud()
 	CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
 }
 
+void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string json)
+{
+    Json::Value  root;
+    Json::Reader reader;
+    
+    // userDefaultDataList.json 읽음
+    //    std::string strUserDefaultDataList = FileUtils::getInstance()->fullPathForFilename("userDefaultDataList.json");
+    //    std::string userDefaultDataListClearData = FileUtils::getInstance()->getStringFromFile(strUserDefaultDataList);
+    //    size_t pos = userDefaultDataListClearData.rfind("}");
+    //    userDefaultDataListClearData = userDefaultDataListClearData.substr(0, pos + 1);
+    
+    bool parsingSuccessful = reader.parse(json, root);
+    if (!parsingSuccessful)
+    {
+        CCASSERT(false, MakeString("parser failed : \n %s", json.c_str()).c_str());
+        return;
+    }
+    CCLOG("strUserDefaultDataList JSON : \n %s\n", json.c_str());
+    
+    
+    // initializing single data ( number data )
+    {
+        auto singleDataArray = root[USERDATA::SINGLE_DATA_KEY];
+        for (auto singleData : singleDataArray)
+        {
+            auto key         = singleData["dataKey"].asString();
+            auto value       = singleData["value"].asInt();
+            auto iter        = data._userDataIntMap.find(key);
+            
+            if(iter == data._userDataIntMap.end())
+                data._userDataIntMap.emplace(std::pair<std::string, int>(key, value));
+            else iter->second     = value;
+        }
+    }
+    
+    // initializing array data ( list data )
+    {
+        auto listDataArray   = root[USERDATA::ARRAY_DATA_KEY];
+        for (auto listData : listDataArray)
+        {
+            auto key         = listData["dataKey"].asString();
+            auto valueArray  = listData["value"];
+            auto iter        = data._userDataListMap.find(key);
+            ARRAY_DATA* emptyList = nullptr;
+            
+            if(iter == data._userDataListMap.end()){
+                emptyList    = new ARRAY_DATA();
+                data._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(key, emptyList));
+            }
+            else emptyList   = iter->second;
+            
+            // clean list
+            emptyList->clear();
+            for(auto value : valueArray)
+                emptyList->emplace_back(value.asInt());
+        }
+    }
+    
+    // initializing param data
+    {
+        auto paramDataArray  = root[USERDATA::PARAM_ARRAY_DATA_KEY];
+        for (auto paramData : paramDataArray)
+        {
+            auto key         = paramData["dataKey"].asString();
+            auto paramArray  = paramData["value"];
+            auto iter        = data._userDataParamListMap.find(key);
+            PARAM_DATA_ARRAY* emptyParamArray = nullptr;
+            
+            if(iter == data._userDataParamListMap.end()){
+                emptyParamArray = new PARAM_DATA_ARRAY();
+                data._userDataParamListMap.emplace(std::pair<std::string, PARAM_DATA_ARRAY*>(key, emptyParamArray));
+            }
+            else emptyParamArray = iter->second;
+            
+            // clean list
+            DATA_MANAGER_UTILS::mapDeleteAndClean(*emptyParamArray);
+            for(auto param : paramArray){
+                auto emptyParam = new PARAM_DATA();
+                auto index      = 0;
+                emptyParamArray->emplace(std::pair<int, PARAM_DATA*>(paramArray[index].asInt(), emptyParam));
+                
+                for(auto param : paramArray)
+                    emptyParam->emplace_back(param.asInt());
+            }
+            
+            
+            //            auto emptyParamArray                = new PARAM_DATA_ARRAY();
+            //            data._userDataParamListMap.emplace(std::pair<std::string, PARAM_DATA_ARRAY*>(key, paramArray));
+            
+            //            for(auto paramArray : paramArray)
+            //            {
+            //                auto emptyParam                 = new PARAM_DATA();
+            //                int index = 0;
+            //                emptyParamArray->emplace(std::pair<int, PARAM_DATA*>(paramArray[index].asInt(), emptyParam));
+            //
+            //                for(auto param : paramArray)
+            //                    emptyParam->emplace_back(param.asInt());
+            //            }
+        }
+    }
+}
+
+void CUserDataManager::convertUserDataToJson(sUSER_DATA &data, std::string &valueJson)
+{
+    Json::StyledWriter writer;
+    Json::Value root;
+    Json::Value singleDataArray = root[USERDATA::SINGLE_DATA_KEY];
+    Json::Value listDataArray   = root[USERDATA::ARRAY_DATA_KEY];
+    Json::Value paramDataArray  = root[USERDATA::PARAM_ARRAY_DATA_KEY];
+    
+    // add single data ( number data )
+    {
+        for(auto singleData : data._userDataIntMap)
+        {
+            Json::Value singleJsonValue;
+            singleJsonValue["dataKey"] = singleData.first;
+            singleJsonValue["value"]   = singleData.second;
+            
+            singleDataArray.append(singleJsonValue);
+        }
+    }
+    
+    // add array data ( list data )
+    {
+        for(auto listData : data._userDataListMap)
+        {
+            Json::Value listJsonValue;
+            listJsonValue["dataKey"]   = listData.first;
+            
+            for(auto index : *listData.second)
+                listJsonValue["value"].append(static_cast<int>(index));
+            
+            listDataArray.append(listJsonValue);
+        }
+    }
+    
+    // add param data
+    {
+        for(auto paramListData : data._userDataParamListMap)
+        {
+            Json::Value paramListJsonValue;
+            paramListJsonValue["dataKey"]  = paramListData.first;
+            
+            for(auto paramData : *paramListData.second)
+            {
+                Json::Value paramJsonValue;
+                for(auto param : *paramData.second)
+                    paramJsonValue.append(static_cast<int>(param));
+                
+                paramListJsonValue["value"].append(paramJsonValue);
+            }
+            paramDataArray.append(paramListJsonValue);
+        }
+    }
+    
+    //	for (auto keyInfo : m_UserDataKeyList)
+    //	{
+    //		std::string keyKind = keyInfo.second;
+    //		std::string key = keyInfo.first;
+    //		Json::Value userData;
+    //		if (keyKind == USERDATA::SINGLE_DATA_KEY)
+    //		{
+    //			dataArray[key.c_str()] = getUserData_Number(key);
+    //		}
+    //		else if (keyKind == USERDATA::ARRAY_DATA_KEY)
+    //		{
+    //			Json::Value jsonItemList;
+    //			auto list = getUserData_List(key);
+    //
+    //			for (auto data : list)
+    //			{
+    //				jsonItemList.append(static_cast<int>(data));
+    //			}
+    //			dataArray[key.c_str()] = jsonItemList;
+    //		}
+    //        else if (keyKind == USERDATA::PARAM_ARRAY_DATA_KEY)
+    //        {
+    //            Json::Value jsonParamItemList;
+    //            auto paramList = getUserData_ParamList(key);
+    //
+    //            for(auto param : paramList)
+    //            {
+    //                Json::Value jsonParam;
+    //                for(auto data : *param.second)
+    //                {
+    //                    jsonParam.append(static_cast<int>(data));
+    //                }
+    //                jsonParamItemList.append(jsonParam);
+    //            }
+    //            dataArray[key.c_str()] = jsonParamItemList;
+    //        }
+    //	}
+    //	root["data"] = dataArray;
+    valueJson = writer.write(root);
+}
+
 void CUserDataManager::googleCloudDataLoad(std::string cryptoValue)
 {
 	std::string decrypto_value = MakeCryptoString(cryptoValue, USERDATA::CRYPTO_KEY);
 
 	m_JsonUserDataFromGoogleCloud = decrypto_value;
 
-	if (isGoogleRevisionHigher())
+	if (this->isGoogleRevisionHigher())
 	{
         CSDKUtil::Instance()->Toast("Google revision");
         
-		convertJsonToUserData(m_UserData, m_JsonUserDataFromGoogleCloud);
-		overwriteXmlByGoogleCloud(m_JsonUserDataFromGoogleCloud);
+		this->convertJsonToUserData(m_UserData, m_JsonUserDataFromGoogleCloud);
+		this->overwriteXmlByGoogleCloud(m_JsonUserDataFromGoogleCloud);
         UserDefault::getInstance()->setBoolForKey(USERDATA_KEY::FIRST_LOAD.c_str(), false);
 	}
 	else
 	{
         CSDKUtil::Instance()->Toast("xml revision");
         
-		convertJsonToUserData(m_UserData, m_JsonUserDataFromXML);
+		this->convertJsonToUserData(m_UserData, m_JsonUserDataFromXML);
 	}
     
     __NotificationCenter::getInstance()->postNotification(NOTICE::USERDATA_LOAD_FINISH, NULL);
 }
 
-void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string valueJson)
+//void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string valueJson)
+//{
+//	if (valueJson == "")
+//	{
+//        this->initUserDefaultValue(m_UserData);
+//		CCLOG("This is the first time to load. use default value");
+//		return;
+//	}
+//
+//	Json::Value root;
+//	Json::Reader reader;
+//	
+//	bool parsingSuccessful = reader.parse(valueJson, root);
+//	if (!parsingSuccessful)
+//	{
+//		CCASSERT(false, MakeString("parser failed : \n %s", valueJson.c_str()).c_str());
+//		return;
+//	}
+//	CCLOG("UserData JSON : \n %s\n", valueJson.c_str());
+//
+//	const Json::Value dataArray = root["data"];
+//
+//	for (auto keyInfo : m_UserDataKeyList)
+//	{
+//		std::string keyKind = keyInfo.second;
+//		std::string key = keyInfo.first;
+//
+//		if (keyKind == USERDATA::SINGLE_DATA_KEY)
+//		{
+//			auto value = dataArray[key.c_str()];
+//			auto iter = data._userDataIntMap.find(key);
+//			if (iter == data._userDataIntMap.end())
+//				data._userDataIntMap.emplace(std::pair<std::string, int>(key, 0));
+//
+//			/** if there isn't data about the key.
+//			* set user data from the default data. */
+//			if (value.isNull())
+//			{
+//				this->initSingleUserDataWithDefaultValue(key);
+//				continue;
+//			}
+//
+//			data._userDataIntMap[key] = value.asInt();
+//		}
+//		else if (keyKind == USERDATA::ARRAY_DATA_KEY)
+//		{
+//			const Json::Value arrayValue = dataArray[key.c_str()];
+//
+//			auto iter = data._userDataListMap.find(key);
+//			if (iter == data._userDataListMap.end()){
+//				auto emptyList = new ARRAY_DATA();
+//				data._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(key, emptyList));
+//			}
+//			/** if there isn't data about the key.
+//			 * set user data from the default data. */
+//			if (arrayValue.isNull())
+//			{
+//				this->initArrayUserDataWithDefaultValue(key);
+//				continue;
+//			}
+//
+//			for (auto value : arrayValue)
+//			{
+//				int itemIdx = value.asInt();
+//
+//				if (getUserData_IsItemHave(key, itemIdx))
+//				{
+//					CCLOG("Item get : Already have %s", key.c_str());
+//					continue;
+//				}
+//
+//				data._userDataListMap[key]->push_back(itemIdx);
+//				this->sortUserDataList(key, compare);
+//			}
+//		}
+//        else if (keyKind == USERDATA::PARAM_ARRAY_DATA_KEY)
+//        {
+//            const Json::Value paramArrayValue = dataArray[key.c_str()];
+//            
+//            auto iter = data._userDataParamListMap.find(key);
+//            if (iter == data._userDataParamListMap.end()){
+//                auto emptyParamArray = new PARAM_DATA_ARRAY();
+//                data._userDataParamListMap.emplace(std::pair<std::string, PARAM_DATA_ARRAY*>(key, emptyParamArray));
+//            }
+//            /** if there isn't data about the key.
+//             * set user data from the default data. */
+//            if (paramArrayValue.isNull())
+//            {
+//                this->initParamArrayUserDataWithDefaultValue(key);
+//                continue;
+//            }
+//            
+//            for (auto param : paramArrayValue)
+//            {
+//                auto paramList                   = data._userDataParamListMap[key];
+//                auto emptyParam                  = new PARAM_DATA();
+//                int index = 0;
+//                
+//                if(paramList->find(param[index].asInt()) != paramList->end()){
+//                    CCLOG("Item get : Already have %s", key.c_str());
+//                    continue;
+//                }
+//                
+//                paramList->emplace(std::pair<int, PARAM_DATA*>(param[index].asInt(), emptyParam));
+//                
+//                for (auto paramValue : param)
+//                    emptyParam->emplace_back(paramValue.asInt());
+//            }
+//        }
+//    }
+//}
+
+void CUserDataManager::overwriteXmlByGoogleCloud(std::string valueJson)
 {
-	if (valueJson == "")
-	{
-        this->initUserDefaultValue(m_UserData);
-		CCLOG("This is the first time to load. use default value");
-		return;
-	}
-
-	Json::Value root;
-	Json::Reader reader;
-	
-	bool parsingSuccessful = reader.parse(valueJson, root);
-	if (!parsingSuccessful)
-	{
-		CCASSERT(false, MakeString("parser failed : \n %s", valueJson.c_str()).c_str());
-		return;
-	}
-	CCLOG("UserData JSON : \n %s\n", valueJson.c_str());
-
-	const Json::Value dataArray = root["data"];
-
-	for (auto keyInfo : m_UserDataKeyList)
-	{
-		std::string keyKind = keyInfo.second;
-		std::string key = keyInfo.first;
-
-		if (keyKind == USERDATA::SINGLE_DATA_KEY)
-		{
-			auto value = dataArray[key.c_str()];
-			auto iter = data._userDataIntMap.find(key);
-			if (iter == data._userDataIntMap.end())
-				data._userDataIntMap.emplace(std::pair<std::string, int>(key, 0));
-
-			/** if there isn't data about the key.
-			* set user data from the default data. */
-			if (value.isNull())
-			{
-				this->initSingleUserDataWithDefaultValue(key);
-				continue;
-			}
-
-			data._userDataIntMap[key] = value.asInt();
-		}
-		else if (keyKind == USERDATA::ARRAY_DATA_KEY)
-		{
-			const Json::Value arrayValue = dataArray[key.c_str()];
-
-			auto iter = data._userDataListMap.find(key);
-			if (iter == data._userDataListMap.end()){
-				auto emptyList = new ARRAY_DATA();
-				data._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(key, emptyList));
-			}
-			/** if there isn't data about the key.
-			 * set user data from the default data. */
-			if (arrayValue.isNull())
-			{
-				this->initArrayUserDataWithDefaultValue(key);
-				continue;
-			}
-
-			for (auto value : arrayValue)
-			{
-				int itemIdx = value.asInt();
-
-				if (getUserData_IsItemHave(key, itemIdx))
-				{
-					CCLOG("Item get : Already have %s", key.c_str());
-					continue;
-				}
-
-				data._userDataListMap[key]->push_back(itemIdx);
-				this->sortUserDataList(key, compare);
-			}
-		}
-        else if (keyKind == USERDATA::PARAM_ARRAY_DATA_KEY)
-        {
-            const Json::Value paramArrayValue = dataArray[key.c_str()];
-            
-            auto iter = data._userDataParamListMap.find(key);
-            if (iter == data._userDataParamListMap.end()){
-                auto emptyParamArray = new PARAM_DATA_ARRAY();
-                data._userDataParamListMap.emplace(std::pair<std::string, PARAM_DATA_ARRAY*>(key, emptyParamArray));
-            }
-            /** if there isn't data about the key.
-             * set user data from the default data. */
-            if (paramArrayValue.isNull())
-            {
-                this->initParamArrayUserDataWithDefaultValue(key);
-                continue;
-            }
-            
-            for (auto param : paramArrayValue)
-            {
-                auto paramList                   = data._userDataParamListMap[key];
-                auto emptyParam                  = new PARAM_DATA();
-                int index = 0;
-                
-                if(paramList->find(param[index].asInt()) != paramList->end()){
-                    CCLOG("Item get : Already have %s", key.c_str());
-                    continue;
-                }
-                
-                paramList->emplace(std::pair<int, PARAM_DATA*>(param[index].asInt(), emptyParam));
-                
-                for (auto paramValue : param)
-                    emptyParam->emplace_back(paramValue.asInt());
-            }
-        }
-    }
+    CSDKUtil::Instance()->Toast("Overwrite to xml");
+    UserDefault::getInstance()->setStringForKey(USERDATA::GOOGLE_DATA_KEY.c_str(), valueJson);
 }
 
 bool CUserDataManager::isGoogleRevisionHigher()
@@ -448,17 +645,61 @@ bool CUserDataManager::isGoogleRevisionHigher()
     return (googleRevision > xmlRevision);
 }
 
-void CUserDataManager::overwriteXmlByGoogleCloud(std::string valueJson)
+void CUserDataManager::saveUserDataToGoogleCloud(std::string key, std::string data, bool forceSave/*= false*/)
 {
-    CSDKUtil::Instance()->Toast("Overwrite to xml");
-    UserDefault::getInstance()->setStringForKey(USERDATA::GOOGLE_DATA_KEY.c_str(), valueJson);
+    if (CSDKUtil::Instance()->getIsNetworkConnect())
+        CGoogleCloudManager::Instance()->GoogleCloudDataSave(key.c_str(), data);
+    else
+    {
+        if (!forceSave) return;
+        
+        CGameScene::getGameScene()->CreateAlertPopup()
+        ->setPositiveButton([=](Node* sender){
+            CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
+                this->saveUserDataToGoogleCloud(key, data, forceSave);
+            });
+            CSDKUtil::Instance()->IsNetworkConnect();
+        }, TRANSLATE("BUTTON_OK"))
+        ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_CANCEL"))
+        ->setMessage(TRANSLATE("OPTION_DATASAVE_NETWORK_CHECK"))
+        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+    }
 }
 
-void CUserDataManager::addKey(std::string keyKind, std::string key)
+ARRAY_DATA* CUserDataManager::getUserData_ListRef(std::string key)
 {
-    m_UserDataKeyList.emplace(std::pair<std::string, std::string>(key, keyKind));
-    CCLOG("Kind : %s Add Key : %s ", keyKind.c_str(), key.c_str());
+    if(m_UserData._userDataListMap.find(key) != m_UserData._userDataListMap.end()){
+        auto list = m_UserData._userDataListMap.find(key)->second;
+        return list;
+    }
+    CCLOG("There is no user data key : %s", key.c_str());
+    CCASSERT(false, "Wrong Key");
 }
+
+PARAM_DATA_ARRAY* CUserDataManager::getUserData_ParamListRef(std::string key)
+{
+    if(m_UserData._userDataParamListMap.find(key) != m_UserData._userDataParamListMap.end()){
+        auto list = m_UserData._userDataParamListMap.find(key)->second;
+        return list;
+    }
+    CCLOG("There is no user data key : %s", key.c_str());
+    CCASSERT(false, "Wrong Key");
+}
+
+void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& compare)
+{
+    //    if(key == USERDATA_KEY::ACHIEVEMENT_CUR_VALUE_LIST ||
+    //       key == USERDATA_KEY::ACHIEVEMENT_CUR_LIST) return;
+    
+    auto list = CUserDataManager::Instance()->getUserData_ListRef(key);
+    std::sort(list->begin(), list->end(), compare);
+}
+
+//void CUserDataManager::addKey(std::string keyKind, std::string key)
+//{
+//    m_UserDataKeyList.emplace(std::pair<std::string, std::string>(key, keyKind));
+//    CCLOG("Kind : %s Add Key : %s ", keyKind.c_str(), key.c_str());
+//}
 
 #pragma mark -
 #pragma mark [ interface function getter ]
@@ -493,14 +734,16 @@ int CUserDataManager::getUserData_ParamData(std::string key, int index, int para
     auto iter = list.find(index);
     if(iter == list.end()) {
         CCLOG("There is no param data matched index : %d", index);
-        CCASSERT(false, "Wrong Index");
+        return -1;
+//        CCASSERT(false, "Wrong Index");
     }
     
     // Find the parameter as the paramIdx.
     auto paramDataList = iter->second;
     if(paramDataList->size() <= paramIdx) {
         CCLOG("The parameter index is wrong indexed : %d", paramIdx);
-        CCASSERT(false, "No param data");
+        return -1;
+//        CCASSERT(false, "No param data");
     }
     
     return paramDataList->at(paramIdx);
@@ -530,8 +773,9 @@ bool CUserDataManager::getUserData_IsItemHave(std::string key, int itemIdx)
 float CUserDataManager::getItemCurrentValue(std::string key)
 {
     sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey(key.c_str());
-    float limitTime = item._valuePerLevel * this->getUserData_ParamData(key, index, level);
-    return limitTime;
+//    float limitTime = item._valuePerLevel * this->getUserData_ParamData(key, index, level);
+//    return limitTime;
+    return 0.5f;
 }
 
 
@@ -540,12 +784,12 @@ float CUserDataManager::getItemCurrentValue(std::string key)
 
 void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/, bool forceSave/* = false*/)
 {
-    setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
-    std::string jsonString = "";
-    convertUserDataToJson(jsonString);
+    this->setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
+    std::string jsonString   = "";
+    this->convertUserDataToJson(m_UserData, jsonString);
     
     // crypto
-    std::string crypto_key = MakeCryptoString(USERDATA::GOOGLE_DATA_KEY, USERDATA::CRYPTO_KEY);
+    std::string crypto_key   = MakeCryptoString(USERDATA::GOOGLE_DATA_KEY, USERDATA::CRYPTO_KEY);
     std::string crypto_value = MakeCryptoString(jsonString, USERDATA::CRYPTO_KEY);
     
     UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
@@ -561,37 +805,44 @@ void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/, bool forceSave
 
 void CUserDataManager::setSaveRevision(int value)
 {
-    if(m_UserData._userDataIntMap.find(USERDATA_KEY::DATA_REVISION) != m_UserData._userDataIntMap.end())
-        m_UserData._userDataIntMap.find(USERDATA_KEY::DATA_REVISION)->second = value;
+    auto iter = m_UserData._userDataIntMap.find(USERDATA_KEY::DATA_REVISION);
+    if(iter != m_UserData._userDataIntMap.end())
+        iter->second = value;
 }
 
 void CUserDataManager::setUserData_Number(std::string key, int value)
 {
-    if(m_UserData._userDataIntMap.find(key) != m_UserData._userDataIntMap.end())
-        m_UserData._userDataIntMap.find(key)->second = value;
+    auto iter = m_UserData._userDataIntMap.find(key);
+    if(iter == m_UserData._userDataIntMap.end())
+        m_UserData._userDataIntMap.emplace(std::pair<std::string, int>(key, value));
+    else iter->second = value;
     
-    SaveUserData();
+    this->SaveUserData();
 }
 
 void CUserDataManager::setUserData_ItemGet(std::string key, int itemIdx)
 {
-    if(getUserData_IsItemHave(key, itemIdx))
+    if(this->getUserData_IsItemHave(key, itemIdx))
     {
         CCLOG("Item get : Already have %s index %d", key.c_str(), itemIdx);
         return;
     }
     
-	auto itemList = m_UserData._userDataListMap.find(key);
-	if (itemList != m_UserData._userDataListMap.end()){
-		auto list = itemList->second;
-
-        list->push_back(itemIdx);
-        
-        this->sortUserDataList(key, compare);
+    ARRAY_DATA* arrayData = nullptr;
+	auto iter = m_UserData._userDataListMap.find(key);
+    if (iter == m_UserData._userDataListMap.end()){
+        arrayData = new ARRAY_DATA();
+        m_UserData._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(key, arrayData));
     }
-	SaveUserData();
+    else arrayData = iter->second;
+    
+    arrayData->push_back(itemIdx);
+    
+    this->sortUserDataList(key, compare);
+	this->SaveUserData();
 }
 
+// TODO: refactoring - initUserDefaultValue 부분과 비슷한 부분이 있다.
 void CUserDataManager::setUserData_ItemParam(std::string key, int itemIdx, int paramIdx, int value)
 {
     PARAM_DATA* paramData = nullptr;
@@ -611,11 +862,13 @@ void CUserDataManager::setUserData_ItemParam(std::string key, int itemIdx, int p
         paramData->resize(paramIdx+1);
     
     paramData->at(paramIdx) = value;
+    
+    this->SaveUserData();
 }
 
 void CUserDataManager::setUserData_ItemRemove(std::string key, int itemIdx)
 {
-	if (!getUserData_IsItemHave(key, itemIdx))
+	if (!this->getUserData_IsItemHave(key, itemIdx))
 	{
 		CCLOG("Item remove : Do not have %s index %d", key.c_str(), itemIdx);
 		return;
@@ -627,7 +880,7 @@ void CUserDataManager::setUserData_ItemRemove(std::string key, int itemIdx)
 		list->erase(std::remove(std::begin(*list), std::end(*list), itemIdx), std::end(*list));
         this->sortUserDataList(key, compare);
     }
-	SaveUserData();
+	this->SaveUserData();
 }
 
 void CUserDataManager::setUserData_ItemRemoveAll(std::string key)
@@ -637,30 +890,30 @@ void CUserDataManager::setUserData_ItemRemoveAll(std::string key)
         auto list = itemList->second;
         list->clear();
     }
-	SaveUserData();
+	this->SaveUserData();
 }
 
 void CUserDataManager::setUserData_Reset()
 {
-    for (auto keyInfo : m_UserDataKeyList)
-    {
-        std::string keyKind = keyInfo.second;
-        std::string key = keyInfo.first;
-        if (keyKind == USERDATA::SINGLE_DATA_KEY)
-        {
-            this->initSingleUserDataWithDefaultValue(key);
-        }
-        else if (keyKind == USERDATA::ARRAY_DATA_KEY)
-        {
-            this->initArrayUserDataWithDefaultValue(key);
-        }
-        else if (keyKind == USERDATA::PARAM_ARRAY_DATA_KEY)
-        {
-            this->initParamArrayUserDataWithDefaultValue(key);
-        }
-    }
-    
-   	SaveUserData();
+//    for (auto keyInfo : m_UserDataKeyList)
+//    {
+//        std::string keyKind = keyInfo.second;
+//        std::string key = keyInfo.first;
+//        if (keyKind == USERDATA::SINGLE_DATA_KEY)
+//        {
+//            this->initSingleUserDataWithDefaultValue(key);
+//        }
+//        else if (keyKind == USERDATA::ARRAY_DATA_KEY)
+//        {
+//            this->initArrayUserDataWithDefaultValue(key);
+//        }
+//        else if (keyKind == USERDATA::PARAM_ARRAY_DATA_KEY)
+//        {
+//            this->initParamArrayUserDataWithDefaultValue(key);
+//        }
+//    }
+    this->initUserDefaultValue(m_UserData);
+   	this->SaveUserData();
 }
 
 void CUserDataManager::setLastSavedTime(long long unixTime)
@@ -684,7 +937,7 @@ bool CUserDataManager::CoinUpdate(int value)
     if (value > 0)
     {
         result = true;
-        setUserData_Number(USERDATA_KEY::COIN, getUserData_Number(USERDATA_KEY::COIN) + value);
+        this->setUserData_Number(USERDATA_KEY::COIN, this->getUserData_Number(USERDATA_KEY::COIN) + value);
     }
     else
     {
@@ -703,7 +956,7 @@ bool CUserDataManager::CoinUpdate(int value)
         else
         {
             result = true;
-            setUserData_Number(USERDATA_KEY::COIN, getUserData_Number(USERDATA_KEY::COIN) + value);
+            this->setUserData_Number(USERDATA_KEY::COIN, this->getUserData_Number(USERDATA_KEY::COIN) + value);
         }
     }
     return result;
@@ -729,104 +982,6 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
     auto iter = std::find(curList.begin(), curList.end(), itemIndex);
     auto sequence = std::distance(curList.begin(), iter);
     return int(sequence);
-}
-
-void CUserDataManager::convertUserDataToJson(std::string &valueJson)
-{
-	JSONWRITER_CREATE
-
-	Json::Value dataArray = root["data"];
-
-	for (auto keyInfo : m_UserDataKeyList)
-	{
-		std::string keyKind = keyInfo.second;
-		std::string key = keyInfo.first;
-		Json::Value userData;
-		if (keyKind == USERDATA::SINGLE_DATA_KEY)
-		{
-			dataArray[key.c_str()] = getUserData_Number(key);
-		}
-		else if (keyKind == USERDATA::ARRAY_DATA_KEY)
-		{
-			Json::Value jsonItemList;
-			auto list = getUserData_List(key);
-
-			for (auto data : list)
-			{
-				jsonItemList.append(static_cast<int>(data));
-			}
-			dataArray[key.c_str()] = jsonItemList;
-		}
-        else if (keyKind == USERDATA::PARAM_ARRAY_DATA_KEY)
-        {
-            Json::Value jsonParamItemList;
-            auto paramList = getUserData_ParamList(key);
-            
-            for(auto param : paramList)
-            {
-                Json::Value jsonParam;
-                for(auto data : *param.second)
-                {
-                    jsonParam.append(static_cast<int>(data));
-                }
-                jsonParamItemList.append(jsonParam);
-            }
-            dataArray[key.c_str()] = jsonParamItemList;
-        }
-	}
-	root["data"] = dataArray;
-	valueJson = writer.write(root);
-}
-
-void CUserDataManager::saveUserDataToGoogleCloud(std::string key, std::string data, bool forceSave/*= false*/)
-{
-	if (CSDKUtil::Instance()->getIsNetworkConnect())
-		CGoogleCloudManager::Instance()->GoogleCloudDataSave(key.c_str(), data);
-	else
-	{
-		if (!forceSave) return;
-
-        CGameScene::getGameScene()->CreateAlertPopup()
-        ->setPositiveButton([=](Node* sender){
-            CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
-                this->saveUserDataToGoogleCloud(key, data, forceSave);
-            });
-            CSDKUtil::Instance()->IsNetworkConnect();
-        }, TRANSLATE("BUTTON_OK"))
-        ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_CANCEL"))
-        ->setMessage(TRANSLATE("OPTION_DATASAVE_NETWORK_CHECK"))
-        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
-    }
-}
-
-
-ARRAY_DATA* CUserDataManager::getUserData_ListRef(std::string key)
-{
-    if(m_UserData._userDataListMap.find(key) != m_UserData._userDataListMap.end()){
-        auto list = m_UserData._userDataListMap.find(key)->second;
-        return list;
-    }
-    CCLOG("There is no user data key : %s", key.c_str());
-    CCASSERT(false, "Wrong Key");
-}
-
-PARAM_DATA_ARRAY* CUserDataManager::getUserData_ParamListRef(std::string key)
-{
-    if(m_UserData._userDataParamListMap.find(key) != m_UserData._userDataParamListMap.end()){
-        auto list = m_UserData._userDataParamListMap.find(key)->second;
-        return list;
-    }
-    CCLOG("There is no user data key : %s", key.c_str());
-    CCASSERT(false, "Wrong Key");
-}
-
-void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& compare)
-{
-//    if(key == USERDATA_KEY::ACHIEVEMENT_CUR_VALUE_LIST ||
-//       key == USERDATA_KEY::ACHIEVEMENT_CUR_LIST) return;
-    
-    auto list = CUserDataManager::Instance()->getUserData_ListRef(key);
-    std::sort(list->begin(), list->end(), compare);
 }
 
 

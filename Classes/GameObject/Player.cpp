@@ -291,12 +291,18 @@ void CPlayer::ChangeDataByCharacter()
 		return CUserDataManager::Instance()->getItemCurrentValue(key);
 	};
 
-	m_fMagnetLimitTime		= m_CharacterParam->_magnetItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_MAGNET);
-	m_fMagnetLimitRadius	= m_CharacterParam->_magnetItemSize	+ getValue(USERDATA_KEY::ITEM_SIZE_MAGNET);
-	m_fCoinLimitTime		= m_CharacterParam->_coinItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_COIN);
-	m_fStarLimitTime		= m_CharacterParam->_starItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_STAR);
-	m_fBonusTimeLimitTime	= m_CharacterParam->_bonusItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_BOUNS);
-	m_fGiantLimitTime		= m_CharacterParam->_giantItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_GIANT);
+//	m_fMagnetLimitTime		= m_CharacterParam->_magnetItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_MAGNET);
+//	m_fMagnetLimitRadius	= m_CharacterParam->_magnetItemSize	+ getValue(USERDATA_KEY::ITEM_SIZE_MAGNET);
+//	m_fCoinLimitTime		= m_CharacterParam->_coinItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_COIN);
+//	m_fStarLimitTime		= m_CharacterParam->_starItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_STAR);
+//	m_fBonusTimeLimitTime	= m_CharacterParam->_bonusItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_BOUNS);
+//	m_fGiantLimitTime		= m_CharacterParam->_giantItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_GIANT);
+    m_fMagnetLimitTime		= 1.f;
+    m_fMagnetLimitRadius	= 1.f;
+    m_fCoinLimitTime		= 1.f;
+    m_fStarLimitTime		= 1.f;
+    m_fBonusTimeLimitTime	= 1.f;
+    m_fGiantLimitTime		= 1.f;
 	m_fMaxLife				= 1;
 
 	m_MagnetEffect->setLimitTime(m_fMagnetLimitTime);

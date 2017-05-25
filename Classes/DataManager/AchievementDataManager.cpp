@@ -682,14 +682,20 @@ void CAchievementDataManager::initRewarderList()
 void CAchievementDataManager::addAchievementToList(ACHIEVEMENT_LIST &list, 
 											   const Json::Value &data)
 {
+    if(data["index"].isNull()) return;
+    
 	ACHIEVEMENT* achievement    = new ACHIEVEMENT();
 
 	achievement->_index         = data["index"].asInt();
-    achievement->_visibleType   = data["visibleType"].asBool();
-	achievement->_hiddenType    = data["hiddenType"].asBool();
+    achievement->_visibleType   = data["visible"].asBool();
+	achievement->_hiddenType    = data["hidden"].asBool();
     
-    this->addLevelToAchievement(achievement->_levelList, data["level"]);
-    
+    auto levelArray             = data["level"];
+    for(auto levelData : levelArray){
+        if(levelData.isNull())
+            continue;
+        this->addLevelToAchievement(achievement->_levelList, levelData);
+    }
     list.emplace(std::pair<int, const ACHIEVEMENT*>(achievement->_index, achievement));
 
 
@@ -736,6 +742,8 @@ void CAchievementDataManager::addAchievementToList(ACHIEVEMENT_LIST &list,
 
 void CAchievementDataManager::addLevelToAchievement(ACHIEVEMENT_LEVEL_LIST &list, const Json::Value &data)
 {
+    if(data["rewardKey"].isNull()) return;
+    
     ACHIEVEMENT_LEVEL level;
     
     level._rewardKey        = data["rewardKey"].asString();
@@ -743,20 +751,28 @@ void CAchievementDataManager::addLevelToAchievement(ACHIEVEMENT_LEVEL_LIST &list
     level._contentsValue    = data["contentsValue"].asInt();
     level._checkerType      = (CHECKER_TYPE)data["checkerType"].asInt();
     
-    this->addMaterialToLevel(level._materialList, data["material"]);
-    
+    auto materialArray      = data["material"];
+    for(auto materialData : materialArray){
+        if(materialData.isNull())
+            continue;
+        this->addMaterialToLevel(level._materialList, materialData);
+    }
     list.emplace_back(level);
 }
 
 void CAchievementDataManager::addMaterialToLevel(MATERIAL_LIST &list, const Json::Value &data)
 {
-    ACHIEVEMENT_MATERIAL material;
+    if(data["materialKey"].isNull()) return;
     
+    ACHIEVEMENT_MATERIAL material;
     material._materialKey   = data["materialKey"].asString();
     auto valueList          = data["materialValue"];
     
-    for(auto value : valueList)
+    for(auto value : valueList){
+        if(value.isNull())
+            continue;
         material._materialValues.emplace_back(value.asInt());
+    }
     
     list.emplace_back(material);
 }

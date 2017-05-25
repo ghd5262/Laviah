@@ -94,7 +94,7 @@ public:
     int getUserData_ParamData(std::string key, int index, int paramIdx);
     bool getUserData_IsItemHave(std::string key, int itemIdx);
     float getItemCurrentValue(std::string key);
-	USERDATA_KEY_LIST getKeyList() { return m_UserDataKeyList; }
+//	USERDATA_KEY_LIST getKeyList() { return m_UserDataKeyList; }
     
 	void SaveUserData(bool saveToCloud = false, bool forceSave = false);
     void setSaveRevision(int value);
@@ -115,13 +115,13 @@ public:
 private:
 	void initUserDefaultValue(sUSER_DATA &data);
 
-	void initUserDataKey(sUSER_DATA &data);
+//	void initUserDataKey(sUSER_DATA &data);
     
-	void initSingleUserDataWithDefaultValue(std::string key);
+//	void initSingleUserDataWithDefaultValue(std::string key);
 
-	void initArrayUserDataWithDefaultValue(std::string key);
+//	void initArrayUserDataWithDefaultValue(std::string key);
 
-    void initParamArrayUserDataWithDefaultValue(std::string key);
+//    void initParamArrayUserDataWithDefaultValue(std::string key);
 
 	void dataLoadFromXML();
 
@@ -129,7 +129,7 @@ private:
 
 	void convertJsonToUserData(sUSER_DATA &data, std::string valueJson);
 
-	void convertUserDataToJson(std::string &valueJson);
+	void convertUserDataToJson(sUSER_DATA &data, std::string &valueJson);
 
 	void googleCloudDataLoad(std::string cryptoValue);
 
@@ -137,7 +137,7 @@ private:
 
 	bool isGoogleRevisionHigher();
 
-	void addKey(std::string keyKind, std::string key);
+//	void addKey(std::string keyKind, std::string key);
 
 	void saveUserDataToGoogleCloud(std::string key, std::string data, bool forceSave = false);
 
@@ -171,8 +171,8 @@ private:
     
 private:
     sUSER_DATA m_UserData;
-	sUSER_DATA m_UserDefaultData;
-	USERDATA_KEY_LIST m_UserDataKeyList;
+//	sUSER_DATA m_UserDefaultData;
+//	USERDATA_KEY_LIST m_UserDataKeyList;
 
 	std::string m_JsonUserDataFromXML;
 	std::string m_JsonUserDataFromGoogleCloud;
