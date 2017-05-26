@@ -3,8 +3,7 @@
 #include <vector>
 
 enum USERDATA_PARAM_WORKSHOP{
-    WORKSHOP_ITEM_INDEX = 0,
-    WORKSHOP_ITEM_LEVEL = 1,
+    ITEM_LEVEL = 0,
 };
 
 namespace WORKSHOP_DEFINE {

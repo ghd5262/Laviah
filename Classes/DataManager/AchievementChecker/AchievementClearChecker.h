@@ -55,8 +55,8 @@ namespace ACHIEVEMENT_DATA_KEY {
     const std::string SAVED_RUN			   = "USER_SAVED_RUN";
     const std::string SAVED_SCORE		   = "USER_SAVED_SCORE";
     const std::string SAVED_REVIVE		   = "USER_SAVED_REVIVE";
-    const std::string NORMAL_CLEAR_COUNT   = "USER_NORMAL_ACHIEVEMENT_LIST";
-    const std::string HIDDEN_CLEAR_COUNT   = "USER_HIDDEN_ACHIEVEMENT_LIST";
+    const std::string NORMAL_CLEAR_COUNT   = "USER_NORMAL_ACHIEVEMENT_COUNT";
+    const std::string HIDDEN_CLEAR_COUNT   = "USER_HIDDEN_ACHIEVEMENT_COUNT";
 };
 
 class CAchievementClearChecker {

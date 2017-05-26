@@ -43,15 +43,7 @@ namespace USERDATA_KEY {
     
     const std::string BEST_COMBO                = "USER_BEST_COMBO";
     const std::string BEST_SCORE                = "USER_BEST_TOTAL_SCORE";
-    
-//    const std::string ITEM_HEALTH               = "USER_HEALTH_ITEM_LEVEL";
-//    const std::string ITEM_TIME_BOUNS           = "USER_BONUS_ITEM_LEVEL";
-//    const std::string ITEM_TIME_COIN            = "USER_COIN_ITEM_LEVEL";
-//    const std::string ITEM_TIME_STAR            = "USER_STAR_ITEM_LEVEL";
-//    const std::string ITEM_TIME_GIANT           = "USER_GIANT_ITEM_LEVEL";
-//    const std::string ITEM_TIME_MAGNET          = "USER_MAGNET_ITEM_LEVEL";
-//    const std::string ITEM_SIZE_MAGNET          = "USER_MAGNET_SIZE_LEVEL";
-    
+
     const std::string SELECT_ITEM               = "USER_CUR_SELECT_ITEM";
     const std::string SELECT_KEY                = "USER_CUR_SELECT_KEY";
     
@@ -63,11 +55,9 @@ namespace USERDATA_KEY {
     const std::string CHARACTER_LIST            = "USER_CHARACTER_LIST";
     const std::string ROCKET_LIST               = "USER_ROCKET_LIST";
     const std::string PET_LIST                  = "USER_PET_LIST";
-    
-//    const std::string ACHIEVEMENT_CUR_NORMAL_LIST = "USER_CUR_NORMAL_ACHIEVEMENT_LIST";
-//    const std::string ACHIEVEMENT_CUR_HIDDEN_LIST = "USER_CUR_HIDDEN_ACHIEVEMENT_LIST";
-//    const std::string ACHIEVEMENT_COM_NORMAL_LIST = "USER_COM_NORMAL_ACHIEVEMENT_LIST";
-//	const std::string ACHIEVEMENT_COM_HIDDEN_LIST = "USER_COM_HIDDEN_ACHIEVEMENT_LIST";
+
+    const std::string NORMAL_CLEAR_COUNT        = "USER_NORMAL_ACHIEVEMENT_COUNT";
+    const std::string HIDDEN_CLEAR_COUNT        = "USER_HIDDEN_ACHIEVEMENT_COUNT";
     
     const std::string ITEM_LEVEL                = "USER_ITEM_LEVEL";
     const std::string NORMAL_ACHIEVEMENT_LIST   = "USER_NORMAL_ACHIEVEMENT_LIST";
@@ -91,10 +81,9 @@ public:
     int getUserData_Number(std::string key);
     ARRAY_DATA getUserData_List(std::string key);
     PARAM_DATA_ARRAY getUserData_ParamList(std::string key);
-    int getUserData_ParamData(std::string key, int index, int paramIdx);
+    int getUserData_ParamData(std::string key, int index, int paramIdx, int defaultValue);
     bool getUserData_IsItemHave(std::string key, int itemIdx);
     float getItemCurrentValue(std::string key);
-//	USERDATA_KEY_LIST getKeyList() { return m_UserDataKeyList; }
     
 	void SaveUserData(bool saveToCloud = false, bool forceSave = false);
     void setSaveRevision(int value);
@@ -115,14 +104,6 @@ public:
 private:
 	void initUserDefaultValue(sUSER_DATA &data);
 
-//	void initUserDataKey(sUSER_DATA &data);
-    
-//	void initSingleUserDataWithDefaultValue(std::string key);
-
-//	void initArrayUserDataWithDefaultValue(std::string key);
-
-//    void initParamArrayUserDataWithDefaultValue(std::string key);
-
 	void dataLoadFromXML();
 
 	void dataLoadFromGoogleCloud();
@@ -136,8 +117,6 @@ private:
 	void overwriteXmlByGoogleCloud(std::string valueJson);
 
 	bool isGoogleRevisionHigher();
-
-//	void addKey(std::string keyKind, std::string key);
 
 	void saveUserDataToGoogleCloud(std::string key, std::string data, bool forceSave = false);
 
@@ -171,8 +150,6 @@ private:
     
 private:
     sUSER_DATA m_UserData;
-//	sUSER_DATA m_UserDefaultData;
-//	USERDATA_KEY_LIST m_UserDataKeyList;
 
 	std::string m_JsonUserDataFromXML;
 	std::string m_JsonUserDataFromGoogleCloud;

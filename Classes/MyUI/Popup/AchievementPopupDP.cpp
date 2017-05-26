@@ -70,9 +70,9 @@ bool CAchievementPopupDP::init()
     
     // create star
     {
-        auto maxLevel = m_AchievementData->_levelList.size();
+        auto maxLevel = CAchievementDataManager::Instance()->getAchievementMaxLevelByIndex(index, true);
         auto curLevel = CAchievementDataManager::getAchievementLevelByIndex(index);
-        for(int count = 0; count < maxLevel; count++)
+        for(int count = 0; count <= maxLevel; count++)
         {
             auto star = Sprite::create("starIcon_s.png");
             star->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);

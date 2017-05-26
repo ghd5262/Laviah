@@ -33,7 +33,7 @@ bool CAchievementClearChecker::checkWithItemParam(std::string key, int itemIndex
 {
     return (value <= CUserDataManager::Instance()->getUserData_ParamData(key,
                                                                          itemIndex,
-                                                                         paramIndex));
+                                                                         paramIndex, 0));
 }
 
 bool CAchievementClearChecker::checkWithContinuingType(std::string key, int value)

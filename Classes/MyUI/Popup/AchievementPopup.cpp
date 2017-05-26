@@ -70,42 +70,13 @@ bool CAchievementPopup::init()
         listView->setCascadeOpacityEnabled(true);
         bg->addChild(listView);
         
-//        int index = 0;
-//        for(auto achievement : achievementList)
-////        for(int index = 0; index < achievementCount; index+=5)
-//        {
-////            auto  iter                          = achievementList.find(index);
-////            if(iter == achievementList.end())   continue;
-//            
-//            const ACHIEVEMENT* lastData  = achievement.second;
-//            int                lastLevel = 0;
-//            int                maxLevel  = 0;
-//
-//            for(int level = 0; level < 5; level++)
-//            {
-//                int  idx      = index + level;
-//                auto dataIter = achievementList.find(idx);
-//                if(dataIter  == achievementList.end()) continue;
-//                
-//                maxLevel++;
-//                auto data     = dataIter->second;
-//                
-//                if(data->_visible){
-//                    if(CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::ACHIEVEMENT_COM_HIDDEN_LIST, idx))
-//                    {
-//                        lastData  = data;
-//                        lastLevel = level + 1;
-//                    }
-//                }
-//            }
-//            std::cout<<lastLevel<<std::endl;
-//            auto achievementDP = CAchievementPopupDP::create(lastData, lastLevel, maxLevel);
-//            achievementDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-//            achievementDP->setCascadeOpacityEnabled(true);
-//            listView->pushBackCustomItem(achievementDP);
-//            
-//            index += 5;
-//        }
+        for(auto achievement : achievementList)
+        {
+            auto achievementDP = CAchievementPopupDP::create(achievement.second);
+            achievementDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            achievementDP->setCascadeOpacityEnabled(true);
+            listView->pushBackCustomItem(achievementDP);
+        }
     }
     
     auto btnEnd = CMyButton::create()
