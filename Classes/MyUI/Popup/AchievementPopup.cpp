@@ -2,6 +2,7 @@
 #include "AchievementPopupDP.hpp"
 #include "../MyButton.h"
 #include "../MenuLayer.hpp"
+#include "../UserCoinButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../GameObject/ObjectManager.h"
@@ -72,7 +73,10 @@ bool CAchievementPopup::init()
         
         for(auto achievement : achievementList)
         {
-            auto achievementDP = CAchievementPopupDP::create(achievement.second);
+            auto data = achievement.second;
+            if(!data->_visibleType) continue;
+            
+            auto achievementDP = CAchievementPopupDP::create(data);
             achievementDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             achievementDP->setCascadeOpacityEnabled(true);
             listView->pushBackCustomItem(achievementDP);
@@ -90,6 +94,15 @@ bool CAchievementPopup::init()
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(bg);
     
+    auto btnUserCoin = CUserCoinButton::create();
+    if (btnUserCoin != nullptr)
+    {
+        btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                                      this->getContentSize().height * 0.05f));
+        btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        this->addChild(btnUserCoin);
+    }
+    
     this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* owner){
             auto delay = DelayTime::create(1.f);
@@ -101,6 +114,7 @@ bool CAchievementPopup::init()
         
         action(btnEnd);
         action(rankingLabel);
+        action(btnUserCoin);
         
         auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
         auto easeAction = EaseExponentialInOut::create(moveAction);
@@ -113,6 +127,7 @@ bool CAchievementPopup::init()
                                                                              layerSize.height * 1.5f))));
         btnEnd->runAction(FadeTo::create(0.3f, 0));
         rankingLabel->runAction(FadeTo::create(0.3f, 0));
+        btnUserCoin->runAction(FadeTo::create(0.3f, 0));
     });
     
     this->setDefaultCallback([=](Node* sender){

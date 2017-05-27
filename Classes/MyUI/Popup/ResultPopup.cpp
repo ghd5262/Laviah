@@ -388,7 +388,7 @@ bool CResultPopup::init()
    
     // if there are some reward from achievement. open reward popup after end of result popup.
     if ( m_GoalPopupOpen ) this->setDefaultCallback([=](Node* sender){ this->End(sender);    });
-    else                        this->setDefaultCallback([=](Node* sender){ this->GoHome(sender); });
+    else                   this->setDefaultCallback([=](Node* sender){ this->GoHome(sender); });
     
 	return true;
 }

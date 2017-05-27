@@ -19,10 +19,10 @@ enum CHECKER_TYPE{
 };
 
 enum USERDATA_PARAM_ACHIEVEMENT_NORMAL{
-    STATE = 0, ///< 0: non-completed, 1: running, 2: finished, 3: completed
+    NORMAL_STATE = 0, ///< 0: non-completed, 1: running, 2: finished, 3: completed
 };
 
-enum ACHIEVEMENT_NORMAL_STATE{
+enum ACHIEVEMENT_STATE{
     NONE_COMPLETED = 0,
     RUNNING,
     FINISHED,
@@ -30,7 +30,8 @@ enum ACHIEVEMENT_NORMAL_STATE{
 };
 
 enum USERDATA_PARAM_ACHIEVEMENT_HIDDEN{
-    LEVEL = 0,
+    HIDDEN_LEVEL = 0,
+     HIDDEN_STATE= 1,
 };
 
 class CAchievementClearChecker;
@@ -114,7 +115,7 @@ public:
 	bool CheckAchievementComplete(int index, bool isHidden);
 	const ACHIEVEMENT* CompleteCheckRealTime(bool isHidden);
     void ResetNormalAchievements();
-
+    void HiddenAchievementLevelUP(int index);
     
 	sREWARD_DATA Reward(int index);
 	sREWARD_DATA RewardByKey(std::string key, int value);
@@ -130,6 +131,7 @@ public:
     
     ACHIEVEMENT_LEVEL  getCurLevelDataByIndex(int index, bool isHidden);
     std::string getAchievementTitleByIndex(int index);
+    std::string getAchievementTitle(int index, int level);
     std::string getAchievementContentsByIndex(int index, bool isHidden);
     ACHIEVEMENT_LIST getHiddenAchievementList() const;
     ACHIEVEMENT_LIST getNonCompletedAchievementList() const;
@@ -138,7 +140,7 @@ public:
     int getAchievementMaxLevelByIndex(int index, bool isHidden);
     
     static int getAchievementLevelByIndex(int index);
-    static int getAchievementStateByIndex(int index);
+    static int getAchievementStateByIndex(int index, bool isHidden);
 
 private:
     void initWithJson(ACHIEVEMENT_LIST &list, std::string fileName);

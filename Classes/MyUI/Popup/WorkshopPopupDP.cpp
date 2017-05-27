@@ -38,7 +38,7 @@ bool CWorkshopPopupDP::init()
         this->setContentSize(dpBack->getContentSize());
         
         dpBack->setIgnoreAnchorPointForPosition(false);
-        dpBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+        dpBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         dpBack->setPosition(this->getContentSize() / 2);
         this->addChild(dpBack);
     }
@@ -47,7 +47,8 @@ bool CWorkshopPopupDP::init()
     if (dpItemBack != nullptr){
         dpItemBack->setIgnoreAnchorPointForPosition(false);
         dpItemBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        dpItemBack->setPosition(Vec2(dpItemBack->getContentSize().width * 0.5f, 0));
+        dpItemBack->setPosition(Vec2(dpItemBack->getContentSize().width * 0.5f,
+                                     dpItemBack->getContentSize().height * 0.5f));
         dpBack->addChild(dpItemBack);
     }
     
@@ -67,7 +68,9 @@ bool CWorkshopPopupDP::init()
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(dpBack);
     
-    m_BtnBuy->setPosition(Vec2(dpBack->getContentSize().width - (m_BtnBuy->getContentSize().width * 0.5f), 0));
+    m_BtnBuy->setPosition(Vec2(dpBack->getContentSize().width
+                               - (m_BtnBuy->getContentSize().width * 0.5f),
+                               dpBack->getContentSize().height * 0.5f));
     m_BtnBuy->setSwallowTouches(false);
     
     if (currentLevel >= m_WorkshopItem._maxLevel){
@@ -84,26 +87,29 @@ bool CWorkshopPopupDP::init()
     if (workshopItemName != nullptr)
     {
         workshopItemName->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        workshopItemName->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f, dpItemBack->getContentSize().height * 0.8f));
+        workshopItemName->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f,
+                                           dpItemBack->getContentSize().height * 0.8f));
         workshopItemName->setColor(COLOR::BRIGHTGRAY);
         dpItemBack->addChild(workshopItemName);
     }
     
-	auto workshopItemExplain = Label::createWithTTF(TRANSLATE(m_WorkshopItem._explain),
-		"fonts/malgun.ttf",
-		23,
-		Size(dpItemBack->getContentSize().width * 0.7f, dpItemBack->getContentSize().height * 0.45f),
-		TextHAlignment::LEFT,
-		TextVAlignment::TOP);
+    auto workshopItemExplain = Label::createWithSystemFont(TRANSLATE(m_WorkshopItem._explain),
+                                                           FONT::MALGUN,
+                                                           30,
+                                                           Size(dpItemBack->getContentSize().width * 0.7f, dpItemBack->getContentSize().height * 0.45f),
+                                                           TextHAlignment::LEFT,
+                                                           TextVAlignment::CENTER);
     if (workshopItemExplain != nullptr)
     {
         workshopItemExplain->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        workshopItemExplain->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f, dpItemBack->getContentSize().height * 0.45f));
+        workshopItemExplain->setPosition(Vec2(dpItemBack->getContentSize().width * 0.25f,
+                                              dpItemBack->getContentSize().height * 0.5f));
         workshopItemExplain->setColor(COLOR::BRIGHTGRAY);
         dpItemBack->addChild(workshopItemExplain);
     }
     
-    m_LevelProgressBar = CLevelProgressBar::create(Size(dpItemBack->getContentSize().width * 0.7f, dpItemBack->getContentSize().height * 0.1f),
+    m_LevelProgressBar = CLevelProgressBar::create(Size(dpItemBack->getContentSize().width * 0.7f,
+                                                        dpItemBack->getContentSize().height * 0.1f),
                                                    m_WorkshopItem._maxLevel, currentLevel);
     if (m_LevelProgressBar != nullptr)
     {

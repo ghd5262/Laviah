@@ -4,14 +4,13 @@
 
 USING_NS_CC;
 struct ACHIEVEMENT;
+class CMyButton;
 class CAchievementPopupDP : public cocos2d::ui::Widget
 {
 public:
     static CAchievementPopupDP* create(const ACHIEVEMENT* data);
     
-    void Share();
-    void Notice();
-    void Invite();
+    void Reward();
     
     //setter & getter
     const ACHIEVEMENT* getAchievementData() const { return m_AchievementData; }
@@ -25,9 +24,11 @@ private:
     
     CAchievementPopupDP(const ACHIEVEMENT* data)
     : m_AchievementData(data)
-    , m_SelectDPListener(nullptr){};
+    , m_SelectDPListener(nullptr)
+    , m_RewardBtn(nullptr){};
     virtual ~CAchievementPopupDP(){};
     
 private:
     const ACHIEVEMENT* m_AchievementData;
+    CMyButton* m_RewardBtn;
 };
