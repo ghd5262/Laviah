@@ -525,6 +525,12 @@ void CUserDataManager::setUserData_Number(std::string key, int value)
     this->SaveUserData();
 }
 
+void CUserDataManager::setUserData_NumberAdd(std::string key, int value)
+{
+    auto origin = this->getUserData_Number(key);
+    this->setUserData_Number(key, origin + value);
+}
+
 void CUserDataManager::setUserData_ItemGet(std::string key, int itemIdx)
 {
     if(this->getUserData_IsItemHave(key, itemIdx))
@@ -625,7 +631,7 @@ bool CUserDataManager::CoinUpdate(int value)
     if (value > 0)
     {
         result = true;
-        this->setUserData_Number(USERDATA_KEY::COIN, this->getUserData_Number(USERDATA_KEY::COIN) + value);
+        this->setUserData_NumberAdd(USERDATA_KEY::COIN, value);
     }
     else
     {
@@ -644,7 +650,7 @@ bool CUserDataManager::CoinUpdate(int value)
         else
         {
             result = true;
-            this->setUserData_Number(USERDATA_KEY::COIN, this->getUserData_Number(USERDATA_KEY::COIN) + value);
+            this->setUserData_NumberAdd(USERDATA_KEY::COIN, value);
         }
     }
     return result;

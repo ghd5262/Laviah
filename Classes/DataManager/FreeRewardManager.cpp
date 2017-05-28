@@ -42,5 +42,5 @@ void CFreeRewardManager::FreeRewardLevelUP()
     auto currentLevel = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::FREE_REWARD_LEVEL);
     if(currentLevel >= m_LimitTimeList.size()-1) return;
     
-    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::FREE_REWARD_LEVEL, currentLevel + 1);
+    CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::FREE_REWARD_LEVEL, 1);
 }

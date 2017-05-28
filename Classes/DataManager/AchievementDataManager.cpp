@@ -99,23 +99,22 @@ bool CAchievementDataManager::CheckAchievementComplete(int index, bool isHidden)
     if (state == ACHIEVEMENT_STATE::FINISHED)  return true;
     if (state == ACHIEVEMENT_STATE::COMPLETED) return true;
 
-    int currentLevel = 0;
     std::string userDataKey = USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST;
     if(isHidden){
         userDataKey         = USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST;
-        currentLevel        = this->getAchievementLevelByIndex(index);
-        auto maxLevel       = this->getAchievementMaxLevelByIndex(index, isHidden);
         
         //Return false, If the level got max.
-        if(currentLevel > maxLevel) return false;
+        if(this->CompletedAllOfLevels(index)) return false;
     }
     
+
     const ACHIEVEMENT* achievementData = nullptr;
     if(isHidden) achievementData = this->getHiddenAchievementByIndex(index);
     else          achievementData = this->getNormalAchievementByIndex(index);
     
     if(!achievementData->_visibleType) return false;
     
+    int currentLevel    = this->getAchievementLevelByIndex(index);
     auto levelData      = this->getLevelDataFromAchievement(index, currentLevel, isHidden);
     auto materialList   = levelData._materialList;
     auto checkerType    = levelData._checkerType;
@@ -183,8 +182,7 @@ bool CAchievementDataManager::CheckAchievementComplete(int index, bool isHidden)
     // Update user data.
     {
         // Clear count +1
-        auto clearCount = CUserDataManager::Instance()->getUserData_Number(clearCountKey);
-        CUserDataManager::Instance()->setUserData_Number(clearCountKey, clearCount+1);
+        CUserDataManager::Instance()->setUserData_NumberAdd(clearCountKey, 1);
         
         // Change the state of achievement.
         CUserDataManager::Instance()->setUserData_ItemParam(userDataKey, index, paramIndex, paramState);
@@ -235,6 +233,14 @@ void CAchievementDataManager::HiddenAchievementLevelUP(int index)
     CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST, index,
                                                         USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_LEVEL,
                                                         level+1);
+}
+
+bool CAchievementDataManager::CompletedAllOfLevels(int index)
+{
+    auto currentLevel = this->getAchievementLevelByIndex(index);
+    auto maxLevel     = this->getAchievementMaxLevelByIndex(index, true);
+
+    return (currentLevel > maxLevel);
 }
 
 sREWARD_DATA CAchievementDataManager::Reward(int index)
@@ -355,6 +361,9 @@ ACHIEVEMENT_LEVEL CAchievementDataManager::getCurLevelDataByIndex(int index, boo
 std::string CAchievementDataManager::getAchievementTitleByIndex(int index)
 {
     auto level = this->getAchievementLevelByIndex(index);
+    if(this->CompletedAllOfLevels(index))
+        level  = this->getAchievementMaxLevelByIndex(index, true);
+    
     return this->getAchievementTitle(index, level);
 }
 
@@ -461,12 +470,21 @@ ACHIEVEMENT_LEVEL CAchievementDataManager::getLevelDataFromAchievement(int index
     else         achievement = this->getNormalAchievementByIndex(index);
     
     auto         maxLevel    = this->getAchievementMaxLevelByIndex(index, isHidden);
-    if(maxLevel < level){
-        if(0 < maxLevel)
-            return achievement->_levelList.at(maxLevel);
+    if(maxLevel < 0) {
+        CCLOG("There is no data as level : %d, index : %d, hidden : %d", level, index, isHidden);
+        CCASSERT(false, "There is no data as level");
     }
     
-    return achievement->_levelList.at(level);
+    if(maxLevel < level){
+        if(0 <= maxLevel)
+            return achievement->_levelList.at(maxLevel);
+    }
+    try {
+        return achievement->_levelList.at(level);
+    } catch (...) {
+        CCLOG("There is no level data - level : %d, index : %d, hidden : %d", level, index, isHidden);
+        CCASSERT(false, "Wrong level");
+    }
 }
 
 

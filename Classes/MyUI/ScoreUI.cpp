@@ -34,7 +34,7 @@ CScoreUI* CScoreUI::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
     m_ScoreLabel->setPosition(Vec2(m_FontSize * 2, m_FontSize));
     m_ScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     m_ScoreLabel->setColor(m_FontColor);
-	m_ScoreLabel->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 3);
+	m_ScoreLabel->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, m_OutlineSize);
 	this->addChild(m_ScoreLabel);
 
 	if (m_IconName != "")
@@ -48,16 +48,21 @@ CScoreUI* CScoreUI::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
 	this->scheduleUpdate();
     this->setAnchorPoint(m_ScoreAnchorPoint);
     this->setCascadeOpacityEnabled(true);
+    this->setCascadeColorEnabled(true);
     
 	parent->addChild(this, zOrder);
 	return this;
 }
 
-CScoreUI* CScoreUI::setFont(std::string fontName, size_t fontSize, Color3B fontColor/* = WHITE*/)
+CScoreUI* CScoreUI::setFont(std::string fontName,
+                            size_t fontSize,
+                            Color3B fontColor/* = WHITE*/,
+                            int outlineSize/* = 3*/)
 {
-	m_FontName  = fontName;
-	m_FontSize  = fontSize;
-    m_FontColor = fontColor;
+	m_FontName    = fontName;
+	m_FontSize    = fontSize;
+    m_FontColor   = fontColor;
+    m_OutlineSize = outlineSize;
 	return this;
 }
 

@@ -15,20 +15,20 @@ public:
     //setter & getter
     const ACHIEVEMENT* getAchievementData() const { return m_AchievementData; }
     
-    CC_SYNTHESIZE(std::function<void(int)>, m_SelectDPListener, SelectDPListener)
-    
 protected:
     virtual bool init() override;
     
 private:
+    void contentUpdate();
     
     CAchievementPopupDP(const ACHIEVEMENT* data)
     : m_AchievementData(data)
-    , m_SelectDPListener(nullptr)
-    , m_RewardBtn(nullptr){};
+    , m_RewardValue(0){}
     virtual ~CAchievementPopupDP(){};
     
 private:
     const ACHIEVEMENT* m_AchievementData;
-    CMyButton* m_RewardBtn;
+    typedef std::function<void(void)> UPDATE_LISTENER;
+    std::vector<UPDATE_LISTENER> m_ListenerList;
+    int m_RewardValue;
 };

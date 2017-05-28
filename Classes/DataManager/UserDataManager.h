@@ -88,6 +88,7 @@ public:
 	void SaveUserData(bool saveToCloud = false, bool forceSave = false);
     void setSaveRevision(int value);
     void setUserData_Number(std::string key, int value);
+    void setUserData_NumberAdd(std::string key, int value);
     void setUserData_ItemGet(std::string key, int itemIdx);
     void setUserData_ItemParam(std::string key, int itemIdx, int paramIdx, int value);
 	void setUserData_ItemRemove(std::string key, int itemIdx);

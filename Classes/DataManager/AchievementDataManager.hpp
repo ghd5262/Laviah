@@ -116,7 +116,8 @@ public:
 	const ACHIEVEMENT* CompleteCheckRealTime(bool isHidden);
     void ResetNormalAchievements();
     void HiddenAchievementLevelUP(int index);
-    
+    bool CompletedAllOfLevels(int index);
+
 	sREWARD_DATA Reward(int index);
 	sREWARD_DATA RewardByKey(std::string key, int value);
     int NonCompleteAchievementExist();
@@ -138,6 +139,7 @@ public:
     ACHIEVEMENT_LIST getPickedAchievementList() const;
     ACHIEVEMENT_LIST getRunnnigAchievementList() const;
     int getAchievementMaxLevelByIndex(int index, bool isHidden);
+    
     
     static int getAchievementLevelByIndex(int index);
     static int getAchievementStateByIndex(int index, bool isHidden);

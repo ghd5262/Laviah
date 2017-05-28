@@ -207,6 +207,7 @@ void CVideoPopup::ReviveByVideo(cocos2d::Node* sender)
 void CVideoPopup::Resume()
 {
     GLOBAL->REVIVE_COUNT += 1;
+    CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::SAVED_REVIVE, 1);
     
     m_CountDown->Pause();
     m_CountDown->setVisible(false);
