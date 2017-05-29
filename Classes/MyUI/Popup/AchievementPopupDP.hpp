@@ -20,6 +20,7 @@ protected:
     
 private:
     void contentUpdate();
+    float getPercent(float value, float max);
     
     CAchievementPopupDP(const ACHIEVEMENT* data)
     : m_AchievementData(data)

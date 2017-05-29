@@ -7,41 +7,47 @@
 
 using namespace cocos2d;
 
-bool CAchievementClearChecker::checkWithGlobal(std::string key, int value)
+bool CAchievementClearChecker::checkWithGlobal(std::string key, int value, int& currentValue)
 {
-    auto global = GLOBAL->getVariable(key);
-    return value <= global;
+    currentValue += GLOBAL->getVariable(key);
+    return value <= GLOBAL->getVariable(key);
 }
 
-bool CAchievementClearChecker::checkWithSingleUserData(std::string key, int value)
+bool CAchievementClearChecker::checkWithSingleUserData(std::string key, int value, int& currentValue)
 {
+    currentValue += CUserDataManager::Instance()->getUserData_Number(key);
 	return (value <= CUserDataManager::Instance()->getUserData_Number(key));
 }
 
-bool CAchievementClearChecker::checkWithItemExist(std::string key, int value)
+bool CAchievementClearChecker::checkWithItemExist(std::string key, int value, int& currentValue)
 {
+    currentValue += CUserDataManager::Instance()->getUserData_IsItemHave(key, value);
 	return CUserDataManager::Instance()->getUserData_IsItemHave(key, value);
 }
 
-bool CAchievementClearChecker::checkWithCount(std::string key, int value)
+bool CAchievementClearChecker::checkWithCount(std::string key, int value, int& currentValue)
 {
+    currentValue += CUserDataManager::Instance()->getUserData_List(key).size();
 	return (value <= CUserDataManager::Instance()->getUserData_List(key).size());
 }
 
 bool CAchievementClearChecker::checkWithItemParam(std::string key, int itemIndex,
-                                                  int paramIndex, int value)
+                                                  int paramIndex, int value, int& currentValue)
 {
+    currentValue += CUserDataManager::Instance()->getUserData_ParamData(key,
+                                                                        itemIndex,
+                                                                        paramIndex, 0);
     return (value <= CUserDataManager::Instance()->getUserData_ParamData(key,
                                                                          itemIndex,
                                                                          paramIndex, 0));
 }
 
-bool CAchievementClearChecker::checkWithContinuingType(std::string key, int value)
+bool CAchievementClearChecker::checkWithContinuingType(std::string key, int value, int& currentValue)
 {
     return false;
 }
 
-bool CAchievementClearChecker::characterRareCountCheck(int value)
+bool CAchievementClearChecker::characterRareCountCheck(int value, int& currentValue)
 {
 	auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST);
 	if (!list.size()) return false;
@@ -50,10 +56,12 @@ bool CAchievementClearChecker::characterRareCountCheck(int value)
 		auto data = CCharacterDataManager::Instance()->getCharacterByIndex(index);
 		return (data->_grade == CHARACTER_GRADE::RARE);
 	}, list);
+    
+    currentValue += rareList.size();
 	return rareList.size();
 }
 
-bool CAchievementClearChecker::rocketRareCountCheck(int value)
+bool CAchievementClearChecker::rocketRareCountCheck(int value, int& currentValue)
 {
 	return false;
 }

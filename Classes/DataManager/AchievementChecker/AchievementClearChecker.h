@@ -61,16 +61,16 @@ namespace ACHIEVEMENT_DATA_KEY {
 
 class CAchievementClearChecker {
 public:
-    bool checkWithGlobal		(std::string key, int value);
-	bool checkWithSingleUserData(std::string key, int value);
-	bool checkWithItemExist		(std::string key, int value);
-	bool checkWithCount			(std::string key, int value);
+    bool checkWithGlobal		(std::string key, int value, int& currentValue);
+	bool checkWithSingleUserData(std::string key, int value, int& currentValue);
+	bool checkWithItemExist		(std::string key, int value, int& currentValue);
+	bool checkWithCount			(std::string key, int value, int& currentValue);
     bool checkWithItemParam     (std::string key, int itemIndex,
-                                 int paramIndex,  int value);
-    bool checkWithContinuingType(std::string key, int value);
+                                 int paramIndex,  int value, int& currentValue);
+    bool checkWithContinuingType(std::string key, int value, int& currentValue);
 
-	bool characterRareCountCheck(int value);
-	bool rocketRareCountCheck	(int value);
+	bool characterRareCountCheck(int value, int& currentValue);
+	bool rocketRareCountCheck	(int value, int& currentValue);
 
     CAchievementClearChecker(){};
     virtual ~CAchievementClearChecker(){};

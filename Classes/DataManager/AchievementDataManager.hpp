@@ -70,12 +70,14 @@ struct ACHIEVEMENT {
     int _index;
     bool _hiddenType;
     bool _visibleType;
+    int _currentValue;
     ACHIEVEMENT_LEVEL_LIST _levelList;
     
     ACHIEVEMENT()
     : _index(-1)
     , _hiddenType(false)
-    , _visibleType(false){
+    , _visibleType(false)
+    , _currentValue(0){
         _levelList.clear();
     }
 };
@@ -101,7 +103,7 @@ struct sREWARD_DATA{
 		, _value(value){};
 };
 
-typedef std::function<bool(int)> CHECKER;
+typedef std::function<bool(int, int&)> CHECKER;
 typedef std::map<std::string, CHECKER> CHECKER_LIST;
 typedef std::function<sREWARD_DATA(sREWARD_DATA)> REWARDER;
 typedef std::map<std::string, REWARDER> REWARDER_LIST;
@@ -139,7 +141,7 @@ public:
     ACHIEVEMENT_LIST getPickedAchievementList() const;
     ACHIEVEMENT_LIST getRunnnigAchievementList() const;
     int getAchievementMaxLevelByIndex(int index, bool isHidden);
-    
+    int getHiddenAchievementCurrentValue(int index);
     
     static int getAchievementLevelByIndex(int index);
     static int getAchievementStateByIndex(int index, bool isHidden);
