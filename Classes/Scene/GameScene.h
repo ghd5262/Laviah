@@ -59,7 +59,7 @@ public:
 
 	CC_SYNTHESIZE(cocos2d::Vec2, m_TouchPos, TouchPos);
     CC_SYNTHESIZE(bool, m_NeedTutorial, NeedTutorial);
-    
+    CC_SYNTHESIZE(bool, m_IsMenuLayerFront, IsMenuLayerFront);
 protected:
 	virtual bool init() override;
 

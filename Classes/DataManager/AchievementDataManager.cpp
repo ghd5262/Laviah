@@ -118,8 +118,7 @@ bool CAchievementDataManager::CheckAchievementComplete(int index, bool isHidden)
     auto levelData      = this->getLevelDataFromAchievement(index, currentLevel, isHidden);
     auto materialList   = levelData._materialList;
     auto checkerType    = levelData._checkerType;
-    auto &curValue      = (const_cast<ACHIEVEMENT*>(achievementData))->_currentValue;
-    curValue            = 0;
+
     // If all of material in a ACHIEVEMENT_LEVEL has completed return true
     for(auto material : materialList)
     {
@@ -128,61 +127,62 @@ bool CAchievementDataManager::CheckAchievementComplete(int index, bool isHidden)
         auto mtrlValue  = paramList.at(0);
         auto checker	= m_CheckerList.find(key);
         switch(checkerType){
-            case CHECKER_TYPE::ETC:
+            case CHECKER_TYPE::ETC:{
+                auto curValue = 0;
                 if (checker == m_CheckerList.end()) {
                     CCLOG("There is no checker as key %s", key.c_str());
                     CCASSERT(false, "There is no checker as key");
                     return false;
                 }
                 if (!checker->second(mtrlValue, curValue)) return false;
-                break;
+            } break;
             case CHECKER_TYPE::GLOBAL_DATA:
-                if (!m_Checker->checkWithGlobal(key, mtrlValue, curValue))            return false; break;
+                if (!m_Checker->checkWithGlobal(key, mtrlValue))        return false; break;
         
             case CHECKER_TYPE::SINGLE_DATA:
-                if (!m_Checker->checkWithSingleUserData(key, mtrlValue, curValue))    return false; break;
+                if (!m_Checker->checkWithSingleUserData(key, mtrlValue))return false; break;
                 
             case CHECKER_TYPE::ITEM_EXIST:
-                if (!m_Checker->checkWithItemExist(key, mtrlValue, curValue))         return false; break;
+                if (!m_Checker->checkWithItemExist(key, mtrlValue))     return false; break;
                 
             case CHECKER_TYPE::ITEM_COUNT:
-                if (!m_Checker->checkWithCount(key, mtrlValue, curValue))             return false; break;
+                if (!m_Checker->checkWithCount(key, mtrlValue))         return false; break;
                 
             case CHECKER_TYPE::ITEM_PARAM:{
                 auto itemIndex = paramList.at(0);
                 for(int paramIndex = 1; paramIndex < paramList.size(); paramIndex++){
                     auto paramValue = paramList.at(paramIndex);
-                    if (!m_Checker->checkWithItemParam(key, itemIndex, paramIndex-1, paramValue, curValue))
+                    if (!m_Checker->checkWithItemParam(key, itemIndex, paramIndex-1, paramValue))
                         return false;
                 }
-            }break;
+            } break;
 
             case CHECKER_TYPE::CONTINUE:
-                if (!m_Checker->checkWithContinuingType(key, mtrlValue, curValue))    return false; break;
+                if (!m_Checker->checkWithContinuingType(key, mtrlValue))return false; break;
         }
     }
     
     // If the achievement has completed.
-    auto paramIndex           = 0;
-    auto paramState           = 0;
+    auto paramIndex = 0;
+    auto paramState = 0;
     if (isHidden){
         GLOBAL->HIDDEN_ACHIEVEMENT_CLEAR_COUNT += 1;
-        paramIndex    = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
-        paramState    = ACHIEVEMENT_STATE::COMPLETED;
+        paramIndex  = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
+        paramState  = ACHIEVEMENT_STATE::COMPLETED;
     }
     else{
         GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT += 1;
         
         // Clear count +1
         CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::NORMAL_CLEAR_COUNT, 1);
-        paramIndex    = USERDATA_PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE;
-        paramState    = ACHIEVEMENT_STATE::FINISHED;
+        paramIndex  = USERDATA_PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE;
+        paramState  = ACHIEVEMENT_STATE::FINISHED;
     }
     
     // Update user data.
     {
         // Change the state of achievement.
-        CUserDataManager::Instance()->setUserData_ItemParam(userDataKey, index, paramIndex, paramState);
+        CAchievementDataManager::setAchievementStateByIndex(index, paramState, isHidden);
     }
 	return true;
 }
@@ -213,7 +213,9 @@ const ACHIEVEMENT* CAchievementDataManager::CompleteCheckRealTime(bool isHidden)
 
 void CAchievementDataManager::ResetNormalAchievements()
 {
-//    CUserDataManager::Instance()->setUserData_ItemRemoveAll(USERDATA_KEY::ACHIEVEMENT_COM_NORMAL_LIST);
+    auto list = CUserDataManager::Instance()->getUserData_ParamList(USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST);
+    for (auto data : list)
+        this->setAchievementStateByIndex(data.first, ACHIEVEMENT_STATE::NON_COMPLETED, false);
 }
 
 void CAchievementDataManager::HiddenAchievementLevelUP(int index)
@@ -221,19 +223,16 @@ void CAchievementDataManager::HiddenAchievementLevelUP(int index)
     // Hidden clear count +1
     CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::HIDDEN_CLEAR_COUNT, 1);
     
-    
     // Update state of achievement to non-completed
-    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST, index,
-                                                        USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE,
-                                                        ACHIEVEMENT_STATE::NONE_COMPLETED);
+    CAchievementDataManager::setAchievementStateByIndex(index,
+                                                        ACHIEVEMENT_STATE::NON_COMPLETED,
+                                                        true);
     
     // Get current level of achievement.
     auto level = CAchievementDataManager::getAchievementLevelByIndex(index);
     
     // Update level of achievement.
-    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST, index,
-                                                        USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_LEVEL,
-                                                        level+1);
+    CAchievementDataManager::setAchievementLevelByIndex(index, level+1);
 }
 
 bool CAchievementDataManager::CompletedAllOfLevels(int index)
@@ -244,14 +243,12 @@ bool CAchievementDataManager::CompletedAllOfLevels(int index)
     return (currentLevel > maxLevel);
 }
 
-sREWARD_DATA CAchievementDataManager::Reward(int index)
+bool CAchievementDataManager::ExistCompletedHiddenAchievement()
 {
-//    auto achievementData = getNormalAchievementByIndex(index);
-//    
-//    auto key = achievementData->_rewardKey;
-//    auto rewardValue = achievementData->_rewardValue;
-//    
-//	return this->RewardByKey(key, rewardValue);
+    auto key1   = USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST;
+    auto key2   = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
+    auto key3   = ACHIEVEMENT_STATE::COMPLETED;
+    return CUserDataManager::Instance()->getUserData_IsItemExistWithParam(key1, key2, key3);
 }
 
 sREWARD_DATA CAchievementDataManager::RewardByKey(std::string key, int value)
@@ -273,11 +270,17 @@ void CAchievementDataManager::getNewAchievements()
     auto nonCompleteList = this->getNonCompletedAchievementList();
     
     // If achievements not completed are less than limit count,
-    // remove current achievements too.
+    // Change the state of achievement in the list picked to the non-completed.
     if(nonCompleteList.size() < ACHIEVEMENT_DEFINE::LIMIT_COUNT)
     {
-		for (int index = 0; index < pickedList.size(); index++)
-			this->removeAchievementFromUserData(pickedList.at(index)->_index);
+        for (int index = 0; index < pickedList.size(); index++){
+            auto iter = pickedList.begin();
+            std::advance(iter, index);
+            auto data = (iter->second);
+            CAchievementDataManager::setAchievementStateByIndex(data->_index,
+                                                                ACHIEVEMENT_STATE::NON_COMPLETED,
+                                                                false);
+        }
         
         return;
     }
@@ -293,15 +296,20 @@ void CAchievementDataManager::getNewAchievements()
     }
     
     // If there are enough count of achievements to skip. (to get new achievements)
-	for (int count = 0; count < ACHIEVEMENT_DEFINE::LIMIT_COUNT; count++)
-		this->SkipAchievement(pickedList.at(count)->_index); // Get new achievements.
+    for (int count = 0; count < ACHIEVEMENT_DEFINE::LIMIT_COUNT; count++){
+        auto iter           = pickedList.begin();
+        std::advance(iter, count);
+    
+		this->SkipAchievement((iter->second)->_index); // Get new achievements.
+    }
 }
 
 const ACHIEVEMENT* CAchievementDataManager::SkipAchievement(int index)
 {
     auto newAchievement = this->getNewRandomAchievement();
-	this->removeAchievementFromUserData(index);
-
+    CAchievementDataManager::setAchievementStateByIndex(index,
+                                                        ACHIEVEMENT_STATE::COMPLETED,
+                                                        false);
 	return newAchievement;
 }
 
@@ -335,9 +343,9 @@ const ACHIEVEMENT* CAchievementDataManager::getNewRandomAchievement()
     CCLOG("Get new achievement %d", index);
     
     // State initialize
-    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST, index,
-                                                        USERDATA_PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE,
-                                                        ACHIEVEMENT_STATE::RUNNING);
+    CAchievementDataManager::setAchievementStateByIndex(index,
+                                                        ACHIEVEMENT_STATE::RUNNING,
+                                                        false);
     return newAchievement;
 }
 
@@ -394,7 +402,7 @@ ACHIEVEMENT_LIST CAchievementDataManager::getNonCompletedAchievementList() const
     return DATA_MANAGER_UTILS::getMapByFunc([=](const ACHIEVEMENT* data){
         
         auto state = this->getAchievementStateByIndex(data->_index, false);
-        if(state == ACHIEVEMENT_STATE::NONE_COMPLETED) return true;
+        if(state == ACHIEVEMENT_STATE::NON_COMPLETED) return true;
         return false;
     }, m_NormalAchievementDataList);
 }
@@ -454,7 +462,7 @@ int CAchievementDataManager::getHiddenAchievementCurrentValue(int index)
                     CCASSERT(false, "There is no checker as key");
                     return false;
                 }
-                if (!checker->second(mtrlValue, curValue)) return false;
+                checker->second(mtrlValue, curValue);
                 break;
             case CHECKER_TYPE::GLOBAL_DATA:
                 curValue += GLOBAL->getVariable(key);
@@ -475,8 +483,7 @@ int CAchievementDataManager::getHiddenAchievementCurrentValue(int index)
             case CHECKER_TYPE::ITEM_PARAM:{
                 auto itemIndex = paramList.at(0);
                 for(int paramIndex = 1; paramIndex < paramList.size(); paramIndex++){
-                    curValue += CUserDataManager::Instance()->getUserData_ParamData(key,
-                                                                                    itemIndex,
+                    curValue += CUserDataManager::Instance()->getUserData_ParamData(key, itemIndex,
                                                                                     paramIndex-1, 0);
                 }
             }break;
@@ -506,6 +513,28 @@ int CAchievementDataManager::getAchievementStateByIndex(int index, bool isHidden
     return CUserDataManager::Instance()->getUserData_ParamData(userDataKey, index,
                                                                paramIndex, 0);
 }
+
+void CAchievementDataManager::setAchievementStateByIndex(int index, int state, bool isHidden)
+{
+    std::string userDataKey = USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST;
+    int         paramIndex  = USERDATA_PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE;
+    
+    if(isHidden) {
+        userDataKey = USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST;
+        paramIndex  = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
+    }
+    
+    CUserDataManager::Instance()->setUserData_ItemParam(userDataKey, index, paramIndex, state);
+}
+
+void CAchievementDataManager::setAchievementLevelByIndex(int index, int level)
+{
+    auto userDataKey = USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST;
+    auto paramIndex  = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_LEVEL;
+
+    CUserDataManager::Instance()->setUserData_ItemParam(userDataKey, index, paramIndex, level);
+}
+
 
 const ACHIEVEMENT* CAchievementDataManager::getNewRandomAchievementFromList(ACHIEVEMENT_LIST &list)
 {
@@ -544,13 +573,6 @@ ACHIEVEMENT_LEVEL CAchievementDataManager::getLevelDataFromAchievement(int index
         CCLOG("There is no level data - level : %d, index : %d, hidden : %d", level, index, isHidden);
         CCASSERT(false, "Wrong level");
     }
-}
-
-
-void CAchievementDataManager::removeAchievementFromUserData(int index)
-{
-    CCLOG("Remove achievement %d", index);
-//    CUserDataManager::Instance()->setUserData_ItemRemove(USERDATA_KEY::ACHIEVEMENT_CUR_NORMAL_LIST, index);
 }
 
 void CAchievementDataManager::getAchievementParamListByType(PARAM_DATA_ARRAY& list, bool isHidden)

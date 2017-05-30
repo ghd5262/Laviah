@@ -4,45 +4,39 @@
 #include "../WorkshopItemDataManager.h"
 #include "../CharacterDataManager.h"
 #include "../DataManagerUtils.h"
+#include "../RocketDataManager.hpp"
 
 using namespace cocos2d;
 
-bool CAchievementClearChecker::checkWithGlobal(std::string key, int value, int& currentValue)
+bool CAchievementClearChecker::checkWithGlobal(std::string key, int value)
 {
-    currentValue += GLOBAL->getVariable(key);
     return value <= GLOBAL->getVariable(key);
 }
 
-bool CAchievementClearChecker::checkWithSingleUserData(std::string key, int value, int& currentValue)
+bool CAchievementClearChecker::checkWithSingleUserData(std::string key, int value)
 {
-    currentValue += CUserDataManager::Instance()->getUserData_Number(key);
 	return (value <= CUserDataManager::Instance()->getUserData_Number(key));
 }
 
-bool CAchievementClearChecker::checkWithItemExist(std::string key, int value, int& currentValue)
+bool CAchievementClearChecker::checkWithItemExist(std::string key, int value)
 {
-    currentValue += CUserDataManager::Instance()->getUserData_IsItemHave(key, value);
 	return CUserDataManager::Instance()->getUserData_IsItemHave(key, value);
 }
 
-bool CAchievementClearChecker::checkWithCount(std::string key, int value, int& currentValue)
+bool CAchievementClearChecker::checkWithCount(std::string key, int value)
 {
-    currentValue += CUserDataManager::Instance()->getUserData_List(key).size();
 	return (value <= CUserDataManager::Instance()->getUserData_List(key).size());
 }
 
 bool CAchievementClearChecker::checkWithItemParam(std::string key, int itemIndex,
-                                                  int paramIndex, int value, int& currentValue)
+                                                  int paramIndex, int value)
 {
-    currentValue += CUserDataManager::Instance()->getUserData_ParamData(key,
-                                                                        itemIndex,
-                                                                        paramIndex, 0);
     return (value <= CUserDataManager::Instance()->getUserData_ParamData(key,
                                                                          itemIndex,
                                                                          paramIndex, 0));
 }
 
-bool CAchievementClearChecker::checkWithContinuingType(std::string key, int value, int& currentValue)
+bool CAchievementClearChecker::checkWithContinuingType(std::string key, int value)
 {
     return false;
 }
@@ -58,10 +52,20 @@ bool CAchievementClearChecker::characterRareCountCheck(int value, int& currentVa
 	}, list);
     
     currentValue += rareList.size();
-	return rareList.size();
+	return (value <= rareList.size());
 }
 
 bool CAchievementClearChecker::rocketRareCountCheck(int value, int& currentValue)
 {
-	return false;
+//    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ROCKET_LIST);
+//    if (!list.size()) return false;
+//    
+//    auto rareList = DATA_MANAGER_UTILS::getNonPtrListByFunc([=](int index){
+//        auto data = CRocketDataManager::Instance()->getRocketByIndex(index);
+//        return (data->_grade == ROCKET::RARE);
+//    }, list);
+//    
+//    currentValue += rareList.size();
+//    return (value <= rareList.size());
+    return false;
 }

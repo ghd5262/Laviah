@@ -207,10 +207,9 @@ bool CAchievementPopupDP::init()
                 auto value = CAchievementDataManager::Instance()->getHiddenAchievementCurrentValue(index);
                 auto max   = data._contentsValue;
                 
-                
-//                auto state = CAchievementDataManager::getAchievementStateByIndex(index, true);
-//                if(state == ACHIEVEMENT_STATE::COMPLETED)
-//                    value  = max;
+                auto state = CAchievementDataManager::getAchievementStateByIndex(index, true);
+                if(state == ACHIEVEMENT_STATE::COMPLETED && value < max)
+                    value  = max;
             
                 goalLabel->setString(StringUtils::format("%d / %d", value, max));
                 progressBar->runAction(ProgressTo::create(1.5f, this->getPercent(value, max)));

@@ -54,7 +54,7 @@ bool CFacebookRankPopup::init()
     auto sequence   = CFacebookManager::Instance()->getMyRank();
     Size dpSize     = Size(1080, 200);
     size_t dpDistance = 15;
-    float spawnCount = 4;
+    int spawnCount  = 4;
     
     // Create the list view
     auto listView = ListView::create();
@@ -84,10 +84,12 @@ bool CFacebookRankPopup::init()
         }
         
         if(userList.size() > spawnCount){
-            // Scrolling to current character
-            this->scheduleOnce([=](float delta){
-                listView->scrollToItem(sequence, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
-            }, 0.f, "ScrollToItem");
+            // Scrolling to my score
+            if(sequence > spawnCount){
+                this->scheduleOnce([=](float delta){
+                    listView->scrollToItem(sequence, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
+                }, 0.f, "ScrollToItem");
+            }
         }
     }
     

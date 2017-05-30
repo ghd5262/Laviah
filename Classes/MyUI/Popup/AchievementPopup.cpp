@@ -54,7 +54,7 @@ bool CAchievementPopup::init()
     auto achievementList  = CAchievementDataManager::Instance()->getHiddenAchievementList();
     Size dpSize           = Size(1080, 200);
     size_t dpDistance     = 15;
-    float spawnCount      = 4;
+    int spawnCount        = 4;
     
     // Create the list view
     auto listView = ListView::create();
@@ -71,15 +71,31 @@ bool CAchievementPopup::init()
         listView->setCascadeOpacityEnabled(true);
         bg->addChild(listView);
         
+        int lastCompletedIndex = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LAST_COM_ACHIEVEMENT);
+        int dpIndex = 0;
+        int scrollIndex = 0;
         for(auto achievement : achievementList)
         {
             auto data = achievement.second;
             if(!data->_visibleType) continue;
             
+            if(lastCompletedIndex == data->_index)
+                scrollIndex = dpIndex;
+            
             auto achievementDP = CAchievementPopupDP::create(data);
             achievementDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             achievementDP->setCascadeOpacityEnabled(true);
             listView->pushBackCustomItem(achievementDP);
+            dpIndex++;
+        }
+        
+        if(achievementList.size() > spawnCount){
+            // Scrolling to last completed achievement
+            if(scrollIndex > spawnCount){
+                this->scheduleOnce([=](float delta){
+                    listView->scrollToItem(scrollIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, 0.f);
+                }, 0.f, "ScrollToItem");
+            }
         }
     }
     

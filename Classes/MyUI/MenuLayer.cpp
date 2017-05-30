@@ -157,51 +157,48 @@ bool CMenuLayer::init()
 //        }, "R", testButtonPos[5], Size(100, 100)),
     };*/
     
-    std::array<CMyButton*, 7> btnArray = {
-        // character select button
-        createLayerButton([=](Node* sender){
-            CGameScene::getGameScene()->OpenCharacterSelectPopup();
-        }, "", Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f), Size(100, 100)),
-        
-        // start button
-        CMyButton::create()
-        ->addEventListener([=](Node* sender){
-            
-            CGameScene::getGameScene()->GameStart();            
-        })
-        ->setContents(TRANSLATE("BUTTON_MENU_START"))
-        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-        ->setButtonPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f))
-        ->show(this),
-        
-        // workshop button
-        createButton([=](Node* sender){
-            CGameScene::getGameScene()->OpenWorkshopPopup();
-        }, "workshopIcon_5.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f)),
-        
-        // option button
-        createButton([=](Node* sender){
-            CGameScene::getGameScene()->OpenOptionPopup(0);
-        }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.95f)),
-        
-        // option button
-        createButton([=](Node* sender){
-            CGameScene::getGameScene()->OpenFBTestPopup();
-        }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f)),
-        
-        // option button
-        createButton([=](Node* sender){
-            CGameScene::getGameScene()->OpenRankPopup();
-        }, "rankingIcon.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f)),
-        
-        // option button
-        createButton([=](Node* sender){
-            CGameScene::getGameScene()->OpenAchievementPopup();
-        }, "achievementIcon_2.png", Vec2(popupSize.width * 0.32f, popupSize.height * 0.95f)),
-    };
+    // character select button
+    createLayerButton([=](Node* sender){
+        CGameScene::getGameScene()->OpenCharacterSelectPopup();
+    }, "", Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f), Size(100, 100));
+    
+    // workshop button
+    createButton([=](Node* sender){
+        CGameScene::getGameScene()->OpenWorkshopPopup();
+    }, "workshopIcon_5.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f));
+    
+    // option button
+    createButton([=](Node* sender){
+        CGameScene::getGameScene()->OpenOptionPopup(0);
+    }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.95f));
+    
+    // option button
+    createButton([=](Node* sender){
+        CGameScene::getGameScene()->OpenFBTestPopup();
+    }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
+    
+    // option button
+    createButton([=](Node* sender){
+        CGameScene::getGameScene()->OpenRankPopup();
+    }, "rankingIcon.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f));
+    
+    // option button
+    m_AchievementButton = createButton([=](Node* sender){
+        CGameScene::getGameScene()->OpenAchievementPopup();
+    }, "achievementIcon_2.png", Vec2(popupSize.width * 0.32f, popupSize.height * 0.95f));
+    
+    // start button
+    auto startBtn = CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        CGameScene::getGameScene()->GameStart();
+    })
+    ->setContents(TRANSLATE("BUTTON_MENU_START"))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f))
+    ->show(this);
     
     CTranslateManager::Instance()->addTranslateEventListener([=](){
-        btnArray[1]->changeContents(TRANSLATE("BUTTON_MENU_START"));
+        startBtn->changeContents(TRANSLATE("BUTTON_MENU_START"));
     });
     
     CTitleCompleteNoticePopup::create()
@@ -216,6 +213,14 @@ bool CMenuLayer::init()
     }, false);
 
     return true;
+}
+
+void CMenuLayer::AchievementButtonState(bool enable)
+{
+    if(!m_AchievementButton) return;
+    
+    if(enable) m_AchievementButton->setColor(COLOR::GOLD);
+    else       m_AchievementButton->setColor(Color3B::WHITE);
 }
 
 bool CMenuLayer::TouchBegan(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)

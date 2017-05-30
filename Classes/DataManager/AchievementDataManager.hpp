@@ -23,7 +23,7 @@ enum USERDATA_PARAM_ACHIEVEMENT_NORMAL{
 };
 
 enum ACHIEVEMENT_STATE{
-    NONE_COMPLETED = 0,
+    NON_COMPLETED = 0,
     RUNNING,
     FINISHED,
     COMPLETED,
@@ -119,8 +119,8 @@ public:
     void ResetNormalAchievements();
     void HiddenAchievementLevelUP(int index);
     bool CompletedAllOfLevels(int index);
-
-	sREWARD_DATA Reward(int index);
+    bool ExistCompletedHiddenAchievement();
+    
 	sREWARD_DATA RewardByKey(std::string key, int value);
     int NonCompleteAchievementExist();
     void getNewAchievements();
@@ -145,7 +145,8 @@ public:
     
     static int getAchievementLevelByIndex(int index);
     static int getAchievementStateByIndex(int index, bool isHidden);
-
+    static void setAchievementLevelByIndex(int index, int level);
+    static void setAchievementStateByIndex(int index, int state, bool isHidden);
 private:
     void initWithJson(ACHIEVEMENT_LIST &list, std::string fileName);
 	void initETCChekerList();
@@ -158,9 +159,7 @@ private:
     const ACHIEVEMENT* getNewRandomAchievementFromList(ACHIEVEMENT_LIST &list);
 
     ACHIEVEMENT_LEVEL getLevelDataFromAchievement(int index, int level, bool isHidden);
-    
-    void removeAchievementFromUserData(int index);
-    
+        
     void getAchievementParamListByType(PARAM_DATA_ARRAY& list,
                                        bool isHidden);
 

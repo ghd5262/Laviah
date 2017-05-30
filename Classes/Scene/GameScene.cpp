@@ -308,8 +308,20 @@ void CGameScene::MenuFadeIn()
     m_MenuLayer->setOpacity(0);
     auto delayAction    = DelayTime::create(1.0f);
     auto fadeAction     = FadeIn::create(0.5f);
-    auto sequenceAction = Sequence::createWithTwoActions(delayAction, fadeAction);
+    auto callFunc       = CallFunc::create([=](){
+        m_IsMenuLayerFront = true;
+    });
+    auto sequenceAction = Sequence::create(delayAction, fadeAction, callFunc, nullptr);
     m_MenuLayer->runAction(sequenceAction);
+    
+    // Update the achievement button.
+    bool enable = CAchievementDataManager::Instance()->ExistCompletedHiddenAchievement();
+    CMenuLayer::Instance()->AchievementButtonState(enable);
+    
+    if(!enable){
+        // Save the index of the last completed achievement
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::LAST_COM_ACHIEVEMENT, 0);
+    }
 }
 
 void CGameScene::MenuFadeOut()
@@ -317,6 +329,7 @@ void CGameScene::MenuFadeOut()
     auto fadeAction     = FadeTo::create(0.3f, 0);
     auto callFunc       = CallFunc::create([=](){
         m_MenuLayer->setVisible(false);
+        m_IsMenuLayerFront = false;
     });
     auto sequenceAction = Sequence::createWithTwoActions(fadeAction, callFunc);
     m_MenuLayer->runAction(sequenceAction);
