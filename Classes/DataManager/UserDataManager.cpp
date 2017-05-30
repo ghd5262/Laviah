@@ -475,6 +475,16 @@ bool CUserDataManager::getUserData_IsItemHave(std::string key, int itemIdx)
     return false;
 }
 
+bool CUserDataManager::getUserData_IsItemExistWithParam(std::string key, int paramIdx, int value)
+{
+    auto list   = this->getUserData_ParamList(key);
+    auto picked = DATA_MANAGER_UTILS::getMapByFunc([=](PARAM_DATA* data){
+        if(data->size() <= paramIdx) return false;
+        return (data->at(paramIdx) == value);
+    }, list);
+    return (picked.size());
+}
+
 float CUserDataManager::getItemCurrentValue(std::string key)
 {
     sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey(key.c_str());
@@ -517,12 +527,16 @@ void CUserDataManager::setSaveRevision(int value)
 
 void CUserDataManager::setUserData_Number(std::string key, int value)
 {
+    bool save = true;
     auto iter = m_UserData._userDataIntMap.find(key);
     if(iter == m_UserData._userDataIntMap.end())
         m_UserData._userDataIntMap.emplace(std::pair<std::string, int>(key, value));
-    else iter->second = value;
+    else {
+        if(iter->second != value) iter->second = value;
+        else                      save = false;
+    }
     
-    this->SaveUserData();
+    if(save) this->SaveUserData();
 }
 
 void CUserDataManager::setUserData_NumberAdd(std::string key, int value)

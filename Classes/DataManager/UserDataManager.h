@@ -45,7 +45,7 @@ namespace USERDATA_KEY {
     const std::string BEST_SCORE                = "USER_BEST_TOTAL_SCORE";
 
     const std::string SELECT_ITEM               = "USER_CUR_SELECT_ITEM";
-    const std::string SELECT_KEY                = "USER_CUR_SELECT_KEY";
+    const std::string LAST_COM_ACHIEVEMENT      = "USER_LAST_COM_ACHIEVEMENT";
     
     const std::string BGM_VOLUME                = "USER_BGM_VOLUME";
     const std::string EFFECT_VOLUME             = "USER_EFFECT_VOLUME";
@@ -83,6 +83,7 @@ public:
     PARAM_DATA_ARRAY getUserData_ParamList(std::string key);
     int getUserData_ParamData(std::string key, int index, int paramIdx, int defaultValue);
     bool getUserData_IsItemHave(std::string key, int itemIdx);
+    bool getUserData_IsItemExistWithParam(std::string key, int paramIdx, int value);
     float getItemCurrentValue(std::string key);
     
 	void SaveUserData(bool saveToCloud = false, bool forceSave = false);
