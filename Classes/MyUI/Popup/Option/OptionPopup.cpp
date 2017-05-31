@@ -59,20 +59,20 @@ bool COptionPopup::init()
                                        Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
     bg->addChild(m_TitleScrollView);
     
-    std::array<std::string, 5> iconArray = {
+    std::array<std::string, 4> iconArray = {
 //        std::string("musicIcon.png"),
         std::string("musicIcon.png"),
         std::string("saveIcon.png"),
         std::string("languageIcon.png"),
-        std::string("achievementIcon_2.png"),
+//        std::string("achievementIcon_2.png"),
         std::string("developerIcon.png")
     };
 
-    std::array<CPopup*, 5> contentArray = {
+    std::array<CPopup*, 4> contentArray = {
         COptionMusicPopup::create(),
         COptionDataSavePopup::create(),
         COptionLanguagePopup::create(),
-        COptionTitlePopup::create(),
+//        COptionTitlePopup::create(),
 //        COptionDeveloperPopup::create(),
         COptionMoreGamesPopup::create(),
     };

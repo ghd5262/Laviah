@@ -83,7 +83,7 @@ void CTitleCompleteNoticePopup::checkAchievementCompleteOnRealTime()
     
     auto data = CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
     if(data != nullptr){
-        auto level = CAchievementDataManager::getAchievementLevelByIndex(data->_index);
+        auto level = CAchievementDataManager::getAchievementLevelByIndex(data->_index, true);
         m_ShowList.push(COMPLETED_ACHIEVEMENT(data->_index, level));
     }
     

@@ -676,7 +676,7 @@ void CUserDataManager::ExpAdd(int exp)
     auto oldLevel = this->getUserData_Number(USERDATA_KEY::LEVEL);
     
     auto newExp   = oldExp + exp;
-    auto newlevel = std::max(1, newExp / 300);
+    auto newlevel = std::max(0, newExp / 300);
     
     this->setUserData_Number(USERDATA_KEY::EXP, newExp);
     

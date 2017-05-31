@@ -109,7 +109,7 @@ bool CAchievementPopupDP::init()
         
         // update
         m_ListenerList.emplace_back([=](){
-            auto curLevel = CAchievementDataManager::getAchievementLevelByIndex(index);
+            auto curLevel = CAchievementDataManager::getAchievementLevelByIndex(index, true);
             auto count    = 0;
             for(auto star : starList){
                 star->setOpacity(255);

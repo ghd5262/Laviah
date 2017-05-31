@@ -108,9 +108,6 @@ CBulletMagnetItem* CBulletMagnetItem::Instance()
 void CBulletMagnetItem::Enter(CBullet* bullet)
 {
 	bullet->setTargetVec(bullet->getPlanet()->getPosition());
-
-    GLOBAL->MAGNET_COUNT += 1;
-    GLOBAL->MAGNET_SCORE += (GLOBAL->COMBO_LEVEL * 2);
 }
 
 void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
@@ -128,6 +125,9 @@ void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 	}
 	else if (bullet->IsHit(player->getPosition(), magnetSize))
 	{
+        GLOBAL->MAGNET_COUNT += 1;
+        GLOBAL->MAGNET_SCORE += (GLOBAL->COMBO_LEVEL * 2);
+        
 		bullet->setIsPlayerGet(true);
 		bullet->setTargetVec(bullet->getPlayer()->getPosition());
 		bullet->setSpeed(bullet->getSpeed() + 50);

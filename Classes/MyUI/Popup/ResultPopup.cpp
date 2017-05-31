@@ -170,10 +170,6 @@ bool CResultPopup::init()
 		return layerBG;
 	};
     
-    CComboScore::Instance()->ComboScoreReset();
-	bool achievementAll    = CAchievementDataManager::Instance()->CheckCompleteAll();
-    m_GoalPopupOpen = (GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT || achievementAll);
-    
     // score layer array
     std::array<Node*, 6> scoreLayerArray;
     
@@ -257,6 +253,10 @@ bool CResultPopup::init()
     // get exp
     CUserDataManager::Instance()->ExpAdd(std::max(1, GLOBAL->TOTAL_SCORE / 100));
     
+    // Check all of achievement.
+    CComboScore::Instance()->ComboScoreReset();
+    bool achievementAll    = CAchievementDataManager::Instance()->CheckCompleteAll();
+    m_GoalPopupOpen = (GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT || achievementAll);
     
     // create button lambda
     auto createButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, bool visible){
@@ -436,5 +436,5 @@ void CResultPopup::createRewardPopup(std::string key, int value)
 void CResultPopup::exit()
 {
     if(m_GoalPopupOpen) this->popupClose();
-    else                     this->popupClose(1.3f);
+    else                this->popupClose(1.3f);
 }

@@ -143,7 +143,7 @@ public:
     int getAchievementMaxLevelByIndex(int index, bool isHidden);
     int getHiddenAchievementCurrentValue(int index);
     
-    static int getAchievementLevelByIndex(int index);
+    static int getAchievementLevelByIndex(int index, bool isHidden);
     static int getAchievementStateByIndex(int index, bool isHidden);
     static void setAchievementLevelByIndex(int index, int level);
     static void setAchievementStateByIndex(int index, int state, bool isHidden);
