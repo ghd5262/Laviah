@@ -27,9 +27,11 @@ private:
     struct COMPLETED_ACHIEVEMENT{
         int _index;
         int _level;
-        COMPLETED_ACHIEVEMENT(int index, int level)
+        bool _isHidden;
+        COMPLETED_ACHIEVEMENT(int index, int level, bool hidden)
         : _index(index)
-        , _level(level){};
+        , _level(level)
+        , _isHidden(hidden){};
     };
     cocos2d::Sprite* m_LayerBG;
     cocos2d::Label* m_AchievementLabelFront;

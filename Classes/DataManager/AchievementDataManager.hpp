@@ -120,6 +120,7 @@ public:
     void HiddenAchievementLevelUP(int index);
     bool CompletedAllOfLevels(int index);
     bool ExistCompletedHiddenAchievement();
+    bool IsHiddenAchievement(int index);
     
 	sREWARD_DATA RewardByKey(std::string key, int value);
     int NonCompleteAchievementExist();

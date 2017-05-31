@@ -83,8 +83,9 @@ void CTitleCompleteNoticePopup::checkAchievementCompleteOnRealTime()
     
     auto data = CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
     if(data != nullptr){
-        auto level = CAchievementDataManager::getAchievementLevelByIndex(data->_index, true);
-        m_ShowList.push(COMPLETED_ACHIEVEMENT(data->_index, level));
+        auto level  = CAchievementDataManager::getAchievementLevelByIndex(data->_index, true);
+        auto hidden = (data->_hiddenType && level <= 0);
+        m_ShowList.push(COMPLETED_ACHIEVEMENT(data->_index, level, hidden));
     }
     
 //    if (!CGameScene::getGameScene()->getIsMenuLayerFront()) return;
@@ -120,7 +121,10 @@ void CTitleCompleteNoticePopup::show()
     
     auto data   = m_ShowList.front();
     auto title  = CAchievementDataManager::Instance()->getAchievementTitle(data._index, data._level);
-    m_AchievementLabelBack->setString(title + std::string("\n업적을 획득하셨습니다!"));
+    std::string ment = "\n업적을 획득하셨습니다!";
+    if(data._isHidden) ment = "\n숨겨진 업적을 발견했습니다!";
+    
+    m_AchievementLabelBack->setString(title + ment);
     m_AchievementLabelFront->setString(title + std::string("\n"));
     m_ShowList.pop();
     

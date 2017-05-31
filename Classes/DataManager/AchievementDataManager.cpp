@@ -250,6 +250,18 @@ bool CAchievementDataManager::ExistCompletedHiddenAchievement()
     return CUserDataManager::Instance()->getUserData_IsItemExistWithParam(key1, key2, key3);
 }
 
+bool CAchievementDataManager::IsHiddenAchievement(int index)
+{
+    auto data = this->getHiddenAchievementByIndex(index);
+    if(data == nullptr)     return false;
+    if(!data->_hiddenType)  return false;
+    if(this->getAchievementLevelByIndex(index, true) > 0) return false;
+    if(this->getAchievementStateByIndex(index, true) == ACHIEVEMENT_STATE::COMPLETED) return false;
+    if(this->getAchievementStateByIndex(index, true) == ACHIEVEMENT_STATE::FINISHED)  return false;
+    
+    return true;
+}
+
 sREWARD_DATA CAchievementDataManager::RewardByKey(std::string key, int value)
 {
 	auto rewarder = m_RewarderList.find(key);

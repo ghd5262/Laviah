@@ -78,6 +78,7 @@ bool CAchievementPopup::init()
         {
             auto data = achievement.second;
             if(!data->_visibleType) continue;
+            if(CAchievementDataManager::Instance()->IsHiddenAchievement(data->_index)) continue;
             
             if(lastCompletedIndex == data->_index)
                 scrollIndex = dpIndex;
