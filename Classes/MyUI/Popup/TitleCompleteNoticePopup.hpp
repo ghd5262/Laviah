@@ -18,6 +18,7 @@ private:
     
     CTitleCompleteNoticePopup()
     : m_LayerBG(nullptr)
+    , m_NewIcon(nullptr)
     , m_AchievementLabelFront(nullptr)
     , m_AchievementLabelBack(nullptr)
     , m_Checkable(true){};
@@ -34,6 +35,7 @@ private:
         , _isHidden(hidden){};
     };
     cocos2d::Sprite* m_LayerBG;
+    cocos2d::Sprite* m_NewIcon;
     cocos2d::Label* m_AchievementLabelFront;
     cocos2d::Label* m_AchievementLabelBack;
     std::queue<COMPLETED_ACHIEVEMENT> m_ShowList;

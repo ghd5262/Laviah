@@ -185,7 +185,13 @@ bool CMenuLayer::init()
     // option button
     m_AchievementButton = createButton([=](Node* sender){
         CGameScene::getGameScene()->OpenAchievementPopup();
-    }, "achievementIcon_2.png", Vec2(popupSize.width * 0.32f, popupSize.height * 0.95f));
+    }, "achievementIcon.png", Vec2(popupSize.width * 0.32f, popupSize.height * 0.95f));
+    
+    m_NewIcon = Sprite::create("achievementIconNew_2.png");
+    m_NewIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_NewIcon->setPosition(m_AchievementButton->getContentSize() / 2);
+    m_NewIcon->setVisible(false);
+    m_AchievementButton->addChild(m_NewIcon);
     
     // start button
     auto startBtn = CMyButton::create()
@@ -215,12 +221,15 @@ bool CMenuLayer::init()
     return true;
 }
 
-void CMenuLayer::AchievementButtonState(bool enable)
+void CMenuLayer::AchievementButtonState(bool enable, bool newIcon/* = false*/)
 {
-    if(!m_AchievementButton) return;
+    if(!m_AchievementButton || !m_NewIcon) return;
     
     if(enable) m_AchievementButton->setColor(COLOR::GOLD);
     else       m_AchievementButton->setColor(Color3B::WHITE);
+    
+    m_NewIcon->setVisible(enable & newIcon);
+    m_NewIcon->setColor(Color3B::WHITE);
 }
 
 bool CMenuLayer::TouchBegan(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)

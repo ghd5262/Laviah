@@ -66,11 +66,18 @@ bool CTitleCompleteNoticePopup::init()
     m_AchievementLabelFront->setColor(COLOR::GOLD);
     m_LayerBG->addChild(m_AchievementLabelFront);
     
-    auto icon = Sprite::create("achievementIcon_2.png");
+    auto icon = Sprite::create("achievementIcon.png");
     icon->setColor(COLOR::GOLD);
     icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     icon->setPosition(Vec2(popupSize.width * 0.08f, popupSize.height * 0.5f));
     m_LayerBG->addChild(icon);
+    
+    m_NewIcon = Sprite::create("achievementIconNew_2.png");
+    m_NewIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_NewIcon->setPosition(Vec2(popupSize.width * 0.08f, popupSize.height * 0.5f));
+    m_NewIcon->setVisible(false);
+    m_LayerBG->addChild(m_NewIcon);
+
     
 //    CAchievementDataManager::Instance()->UpdateCurHiddenAchievementList();
     
@@ -115,10 +122,6 @@ void CTitleCompleteNoticePopup::show()
     
     m_Checkable = false;
     
-    // Update achievement button
-    bool enable = CAchievementDataManager::Instance()->ExistCompletedHiddenAchievement();
-    CMenuLayer::Instance()->AchievementButtonState(enable);
-    
     auto data   = m_ShowList.front();
     auto title  = CAchievementDataManager::Instance()->getAchievementTitle(data._index, data._level);
     std::string ment = "\n업적을 획득하셨습니다!";
@@ -128,6 +131,13 @@ void CTitleCompleteNoticePopup::show()
     m_AchievementLabelFront->setString(title + std::string("\n"));
     m_ShowList.pop();
     
+    // Update achievement button
+    bool enable = CAchievementDataManager::Instance()->ExistCompletedHiddenAchievement();
+    CMenuLayer::Instance()->AchievementButtonState(enable, data._isHidden);
+    
+    // new icon
+    m_NewIcon->setVisible(data._isHidden);
+
     // Save the index of the last completed achievement
     CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::LAST_COM_ACHIEVEMENT, data._index);
     
@@ -136,7 +146,7 @@ void CTitleCompleteNoticePopup::show()
         Vec2 startPos    = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 2.f);
         Vec2 targetPos   = this->getContentSize() / 2;
         auto easeAction  = EaseExponentialOut::create(MoveTo::create(0.5f, targetPos));
-        auto downAction  = Spawn::createWithTwoActions(easeAction, FadeTo::create(0.3f, 255 * 0.8f));
+        auto downAction  = Spawn::createWithTwoActions(easeAction, FadeTo::create(0.3f, 255));
         auto delayAction = DelayTime::create(TITLE_COMPLETE_NOTICE::STAY_LIMIT_TIME);
         auto sineAction  = EaseSineIn::create(MoveTo::create(0.3f, startPos));
         auto upAction    = Spawn::createWithTwoActions(sineAction, FadeTo::create(0.1f, 0));

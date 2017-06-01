@@ -69,7 +69,7 @@ bool CResultPopup::init()
 		"starIcon.png",
 		"comboIcon.png",
         "coinIcon.png",
-        "achievementIcon_2.png",
+        "achievementIcon.png",
         "",
         "bestScoreIcon.png"
     };

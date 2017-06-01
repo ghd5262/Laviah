@@ -14,7 +14,6 @@ public:
     
     //setter & getter
     const ACHIEVEMENT* getAchievementData() const { return m_AchievementData; }
-    
 protected:
     virtual bool init() override;
     
@@ -28,8 +27,8 @@ private:
     virtual ~CAchievementPopupDP(){};
     
 private:
-    const ACHIEVEMENT* m_AchievementData;
     typedef std::function<void(void)> UPDATE_LISTENER;
     std::vector<UPDATE_LISTENER> m_ListenerList;
+    const ACHIEVEMENT* m_AchievementData;
     int m_RewardValue;
 };

@@ -59,6 +59,19 @@ bool CAchievementPopupDP::init()
 //                              this->getContentSize().height * 0.5f));
     }
     
+    // create new icon
+    {
+        auto newIcon = Sprite::create("newIcon.png");
+        newIcon->setAnchorPoint(Vec2::ZERO);
+        contentBG->addChild(newIcon);
+        
+        // update
+        m_ListenerList.emplace_back([=](){
+            auto level = CAchievementDataManager::Instance()->getAchievementLevelByIndex(index, true);
+            auto isNew = (m_AchievementData->_hiddenType && (level < 1));
+            newIcon->setVisible(isNew);
+        });
+    }
     
     // create title
     {
