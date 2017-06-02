@@ -52,6 +52,7 @@ public:
     { m_FSM->ChangeState(newState); };
     void StartBonusTime();
     void EndBonusTime();
+    void Intro(bool skip, std::function<void()> endListener = nullptr);
     void ZoomIn();
     void ZoomIn2();
     void ZoomInRank();

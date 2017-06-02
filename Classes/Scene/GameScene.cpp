@@ -111,6 +111,7 @@ bool CGameScene::init()
     this->createZoomLayer();
     this->createBulletCreator();
     this->createBackground();
+    this->createBackgroundStar();
     this->createPlanet();
     this->createPlayer();
     this->createRocket();
@@ -122,8 +123,11 @@ bool CGameScene::init()
     this->createUILayer();
     this->createRivalRankLayer();
     this->createTutorialLayer();
+    this->createIntroUI();
     this->initKeyboardListener();
     this->setTimestamp();
+    
+    this->intro();
     
     return true;
 }
@@ -216,12 +220,7 @@ void CGameScene::OpenGameMenuLayer()
 {
     this->ScreenFade([=](){
         CObjectManager::Instance()->ZoomIn();
-        this->clearData();
-//        this->createRandomCoin();
-        this->getFreeReward();
-        this->MenuFadeIn();
-        m_UILayer->setVisible(false);
-        m_MenuLayer->setDefaultCallbackToTopAgain();
+        this->menuOpen();
     });
 }
 
@@ -357,6 +356,7 @@ void CGameScene::BonusTimeEnd()
 CPopup* CGameScene::Reward()
 {
     CObjectManager::Instance()->ZoomInRank();
+//    CObjectManager::Instance()->MoveAction(this, MOVE_DIRECTION::DOWN);
     this->MenuFadeOut();
 
     return CRewardPopup::create()
@@ -528,6 +528,23 @@ void CGameScene::removeBonusTimeLayer()
     }
 }
 
+void CGameScene::createRandomCoin()
+{
+    auto data = CBulletPatternDataManager::Instance()->getRandomConstellationPatternByLevel(1, true);
+    CBulletCreator::CreateConstellation(data);
+}
+
+void CGameScene::menuOpen()
+{
+    this->clearData();
+    //        this->createRandomCoin();
+    this->getFreeReward();
+    this->MenuFadeIn();
+    m_UILayer->setVisible(false);
+    m_MenuLayer->setDefaultCallbackToTopAgain();
+    CObjectManager::Instance()->getRocket()->ComebackHome();
+}
+
 void CGameScene::turnDownSound()
 {
     auto userBGMVolume      = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME);
@@ -561,12 +578,6 @@ void CGameScene::initKeyboardListener()
     };
     
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(pListener, this);
-}
-
-void CGameScene::createRandomCoin()
-{
-    auto data = CBulletPatternDataManager::Instance()->getRandomConstellationPatternByLevel(1, true);
-    CBulletCreator::CreateConstellation(data);
 }
 
 void CGameScene::startTutorial()
@@ -646,6 +657,11 @@ void CGameScene::createBackground()
     CObjectManager::Instance()->setBackground(background);
 }
 
+void CGameScene::createBackgroundStar()
+{
+    
+}
+
 void CGameScene::createPlanet()
 {
     CObjectManager::Instance()->ChangeCharacter();
@@ -676,9 +692,9 @@ void CGameScene::createRocket()
     rocket->setSpeed(ROCKET_DEFINE::SPEED);
     rocket->setDistance(ROCKET_DEFINE::FLYAROUND_DISTANCE);
     rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    rocket->setPosition(CBullet::getSquarePosition(random<int>(0, 360), ROCKET_DEFINE::FLYAWAY_DISTANCE));
+    rocket->setPosition(m_VisibleSize);
     rocket->setTargetPos(CBullet::getSquarePosition(random<int>(0, 360), rocket->getDistance()));
-    rocket->ChangeState(CFlyToTouchArea::Instance());
+    rocket->ChangeState(CFlyAway::Instance());
     m_ZoomLayer->addChild(rocket, ZORDER::PLAYER);
     CObjectManager::Instance()->setRocket(rocket);
 }
@@ -746,7 +762,9 @@ void CGameScene::createMenuLayer()
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
     
-    this->OpenGameMenuLayer();
+    m_MenuLayer->setVisible(false);
+    
+//    this->OpenGameMenuLayer();
 }
 
 void CGameScene::createUILayer()
@@ -756,6 +774,8 @@ void CGameScene::createUILayer()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(this, ZORDER::POPUP);
+    
+    m_UILayer->setVisible(false);
 }
 
 void CGameScene::createRivalRankLayer()
@@ -795,6 +815,13 @@ void CGameScene::createTutorialLayer()
     this->addChild(tutorialMananger, ZORDER::POPUP);
 }
 
+void CGameScene::createIntroUI()
+{
+    // logo
+    
+    // earth
+}
+
 void CGameScene::setTimestamp()
 {
     bool exist = (CAchievementDataManager::Instance()->NonCompleteAchievementExist() >= ACHIEVEMENT_DEFINE::LIMIT_COUNT);
@@ -821,4 +848,33 @@ void CGameScene::setTimestamp()
         }
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
+}
+
+void CGameScene::intro()
+{
+    m_UILayer->setVisible(false);
+    m_ZoomLayer->setPosition(Vec2(m_VisibleSize.width * 0.5f,
+                                  m_VisibleSize.height * 4.f));
+    
+    this->ScreenFade([=](){
+        
+        auto skipBtn = CMyButton::create()
+        ->addEventListener([=](Node* sender){
+            CObjectManager::Instance()->Intro(true, [=](){
+                this->menuOpen();
+            });
+            sender->removeFromParent();
+        })
+        ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+        ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, m_VisibleSize.width, m_VisibleSize.height))
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setButtonPosition(m_VisibleSize / 2)
+        ->setButtonSingleUse(true)
+        ->show(this);
+        
+        CObjectManager::Instance()->Intro(false, [=](){
+            skipBtn->removeFromParent();
+            this->menuOpen();
+        });
+    });
 }

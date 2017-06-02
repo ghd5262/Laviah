@@ -84,10 +84,10 @@ private:
     void createAchievementPopup();
     void createBonusTimeLayer();
 	void createRandomCoin();
+    void menuOpen();
     void removeBonusTimeLayer();
     void turnDownSound();
     void turnUpSound();
-	void initKeyboardListener();
     void startTutorial();
     void getFreeReward();
     
@@ -97,6 +97,7 @@ private:
     void createZoomLayer();
     void createBulletCreator();
     void createBackground();
+    void createBackgroundStar();
     void createPlanet();
     void createPlayer();
     void createRocket();
@@ -108,7 +109,10 @@ private:
     void createUILayer();
     void createRivalRankLayer();
     void createTutorialLayer();
+    void createIntroUI();
+    void initKeyboardListener();
     void setTimestamp();
+    void intro();
     
 private:
 	static CGameScene* m_GameScene;

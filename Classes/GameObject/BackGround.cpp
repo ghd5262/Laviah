@@ -47,9 +47,9 @@ bool CBackGround::init()
         m_Gradient->setEndColor(gradientTo._leftColor);
     }
     
-    this->createBackParticleBonusTime();
-    this->createBackParticleNormal();
-    this->createBottomParticleNormal();
+//    this->createBackParticleBonusTime();
+//    this->createBackParticleNormal();
+//    this->createBottomParticleNormal();
     
 
 //    m_Index = Label::createWithTTF(StringUtils::format("%d", CGradientDataManager::Instance()->getGradientIdx()), FONT::MALGUNBD, 60);
@@ -72,7 +72,7 @@ void CBackGround::update(float delta)
         m_Time = 0.f;
     }
     
-    if (m_IsChangying && m_Gradient != nullptr){
+    if (m_IsChanging && m_Gradient != nullptr){
         m_Gradient->setStartColor(m_tempStartGradient->getColor());
         m_Gradient->setEndColor(m_tempEndGradient->getColor());
     }
@@ -95,8 +95,9 @@ void CBackGround::BonusTimeEnd()
 void CBackGround::changeBackground()
 {
     if (m_tempStartGradient == nullptr || m_tempEndGradient == nullptr) return;
+    if (m_IsChanging) return;
     
-    m_IsChangying = true;
+    m_IsChanging = true;
     auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
 //    auto gradientTo = CGradientDataManager::Instance()->getNextGradient();
     
@@ -110,7 +111,7 @@ void CBackGround::changeBackground()
     m_tempStartGradient->runAction(TintTo::create(1.5f, data._rightColor));
     m_tempEndGradient->runAction(Sequence::create(TintTo::create(1.5f, data._leftColor),
                                                   CallFunc::create([=](){
-        m_IsChangying = false;
+        m_IsChanging = false;
     }), nullptr));
     
 //    m_Index->setString(StringUtils::format("%d", CGradientDataManager::Instance()->getGradientIdx()));

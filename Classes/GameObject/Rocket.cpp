@@ -278,7 +278,7 @@ void CRocket::createFlameParticle()
     m_ParticleFlame->setGravity(Vec2(90, 0));
 	m_ParticleFlame->setRotation(90);
     m_ParticleFlame->setPosition(Vec2(this->getContentSize().width * 0.5f,
-		this->getContentSize().height * -0.1f));
+                                      this->getContentSize().height * -0.1f));
     m_ParticleFlame->setStartSize(100);
     m_ParticleFlame->setLife(0.8f);
     m_ParticleFlame->setLifeVar(0.15f);

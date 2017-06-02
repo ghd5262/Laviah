@@ -35,7 +35,7 @@ private:
     , m_Time(0.f)
     , m_fLimitTime(30.f)
     , m_IsBonusTime(false)
-    , m_IsChangying(false){}
+    , m_IsChanging(false){}
 
     virtual ~CBackGround(){}
     
@@ -49,5 +49,5 @@ private:
     Sprite* m_tempEndGradient;
     float m_Time;
     float m_fLimitTime;
-    bool m_IsChangying;
+    bool m_IsChanging;
 };
