@@ -201,22 +201,28 @@ void CObjectManager::EndBonusTime()
     CGameScene::getGameScene()->BonusTimeEnd();
 }
 
-void CObjectManager::Intro(bool skip, std::function<void()> endListener/* = nullptr*/)
+void CObjectManager::Intro(Node* obj,
+                           float duration,
+                           Vec2 tPos,
+                           bool skip,
+                           std::function<void()> endListener/* = nullptr*/)
 {
-    float duration  = 7.f;
-    float delayTime = 1.5f;
+    float delayTime = 2.5f;
     if(skip) {
-        duration    = 1.5f;
+        duration    *= 0.15f;
         delayTime   = 0.f;
     }
-    auto obj        = CGameScene::getZoomLayer();
     obj->stopActionByTag(100);
 
-    auto delay      = DelayTime::create(delayTime);
-    auto moveAction = MoveTo::create(duration, PLANET_DEFINE::MENU_POS);
-    auto sineAction = EaseSineOut::create(moveAction);
-    auto callFunc   = CallFunc::create(endListener);
-    auto sequence   = Sequence::create(delay, sineAction, callFunc, nullptr);
+    auto delay                    = DelayTime::create(delayTime);
+    auto moveAction               = MoveTo::create(duration, tPos);
+    FiniteTimeAction* sineAction1 = EaseSineInOut::create(moveAction);
+    FiniteTimeAction* sineAction2 = EaseSineOut::create(moveAction);
+    auto callFunc                 = CallFunc::create(endListener);
+    auto sequence                 = Sequence::create(delay,
+                                                     (skip ? sineAction2 : sineAction1),
+                                                     callFunc,
+                                                     nullptr);
     sequence->setTag(100);
     obj->runAction(sequence);
 }

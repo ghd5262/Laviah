@@ -9,7 +9,7 @@ enum ZORDER{
     PLANET,
     PLAYER,
     POPUP,
-    SCREENFADE,
+    SCREENFADE = 100,
 };
 
 class CMyButton;
@@ -125,5 +125,6 @@ private:
     CPopup* m_RivalRankLayer;
     CCountDown* m_CountDown;
 	cocos2d::Size m_VisibleSize;
+    std::vector<cocos2d::Sprite*> m_IntroUIList;
 	bool m_KeyBoardSpace;
 };

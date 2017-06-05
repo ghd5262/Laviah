@@ -123,7 +123,7 @@ bool CGameScene::init()
     this->createUILayer();
     this->createRivalRankLayer();
     this->createTutorialLayer();
-    this->createIntroUI();
+//    this->createIntroUI();
     this->initKeyboardListener();
     this->setTimestamp();
     
@@ -640,7 +640,7 @@ void CGameScene::createZoomLayer()
     m_ZoomLayer->setContentSize(m_VisibleSize);
     m_ZoomLayer->setIgnoreAnchorPointForPosition(false);
     m_ZoomLayer->setPosition(m_VisibleSize / 2);
-    this->addChild(m_ZoomLayer);
+    this->addChild(m_ZoomLayer, POPUP);
 }
 
 void CGameScene::createBulletCreator()
@@ -681,6 +681,7 @@ void CGameScene::createPlayer()
                              (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.8f)));
     player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_ZoomLayer->addChild(player, ZORDER::PLAYER);
+    player->setVisible(false);
     CObjectManager::Instance()->setPlayer(player);
 }
 
@@ -693,8 +694,8 @@ void CGameScene::createRocket()
     rocket->setDistance(ROCKET_DEFINE::FLYAROUND_DISTANCE);
     rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     rocket->setPosition(m_VisibleSize);
-    rocket->setTargetPos(CBullet::getSquarePosition(random<int>(0, 360), rocket->getDistance()));
-    rocket->ChangeState(CFlyAway::Instance());
+    rocket->setTargetPos(CBullet::getCirclePosition(90, ROCKET_DEFINE::FLYAWAY_DISTANCE, m_VisibleSize / 2));
+    rocket->ChangeState(CFlyToTarget::Instance());
     m_ZoomLayer->addChild(rocket, ZORDER::PLAYER);
     CObjectManager::Instance()->setRocket(rocket);
 }
@@ -817,9 +818,38 @@ void CGameScene::createTutorialLayer()
 
 void CGameScene::createIntroUI()
 {
-    // logo
+    std::array<Vec2, 9> startPos = {
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 1.4f),
+        Vec2(m_VisibleSize.width * 0.5f, 0),
+        Vec2(m_VisibleSize.width * 0.5f, 0),
+        Vec2(m_VisibleSize.width * 0.5f, 0),
+        Vec2(m_VisibleSize.width * 0.5f, 0),
+        Vec2(m_VisibleSize.width * 0.5f, 0),
+        Vec2(m_VisibleSize.width * 0.5f, 0),
+        Vec2(m_VisibleSize.width * 0.5f, 0),
+        Vec2(m_VisibleSize.width * 0.5f, 0),
+    };
     
-    // earth
+    std::array<float, 9> zOrder = {
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+    };
+    
+    for(int i = 0; i < 9; i++)
+    {
+        auto sprite = Sprite::create(StringUtils::format("background_%d.png", i));
+        sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+        sprite->setPosition(startPos[i]);
+        this->addChild(sprite, zOrder[i]);
+        m_IntroUIList.push_back(sprite);
+    }
 }
 
 void CGameScene::setTimestamp()
@@ -854,16 +884,59 @@ void CGameScene::intro()
 {
     m_UILayer->setVisible(false);
     m_ZoomLayer->setPosition(Vec2(m_VisibleSize.width * 0.5f,
-                                  m_VisibleSize.height * 4.f));
+                                  m_VisibleSize.height * 1.5f));
+    
+    std::array<Vec2, 9> targetPos = {
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -.3f),
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
+    };
+    
+    std::array<float, 9> durations = {
+        9.0f,
+        7.0f,
+        7.4f,
+        7.8f,
+        8.2f,
+        8.6f,
+        9.0f,
+        9.4f,
+        10.0f
+    };
+    
+    auto uiListAction = [=](bool skip){
+        for(int i = 0; i < m_IntroUIList.size(); i++)
+            CObjectManager::Instance()->Intro(m_IntroUIList[i], durations[i], targetPos[i], skip);
+    };
+    
+    auto uiListRemove = [=](){
+        for(auto ui : m_IntroUIList)
+            ui->removeFromParent();
+        m_IntroUIList.clear();
+    };
     
     this->ScreenFade([=](){
         
-        auto skipBtn = CMyButton::create()
-        ->addEventListener([=](Node* sender){
-            CObjectManager::Instance()->Intro(true, [=](){
+        this->createIntroUI();
+        
+        CMyButton* skipBtn = CMyButton::create();
+        
+        auto introAction = [=](bool skip){
+            uiListAction(skip);
+            CObjectManager::Instance()->Intro(m_ZoomLayer, 12.5f, PLANET_DEFINE::MENU_POS, skip, [=](){            skipBtn->removeFromParent();
                 this->menuOpen();
+                uiListRemove();
             });
-            sender->removeFromParent();
+        };
+        
+        skipBtn->addEventListener([=](Node* sender){
+            introAction(true);
         })
         ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
         ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, m_VisibleSize.width, m_VisibleSize.height))
@@ -872,9 +945,7 @@ void CGameScene::intro()
         ->setButtonSingleUse(true)
         ->show(this);
         
-        CObjectManager::Instance()->Intro(false, [=](){
-            skipBtn->removeFromParent();
-            this->menuOpen();
-        });
+        
+        introAction(false);
     });
 }

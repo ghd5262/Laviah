@@ -33,6 +33,9 @@ bool CBackGround::init()
     
     auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
     
+    gradientTo._rightColor = Color3B(0, 0, 16);
+    gradientTo._leftColor  = Color3B(30, 18, 90);
+    
     m_tempStartGradient = Sprite::create();
     if (m_tempStartGradient != nullptr){
         addChild(m_tempStartGradient);
@@ -48,7 +51,7 @@ bool CBackGround::init()
     }
     
 //    this->createBackParticleBonusTime();
-//    this->createBackParticleNormal();
+    this->createBackParticleNormal();
 //    this->createBottomParticleNormal();
     
 
@@ -122,7 +125,7 @@ void CBackGround::createBackParticleNormal()
     m_BackParticle = CParticle_BackGround::create("whiteSquare.png");
     if (m_BackParticle != nullptr){
         m_BackParticle->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                                         this->getContentSize().height * 0.75f));
+                                         this->getContentSize().height * 0.45f));
         m_BackParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_BackParticle->setTotalParticles(15);
         addChild(m_BackParticle);

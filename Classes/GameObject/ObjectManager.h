@@ -52,7 +52,11 @@ public:
     { m_FSM->ChangeState(newState); };
     void StartBonusTime();
     void EndBonusTime();
-    void Intro(bool skip, std::function<void()> endListener = nullptr);
+    void Intro(cocos2d::Node* obj,
+               float duration,
+               cocos2d::Vec2 tPos,
+               bool skip,
+               std::function<void()> endListener = nullptr);
     void ZoomIn();
     void ZoomIn2();
     void ZoomInRank();
