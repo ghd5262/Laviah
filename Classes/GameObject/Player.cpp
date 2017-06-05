@@ -10,6 +10,7 @@
 #include "../Scene/GameScene.h"
 #include "../MyUI/ScoreUI.h"
 #include "../DataManager/UserDataManager.h"
+#include "../DataManager/WorkshopItemDataManager.h"
 #include "../MyUI/ComboScore.h"
 
 using namespace cocos2d;
@@ -287,22 +288,17 @@ void CPlayer::InvincibilityMode(float time)
 
 void CPlayer::ChangeDataByCharacter()
 {
-	auto getValue = [=](std::string key){
-		return CUserDataManager::Instance()->getItemCurrentValue(key);
+	auto getValue = [=](int index){
+        return CWorkshopItemDataManager::Instance()->getCurrentItemValue(index);
 	};
 
-//	m_fMagnetLimitTime		= m_CharacterParam->_magnetItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_MAGNET);
-//	m_fMagnetLimitRadius	= m_CharacterParam->_magnetItemSize	+ getValue(USERDATA_KEY::ITEM_SIZE_MAGNET);
-//	m_fCoinLimitTime		= m_CharacterParam->_coinItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_COIN);
-//	m_fStarLimitTime		= m_CharacterParam->_starItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_STAR);
-//	m_fBonusTimeLimitTime	= m_CharacterParam->_bonusItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_BOUNS);
-//	m_fGiantLimitTime		= m_CharacterParam->_giantItemTime	+ getValue(USERDATA_KEY::ITEM_TIME_GIANT);
-    m_fMagnetLimitTime		= 1.f;
-    m_fMagnetLimitRadius	= 1.f;
-    m_fCoinLimitTime		= 1.f;
-    m_fStarLimitTime		= 1.f;
-    m_fBonusTimeLimitTime	= 1.f;
-    m_fGiantLimitTime		= 1.f;
+	m_fMagnetLimitTime		= m_CharacterParam->_magnetItemTime	+ getValue(1);
+	m_fCoinLimitTime		= m_CharacterParam->_coinItemTime	+ getValue(2);
+	m_fStarLimitTime		= m_CharacterParam->_starItemTime	+ getValue(3);
+    m_fGiantLimitTime		= m_CharacterParam->_giantItemTime	+ getValue(4);
+    m_fBonusTimeLimitTime	= m_CharacterParam->_bonusItemTime	+ getValue(5);
+    m_fMagnetLimitRadius	= m_CharacterParam->_magnetItemSize	+ getValue(6);
+    
 	m_fMaxLife				= 1;
 
 	m_MagnetEffect->setLimitTime(m_fMagnetLimitTime);

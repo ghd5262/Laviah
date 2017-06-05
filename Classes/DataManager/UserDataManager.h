@@ -84,7 +84,6 @@ public:
     int getUserData_ParamData(std::string key, int index, int paramIdx, int defaultValue);
     bool getUserData_IsItemHave(std::string key, int itemIdx);
     bool getUserData_IsItemExistWithParam(std::string key, int paramIdx, int value);
-    float getItemCurrentValue(std::string key);
     
 	void SaveUserData(bool saveToCloud = false, bool forceSave = false);
     void setSaveRevision(int value);

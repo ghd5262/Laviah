@@ -485,14 +485,6 @@ bool CUserDataManager::getUserData_IsItemExistWithParam(std::string key, int par
     return (picked.size());
 }
 
-float CUserDataManager::getItemCurrentValue(std::string key)
-{
-    sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey(key.c_str());
-//    float limitTime = item._valuePerLevel * this->getUserData_ParamData(key, index, level);
-//    return limitTime;
-    return 0.5f;
-}
-
 
 #pragma mark -
 #pragma mark [ interface function setter ]
@@ -761,7 +753,7 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
 //
 //float CUserDataManager::getItemCurrentValue(std::string key)
 //{
-//    sWORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey(key.c_str());
+//    WORKSHOPITEM_PARAM item = CWorkshopItemDataManager::Instance()->getWorkshopItemInfoByKey(key.c_str());
 //    float limitTime = item._valuePerLevel * getUserData_Number(key.c_str());
 //    return limitTime;
 //}

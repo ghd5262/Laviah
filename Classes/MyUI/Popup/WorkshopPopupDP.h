@@ -8,7 +8,7 @@ class CLevelProgressBar;
 class CWorkshopPopupDP : public cocos2d::ui::Widget
 {
 public:
-	static CWorkshopPopupDP* create(sWORKSHOPITEM_PARAM workshopItem);
+	static CWorkshopPopupDP* create(const WORKSHOPITEM_PARAM* workshopItem);
 
 protected:
     virtual bool init() override;
@@ -16,14 +16,14 @@ protected:
 private:
 	void Buy(cocos2d::Node* sender);
     
-	CWorkshopPopupDP(sWORKSHOPITEM_PARAM workshopItem)
+	CWorkshopPopupDP(const WORKSHOPITEM_PARAM* workshopItem)
 		: m_WorkshopItem(workshopItem)
 		, m_BtnBuy(nullptr)
         , m_LevelProgressBar(nullptr){};
     virtual ~CWorkshopPopupDP(){};
     
 private:
-	const sWORKSHOPITEM_PARAM m_WorkshopItem;
+	const WORKSHOPITEM_PARAM* m_WorkshopItem;
 	CMyButton* m_BtnBuy;
     CLevelProgressBar* m_LevelProgressBar;
 };

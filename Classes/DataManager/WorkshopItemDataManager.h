@@ -1,6 +1,6 @@
 #pragma once
 #include "../Common/HSHUtility.h"
-#include <vector>
+#include <map>
 
 enum USERDATA_PARAM_WORKSHOP{
     ITEM_LEVEL = 0,
@@ -11,7 +11,7 @@ namespace WORKSHOP_DEFINE {
 	static const std::string EXPLAIN = "WORKSHOP_ITEM_EXPLAIN_%d";
 }
 
-struct sWORKSHOPITEM_PARAM{
+struct WORKSHOPITEM_PARAM{
 	int _idx;
 	int _maxLevel;
 	float _valuePerLevel;
@@ -19,35 +19,25 @@ struct sWORKSHOPITEM_PARAM{
 	std::string _name;
 	std::string _textureName;
 	std::string _explain;
-    std::string _userDataKey;
 	std::vector<int> _costPerLevel;
 };
 
+typedef std::map<int, const WORKSHOPITEM_PARAM*> ITEM_LIST;
 class CWorkshopItemDataManager
 {
 public:
 	static CWorkshopItemDataManager* Instance();
 
 	//getter & setter
-	sWORKSHOPITEM_PARAM getWorkshopItemInfoByKey(std::string key) const;
-	sWORKSHOPITEM_PARAM getWorkshopItemInfoByIndex(int index) const;
-	std::vector<sWORKSHOPITEM_PARAM> getWorkshopItemList(){ return m_WorkshopItemList; };
-    std::vector<sWORKSHOPITEM_PARAM> getSellingWorkshopItemList(){
-        std::vector<sWORKSHOPITEM_PARAM> sellingItemList;
-        for(auto item : m_WorkshopItemList)
-        {
-            if(item._isSelling)
-            {
-                sellingItemList.emplace_back(item);
-            }
-        }
-        return sellingItemList;
-    }
+	const WORKSHOPITEM_PARAM* getItemDataByIndex(int index) const;
+	ITEM_LIST getItemList();
+    ITEM_LIST getSellingItemList();
+    float getCurrentItemValue(int index);
 
 private:
 	CWorkshopItemDataManager();
 	virtual ~CWorkshopItemDataManager();
 
 private:
-	std::vector<sWORKSHOPITEM_PARAM> m_WorkshopItemList;
+	ITEM_LIST m_WorkshopItemList;
 };

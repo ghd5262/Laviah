@@ -6,7 +6,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 
-CWorkshopPopupDP* CWorkshopPopupDP::create(sWORKSHOPITEM_PARAM workshopItem)
+CWorkshopPopupDP* CWorkshopPopupDP::create(const WORKSHOPITEM_PARAM* workshopItem)
 {
 	CWorkshopPopupDP *pRet = new(std::nothrow) CWorkshopPopupDP(workshopItem);
     if (pRet && pRet->init())
@@ -26,13 +26,13 @@ bool CWorkshopPopupDP::init()
 {
     if (!Widget::init()) return false;
     
-//    auto currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+//    auto currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem->_userDataKey);
     auto currentLevel = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
-                                                                            m_WorkshopItem._idx,
+                                                                            m_WorkshopItem->_idx,
                                                                             USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
                                                                             0);
     
-    auto itemName     = TRANSLATE(m_WorkshopItem._name);
+    auto itemName     = TRANSLATE(m_WorkshopItem->_name);
     auto dpBack = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 200.f);
     if (dpBack != nullptr){
         this->setContentSize(dpBack->getContentSize());
@@ -73,12 +73,12 @@ bool CWorkshopPopupDP::init()
                                dpBack->getContentSize().height * 0.5f));
     m_BtnBuy->setSwallowTouches(false);
     
-    if (currentLevel >= m_WorkshopItem._maxLevel){
+    if (currentLevel >= m_WorkshopItem->_maxLevel){
         m_BtnBuy->changeContents(TRANSLATE("WORKSHOP_BUTTON_MAX_LEVEL"));
         m_BtnBuy->setTouchEnable(false);
     }
     else{
-        m_BtnBuy->changeContents(MakeString(TRANSLATE("WORKSHOP_BUTTON_BUY_LEVEL").c_str(), m_WorkshopItem._costPerLevel.at(currentLevel)));
+        m_BtnBuy->changeContents(MakeString(TRANSLATE("WORKSHOP_BUTTON_BUY_LEVEL").c_str(), m_WorkshopItem->_costPerLevel.at(currentLevel)));
         m_BtnBuy->setTouchEnable(true);
     }
     
@@ -93,7 +93,7 @@ bool CWorkshopPopupDP::init()
         dpItemBack->addChild(workshopItemName);
     }
     
-    auto workshopItemExplain = Label::createWithSystemFont(TRANSLATE(m_WorkshopItem._explain),
+    auto workshopItemExplain = Label::createWithSystemFont(TRANSLATE(m_WorkshopItem->_explain),
                                                            FONT::MALGUN,
                                                            30,
                                                            Size(dpItemBack->getContentSize().width * 0.7f, dpItemBack->getContentSize().height * 0.45f),
@@ -110,7 +110,7 @@ bool CWorkshopPopupDP::init()
     
     m_LevelProgressBar = CLevelProgressBar::create(Size(dpItemBack->getContentSize().width * 0.7f,
                                                         dpItemBack->getContentSize().height * 0.1f),
-                                                   m_WorkshopItem._maxLevel, currentLevel);
+                                                   m_WorkshopItem->_maxLevel, currentLevel);
     if (m_LevelProgressBar != nullptr)
     {
         m_LevelProgressBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -118,7 +118,7 @@ bool CWorkshopPopupDP::init()
         dpItemBack->addChild(m_LevelProgressBar);
     }
     
-    auto workshopItemImg = Sprite::create(m_WorkshopItem._textureName);
+    auto workshopItemImg = Sprite::create(m_WorkshopItem->_textureName);
     if (workshopItemImg != nullptr)
     {
         workshopItemImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -131,30 +131,30 @@ bool CWorkshopPopupDP::init()
 
 void CWorkshopPopupDP::Buy(Node* sender)
 {
-	CCLOG("Buy Item %s", TRANSLATE(m_WorkshopItem._name).c_str());
+	CCLOG("Buy Item %s", TRANSLATE(m_WorkshopItem->_name).c_str());
     
-//    unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem._userDataKey);
+//    unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem->_userDataKey);
     
     auto value = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
-                                                                     m_WorkshopItem._idx,
+                                                                     m_WorkshopItem->_idx,
                                                                      USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
                                                                      0);
     
-    if (CUserDataManager::Instance()->CoinUpdate(-m_WorkshopItem._costPerLevel.at(value))){
+    if (CUserDataManager::Instance()->CoinUpdate(-m_WorkshopItem->_costPerLevel.at(value))){
 		value += 1;
         CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::ITEM_LEVEL,
-                                                            m_WorkshopItem._idx,
+                                                            m_WorkshopItem->_idx,
                                                             USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
                                                             value);
         
         // Update button ui
-        if(value >= m_WorkshopItem._maxLevel){
+        if(value >= m_WorkshopItem->_maxLevel){
             m_BtnBuy->changeContents(TRANSLATE("WORKSHOP_BUTTON_MAX_LEVEL"));
             m_BtnBuy->setTouchEnable(false);
             m_BtnBuy->changeFontColor(Color3B::GRAY);
         }
         else{
-            m_BtnBuy->changeContents(MakeString(TRANSLATE("WORKSHOP_BUTTON_BUY_LEVEL").c_str(), m_WorkshopItem._costPerLevel.at(value)));
+            m_BtnBuy->changeContents(MakeString(TRANSLATE("WORKSHOP_BUTTON_BUY_LEVEL").c_str(), m_WorkshopItem->_costPerLevel.at(value)));
         }
         
         // Update level progress
@@ -162,7 +162,7 @@ void CWorkshopPopupDP::Buy(Node* sender)
         m_LevelProgressBar->UpdateProgress();
         
         // set current selected item idx
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::SELECT_ITEM, m_WorkshopItem._idx);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::SELECT_ITEM, m_WorkshopItem->_idx);
         
         // set current player data by item level
         CObjectManager::Instance()->ChangeCharacter();

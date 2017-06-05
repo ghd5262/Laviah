@@ -831,15 +831,7 @@ void CGameScene::createIntroUI()
     };
     
     std::array<float, 9> zOrder = {
-        8,
-        7,
-        6,
-        5,
-        4,
-        3,
-        2,
-        1,
-        0
+        8, 7, 6, 5, 4, 3, 2, 1, 0
     };
     
     for(int i = 0; i < 9; i++)
