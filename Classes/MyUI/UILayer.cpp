@@ -221,9 +221,13 @@ void CUILayer::stop()
     m_PauseBtn->runAction(FadeTo::create(0.5f, 0));
 
 	auto move = MoveTo::create(0.01f, Vec2(this->getContentSize().width * 0.5f,
-										  this->getContentSize().height * 1.1f));
+										   this->getContentSize().height * 1.1f));
 	auto ease = EaseSineIn::create(move);
-	m_AchievementProgressBar->runAction(ease);
+    auto call = CallFunc::create([=](){
+        m_AchievementProgressBar->setVisible(false);
+    });
+    auto seq  = Sequence::createWithTwoActions(ease, call);
+	m_AchievementProgressBar->runAction(seq);
 }
 
 void CUILayer::play()
@@ -231,6 +235,7 @@ void CUILayer::play()
     m_Pause = false;
     m_PauseBtn->runAction(FadeIn::create(0.5f));
     
+    m_AchievementProgressBar->setVisible(true);
     auto move = MoveTo::create(0.5f, Vec2(this->getContentSize().width * 0.5f,
                                           this->getContentSize().height));
     auto exponential = EaseExponentialOut::create(move);

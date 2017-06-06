@@ -61,6 +61,7 @@ public:
     void ZoomIn2();
     void ZoomInRank();
     void ZoomOutRank();
+    void MoveAction(MOVE_DIRECTION dir);
     void MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir);
     void GiantMode();
     void NormalMode();

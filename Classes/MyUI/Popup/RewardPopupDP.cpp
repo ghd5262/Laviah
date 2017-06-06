@@ -53,7 +53,6 @@ bool CRewardPopupDP::init()
                                                   this->getContentSize().height),
                                              TextHAlignment::CENTER,
                                              TextVAlignment::CENTER);
-    title->setColor(COLOR::DARKGRAY);
     title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     title->setPosition(Vec2(this->getContentSize().width * 0.5f,
                             this->getContentSize().height * 0.8f));
@@ -80,27 +79,67 @@ bool CRewardPopupDP::init()
 
 void CRewardPopupDP::goldReward()
 {
-    auto action = [=](CBullet* sender){
+    auto action = [=](Node* sender){
         auto layerSize   = this->getContentSize();
-        sender->setPosition(layerSize.width * 0.5f,
-                            layerSize.height * 0.3f);
+        sender->setPosition(CBullet::getCirclePosition(random<float>(0.f, 360.f), 1500, layerSize / 2));
         sender->setRotation(random<float>(0.f, 360.f));
         
-        auto targetPos   = CBullet::getSquarePosition(random<int>(30, 330), random<int>(2000 , 3700));
+        auto targetPos   = CBullet::getSquarePosition(random<int>(30, 330), random<int>(100, 1500));
         auto moveAction  = MoveTo::create(1.5f, targetPos);
         auto easeAction  = EaseExponentialInOut::create(moveAction);
         auto delayAction = DelayTime::create(random<float>(1.f, 3.f));
         auto callFunc    = CallFunc::create([=](){
-            sender->R_UpAndBezier();
+            
+            // create action
+            auto upActin      = MoveTo::create(0.6f, Vec2(sender->getPositionX(), sender->getPositionY() + 150.f));
+            auto sineAction   = EaseExponentialOut::create(upActin);
+            auto delayAction  = DelayTime::create(0.5f);
+            
+            auto seqAction    = Sequence::create(sineAction,
+                                                 delayAction,
+                                                 CallFunc::create([=](){
+                
+                // create bezier action config
+                auto targetPos   = Vec2(layerSize.width * 0.055f, layerSize.height * 0.925f);
+                auto length      = Vec2(targetPos - sender->getPosition()).length();
+                auto cPos1       = Vec2(sender->getPosition().x - (length * 0.3f),
+                                        sender->getPosition().y - 100.f);
+                auto cPos2       = Vec2(targetPos.x, targetPos.y - (length * 0.3f));
+                auto time        = std::max<float>(0.5f, (length / layerSize.height) * 1.3f);
+                auto scale       = 3.f;
+                
+                // create bezier action
+                ccBezierConfig bezier;
+                bezier.controlPoint_1 = Vec2(cPos1);
+                bezier.controlPoint_2 = Vec2(cPos2);
+                bezier.endPosition    = Vec2(targetPos);
+                
+                auto bezierAction = BezierTo::create(time, bezier);
+                auto exponential  = EaseSineIn::create(bezierAction);
+                auto scaleAction  = ScaleTo::create(0.4f, scale);
+                auto fadeAction   = FadeTo::create(0.4f, 1);
+                auto spawn        = Spawn::create(scaleAction, fadeAction, nullptr);
+                
+                sender->runAction(Sequence::create(exponential,
+                                                   spawn,
+                                                   CallFunc::create([=](){
+                    sender->removeFromParent();
+                }), nullptr));
+                
+            }), nullptr);
+            
+            sender->runAction(seqAction);
         });
         auto sequence    = Sequence::create(easeAction, delayAction, callFunc, nullptr);
         sender->runAction(sequence);
     };
     
-    auto limit = std::min(80, m_Reward._value);
+    auto limit = std::min(60, m_Reward._value);
     for(int count = 0; count < limit; count++)
     {
-        auto gold = CBulletCreator::CreateBullet('U', 1, 1, false);
+        auto gold = Sprite::createWithSpriteFrameName("coin_1.png");
+        gold->setColor(COLOR::GOLD);
+        this->addChild(gold);
         action(gold);
     }
 }
@@ -124,13 +163,11 @@ void CRewardPopupDP::characterReward()
 
 void CRewardPopupDP::characterCreator1(cocos2d::Sprite* character)
 {
-    character->setColor(Color3B::BLACK);
     character->setOpacity(0);
 
     auto delay      = DelayTime::create(2.f);
     auto fadeIn     = FadeIn::create(1.f);
-    auto tint       = TintTo::create(1.f, Color3B::WHITE);
-    auto sequence   = Sequence::create(delay, fadeIn, tint, nullptr);
+    auto sequence   = Sequence::create(delay, fadeIn, nullptr);
     character->runAction(sequence);
     
     auto particle   = CParticle_Explosion_2::create("helpButton.png");
@@ -145,8 +182,6 @@ void CRewardPopupDP::characterCreator1(cocos2d::Sprite* character)
         particle->setEndSize(0);
         particle->setTotalParticles(100);
         particle->setAngle(random<int>(0, 360));
-        particle->setStartColor(Color4F::BLACK);
-        particle->setEndColor(Color4F::BLACK);
         this->addChild(particle);
     }
 }

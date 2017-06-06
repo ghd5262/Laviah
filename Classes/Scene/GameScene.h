@@ -56,7 +56,8 @@ public:
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
 	static cocos2d::Layer* getZoomLayer(){ return m_ZoomLayer; }
-
+    static cocos2d::Layer* getPopupLayer(){ return m_PopupLayer; }
+    
 	CC_SYNTHESIZE(cocos2d::Vec2, m_TouchPos, TouchPos);
     CC_SYNTHESIZE(bool, m_NeedTutorial, NeedTutorial);
     CC_SYNTHESIZE(bool, m_IsMenuLayerFront, IsMenuLayerFront);
@@ -94,10 +95,10 @@ private:
     // The following items are initialized only once.
     void initMemoryPool();
     void createFacebookManager();
+    void createPopupLayer();
     void createZoomLayer();
     void createBulletCreator();
     void createBackground();
-    void createBackgroundStar();
     void createPlanet();
     void createPlayer();
     void createRocket();
@@ -117,6 +118,7 @@ private:
 private:
 	static CGameScene* m_GameScene;
 	static cocos2d::Layer* m_ZoomLayer;
+    static cocos2d::Layer* m_PopupLayer;
     cocos2d::LayerColor* m_ScreenFade;
     CPopup* m_UILayer;
     CPopup* m_MenuLayer;

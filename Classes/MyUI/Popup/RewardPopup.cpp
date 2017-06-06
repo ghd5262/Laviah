@@ -30,6 +30,14 @@ bool CRewardPopup::init()
 
 	auto popupSize = this->getContentSize();
     
+    CMyButton::create()
+    ->addEventListener([](Node* sender){})
+    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080, 1920 * 3.f))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(popupSize / 2)
+    ->show(this);
+    
     m_BG = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1920.f);
     if (m_BG != nullptr){
         m_BG->setIgnoreAnchorPointForPosition(false);
@@ -60,13 +68,10 @@ bool CRewardPopup::init()
     ->show(this);
     
     auto btnUserCoin = CUserCoinButton::create();
-    if (btnUserCoin != nullptr)
-    {
-        btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                                      this->getContentSize().height * 0.05f));
-        btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        this->addChild(btnUserCoin);
-    }
+    btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                                  this->getContentSize().height * 0.05f));
+    btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    this->addChild(btnUserCoin);
     
     this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* owner){
@@ -79,19 +84,12 @@ bool CRewardPopup::init()
         
         action(m_BtnEnd);
         action(btnUserCoin);
-        m_BG->runAction(FadeTo::create(0.5f, 255 * 0.9f));
-//        auto moveAction = MoveTo::create(1.2f, Vec2(popupSize.width * 0.5f, popupSize.height * 0.5f));
-//        auto easeAction = EaseExponentialInOut::create(moveAction);
-//        m_BG->runAction(easeAction);
         
     }, 1.2f);
     
     this->setCloseAnimation([=](Node* sender){
-//        m_BG->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(popupSize.width * 0.5f,
-//                                                                             popupSize.height * 1.5f))));
         btnUserCoin->runAction(FadeTo::create(0.3f, 0));
         m_BtnEnd->runAction(FadeTo::create(0.3f, 0));
-        m_BG->runAction(FadeTo::create(0.3f, 0));
     });
     
     this->setDefaultCallback([=](Node* sender){
@@ -162,8 +160,6 @@ void CRewardPopup::open()
 
 void CRewardPopup::end()
 {
-//    CObjectManager::Instance()->ZoomOutRank();
-//    CGameScene::getGameScene()->MenuFadeIn();
-    
-    this->popupClose();
+    CObjectManager::Instance()->MoveAction(MOVE_DIRECTION::MIDDLE);
+    this->popupClose(1.3f);
 }

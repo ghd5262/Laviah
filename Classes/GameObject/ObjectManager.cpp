@@ -262,6 +262,11 @@ void CObjectManager::ZoomOutRank()
     m_Rocket->setVisible(true);
 }
 
+void CObjectManager::MoveAction(MOVE_DIRECTION dir)
+{
+    this->MoveAction(CGameScene::getPopupLayer(), dir);
+}
+
 void CObjectManager::MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir)
 {
     auto winSize    = Director::getInstance()->getWinSize();

@@ -51,6 +51,7 @@ USING_NS_CC;
 
 CGameScene* CGameScene::m_GameScene = nullptr;
 cocos2d::Layer* CGameScene::m_ZoomLayer = nullptr;
+cocos2d::Layer* CGameScene::m_PopupLayer = nullptr;
 
 Scene* CGameScene::createScene()
 {
@@ -108,10 +109,10 @@ bool CGameScene::init()
     this->scheduleUpdate();
     this->initMemoryPool();
     this->createFacebookManager();
+    this->createPopupLayer();
     this->createZoomLayer();
     this->createBulletCreator();
     this->createBackground();
-    this->createBackgroundStar();
     this->createPlanet();
     this->createPlayer();
     this->createRocket();
@@ -265,7 +266,7 @@ void CGameScene::OpenFBTestPopup()
     CFacebookAPITestPopup::create()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::OpenAchievementPopup()
@@ -355,15 +356,13 @@ void CGameScene::BonusTimeEnd()
 
 CPopup* CGameScene::Reward()
 {
-    CObjectManager::Instance()->ZoomInRank();
-//    CObjectManager::Instance()->MoveAction(this, MOVE_DIRECTION::DOWN);
-    this->MenuFadeOut();
-
+    CObjectManager::Instance()->MoveAction(MOVE_DIRECTION::DOWN);
+    
     return CRewardPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->setPopupPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 1.5f))
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::clearData()
@@ -386,7 +385,7 @@ void CGameScene::createPausePopup()
     CPausePopup::create()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createVideoPopup()
@@ -394,7 +393,7 @@ void CGameScene::createVideoPopup()
     CVideoPopup::create()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createGoalPopup()
@@ -403,7 +402,7 @@ void CGameScene::createGoalPopup()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createResultPopup()
@@ -412,7 +411,7 @@ void CGameScene::createResultPopup()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createEndPopup()
@@ -421,7 +420,7 @@ void CGameScene::createEndPopup()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createHelpPopup()
@@ -429,7 +428,7 @@ void CGameScene::createHelpPopup()
     CHelpPopup::create()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createExitPopup(bool resume)
@@ -453,7 +452,7 @@ void CGameScene::createExitPopup(bool resume)
         popup->popupClose();
     })
     ->setMessage(TRANSLATE("GAME_EXIT_CHECK"))
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createOptionPopup(int index)
@@ -463,7 +462,7 @@ void CGameScene::createOptionPopup(int index)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createBonusTimeLayer()
@@ -472,7 +471,7 @@ void CGameScene::createBonusTimeLayer()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createWorkshopPopup()
@@ -481,7 +480,7 @@ void CGameScene::createWorkshopPopup()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createCharacterSelectPopup()
@@ -490,7 +489,7 @@ void CGameScene::createCharacterSelectPopup()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createRankPopup()
@@ -499,7 +498,7 @@ void CGameScene::createRankPopup()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createRankUpPopup()
@@ -508,7 +507,7 @@ void CGameScene::createRankUpPopup()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createAchievementPopup()
@@ -517,7 +516,7 @@ void CGameScene::createAchievementPopup()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::removeBonusTimeLayer()
@@ -611,7 +610,7 @@ void CGameScene::getFreeReward()
             this->CreateAlertPopup()
             ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
             ->setMessage("free reward")
-            ->show(this, ZORDER::POPUP);
+            ->show(m_PopupLayer, ZORDER::POPUP);
         }
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
@@ -631,6 +630,18 @@ void CGameScene::createFacebookManager()
     this->addChild(facebook);
 }
 
+void CGameScene::createPopupLayer()
+{
+    if(m_PopupLayer) return;
+    
+    m_PopupLayer = Layer::create();
+    m_PopupLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_PopupLayer->setContentSize(m_VisibleSize);
+    m_PopupLayer->setIgnoreAnchorPointForPosition(false);
+    m_PopupLayer->setPosition(m_VisibleSize / 2);
+    this->addChild(m_PopupLayer, POPUP);
+}
+
 void CGameScene::createZoomLayer()
 {
     if(m_ZoomLayer) return;
@@ -640,7 +651,7 @@ void CGameScene::createZoomLayer()
     m_ZoomLayer->setContentSize(m_VisibleSize);
     m_ZoomLayer->setIgnoreAnchorPointForPosition(false);
     m_ZoomLayer->setPosition(m_VisibleSize / 2);
-    this->addChild(m_ZoomLayer, POPUP);
+    m_PopupLayer->addChild(m_ZoomLayer, POPUP);
 }
 
 void CGameScene::createBulletCreator()
@@ -655,11 +666,6 @@ void CGameScene::createBackground()
     auto background = CBackGround::create();
     this->addChild(background, ZORDER::BACKGROUND);
     CObjectManager::Instance()->setBackground(background);
-}
-
-void CGameScene::createBackgroundStar()
-{
-    
 }
 
 void CGameScene::createPlanet()
@@ -716,7 +722,7 @@ void CGameScene::createCountDown()
     ->setInterval(0.8f)
     ->setLabelPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.8f))
     ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
     m_CountDown->Pause();
     
     CTranslateManager::Instance()->addTranslateEventListener([=](){
@@ -752,7 +758,7 @@ void CGameScene::createItemRanges()
 void CGameScene::createComboUI()
 {
     auto multiscore = CComboScore::Instance();
-    this->addChild(multiscore, ZORDER::POPUP);
+    m_PopupLayer->addChild(multiscore, ZORDER::POPUP);
 }
 
 void CGameScene::createMenuLayer()
@@ -761,7 +767,7 @@ void CGameScene::createMenuLayer()
     ->setBackgroundVisible(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
     
     m_MenuLayer->setVisible(false);
     
@@ -774,7 +780,7 @@ void CGameScene::createUILayer()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(this, ZORDER::POPUP);
+    ->show(m_PopupLayer, ZORDER::POPUP);
     
     m_UILayer->setVisible(false);
 }
@@ -866,7 +872,7 @@ void CGameScene::setTimestamp()
             this->CreateAlertPopup()
             ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
             ->setMessage("normal achievement reseted")
-            ->show(this, ZORDER::POPUP);
+            ->show(m_PopupLayer, ZORDER::POPUP);
         }
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
