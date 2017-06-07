@@ -15,6 +15,7 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementChecker/AchievementClearChecker.h"
+#include "../../DataManager/GradientDataManager.h"
 
 using namespace cocos2d;
 
@@ -55,6 +56,8 @@ bool CNormalMissile::init()
     if (!CBullet::init()) return false;
     
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
+
+    this->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GLOBAL->PATTERN_LEVEL));
 
     return true;
 }

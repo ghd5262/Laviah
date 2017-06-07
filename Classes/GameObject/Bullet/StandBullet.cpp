@@ -12,6 +12,7 @@
 #include "../BulletCreator.h"
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementChecker/AchievementClearChecker.h"
+#include "../../DataManager/GradientDataManager.h"
 
 namespace STANDBULLET{
     const static float STAY_LIMIT_TIME = 1.f;
@@ -54,6 +55,8 @@ bool CStandBullet::init()
     
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
     
+    this->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GLOBAL->PATTERN_LEVEL));
+
     return true;
 }
 

@@ -27,6 +27,7 @@ public:
     int COMBO_LEVEL;
     int BEST_COMBO;
     int STAGE_LEVEL;
+    int PATTERN_LEVEL;
     
     int COIN_COUNT;
     int STAR_COUNT;

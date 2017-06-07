@@ -86,10 +86,10 @@ bool CUILayer::init()
     m_StarScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     this->addChild(m_StarScoreLabel);
     
-    m_StageLevelLabel = Label::createWithTTF("", FONT::MALGUNBD, 150);
-    m_StageLevelLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_StageLevelLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.825f));
-    this->addChild(m_StageLevelLabel);
+    m_LevelLabel = Label::createWithTTF("", FONT::MALGUNBD, 150);
+    m_LevelLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_LevelLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.825f));
+    this->addChild(m_LevelLabel);
     
     CMyButton::create()
     ->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -2.f), eMYBUTTON_STATE::EXECUTE)
@@ -158,7 +158,7 @@ void CUILayer::ScoreAction(int score)
     
     m_StarScoreLabel->setString(StringUtils::format("+ %d", score));
     m_StarScoreLabel->setPosition(Vec2(uiPos.x + uiSize.width, uiPos.y));
-    m_StarScoreLabel->setColor(CGradientDataManager::Instance()->getColorByLevel(GLOBAL->COMBO_LEVEL));
+    m_StarScoreLabel->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(GLOBAL->COMBO_LEVEL));
     auto fadeIn   = FadeTo::create(0.3f, 255 * 0.8);
     auto delay    = DelayTime::create(0.3f);
     auto fadeTo   = FadeTo::create(0.3f, 0);
@@ -167,24 +167,29 @@ void CUILayer::ScoreAction(int score)
     m_StarScoreLabel->runAction(sequence);
 }
 
-void CUILayer::StageLevelUpdate()
+void CUILayer::LevelUPNotice()
 {
-    if(!m_StageLevelLabel) return;
+    if(!m_LevelLabel) return;
     
-    Vec2 startPos  = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.9f);
-    Vec2 targetPos = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.8f);
+    this->scheduleOnce([=](float delta){
+        if(CObjectManager::Instance()->getIsGamePause()) return;
+        
+        Vec2 startPos     = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.9f);
+        Vec2 targetPos    = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.8f);
+        auto moveDown     = EaseExponentialOut::create(MoveTo::create(0.5f, targetPos));
+        auto downAction   = Spawn::createWithTwoActions(moveDown, FadeTo::create(0.3f, 255 * 0.8f));
+        auto delayAction  = DelayTime::create(2.f);
+        auto moveUp       = EaseSineIn::create(MoveTo::create(0.3f, startPos));
+        auto upAction     = Spawn::createWithTwoActions(moveUp, FadeTo::create(0.1f, 0));
+        auto sequence     = Sequence::create(downAction, delayAction, upAction, nullptr);
+        
+        m_LevelLabel->setOpacity(0);
+        m_LevelLabel->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GLOBAL->PATTERN_LEVEL));
+        m_LevelLabel->setString(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL));
+        m_LevelLabel->runAction(sequence);
+        
+    }, 4.f, "LevelNoticeDelay");
     
-    auto delayAction1 = DelayTime::create(4.f);
-    auto moveDown     = EaseExponentialOut::create(MoveTo::create(0.5f, targetPos));
-    auto downAction   = Spawn::createWithTwoActions(moveDown, FadeTo::create(0.3f, 255 * 0.8f));
-    auto delayAction2 = DelayTime::create(2.f);
-    auto moveUp       = EaseSineIn::create(MoveTo::create(0.3f, startPos));
-    auto upAction     = Spawn::createWithTwoActions(moveUp, FadeTo::create(0.1f, 0));
-    
-    auto sequenceAction = Sequence::create(delayAction1, downAction, delayAction2, upAction, nullptr);
-    m_StageLevelLabel->setOpacity(0);
-    m_StageLevelLabel->setString(StringUtils::format("Stage %d", GLOBAL->STAGE_LEVEL+1));
-    m_StageLevelLabel->runAction(sequenceAction);
 }
 
 void CUILayer::setItemTimer(eITEM_TYPE type, float limitTime)

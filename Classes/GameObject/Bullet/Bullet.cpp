@@ -11,7 +11,6 @@
 #include "../../Particle/Particles.h"
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementChecker/AchievementClearChecker.h"
-
 using namespace cocos2d;
 
 CBullet::CBullet()
@@ -91,7 +90,7 @@ CBullet* CBullet::build()
     this->setRotation(angle);
 //	this->setScale(1.5f);
 //	this->setBoundingRadius(this->getBoundingRadius() * 1.5f);
-    
+        
     return this;
 }
 

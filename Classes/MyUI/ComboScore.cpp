@@ -80,7 +80,7 @@ void CComboScore::AddCombo()
 	GLOBAL->COMBO_LEVEL = (int(GLOBAL->COMBO_SCORE / 50)) + 1;
     if(m_OldLevel != GLOBAL->COMBO_LEVEL){
         m_OldLevel = GLOBAL->COMBO_LEVEL;
-        m_ComboLabel->setColor(CGradientDataManager::Instance()->getColorByLevel(m_OldLevel));
+        m_ComboLabel->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(m_OldLevel));
         //        this->runAction(JumpBy::create(0.3f, Vec2(0, 0), 50, 1));
         //        GLOBAL->STAR_SCORE += (m_MultipleNumber / 100) * 100000;
     }

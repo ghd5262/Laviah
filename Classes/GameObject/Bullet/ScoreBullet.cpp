@@ -3,6 +3,7 @@
 #include "../Planet.h"
 #include "../Player.h"
 #include "../../Particle/Particles.h"
+#include "../../DataManager/GradientDataManager.h"
 
 using namespace cocos2d;
 

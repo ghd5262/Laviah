@@ -8,7 +8,7 @@
 
 namespace BULLETCREATOR{
 	const static float PATTERN_PADDING_LIMIT	= 1.5f;
-	const static float CREATE_DISTANCE			= 2300.f;
+	const static float CREATE_DISTANCE			= 2700.f;
 	const static float ROTATION_SPEED			= 90.f;
 	const static float BULLET_STANDARD_SPEED	= 400.f;
 	const static float BULLET_STANDARD_PADDING  = 60.f;

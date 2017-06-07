@@ -44,36 +44,48 @@ CGradientDataManager::CGradientDataManager()
         m_GradientList.push_back(param);
     }
     
-    auto addColor = [=](int r, int g, int b){
+    auto addScoreColor = [=](int r, int g, int b){
         m_ScoreColorList.emplace_back(Color3B(r, g, b));
     };
     
     m_ScoreColorList.clear();
-    addColor( 255, 255, 255 );
-    addColor( 240, 222, 218 );
-    addColor( 230, 196, 193 );
-    addColor( 230, 171, 163 );
-    addColor( 242, 148, 148 );
-    addColor( 240, 142, 115 );
-    addColor( 245, 157, 91  );
-    addColor( 235, 170, 66  );
-    addColor( 240, 190, 53  );
-    addColor( 240, 218, 26  );
-    addColor( 237, 245, 24  );
-    addColor( 227, 227, 25  );
-    addColor( 201, 224, 20  );
-    addColor( 151, 242, 24  );
-    addColor( 81,  242, 22  );
-    addColor( 7,   242, 140 );
-    addColor( 0,   224, 232 );
-    addColor( 12,  186, 235 );
-    addColor( 21,  163, 235 );
-    addColor( 24,  139, 240 );
-    addColor( 29,  88,  224 );
-    addColor( 54,  22,  240 );
-    addColor( 54,  22,  240 );
-    addColor( 54,  22,  240 );
-    addColor( 54,  22,  240 );
+    addScoreColor( 255, 255, 255 );
+    addScoreColor( 240, 222, 218 );
+    addScoreColor( 230, 196, 193 );
+    addScoreColor( 230, 171, 163 );
+    addScoreColor( 242, 148, 148 );
+    addScoreColor( 240, 142, 115 );
+    addScoreColor( 245, 157, 91  );
+    addScoreColor( 235, 170, 66  );
+    addScoreColor( 240, 190, 53  );
+    addScoreColor( 240, 218, 26  );
+    addScoreColor( 237, 245, 24  );
+    addScoreColor( 227, 227, 25  );
+    addScoreColor( 201, 224, 20  );
+    addScoreColor( 151, 242, 24  );
+    addScoreColor( 81,  242, 22  );
+    addScoreColor( 7,   242, 140 );
+    addScoreColor( 0,   224, 232 );
+    addScoreColor( 12,  186, 235 );
+    addScoreColor( 21,  163, 235 );
+    addScoreColor( 24,  139, 240 );
+    addScoreColor( 29,  88,  224 );
+    addScoreColor( 54,  22,  240 );
+    addScoreColor( 54,  22,  240 );
+    addScoreColor( 54,  22,  240 );
+    addScoreColor( 54,  22,  240 );
+    
+    auto addBulletColor = [=](int r, int g, int b){
+        m_BulletColorList.emplace_back(Color3B(r, g, b));
+    };
+    m_BulletColorList.clear();
+    addBulletColor( 21,  163, 235 );
+    addBulletColor( 24,  139, 240 );
+    addBulletColor( 29,  88,  224 );
+    addBulletColor( 54,  22,  240 );
+    addBulletColor( 54,  22,  240 );
+    addBulletColor( 54,  22,  240 );
+    addBulletColor( 54,  22,  240 );
 }
 
 CGradientDataManager::~CGradientDataManager(){}
@@ -103,9 +115,16 @@ sGRADIENT_PARAM CGradientDataManager::getNextGradient()
 	return result;
 }
 
-cocos2d::Color3B CGradientDataManager::getColorByLevel(int level)
+cocos2d::Color3B CGradientDataManager::getScoreColorByLevel(int level)
 {
     if(level >= m_ScoreColorList.size()) return m_ScoreColorList.back();
     
     return m_ScoreColorList.at(level);
+}
+
+cocos2d::Color3B CGradientDataManager::getBulletColorByLevel(int level)
+{
+    if(level >= m_BulletColorList.size()) return m_BulletColorList.back();
+    
+    return m_BulletColorList.at(level);
 }

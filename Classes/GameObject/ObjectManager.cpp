@@ -35,6 +35,7 @@ CObjectManager::CObjectManager()
 , m_Delta(0.f)
 , m_GiantSpeed(1.f)
 , m_BulletPatternPaddingLimit(0.f)
+, m_OriginPatternLevel(0)
 {
 //    m_FSM = std::shared_ptr<CStateMachine<CObjectManager>>(new CStateMachine<CObjectManager>(this),
 //                                                           [=](CStateMachine<CObjectManager>* fsm){
@@ -258,7 +259,7 @@ void CObjectManager::ZoomInRank()
 
 void CObjectManager::ZoomOutRank()
 {
-    this->ZoomIn();
+    this->MoveAction(CGameScene::getZoomLayer(), MOVE_DIRECTION::MIDDLE);
     m_Rocket->setVisible(true);
 }
 
@@ -278,7 +279,7 @@ void CObjectManager::MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir)
         Vec2(  winSize.width * 0.5f,  winSize.height * 0.5f),
     };
     
-    this->zoom(owner, posArray[dir], 0, 1.f, 1.2f, true);
+    this->zoom(owner, posArray[dir], -1, 1.f, 1.2f, true);
 }
 
 void CObjectManager::GiantMode()
@@ -447,13 +448,20 @@ void CObjectManager::setGameLevelByTimer()
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
     m_LevelTimer += m_Delta;
-    if(m_LevelList.at(GLOBAL->STAGE_LEVEL)._time < m_LevelTimer)
+    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
+    if(levelData._time < m_LevelTimer)
     {
         if(m_LevelList.size() > GLOBAL->STAGE_LEVEL+1){
             GLOBAL->STAGE_LEVEL++;
-            CUILayer::Instance()->StageLevelUpdate();
+            GLOBAL->PATTERN_LEVEL = levelData._level;
             this->setGameStateByLevel();
-            m_BulletPatternPaddingLimit = 3.f;
+    
+            if(m_OriginPatternLevel != GLOBAL->PATTERN_LEVEL){
+                CUILayer::Instance()->LevelUPNotice();
+                m_OriginPatternLevel        = GLOBAL->PATTERN_LEVEL;
+                m_BulletPatternPaddingLimit = 4.f;
+                m_PatternTimer              = 0.f;
+            }
         }
     }
 }
@@ -467,7 +475,7 @@ void CObjectManager::zoom(cocos2d::Node* obj,
 {
     if(force) obj->stopActionByTag(100);
     if(obj->getActionByTag(100)) return;
-    
+    if(zoomAngle == -1) zoomAngle = obj->getRotation();
     auto scaleAction  = ScaleTo::create(duration,  zoomSize);
     auto moveAction   = MoveTo::create(duration,   zoomPos);
     auto rotateAction = RotateTo::create(duration, zoomAngle);

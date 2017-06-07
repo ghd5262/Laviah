@@ -49,6 +49,11 @@
 
 USING_NS_CC;
 
+namespace GAMESCENE_DEFINE {
+    static int ROTATION_TAG = 1000;
+    static std::string RESUME_ROTATION = "RESUME_ROTATION";
+}
+
 CGameScene* CGameScene::m_GameScene = nullptr;
 cocos2d::Layer* CGameScene::m_ZoomLayer = nullptr;
 cocos2d::Layer* CGameScene::m_PopupLayer = nullptr;
@@ -127,8 +132,10 @@ bool CGameScene::init()
 //    this->createIntroUI();
     this->initKeyboardListener();
     this->setTimestamp();
-    
     this->intro();
+    
+    CAudioManager::Instance()->Clear();
+    CAudioManager::Instance()->PlayBGM("sounds/menuBGM.mp3", true);
     
     return true;
 }
@@ -149,6 +156,7 @@ void CGameScene::GameStart()
     this->clearData();
     this->GameResume();
     this->MenuFadeOut();
+//    this->pauseRotation();
     
     m_UILayer->setVisible(true);
     m_UILayer->setDefaultCallbackToTopAgain();
@@ -367,7 +375,6 @@ CPopup* CGameScene::Reward()
 
 void CGameScene::clearData()
 {
-    CAudioManager::Instance()->Clear();
     CObjectManager::Instance()->Clear();
     CItemManager::Instance()->Clear();
     CTutorialManager::Instance()->Clear();
@@ -542,6 +549,10 @@ void CGameScene::menuOpen()
     m_UILayer->setVisible(false);
     m_MenuLayer->setDefaultCallbackToTopAgain();
     CObjectManager::Instance()->getRocket()->ComebackHome();
+    
+//    m_ZoomLayer->scheduleOnce([=](float delta){
+//        this->resumeRotation();
+//    }, 1.3f, GAMESCENE_DEFINE::RESUME_ROTATION);
 }
 
 void CGameScene::turnDownSound()
@@ -615,6 +626,25 @@ void CGameScene::getFreeReward()
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
 }
+
+void CGameScene::resumeRotation()
+{
+    if(!m_ZoomLayer) return;
+    if(m_ZoomLayer->getActionByTag(GAMESCENE_DEFINE::ROTATION_TAG)) return;
+    
+    auto rotation = RotateBy::create(120.f, 360);
+    auto repeat   = RepeatForever::create(rotation);
+    repeat->setTag(GAMESCENE_DEFINE::ROTATION_TAG);
+    m_ZoomLayer->runAction(repeat);
+}
+
+void CGameScene::pauseRotation()
+{
+    if(!m_ZoomLayer) return;
+
+    m_ZoomLayer->stopActionByTag(GAMESCENE_DEFINE::ROTATION_TAG);
+}
+
 
 // The following items are initialized only once.
 void CGameScene::initMemoryPool()
@@ -702,7 +732,7 @@ void CGameScene::createRocket()
     rocket->setPosition(m_VisibleSize);
     rocket->setTargetPos(CBullet::getCirclePosition(90, ROCKET_DEFINE::FLYAWAY_DISTANCE, m_VisibleSize / 2));
     rocket->ChangeState(CFlyToTarget::Instance());
-    m_ZoomLayer->addChild(rocket, ZORDER::PLAYER);
+    m_PopupLayer->addChild(rocket, ZORDER::POPUP);
     CObjectManager::Instance()->setRocket(rocket);
 }
 

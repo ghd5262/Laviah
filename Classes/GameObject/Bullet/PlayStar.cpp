@@ -61,8 +61,8 @@ void CPlayStar::Execute(float delta)
     {
         m_OldLevel = GLOBAL->COMBO_LEVEL;
         auto scale = std::min(1.0f, (m_OldLevel + 1) / 10.f);
-        scale      = std::max(0.5f, scale);
-        this->setColor(CGradientDataManager::Instance()->getColorByLevel(m_OldLevel));
+        scale      = std::max(0.7f, scale);
+        this->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(m_OldLevel));
         this->setScale(scale);
     }
 }

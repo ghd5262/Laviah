@@ -158,4 +158,5 @@ private:
     float m_RotationSpeed;
     float m_GiantSpeed;
     float m_BulletPatternPaddingLimit;
+    int m_OriginPatternLevel;
 };
