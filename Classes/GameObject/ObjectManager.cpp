@@ -286,7 +286,7 @@ void CObjectManager::GiantMode()
 {
     m_GiantSpeed = 1.5f;
     auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
-    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, 0.45f, 1.f, true);
+    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom * 1.25f, 1.f, true);
 }
 
 void CObjectManager::NormalMode()

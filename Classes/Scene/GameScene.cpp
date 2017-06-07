@@ -732,7 +732,7 @@ void CGameScene::createRocket()
     rocket->setPosition(m_VisibleSize);
     rocket->setTargetPos(CBullet::getCirclePosition(90, ROCKET_DEFINE::FLYAWAY_DISTANCE, m_VisibleSize / 2));
     rocket->ChangeState(CFlyToTarget::Instance());
-    m_PopupLayer->addChild(rocket, ZORDER::POPUP);
+    m_ZoomLayer->addChild(rocket, ZORDER::POPUP);
     CObjectManager::Instance()->setRocket(rocket);
 }
 

@@ -127,7 +127,7 @@ bool CVideoPopup::init()
     ->setMaxNumber(10)
     ->setMinNumber(0)
     ->setInterval(0.8f)
-    ->setLabelPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f))
+    ->setLabelPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.75f))
     ->setLabelAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(this);
     

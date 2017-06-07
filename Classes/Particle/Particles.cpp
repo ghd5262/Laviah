@@ -529,8 +529,8 @@ bool CParticle_BackGround::initWithTotalParticles(int numberOfParticles)
 		this->modeA.radialAccelVar = 0;
 
 		//  Gravity Mode: speed of particles
-		this->modeA.speed = 3;
-		this->modeA.speedVar = 3;
+		this->modeA.speed = 0;
+		this->modeA.speedVar = 2;
 
 		// emitter position
 		Size winSize = Director::getInstance()->getWinSize();
@@ -541,13 +541,13 @@ bool CParticle_BackGround::initWithTotalParticles(int numberOfParticles)
 		this->_angle = 90;
 		this->_angleVar = 360;
 		// life of particles
-		this->_life = 2.0f;
-		this->_lifeVar = 0.5f;
+		this->_life = 10.0f;
+		this->_lifeVar = 5.5f;
 
 		this->_startSpin = 0.f;
 		this->_startSpinVar = 360.f;
 
-		this->_endSpin = 360.f;
+		this->_endSpin = 0.f;
 		this->_endSpinVar = 360.f;
 
 		this->modeA.speed = 10;
