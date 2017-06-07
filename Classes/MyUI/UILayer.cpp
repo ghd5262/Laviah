@@ -185,7 +185,7 @@ void CUILayer::LevelUPNotice()
         
         m_LevelLabel->setOpacity(0);
         m_LevelLabel->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GLOBAL->PATTERN_LEVEL));
-        m_LevelLabel->setString(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL));
+        m_LevelLabel->setString(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL + 1));
         m_LevelLabel->runAction(sequence);
         
     }, 4.f, "LevelNoticeDelay");

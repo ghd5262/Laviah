@@ -274,7 +274,7 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
         case 'F':  name = "playItem_6.png";                            break;
         case 'G':  name = "playItem_7.png";                            break;
             
-        case 'P':  name = "star_1.png";                                break;
+        case 'P':  name = StringUtils::format("star_%d.png", (GLOBAL->COMBO_LEVEL % 5) + 1); break;
         case 'Q':  name = "star_2.png";                                break;
         case 'R':  name = "star_3.png";                                break;
         case 'S':  name = "star_4.png";                                break;

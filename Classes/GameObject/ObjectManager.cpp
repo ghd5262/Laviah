@@ -35,7 +35,7 @@ CObjectManager::CObjectManager()
 , m_Delta(0.f)
 , m_GiantSpeed(1.f)
 , m_BulletPatternPaddingLimit(0.f)
-, m_OriginPatternLevel(0)
+, m_OriginPatternLevel(-1)
 {
 //    m_FSM = std::shared_ptr<CStateMachine<CObjectManager>>(new CStateMachine<CObjectManager>(this),
 //                                                           [=](CStateMachine<CObjectManager>* fsm){
@@ -54,29 +54,29 @@ CObjectManager::CObjectManager()
         m_LevelList.emplace_back(data);
     };
 
-    insertLevel(sLEVEL_BALANCE(20,  80.f,  1, 0.66f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(20,  80.f,  1, 0.66f, 0, 0, Vec2(540.f, 672.f)));
     
-    insertLevel(sLEVEL_BALANCE(30,  90.f,  2, 0.66f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(30,  90.f,  2, 0.66f, 0, 0, Vec2(540.f, 672.f)));
     
-    insertLevel(sLEVEL_BALANCE(40,  95.f,  3, 0.66f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(40,  95.f,  3, 0.66f, 0, 1, Vec2(540.f, 672.f)));
     
-    insertLevel(sLEVEL_BALANCE(60,  100.f, 4, 0.66f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(60,  100.f, 4, 0.66f, 0, 2, Vec2(540.f, 672.f)));
     
-    insertLevel(sLEVEL_BALANCE(80,  100.f, 5, 0.66f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(90,  100.f, 5, 0.45f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(100, 100.f, 5, 0.8f,  0, Vec2(540.f, 400.f)));
+    insertLevel(sLEVEL_BALANCE(80,  100.f, 5, 0.66f, 0, 3, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(90,  100.f, 5, 0.45f, 0, 3, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(100, 100.f, 5, 0.8f,  0, 3, Vec2(540.f, 400.f)));
     
-    insertLevel(sLEVEL_BALANCE(110, 110.f, 5, 0.66f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(120, 110.f, 5, 0.45f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(130, 110.f, 5, 0.8f,  0, Vec2(540.f, 400.f)));
+    insertLevel(sLEVEL_BALANCE(110, 110.f, 5, 0.66f, 0, 4, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(120, 110.f, 5, 0.45f, 0, 4, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(130, 110.f, 5, 0.8f,  0, 4, Vec2(540.f, 400.f)));
     
-    insertLevel(sLEVEL_BALANCE(140, 120.f, 5, 0.66f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(150, 120.f, 5, 0.45f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(160, 120.f, 5, 0.8f,  0, Vec2(540.f, 400.f)));
+    insertLevel(sLEVEL_BALANCE(140, 120.f, 5, 0.66f, 0, 5, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(150, 120.f, 5, 0.45f, 0, 5, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(160, 120.f, 5, 0.8f,  0, 5, Vec2(540.f, 400.f)));
     
-    insertLevel(sLEVEL_BALANCE(170, 120.f, 5, 0.8f,  0, Vec2(540.f, 100.f)));
-    insertLevel(sLEVEL_BALANCE(190, 130.f, 5, 0.45f, 0, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(210, 130.f, 5, 0.66f, 0, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(170, 120.f, 5, 0.8f,  0, 6, Vec2(540.f, 100.f)));
+    insertLevel(sLEVEL_BALANCE(190, 130.f, 5, 0.45f, 0, 6, Vec2(540.f, 672.f)));
+    insertLevel(sLEVEL_BALANCE(210, 130.f, 5, 0.66f, 0, 6, Vec2(540.f, 672.f)));
 }
 
 CObjectManager* CObjectManager::Instance()
@@ -372,9 +372,9 @@ void CObjectManager::createBulletByTimer(float delta)
 	if (m_PatternTimer < m_BulletPatternPaddingLimit) return;
 
     auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
-    auto level = levelData._level;
+    auto pattern = levelData._pattern;
     auto below = levelData._below;
-    auto data = m_PatternManager->getRandomNormalPatternByLevel(level, below);
+    auto data = m_PatternManager->getRandomNormalPatternByLevel(pattern, below);
     m_BulletCreator->setPattern(data);
     
     m_BulletPatternPaddingLimit = BULLETCREATOR::PATTERN_PADDING_LIMIT;
@@ -459,7 +459,7 @@ void CObjectManager::setGameLevelByTimer()
             if(m_OriginPatternLevel != GLOBAL->PATTERN_LEVEL){
                 CUILayer::Instance()->LevelUPNotice();
                 m_OriginPatternLevel        = GLOBAL->PATTERN_LEVEL;
-                m_BulletPatternPaddingLimit = 4.f;
+                m_BulletPatternPaddingLimit = 2.f;
                 m_PatternTimer              = 0.f;
             }
         }

@@ -123,27 +123,30 @@ private:
     struct sLEVEL_BALANCE{
         float _time;
         float _speed;
-        int   _level;
+        int   _pattern;
         float _zoom;
         int   _angle;
+        int   _level;
         cocos2d::Vec2 _pos;
         bool  _below;
         
         sLEVEL_BALANCE()
         : _time(0.f)
         , _speed(0.f)
-        , _level(0)
+        , _pattern(0)
         , _zoom(1.f)
         , _angle(0)
+        , _level(0)
         , _pos(PLANET_DEFINE::GAME_POS)
         , _below(true){}
 
-        sLEVEL_BALANCE(float time, float speed, int level, float zoom, int angle, cocos2d::Vec2 pos, bool below = true)
+        sLEVEL_BALANCE(float time, float speed, int pattern, float zoom, int angle, int level, cocos2d::Vec2 pos, bool below = true)
         : _time(time)
         , _speed(speed)
-        , _level(level)
+        , _pattern(pattern)
         , _zoom(zoom)
         , _angle(angle)
+        , _level(level)
         , _pos(pos)
         , _below(below){}
     };
