@@ -126,7 +126,7 @@ void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 	else if (bullet->IsHit(player->getPosition(), magnetSize))
 	{
         GLOBAL->MAGNET_COUNT += 1;
-        GLOBAL->MAGNET_SCORE += (GLOBAL->COMBO_LEVEL * 2);
+        GLOBAL->MAGNET_SCORE += ((GLOBAL->COMBO_LEVEL+1) * 2);
         
 		bullet->setIsPlayerGet(true);
 		bullet->setTargetVec(bullet->getPlayer()->getPosition());

@@ -15,6 +15,8 @@ protected:
 	virtual bool init() override;
 
 private:
+    void updateStateByCombo();
+    
 	CPlayStar();
 	virtual ~CPlayStar(){};
     

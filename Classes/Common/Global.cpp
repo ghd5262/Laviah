@@ -16,7 +16,7 @@ void Global::Clear()
     STAR_SCORE = 0;
     RUN_SCORE = 0;
     COMBO_SCORE = 0;
-    COMBO_LEVEL = 0;
+    COMBO_LEVEL = 1;
     BEST_COMBO = 0;
     STAGE_LEVEL = 0;
     PATTERN_LEVEL = 0;

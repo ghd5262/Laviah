@@ -13,7 +13,7 @@
 using namespace cocos2d;
 
 CPlayStar::CPlayStar()
-: m_OldLevel(-1){}
+: m_OldLevel(0){}
 
 CPlayStar* CPlayStar::create()
 {
@@ -55,14 +55,25 @@ void CPlayStar::CollisionWithPlayer()
 
 void CPlayStar::Execute(float delta)
 {
-    CBullet::Execute(delta);
-    if(CObjectManager::Instance()->getIsGamePause()) return;
-    if(m_OldLevel != GLOBAL->COMBO_LEVEL)
-    {
-        m_OldLevel = GLOBAL->COMBO_LEVEL;
-        auto scale = std::min(1.0f, (m_OldLevel + 1) / 10.f);
-        scale      = std::max(0.7f, scale);
-        this->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(m_OldLevel));
-        this->setScale(scale);
-    }
+    m_Time += delta;
+    if (!IsTimeUP()) return;
+    
+    this->updateStateByCombo();
+    this->setVisible(true);
+    m_FSM->Execute(delta);
+}
+
+void CPlayStar::updateStateByCombo()
+{
+    if(m_OldLevel == GLOBAL->COMBO_LEVEL) return;
+    
+    m_OldLevel = GLOBAL->COMBO_LEVEL;
+    
+    auto name  = StringUtils::format("star_%d.png", ((GLOBAL->COMBO_LEVEL - 1) % 5) + 1);
+    this->getBulletSprite()->setSpriteFrame(name);
+    this->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(m_OldLevel));
+
+//    auto scale = std::min(1.0f, (m_OldLevel + 1) / 10.f);
+//    scale      = std::max(0.7f, scale);
+    this->setScale(0.7f);
 }
