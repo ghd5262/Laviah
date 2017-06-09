@@ -1,4 +1,5 @@
 #pragma once
+#include "../MyButton.h"
 #include "../../Common/HSHUtility.h"
 #include "TutorialManager.hpp"
 #include "TutorialStep.hpp"
@@ -14,15 +15,14 @@ public:
     
     void CreateMessageBox(std::string key,
                           std::string msg,
-                          bool tailEnable = true);
-    
-    void CreateMessageBoxWithRotation(std::string key,
-                                      std::string msg,
-                                      bool tailEnable = true);
+                          bool tailEnable = true,
+                          eMYBUTTON_STATE action = eMYBUTTON_STATE::END);
     
     void NextStepAfterDelay(std::string key, float delay);
     
     void CreateBulletPattern(std::string key, int patternIdx);
+    
+    void RotationEnable(std::string key, bool enable);
     
 private:
     CTutorialHelper();

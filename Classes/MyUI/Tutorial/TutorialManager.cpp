@@ -3,6 +3,7 @@
 #include "../../MyUI/MyButton.h"
 #include "../../DataManager/DataManagerUtils.h"
 #include "../../GameObject/ObjectManager.h"
+#include "../../Scene/GameScene.h"
 
 using namespace cocos2d;
 
@@ -15,6 +16,7 @@ CTutorialManager* CTutorialManager::m_Instance = nullptr;
 CTutorialManager::CTutorialManager()
 : m_CurrentTutorial(nullptr)
 , m_IsRunning(false)
+, m_IsRotationEnable(true)
 , m_CurrentStepIndex(0){}
 
 CTutorialManager::~CTutorialManager(){
@@ -46,6 +48,21 @@ bool CTutorialManager::init()
     if (!Node::init()) return false;
     this->scheduleUpdate();
     this->setContentSize(_director->getWinSize());
+    auto size = this->getContentSize();
+    
+    CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        if(!m_IsRunning) return;
+        if(!m_IsRotationEnable) return;
+        CObjectManager::Instance()->RotationObject(-2);
+    }, eMYBUTTON_STATE::EXECUTE)
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, size.width, size.height))
+    ->setEnableSound(false)
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(size / 2)
+    ->show(this, ZORDER::POPUP)
+    ->setSwallowTouches(false);
+    
     return true;
 }
 

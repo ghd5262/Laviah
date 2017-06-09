@@ -22,6 +22,8 @@ public:
     virtual void update(float delta) override;
     
     CC_SYNTHESIZE(bool, m_IsRunning, IsRunning);
+    CC_SYNTHESIZE(bool, m_IsRotationEnable, IsRotationEnable);
+
 protected:
     virtual bool init() override;
     
