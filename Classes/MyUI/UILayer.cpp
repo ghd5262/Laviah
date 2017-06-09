@@ -92,7 +92,9 @@ bool CUILayer::init()
     this->addChild(m_LevelLabel);
     
     CMyButton::create()
-    ->addEventListener(std::bind(&CObjectManager::RotationObject, CObjectManager::Instance(), -2.f), eMYBUTTON_STATE::EXECUTE)
+    ->addEventListener([](Node* sender){
+        CObjectManager::Instance()->RotationObject(-2);
+    }, eMYBUTTON_STATE::EXECUTE)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height))
     ->setEnableSound(false)
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

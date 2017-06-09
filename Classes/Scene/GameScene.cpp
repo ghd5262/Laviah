@@ -98,7 +98,7 @@ CGameScene::~CGameScene()
 
 void CGameScene::update(float delta)
 {
-    if (m_KeyBoardSpace) CObjectManager::Instance()->RotationObject(-2.f);
+//    if (m_KeyBoardSpace) CObjectManager::Instance()->RotationObject(-2.f);
     
     CObjectManager::Instance()->Execute(delta);
 }
@@ -849,7 +849,7 @@ void CGameScene::createTutorialLayer()
     auto tutorialMananger = CTutorialManager::Instance();
     tutorialMananger->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     tutorialMananger->setPosition(m_VisibleSize / 2);
-    this->addChild(tutorialMananger, ZORDER::POPUP);
+    m_PopupLayer->addChild(tutorialMananger, ZORDER::POPUP);
 }
 
 void CGameScene::createIntroUI()

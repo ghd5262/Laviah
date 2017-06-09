@@ -23,39 +23,25 @@ CTutorialStep* CTutorialStep::build(std::string key)
     m_TutorialKey = key;
     this->setContentSize(_director->getWinSize());
 
-    if(m_TouchListener)
-    {
-        auto btn = CMyButton::create()
-        ->addEventListener([=](Node* sender){
-            CCLOG("Tutorial step touched");
-            this->retain();
-            if(m_TouchListener){
-                m_TouchListener(this);
-            }
-            this->release();
-        })
-        ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-        ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080, 1920))
-        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-        ->setButtonPosition(this->getContentSize() / 2)
-        ->show(this);
-        
-        btn->setSwallowTouches(false);
-    }
+    if(m_Button)
+        m_Button->show(this);
     
     // if there is message, create message box
     if(m_Message != ""){
         this->createMessageBox();
         m_MessageLayer->setScale(0.f);
+        
+        
         this->setOpenAnimation([=](Node* sender){
-            m_MessageLayer->runAction(EaseElasticOut::create(ScaleTo::create(0.5f, 1.0f), 0.5f));
+            auto scale   = ScaleTo::create(0.5f, 1.0f);
+            auto elastic = EaseElasticOut::create(scale, 0.5f);
+            m_MessageLayer->runAction(elastic);
         });
         
         this->setCloseAnimation([=](Node* sender){
             auto scale   = ScaleTo::create(0.5f, 0.2f);
             auto elastic = EaseElasticIn::create(scale, 1);
             m_MessageLayer->runAction(elastic);
-            this->popupTouchEnable(true);
         });
     }
     
@@ -67,12 +53,6 @@ CTutorialStep* CTutorialStep::addMessageBox(std::string message, bool tailEnable
 {
     m_Message = message;
     m_MessageBoxTail = tailEnable;
-    return this;
-}
-
-CTutorialStep* CTutorialStep::addTouchListener(const SINGLE_LISTENER& listener)
-{
-    m_TouchListener = listener;
     return this;
 }
 
@@ -91,6 +71,12 @@ CTutorialStep* CTutorialStep::addUpdateListener(const UPDATE_LISTENER& listener)
 CTutorialStep* CTutorialStep::addEndListener(const SINGLE_LISTENER& listener)
 {
     m_EndListener = listener;
+    return this;
+}
+
+CTutorialStep* CTutorialStep::addButton(CMyButton* button)
+{
+    m_Button = button;
     return this;
 }
 
