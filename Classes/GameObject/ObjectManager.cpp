@@ -487,23 +487,15 @@ void CObjectManager::zoom(cocos2d::Node* obj,
 
 void CObjectManager::InitTutorialStep()
 {
-    CTutorialStep::create()
-    ->addBeginListener([=](CTutorialStep* sender){
-        this->zoom(CGameScene::getZoomLayer(),
-                   PLANET_DEFINE::GAME_POS,
-                   0, 0.8f, 2.f, true);
-    })
-    ->addUpdateListener([=](float delta, CTutorialStep* sender){
-        if(sender->getTime() > 2.2)
-            CTutorialManager::Instance()->NextStep();
-    })
-    ->build(TUTORIAL_KEY::BEGINER)
-    ->setBackgroundVisible(true)
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
+    auto layerSize = Director::getInstance()->getWinSize();
     
-    
-    auto createMessageBox = [=](std::string msg, eMYBUTTON_STATE action = eMYBUTTON_STATE::BEGIN){
-        CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, msg, true, action);
+    auto createMessageBox = [=](std::string msg,
+                                cocos2d::Vec2 pos = Vec2::ZERO,
+                                cocos2d::Vec2 tailPos = Vec2::ANCHOR_MIDDLE_BOTTOM,
+                                eMYBUTTON_STATE action = eMYBUTTON_STATE::BEGIN){
+        if(pos == Vec2::ZERO)
+            pos = Vec2(layerSize.width * 0.5f, layerSize.height * 0.65f);
+        CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::BEGINER, msg, pos, tailPos, action);
     };
     
     auto createPattern    = [=](int index){
@@ -517,101 +509,168 @@ void CObjectManager::InitTutorialStep()
     auto rotationEnable   = [=](bool enable){
         CTutorialHelper::Instance()->RotationEnable(TUTORIAL_KEY::BEGINER, enable);
     };
-    
-    rotationEnable(false);
-    
-    createMessageBox("바이킹이 여기까지 쫒아 왔어요!!");
-    createMessageBox("이 행성도 더 이상 안전하지 않은 것 같아요!!");
-    createMessageBox("어서 빨리 탈출하세요!!");
-    
-    
-    createPattern(0);
-    nextStep(5.f);
-    createMessageBox("이건 바이킹이 쏘는 총알이에요!!");
-    createMessageBox("한번이라도 맞으면 끝이니까 조심해야해요!!");
-    nextStep(1.f);
-    
-    
-    createPattern(1);
-    nextStep(4.f);
-    rotationEnable(true);
-    createMessageBox("화면을 길게 누르면 반대 방향으로 피할 수 있어요!!");
-    
-    
-    createPattern(2);
-    nextStep(5.f);
 
+    // REVIVE
+    {
+        CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::REVIVE,
+                                                      "자! 다시 한 번 도전해보세요!",
+                                                      Vec2(layerSize.width * 0.5f, layerSize.height * 0.65f),
+                                                      Vec2::ANCHOR_MIDDLE_BOTTOM,
+                                                      eMYBUTTON_STATE::BEGIN);
+        
+        CTutorialStep::create()
+        ->addUpdateListener([=](float delta, CTutorialStep* sender){
+            if(sender->getTime() > 0.f)
+                CTutorialManager::Instance()->LoadLastSavedStep(TUTORIAL_KEY::BEGINER);
+        })
+        ->build(TUTORIAL_KEY::REVIVE)
+        ->setBackgroundVisible(true)
+        ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
+    }
     
-    createPattern(3);
-    nextStep(4.f);
-    createMessageBox("하얀색 빛은 곧 미사일이 떨어진다는 표시이니 주의 해야해요.");
-    
-    
-    createPattern(4);
-    nextStep(4.f);
-    createMessageBox("엇!! 우주에 떠다니는 크리스탈 운석이에요!! 부딪히지 않도록 주의하세요.");
-    nextStep(0.5f);
-    createMessageBox("땅에 떨어지고 나서도 잠시동안 유지되니 조심하세요!");
-    
-    
-    createPattern(5);
-    nextStep(4.f);
-    createMessageBox("행성이 불안정하기 때문에 땅에서 위험한 것들이 솟아나기도 하니까 조심 해야해요.");
-
-    
-    createPattern(6);
-    nextStep(4.f);
-    createMessageBox("오! 별이에요!!");
-    
-    
-    nextStep(2.5f);
-    createMessageBox("별을 먹을수록 콤보가 올라가요.");
-    createMessageBox("콤보가 높으면 별 한개 당 점수가 높아져요.");
-    createMessageBox("일정시간 별을 먹지 않으면 콤보가 끊기니까 주의하세요!!");
- 
-    
-    createPattern(7);
-    nextStep(3.5f);
-    createMessageBox("이제 아이템을 설명할 차례네요.");
-    createMessageBox("아이템은 공격을 피하는데 큰 도움이 될거에요.");
-    createMessageBox("먼저 모든 것을 별로 바꿔주는 별마법 아이템이에요.");
-    
-    
-    createPattern(8);
-    nextStep(6.f);
-
-    
-    createPattern(9);
-    nextStep(4.f);
-    createMessageBox("다음은 모든 것을 코인으로 바꿔주는 코인마법 아이템이에요.");
-    createMessageBox("코인으로 아이템 능력을 업그레이드 시킬수도 있다는 것 잊지마세요.");
-    
-    
-    createPattern(10);
-    nextStep(5.f);
-
-    
-    createPattern(11);
-    nextStep(4.5f);
-    createMessageBox("엇!! 이번엔 정말로 위험한 것 같은데요?!");
-    nextStep(1.5f);
-    createMessageBox("걱정하지 마시라!! 이게 바로 방어마법 아이템의 능력이죠!!");
-    createMessageBox("방어도 하고 콤보도 올리고!! 이게 바로 일석이조!!");
-    nextStep(1.f);
-
-    
-    createPattern(12);
-    nextStep(4.f);
-    createMessageBox("자!! 이제 마지막 거인마법 아이템으로 모두 날려 버리세요!!");
-    nextStep(5.f);
-    createMessageBox("마찬가지로 날려버린 것들에 대해서 콤보가 올라갑니다.");
-    nextStep(2.f);
-
-    
-    nextStep(5.f);
-    createMessageBox("이제 튜토리얼은 끝났습니다.");
-    createMessageBox("튜토리얼을 다시 보고 싶다면 설정에서 다시보기 버튼을 눌러주세요.");
-    CTutorialManager::Instance()->ChangeTutorial(TUTORIAL_KEY::BEGINER);
+    // BEGINER
+    {
+        CTutorialStep::create()
+        ->addBeginListener([=](CTutorialStep* sender){
+            this->zoom(CGameScene::getZoomLayer(),
+                       PLANET_DEFINE::GAME_POS,
+                       0, 0.8f, 2.f, true);
+        })
+        ->addUpdateListener([=](float delta, CTutorialStep* sender){
+            if(sender->getTime() > 2.2)
+                CTutorialManager::Instance()->NextStep();
+        })
+        ->build(TUTORIAL_KEY::BEGINER)
+        ->setBackgroundVisible(true)
+        ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
+        
+        rotationEnable(false);
+        
+        createMessageBox("바이킹이 여기까지 쫒아 왔어요!!");
+        createMessageBox("이 행성도 더 이상 안전하지 않은 것 같아요!!");
+        createMessageBox("어서 빨리 탈출하세요!!");
+        
+        
+        createPattern(0);
+        nextStep(2.f);
+        createMessageBox("이건 바이킹이 쏘는 총알이에요!!");
+        createMessageBox("한번이라도 맞으면 끝이니까 조심해야해요!!");
+        
+        
+        nextStep(3.f);
+        createPattern(1);
+        nextStep(1.f);
+        rotationEnable(true);
+        createMessageBox("화면을 길게 누르면 반대 방향으로 피할 수 있어요!!");
+        
+        
+        nextStep(4.f);
+        createMessageBox("test1");
+        createPattern(2);
+        
+        
+        nextStep(7.f);
+        createMessageBox("test2");
+        createPattern(3);
+        nextStep(2.f);
+        createMessageBox("하얀색 빛은 곧 미사일이 떨어진다는 표시이니 주의 해야해요.");
+        
+        
+        nextStep(3.5f);
+        createMessageBox("test3");
+        createPattern(4);
+        nextStep(2.f);
+        createMessageBox("위험해요!! 우주에 떠다니는 크리스탈 운석이에요.");
+        createMessageBox("스치지 않도록 주의하세요.");
+        nextStep(1.0f);
+        createMessageBox("땅에 떨어지고 나서도 잠시동안 유지되니까 조심하세요!");
+        
+        
+        nextStep(4.f);
+        createMessageBox("test4");
+        createPattern(5);
+        nextStep(1.f);
+        createMessageBox("행성이 불안정하기 때문에 땅에서 위험한 것들이 솟아나기도 하니까 조심 해야해요.");
+        
+        
+        nextStep(5.f);
+        createMessageBox("test5");
+        createPattern(6);
+        nextStep(1.f);
+        createMessageBox("오! 별이에요!!");
+        nextStep(2.f);
+        createMessageBox("별을 먹으면 점수가 올라요.",
+                         Vec2(layerSize.width * 0.45f, layerSize.height * 0.91f),
+                         Vec2::ANCHOR_TOP_LEFT);
+        
+        
+        nextStep(3.5f);
+        createMessageBox("별을 먹을수록 콤보가 올라가요.",
+                         Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
+        createMessageBox("콤보가 높으면 별 한개 당 점수가 높아져요.",
+                         Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
+        createMessageBox("일정시간 별을 먹지 않으면 콤보가 끊기니까 주의하세요!!",
+                         Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
+        
+        createMessageBox("test6");
+        createPattern(7);
+        nextStep(0.5f);
+        createMessageBox("이제 아이템을 설명할 차례네요.");
+        createMessageBox("아이템은 공격을 피하는데 큰 도움이 될거에요.");
+        createMessageBox("먼저 모든 것을 별로 바꿔주는 별마법 아이템이에요.");
+        
+        
+        nextStep(4.5f);
+        createMessageBox("test7");
+        createPattern(8);
+        
+        nextStep(9.0f);
+        createMessageBox("test8");
+        createPattern(9);
+        nextStep(1.f);
+        createMessageBox("다음은 모든 것을 코인으로 바꿔주는 코인마법 아이템이에요.");
+        createMessageBox("코인으로 아이템 능력을 업그레이드 시킬수도 있다는 사실!! 잊지마세요.");
+        
+        nextStep(4.0f);
+        createMessageBox("test9");
+        createPattern(10);
+        
+        nextStep(9.0f);
+        createMessageBox("test10");
+        createPattern(11);
+        nextStep(1.5f);
+        createMessageBox("이런, 이번엔 정말로 위험한 것 같은데요?!");
+        nextStep(1.5f);
+        createMessageBox("걱정하지 마시라!! 이게 바로 방어마법 아이템의 능력이죠!!");
+        createMessageBox("방어도 하고 콤보도 올리고!! 이게 바로 일석이조!!");
+        
+        nextStep(2.f);
+        createMessageBox("test11");
+        createPattern(12);
+        nextStep(2.f);
+        createMessageBox("자!! 이제 마지막 거인마법 아이템으로 모두 날려 버리세요!!");
+        nextStep(3.f);
+        createMessageBox("마찬가지로 날려버린 것들에 대해서 콤보가 올라갑니다.");
+        nextStep(6.f);
+        
+        
+        createMessageBox("이제 튜토리얼은 끝났습니다.");
+        createMessageBox("튜토리얼을 다시 보고 싶다면 설정에서 다시보기 버튼을 눌러주세요.");
+        createMessageBox("그럼, 힘내서 함께 탈출하자고요!!");
+        CTutorialStep::create()
+        ->addBeginListener([=](CTutorialStep* sender){
+            GLOBAL->Clear();
+        })
+        ->addUpdateListener([=](float delta, CTutorialStep* sender){
+            if(sender->getTime() > 0)
+                CTutorialManager::Instance()->NextStep();
+        })
+        ->build(TUTORIAL_KEY::BEGINER)
+        ->setBackgroundVisible(true)
+        ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
+        
+        CTutorialManager::Instance()->ChangeTutorial(TUTORIAL_KEY::BEGINER);
+    }
 }
 
 void CObjectManager::Share()

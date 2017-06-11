@@ -1,3 +1,4 @@
+#pragma once
 #include "../Popup.h"
 
 class CMyButton;
@@ -11,7 +12,10 @@ public:
     CTutorialStep* addUpdateListener(const UPDATE_LISTENER& listener);
     CTutorialStep* addEndListener(const SINGLE_LISTENER& listener);
     CTutorialStep* addButton(CMyButton* button);
-    CTutorialStep* addMessageBox(std::string message, bool tailEnable = false);
+    CTutorialStep* addMessageBox(std::string message);
+    CTutorialStep* setMessageBoxPosition(cocos2d::Vec2 position);
+    CTutorialStep* setTailPosition(cocos2d::Vec2 tailPosition);
+    CTutorialStep* SaveStepEnable(bool enable);
     CTutorialStep* build(std::string key);
     
     void Begin();
@@ -33,10 +37,12 @@ private:
     , m_UpdateListener(nullptr)
     , m_Button(nullptr)
     , m_MessageLayer(nullptr)
+    , m_MessageBoxPosition(cocos2d::Vec2::ZERO)
+    , m_MessageBoxTailPosition(cocos2d::Vec2::ZERO)
     , m_TutorialKey("")
     , m_Message("")
     , m_Time(0.f)
-    , m_MessageBoxTail(false){}
+    , m_SaveStepEnable(false){}
 
 public:
     virtual ~CTutorialStep(){};
@@ -46,7 +52,9 @@ private:
     SINGLE_LISTENER m_EndListener;
     UPDATE_LISTENER m_UpdateListener;
     CMyButton* m_Button;
+    cocos2d::Vec2 m_MessageBoxPosition;
+    cocos2d::Vec2 m_MessageBoxTailPosition;
     std::string m_TutorialKey;
     std::string m_Message;
-    bool m_MessageBoxTail;
+    bool m_SaveStepEnable;
 };

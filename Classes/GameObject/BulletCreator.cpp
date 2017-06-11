@@ -22,6 +22,8 @@ CBulletCreator::CBulletCreator()
 , m_Time(0.f)
 , m_CoinTimer(0.f)
 , m_LineIntervalLimit(0.f)
+, m_CreateDistance(0.f)
+, m_StandardDelay(0.f)
 , m_Running(false)
 , m_IsFlip(false)
 {}
@@ -69,17 +71,19 @@ void CBulletCreator::Update(float delta)
 		BULLETCREATOR::COIN_CREATE = true;
 		m_CoinTimer = 0.f;
 	}
-	this->createOneLine(m_CurrentPattern, --m_CurrentHeight, CREATE_DISTANCE, m_RotationAngle, true);
+	this->createOneLine(m_CurrentPattern, --m_CurrentHeight, m_CreateDistance, m_RotationAngle, true);
 	m_Time = 0.0f;
 }
 
 void CBulletCreator::Clear()
 {
-    m_CurrentHeight = 0;
+    m_CurrentHeight     = 0;
     //m_RotationAngle = 0.f;
-    m_CurrentPattern = nullptr;
-    m_Running = false;
-    m_IsFlip = false;
+    m_CreateDistance    = 0.f;
+    m_StandardDelay     = 0.f;
+    m_CurrentPattern    = nullptr;
+    m_Running           = false;
+    m_IsFlip            = false;
 }
 
 void CBulletCreator::Rotation(float speed)
@@ -103,11 +107,18 @@ void CBulletCreator::setData(const sBULLET_PATTERN* data)
     if(m_Running) return;
     
 	m_CurrentPattern = data;
-	m_CurrentHeight = data->_height;
+	m_CurrentHeight  = data->_height;
 //	m_LineIntervalLimit = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;
-	m_Running = true;
-    if (!CTutorialManager::Instance()->getIsRunning())
-        m_IsFlip = random<int>(0, 1);
+	m_Running        = true;
+    m_IsFlip         = random<int>(0, 1);
+    m_CreateDistance = 2700.f;
+    
+    if (CTutorialManager::Instance()->getIsRunning()) {
+        m_IsFlip         = false;
+        m_CreateDistance = 1700.f;
+    }
+    
+    m_StandardDelay  = (m_CreateDistance - PLANET_DEFINE::BOUNDING_RADIUS) / BULLET_STANDARD_SPEED;
 }
 
 void CBulletCreator::createOneLine(const sBULLET_PATTERN* data,
@@ -203,6 +214,13 @@ void CBulletCreator::CreateConstellation(const sBULLET_PATTERN* data)
     }
 }
 
+float CBulletCreator::getCalculatedDelayTime(float speed)
+{
+    auto standardDelay  = this->getStandardDelay();
+    auto createDistance = this->getCreateDistance();
+    return (standardDelay - ((createDistance - BOUNDING_RADIUS) / speed));
+}
+
 CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, bool isDelay/* = true*/)
 {
     CBullet* bullet = nullptr;
@@ -234,10 +252,11 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
     if(PERFORMANCETEST)
         data._power = 0;
     
-	if (isDelay && data._speed > BULLET_STANDARD_SPEED)
-        data._delayTime = (BULLET_STANDARD_DELAY - ((CREATE_DISTANCE - BOUNDING_RADIUS) / data._speed));
-
-    CObjectManager::Instance()->getBulletCreator()->setBulletDataByUserData(data, symbol);
+    auto creator = CObjectManager::Instance()->getBulletCreator();
+    if (isDelay && data._speed > BULLET_STANDARD_SPEED){
+        data._delayTime = creator->getCalculatedDelayTime(data._speed);
+    }
+    creator->setBulletDataByUserData(data, symbol);
 
     bullet
     ->setBulletInfo(data)

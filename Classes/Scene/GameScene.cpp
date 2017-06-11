@@ -821,8 +821,7 @@ void CGameScene::createRivalRankLayer()
     ->setRankUPListener([=](int rank){
         // create rival bullet
         auto data   = CFacebookManager::Instance()->getFriendByRank(rank);
-        auto bullet = CBulletCreator::CreateBullet('8', random<int>(0, 360),
-                                                   BULLETCREATOR::CREATE_DISTANCE, false);
+        auto bullet = CBulletCreator::CreateBullet('8', random<int>(0, 360), 2700, false);
         
         CUrlSprite::create()
         ->setUrl(data->_url)

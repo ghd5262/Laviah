@@ -1,6 +1,10 @@
 #include "GameEndPopup.hpp"
 #include "../MyButton.h"
+#include "../Tutorial/TutorialManager.hpp"
+#include "../Tutorial/TutorialHelper.hpp"
 #include "../../Scene/GameScene.h"
+#include "../../GameObject/ObjectManager.h"
+#include "../../GameObject/Player.h"
 
 CGameEndPopup* CGameEndPopup::create()
 {
@@ -68,8 +72,16 @@ bool CGameEndPopup::init()
 }
 
 void CGameEndPopup::End(Node* sender){
-    if (GLOBAL->RUN_SCORE < 0 || GLOBAL->REVIVE_COUNT)	CGameScene::getGameScene()->GameResult();
-    else                                                CGameScene::getGameScene()->WatchVideo();
-    
+    if (CTutorialManager::Instance()->getIsRunning()){
+        CObjectManager::Instance()->ReturnToMemoryBlockAll();
+        CObjectManager::Instance()->getPlayer()->PlayerAlive();
+        CGameScene::getGameScene()->GameResume();
+        CTutorialManager::Instance()->ChangeTutorial(TUTORIAL_KEY::REVIVE);
+    }
+    else{
+        if (GLOBAL->RUN_SCORE < 0 || GLOBAL->REVIVE_COUNT)	CGameScene::getGameScene()->GameResult();
+        else                                                CGameScene::getGameScene()->WatchVideo();
+    }
+
     this->popupClose();
 }

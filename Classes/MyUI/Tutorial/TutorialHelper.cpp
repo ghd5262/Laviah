@@ -17,9 +17,17 @@ CTutorialHelper* CTutorialHelper::Instance()
 }
 
 void CTutorialHelper::CreateMessageBox(std::string key,
+                                       std::string msg)
+{
+    auto layerSize = Director::getInstance()->getWinSize();
+    this->CreateMessageBox(key, msg, layerSize / 2, Vec2::ANCHOR_MIDDLE_BOTTOM, eMYBUTTON_STATE::BEGIN);
+}
+
+void CTutorialHelper::CreateMessageBox(std::string key,
                                        std::string msg,
-                                       bool tailEnable/* = true */,
-                                       eMYBUTTON_STATE action/* = eMYBUTTON_STATE::END */)
+                                       cocos2d::Vec2 pos,
+                                       cocos2d::Vec2 tailPos,
+                                       eMYBUTTON_STATE action)
 {
     auto layerSize = Director::getInstance()->getWinSize();
     auto button    = CMyButton::create()
@@ -33,14 +41,16 @@ void CTutorialHelper::CreateMessageBox(std::string key,
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(layerSize / 2)
     ->setEnableSound(false);
-
+    
     CTutorialStep::create()
     ->addBeginListener([](Node* sender){
         CObjectManager::Instance()->SpeedControl(0, 0, true);
         CGameScene::getZoomLayer()->pause();
     })
     ->addButton(button)
-    ->addMessageBox(msg, tailEnable)
+    ->addMessageBox(msg)
+    ->setMessageBoxPosition(pos)
+    ->setTailPosition(tailPos)
     ->build(key)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
 }
@@ -64,12 +74,13 @@ void CTutorialHelper::CreateBulletPattern(std::string key, int patternIdx)
     CTutorialStep::create()
     ->addBeginListener([=](CTutorialStep* sender){
         auto data = CBulletPatternDataManager::Instance()->getTutorialPatternByIndex(patternIdx);
-        CObjectManager::Instance()->getBulletCreator()->setRotationAngle(0.f);
+        CObjectManager::Instance()->getBulletCreator()->setRotationAngle(140.f);
         CObjectManager::Instance()->getBulletCreator()->setPattern(data);
     })
     ->addUpdateListener([=](float delta, CTutorialStep* sender){
         CTutorialManager::Instance()->NextStep();
     })
+    ->SaveStepEnable(true)
     ->build(TUTORIAL_KEY::BEGINER)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA);
 }

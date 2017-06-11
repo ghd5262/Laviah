@@ -7,6 +7,7 @@
 
 namespace TUTORIAL_KEY {
     const std::string BEGINER        = "TUTORIAL_BEGINER";
+    const std::string REVIVE         = "TUTORIAL_REVIVE";
 };
 
 class CTutorialHelper{
@@ -14,9 +15,13 @@ public:
     static CTutorialHelper* Instance();
     
     void CreateMessageBox(std::string key,
+                          std::string msg);
+    
+    void CreateMessageBox(std::string key,
                           std::string msg,
-                          bool tailEnable = true,
-                          eMYBUTTON_STATE action = eMYBUTTON_STATE::END);
+                          cocos2d::Vec2 pos,
+                          cocos2d::Vec2 tailPos,
+                          eMYBUTTON_STATE action);
     
     void NextStepAfterDelay(std::string key, float delay);
     

@@ -1,6 +1,7 @@
 #include "TutorialStep.hpp"
 #include "TutorialManager.hpp"
 #include "../MyButton.h"
+//#include <array>
 
 CTutorialStep* CTutorialStep::create()
 {
@@ -45,14 +46,7 @@ CTutorialStep* CTutorialStep::build(std::string key)
         });
     }
     
-    CTutorialManager::Instance()->addTutorial(m_TutorialKey, this);
-    return this;
-}
-
-CTutorialStep* CTutorialStep::addMessageBox(std::string message, bool tailEnable/* = false*/)
-{
-    m_Message = message;
-    m_MessageBoxTail = tailEnable;
+    CTutorialManager::Instance()->addStep(m_TutorialKey, this);
     return this;
 }
 
@@ -80,10 +74,38 @@ CTutorialStep* CTutorialStep::addButton(CMyButton* button)
     return this;
 }
 
+CTutorialStep* CTutorialStep::addMessageBox(std::string message)
+{
+    m_Message = message;
+    return this;
+}
+
+CTutorialStep* CTutorialStep::setMessageBoxPosition(cocos2d::Vec2 position)
+{
+    m_MessageBoxPosition = position;
+    return this;
+}
+
+CTutorialStep* CTutorialStep::setTailPosition(cocos2d::Vec2 tailPosition)
+{
+    m_MessageBoxTailPosition = tailPosition;
+    return this;
+}
+
+CTutorialStep* CTutorialStep::SaveStepEnable(bool enable)
+{
+    m_SaveStepEnable = enable;
+    return this;
+}
+
 void CTutorialStep::Begin()
 {
     // call begin function
     this->callListener(m_BeginListener);
+    
+    // Save step
+    if(m_SaveStepEnable)
+        CTutorialManager::Instance()->SaveCurrentStep(m_TutorialKey);
 }
 
 void CTutorialStep::Update(float delta)
@@ -115,8 +137,7 @@ void CTutorialStep::createMessageBox()
     m_MessageLayer->setOpacity(255);
     m_MessageLayer->setIgnoreAnchorPointForPosition(false);
     m_MessageLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_MessageLayer->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                                     this->getContentSize().height * 0.65f));
+    m_MessageLayer->setPosition(m_MessageBoxPosition);
     this->addChild(m_MessageLayer);
 
     label->setAlignment(TextHAlignment::LEFT, TextVAlignment::CENTER);
@@ -126,11 +147,12 @@ void CTutorialStep::createMessageBox()
     label->setPosition(m_MessageLayer->getContentSize() / 2);
     m_MessageLayer->addChild(label);
     
-    if(m_MessageBoxTail)
+    if(m_MessageBoxTailPosition != cocos2d::Vec2::ZERO)
     {
         auto tail = Sprite::create("messageBoxTail.png");
         tail->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
-        tail->setPosition(Vec2(m_MessageLayer->getContentSize().width * 0.5f, 0));
+        tail->setPosition(Vec2(m_MessageLayer->getContentSize().width * m_MessageBoxTailPosition.x,
+                               m_MessageLayer->getContentSize().height * m_MessageBoxTailPosition.y));
         tail->setColor(m_MessageLayer->getColor());
         tail->setOpacity(m_MessageLayer->getOpacity());
         m_MessageLayer->addChild(tail);

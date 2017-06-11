@@ -8,11 +8,9 @@
 
 namespace BULLETCREATOR{
 	const static float PATTERN_PADDING_LIMIT	= 1.5f;
-	const static float CREATE_DISTANCE			= 2700.f;
 	const static float ROTATION_SPEED			= 90.f;
 	const static float BULLET_STANDARD_SPEED	= 400.f;
 	const static float BULLET_STANDARD_PADDING  = 60.f;
-	const static float BULLET_STANDARD_DELAY	= (CREATE_DISTANCE - PLANET_DEFINE::BOUNDING_RADIUS) / BULLET_STANDARD_SPEED;
 	const static float COIN_CREATE_LIMIT_TIME   = 5.f;
 	static bool COIN_CREATE						= false;
 };
@@ -44,7 +42,8 @@ public:
                            float angle,
                            float distance,
                            eITEM_FLAG type = eITEM_FLAG_none);
-        
+    
+    
     static CBullet* CreateBullet(char symbol,
                                  float angle,
                                  float distance,
@@ -55,6 +54,8 @@ public:
     CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterInfo, CharacterInfo);
 	CC_SYNTHESIZE(float, m_RotationAngle, RotationAngle);
     CC_SYNTHESIZE(float, m_LineIntervalLimit, LineIntervalLimit);
+    CC_SYNTHESIZE(float, m_CreateDistance, CreateDistance);
+    CC_SYNTHESIZE(float, m_StandardDelay, StandardDelay);
     CC_SYNTHESIZE(bool, m_IsFlip, IsFlip);
 
 private:
@@ -75,7 +76,8 @@ private:
     std::string getOneLineOfPattern(const char* pattern, int width, int curHeight);
   
     void setBulletDataByUserData(sBULLET_PARAM& data, char symbol);
-    
+    float getCalculatedDelayTime(float speed);
+
     CBulletCreator();
     virtual ~CBulletCreator();
     
