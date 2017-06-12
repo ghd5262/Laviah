@@ -132,7 +132,7 @@ void CFacebookManager::SaveScore(int score)
 bool CFacebookManager::IsScoresEnabled()
 {
     if(!sdkbox::PluginFacebook::isLoggedIn()) return false;
-    if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_PUBLISH_POST)) return false;
+    if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_READ_USER_FRIENDS)) return false;
     
     return true;
 }
