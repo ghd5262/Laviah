@@ -74,7 +74,7 @@ void CTutorialHelper::CreateBulletPattern(std::string key, int patternIdx)
     CTutorialStep::create()
     ->addBeginListener([=](CTutorialStep* sender){
         auto data = CBulletPatternDataManager::Instance()->getTutorialPatternByIndex(patternIdx);
-        CObjectManager::Instance()->getBulletCreator()->setRotationAngle(140.f);
+        CObjectManager::Instance()->getBulletCreator()->setRotationAngle(150.f);
         CObjectManager::Instance()->getBulletCreator()->setPattern(data);
     })
     ->addUpdateListener([=](float delta, CTutorialStep* sender){

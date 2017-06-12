@@ -46,12 +46,15 @@ public:
     CC_SYNTHESIZE(API_LISTENER, m_MyInfoListener, MyInfoListener);
     CC_SYNTHESIZE(API_LISTENER, m_FriendListListener, FriendListListener);
     
+    static void Login();
     static void CheckFacebookStatus();
     static void RequestMyInfo();
     static void RequestFriendList();
     static void SaveScore(int score);
     static bool IsScoresEnabled();
-    
+    static bool IsPermissionAllowed(std::string id);
+    static void RequestPermission(std::string id);
+
 private:
     //Facebook callback
     virtual void onLogin(bool isLogin, const std::string& msg) override;

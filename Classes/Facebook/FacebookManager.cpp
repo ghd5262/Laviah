@@ -87,6 +87,14 @@ void CFacebookManager::ClearData()
     DATA_MANAGER_UTILS::mapDeleteAndClean(m_FBFriendList);
 }
 
+void CFacebookManager::Login()
+{
+    std::vector<std::string> permissions;
+    permissions.push_back(sdkbox::FB_PERM_READ_EMAIL);
+    permissions.push_back(sdkbox::FB_PERM_READ_USER_FRIENDS);
+    sdkbox::PluginFacebook::login(permissions);
+}
+
 void CFacebookManager::CheckFacebookStatus()
 {
     CCLOG("##FB> permission list: ");
@@ -124,10 +132,27 @@ void CFacebookManager::SaveScore(int score)
 bool CFacebookManager::IsScoresEnabled()
 {
     if(!sdkbox::PluginFacebook::isLoggedIn()) return false;
-    for(auto permission : sdkbox::PluginFacebook::getPermissionList())
-        if(permission == sdkbox::FB_PERM_PUBLISH_POST) return true;
+    if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_PUBLISH_POST)) return false;
     
+    return true;
+}
+
+bool CFacebookManager::IsPermissionAllowed(std::string id)
+{
+    for(auto permission : sdkbox::PluginFacebook::getPermissionList())
+        if(permission == id)
+            return true;
     return false;
+}
+
+void CFacebookManager::RequestPermission(std::string id)
+{
+    if(IsPermissionAllowed(id)) return;
+    
+    if(id == sdkbox::FB_PERM_READ_USER_FRIENDS)
+        sdkbox::PluginFacebook::requestReadPermissions({sdkbox::FB_PERM_READ_USER_FRIENDS});
+    else if(id == sdkbox::FB_PERM_PUBLISH_POST)
+        sdkbox::PluginFacebook::requestPublishPermissions({sdkbox::FB_PERM_PUBLISH_POST});
 }
 
 // on "init" you need to initialize your instance
@@ -140,9 +165,11 @@ bool CFacebookManager::init()
     this->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     
     sdkbox::PluginFacebook::setListener(this);
-    sdkbox::PluginFacebook::init();
 
     m_MyFacebookData = new FBUSER_PARAM();
+    
+    CFacebookManager::RequestMyInfo();
+    CFacebookManager::RequestFriendList();
     
     return true;
 }
@@ -325,8 +352,8 @@ void CFacebookManager::onGetUserInfo( const sdkbox::FBGraphUser& userInfo )
     CCLOG("email       : %s", userInfo.getEmail().c_str());
     CCLOG("installed   : %s", userInfo.isInstalled ? "installed" : "non-installed");
     
-    CFacebookManager::RequestMyInfo();
-    CFacebookManager::RequestFriendList();
+//    CFacebookManager::RequestMyInfo();
+//    CFacebookManager::RequestFriendList();
 }
 
 const FBUSER_PARAM* CFacebookManager::createNewFriendData(std::string id)
@@ -345,6 +372,7 @@ void CFacebookManager::initFacebookUserDataByJson(FBUSER_PARAM* param,
     param->_name            = data["name"].asString();
     param->_firstName       = data["first_name"].asString();
     param->_lastName        = data["last_name"].asString();
+    param->_installed       = data["installed"].asBool();
     
     auto picture            = data["picture"]["data"];
     param->_url             = picture["url"].asString();

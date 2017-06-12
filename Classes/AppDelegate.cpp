@@ -56,6 +56,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // run
     director->runWithScene(scene);
     
+    // facebook sdk init
+    sdkbox::PluginFacebook::init();
+
     return true;
 }
 

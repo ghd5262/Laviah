@@ -32,6 +32,7 @@ public:
     void OpenCharacterSelectPopup();
     void OpenRankPopup();
     void OpenRankUpPopup();
+    void OpenFacebookLoginPopup();
     void OpenFBTestPopup();
     void OpenAchievementPopup();
     void GameStart();
@@ -82,6 +83,7 @@ private:
     void createCharacterSelectPopup();
     void createRankPopup();
     void createRankUpPopup();
+    void createFacebookLoginPopup();
     void createAchievementPopup();
     void createBonusTimeLayer();
 	void createRandomCoin();

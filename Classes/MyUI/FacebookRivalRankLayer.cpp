@@ -2,6 +2,7 @@
 #include "MyButton.h"
 #include "UrlSprite.hpp"
 #include "ScoreUI.h"
+#include "Tutorial/TutorialManager.hpp"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 #include "../GameObject/ObjectManager.h"
@@ -152,6 +153,7 @@ void CFacebookRivalRankLayer::callListener(int rank)
 {
     if(!m_RankUPListener) return;
     if(rank >= CFacebookManager::Instance()->getMyRank()) return;
+    if(CTutorialManager::Instance()->isRunning()) return;
     
     // 나의 랭크를 갱신한 경우에만 실행함.
     this->retain();

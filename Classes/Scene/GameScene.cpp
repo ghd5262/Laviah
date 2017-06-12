@@ -269,6 +269,11 @@ void CGameScene::OpenRankUpPopup()
     m_ZoomLayer->pause();
 }
 
+void CGameScene::OpenFacebookLoginPopup()
+{
+    this->createFacebookLoginPopup();
+}
+
 void CGameScene::OpenFBTestPopup()
 {
     CFacebookAPITestPopup::create()
@@ -514,6 +519,42 @@ void CGameScene::createRankUpPopup()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
+    ->show(m_PopupLayer, ZORDER::POPUP);
+}
+
+void CGameScene::createFacebookLoginPopup()
+{
+    auto loginFailed = [=](){
+        this->CreateAlertPopup()
+        ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
+        ->setMessage("Login failed")
+        ->show(m_PopupLayer, ZORDER::POPUP);
+        return true;
+    };
+    
+    auto afterLogin  = [=](){
+        CFacebookManager::Instance()->ClearData();
+        CFacebookManager::RequestFriendList();
+        CFacebookManager::RequestMyInfo();
+        
+        CFacebookManager::Instance()->setMyInfoListener([=](bool isSucceed){
+            CFacebookManager::RequestPermission(sdkbox::FB_PERM_READ_USER_FRIENDS);
+        });
+    };
+    
+    this->CreateAlertPopup()
+    ->setPositiveButton([=](Node* sender){
+        if(!sdkbox::PluginFacebook::isLoggedIn()){
+            CFacebookManager::Login();
+            CFacebookManager::Instance()->setLoginListener([=](bool isLogin, std::string error){
+                if(!isLogin && loginFailed()) return;
+                afterLogin();
+            });
+        }
+        else afterLogin();
+    }, TRANSLATE("BUTTON_YES"))
+    ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_NO"))
+    ->setMessage("Do you want to login on facebook to use the Record?")
     ->show(m_PopupLayer, ZORDER::POPUP);
 }
 

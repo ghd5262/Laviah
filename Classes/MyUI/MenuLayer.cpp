@@ -6,6 +6,7 @@
 #include "Popup/TitleCompleteNoticePopup.hpp"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
+#include "../Facebook/FacebookManager.hpp"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Rocket.h"
 #include "../GameObject/Planet.h"
@@ -179,7 +180,10 @@ bool CMenuLayer::init()
     
     // option button
     createButton([=](Node* sender){
-        CGameScene::getGameScene()->OpenRankPopup();
+        if(CFacebookManager::IsScoresEnabled())
+            CGameScene::getGameScene()->OpenRankPopup();
+        else
+            CGameScene::getGameScene()->OpenFacebookLoginPopup();
     }, "rankingIcon.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f));
     
     // option button

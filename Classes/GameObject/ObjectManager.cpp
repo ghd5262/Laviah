@@ -546,14 +546,14 @@ void CObjectManager::InitTutorialStep()
         
         rotationEnable(false);
         
-        createMessageBox("바이킹이 여기까지 쫒아 왔어요!!");
+        createMessageBox("우주 해적이 여기까지 쫒아 왔어요!!");
         createMessageBox("이 행성도 더 이상 안전하지 않은 것 같아요!!");
         createMessageBox("어서 빨리 탈출하세요!!");
         
         
         createPattern(0);
-        nextStep(2.f);
-        createMessageBox("이건 바이킹이 쏘는 총알이에요!!");
+        nextStep(2.5f);
+        createMessageBox("이건 해적들이 쏘는 총알이에요!!");
         createMessageBox("한번이라도 맞으면 끝이니까 조심해야해요!!");
         
         
@@ -565,19 +565,19 @@ void CObjectManager::InitTutorialStep()
         
         
         nextStep(4.f);
-        createMessageBox("test1");
+//        createMessageBox("test1");
         createPattern(2);
         
         
         nextStep(7.f);
-        createMessageBox("test2");
+//        createMessageBox("test2");
         createPattern(3);
         nextStep(2.f);
         createMessageBox("하얀색 빛은 곧 미사일이 떨어진다는 표시이니 주의 해야해요.");
         
         
         nextStep(3.5f);
-        createMessageBox("test3");
+//        createMessageBox("test3");
         createPattern(4);
         nextStep(2.f);
         createMessageBox("위험해요!! 우주에 떠다니는 크리스탈 운석이에요.");
@@ -587,24 +587,24 @@ void CObjectManager::InitTutorialStep()
         
         
         nextStep(4.f);
-        createMessageBox("test4");
+//        createMessageBox("test4");
         createPattern(5);
         nextStep(1.f);
         createMessageBox("행성이 불안정하기 때문에 땅에서 위험한 것들이 솟아나기도 하니까 조심 해야해요.");
         
         
         nextStep(5.f);
-        createMessageBox("test5");
+//        createMessageBox("test5");
         createPattern(6);
         nextStep(1.f);
         createMessageBox("오! 별이에요!!");
-        nextStep(2.f);
+        nextStep(3.5f);
         createMessageBox("별을 먹으면 점수가 올라요.",
                          Vec2(layerSize.width * 0.45f, layerSize.height * 0.91f),
                          Vec2::ANCHOR_TOP_LEFT);
         
         
-        nextStep(3.5f);
+        nextStep(2.5f);
         createMessageBox("별을 먹을수록 콤보가 올라가요.",
                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
         createMessageBox("콤보가 높으면 별 한개 당 점수가 높아져요.",
@@ -612,7 +612,7 @@ void CObjectManager::InitTutorialStep()
         createMessageBox("일정시간 별을 먹지 않으면 콤보가 끊기니까 주의하세요!!",
                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
         
-        createMessageBox("test6");
+//        createMessageBox("test6");
         createPattern(7);
         nextStep(0.5f);
         createMessageBox("이제 아이템을 설명할 차례네요.");
@@ -621,31 +621,31 @@ void CObjectManager::InitTutorialStep()
         
         
         nextStep(4.5f);
-        createMessageBox("test7");
+//        createMessageBox("test7");
         createPattern(8);
         
         nextStep(9.0f);
-        createMessageBox("test8");
+//        createMessageBox("test8");
         createPattern(9);
         nextStep(1.f);
         createMessageBox("다음은 모든 것을 코인으로 바꿔주는 코인마법 아이템이에요.");
         createMessageBox("코인으로 아이템 능력을 업그레이드 시킬수도 있다는 사실!! 잊지마세요.");
         
         nextStep(4.0f);
-        createMessageBox("test9");
+//        createMessageBox("test9");
         createPattern(10);
         
         nextStep(9.0f);
-        createMessageBox("test10");
+//        createMessageBox("test10");
         createPattern(11);
-        nextStep(1.5f);
+        nextStep(2.5f);
         createMessageBox("이런, 이번엔 정말로 위험한 것 같은데요?!");
-        nextStep(1.5f);
+        nextStep(1.0f);
         createMessageBox("걱정하지 마시라!! 이게 바로 방어마법 아이템의 능력이죠!!");
         createMessageBox("방어도 하고 콤보도 올리고!! 이게 바로 일석이조!!");
         
         nextStep(2.f);
-        createMessageBox("test11");
+//        createMessageBox("test11");
         createPattern(12);
         nextStep(2.f);
         createMessageBox("자!! 이제 마지막 거인마법 아이템으로 모두 날려 버리세요!!");
