@@ -61,7 +61,7 @@ bool CWorkshopPopupDP::init()
         ->setNegativeButton([=](Node* sender){
         }, TRANSLATE("BUTTON_NO"))
         ->setMessage(StringUtils::format(TRANSLATE("CHARACTER_BUY_CHECK").c_str(), itemName.c_str()))
-        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+        ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 260, 200))
     ->setContents(TRANSLATE("WORKSHOP_BUTTON_BUY"))

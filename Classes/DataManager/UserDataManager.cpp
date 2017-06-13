@@ -381,7 +381,7 @@ void CUserDataManager::saveUserDataToGoogleCloud(std::string key, std::string da
         }, TRANSLATE("BUTTON_OK"))
         ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_CANCEL"))
         ->setMessage(TRANSLATE("OPTION_DATASAVE_NETWORK_CHECK"))
-        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+        ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
     }
 }
 

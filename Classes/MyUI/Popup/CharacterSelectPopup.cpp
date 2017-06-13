@@ -251,7 +251,7 @@ void CCharacterSelectPopup::Select(Node* sender)
         ->setNegativeButton([=](Node* sender){
         }, TRANSLATE("BUTTON_NO"))
         ->setMessage(StringUtils::format(TRANSLATE("CHARACTER_BUY_CHECK").c_str(), characterName.c_str()))
-        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+        ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
     }
 }
 

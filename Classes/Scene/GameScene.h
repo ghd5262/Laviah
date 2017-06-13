@@ -32,7 +32,7 @@ public:
     void OpenCharacterSelectPopup();
     void OpenRankPopup();
     void OpenRankUpPopup();
-    void OpenFacebookLoginPopup();
+    void OpenPermRequestPopup(std::string permission);
     void OpenFBTestPopup();
     void OpenAchievementPopup();
     void GameStart();
@@ -83,7 +83,7 @@ private:
     void createCharacterSelectPopup();
     void createRankPopup();
     void createRankUpPopup();
-    void createFacebookLoginPopup();
+    void createPermRequestPopup(std::string permission);
     void createAchievementPopup();
     void createBonusTimeLayer();
 	void createRandomCoin();

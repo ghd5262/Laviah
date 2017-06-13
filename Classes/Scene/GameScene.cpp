@@ -269,9 +269,9 @@ void CGameScene::OpenRankUpPopup()
     m_ZoomLayer->pause();
 }
 
-void CGameScene::OpenFacebookLoginPopup()
+void CGameScene::OpenPermRequestPopup(std::string permission)
 {
-    this->createFacebookLoginPopup();
+    this->createPermRequestPopup(permission);
 }
 
 void CGameScene::OpenFBTestPopup()
@@ -522,39 +522,47 @@ void CGameScene::createRankUpPopup()
     ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
-void CGameScene::createFacebookLoginPopup()
+void CGameScene::createPermRequestPopup(std::string permission)
 {
-    auto loginFailed = [=](){
-        this->CreateAlertPopup()
-        ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-        ->setMessage("Login failed")
-        ->show(m_PopupLayer, ZORDER::POPUP);
-        return true;
-    };
+    std::function<void()> afterPermission = nullptr;
+    auto message = "";
     
-    auto afterLogin  = [=](){
-        CFacebookManager::Instance()->ClearData();
-        CFacebookManager::RequestFriendList();
-        CFacebookManager::RequestMyInfo();
-        
-        CFacebookManager::Instance()->setMyInfoListener([=](bool isSucceed){
-            CFacebookManager::RequestPermission(sdkbox::FB_PERM_READ_USER_FRIENDS);
-        });
+    if(permission == sdkbox::FB_PERM_READ_USER_FRIENDS){
+        message         = "Do you want to login on facebook to use the Record?";
+        afterPermission = [=](){
+            CFacebookManager::RequestFriendList();
+        };
+    }
+    else if(permission == sdkbox::FB_PERM_PUBLISH_POST){
+        message         = "Do you want to login on facebook to use the Share?";
+        afterPermission = [=](){
+            CFacebookManager::OpenShareDialog();
+        };
+    }
+    
+    auto afterLogin = [=](){
+        if(!CFacebookManager::IsPermissionAllowed(permission)){
+            CFacebookManager::RequestPermission(permission);
+            CFacebookManager::Instance()->setPermissionListener(afterPermission);
+        }
+        else afterPermission();
     };
     
     this->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
         if(!sdkbox::PluginFacebook::isLoggedIn()){
             CFacebookManager::Login();
-            CFacebookManager::Instance()->setLoginListener([=](bool isLogin, std::string error){
-                if(!isLogin && loginFailed()) return;
-                afterLogin();
+            CFacebookManager::Instance()->setLoginListener([=](){
+                
+                CFacebookManager::Instance()->ClearData();
+                CFacebookManager::RequestMyInfo();
+                CFacebookManager::Instance()->setMyInfoListener(afterLogin);
             });
         }
         else afterLogin();
     }, TRANSLATE("BUTTON_YES"))
     ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_NO"))
-    ->setMessage("Do you want to login on facebook to use the Record?")
+    ->setMessage(message)
     ->show(m_PopupLayer, ZORDER::POPUP);
 }
 

@@ -107,7 +107,7 @@ bool COptionMusicPopup::init()
         ->setPositiveButton(positive, TRANSLATE("BUTTON_YES"))
         ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
         ->setMessage(content)
-        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+        ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
     };
     
     auto buttonCreate = [=](std::function<void(Node*)> callback, std::string content, Vec2 pos){

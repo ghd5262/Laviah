@@ -215,7 +215,7 @@ bool CResultPopup::init()
         if(oldScore < GLOBAL->TOTAL_SCORE){
             // save score to facebook data
             CFacebookManager::Instance()->SaveScore(GLOBAL->TOTAL_SCORE);
-            CFacebookManager::Instance()->setSaveScoreListener([=](bool succeed){
+            CFacebookManager::Instance()->setSaveScoreListener([=](){
                 auto oldRank = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK);
                 auto newRank = CFacebookManager::Instance()->getMyRank();
                 if(oldRank != newRank){

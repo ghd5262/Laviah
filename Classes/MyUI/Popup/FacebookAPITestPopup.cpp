@@ -150,13 +150,9 @@ bool CFacebookAPITestPopup::init()
     btnEnd->setCascadeOpacityEnabled(true);
     
     
-    CFacebookManager::Instance()->setLoginListener([=](bool isLogin, std::string error){
-        if (isLogin)
-            Login->changeContents("Logout");
+    CFacebookManager::Instance()->setLoginListener([=](){
+        Login->changeContents("Logout");
         
-        std::string title = "login ";
-        title.append((isLogin ? "success" : "failed"));
-        MessageBox(error.c_str(), title.c_str());
         CFacebookManager::Instance()->ClearData();
         CFacebookManager::RequestFriendList();
         CFacebookManager::RequestMyInfo();

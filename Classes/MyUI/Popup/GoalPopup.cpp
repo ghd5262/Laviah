@@ -223,16 +223,16 @@ void CGoalPopup::createAchievementDP(const ACHIEVEMENT* data, int posIndex, bool
 void CGoalPopup::Skip(CGoalPopupDP *sender, int posIndex)
 {
     auto dp = sender;
-	CGameScene::getGameScene()->CreateAlertPopup()
-		->setPositiveButton([=](Node* sender){
-		auto newData = CAchievementDataManager::Instance()->SkipAchievement(dp->getAchievementParam()._index);
-		dp->popupClose();
-		this->createAchievementDP(newData, posIndex, true);
-	}, TRANSLATE("BUTTON_YES"))
-		->setNegativeButton([=](Node* sender){
-	}, TRANSLATE("BUTTON_NO"))
-		->setMessage(TRANSLATE("GOAL_SKIP_CHECK"))
-		->show(CGameScene::getGameScene(), ZORDER::POPUP);
+    CGameScene::getGameScene()->CreateAlertPopup()
+    ->setPositiveButton([=](Node* sender){
+        auto newData = CAchievementDataManager::Instance()->SkipAchievement(dp->getAchievementParam()._index);
+        dp->popupClose();
+        this->createAchievementDP(newData, posIndex, true);
+    }, TRANSLATE("BUTTON_YES"))
+    ->setNegativeButton([=](Node* sender){
+    }, TRANSLATE("BUTTON_NO"))
+    ->setMessage(TRANSLATE("GOAL_SKIP_CHECK"))
+    ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
 }
 
 void CGoalPopup::Reset(Node* sender){

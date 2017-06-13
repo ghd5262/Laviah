@@ -200,7 +200,7 @@ void CPausePopup::Skip(CGoalPopupDP *sender, int posIndex)
     ->setNegativeButton([=](Node* sender){
     }, TRANSLATE("BUTTON_NO"))
     ->setMessage(TRANSLATE("GOAL_SKIP_CHECK"))
-	->show(CGameScene::getGameScene(), ZORDER::POPUP);
+	->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
 }
 
 void CPausePopup::initAchievementList()

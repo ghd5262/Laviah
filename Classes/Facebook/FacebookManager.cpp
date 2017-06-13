@@ -82,6 +82,13 @@ FB_USER_LIST CFacebookManager::getFBUserList()
     return userList;
 }
 
+void CFacebookManager::CaptureScreen()
+{
+    utils::captureScreen([=](bool yes, const std::string &outputFilename){
+        m_FacebookCapture = outputFilename;
+    }, "FBCapture.png");
+}
+
 void CFacebookManager::ClearData()
 {
     DATA_MANAGER_UTILS::mapDeleteAndClean(m_FBFriendList);
@@ -90,7 +97,8 @@ void CFacebookManager::ClearData()
 void CFacebookManager::Login()
 {
     std::vector<std::string> permissions;
-    permissions.push_back(sdkbox::FB_PERM_READ_EMAIL);
+//    permissions.push_back(sdkbox::FB_PERM_READ_EMAIL);
+    permissions.push_back(sdkbox::FB_PERM_READ_PUBLIC_PROFILE);
     permissions.push_back(sdkbox::FB_PERM_READ_USER_FRIENDS);
     sdkbox::PluginFacebook::login(permissions);
 }
@@ -137,6 +145,14 @@ bool CFacebookManager::IsScoresEnabled()
     return true;
 }
 
+bool CFacebookManager::IsShareEnabled()
+{
+    if(!sdkbox::PluginFacebook::isLoggedIn()) return false;
+    if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_PUBLISH_POST)) return false;
+    
+    return true;
+}
+
 bool CFacebookManager::IsPermissionAllowed(std::string id)
 {
     for(auto permission : sdkbox::PluginFacebook::getPermissionList())
@@ -147,12 +163,25 @@ bool CFacebookManager::IsPermissionAllowed(std::string id)
 
 void CFacebookManager::RequestPermission(std::string id)
 {
-    if(IsPermissionAllowed(id)) return;
-    
     if(id == sdkbox::FB_PERM_READ_USER_FRIENDS)
         sdkbox::PluginFacebook::requestReadPermissions({sdkbox::FB_PERM_READ_USER_FRIENDS});
     else if(id == sdkbox::FB_PERM_PUBLISH_POST)
         sdkbox::PluginFacebook::requestPublishPermissions({sdkbox::FB_PERM_PUBLISH_POST});
+}
+
+void CFacebookManager::OpenShareDialog()
+{
+    auto captured = CFacebookManager::Instance()->getFacebookCapture();
+    if (!captured.empty() && FileUtils::getInstance()->isFileExist(captured))
+    {
+        sdkbox::FBShareInfo info;
+        info.type  = sdkbox::FB_PHOTO;
+        info.title = "capture screen";
+        info.image = captured;
+        sdkbox::PluginFacebook::dialog(info);
+    }
+    else
+        MessageBox("capture first", "Failed");
 }
 
 // on "init" you need to initialize your instance
@@ -176,10 +205,15 @@ bool CFacebookManager::init()
 
 void CFacebookManager::onLogin(bool isLogin, const std::string& error)
 {
-    if(m_LoginListener) {
-        m_LoginListener(isLogin, error);
+    if(!isLogin) {
+        std::string title = "login ";
+        title.append((isLogin ? "success" : "failed"));
+        MessageBox(error.c_str(), title.c_str());
         m_LoginListener = nullptr;
+        return;
     }
+    
+    this->callAPIListener(m_LoginListener);
 }
 
 void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData)
@@ -200,7 +234,7 @@ void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData
     // if tag is "me" set my info of facebook
     if(tag == FACEBOOK_DEFINE::TAG_API_ME){
         this->initFacebookUserDataByJson(m_MyFacebookData, root);
-        this->callAPIListener(true, m_MyInfoListener);
+        this->callAPIListener(m_MyInfoListener);
     }
     
     // if tag is "friends" set friends info of facebook
@@ -210,16 +244,16 @@ void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData
             auto userData = createNewFriendData(user["id"].asString());
             this->initFacebookUserDataByJson(const_cast<FBUSER_PARAM*>(userData), user);
         }
-        this->callAPIListener(true, m_FriendListListener);
+        this->callAPIListener(m_FriendListListener);
     }
     
     // if tag is "save score" call listener
     else if(tag == FACEBOOK_DEFINE::TAG_API_SAVE_SCORE){
         this->RequestMyInfo();
-        this->setMyInfoListener([=](bool succeed){
+        this->setMyInfoListener([=](){
             this->RequestFriendList();
-            this->setFriendListListener([=](bool succeed){
-                this->callAPIListener(true, m_SaveScoreListener);
+            this->setFriendListListener([=](){
+                this->callAPIListener(m_SaveScoreListener);
             });
         });
     }
@@ -285,9 +319,15 @@ void CFacebookManager::onPermission(bool isLogin, const std::string& error)
 {
     CCLOG("##FB onPermission: %d, error: %s", isLogin, error.c_str());
     
-    std::string title = "permission ";
-    title.append((isLogin ? "success" : "failed"));
-    MessageBox(error.c_str(), title.c_str());
+    if(!isLogin) {
+        std::string title = "permission ";
+        title.append((isLogin ? "success" : "failed"));
+        MessageBox(error.c_str(), title.c_str());
+        m_PermissionListener = nullptr;
+        return;
+    }
+
+    this->callAPIListener(m_PermissionListener);
 }
 
 void CFacebookManager::onFetchFriends(bool ok, const std::string& msg)
@@ -387,11 +427,11 @@ void CFacebookManager::initFacebookUserDataByJson(FBUSER_PARAM* param,
     }
 }
 
-void CFacebookManager::callAPIListener(bool succeed, API_LISTENER& listener)
+void CFacebookManager::callAPIListener(API_LISTENER& listener)
 {
     if(listener)
     {
-        listener(succeed);
+        listener();
         listener = nullptr;
     }
 }

@@ -59,7 +59,7 @@ bool CMenuLayer::init()
         CGameScene::getGameScene()->CreateAlertPopup()
         ->setPositiveButton(callback, TRANSLATE("BUTTON_OK"))
         ->setMessage(message)
-        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
+        ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
 	};
     
     auto createTwoButtonPopup = [=](const std::function<void(Node*)> &callback, std::string message){
@@ -67,7 +67,7 @@ bool CMenuLayer::init()
         ->setPositiveButton(callback, TRANSLATE("BUTTON_YES"))
         ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
         ->setMessage(message)
-		->show(CGameScene::getGameScene(), ZORDER::POPUP);
+		->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
     };
 
 	auto createWidgetPopup = [=](CPopup* widget){
@@ -183,7 +183,7 @@ bool CMenuLayer::init()
         if(CFacebookManager::IsScoresEnabled())
             CGameScene::getGameScene()->OpenRankPopup();
         else
-            CGameScene::getGameScene()->OpenFacebookLoginPopup();
+            CGameScene::getGameScene()->OpenPermRequestPopup(sdkbox::FB_PERM_READ_USER_FRIENDS);
     }, "rankingIcon.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f));
     
     // option button

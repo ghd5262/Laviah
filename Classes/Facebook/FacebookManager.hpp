@@ -25,7 +25,7 @@ struct FBUSER_PARAM{
 typedef std::map<std::string, const FBUSER_PARAM*> FBFRIEND_LIST;
 typedef std::pair<std::string, const FBUSER_PARAM*> FB_PARAM_PAIR;
 typedef std::vector<FB_PARAM_PAIR> FB_USER_LIST;
-typedef std::function<void(bool)> API_LISTENER;
+typedef std::function<void(void)> API_LISTENER;
 class CFacebookManager : public cocos2d::Node, sdkbox::FacebookListener
 {
 public:
@@ -37,14 +37,17 @@ public:
     FB_USER_LIST getFBUserList();
     FBFRIEND_LIST getFBFriendList() const { return m_FBFriendList; }
     const FBUSER_PARAM* getMyFacebookData() const { return m_MyFacebookData; }
+    void CaptureScreen();
     
     void ClearData();
     
     CC_SYNTHESIZE(std::function<void(const sdkbox::FBInvitableFriendsInfo&)>, m_InvitableFriendsListener, InvitableFriendsListener);
-    CC_SYNTHESIZE(std::function<void(bool, std::string)>, m_LoginListener, LoginListener);
-    CC_SYNTHESIZE(API_LISTENER, m_SaveScoreListener, SaveScoreListener);
-    CC_SYNTHESIZE(API_LISTENER, m_MyInfoListener, MyInfoListener);
-    CC_SYNTHESIZE(API_LISTENER, m_FriendListListener, FriendListListener);
+    CC_SYNTHESIZE(API_LISTENER, m_LoginListener,        LoginListener);
+    CC_SYNTHESIZE(API_LISTENER, m_SaveScoreListener,    SaveScoreListener);
+    CC_SYNTHESIZE(API_LISTENER, m_MyInfoListener,       MyInfoListener);
+    CC_SYNTHESIZE(API_LISTENER, m_FriendListListener,   FriendListListener);
+    CC_SYNTHESIZE(API_LISTENER, m_PermissionListener,   PermissionListener);
+    CC_SYNTHESIZE(std::string,  m_FacebookCapture,      FacebookCapture);
     
     static void Login();
     static void CheckFacebookStatus();
@@ -52,9 +55,11 @@ public:
     static void RequestFriendList();
     static void SaveScore(int score);
     static bool IsScoresEnabled();
+    static bool IsShareEnabled();
     static bool IsPermissionAllowed(std::string id);
     static void RequestPermission(std::string id);
-
+    static void OpenShareDialog();
+    
 private:
     //Facebook callback
     virtual void onLogin(bool isLogin, const std::string& msg) override;
@@ -76,14 +81,16 @@ private:
     void initFacebookUserDataByJson(FBUSER_PARAM* param,
                                     const Json::Value& data);
     const FBUSER_PARAM* createNewFriendData(std::string id);
-    void callAPIListener(bool succeed, API_LISTENER& listener);
+    void callAPIListener(API_LISTENER& listener);
     
     CFacebookManager()
     : m_InvitableFriendsListener(nullptr)
     , m_LoginListener(nullptr)
     , m_SaveScoreListener(nullptr)
     , m_MyInfoListener(nullptr)
-    , m_FriendListListener(nullptr){};
+    , m_FriendListListener(nullptr)
+    , m_PermissionListener(nullptr)
+    , m_FacebookCapture(""){};
     virtual ~CFacebookManager();
     
 private:

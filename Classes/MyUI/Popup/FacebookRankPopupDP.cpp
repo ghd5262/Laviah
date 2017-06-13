@@ -36,37 +36,42 @@ bool CFacebookRankPopupDP::init()
     }
     
     if(!m_IsMyData){
-        CMyButton::create()
-        ->addEventListener([=](Node* sender){
-            CGameScene::getGameScene()->CreateAlertPopup()
-            ->setPositiveButton([=](Node* sender){
-                this->FBShare();
-            }, TRANSLATE("BUTTON_YES"))
-            ->setNegativeButton([=](Node* sender){
-            }, TRANSLATE("BUTTON_NO"))
-            ->setMessage("페이스북 친구들과 공유하시겠습니까?")
-            ->show(CGameScene::getGameScene(), ZORDER::POPUP);
-        })
-        ->setButtonNormalImage("facebookShareIcon.png")
-        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-        ->setButtonPosition(Vec2(bg->getContentSize().width * 0.91f, bg->getContentSize().height * 0.5f))
-        ->show(bg);
+        auto layerSize    = bg->getContentSize();
+        auto createButton = [=](std::string icon, Vec2 pos){
+            return CMyButton::create()
+            ->setButtonNormalImage(icon)
+            ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+            ->setButtonPosition(pos)
+            ->show(bg);
+        };
         
-        CMyButton::create()
-        ->addEventListener([=](Node* sender){
+        auto createAlert  = [=](std::function<void(Node*)> positive, std::string msg){
             CGameScene::getGameScene()->CreateAlertPopup()
-            ->setPositiveButton([=](Node* sender){
+            ->setPositiveButton(positive, TRANSLATE("BUTTON_YES"))
+            ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_NO"))
+            ->setMessage(msg)
+            ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
+        };
+        
+        createButton("facebookShareIcon.png", Vec2(layerSize.width * 0.91f, layerSize.height * 0.5f))
+        ->addEventListener([=](Node* sender){
+            if(!CFacebookManager::IsShareEnabled())
+                CGameScene::getGameScene()->OpenPermRequestPopup(sdkbox::FB_PERM_PUBLISH_POST);
+            else{
+                createAlert([=](Node* sender){
+                    CFacebookManager::OpenShareDialog();
+                }, "페이스북 친구들과 공유하시겠습니까?");
+            }
+        });
+        
+        createButton("twitterShareIcon.png", Vec2(layerSize.width * 0.75f, layerSize.height * 0.5f))
+        ->addEventListener([=](Node* sender){
+            
+            createAlert([=](Node* sender){
+                
                 this->TWShare();
-            }, TRANSLATE("BUTTON_YES"))
-            ->setNegativeButton([=](Node* sender){
-            }, TRANSLATE("BUTTON_NO"))
-            ->setMessage("트윗 하시겠습니까?")
-            ->show(CGameScene::getGameScene(), ZORDER::POPUP);
-        })
-        ->setButtonNormalImage("twitterShareIcon.png")
-        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-        ->setButtonPosition(Vec2(bg->getContentSize().width * 0.75f, bg->getContentSize().height * 0.5f))
-        ->show(bg);
+            }, "트윗 하시겠습니까?");
+        });
     }
     
     // create number
@@ -145,6 +150,7 @@ bool CFacebookRankPopupDP::init()
 
 void CFacebookRankPopupDP::FBShare()
 {
+    
 }
 
 void CFacebookRankPopupDP::TWShare()
