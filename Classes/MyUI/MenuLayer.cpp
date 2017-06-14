@@ -180,10 +180,10 @@ bool CMenuLayer::init()
     
     // option button
     createButton([=](Node* sender){
-        if(CFacebookManager::IsScoresEnabled())
+        CGameScene::getGameScene()->OpenPermRequestPopup([=](){
+            CCLOG("########## Open Rank popup");
             CGameScene::getGameScene()->OpenRankPopup();
-        else
-            CGameScene::getGameScene()->OpenPermRequestPopup(sdkbox::FB_PERM_READ_USER_FRIENDS);
+        });
     }, "rankingIcon.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f));
     
     // option button

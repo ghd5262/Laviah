@@ -82,6 +82,35 @@ FB_USER_LIST CFacebookManager::getFBUserList()
     return userList;
 }
 
+void CFacebookManager::Login(API_LISTENER listener)
+{
+    this->setLoginListener(listener);
+    if(sdkbox::PluginFacebook::isLoggedIn()){
+        this->onLogin(true, "");
+        return;
+    }
+    
+    std::vector<std::string> permissions;
+    //    permissions.push_back(sdkbox::FB_PERM_READ_EMAIL);
+    permissions.push_back(sdkbox::FB_PERM_READ_PUBLIC_PROFILE);
+    permissions.push_back(sdkbox::FB_PERM_READ_USER_FRIENDS);
+    sdkbox::PluginFacebook::login(permissions);
+}
+
+void CFacebookManager::RequestPermission(API_LISTENER listener, std::string id)
+{
+    this->setPermissionListener(listener);
+    if(CFacebookManager::IsPermissionAllowed(id)){
+        this->onPermission(true, "");
+        return;
+    }
+    
+    if(id == sdkbox::FB_PERM_READ_USER_FRIENDS)
+        sdkbox::PluginFacebook::requestReadPermissions({sdkbox::FB_PERM_READ_USER_FRIENDS});
+    else if(id == sdkbox::FB_PERM_PUBLISH_POST)
+        sdkbox::PluginFacebook::requestPublishPermissions({sdkbox::FB_PERM_PUBLISH_POST});
+}
+
 void CFacebookManager::CaptureScreen()
 {
     utils::captureScreen([=](bool yes, const std::string &outputFilename){
@@ -92,15 +121,6 @@ void CFacebookManager::CaptureScreen()
 void CFacebookManager::ClearData()
 {
     DATA_MANAGER_UTILS::mapDeleteAndClean(m_FBFriendList);
-}
-
-void CFacebookManager::Login()
-{
-    std::vector<std::string> permissions;
-//    permissions.push_back(sdkbox::FB_PERM_READ_EMAIL);
-    permissions.push_back(sdkbox::FB_PERM_READ_PUBLIC_PROFILE);
-    permissions.push_back(sdkbox::FB_PERM_READ_USER_FRIENDS);
-    sdkbox::PluginFacebook::login(permissions);
 }
 
 void CFacebookManager::CheckFacebookStatus()
@@ -141,13 +161,6 @@ bool CFacebookManager::IsScoresEnabled()
 {
     if(!sdkbox::PluginFacebook::isLoggedIn()) return false;
     if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_READ_USER_FRIENDS)) return false;
-    
-    return true;
-}
-
-bool CFacebookManager::IsShareEnabled()
-{
-    if(!sdkbox::PluginFacebook::isLoggedIn()) return false;
     if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_PUBLISH_POST)) return false;
     
     return true;
@@ -161,15 +174,7 @@ bool CFacebookManager::IsPermissionAllowed(std::string id)
     return false;
 }
 
-void CFacebookManager::RequestPermission(std::string id)
-{
-    if(id == sdkbox::FB_PERM_READ_USER_FRIENDS)
-        sdkbox::PluginFacebook::requestReadPermissions({sdkbox::FB_PERM_READ_USER_FRIENDS});
-    else if(id == sdkbox::FB_PERM_PUBLISH_POST)
-        sdkbox::PluginFacebook::requestPublishPermissions({sdkbox::FB_PERM_PUBLISH_POST});
-}
-
-void CFacebookManager::OpenShareDialog()
+void CFacebookManager::OpenPhotoShareDialog()
 {
     auto captured = CFacebookManager::Instance()->getFacebookCapture();
     if (!captured.empty() && FileUtils::getInstance()->isFileExist(captured))
@@ -182,6 +187,17 @@ void CFacebookManager::OpenShareDialog()
     }
     else
         MessageBox("capture first", "Failed");
+}
+
+void CFacebookManager::OpenLinkShareDialog()
+{
+    sdkbox::FBShareInfo info;
+    info.type  = sdkbox::FB_LINK;
+    info.link  = "http://www.cocos2d-x.org";
+    info.title = "cocos2d-x";
+    info.text  = "Best Game Engine";
+    info.image = "http://cocos2d-x.org/images/logo.png";
+    sdkbox::PluginFacebook::dialog(info);
 }
 
 // on "init" you need to initialize your instance
@@ -257,44 +273,6 @@ void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData
             });
         });
     }
-    
-    
-    
-    
-//    if (tag == "__fetch_picture_tag__") {
-    
-//        Json::Value  root;
-//        Json::Reader reader;
-//        std::string  jsonDataStr = jsonData;
-//        
-//        jsonDataStr              = jsonDataStr.substr(0, jsonDataStr.rfind("}") + 1);
-//        bool parsingSuccessful   = reader.parse(jsonDataStr, root);
-//        if (!parsingSuccessful)
-//        {
-//            CCASSERT(false, MakeString("parser failed : \n %s", jsonDataStr.c_str()).c_str());
-//            return;
-//        }
-//        Json::Value  data        = root["data"];
-//        std::string  url         = data["url"].asString();
-//        
-//        CCLOG("picture's url = %s", url.data());
-        
-//        auto btn = CMyButton::create()
-//        ->addEventListener([=](Node* sender){
-//            sender->removeFromParent();
-//        })
-//        ->setButtonSingleUse(true)
-//        ->setLayer(LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, 430, 430))
-//        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-//        ->setButtonPosition(this->getContentSize() / 2)
-//        ->show(this);
-//        
-//        CUrlSprite::create()
-//        ->setUrl(url)
-//        ->setSize(Size(400, 400))
-//        ->build(btn)
-//        ->setPosition(btn->getContentSize() / 2);
-//    }
 }
 
 void CFacebookManager::onSharedSuccess(const std::string& message)

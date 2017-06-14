@@ -269,9 +269,42 @@ void CGameScene::OpenRankUpPopup()
     m_ZoomLayer->pause();
 }
 
-void CGameScene::OpenPermRequestPopup(std::string permission)
+void CGameScene::OpenPermRequestPopup(const VOID_CALLBACK& callback)
 {
-    this->createPermRequestPopup(permission);
+    auto afterLogin = [=](){
+        CFacebookManager::Instance()->RequestPermission([=](){
+            CFacebookManager::RequestFriendList();
+            CFacebookManager::Instance()->setFriendListListener([=](){
+                CFacebookManager::Instance()->RequestPermission(callback, sdkbox::FB_PERM_PUBLISH_POST);
+            });
+        }, sdkbox::FB_PERM_READ_USER_FRIENDS);
+    };
+    
+    if(CFacebookManager::IsScoresEnabled()) afterLogin();
+    else {
+        std::string message = "점수 기록 및 랭킹 시스템을 이용하려면 권한\n(";
+        if(!sdkbox::PluginFacebook::isLoggedIn())
+            message += std::string(" 페이스북 로그인,");
+        if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_READ_USER_FRIENDS))
+            message += std::string(" 친구 리스트,");
+        if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_PUBLISH_POST))
+            message += std::string(" 게시 권한,");
+        message.pop_back();// 마지막 쉼표를 빼줌
+        message += std::string(" )\n이 필요합니다.\n실제 게시물을 올리지 않습니다. 걱정하지 마세요!");
+        
+        this->CreateAlertPopup()
+        ->setPositiveButton([=](Node* sender){
+            CFacebookManager::Instance()->Login([=](){
+                
+                CFacebookManager::Instance()->ClearData();
+                CFacebookManager::RequestMyInfo();
+                CFacebookManager::Instance()->setMyInfoListener(afterLogin);
+            });
+        }, TRANSLATE("BUTTON_YES"))
+        ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_NO"))
+        ->setMessage(message)
+        ->show(m_PopupLayer, ZORDER::POPUP);
+    }
 }
 
 void CGameScene::OpenFBTestPopup()
@@ -294,7 +327,7 @@ void CGameScene::RandomCoin()
     this->createRandomCoin();
 }
 
-void CGameScene::ScreenFade(const FADE_CALLBACK& callback/* = nullptr*/)
+void CGameScene::ScreenFade(const VOID_CALLBACK& callback/* = nullptr*/)
 {
     auto fadeOut = FadeTo::create(0.5f, 1);
     auto fadeIn  = FadeIn::create(0.5f);
@@ -519,50 +552,6 @@ void CGameScene::createRankUpPopup()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
-    ->show(m_PopupLayer, ZORDER::POPUP);
-}
-
-void CGameScene::createPermRequestPopup(std::string permission)
-{
-    std::function<void()> afterPermission = nullptr;
-    auto message = "";
-    
-    if(permission == sdkbox::FB_PERM_READ_USER_FRIENDS){
-        message         = "Do you want to login on facebook to use the Record?";
-        afterPermission = [=](){
-            CFacebookManager::RequestFriendList();
-        };
-    }
-    else if(permission == sdkbox::FB_PERM_PUBLISH_POST){
-        message         = "Do you want to login on facebook to use the Share?";
-        afterPermission = [=](){
-            CFacebookManager::OpenShareDialog();
-        };
-    }
-    
-    auto afterLogin = [=](){
-        if(!CFacebookManager::IsPermissionAllowed(permission)){
-            CFacebookManager::RequestPermission(permission);
-            CFacebookManager::Instance()->setPermissionListener(afterPermission);
-        }
-        else afterPermission();
-    };
-    
-    this->CreateAlertPopup()
-    ->setPositiveButton([=](Node* sender){
-        if(!sdkbox::PluginFacebook::isLoggedIn()){
-            CFacebookManager::Login();
-            CFacebookManager::Instance()->setLoginListener([=](){
-                
-                CFacebookManager::Instance()->ClearData();
-                CFacebookManager::RequestMyInfo();
-                CFacebookManager::Instance()->setMyInfoListener(afterLogin);
-            });
-        }
-        else afterLogin();
-    }, TRANSLATE("BUTTON_YES"))
-    ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_NO"))
-    ->setMessage(message)
     ->show(m_PopupLayer, ZORDER::POPUP);
 }
 

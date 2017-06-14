@@ -5,6 +5,7 @@
 #include "../../../GameObject/ObjectManager.h"
 #include "../../../Scene/GameScene.h"
 #include "../../../DataManager/UserDataManager.h"
+#include "../../../Facebook/FacebookManager.hpp"
 #include "network/HttpClient.h"
 
 #include <array>
@@ -133,7 +134,7 @@ bool COptionPopup::init()
                            layerSize.height * 0.05f));
     
     auto btnShare = createButton([=](Node* sender){
-        CObjectManager::Instance()->Share();
+        CFacebookManager::Instance()->CaptureScreen();
         this->End(sender);
     }, "shareIcon_2.png", Vec2(layerSize.width * 0.08f,
                                layerSize.height * 0.05f));

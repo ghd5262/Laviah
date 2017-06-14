@@ -149,15 +149,6 @@ bool CFacebookAPITestPopup::init()
     btnEnd->setOpacity(0);
     btnEnd->setCascadeOpacityEnabled(true);
     
-    
-    CFacebookManager::Instance()->setLoginListener([=](){
-        Login->changeContents("Logout");
-        
-        CFacebookManager::Instance()->ClearData();
-        CFacebookManager::RequestFriendList();
-        CFacebookManager::RequestMyInfo();
-    });
-    
     CFacebookManager::Instance()->setInvitableFriendsListener([=](const sdkbox::FBInvitableFriendsInfo &friends){
         CCLOG("Request Inviteable Friends Begin");
         for (auto it = friends.begin(); it != friends.end(); ++it) {
@@ -226,6 +217,12 @@ void CFacebookAPITestPopup::Login(cocos2d::Node* sender){
     }
     else
     {
+        CFacebookManager::Instance()->setLoginListener([=](){            
+            CFacebookManager::Instance()->ClearData();
+            CFacebookManager::RequestFriendList();
+            CFacebookManager::RequestMyInfo();
+        });
+        
         std::vector<std::string> permissions;
         permissions.push_back(sdkbox::FB_PERM_READ_EMAIL);
         permissions.push_back(sdkbox::FB_PERM_READ_USER_FRIENDS);

@@ -17,7 +17,7 @@ class CPopup;
 class CCountDown;
 class CGameScene : public cocos2d::Layer
 {
-    typedef std::function<void(void)> FADE_CALLBACK;
+    typedef std::function<void(void)>           VOID_CALLBACK;
 	typedef std::function<void(cocos2d::Node*)> NODE_CALLBACK;
     
 public:
@@ -32,7 +32,7 @@ public:
     void OpenCharacterSelectPopup();
     void OpenRankPopup();
     void OpenRankUpPopup();
-    void OpenPermRequestPopup(std::string permission);
+    void OpenPermRequestPopup(const VOID_CALLBACK& callback);
     void OpenFBTestPopup();
     void OpenAchievementPopup();
     void GameStart();
@@ -47,7 +47,7 @@ public:
     void RandomCoin();
     void BonusTimeStart();
     void BonusTimeEnd();
-    void ScreenFade(const FADE_CALLBACK& callback = nullptr);
+    void ScreenFade(const VOID_CALLBACK& callback = nullptr);
     void MenuFadeIn();
     void MenuFadeOut();
     
@@ -83,7 +83,6 @@ private:
     void createCharacterSelectPopup();
     void createRankPopup();
     void createRankUpPopup();
-    void createPermRequestPopup(std::string permission);
     void createAchievementPopup();
     void createBonusTimeLayer();
 	void createRandomCoin();

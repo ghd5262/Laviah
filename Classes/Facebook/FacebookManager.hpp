@@ -37,6 +37,8 @@ public:
     FB_USER_LIST getFBUserList();
     FBFRIEND_LIST getFBFriendList() const { return m_FBFriendList; }
     const FBUSER_PARAM* getMyFacebookData() const { return m_MyFacebookData; }
+    void Login(API_LISTENER listener);
+    void RequestPermission(API_LISTENER listener, std::string id);
     void CaptureScreen();
     
     void ClearData();
@@ -49,16 +51,14 @@ public:
     CC_SYNTHESIZE(API_LISTENER, m_PermissionListener,   PermissionListener);
     CC_SYNTHESIZE(std::string,  m_FacebookCapture,      FacebookCapture);
     
-    static void Login();
     static void CheckFacebookStatus();
     static void RequestMyInfo();
     static void RequestFriendList();
     static void SaveScore(int score);
     static bool IsScoresEnabled();
-    static bool IsShareEnabled();
     static bool IsPermissionAllowed(std::string id);
-    static void RequestPermission(std::string id);
-    static void OpenShareDialog();
+    static void OpenPhotoShareDialog();
+    static void OpenLinkShareDialog();
     
 private:
     //Facebook callback

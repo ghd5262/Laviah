@@ -55,13 +55,11 @@ bool CFacebookRankPopupDP::init()
         
         createButton("facebookShareIcon.png", Vec2(layerSize.width * 0.91f, layerSize.height * 0.5f))
         ->addEventListener([=](Node* sender){
-            if(!CFacebookManager::IsShareEnabled())
-                CGameScene::getGameScene()->OpenPermRequestPopup(sdkbox::FB_PERM_PUBLISH_POST);
-            else{
+            CGameScene::getGameScene()->OpenPermRequestPopup([=](){
                 createAlert([=](Node* sender){
                     CFacebookManager::OpenShareDialog();
                 }, "페이스북 친구들과 공유하시겠습니까?");
-            }
+            });
         });
         
         createButton("twitterShareIcon.png", Vec2(layerSize.width * 0.75f, layerSize.height * 0.5f))
