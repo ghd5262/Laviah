@@ -417,7 +417,8 @@ void CResultPopup::GetCoinFromVideo(cocos2d::Node* sender)
 
 void CResultPopup::GetNewCharacter(cocos2d::Node* sender)
 {
-    this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+//    this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+    CObjectManager::Instance()->Capture();
 }
 
 void CResultPopup::GetFreeReward(cocos2d::Node* sender)

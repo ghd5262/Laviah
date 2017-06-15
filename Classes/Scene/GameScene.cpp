@@ -928,7 +928,7 @@ void CGameScene::createCaptureNode()
     m_CaptureNode->setPosition(m_VisibleSize / 2);
     this->addChild(m_CaptureNode, POPUP);
     
-    CObjectManager::Instance()->Capture();
+//    CObjectManager::Instance()->Capture();
 }
 
 void CGameScene::setTimestamp()
