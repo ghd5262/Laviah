@@ -57,7 +57,7 @@ bool CFacebookRankPopupDP::init()
         ->addEventListener([=](Node* sender){
             CGameScene::getGameScene()->OpenPermRequestPopup([=](){
                 createAlert([=](Node* sender){
-                    CFacebookManager::OpenShareDialog();
+                    CFacebookManager::OpenPhotoShareDialog();
                 }, "페이스북 친구들과 공유하시겠습니까?");
             });
         });

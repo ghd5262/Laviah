@@ -57,6 +57,7 @@ namespace GAMESCENE_DEFINE {
 CGameScene* CGameScene::m_GameScene = nullptr;
 cocos2d::Layer* CGameScene::m_ZoomLayer = nullptr;
 cocos2d::Layer* CGameScene::m_PopupLayer = nullptr;
+cocos2d::Node* CGameScene::m_CaptureNode = nullptr;
 
 Scene* CGameScene::createScene()
 {
@@ -129,7 +130,7 @@ bool CGameScene::init()
     this->createUILayer();
     this->createRivalRankLayer();
     this->createTutorialLayer();
-//    this->createIntroUI();
+    this->createCaptureNode();
     this->initKeyboardListener();
     this->setTimestamp();
     this->intro();
@@ -915,6 +916,19 @@ void CGameScene::createIntroUI()
         this->addChild(sprite, zOrder[i]);
         m_IntroUIList.push_back(sprite);
     }
+}
+
+void CGameScene::createCaptureNode()
+{
+    if(m_CaptureNode) return;
+    
+    m_CaptureNode = Node::create();
+    m_CaptureNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_CaptureNode->setContentSize(m_VisibleSize);
+    m_CaptureNode->setPosition(m_VisibleSize / 2);
+    this->addChild(m_CaptureNode, POPUP);
+    
+    CObjectManager::Instance()->Capture();
 }
 
 void CGameScene::setTimestamp()

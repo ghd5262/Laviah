@@ -4,6 +4,7 @@
 #include "../ItemManager.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/UrlSprite.hpp"
+#include "../../Facebook/FacebookManager.hpp"
 
 using namespace cocos2d;
 
@@ -77,4 +78,5 @@ void CRivalBullet::CollisionWithPlayer()
 {
     this->createScoreCurrentPos(100);
     this->R_BezierWithRotation(Vec2(2000, 3000), Vec2(540, 1500), Vec2(900, 2000), 1.f);
+    CFacebookManager::Instance()->CaptureScreen();
 }

@@ -58,6 +58,7 @@ public:
 	static CGameScene* getGameScene(){ return m_GameScene; }
 	static cocos2d::Layer* getZoomLayer(){ return m_ZoomLayer; }
     static cocos2d::Layer* getPopupLayer(){ return m_PopupLayer; }
+    static cocos2d::Node* getCaptureNode(){ return m_CaptureNode; }
     
 	CC_SYNTHESIZE(cocos2d::Vec2, m_TouchPos, TouchPos);
     CC_SYNTHESIZE(bool, m_NeedTutorial, NeedTutorial);
@@ -114,6 +115,7 @@ private:
     void createRivalRankLayer();
     void createTutorialLayer();
     void createIntroUI();
+    void createCaptureNode();
     void initKeyboardListener();
     void setTimestamp();
     void intro();
@@ -122,6 +124,7 @@ private:
 	static CGameScene* m_GameScene;
 	static cocos2d::Layer* m_ZoomLayer;
     static cocos2d::Layer* m_PopupLayer;
+    static cocos2d::Node* m_CaptureNode;
     cocos2d::LayerColor* m_ScreenFade;
     CPopup* m_UILayer;
     CPopup* m_MenuLayer;

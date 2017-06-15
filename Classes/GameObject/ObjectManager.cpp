@@ -11,9 +11,12 @@
 #include "../AI/States/RocketStates.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
+#include "../Facebook/FacebookManager.hpp"
 #include "../MyUI/Tutorial/TutorialHelper.hpp"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/UILayer.hpp"
+#include "../MyUI/ScoreUI.h"
+#include "../Common/StringUtility.h"
 #include <algorithm>
 
 CObjectManager::CObjectManager()
@@ -703,4 +706,93 @@ void CObjectManager::Share()
     };
     
     rt->saveToFile("screenshot.png", true, completionCallback);
+}
+
+void CObjectManager::Capture()
+{
+    auto captureNode = CGameScene::getCaptureNode();
+    auto layerSize   = captureNode->getContentSize();
+//    // background
+//    {
+//        auto background = LayerGradient::create();
+//        background->setContentSize(layerSize);
+//        background->setStartColor(Color3B(255, 255, 16));
+//        background->setEndColor(Color3B(30, 18, 90));
+//        captureNode->addChild(background);
+//    }
+    
+    auto createIcon = [=](std::string iconImg, Vec2 pos){
+        auto icon = Sprite::create(iconImg);
+        icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        icon->setPosition(Vec2(pos.x, pos.y));
+        icon->setOpacity(255 * 0.8f);
+        icon->setScale(45 / icon->getContentSize().height);
+        captureNode->addChild(icon);
+    };
+    
+    auto createLabel = [=](std::string value, float size, Vec2 pos){
+        auto label = Label::createWithTTF(value, FONT::MALGUNBD, size);
+        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+        label->setPosition(pos);
+        label->setOpacity(255 * 0.8f);
+        label->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 3);
+        captureNode->addChild(label);
+        return label;
+    };
+    
+    auto createScoreUI = [=](std::string iconImg, int value, Vec2 pos){
+        createIcon(iconImg, Vec2(pos.x + 45, pos.y));
+        createLabel(StringUtility::toCommaString(value), 45, Vec2(pos.x + (45 * 2.f), pos.y));
+    };
+    
+    // score
+    {
+        createScoreUI("starIcon.png", GLOBAL->TOTAL_SCORE, Vec2(layerSize.width * 0.025f,
+                                                                layerSize.height * 0.96f ));
+    }
+    
+    // rank
+    {
+        auto rank = CFacebookManager::Instance()->getMyRank();
+        createScoreUI("rankingIcon.png", rank, Vec2(layerSize.width * 0.025f,
+                                                    layerSize.height * 0.925f ));
+    }
+    
+    // level
+    {
+        auto label = createLabel(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL), 150,
+                                 Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f ));
+        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        label->setOpacity(255 * 0.4f);
+//        auto label = Label::createWithTTF(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL),
+//                                          FONT::MALGUNBD, 150);
+//        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//        label->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.825f));
+//        captureNode->addChild(label);
+    }
+    
+    // planet
+    {
+        auto planet  = Sprite::createWithSpriteFrameName(m_CharacterParam->_planetTextureName);
+        planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        planet->setPosition(layerSize / 2);
+        planet->setRotation(random<int>(0, 360));
+        captureNode->addChild(planet);
+    }
+    
+    // character
+    {
+        auto character = Sprite::createWithSpriteFrameName(m_CharacterParam->_normalTextureName);
+        character->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        character->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f
+                                    +  PLANET_DEFINE::BOUNDING_RADIUS
+                                    + (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.8f)));
+        character->setRotation(random<int>(0, 360));
+        captureNode->addChild(character);
+    }
+    
+    // rival
+    {
+        
+    }
 }

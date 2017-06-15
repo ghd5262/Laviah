@@ -67,8 +67,8 @@ public:
     void NormalMode();
     void InitTutorialStep();
     void Share();
+    void Capture();
     void setGameStateByLevel();
-
     
 	// 초기화
 	void Clear();
