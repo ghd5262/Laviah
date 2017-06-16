@@ -863,7 +863,8 @@ void CGameScene::createRivalRankLayer()
         auto bullet = CBulletCreator::CreateBullet('8', random<int>(0, 360), 2700, false);
         
         CUrlSprite::create()
-        ->setUrl(data->_url)
+        ->setUrl(data->_url, data->_url)
+        ->setSaveToFileEnable(true)
         ->setSize(Size(55.f, 55.f))
         ->build(bullet)
         ->setPosition(Vec2(bullet->getContentSize().width,

@@ -10,17 +10,12 @@ using namespace std;
  */
 string StringUtility::replaceAll(const string &str, const string &oldStr, const string &newStr) {
     
-    size_t pos = str.find(oldStr);
-    size_t oldCharLength = strlen(oldStr.c_str());
-    size_t newCharLength = strlen(newStr.c_str());
-    
     string result = str;
-    
-    while (pos < string::npos) {
-        result.replace(pos, oldCharLength, newStr);
-        pos = str.find(oldStr, pos + newCharLength);
+    for(string::size_type i = 0; (i = result.find(oldStr, i)) != string::npos;)
+    {
+        result.replace(i, oldStr.length(), newStr);
+        i += newStr.length();
     }
-    
     return result;
 }
 

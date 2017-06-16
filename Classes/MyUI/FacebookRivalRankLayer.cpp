@@ -135,7 +135,8 @@ cocos2d::ui::Widget* CFacebookRivalRankLayer::createRankDP(int &scoreRef, std::s
                             this->getContentSize().height * 0.5f));
     
     auto pic = CUrlSprite::create()
-    ->setUrl(url)
+    ->setUrl(url, url)
+    ->setSaveToFileEnable(true)
     ->setSize(Size(55.f, 55.f))
     ->build(score);
     

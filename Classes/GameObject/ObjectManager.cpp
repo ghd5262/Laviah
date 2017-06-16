@@ -872,7 +872,8 @@ void CObjectManager::Capture()
         
         auto pic       = CUrlSprite::create()
         ->setSize(Size(70, 70))
-        ->setUrl(rivalData->_url)
+        ->setUrl(rivalData->_url, rivalData->_url)
+        ->setSaveToFileEnable(true)
         ->build(circleClipper, -1);
         pic->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         pic->setPosition(Vec2(ship->getContentSize().width * 0.6f, ship->getContentSize().height * 0.48f));

@@ -421,7 +421,8 @@ void CFacebookAPITestPopup::createInviteDialog() {
             contentBG->addChild(name);
             
             CUrlSprite::create()
-            ->setUrl(user.getPictureURL())
+            ->setUrl(user.getPictureURL(), user.getPictureURL())
+            ->setSaveToFileEnable(true)
             ->setSize(Size(contentBG->getContentSize() * 0.35f))
             ->build(contentBG)
             ->setPosition(Vec2(contentBG->getContentSize().width * 0.175f,

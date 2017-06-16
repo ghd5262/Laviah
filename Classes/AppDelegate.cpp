@@ -27,11 +27,20 @@ void AppDelegate::initGLContextAttrs()
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
+    
+    auto createWritablePath = [=](std::string path){
+        auto writable = FileUtils::getInstance()->getWritablePath();
+        auto fullPath = writable + path + "/";
+        FileUtils::getInstance()->createDirectory(fullPath);
+        return fullPath;
+    };
+    
     int i = 0;
     FileUtils *fileUtils = FileUtils::getInstance();
     auto searchPaths = fileUtils->getSearchPaths();
     searchPaths.insert(searchPaths.begin() + i++, "imageRes");
-    searchPaths.insert(searchPaths.begin() + i++, StringUtils::format("%supdate/", fileUtils->getWritablePath().c_str()));
+    searchPaths.insert(searchPaths.begin() + i++, createWritablePath("update"));
+    searchPaths.insert(searchPaths.begin() + i++, createWritablePath("remoteImage"));
     fileUtils->setSearchPaths(searchPaths);
     
     // initialize director

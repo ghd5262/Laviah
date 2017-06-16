@@ -84,7 +84,8 @@ bool CFacebookRankPopupDP::init()
     // create picture
     {
         auto pic = CUrlSprite::create()
-        ->setUrl(m_User->_url)
+        ->setUrl(m_User->_url, m_User->_url)
+        ->setSaveToFileEnable(true)
         ->setSize(Size(150.f, 150.f))
         ->build(this);
         pic->setPosition(Vec2(this->getContentSize().width * 0.25f,
