@@ -48,6 +48,8 @@
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		59315BAF1E92776E00337C1C /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59315BAB1E92776E00337C1C /* CharacterBullet.cpp */; };
+		5951815A1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595181581EF59CFD00CC1F18 /* SharePopup.cpp */; };
+		5951815B1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595181581EF59CFD00CC1F18 /* SharePopup.cpp */; };
 		610E425E9DB522E05A190348 /* PluginFacebook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 392D48748E4840CC0EC39E61 /* PluginFacebook.framework */; };
 		89D8468A885D51FF77F0ED94 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C944AEBA4B542B4548E39EC /* Bolts.framework */; };
 		9312B4781D58A0A800FE954C /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9312B4771D58A0A800FE954C /* CoreText.framework */; };
@@ -291,6 +293,8 @@
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		59315BAB1E92776E00337C1C /* CharacterBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterBullet.cpp; sourceTree = "<group>"; };
 		59315BAC1E92776E00337C1C /* CharacterBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterBullet.hpp; sourceTree = "<group>"; };
+		595181581EF59CFD00CC1F18 /* SharePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SharePopup.cpp; sourceTree = "<group>"; };
+		595181591EF59CFD00CC1F18 /* SharePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SharePopup.hpp; sourceTree = "<group>"; };
 		7C944AEBA4B542B4548E39EC /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = SOURCE_ROOT; };
 		803948579A13A3F02433115C /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AdSupport.framework; sourceTree = DEVELOPER_DIR; };
 		9312B4771D58A0A800FE954C /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
@@ -1088,6 +1092,8 @@
 				93B7F44B1EB843DD0019D36C /* AchievementPopup.hpp */,
 				93B7F44E1EB845890019D36C /* AchievementPopupDP.cpp */,
 				93B7F44F1EB845890019D36C /* AchievementPopupDP.hpp */,
+				595181581EF59CFD00CC1F18 /* SharePopup.cpp */,
+				595181591EF59CFD00CC1F18 /* SharePopup.hpp */,
 			);
 			path = Popup;
 			sourceTree = "<group>";
@@ -1381,6 +1387,7 @@
 				93706F631E7A6891009A2CA0 /* PlayStar.cpp in Sources */,
 				93706FBD1E7A8BF8009A2CA0 /* FacebookManager.cpp in Sources */,
 				93706F831E7A6891009A2CA0 /* MenuLayer.cpp in Sources */,
+				5951815A1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */,
 				93B7F4491EB81E1A0019D36C /* AchievementRewarder.cpp in Sources */,
 				93706F511E7A6891009A2CA0 /* CharacterDataManager.cpp in Sources */,
 				93706F451E7A6891009A2CA0 /* PlayerStates.cpp in Sources */,
@@ -1474,6 +1481,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				932C6B941E83A2710043BE02 /* FacebookRankPopupDP.cpp in Sources */,
+				5951815B1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */,
 				93783B911E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
 				93706FD11E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
 				93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */,

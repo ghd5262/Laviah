@@ -39,7 +39,7 @@ public:
     const FBUSER_PARAM* getMyFacebookData() const { return m_MyFacebookData; }
     void Login(API_LISTENER listener);
     void RequestPermission(API_LISTENER listener, std::string id);
-    void CaptureScreen();
+    bool SaveNodeToFile(cocos2d::Node* node);
     
     void ClearData();
     
@@ -50,7 +50,7 @@ public:
     CC_SYNTHESIZE(API_LISTENER, m_FriendListListener,   FriendListListener);
     CC_SYNTHESIZE(API_LISTENER, m_PermissionListener,   PermissionListener);
     CC_SYNTHESIZE(std::string,  m_FacebookCapture,      FacebookCapture);
-    
+
     static void CheckFacebookStatus();
     static void RequestMyInfo();
     static void RequestFriendList();

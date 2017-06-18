@@ -40,6 +40,7 @@ CObjectManager::CObjectManager()
 , m_GiantSpeed(1.f)
 , m_BulletPatternPaddingLimit(0.f)
 , m_OriginPatternLevel(-1)
+, m_PhotoShareAble(false)
 {
 //    m_FSM = std::shared_ptr<CStateMachine<CObjectManager>>(new CStateMachine<CObjectManager>(this),
 //                                                           [=](CStateMachine<CObjectManager>* fsm){
@@ -103,7 +104,8 @@ void CObjectManager::Clear()
 	m_BarrierItemRange->Clear();
 	m_StarItemRange->Clear();
 	m_CoinItemRange->Clear();
-
+    m_PhotoShareAble = false;
+    
     this->ReturnToMemoryBlockAll();
 //    this->setGameStateByLevel();
 //	this->EndBonusTime();
@@ -709,85 +711,147 @@ void CObjectManager::Share()
     rt->saveToFile("screenshot.png", true, completionCallback);
 }
 
-void CObjectManager::Capture()
+void CObjectManager::ShowCapturingAction(){
+    
+    auto gameScene  = CGameScene::getGameScene();
+    auto popupLayer = CGameScene::getPopupLayer();
+    auto layerSize  = popupLayer->getContentSize();
+    gameScene->scheduleOnce([=](float delta){
+        
+        m_PhotoShareAble = true;
+        this->SaveCaptureInfo();
+        auto pic     = this->Capture(layerSize.width, layerSize.height, false);
+        pic->setPosition(popupLayer->getContentSize() / 2);
+        popupLayer->addChild(pic, ZORDER::POPUP);
+        pic->setOpacity(255 * 0.4f);
+        auto scale   = ScaleTo::create(0.3f, 0.9f);
+        auto easeOut = EaseSineOut::create(scale);
+        auto delay   = DelayTime::create(0.2f);
+        auto move    = MoveBy::create(0.3f, Vec2(0, 200));
+        auto fadeOut = FadeTo::create(0.2f, 0);
+        auto spawn   = Spawn::createWithTwoActions(move, fadeOut);
+        auto ease    = EaseSineIn::create(spawn);
+        auto func    = CallFunc::create([=](){
+            pic->removeFromParent();
+        });
+        auto sequence = Sequence::create(easeOut, delay, ease, func, nullptr);
+        
+        pic->runAction(sequence);
+        
+    }, 0.5f, "capturingDelay");
+}
+
+void CObjectManager::SaveCaptureInfo(){
+    
+    m_CaptureInfo._backColorStart = m_Background->getCurrentStartColor();
+    m_CaptureInfo._backColorEnd   = m_Background->getCurrentEndColor();
+    m_CaptureInfo._planetAngle    = m_Planet->getAngle();
+    m_CaptureInfo._characterAngle = m_Player->getAngle();
+}
+
+cocos2d::Node* CObjectManager::Capture(float width/* = 1080*/,
+                                       float height/* = 1920*/,
+                                       bool uiEnable/* = true*/)
 {
-    auto captureNode = CGameScene::getCaptureNode();
+    auto captureNode = cocos2d::Node::create();
+    captureNode->setCascadeOpacityEnabled(true);
+    captureNode->setContentSize(Director::getInstance()->getWinSize());
+
+    captureNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     auto layerSize   = captureNode->getContentSize();
 
     captureNode->setVisible(true);
     captureNode->removeAllChildren();
+    captureNode->setScaleX(width / layerSize.width);
+    captureNode->setScaleY(height / layerSize.height);
     
-    // cliper
+    
+    // clipper
     auto stencil = DrawNode::create();
     stencil->drawSolidRect(Vec2(0, 420), Vec2(1080, 1920), Color4F::GREEN);
     
     auto clipper = ClippingNode::create(stencil);
     clipper->setInverted(false);
+    clipper->setCascadeOpacityEnabled(true);
     captureNode->addChild(clipper);
     
     
     // background
     auto background = LayerGradient::create();
+    background->setCascadeOpacityEnabled(true);
     background->setContentSize(layerSize);
     background->setIgnoreAnchorPointForPosition(false);
     background->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     background->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
-    background->setStartColor(Color3B(0, 0, 16));
-    background->setEndColor(Color3B(30, 18, 90));
+    background->setStartColor(m_CaptureInfo._backColorStart);
+    background->setEndColor(m_CaptureInfo._backColorEnd);
     clipper->addChild(background);
     
-    auto createIcon = [=](std::string iconImg, Vec2 pos){
-        auto icon = Sprite::create(iconImg);
-        icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        icon->setPosition(Vec2(pos.x, pos.y));
-        icon->setOpacity(255 * 0.8f);
-        icon->setScale(45 / icon->getContentSize().height);
-        background->addChild(icon);
-    };
     
-    auto createLabel = [=](std::string value, float size, Vec2 pos){
-        auto label = Label::createWithTTF(value, FONT::MALGUNBD, size);
-        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        label->setPosition(pos);
-        label->setOpacity(255 * 0.8f);
-        label->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 3);
-        background->addChild(label);
-        return label;
-    };
-    
-    auto createScoreUI = [=](std::string iconImg, int value, Vec2 pos){
-        createIcon(iconImg, Vec2(pos.x + 45, pos.y));
-        createLabel(StringUtility::toCommaString(value), 45, Vec2(pos.x + (45 * 2.f), pos.y));
-    };
-    
-    // score
-    {
-        createScoreUI("starIcon.png", GLOBAL->TOTAL_SCORE, Vec2(layerSize.width * 0.025f,
-                                                                layerSize.height * 0.96f ));
-    }
-    
-    // rank
-    {
-        auto rank = CFacebookManager::Instance()->getMyRank();
-        createScoreUI("rankingIcon.png", rank + 1, Vec2(layerSize.width * 0.025f,
-                                                    layerSize.height * 0.925f ));
-    }
-    
-    // level
-    {
-        auto label = createLabel(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL + 1), 50,
-                                 Vec2(layerSize.width * 0.5f, layerSize.height * 0.96f ));
-        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        label->setOpacity(255 * 0.4f);
-//        auto label = Label::createWithTTF(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL),
-//                                          FONT::MALGUNBD, 150);
-//        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-//        label->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.825f));
-//        captureNode->addChild(label);
+    if(uiEnable){
+        auto createIcon = [=](std::string iconImg, Vec2 pos){
+            auto icon = Sprite::create(iconImg);
+            icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            icon->setPosition(Vec2(pos.x, pos.y));
+            icon->setOpacity(255 * 0.8f);
+            icon->setScale(45 / icon->getContentSize().height);
+            background->addChild(icon);
+        };
+        
+        auto createLabel = [=](std::string value, float size, Vec2 pos){
+            auto label = Label::createWithTTF(value, FONT::MALGUNBD, size);
+            label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+            label->setPosition(pos);
+            label->setOpacity(255 * 0.8f);
+            label->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 3);
+            background->addChild(label);
+            return label;
+        };
+        
+        auto createScoreUI = [=](std::string iconImg, int value, Vec2 pos){
+            createIcon(iconImg, Vec2(pos.x + 45, pos.y));
+            createLabel(StringUtility::toCommaString(value), 45, Vec2(pos.x + (45 * 2.f), pos.y));
+        };
+        
+        // score
+        {
+            createScoreUI("starIcon.png", GLOBAL->TOTAL_SCORE, Vec2(layerSize.width * 0.025f,
+                                                                    layerSize.height * 0.96f ));
+        }
+        
+        // rank
+        {
+            auto rank = CFacebookManager::Instance()->getMyRank();
+            createScoreUI("rankingIcon.png", rank + 1, Vec2(layerSize.width * 0.025f,
+                                                            layerSize.height * 0.925f ));
+        }
+        
+        // level
+        {
+            auto label = createLabel(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL + 1), 50,
+                                     Vec2(layerSize.width * 0.5f, layerSize.height * 0.96f ));
+            label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            label->setOpacity(255 * 0.4f);
+            //        auto label = Label::createWithTTF(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL),
+            //                                          FONT::MALGUNBD, 150);
+            //        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            //        label->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.825f));
+            //        captureNode->addChild(label);
+        }
+        
+        // logo
+        {
+            auto logo = Sprite::create("background_0.png");
+            logo->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            logo->setPosition(Vec2(layerSize.width * 0.9f, layerSize.height * 0.26f));
+            logo->setScale(0.3f);
+            background->addChild(logo);
+        }
     }
     
     // zoomLayer
     auto zoomLayer = Node::create();
+    zoomLayer->setCascadeOpacityEnabled(true);
     zoomLayer->setContentSize(layerSize);
     zoomLayer->setPosition(layerSize / 2);
     zoomLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -813,7 +877,7 @@ void CObjectManager::Capture()
         auto planet  = Sprite::createWithSpriteFrameName(m_CharacterParam->_planetTextureName);
         planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         planet->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.35f));
-        planet->setRotation(random<int>(0, 360));
+        planet->setRotation(m_CaptureInfo._planetAngle);
         zoomLayer->addChild(planet);
     }
     
@@ -824,7 +888,7 @@ void CObjectManager::Capture()
         character->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.35f
                                     +  PLANET_DEFINE::BOUNDING_RADIUS
                                     + (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.8f)));
-        character->setRotation(random<int>(0, 360));
+        character->setRotation(m_CaptureInfo._characterAngle);
         zoomLayer->addChild(character);
     }
     
@@ -834,8 +898,8 @@ void CObjectManager::Capture()
         auto myRank    = CFacebookManager::Instance()->getMyRank();
         auto rivalRank = myRank + 1; // 나보다 1낮은 등급
         auto rivalData = CFacebookManager::Instance()->getFriendByRank(rivalRank);
-        auto pos       = Vec2((layerSize.width * 0.7f) + (count * 50),
-                              (layerSize.height * 0.78f) + (count * 80));
+        auto pos       = Vec2((layerSize.width * 0.7f) + (count * 70),
+                              (layerSize.height * 0.78f) + (count * 100));
         auto opacity   = (255 - ((max - count) * 50));
         angle = angle - ((max - count) * 30);
         auto ship      = Sprite::createWithSpriteFrameName("ship.png");
@@ -844,6 +908,7 @@ void CObjectManager::Capture()
         ship->setPosition(pos);
         ship->setRotation(angle);
         ship->setOpacity(opacity);
+        ship->setScale(1.2f);
         
         zoomLayer->addChild(ship);
         
@@ -867,6 +932,7 @@ void CObjectManager::Capture()
                                             35, 0, 20, 1, 1, Color4F::GREEN);
         
         auto circleClipper = ClippingNode::create(circleStencil);
+        circleClipper->setCascadeOpacityEnabled(true);
         circleClipper->setInverted(false);
         ship->addChild(circleClipper);
         
@@ -883,12 +949,5 @@ void CObjectManager::Capture()
     for(int i = 0; i <= 3; i++)
         createRival(i, 3, 300);
     
-    // logo
-    {
-        auto logo = Sprite::create("background_0.png");
-        logo->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        logo->setPosition(Vec2(layerSize.width * 0.9f, layerSize.height * 0.26f));
-        logo->setScale(0.3f);
-        background->addChild(logo);
-    }
+    return captureNode;
 }

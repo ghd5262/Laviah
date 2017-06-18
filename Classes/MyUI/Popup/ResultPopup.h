@@ -18,6 +18,7 @@ private:
     void GetCoinFromVideo(cocos2d::Node* sender);
     void GetNewCharacter(cocos2d::Node* sender);
     void GetFreeReward(cocos2d::Node* sender);
+    void Share(cocos2d::Node* sender);
     
     void createRewardPopup(std::string key, int value);
     void exit();

@@ -234,6 +234,7 @@ void CPausePopup::createAchievementDP(const ACHIEVEMENT* data, int posIndex)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(posArray[posIndex])
     ->show(this, ZORDER::POPUP);
+    dp->setColor(COLOR::DARKGRAY);
     m_AchievementList.at(posIndex) = dp;
 }
 

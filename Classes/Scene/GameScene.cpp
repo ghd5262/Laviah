@@ -36,6 +36,7 @@
 #include "../MyUI/Popup/FacebookRankPopup.hpp"
 #include "../MyUI/Popup/FacebookRankUpPopup.hpp"
 #include "../MyUI/Popup/AchievementPopup.hpp"
+#include "../MyUI/Popup/SharePopup.hpp"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/AchievementDataManager.hpp"
@@ -57,7 +58,6 @@ namespace GAMESCENE_DEFINE {
 CGameScene* CGameScene::m_GameScene = nullptr;
 cocos2d::Layer* CGameScene::m_ZoomLayer = nullptr;
 cocos2d::Layer* CGameScene::m_PopupLayer = nullptr;
-cocos2d::Node* CGameScene::m_CaptureNode = nullptr;
 
 Scene* CGameScene::createScene()
 {
@@ -130,10 +130,12 @@ bool CGameScene::init()
     this->createUILayer();
     this->createRivalRankLayer();
     this->createTutorialLayer();
-    this->createCaptureNode();
     this->initKeyboardListener();
     this->setTimestamp();
     this->intro();
+    
+//    CObjectManager::Instance()->setPhotoShareAble(true);
+//    this->createResultPopup();
     
     CAudioManager::Instance()->Clear();
     CAudioManager::Instance()->PlayBGM("sounds/menuBGM.mp3", true);
@@ -202,19 +204,6 @@ void CGameScene::GameHelp()
     this->createHelpPopup();
 }
 
-void CGameScene::WatchVideo()
-{
-    this->createVideoPopup();
-    this->GamePause();
-    m_ZoomLayer->pause();
-}
-
-void CGameScene::ShowAchievement()
-{
-    this->createGoalPopup();
-    this->GamePause();
-}
-
 void CGameScene::OpenGamePausePopup()
 {
     // 이미 Pause인 상태면 리턴한다.
@@ -266,8 +255,8 @@ void CGameScene::OpenRankPopup()
 void CGameScene::OpenRankUpPopup()
 {
     this->createRankUpPopup();
-    this->GamePause();
-    m_ZoomLayer->pause();
+//    this->GamePause();
+//    m_ZoomLayer->pause();
 }
 
 void CGameScene::OpenPermRequestPopup(const VOID_CALLBACK& callback)
@@ -321,6 +310,28 @@ void CGameScene::OpenAchievementPopup()
     CObjectManager::Instance()->ZoomInRank();
     this->createAchievementPopup();
     this->MenuFadeOut();
+}
+
+void CGameScene::OpenGoalPopup()
+{
+    this->createGoalPopup();
+    this->GamePause();
+}
+
+void CGameScene::OpenVideoPopup()
+{
+    this->createVideoPopup();
+    this->GamePause();
+    m_ZoomLayer->pause();
+}
+
+void CGameScene::OpenSharePopup()
+{
+    CSharePopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 void CGameScene::RandomCoin()
@@ -862,19 +873,55 @@ void CGameScene::createRivalRankLayer()
         auto data   = CFacebookManager::Instance()->getFriendByRank(rank);
         auto bullet = CBulletCreator::CreateBullet('8', random<int>(0, 360), 2700, false);
         
-        CUrlSprite::create()
+        auto flag      = Sprite::createWithSpriteFrameName("flag.png");
+        flag->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+        flag->setPosition(Vec2(bullet->getContentSize().width * 1.1f,
+                               bullet->getContentSize().height * 0.4f));
+        flag->setScale(1.5f);
+        bullet->addChild(flag);
+        
+        auto label     = Label::createWithTTF(StringUtils::format("%d", rank + 1), FONT::MALGUNBD, 30);
+        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        label->setPosition(Vec2(flag->getContentSize().width * 0.7f,
+                                flag->getContentSize().height * 0.6f));
+        label->setRotation(90);
+        label->setColor(COLOR::DARKGRAY);
+        flag->addChild(label);
+        
+        // cliper
+        auto circleStencil = DrawNode::create();
+        circleStencil->drawSolidCircle(Vec2(bullet->getContentSize().width * 0.6f,
+                                            bullet->getContentSize().height * 0.48f),
+                                            35, 0, 20, 1, 1, Color4F::GREEN);
+        
+        auto circleClipper = ClippingNode::create(circleStencil);
+        circleClipper->setCascadeOpacityEnabled(true);
+        circleClipper->setInverted(false);
+        bullet->addChild(circleClipper);
+        
+        auto pic = CUrlSprite::create()
+        ->setSize(Size(70, 70))
         ->setUrl(data->_url, data->_url)
         ->setSaveToFileEnable(true)
-        ->setSize(Size(55.f, 55.f))
-        ->build(bullet)
-        ->setPosition(Vec2(bullet->getContentSize().width,
-                           bullet->getContentSize().height * 0.5f));
-        
-        auto number = Label::createWithTTF(StringUtils::format("%d", rank + 1), FONT::MALGUNBD, 55);
-        number->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        number->setPosition(Vec2(bullet->getContentSize().width * 1.5f,
-                                 bullet->getContentSize().height * 0.5f));
-        bullet->addChild(number);
+        ->build(circleClipper, -1);
+        pic->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        pic->setPosition(Vec2(bullet->getContentSize().width * 0.6f,
+                              bullet->getContentSize().height * 0.48f));
+        pic->setRotation(90);
+//
+//        CUrlSprite::create()
+//        ->setUrl(data->_url, data->_url)
+//        ->setSaveToFileEnable(true)
+//        ->setSize(Size(55.f, 55.f))
+//        ->build(bullet)
+//        ->setPosition(Vec2(bullet->getContentSize().width,
+//                           bullet->getContentSize().height * 0.5f));
+//        
+//        auto number = Label::createWithTTF(StringUtils::format("%d", rank + 1), FONT::MALGUNBD, 55);
+//        number->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//        number->setPosition(Vec2(bullet->getContentSize().width * 1.5f,
+//                                 bullet->getContentSize().height * 0.5f));
+//        bullet->addChild(number);
     })
     ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)
@@ -917,19 +964,6 @@ void CGameScene::createIntroUI()
         this->addChild(sprite, zOrder[i]);
         m_IntroUIList.push_back(sprite);
     }
-}
-
-void CGameScene::createCaptureNode()
-{
-    if(m_CaptureNode) return;
-    
-    m_CaptureNode = Node::create();
-    m_CaptureNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_CaptureNode->setContentSize(m_VisibleSize);
-    m_CaptureNode->setPosition(m_VisibleSize / 2);
-    this->addChild(m_CaptureNode, POPUP);
-    
-//    CObjectManager::Instance()->Capture();
 }
 
 void CGameScene::setTimestamp()

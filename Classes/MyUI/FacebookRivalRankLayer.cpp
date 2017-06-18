@@ -134,18 +134,23 @@ cocos2d::ui::Widget* CFacebookRivalRankLayer::createRankDP(int &scoreRef, std::s
     score->setPosition(Vec2(this->getContentSize().width * 0.975f,
                             this->getContentSize().height * 0.5f));
     
+    auto emptySprite = Sprite::create();
+    emptySprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    emptySprite->setContentSize(Size(55.f, 55.f));
+    score->addChild(emptySprite);
+    score->setIcon(emptySprite);
+    
     auto pic = CUrlSprite::create()
     ->setUrl(url, url)
     ->setSaveToFileEnable(true)
     ->setSize(Size(55.f, 55.f))
-    ->build(score);
-    
-    score->setIcon(pic);
+    ->build(emptySprite);
+    pic->setPosition(emptySprite->getContentSize() / 2);
     
     auto number = Label::createWithTTF(StringUtils::format("%d", rank), FONT::MALGUNBD, 55);
     number->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
     number->setPosition(Vec2(-15, 55 * 0.5f));
-    pic->addChild(number);
+    emptySprite->addChild(number);
     
     return dp;
 }
@@ -154,7 +159,7 @@ void CFacebookRivalRankLayer::callListener(int rank)
 {
     if(!m_RankUPListener) return;
     if(rank >= CFacebookManager::Instance()->getMyRank()) return;
-    if(CTutorialManager::Instance()->isRunning()) return;
+    if(CTutorialManager::Instance()->getIsRunning()) return;
     
     // 나의 랭크를 갱신한 경우에만 실행함.
     this->retain();

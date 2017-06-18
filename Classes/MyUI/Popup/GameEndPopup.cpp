@@ -80,7 +80,7 @@ void CGameEndPopup::End(Node* sender){
     }
     else{
         if (GLOBAL->RUN_SCORE < 0 || GLOBAL->REVIVE_COUNT)	CGameScene::getGameScene()->GameResult();
-        else                                                CGameScene::getGameScene()->WatchVideo();
+        else                                                CGameScene::getGameScene()->OpenVideoPopup();
     }
 
     this->popupClose();

@@ -132,8 +132,8 @@ bool CResultPopup::init()
     };
     
 
-    auto createNormalLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize){
-		if (GLOBAL->TOTAL_SCORE + score < INT_MAX )
+    auto createNormalLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize, bool addScore = true){
+		if ((GLOBAL->TOTAL_SCORE + score < INT_MAX) && addScore)
             GLOBAL->TOTAL_SCORE += score;
 
 		auto layerBG = createLayerBG(layerPos, "resultPopup_2.png");
@@ -245,7 +245,7 @@ bool CResultPopup::init()
     scoreLayerArray.at(5) = createNormalLayer(resultIcon[5],
                                               resultContent[5],
                                               bestScore,
-                                              posArray[5], 50);
+                                              posArray[5], 50, false);
     
     // update coin
     CUserDataManager::Instance()->CoinUpdate(GLOBAL->COIN_SCORE);
@@ -271,48 +271,52 @@ bool CResultPopup::init()
         return button;
     };
     
-    std::array<Vec2, 6> btnPosArray = {
+    std::array<Vec2, 7> btnPosArray = {
         Vec2(layerSize.width * 0.08f, layerSize.height * 0.05f),
         Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f),
         Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f),
         Vec2(layerSize.width * 0.25f, layerSize.height * 0.35f),
         Vec2(layerSize.width * 0.5f,  layerSize.height * 0.35f),
         Vec2(layerSize.width * 0.75f, layerSize.height * 0.35f),
+        Vec2(layerSize.width * 0.1f,  layerSize.height * 0.2f ),
     };
     
-    std::array<std::string, 6> btnIconArray = {
+    std::array<std::string, 7> btnIconArray = {
         "homeIcon.png",
         "resetIcon.png",
         "endIcon.png",
         "videoIcon.png",
         "characterIcon.png",
         "rewardIcon.png",
+        "polaroidIcon.png"
     };
     
-    std::array<std::function<void(Node*)>, 6> btnListenerArray = {
+    std::array<std::function<void(Node*)>, 7> btnListenerArray = {
         [=](Node* sender) { this->GoHome(sender);           },
         [=](Node* sender) { this->Reset(sender);            },
         [=](Node* sender) { this->End(sender);              },
         [=](Node* sender) { this->GetCoinFromVideo(sender); },
         [=](Node* sender) { this->GetNewCharacter(sender);  },
         [=](Node* sender) { this->GetFreeReward(sender);    },
+        [=](Node* sender) { this->Share(sender);            },
     };
     
-    std::array<bool, 6> btnVisibleArray = {
+    std::array<bool, 7> btnVisibleArray = {
         (!m_GoalPopupOpen),
         (!m_GoalPopupOpen),
         ( m_GoalPopupOpen),
         ( true ),
         ( CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1000 ),
         ( CFreeRewardManager::Instance()->getRewardAble() ),
+        ( CObjectManager::Instance()->getPhotoShareAble() )
     };
     
     
     // create button array
-    std::array<CMyButton*, 6> btnArray;
+    std::array<CMyButton*, 7> btnArray;
     
     // create buttons
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < 7; i++)
         btnArray[i] = createButton(btnListenerArray[i], btnIconArray[i], btnPosArray[i], btnVisibleArray[i]);
     
     
@@ -330,6 +334,21 @@ bool CResultPopup::init()
                                   layerSize.height * 0.05f));
     btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     this->addChild(btnUserCoin);
+    
+    
+//    // create captured picture
+//    auto pictureBtn = CMyButton::create()
+//    ->addEventListener([=](Node* sender){ this->Share(sender); })
+//    ->setLayer(LayerColor::create(Color4B::WHITE, 100, 160))
+//    ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f))
+//    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//    ->show(this);
+//    
+//    auto picture    = CObjectManager::Instance()->Capture(90, 160, false);
+//    picture->setPosition(Vec2(pictureBtn->getContentSize().width * 0.5f,
+//                              pictureBtn->getContentSize().height * 0.47f));
+//    picture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//    pictureBtn->addChild(picture);
     
     
     this->setOpenAnimation([=](Node* sender){
@@ -354,6 +373,7 @@ bool CResultPopup::init()
         
         action(resultLabel);
         action(btnUserCoin);
+//        action(pictureBtn);
     }, 1.2f);
     
 	this->setCloseAnimation([=](Node* sender){
@@ -363,6 +383,7 @@ bool CResultPopup::init()
         
 		resultLabel->runAction(FadeTo::create(0.3f, 0));
 		btnUserCoin->runAction(FadeTo::create(0.3f, 0));
+//        pictureBtn->runAction(FadeTo::create(0.3f, 0));
         
         if( m_GoalPopupOpen ){
             auto action = [=](Node* sprite, Vec2 pos){
@@ -404,7 +425,7 @@ void CResultPopup::GoHome(Node* sender){
 }
 
 void CResultPopup::End(Node* sender){
-    CGameScene::getGameScene()->ShowAchievement();
+    CGameScene::getGameScene()->OpenGoalPopup();
     this->exit();
 }
 
@@ -417,8 +438,7 @@ void CResultPopup::GetCoinFromVideo(cocos2d::Node* sender)
 
 void CResultPopup::GetNewCharacter(cocos2d::Node* sender)
 {
-//    this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
-    CObjectManager::Instance()->Capture();
+    this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
 }
 
 void CResultPopup::GetFreeReward(cocos2d::Node* sender)
@@ -432,6 +452,11 @@ void CResultPopup::createRewardPopup(std::string key, int value)
     auto popup = CGameScene::getGameScene()->Reward();
     auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
     rewardPopup->AddRewardToList(key, value);
+}
+
+void CResultPopup::Share(cocos2d::Node* sender)
+{
+    CGameScene::getGameScene()->OpenSharePopup();
 }
 
 void CResultPopup::exit()

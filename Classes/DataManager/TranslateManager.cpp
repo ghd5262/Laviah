@@ -159,3 +159,29 @@ void CTranslateManager::addTranslateEventListener(const TRANSLATE_LISTENER& list
     
     m_ListenerList.emplace_back(listener);
 }
+
+std::string CTranslateManager::getCurrentDate(bool timeEnable/* = true*/)
+{
+    time_t time;
+    struct tm * timeinfo;
+    std::time(&time);
+    timeinfo = localtime (&time);
+    std::string result = "";
+    
+    auto year = StringUtils::format("%d", timeinfo->tm_year+1900);
+    auto mon  = StringUtils::format("%d", timeinfo->tm_mon+1);
+    auto day  = StringUtils::format("%d", timeinfo->tm_mday);
+    auto hour = StringUtils::format("%d", timeinfo->tm_hour);
+    auto min  = StringUtils::format("%d", timeinfo->tm_min);
+
+    if(m_CurrentSelectLanguage == "ja" ||
+       m_CurrentSelectLanguage == "ko" ||
+       m_CurrentSelectLanguage == "zh")
+        result += (year + "-" + mon + "-" + day);
+    else
+        result += (mon + "-" + day + "-" + year);
+    
+    if(timeEnable)
+        result += (", " + hour + ":" + min);
+    return result;
+}

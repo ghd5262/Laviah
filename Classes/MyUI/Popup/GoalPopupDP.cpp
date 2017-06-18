@@ -28,7 +28,7 @@ bool CGoalPopupDP::init()
     if (!CPopup::init()) return false;
 
 	float delayTime = m_PosIndex * 0.4f;
-	this->setCascadeOpacityEnabled(true);
+	this->setCascadeColorEnabled(true);
 	this->setOpacity(0);
 	this->setContentSize(Size(1080, 270));
     

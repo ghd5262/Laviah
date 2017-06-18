@@ -114,9 +114,9 @@ CMyButton* CMyButton::addEventListener(const NODE_CALLBACK &callback,
 {
     switch (state)
     {
-        case eMYBUTTON_STATE::BEGIN: m_BeginFunctionList.emplace_back(callback); break;
-        case eMYBUTTON_STATE::EXECUTE: m_ExecuteFunctionList.emplace_back(callback); break;
-        case eMYBUTTON_STATE::END: m_EndFunctionList.emplace_back(callback); break;
+        case eMYBUTTON_STATE::BEGIN:    m_BeginFunctionList.emplace_back(callback);     break;
+        case eMYBUTTON_STATE::EXECUTE:  m_ExecuteFunctionList.emplace_back(callback);   break;
+        case eMYBUTTON_STATE::END:      m_EndFunctionList.emplace_back(callback);       break;
         default: throw "WRONG BUTTON STATE. PLEASE CHECK THE STATE.";
     }
     
@@ -248,10 +248,10 @@ void CMyButton::playButtonStartAnimation()
 	}
 	else{
 
-		if (onEffect(eCLICKED_ANIMATION::ALPHA)) this->setOpacity(80.f);
-		if (onEffect(eCLICKED_ANIMATION::SIZEUP)) this->setScale(1.2f);
+		if (onEffect(eCLICKED_ANIMATION::ALPHA))    this->setOpacity(80.f);
+		if (onEffect(eCLICKED_ANIMATION::SIZEUP))   this->setScale(1.2f);
 		if (onEffect(eCLICKED_ANIMATION::SIZEDOWN)) this->setScale(0.9f);
-		if (onEffect(eCLICKED_ANIMATION::GRAY)) this->setColor(Color3B::GRAY);
+		if (onEffect(eCLICKED_ANIMATION::GRAY))     this->setColor(Color3B::GRAY);
 		if (onEffect(eCLICKED_ANIMATION::TEXTURE)) {
 			if (m_ButtonImage && m_ButtonClickedImage != "")
 				m_ButtonImage->setTexture(m_ButtonClickedImage);
@@ -263,10 +263,10 @@ void CMyButton::playButtonStartAnimation()
 /* 버튼 떨어질 때 Effect 실행 */
 void CMyButton::playButtonEndAnimation()
 {
-	if (onEffect(eCLICKED_ANIMATION::ALPHA)) this->setOpacity(255.f);
-	if (onEffect(eCLICKED_ANIMATION::SIZEUP)) this->setScale(1.0f);
+	if (onEffect(eCLICKED_ANIMATION::ALPHA))    this->setOpacity(255.f);
+	if (onEffect(eCLICKED_ANIMATION::SIZEUP))   this->setScale(1.0f);
 	if (onEffect(eCLICKED_ANIMATION::SIZEDOWN)) this->setScale(1.0f);
-	if (onEffect(eCLICKED_ANIMATION::GRAY)) this->setColor(Color3B::WHITE);
+	if (onEffect(eCLICKED_ANIMATION::GRAY))     this->setColor(Color3B::WHITE);
 	if (onEffect(eCLICKED_ANIMATION::TEXTURE)) {
 		if (m_ButtonImage && m_ButtonNormalImage != "")
 			m_ButtonImage->setTexture(m_ButtonNormalImage);
@@ -324,7 +324,7 @@ void CMyButton::onTouchEnded()
     for(auto func : m_EndFunctionList)
     {
         if (func != nullptr) func(this);
-        if (m_SingleUse) this->setTouchEnable(false, Color3B::WHITE);
+        if (m_SingleUse) this->setTouchEnable(false, this->getColor());
     }
     
 	// 종료 이펙트

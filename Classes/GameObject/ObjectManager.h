@@ -67,7 +67,11 @@ public:
     void NormalMode();
     void InitTutorialStep();
     void Share();
-    void Capture();
+    void ShowCapturingAction();
+    void SaveCaptureInfo();
+    cocos2d::Node* Capture(float width = 1080,
+                           float height = 1920,
+                           bool uiEnable = true);
     void setGameStateByLevel();
     
 	// 초기화
@@ -100,7 +104,8 @@ public:
 	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
     CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterParam, CharacterParam);
     CC_SYNTHESIZE(const sROCKET_PARAM*, m_RocketParam, RocketParam);
-    
+    CC_SYNTHESIZE(bool, m_PhotoShareAble, PhotoShareAble);
+
 private:
 	void createBulletByTimer(float delta);
     void inGameUpdate(float delta);
@@ -150,6 +155,19 @@ private:
         , _pos(pos)
         , _below(below){}
     };
+    
+    struct CAPTURE_INFO{
+        cocos2d::Color3B _backColorStart;
+        cocos2d::Color3B _backColorEnd;
+        float _characterAngle;
+        float _planetAngle;
+        
+        CAPTURE_INFO()
+        : _backColorStart(0, 0, 16)
+        , _backColorEnd(30, 18, 90)
+        , _characterAngle(30.f)
+        , _planetAngle(30.f){};
+    };
 
 private:
     std::shared_ptr<CStateMachine<CObjectManager>> m_FSM;
@@ -158,6 +176,7 @@ private:
     cocos2d::Node* m_SpeedController;
     CItemManager* m_ItemManager;
     CBulletPatternDataManager* m_PatternManager;
+    CAPTURE_INFO m_CaptureInfo;
     float m_RotationSpeed;
     float m_GiantSpeed;
     float m_BulletPatternPaddingLimit;

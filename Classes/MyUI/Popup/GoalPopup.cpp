@@ -101,7 +101,7 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
             // Set achievements until non-exist.
 			if (CAchievementDataManager::Instance()->NonCompleteAchievementExist() >= ACHIEVEMENT_DEFINE::LIMIT_COUNT){
 				// Do open achievement popup again.
-				CGameScene::getGameScene()->ShowAchievement();
+				CGameScene::getGameScene()->OpenGoalPopup();
 				this->popupClose();
 			}
 			else{

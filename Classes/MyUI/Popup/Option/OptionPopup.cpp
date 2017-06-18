@@ -133,11 +133,17 @@ bool COptionPopup::init()
     }, "endIcon.png", Vec2(layerSize.width * 0.92f,
                            layerSize.height * 0.05f));
     
-    auto btnShare = createButton([=](Node* sender){
-        CFacebookManager::Instance()->CaptureScreen();
-        this->End(sender);
-    }, "shareIcon_2.png", Vec2(layerSize.width * 0.08f,
-                               layerSize.height * 0.05f));
+    auto btnShare = CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        //        CFacebookManager::Instance()->CaptureScreen();
+        CObjectManager::Instance()->ShowCapturingAction();
+        //        this->End(sender);
+    })
+    ->setButtonNormalImage("shareIcon_2.png")
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(layerSize.width * 0.08f,
+                             layerSize.height * 0.05f))
+    ->show(this);
     
     
     this->setOpenAnimation([=](Node* sender){

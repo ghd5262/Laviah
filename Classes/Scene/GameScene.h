@@ -25,6 +25,14 @@ public:
 	static cocos2d::Scene* createScene();
 	virtual void update(float delta) override;
 
+    void GameStart();
+    void GamePause();
+    void GameResume();
+    void GameResult();
+    void GameEnd();
+    void GameHelp();
+    void GameExit(bool resume = false);
+    
 	void OpenGamePausePopup();
     void OpenGameMenuLayer();
     void OpenOptionPopup(int scrollIndex = 0);
@@ -35,22 +43,17 @@ public:
     void OpenPermRequestPopup(const VOID_CALLBACK& callback);
     void OpenFBTestPopup();
     void OpenAchievementPopup();
-    void GameStart();
-    void GamePause();
-	void GameResume();
-	void GameResult();
-    void GameEnd();
-    void GameHelp();
-	void WatchVideo();
-	void ShowAchievement();
-    void GameExit(bool resume = false);
+    void OpenGoalPopup();
+    void OpenVideoPopup();
+    void OpenSharePopup();
+    
     void RandomCoin();
     void BonusTimeStart();
     void BonusTimeEnd();
     void ScreenFade(const VOID_CALLBACK& callback = nullptr);
     void MenuFadeIn();
     void MenuFadeOut();
-    
+
 	CPopup* CreateAlertPopup();
 	CPopup* Reward();
 
@@ -58,7 +61,6 @@ public:
 	static CGameScene* getGameScene(){ return m_GameScene; }
 	static cocos2d::Layer* getZoomLayer(){ return m_ZoomLayer; }
     static cocos2d::Layer* getPopupLayer(){ return m_PopupLayer; }
-    static cocos2d::Node* getCaptureNode(){ return m_CaptureNode; }
     
 	CC_SYNTHESIZE(cocos2d::Vec2, m_TouchPos, TouchPos);
     CC_SYNTHESIZE(bool, m_NeedTutorial, NeedTutorial);
@@ -115,7 +117,6 @@ private:
     void createRivalRankLayer();
     void createTutorialLayer();
     void createIntroUI();
-    void createCaptureNode();
     void initKeyboardListener();
     void setTimestamp();
     void intro();
@@ -124,7 +125,6 @@ private:
 	static CGameScene* m_GameScene;
 	static cocos2d::Layer* m_ZoomLayer;
     static cocos2d::Layer* m_PopupLayer;
-    static cocos2d::Node* m_CaptureNode;
     cocos2d::LayerColor* m_ScreenFade;
     CPopup* m_UILayer;
     CPopup* m_MenuLayer;

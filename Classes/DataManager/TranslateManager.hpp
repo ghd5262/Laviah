@@ -15,6 +15,7 @@ public:
     LANGUAGE_KEY_LIST getLanguageKeyList() const { return m_LanguageKeyList; };
     void ChangeLanguage(std::string languageKey);
     void addTranslateEventListener(const TRANSLATE_LISTENER& listener);
+    std::string getCurrentDate(bool timeEnable = true);
     
     CC_SYNTHESIZE_READONLY(std::string, m_CurrentSelectLanguage, CurrentSelectLanguage);
     

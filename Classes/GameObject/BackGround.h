@@ -8,9 +8,11 @@ public:
     static CBackGround* create();
     void BonusTimeStart();
     void BonusTimeEnd();
-    
-    virtual void update(float delta) override;
 
+    virtual void update(float delta) override;
+    Color3B getCurrentStartColor();
+    Color3B getCurrentEndColor();
+    
     CC_SYNTHESIZE(bool, m_IsBonusTime, IsBonusTime);
     
 protected:

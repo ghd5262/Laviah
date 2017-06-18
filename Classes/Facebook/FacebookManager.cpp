@@ -111,11 +111,18 @@ void CFacebookManager::RequestPermission(API_LISTENER listener, std::string id)
         sdkbox::PluginFacebook::requestPublishPermissions({sdkbox::FB_PERM_PUBLISH_POST});
 }
 
-void CFacebookManager::CaptureScreen()
+bool CFacebookManager::SaveNodeToFile(cocos2d::Node* node)
 {
-    utils::captureScreen([=](bool yes, const std::string &outputFilename){
-        m_FacebookCapture = outputFilename;
-    }, "FBCapture.png");
+    auto image   = utils::captureNode(node);
+    auto path    = FileUtils::getInstance()->getWritablePath() + "remoteImage/" + "FBCapture.png";
+    auto succeed = image->saveToFile(path);
+    if(!succeed){
+        CCLOG("Capture failed. Can not save to file.");
+        return false;
+    }
+ 
+    m_FacebookCapture = path;
+    return true;
 }
 
 void CFacebookManager::ClearData()
@@ -138,14 +145,14 @@ void CFacebookManager::CheckFacebookStatus()
 void CFacebookManager::RequestMyInfo()
 {
     sdkbox::FBAPIParam params;
-    params["fields"] = "id,name,first_name,last_name,picture{is_silhouette,url},installed,scores{score}";
+    params["fields"] = "id,name,first_name,last_name,picture.type(large){is_silhouette,url},installed,scores{score}";
     sdkbox::PluginFacebook::api("/me", "GET", params, FACEBOOK_DEFINE::TAG_API_ME);
 }
 
 void CFacebookManager::RequestFriendList()
 {
     sdkbox::FBAPIParam params;
-    params["fields"] = "id,name,first_name,last_name,picture{is_silhouette,url},installed,scores{score}";
+    params["fields"] = "id,name,first_name,last_name,picture.type(large){is_silhouette,url},installed,scores{score}";
     params["limit"] = "30";
     sdkbox::PluginFacebook::api("/me/friends", "GET", params, FACEBOOK_DEFINE::TAG_API_FRIENDS);
 }

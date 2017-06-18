@@ -81,6 +81,20 @@ void CBackGround::update(float delta)
     }
 }
 
+Color3B CBackGround::getCurrentStartColor()
+{
+    if(!m_Gradient) return Color3B(0, 0, 16);
+    
+    return m_Gradient->getStartColor();
+}
+
+Color3B CBackGround::getCurrentEndColor()
+{
+    if(!m_Gradient) return Color3B(30, 18, 90);
+    
+    return m_Gradient->getEndColor();
+}
+
 void CBackGround::BonusTimeStart()
 {
     particleResume(m_BonusTimeParticle);
