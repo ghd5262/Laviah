@@ -27,7 +27,7 @@ CRewardPopupDP* CRewardPopupDP::create()
     }
 }
 
-CPopup* CRewardPopupDP::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
+CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* = 0*/)
 {
     auto rewardKey      = m_Reward._key;
     auto rewardValue    = m_Reward._value;

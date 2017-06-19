@@ -24,7 +24,7 @@ CRewardPopup* CRewardPopup::create()
 	}
 }
 
-CPopup* CRewardPopup::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
+CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 0*/)
 {
     
     auto popupSize = this->getContentSize();
@@ -39,27 +39,14 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
     ->show(this);
     
     
-    m_BtnGet = CMyButton::create()
+    CMyButton::create()
     ->addEventListener([=](Node* sender){
-        m_BtnGet->setVisible(false);
         this->open();
     })
     ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-    ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 400, 150))
-    ->setContents("Get")
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setButtonPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f))
-    ->show(this);
-    
-    
-    m_BtnEnd = CMyButton::create()
-    ->addEventListener([=](Node* sender){
-        this->end();
-    })
-    ->setButtonSingleUse(true)
-    ->setButtonNormalImage("endIcon.png")
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setButtonPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.05f))
+    ->setButtonPosition(popupSize / 2)
     ->show(this);
     
     
@@ -77,22 +64,16 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
             owner->runAction(sequence);
         };
         
-        action(m_BtnEnd);
         action(btnUserCoin);
         
     }, 1.2f);
     
     this->setCloseAnimation([=](Node* sender){
         btnUserCoin->runAction(FadeTo::create(0.3f, 0));
-        m_BtnEnd->runAction(FadeTo::create(0.3f, 0));
     });
     
-    this->setDefaultCallback([=](Node* sender){
-        this->end();
-    });
-    
-    this->uiUpdate();
-    
+    this->setDefaultCallback([=](Node* sender){ this->open(); });
+    this->setDefaultCallbackCleanUp(false);
     return CPopup::show(parent, zOrder);
 }
 
@@ -102,19 +83,16 @@ CRewardPopup* CRewardPopup::setExitCallback(const EXIT_CALLBACK &callback)
     return this;
 }
 
-void CRewardPopup::AddItemToList(std::string key, int value, int cost)
+void CRewardPopup::AddRewardToList(std::string key, int value)
 {
-	m_ItemList.emplace_back(sREWARD_DATA(key, value), cost);
+	m_RewardList.emplace_back(sREWARD_DATA(key, value));
 }
 
 CPopup* CRewardPopup::createRewardDP(sREWARD_DATA data)
 {
     return CRewardPopupDP::create()
     ->setExitCallback([=](){
-        if(!this->isItemRemain()) return;
         
-        m_BtnGet->setVisible(true);
-        this->uiUpdate();
     })
     ->setRewardData(data)
     ->setDefaultCallbackEnable(false)
@@ -122,17 +100,6 @@ CPopup* CRewardPopup::createRewardDP(sREWARD_DATA data)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(getContentSize() / 2)
     ->show(this, ZORDER::POPUP);
-}
-
-void CRewardPopup::uiUpdate()
-{
-    if(m_BtnGet == nullptr) return;
-    if(!this->isItemRemain()) return;
-    
-    std::string content = "Get";
-    auto cost = m_ItemList.at(m_ItemIndex)._cost;
-    if(cost != 0) content = StringUtils::format("Buy -%d", cost);
-    m_BtnGet->changeContents(content);
 }
 
 void CRewardPopup::open()
@@ -144,12 +111,7 @@ void CRewardPopup::open()
     // Open enable after 5 seconds.
     this->scheduleOnce([=](float delta){
         m_OpenEnable = true;
-    }, 5.f, "RewardOpenAble");
-    
-    this->changeDefaultCallback([=](Node* sender){ this->open(); });
-    this->setDefaultCallbackCleanUp(false);
-    m_BtnEnd->setTouchEnable(false);
-    m_BtnEnd->runAction(FadeTo::create(0.3f, 0));
+    }, 5.f, "RewardSkipAble");
     
 	if (m_RewardDP != nullptr){
 		m_RewardDP->popupClose();
@@ -167,10 +129,10 @@ void CRewardPopup::open()
 		return;
 	}
 
-	auto data  = m_ItemList.at(m_ItemIndex)._rewardData;
+	auto data  = m_RewardList.at(m_RewardIndex);
 	data       = CAchievementDataManager::Instance()->RewardByKey(data._key, data._value);
 	m_RewardDP = this->createRewardDP(data);
-	m_ItemIndex++;
+	m_RewardIndex++;
 }
 
 void CRewardPopup::end()
@@ -181,5 +143,5 @@ void CRewardPopup::end()
 
 bool CRewardPopup::isItemRemain()
 {
-    return (m_ItemIndex < m_ItemList.size());
+    return (m_RewardIndex < m_RewardList.size());
 }

@@ -10,7 +10,7 @@ public:
     static CRewardPopupDP* create();
     CRewardPopupDP* setExitCallback(std::function<void()> listener);
     CRewardPopupDP* setRewardData(sREWARD_DATA reward);
-    CPopup* show(cocos2d::Node* parent, unsigned zOrder = 0);
+    CPopup* show(Node* parent = nullptr, int zOrder = 0);
     
     //setter & getter
 	const sREWARD_DATA getRewardData() const { return m_Reward; }
