@@ -7,14 +7,14 @@
 class CRewardPopupDP : public CPopup
 {
 public:
-    static CRewardPopupDP* create(const sREWARD_DATA reward);
+    static CRewardPopupDP* create();
+    CRewardPopupDP* setExitCallback(std::function<void()> listener);
+    CRewardPopupDP* setRewardData(sREWARD_DATA reward);
+    CPopup* show(cocos2d::Node* parent, unsigned zOrder = 0);
     
     //setter & getter
 	const sREWARD_DATA getRewardData() const { return m_Reward; }
-    
-protected:
-    virtual bool init() override;
-    
+        
 private:
     void goldReward();
     void characterReward();
@@ -22,10 +22,11 @@ private:
     void characterCreator2(cocos2d::Sprite* character);
     void characterCreator3(cocos2d::Sprite* character);
     
-	CRewardPopupDP(const sREWARD_DATA reward)
-		: m_Reward(reward){};
+	CRewardPopupDP()
+    : m_ExitListener(nullptr){};
     virtual ~CRewardPopupDP(){};
     
 private:
-	const sREWARD_DATA m_Reward;
+	sREWARD_DATA m_Reward;
+    std::function<void()> m_ExitListener;
 };

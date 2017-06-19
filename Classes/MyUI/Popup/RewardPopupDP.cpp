@@ -11,9 +11,9 @@
 
 USING_NS_CC;
 
-CRewardPopupDP* CRewardPopupDP::create(const sREWARD_DATA reward)
+CRewardPopupDP* CRewardPopupDP::create()
 {
-	CRewardPopupDP *pRet = new(std::nothrow) CRewardPopupDP(reward);
+	CRewardPopupDP *pRet = new(std::nothrow) CRewardPopupDP();
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -27,12 +27,8 @@ CRewardPopupDP* CRewardPopupDP::create(const sREWARD_DATA reward)
     }
 }
 
-bool CRewardPopupDP::init()
+CPopup* CRewardPopupDP::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
 {
-    if (!CPopup::init()) return false;
-    this->setContentSize(_director->getWinSize());
-    
-    
     auto rewardKey      = m_Reward._key;
     auto rewardValue    = m_Reward._value;
     std::string value   = "";
@@ -57,10 +53,10 @@ bool CRewardPopupDP::init()
     title->setPosition(Vec2(this->getContentSize().width * 0.5f,
                             this->getContentSize().height * 0.8f));
     this->addChild(title);
-
+    
     
     this->setOpenAnimation([=](Node* sender){
-
+        
         auto action = [=](Node* owner){
             auto fade  = FadeIn::create(0.5f);
             owner->setOpacity(0);
@@ -73,8 +69,28 @@ bool CRewardPopupDP::init()
     this->setCloseAnimation([=](Node* sender){
         
         this->runAction(FadeTo::create(0.3f, 0));
+        
+        if(m_ExitListener){
+            this->retain();
+            m_ExitListener();
+            m_ExitListener = nullptr;
+            this->release();
+        }
     });
-    return true;
+    
+    return CPopup::show(parent, zOrder);
+}
+
+CRewardPopupDP* CRewardPopupDP::setExitCallback(std::function<void()> listener)
+{
+    m_ExitListener = listener;
+    return this;
+}
+
+CRewardPopupDP* CRewardPopupDP::setRewardData(sREWARD_DATA reward)
+{
+    m_Reward = reward;
+    return this;
 }
 
 void CRewardPopupDP::goldReward()

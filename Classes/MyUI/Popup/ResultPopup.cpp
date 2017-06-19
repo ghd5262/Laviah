@@ -170,6 +170,9 @@ bool CResultPopup::init()
 		return layerBG;
 	};
     
+    // combo reset
+    CComboScore::Instance()->ComboScoreReset();
+        
     // score layer array
     std::array<Node*, 6> scoreLayerArray;
     
@@ -254,7 +257,6 @@ bool CResultPopup::init()
     CUserDataManager::Instance()->ExpAdd(std::max(1, GLOBAL->TOTAL_SCORE / 100));
     
     // Check all of achievement.
-    CComboScore::Instance()->ComboScoreReset();
     bool achievementAll    = CAchievementDataManager::Instance()->CheckCompleteAll();
     m_GoalPopupOpen = (GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT || achievementAll);
     
