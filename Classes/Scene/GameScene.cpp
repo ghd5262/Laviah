@@ -40,6 +40,7 @@
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/AchievementDataManager.hpp"
+#include "../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 #include "../DataManager/NetworkManager.hpp"
 #include "../DataManager/FreeRewardManager.hpp"
 #include "../AI/States/RocketStates.h"
@@ -132,7 +133,24 @@ bool CGameScene::init()
     this->createTutorialLayer();
     this->initKeyboardListener();
     this->setTimestamp();
-    this->intro();
+//    this->intro();
+    
+    this->ScreenFade([=](){
+        auto rewardPopup = dynamic_cast<CRewardPopup*>(this->Reward());
+//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
+//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
+//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
+//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
+//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+        rewardPopup->setIsPaidFeature(-1500);
+        rewardPopup->setExitCallback([=](){
+            CObjectManager::Instance()->ZoomIn();
+            this->menuOpen();
+        });
+    });
     
 //    CObjectManager::Instance()->setPhotoShareAble(true);
 //    this->createResultPopup();

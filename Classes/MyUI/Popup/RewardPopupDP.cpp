@@ -29,9 +29,9 @@ CRewardPopupDP* CRewardPopupDP::create()
 
 CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* = 0*/)
 {
-    auto rewardKey      = m_Reward._key;
-    auto rewardValue    = m_Reward._value;
-    std::string value   = "";
+    auto rewardKey    = m_Reward._key;
+    auto rewardValue  = m_Reward._value;
+    std::string value = "";
     
     if (ACHIEVEMENT_REWARD_KEY::REWARD_COIN == rewardKey){
         value = StringUtils::format("%d Gold", rewardValue);
@@ -49,34 +49,22 @@ CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* =
                                                   this->getContentSize().height),
                                              TextHAlignment::CENTER,
                                              TextVAlignment::CENTER);
+    title->setCascadeOpacityEnabled(true);
     title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     title->setPosition(Vec2(this->getContentSize().width * 0.5f,
                             this->getContentSize().height * 0.8f));
     this->addChild(title);
     
-    
+    this->setOpacity(0);
     this->setOpenAnimation([=](Node* sender){
-        
-        auto action = [=](Node* owner){
-            auto fade  = FadeIn::create(0.5f);
-            owner->setOpacity(0);
-            owner->runAction(fade);
-        };
-        
-        action(this);
-    });
+        this->runAction(FadeIn::create(0.5f));
+    }, 3.f);
     
     this->setCloseAnimation([=](Node* sender){
-        
         this->runAction(FadeTo::create(0.3f, 0));
-        
-        if(m_ExitListener){
-            this->retain();
-            m_ExitListener();
-            m_ExitListener = nullptr;
-            this->release();
-        }
     });
+    
+    this->setDefaultCallback([=](Node* sender){}, false);
     
     return CPopup::show(parent, zOrder);
 }
@@ -85,6 +73,18 @@ CRewardPopupDP* CRewardPopupDP::setExitCallback(std::function<void()> listener)
 {
     m_ExitListener = listener;
     return this;
+}
+
+void CRewardPopupDP::exitWithDelay(float delay)
+{
+    this->scheduleOnce([=](float delay){
+        if(m_ExitListener){
+            this->retain();
+            m_ExitListener();
+            m_ExitListener = nullptr;
+            this->release();
+        }
+    }, delay, "AutoExit");
 }
 
 CRewardPopupDP* CRewardPopupDP::setRewardData(sREWARD_DATA reward)
@@ -158,6 +158,8 @@ void CRewardPopupDP::goldReward()
         this->addChild(gold);
         action(gold);
     }
+    
+    this->exitWithDelay(7.f);
 }
 
 void CRewardPopupDP::characterReward()
@@ -200,6 +202,8 @@ void CRewardPopupDP::characterCreator1(cocos2d::Sprite* character)
         particle->setAngle(random<int>(0, 360));
         this->addChild(particle);
     }
+    
+    this->exitWithDelay(4.f);
 }
 
 void CRewardPopupDP::characterCreator2(cocos2d::Sprite* character)
@@ -213,16 +217,24 @@ void CRewardPopupDP::characterCreator2(cocos2d::Sprite* character)
     auto delay   = DelayTime::create(0.5f);
     auto function= CallFunc::create([=](){
         
-        auto moveOut  = MoveTo::create(3.f, Vec2(this->getContentSize().width * 1.5f,
-                                              this->getContentSize().height * 0.5f));
-        auto spinOut  = RotateBy::create(3.f, 360);
-        auto spawnOut = Spawn::createWithTwoActions(moveOut, spinOut);
-        auto elastic  = EaseElasticIn::create(spawnOut, 1);
+        auto moveOut   = MoveTo::create(3.f, Vec2(this->getContentSize().width * 1.5f,
+                                                 this->getContentSize().height * 0.5f));
+        auto spinOut   = RotateBy::create(3.f, 360);
+        auto spawnOut  = Spawn::createWithTwoActions(moveOut, spinOut);
+        auto elastic   = EaseElasticIn::create(spawnOut, 1);
         
-        character->runAction(elastic);
+        auto delayIn   = DelayTime::create(3.f);
+        
+        auto moveIn    = MoveTo::create(5.f, this->getContentSize() / 2);
+        auto spinIn    = RotateBy::create(5.f, -360);
+        auto spawnIn   = Spawn::createWithTwoActions(moveIn, spinIn);
+        auto elasticIn = EaseElasticOut::create(spawnIn, 1);
+        
+        character->runAction(Sequence::create(elastic, delayIn, elasticIn, nullptr));
     });
     
     character->runAction(Sequence::create(elastic, delay, function, NULL));
+    this->exitWithDelay(6.5f);
 }
 
 void CRewardPopupDP::characterCreator3(cocos2d::Sprite* character)

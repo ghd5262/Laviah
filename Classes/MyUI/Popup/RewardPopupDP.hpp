@@ -16,6 +16,7 @@ public:
 	const sREWARD_DATA getRewardData() const { return m_Reward; }
         
 private:
+    void exitWithDelay(float delay);
     void goldReward();
     void characterReward();
     void characterCreator1(cocos2d::Sprite* character);
