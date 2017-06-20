@@ -93,31 +93,32 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
     }, "homeIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
     
     auto btnReward = createBtn([=](Node* sender){
-		auto popup = CGameScene::getGameScene()->Reward();
-		auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
-        rewardPopup->setExitCallback([=](){
-            
-            // If there are more non-completed achievements than limit count.
-            // Set achievements until non-exist.
-			if (CAchievementDataManager::Instance()->NonCompleteAchievementExist() >= ACHIEVEMENT_DEFINE::LIMIT_COUNT){
-				// Do open achievement popup again.
-				CGameScene::getGameScene()->OpenGoalPopup();
-				this->popupClose();
-			}
-			else{
-				this->GoHome(nullptr);
-			}
-        });
         
-		for (auto node : m_AchievementList)
-		{
+        std::vector<sREWARD_DATA> rewardList;
+        rewardList.clear();
+        for (auto node : m_AchievementList)
+        {
             if(node == nullptr) continue;
             
-			auto dp         = dynamic_cast<CGoalPopupDP*>(node);
-			auto data       = dp->getAchievementParam();
+            auto dp         = dynamic_cast<CGoalPopupDP*>(node);
+            auto data       = dp->getAchievementParam();
             auto levelData  = CAchievementDataManager::Instance()->getCurLevelDataByIndex(data._index, false);
-			rewardPopup->AddRewardToList(levelData._rewardKey, levelData._rewardValue);
-		}
+            rewardList.emplace_back(levelData._rewardKey, levelData._rewardValue);
+        }
+        
+        CGameScene::getGameScene()->Reward([=](){
+            // If there are more non-completed achievements than limit count.
+            // Set achievements until non-exist.
+            if (CAchievementDataManager::Instance()->NonCompleteAchievementExist() >= ACHIEVEMENT_DEFINE::LIMIT_COUNT){
+                // Do open achievement popup again.
+                CGameScene::getGameScene()->OpenGoalPopup();
+                this->popupClose();
+            }
+            else{
+                this->GoHome(nullptr);
+            }
+        }, rewardList);
+
         
         // TODO: If there are no more achievements. do not open achievement popup
         CAchievementDataManager::Instance()->getNewAchievements();

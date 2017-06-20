@@ -12,6 +12,7 @@ enum ZORDER{
     SCREENFADE = 100,
 };
 
+struct sREWARD_DATA;
 class CMyButton;
 class CPopup;
 class CCountDown;
@@ -55,7 +56,9 @@ public:
     void MenuFadeOut();
 
 	CPopup* CreateAlertPopup();
-	CPopup* Reward();
+	void Reward(std::function<void()> exitCallback,
+                std::vector<sREWARD_DATA> list,
+                int cost = 0);
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
@@ -117,6 +120,7 @@ private:
     void createRivalRankLayer();
     void createTutorialLayer();
     void createIntroUI();
+    void createBackKeyButton();
     void initKeyboardListener();
     void setTimestamp();
     void intro();

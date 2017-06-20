@@ -7,6 +7,7 @@
 #include "../../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
+#include "../../DataManager/DataManagerUtils.h"
 #include <array>
 
 CRewardPopup* CRewardPopup::create()
@@ -90,6 +91,7 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.05f))
     ->show(this);
+    if(!m_IsPaidFeature) btnEnd->setVisible(false);
     
     auto btnUserCoin = CUserCoinButton::create();
     btnUserCoin->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.05f));
@@ -108,7 +110,6 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
         action(btnUserCoin);
         action(btnEnd);
         this->showButtons();
-//        action(m_GetButton);
         
     }, 1.2f);
     
@@ -125,6 +126,12 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
     return CPopup::show(parent, zOrder);
 }
 
+CRewardPopup* CRewardPopup::AddRewardToList(std::vector<sREWARD_DATA> list)
+{
+    DATA_MANAGER_UTILS::copyList(list, m_RewardList);
+    return this;
+}
+
 CRewardPopup* CRewardPopup::setExitCallback(const EXIT_CALLBACK &callback)
 {
     m_ExitCallback = callback;
@@ -134,7 +141,7 @@ CRewardPopup* CRewardPopup::setExitCallback(const EXIT_CALLBACK &callback)
 CRewardPopup* CRewardPopup::setIsPaidFeature(int cost)
 {
     m_Cost = cost;
-    m_IsPaidFeature = true;
+    m_IsPaidFeature = (cost != 0);
     return this;
 }
 

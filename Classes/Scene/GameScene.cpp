@@ -131,26 +131,28 @@ bool CGameScene::init()
     this->createUILayer();
     this->createRivalRankLayer();
     this->createTutorialLayer();
+    this->createBackKeyButton();
     this->initKeyboardListener();
     this->setTimestamp();
-//    this->intro();
+    this->intro();
+
     
-    this->ScreenFade([=](){
-        auto rewardPopup = dynamic_cast<CRewardPopup*>(this->Reward());
-//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
-//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
-//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
-//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
-//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
-//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
-//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
-//        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
-        rewardPopup->setIsPaidFeature(-1500);
-        rewardPopup->setExitCallback([=](){
-            CObjectManager::Instance()->ZoomIn();
-            this->menuOpen();
-        });
-    });
+//    this->ScreenFade([=](){
+//        auto rewardPopup = dynamic_cast<CRewardPopup*>(this->Reward());
+////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
+////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
+////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
+////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
+////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+//        rewardPopup->setIsPaidFeature(-1500);
+//        rewardPopup->setExitCallback([=](){
+//            CObjectManager::Instance()->ZoomIn();
+//            this->menuOpen();
+//        });
+//    });
     
 //    CObjectManager::Instance()->setPhotoShareAble(true);
 //    this->createResultPopup();
@@ -430,11 +432,16 @@ void CGameScene::BonusTimeEnd()
     this->removeBonusTimeLayer();
 }
 
-CPopup* CGameScene::Reward()
+void CGameScene::Reward(std::function<void()> exitCallback,
+                        std::vector<sREWARD_DATA> list,
+                        int cost/* = 0*/)
 {
     CObjectManager::Instance()->MoveAction(MOVE_DIRECTION::DOWN);
     
-    return CRewardPopup::create()
+    CRewardPopup::create()
+    ->AddRewardToList(list)
+    ->setExitCallback(exitCallback)
+    ->setIsPaidFeature(cost)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 1.5f))
@@ -954,6 +961,18 @@ void CGameScene::createTutorialLayer()
     tutorialMananger->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     tutorialMananger->setPosition(m_VisibleSize / 2);
     m_PopupLayer->addChild(tutorialMananger, ZORDER::POPUP);
+}
+
+void CGameScene::createBackKeyButton()
+{
+#if(CC_TARGET_PLATFORM == TARGET_OS_SIMULATOR)
+    CMyButton::create()
+    ->addEventListener([=](Node* sender){ CPopup::DefaultCallback(); })
+    ->setButtonNormalImage("exitButton.png")
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(m_VisibleSize.width * 0.08f, m_VisibleSize.height * 0.1f))
+    ->show(this, ZORDER::SCREENFADE);
+#endif
 }
 
 void CGameScene::createIntroUI()

@@ -440,7 +440,7 @@ void CResultPopup::GetCoinFromVideo(cocos2d::Node* sender)
 
 void CResultPopup::GetNewCharacter(cocos2d::Node* sender)
 {
-    this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+    CGameScene::getGameScene()->Reward(nullptr, {}, -1500);
 }
 
 void CResultPopup::GetFreeReward(cocos2d::Node* sender)
@@ -451,9 +451,9 @@ void CResultPopup::GetFreeReward(cocos2d::Node* sender)
 
 void CResultPopup::createRewardPopup(std::string key, int value)
 {
-    auto popup = CGameScene::getGameScene()->Reward();
-    auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
-    rewardPopup->AddRewardToList(key, value);
+    CGameScene::getGameScene()->Reward(nullptr, {
+        sREWARD_DATA(key, value)
+    });
 }
 
 void CResultPopup::Share(cocos2d::Node* sender)

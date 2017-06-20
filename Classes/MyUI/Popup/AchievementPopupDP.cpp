@@ -237,21 +237,21 @@ bool CAchievementPopupDP::init()
 
 void CAchievementPopupDP::Reward()
 {
-    auto state = CAchievementDataManager::getAchievementStateByIndex(m_AchievementData->_index, true);
+    
+    auto achievementMNG = CAchievementDataManager::Instance();
+    auto state = achievementMNG->getAchievementStateByIndex(m_AchievementData->_index, true);
     if(state != ACHIEVEMENT_STATE::COMPLETED) return;
     
     // create reward popup.
-    auto popup = CGameScene::getGameScene()->Reward();
-    auto rewardPopup = dynamic_cast<CRewardPopup*>(popup);
-    auto levelData   = CAchievementDataManager::Instance()->getCurLevelDataByIndex(m_AchievementData->_index,
-                                                                                   true);
-    rewardPopup->AddRewardToList(levelData._rewardKey, levelData._rewardValue);
-    rewardPopup->setExitCallback([=](){
+    auto levelData = achievementMNG->getCurLevelDataByIndex(m_AchievementData->_index, true);
+    CGameScene::getGameScene()->Reward([=](){
         this->contentUpdate();
+    }, {
+        sREWARD_DATA(levelData._rewardKey, levelData._rewardValue)
     });
     
     // level up.
-    CAchievementDataManager::Instance()->HiddenAchievementLevelUP(m_AchievementData->_index);
+    achievementMNG->HiddenAchievementLevelUP(m_AchievementData->_index);
 }
 
 void CAchievementPopupDP::contentUpdate()

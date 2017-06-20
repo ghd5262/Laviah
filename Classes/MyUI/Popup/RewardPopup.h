@@ -11,6 +11,7 @@ class CRewardPopup : public CPopup
     
 public:
 	static CRewardPopup* create();
+    CRewardPopup* AddRewardToList(std::vector<sREWARD_DATA> list);
     CRewardPopup* setExitCallback(const EXIT_CALLBACK &callback);
     CRewardPopup* setIsPaidFeature(int cost);
     CPopup* show(Node* parent = nullptr, int zOrder = 0);
