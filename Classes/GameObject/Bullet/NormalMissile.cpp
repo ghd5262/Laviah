@@ -89,6 +89,8 @@ void CNormalMissile::CollisionWithPlayer()
     //		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_0.mp3", false);
     
 	if (CItemManager::Instance()->isCurrentItem(eITEM_FLAG_giant)){
+//        if(CObjectManager::Instance()->IsHitWithSlowPoint(this))
+//            CObjectManager::Instance()->SlowMotion();
         GLOBAL->GIANT_COUNT_TOTAL += 1;
         GLOBAL->GIANT_COUNT_MISSILE += 1;
         GLOBAL->GIANT_SCORE_TOTAL += (GLOBAL->COMBO_LEVEL * 2);

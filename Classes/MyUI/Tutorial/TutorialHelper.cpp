@@ -32,7 +32,7 @@ void CTutorialHelper::CreateMessageBox(std::string key,
     auto layerSize = Director::getInstance()->getWinSize();
     auto button    = CMyButton::create()
     ->addEventListener([](Node* sender){
-        CObjectManager::Instance()->SpeedControl(0, 90, true);
+        CObjectManager::Instance()->SpeedControl(0.5f, 1.f, true);
         CGameScene::getZoomLayer()->resume();
         CTutorialManager::Instance()->NextStep();
     }, action)
@@ -44,7 +44,7 @@ void CTutorialHelper::CreateMessageBox(std::string key,
     
     CTutorialStep::create()
     ->addBeginListener([](Node* sender){
-        CObjectManager::Instance()->SpeedControl(0, 0, true);
+        CObjectManager::Instance()->SpeedControl(0.5f, 0.02f, true);
         CGameScene::getZoomLayer()->pause();
     })
     ->addButton(button)

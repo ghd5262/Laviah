@@ -123,6 +123,7 @@ bool CGameScene::init()
     this->createPlanet();
     this->createPlayer();
     this->createRocket();
+//    this->createSlowPoint();
     this->createCountDown();
     this->createScreenFade();
     this->createItemRanges();
@@ -789,7 +790,7 @@ void CGameScene::createPlayer()
     auto player = CPlayer::create();
     player->setPosition(Vec2(m_VisibleSize.width * 0.5f, (m_VisibleSize.height * 0.5f) +
                              (PLANET_DEFINE::BOUNDING_RADIUS) +
-                             (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.8f)));
+                             (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.71f)));
     player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_ZoomLayer->addChild(player, ZORDER::PLAYER);
     player->setVisible(false);
@@ -809,6 +810,21 @@ void CGameScene::createRocket()
     rocket->ChangeState(CFlyToTarget::Instance());
     m_ZoomLayer->addChild(rocket, ZORDER::POPUP);
     CObjectManager::Instance()->setRocket(rocket);
+}
+
+void CGameScene::createSlowPoint()
+{
+    auto createSlowPoint = [=](Vec2 pos){
+        auto slowPoint = LayerColor::create(COLOR::BRIGHT_WHITEGRAY_ALPHA, 80, 80);
+        slowPoint->setIgnoreAnchorPointForPosition(false);
+        slowPoint->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        slowPoint->setPosition(pos);
+        m_ZoomLayer->addChild(slowPoint);
+        return slowPoint;
+    };
+    
+    createSlowPoint(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.78f));
+//    createSlowPoint(Vec2(m_VisibleSize.width * 0.4f, m_VisibleSize.height * 0.75f));
 }
 
 void CGameScene::createCountDown()

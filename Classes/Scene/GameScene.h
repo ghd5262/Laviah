@@ -111,6 +111,7 @@ private:
     void createPlanet();
     void createPlayer();
     void createRocket();
+    void createSlowPoint();
     void createCountDown();
     void createScreenFade();
     void createItemRanges();

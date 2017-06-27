@@ -73,6 +73,9 @@ public:
                            float height = 1920,
                            bool uiEnable = true);
     void setGameStateByLevel();
+    void SlowMotion();
+    void SlowMotionFinish();
+    
     
 	// 초기화
 	void Clear();
@@ -87,7 +90,8 @@ public:
                       float magnitude,
                       cocos2d::Node* owner,
                       cocos2d::Vec2 originPos);
-    
+    static bool IsHitWithSlowPoint(CBullet* bullet);
+
 	//getter & setter
     std::vector<CBullet*>* getBulletList(){ return &m_BulletList; }
     CC_SYNTHESIZE(CPlanet*, m_Planet, Planet);
@@ -105,7 +109,8 @@ public:
     CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterParam, CharacterParam);
     CC_SYNTHESIZE(const sROCKET_PARAM*, m_RocketParam, RocketParam);
     CC_SYNTHESIZE(bool, m_PhotoShareAble, PhotoShareAble);
-
+    CC_SYNTHESIZE(bool, m_SlowMotionAble, SlowMotionAble);
+    
 private:
 	void createBulletByTimer(float delta);
     void inGameUpdate(float delta);

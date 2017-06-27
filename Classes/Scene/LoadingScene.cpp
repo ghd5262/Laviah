@@ -105,7 +105,7 @@ void CLoadingScene::callbackDownloadFail(Ref* object)
 	CCLOG("Loading Scene %s", __FUNCTION__);
     CPopup::create()
     ->setPositiveButton([=](Node* sender){
-		if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+//		if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 			this->callbackLoginResult(object);
         CCLOG("Download Faild");
     }, "OK")

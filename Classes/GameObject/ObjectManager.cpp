@@ -41,6 +41,7 @@ CObjectManager::CObjectManager()
 , m_BulletPatternPaddingLimit(0.f)
 , m_OriginPatternLevel(-1)
 , m_PhotoShareAble(false)
+, m_SlowMotionAble(false)
 {
 //    m_FSM = std::shared_ptr<CStateMachine<CObjectManager>>(new CStateMachine<CObjectManager>(this),
 //                                                           [=](CStateMachine<CObjectManager>* fsm){
@@ -96,7 +97,7 @@ void CObjectManager::Clear()
     m_LevelTimer = 0.f;
     m_BulletPatternPaddingLimit = 0.f;
     GLOBAL->STAGE_LEVEL = 0;
-    m_SpeedController->setPositionX(0.f);
+    m_SpeedController->setScale(1.f);
 	m_IsGamePause = true;
     m_BulletCreator->Clear();
     m_Planet->Clear();
@@ -157,7 +158,7 @@ void CObjectManager::SpeedControl(float duration, float speed, bool force/* = fa
     if(force) m_SpeedController->stopActionByTag(100);
     if(m_SpeedController->getActionByTag(100)) return;
     
-    auto move = MoveTo::create(duration, Vec2(speed, 0));
+    auto move = ScaleTo::create(duration, speed);
     move->setTag(100);
     m_SpeedController->runAction(move);
 }
@@ -290,6 +291,7 @@ void CObjectManager::MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir)
 
 void CObjectManager::GiantMode()
 {
+//    m_SlowMotionAble = true;
     m_GiantSpeed = 1.5f;
     auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom * 1.25f, 1.f, true);
@@ -297,9 +299,11 @@ void CObjectManager::GiantMode()
 
 void CObjectManager::NormalMode()
 {
+//    m_SlowMotionAble = false;
     m_GiantSpeed = 1.f;
     auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 1.f, true);
+//    this->SlowMotionFinish();
 }
 
 void CObjectManager::setGameStateByLevel()
@@ -308,7 +312,32 @@ void CObjectManager::setGameStateByLevel()
     
     auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
-    this->SpeedControl(1.f, levelData._speed);
+    this->SpeedControl(1.f, levelData._speed / BULLETCREATOR::ROTATION_SPEED);
+}
+
+void CObjectManager::SlowMotion()
+{
+    if(!m_SlowMotionAble) return;
+    this->SpeedControl(0.5f, 0.1f, true);
+    m_SlowMotionAble = false;
+    CGameScene::getZoomLayer()->scheduleOnce([=](float delta){
+        this->SlowMotionFinish();
+    }, 1.f, "StopSlowMotion");
+}
+
+void CObjectManager::SlowMotionFinish()
+{
+    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
+    this->SpeedControl(0.5f, levelData._speed / BULLETCREATOR::ROTATION_SPEED, true);
+}
+
+bool CObjectManager::IsHitWithSlowPoint(CBullet* bullet)
+{
+    auto layerSize = Director::getInstance()->getWinSize();
+    if (bullet->IsHit(Vec2(layerSize.width * 0.5f, layerSize.height * 0.78f), 40)) return true;
+//    if (bullet->IsHit(Vec2(layerSize.width * 0.4f, layerSize.height * 0.75f), 40)) return true;
+    
+    return false;
 }
 
 void CObjectManager::Shake(float interval,
@@ -393,9 +422,8 @@ void CObjectManager::inGameUpdate(float delta)
 
     if (m_IsGamePause) return;
     
-    m_BulletCreator->setLineIntervalLimit((360.f / m_SpeedController->getPositionX()) / 25);
-    m_RotationSpeed = ((m_SpeedController->getPositionX() * delta));
-    m_Delta = MIN(delta * fabs(m_RotationSpeed), delta);
+    m_Delta         = delta * m_SpeedController->getScale();
+    m_RotationSpeed = BULLETCREATOR::ROTATION_SPEED * m_Delta;
     
     this->RotationObject(1);
     this->createBulletByTimer(m_Delta);

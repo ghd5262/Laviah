@@ -46,7 +46,7 @@ void CNetworkManager::Request(const NETWORK_CALLBACK& callback, std::string key)
         
         if (!response->isSucceed())
         {
-            assertion(StringUtils::format("response failed error buffer : %s", response->getErrorBuffer()));
+            CCLOG("response failed error buffer : %s", response->getErrorBuffer());
             return;
         }
         

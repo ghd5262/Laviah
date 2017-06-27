@@ -182,8 +182,8 @@ bool CParticle_Explosion::initWithTotalParticles(int numberOfParticles)
 		this->_angle = 0;
 		this->_angleVar = 50;
 		// life of particles
-		this->_life = 0.15f;
-		this->_lifeVar = 0.2f;
+		this->_life = 0.1f;
+		this->_lifeVar = 0.15f;
 
 		// emits per frame
 		this->_emissionRate = _totalParticles / _life;

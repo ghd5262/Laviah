@@ -186,7 +186,7 @@ bool CCharacterSelectPopup::init()
         
 //		btnUserCoin->runAction(FadeIn::create(0.5f));
 		scrollBack->runAction(EaseExponentialOut::create(MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f,
-                                                                                   visibleSize.height * 0.62f))));
+                                                                                   visibleSize.height * 0.6f))));
         listView->jumpToItem(currentCharacterDPIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
         m_CenterDP->setVisible(false);
         m_CenterDP->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f), CallFunc::create([=](){

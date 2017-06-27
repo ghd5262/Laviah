@@ -92,7 +92,7 @@ void CPlayer::Execute(float delta)
 void CPlayer::Clear()
 {
     this->TakeOffRocket();
-    this->setRotation(0);
+    m_Texture->setRotation(0);
     m_Particle->setGravity(Vec2(0, -270));
     CComboScore::Instance()->ComboScoreReset();
 }
@@ -162,13 +162,13 @@ void CPlayer::LostSomeHealth(float loseHealth)
 // Dir -1 == Left, 1 == Right
 void CPlayer::Rotation(float speed)
 {
-	m_Angle = this->getRotation() + (speed * 5.5f);
+	m_Angle = m_Texture->getRotation() + (speed * 5.5f);
 //	m_Angle = static_cast<int>(m_Angle) % 360;
 	m_Particle->setStartSpin(m_Angle);
 	m_Particle->setEndSpin(m_Angle);
 	m_Particle->setAngle(speed > 0 ? 180 : 0);
 	m_Particle->setGravity(Vec2(-90 * (speed < 0 ? -1 : 1), 0));
-	this->setRotation(m_Angle);
+	m_Texture->setRotation(m_Angle);
 
     GLOBAL->RUN_SCORE += 1;
 }
@@ -177,15 +177,14 @@ void CPlayer::GiantMode()
 {
     CObjectManager::Instance()->GiantMode();
     
-	auto action = Sequence::create(
-		ScaleTo::create(0.5f, GIANT_SCALE),
-		CallFunc::create([=](){
-		this->setPlayerTexture(m_CharacterParam->_giantTextureName);
-		this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
-		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * GIANT_SCALE);
-		m_Particle->setEndSize(40.f);
-	}), nullptr);
-	this->runAction(action);
+    auto action = Sequence::create(ScaleTo::create(0.5f, GIANT_SCALE),
+                                   CallFunc::create([=](){
+        this->setPlayerTexture(m_CharacterParam->_giantTextureName);
+        this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
+        m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * GIANT_SCALE);
+        m_Particle->setEndSize(40.f);
+    }), nullptr);
+    m_Texture->runAction(action);
 }
 
 void CPlayer::NormalMode()
@@ -194,15 +193,14 @@ void CPlayer::NormalMode()
     
     //1초간 무적
     InvincibilityMode(1.5f);
-	auto action = Sequence::create(
-		ScaleTo::create(0.5f, NORMAL_SCALE),
-		CallFunc::create([=](){
+    auto action = Sequence::create(ScaleTo::create(0.5f, NORMAL_SCALE),
+                                   CallFunc::create([=](){
         this->setPlayerTexture(m_CharacterParam->_normalTextureName);
-		this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
-		m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
+        this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
+        m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_Particle->setEndSize(4.f);
-	}), nullptr);
-	this->runAction(action);
+    }), nullptr);
+    m_Texture->runAction(action);
 }
 
 void CPlayer::TakeOnRocket()
@@ -278,10 +276,10 @@ void CPlayer::InvincibilityMode(float time)
     if(this->isScheduled("SetPlayerNormalMode"))
         this->unschedule("SetPlayerNormalMode");
         
-	this->m_Texture->setOpacity(100);
+	m_Texture->setOpacity(100);
 	m_Invincibility = true;
 	this->scheduleOnce([=](float delta){
-		this->m_Texture->setOpacity(255);
+		m_Texture->setOpacity(255);
 		m_Invincibility = false;
 	}, time, "SetPlayerNormalMode");
 }

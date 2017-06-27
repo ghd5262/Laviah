@@ -106,12 +106,12 @@ void CBulletCreator::setData(const sBULLET_PATTERN* data)
 {
     if(m_Running) return;
     
-	m_CurrentPattern = data;
-	m_CurrentHeight  = data->_height;
-//	m_LineIntervalLimit = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;
-	m_Running        = true;
-    m_IsFlip         = random<int>(0, 1);
-    m_CreateDistance = 2700.f;
+	m_CurrentPattern    = data;
+	m_CurrentHeight     = data->_height;
+	m_LineIntervalLimit = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;
+	m_Running           = true;
+    m_IsFlip            = random<int>(0, 1);
+    m_CreateDistance    = 2700.f;
     
     if (CTutorialManager::Instance()->getIsRunning()) {
         m_IsFlip         = false;
