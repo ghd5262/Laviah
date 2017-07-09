@@ -125,7 +125,6 @@ public:
 	sREWARD_DATA RewardByKey(std::string key, int value);
     int NonCompleteAchievementExist();
     void getNewAchievements();
-    const ACHIEVEMENT* SkipAchievement(int index);
     
     //getter & setter
     const ACHIEVEMENT* getNormalAchievementByIndex(int index) const;

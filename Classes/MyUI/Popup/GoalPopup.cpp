@@ -3,6 +3,7 @@
 #include "RewardPopup.h"
 #include "../MyButton.h"
 #include "../../DataManager/UserDataManager.h"
+#include "../../SDKUtil/SDKUtil.h"
 #include "../../Scene/GameScene.h"
 #include <array>
 
@@ -106,7 +107,7 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
             rewardList.emplace_back(levelData._rewardKey, levelData._rewardValue);
         }
         
-        CGameScene::getGameScene()->Reward([=](){
+        CGameScene::getGameScene()->Reward([=](bool isPlay){
             // If there are more non-completed achievements than limit count.
             // Set achievements until non-exist.
             if (CAchievementDataManager::Instance()->NonCompleteAchievementExist() >= ACHIEVEMENT_DEFINE::LIMIT_COUNT){
@@ -226,9 +227,17 @@ void CGoalPopup::Skip(CGoalPopupDP *sender, int posIndex)
     auto dp = sender;
     CGameScene::getGameScene()->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
-        auto newData = CAchievementDataManager::Instance()->SkipAchievement(dp->getAchievementParam()._index);
-        dp->popupClose();
-        this->createAchievementDP(newData, posIndex, true);
+        
+        CSDKUtil::Instance()->ShowRewardUnityAds([=](){
+            auto achievementMng = CAchievementDataManager::Instance();
+            auto index = dp->getAchievementParam()._index;
+            auto data  = achievementMng->getNormalAchievementByIndex(index);
+            
+            achievementMng->setAchievementStateByIndex(index, ACHIEVEMENT_STATE::FINISHED, false);
+            GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT += 1;
+            dp->popupClose();
+            this->createAchievementDP(data, posIndex, true);
+        });
     }, TRANSLATE("BUTTON_YES"))
     ->setNegativeButton([=](Node* sender){
     }, TRANSLATE("BUTTON_NO"))

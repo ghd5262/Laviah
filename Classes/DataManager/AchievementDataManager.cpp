@@ -308,20 +308,13 @@ void CAchievementDataManager::getNewAchievements()
     
     // If there are enough count of achievements to skip. (to get new achievements)
     for (int count = 0; count < ACHIEVEMENT_DEFINE::LIMIT_COUNT; count++){
-        auto iter           = pickedList.begin();
+        auto iter  = pickedList.begin();
         std::advance(iter, count);
-    
-		this->SkipAchievement((iter->second)->_index); // Get new achievements.
+        
+        auto index = (iter->second)->_index;
+        this->getNewRandomAchievement();
+        this->setAchievementStateByIndex(index, ACHIEVEMENT_STATE::COMPLETED, false);
     }
-}
-
-const ACHIEVEMENT* CAchievementDataManager::SkipAchievement(int index)
-{
-    auto newAchievement = this->getNewRandomAchievement();
-    CAchievementDataManager::setAchievementStateByIndex(index,
-                                                        ACHIEVEMENT_STATE::COMPLETED,
-                                                        false);
-	return newAchievement;
 }
 
 const ACHIEVEMENT* CAchievementDataManager::getNormalAchievementByIndex(int index) const

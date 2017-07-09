@@ -7,6 +7,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
 #include "../../DataManager/UserDataManager.h"
+#include "../../SDKUtil/SDKUtil.h"
 #include <array>
 
 CPausePopup::CPausePopup(){}
@@ -193,9 +194,17 @@ void CPausePopup::Skip(CGoalPopupDP *sender, int posIndex)
 
 	CGameScene::getGameScene()->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
-        auto newData = CAchievementDataManager::Instance()->SkipAchievement(dp->getAchievementParam()._index);
-        dp->popupClose();
-        this->createAchievementDP(newData, posIndex);
+
+        CSDKUtil::Instance()->ShowRewardUnityAds([=](){
+            auto achievementMng = CAchievementDataManager::Instance();
+            auto index = dp->getAchievementParam()._index;
+            auto data  = achievementMng->getNormalAchievementByIndex(index);
+            
+            achievementMng->setAchievementStateByIndex(index, ACHIEVEMENT_STATE::FINISHED, false);
+            GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT += 1;
+            dp->popupClose();
+            this->createAchievementDP(data, posIndex);
+        });
     }, TRANSLATE("BUTTON_YES"))
     ->setNegativeButton([=](Node* sender){
     }, TRANSLATE("BUTTON_NO"))
@@ -210,6 +219,8 @@ void CPausePopup::initAchievementList()
     auto pickedList = CAchievementDataManager::Instance()->getPickedAchievementList();
     for (auto achievement : pickedList)
     {
+        if(posIndex >= ACHIEVEMENT_DEFINE::LIMIT_COUNT) break;
+        
         auto index = achievement.second->_index;
         auto achievementData = CAchievementDataManager::Instance()->getNormalAchievementByIndex(index);
         this->createAchievementDP(achievementData, posIndex++);

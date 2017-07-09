@@ -83,6 +83,7 @@ bool CGoalPopupDP::init()
 		auto completeIcon = Sprite::create("completeIcon.png");
 		completeIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		completeIcon->setPosition(Vec2(popupSize.width * 0.92f, popupSize.height * 0.5f));
+        completeIcon->setOpacity(255 * 0.4f);
 		this->addChild(completeIcon);
 
 
@@ -115,9 +116,9 @@ bool CGoalPopupDP::init()
 		auto sequence = Sequence::createWithTwoActions(delayAction, twoAction);
 		bg->runAction(sequence);*/
 
-		auto delayAction = DelayTime::create(delayTime + 0.3f);
+		auto delayAction  = DelayTime::create(delayTime + 0.3f);
 		auto fadeInAction = FadeIn::create(0.5f);
-		auto sequence = Sequence::createWithTwoActions(delayAction, fadeInAction);
+		auto sequence     = Sequence::createWithTwoActions(delayAction, fadeInAction);
 		this->runAction(sequence);
     });
     
