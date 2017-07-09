@@ -85,6 +85,9 @@ bool CAchievementPopup::init()
             auto achievementDP = CAchievementPopupDP::create(data);
             achievementDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             achievementDP->setCascadeOpacityEnabled(true);
+            achievementDP->setRewardExit([=](){
+                this->End(nullptr);
+            });
             listView->pushBackCustomItem(achievementDP);
             dpIndex++;
         }
@@ -99,16 +102,33 @@ bool CAchievementPopup::init()
         }
     }
     
-    auto btnEnd = CMyButton::create()
-    ->addEventListener([=](Node* sender){
-        this->End(sender);
-    })
-    ->setButtonSingleUse(true)
-    ->setButtonNormalImage("endIcon.png")
-    ->setButtonPosition(Vec2(bg->getContentSize().width * 0.92f,
-                             bg->getContentSize().height * 0.05f))
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(bg);
+    auto createButton = [=](std::function<void(Node*)> callback, std::string icon, Vec2 pos, bool use){
+        return CMyButton::create()
+        ->addEventListener(callback)
+        ->setButtonSingleUse(use)
+        ->setButtonNormalImage(icon)
+        ->setButtonPosition(pos)
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->show(bg);
+    };
+    
+    auto btnEnd  = createButton([=](Node* sender){ this->End(sender); },
+                               "endIcon.png",
+                               Vec2(bg->getContentSize().width * 0.92f,
+                                    bg->getContentSize().height * 0.05f),
+                               true);
+    
+    auto btnTwit = createButton([=](Node* sender){ this->End(sender); },
+                               "twitterShareIcon_s.png",
+                               Vec2(bg->getContentSize().width * 0.08f,
+                                    bg->getContentSize().height * 0.05f),
+                               false);
+    
+    auto btnFace = createButton([=](Node* sender){ this->End(sender); },
+                               "facebookShareIcon_s.png",
+                               Vec2(bg->getContentSize().width * 0.2f,
+                                    bg->getContentSize().height * 0.05f),
+                               false);
     
     auto btnUserCoin = CUserCoinButton::create();
     if (btnUserCoin != nullptr)
@@ -129,6 +149,9 @@ bool CAchievementPopup::init()
         };
         
         action(btnEnd);
+        action(btnTwit);
+        action(btnFace);
+        
         action(rankingLabel);
         action(btnUserCoin);
         
@@ -142,6 +165,9 @@ bool CAchievementPopup::init()
         bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
                                                                              layerSize.height * 1.5f))));
         btnEnd->runAction(FadeTo::create(0.3f, 0));
+        btnTwit->runAction(FadeTo::create(0.3f, 0));
+        btnFace->runAction(FadeTo::create(0.3f, 0));
+
         rankingLabel->runAction(FadeTo::create(0.3f, 0));
         btnUserCoin->runAction(FadeTo::create(0.3f, 0));
     });

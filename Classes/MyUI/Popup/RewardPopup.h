@@ -7,7 +7,7 @@ typedef std::vector<sREWARD_DATA> REWARD_LIST;
 
 class CRewardPopup : public CPopup
 {
-    typedef std::function<void()> EXIT_CALLBACK;
+    typedef std::function<void(bool)> EXIT_CALLBACK;
     
 public:
 	static CRewardPopup* create();
@@ -19,10 +19,13 @@ public:
 
 private:
 	CPopup* createRewardDP(sREWARD_DATA data);
+    void createUFO();
+    void createRewardBox();
+    void lightOn();
 	void open();
     void play();
     void end();
-    void exit();
+    void exit(bool isPlay = false);
     void showButtons();
     bool isItemRemain();
 
@@ -31,6 +34,8 @@ private:
     , m_GetButton(nullptr)
     , m_PlayButton(nullptr)
     , m_ExitCallback(nullptr)
+    , m_UFO(nullptr)
+    , m_UFOLight(nullptr)
     , m_RewardIndex(0)
     , m_Cost(0)
     , m_IsPaidFeature(false){};
@@ -43,6 +48,8 @@ private:
 	REWARD_LIST m_RewardList;
     EXIT_CALLBACK m_ExitCallback;
     sREWARD_DATA m_LastSavedData;
+    cocos2d::Sprite* m_UFO;
+    cocos2d::Sprite* m_UFOLight;
 	int m_RewardIndex;
     int m_Cost;
     bool m_IsPaidFeature;

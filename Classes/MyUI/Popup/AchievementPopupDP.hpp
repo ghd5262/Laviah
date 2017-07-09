@@ -14,6 +14,8 @@ public:
     
     //setter & getter
     const ACHIEVEMENT* getAchievementData() const { return m_AchievementData; }
+    
+    CC_SYNTHESIZE(std::function<void()>, m_RewardExit, RewardExit);
 protected:
     virtual bool init() override;
     
@@ -23,7 +25,8 @@ private:
     
     CAchievementPopupDP(const ACHIEVEMENT* data)
     : m_AchievementData(data)
-    , m_RewardValue(0){}
+    , m_RewardValue(0)
+    , m_RewardExit(nullptr){}
     virtual ~CAchievementPopupDP(){};
     
 private:

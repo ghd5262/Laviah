@@ -29,43 +29,15 @@ CRewardPopupDP* CRewardPopupDP::create()
 
 CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* = 0*/)
 {
-    auto rewardKey    = m_Reward._key;
-    auto rewardValue  = m_Reward._value;
-    std::string value = "";
-    
-    if (ACHIEVEMENT_REWARD_KEY::REWARD_COIN == rewardKey){
-        value = StringUtils::format("%d Gold", rewardValue);
-        this->goldReward();
-    }
-    if (ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER == rewardKey){
-        auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
-        value = TRANSLATE(data->_name);
-        this->characterReward();
-    }
-    
-    // create title
-    auto title = Label::createWithSystemFont(value, FONT::MALGUNBD, 80,
-                                             Size(this->getContentSize().width * 0.8f,
-                                                  this->getContentSize().height),
-                                             TextHAlignment::CENTER,
-                                             TextVAlignment::CENTER);
-    title->setCascadeOpacityEnabled(true);
-    title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    title->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                            this->getContentSize().height * 0.8f));
-    this->addChild(title);
-    
-    this->setOpacity(0);
-    this->setOpenAnimation([=](Node* sender){
-        this->runAction(FadeIn::create(0.5f));
-    }, 3.f);
-    
-    this->setCloseAnimation([=](Node* sender){
-        this->runAction(FadeTo::create(0.3f, 0));
-    });
+    //m_TouchDisable = CMyButton::create()
+    //->addEventListener([](Node* sender){})
+    //->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+    //->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080, 1920))
+    //->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    //->setButtonPosition(this->getContentSize() / 2)
+    //->show(this, -1);
     
     this->setDefaultCallback([=](Node* sender){}, false);
-    
     return CPopup::show(parent, zOrder);
 }
 
@@ -91,6 +63,38 @@ CRewardPopupDP* CRewardPopupDP::setRewardData(sREWARD_DATA reward)
 {
     m_Reward = reward;
     return this;
+}
+
+void CRewardPopupDP::Open()
+{
+    auto rewardKey    = m_Reward._key;
+    auto rewardValue  = m_Reward._value;
+    std::string value = "";
+    
+    if (ACHIEVEMENT_REWARD_KEY::REWARD_COIN == rewardKey){
+        value = StringUtils::format("%d Gold", rewardValue);
+        this->goldReward();
+    }
+    if (ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER == rewardKey){
+        auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
+        value = TRANSLATE(data->_name);
+        this->characterReward();
+    }
+    
+    // create title
+    auto title = Label::createWithSystemFont(value, FONT::MALGUNBD, 80,
+                                             Size(this->getContentSize().width * 0.8f,
+                                                  this->getContentSize().height),
+                                             TextHAlignment::CENTER,
+                                             TextVAlignment::CENTER);
+    title->setCascadeOpacityEnabled(true);
+    title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    title->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                            this->getContentSize().height * 0.3f));
+    this->addChild(title);
+    //this->scheduleOnce([=](float delay){
+    //    m_TouchDisable->setVisible(false);
+    //}, 3.f, "skipEnable");
 }
 
 void CRewardPopupDP::goldReward()

@@ -8,6 +8,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../DataManager/DataManagerUtils.h"
+#include "../../Particle/Particles.h"
 #include <array>
 
 CRewardPopup* CRewardPopup::create()
@@ -98,6 +99,9 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
     btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     this->addChild(btnUserCoin);
     
+    // create UFO
+    this->createUFO();
+    
     this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* owner){
             auto delay = DelayTime::create(1.f);
@@ -109,6 +113,7 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
         
         action(btnUserCoin);
         action(btnEnd);
+        
         this->showButtons();
         
     }, 1.2f);
@@ -165,6 +170,122 @@ CPopup* CRewardPopup::createRewardDP(sREWARD_DATA data)
     ->show(this, ZORDER::POPUP);
 }
 
+void CRewardPopup::createUFO()
+{
+    auto popupSize    = this->getContentSize();
+    
+    m_UFO = Sprite::create("deliveryShip.png");
+    m_UFO->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_UFO->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 1.5f));
+    this->addChild(m_UFO, 1);
+    
+    m_UFOLight = Sprite::create("deliveryShipLight.png");
+    m_UFOLight->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_UFOLight->setPosition(Vec2(m_UFO->getContentSize() / 2.f));
+    m_UFOLight->setOpacity(0);
+    m_UFO->addChild(m_UFOLight);
+    
+    auto delay     = DelayTime::create(1.f);
+    auto moveDown1 = MoveTo::create(2.5f, Vec2(popupSize.width * 0.5f, popupSize.height * 0.6f));
+    auto sineOut1  = EaseExponentialOut::create(moveDown1);
+    auto callFunc  = CallFunc::create([=](){
+        auto moveUp    = MoveTo::create(7.f,  Vec2(popupSize.width * 0.5f, popupSize.height * 0.68f));
+        auto sineOut2  = EaseSineInOut::create(moveUp);
+        auto moveDown2 = MoveTo::create(7.f,  Vec2(popupSize.width * 0.5f, popupSize.height * 0.6f));
+        auto sineOut3  = EaseSineInOut::create(moveDown2);
+        
+        auto rotation1 = RotateTo::create(7.f, 5);
+        auto sineOut4  = EaseSineInOut::create(rotation1);
+        auto rotation2 = RotateTo::create(7.f, -5);
+        auto sineOut5  = EaseSineInOut::create(rotation2);
+        
+        auto sizeDown  = ScaleTo::create(7.f, 1.f, 0.85f);
+        auto sineOut6  = EaseSineInOut::create(sizeDown);
+        auto sizeUp    = ScaleTo::create(7.f, 1.f, 1.f);
+        auto sineOut7  = EaseSineInOut::create(sizeUp);
+        
+        auto repeat1   = (Sequence::createWithTwoActions(sineOut2, sineOut3));
+        auto repeat2   = (Sequence::createWithTwoActions(sineOut4, sineOut5));
+        auto repeat3   = (Sequence::createWithTwoActions(sineOut6, sineOut7));
+        auto spawn     = Spawn::create(repeat1, repeat2, repeat3, nullptr);
+        
+        m_UFO->runAction(RepeatForever::create(spawn));
+    });
+    auto sequence  = Sequence::create(delay, sineOut1, callFunc, nullptr);
+    m_UFO->runAction(sequence);
+    
+}
+
+void CRewardPopup::createRewardBox()
+{
+    auto popupSize = this->getContentSize();
+    auto rewardBox = CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        if(m_RewardDP == nullptr) return;
+        dynamic_cast<CRewardPopupDP*>(m_RewardDP)->Open();
+        sender->removeFromParent();
+    })
+    ->setButtonSingleUse(true)
+    ->setButtonNormalImage(StringUtils::format("rewardBox_%d.png", random<int>(1, 4)))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(popupSize.width * 0.5f, m_UFO->getPosition().y + 250))
+    ->show(this);
+    
+    // Run the action of rewardbox.
+    {
+        auto moveDown     = MoveTo::create(3.f, Vec2(popupSize.width * 0.5f, popupSize.height * -0.5f));
+        auto sineMove     = EaseSineIn::create(moveDown);
+        auto rotateAction = RotateTo::create(3.f, 0);
+        auto sineRotate   = EaseSineIn::create(rotateAction);
+        auto spawn        = Spawn::create(sineMove, sineRotate, nullptr);
+        auto sequence     = Sequence::create(spawn, CallFunc::create([=](){
+            
+            auto moveUp      = MoveTo::create(1.5f, Vec2(popupSize.width * 0.5f, popupSize.height * 0.45f));
+            auto sineOutMove = EaseExponentialOut::create(moveUp);
+            rewardBox->setTouchEnable(true);
+            rewardBox->setScale(0.7f);
+            rewardBox->setOpacity(255);
+            rewardBox->runAction(sineOutMove);
+            
+        }), NULL);
+        
+        rewardBox->setTouchEnable(false);
+        rewardBox->setScale(0.2f);
+        rewardBox->setOpacity(255 * 0.4f);
+        rewardBox->setRotation(random<int>(0, 360));
+        rewardBox->runAction(sequence);
+    }
+}
+
+void CRewardPopup::lightOn()
+{
+    // Run the action of UFO light.
+    {
+        auto lightIn  = FadeIn::create(1.f);
+        auto lightOut = FadeTo::create(2.f, 1);
+        auto callFunc = CallFunc::create([=](){
+            m_UFOLight->setOpacity(0);
+        });
+        auto lightSeq = Sequence::create(lightIn, lightOut, callFunc, nullptr);
+        m_UFOLight->setOpacity(0);
+        m_UFOLight->runAction(lightSeq);
+    }
+    
+    auto particle = CParticle_BackGround::createWithTotalParticles(100, "whiteSquare.png");
+    particle->setPosition(Vec2(this->getContentSize().width * 0.5f, m_UFO->getPosition().y + 230));
+    particle->setPosVar(Vec2(100, 0));
+    particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    particle->setLife(1.5f);
+    particle->setLifeVar(1.f);
+    particle->setSpeed(100);
+    particle->setSpeedVar(30);
+    particle->setAngleVar(0);
+    particle->setDuration(2.f);
+    particle->setGravity(Vec2(0, 90));
+    particle->setRotation(180);
+    this->addChild(particle);
+}
+
 void CRewardPopup::open()
 {
 	if (m_RewardDP != nullptr){
@@ -186,20 +307,22 @@ void CRewardPopup::open()
         this->exit();
 		return;
 	}
-
-    m_GetButton->setVisible(false);
-    m_PlayButton->setVisible(false);
     
 	m_LastSavedData = m_RewardList.at(m_RewardIndex);
 	m_LastSavedData = CAchievementDataManager::Instance()->RewardByKey(m_LastSavedData._key,
                                                                        m_LastSavedData._value);
 	m_RewardDP      = this->createRewardDP(m_LastSavedData);
+    
+    this->lightOn();
+    this->createRewardBox();
+    m_GetButton->setVisible(false);
+    m_PlayButton->setVisible(false);
 	m_RewardIndex++;
 }
 
 void CRewardPopup::play()
 {
-    this->exit();
+    this->exit(true);
     
     auto index = m_LastSavedData._value;
     if(!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, index))
@@ -216,11 +339,11 @@ void CRewardPopup::end()
     this->popupClose(1.3f);
 }
 
-void CRewardPopup::exit()
+void CRewardPopup::exit(bool isPlay/* = false*/)
 {
     this->retain();
     if (m_ExitCallback){
-        m_ExitCallback();
+        m_ExitCallback(isPlay);
         m_ExitCallback = nullptr;
     }
     this->end();

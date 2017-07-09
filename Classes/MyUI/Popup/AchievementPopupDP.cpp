@@ -6,6 +6,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/AchievementDataManager.hpp"
+#include "../../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 #include "../../Common/StringUtility.h"
 
 CAchievementPopupDP* CAchievementPopupDP::create(const ACHIEVEMENT* data)
@@ -165,14 +166,23 @@ bool CAchievementPopupDP::init()
             auto data  = CAchievementDataManager::Instance()->getCurLevelDataByIndex(index, true);
             m_RewardValue = data._rewardValue;
             
+            if(data._rewardKey != ACHIEVEMENT_REWARD_KEY::REWARD_COIN &&
+               data._rewardKey != ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM)
+            {
+                rewardLabel->setVisible(false);
+                rewardBtn->changeContents("GET");
+                rewardBtn->setFont(COLOR::GOLD, 35);
+            }
+            
             if(CAchievementDataManager::Instance()->CompletedAllOfLevels(index))
             {
                 rewardLabel->setVisible(false);
                 rewardBtn->changeContents("COMPLETE");
+                rewardBtn->setFont(Color3B::WHITE, 35);
             }
             
             rewardLabel->setColor(Color3B::WHITE);
-            rewardBtn->setTouchEnable(false);
+            rewardBtn->setTouchEnable(false, Color3B::GRAY);
             
             auto state = CAchievementDataManager::getAchievementStateByIndex(index, true);
             if(state == ACHIEVEMENT_STATE::COMPLETED) {
@@ -244,8 +254,14 @@ void CAchievementPopupDP::Reward()
     
     // create reward popup.
     auto levelData = achievementMNG->getCurLevelDataByIndex(m_AchievementData->_index, true);
-    CGameScene::getGameScene()->Reward([=](){
+    CGameScene::getGameScene()->Reward([=](bool isPlay){
         this->contentUpdate();
+        if(isPlay) {
+            this->retain();
+            if(m_RewardExit)
+                m_RewardExit();
+            this->release();
+        }
     }, {
         sREWARD_DATA(levelData._rewardKey, levelData._rewardValue)
     });

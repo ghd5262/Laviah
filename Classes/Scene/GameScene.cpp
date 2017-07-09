@@ -433,7 +433,7 @@ void CGameScene::BonusTimeEnd()
     this->removeBonusTimeLayer();
 }
 
-void CGameScene::Reward(std::function<void()> exitCallback,
+void CGameScene::Reward(std::function<void(bool)> exitCallback,
                         std::vector<sREWARD_DATA> list,
                         int cost/* = 0*/)
 {

@@ -181,7 +181,7 @@ CMyButton* CMyButton::setTouchEnable(bool able, Color3B color/* = cocos2d::Color
 	if (!m_Touchable)
 		this->setColor(color);
 	else
-		this->setColor(Color3B::WHITE);
+		this->setColor(m_FontColor);
 
 	return this;
 }

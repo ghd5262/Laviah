@@ -440,7 +440,9 @@ void CResultPopup::GetCoinFromVideo(cocos2d::Node* sender)
 
 void CResultPopup::GetNewCharacter(cocos2d::Node* sender)
 {
-    CGameScene::getGameScene()->Reward(nullptr, {}, -1500);
+    CGameScene::getGameScene()->Reward([=](bool isPlay){
+        if(isPlay) this->popupClose();
+    }, {}, -1500);
 }
 
 void CResultPopup::GetFreeReward(cocos2d::Node* sender)
