@@ -114,7 +114,8 @@ bool CWorkshopPopupDP::init()
     if (m_LevelProgressBar != nullptr)
     {
         m_LevelProgressBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        m_LevelProgressBar->setPosition(Vec2(dpItemBack->getContentSize().width * 0.6f, dpItemBack->getContentSize().height * 0.1f));
+        m_LevelProgressBar->setPosition(Vec2(dpItemBack->getContentSize().width * 0.6f,
+                                             dpItemBack->getContentSize().height * 0.1f));
         dpItemBack->addChild(m_LevelProgressBar);
     }
     
@@ -122,7 +123,8 @@ bool CWorkshopPopupDP::init()
     if (workshopItemImg != nullptr)
     {
         workshopItemImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        workshopItemImg->setPosition(Vec2((dpItemBack->getContentSize().width * 0.075f) + (workshopItemImg->getContentSize().width * 0.5f), dpItemBack->getContentSize().height * 0.5f));
+        workshopItemImg->setPosition(Vec2(dpItemBack->getContentSize().width * 0.125f,
+                                          dpItemBack->getContentSize().height * 0.5f));
         dpItemBack->addChild(workshopItemImg);
     }
     

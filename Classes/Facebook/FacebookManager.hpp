@@ -57,8 +57,8 @@ public:
     static void SaveScore(int score);
     static bool IsScoresEnabled();
     static bool IsPermissionAllowed(std::string id);
-    static void OpenPhotoShareDialog();
-    static void OpenLinkShareDialog();
+    static void OpenPhotoShareDialog(std::string title);
+    static void OpenLinkShareDialog(std::string title, std::string text);
     
 private:
     //Facebook callback

@@ -68,7 +68,7 @@ bool CSharePopup::init()
     auto btnShare = createBtn([=](Node* sender){
         CGameScene::getGameScene()->OpenPermRequestPopup([=](){
             if(CFacebookManager::Instance()->SaveNodeToFile(back))
-                CFacebookManager::OpenPhotoShareDialog();
+                CFacebookManager::OpenPhotoShareDialog("");
         });
     }, "shareIcon_1.png", Vec2(popupSize.width * 0.12f,
                                popupSize.height * 0.14f));

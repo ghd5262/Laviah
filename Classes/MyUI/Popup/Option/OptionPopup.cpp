@@ -65,7 +65,7 @@ bool COptionPopup::init()
         std::string("musicIcon.png"),
         std::string("saveIcon.png"),
         std::string("languageIcon.png"),
-//        std::string("achievementIcon_2.png"),
+//        std::string("achievementIcon.png"),
         std::string("developerIcon.png")
     };
 

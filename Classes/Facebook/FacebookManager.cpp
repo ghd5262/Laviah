@@ -181,14 +181,14 @@ bool CFacebookManager::IsPermissionAllowed(std::string id)
     return false;
 }
 
-void CFacebookManager::OpenPhotoShareDialog()
+void CFacebookManager::OpenPhotoShareDialog(std::string title)
 {
     auto captured = CFacebookManager::Instance()->getFacebookCapture();
     if (!captured.empty() && FileUtils::getInstance()->isFileExist(captured))
     {
         sdkbox::FBShareInfo info;
         info.type  = sdkbox::FB_PHOTO;
-        info.title = "capture screen";
+        info.title = title;
         info.image = captured;
         sdkbox::PluginFacebook::dialog(info);
     }
@@ -196,13 +196,13 @@ void CFacebookManager::OpenPhotoShareDialog()
         MessageBox("capture first", "Failed");
 }
 
-void CFacebookManager::OpenLinkShareDialog()
+void CFacebookManager::OpenLinkShareDialog(std::string title, std::string text)
 {
     sdkbox::FBShareInfo info;
     info.type  = sdkbox::FB_LINK;
     info.link  = "http://www.cocos2d-x.org";
-    info.title = "cocos2d-x";
-    info.text  = "Best Game Engine";
+    info.title = title;
+    info.text  = text;
     info.image = "http://cocos2d-x.org/images/logo.png";
     sdkbox::PluginFacebook::dialog(info);
 }
