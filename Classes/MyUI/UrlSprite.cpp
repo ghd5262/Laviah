@@ -85,6 +85,8 @@ void CUrlSprite::downloadAsUrl(std::string url)
 {
     CCLOG("\n\nDownload request url : %s", url.c_str());
     m_RetryLimit--;
+    this->retain();
+    
     network::HttpRequest* request = new network::HttpRequest();
     request->setUrl(m_Url.data());
     request->setRequestType(network::HttpRequest::Type::GET);
@@ -94,9 +96,11 @@ void CUrlSprite::downloadAsUrl(std::string url)
             CCLOG("\n\nDownload failed response code is %ld", response->getResponseCode());
             CCLOG("Download failed response is %s", response->getErrorBuffer());
             this->downloadFailed();
+            this->release();
             return;
         }
         this->downloadSucceed(client, response);
+        this->release();
     });
     network::HttpClient::getInstance()->send(request);
     request->release();
