@@ -4,7 +4,6 @@
 #include "../ScoreUI.h"
 #include "../UserCoinButton.h"
 #include "../ComboScore.h"
-#include "../../SDKUtil/SDKUtil.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/FreeRewardManager.hpp"
@@ -15,6 +14,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
 #include "../../Facebook/FacebookManager.hpp"
+#include "../../APIs/UnityAdsAPIs.h"
 #include <array>
 
 CResultPopup* CResultPopup::create()
@@ -433,7 +433,7 @@ void CResultPopup::End(Node* sender){
 
 void CResultPopup::GetCoinFromVideo(cocos2d::Node* sender)
 {
-    CSDKUtil::Instance()->ShowRewardUnityAds([=](){
+    CUnityAdsAPIs::Instance()->ShowUnityAds([=](){
         this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 50);
     });
 }

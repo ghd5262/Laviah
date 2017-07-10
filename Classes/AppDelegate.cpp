@@ -4,6 +4,7 @@
 #include "Scene/LoadingScene.h"
 #include "Common/AudioManager.h"
 #include "PluginFacebook/PluginFacebook.h"
+#include "APIs/UnityAdsAPIs.h"
 
 USING_NS_CC;
 
@@ -67,7 +68,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     // facebook sdk init
     sdkbox::PluginFacebook::init();
-
+    CUnityAdsAPIs::Instance()->UnityAdsInitialize(true);
+    
     return true;
 }
 

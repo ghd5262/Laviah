@@ -3,8 +3,8 @@
 #include "RewardPopup.h"
 #include "../MyButton.h"
 #include "../../DataManager/UserDataManager.h"
-#include "../../SDKUtil/SDKUtil.h"
 #include "../../Scene/GameScene.h"
+#include "../../APIs/UnityAdsAPIs.h"
 #include <array>
 
 CGoalPopup* CGoalPopup::create()
@@ -228,7 +228,7 @@ void CGoalPopup::Skip(CGoalPopupDP *sender, int posIndex)
     CGameScene::getGameScene()->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
         
-        CSDKUtil::Instance()->ShowRewardUnityAds([=](){
+        CUnityAdsAPIs::Instance()->ShowUnityAds([=](){
             auto achievementMng = CAchievementDataManager::Instance();
             auto index = dp->getAchievementParam()._index;
             auto data  = achievementMng->getNormalAchievementByIndex(index);
