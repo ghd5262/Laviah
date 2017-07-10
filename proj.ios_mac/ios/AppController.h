@@ -8,5 +8,6 @@
 
 @property(nonatomic, readonly) RootViewController* viewController;
 
+- (UIWindow*) getWindow;
 @end
 

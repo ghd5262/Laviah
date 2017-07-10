@@ -50,6 +50,14 @@
 		59315BAF1E92776E00337C1C /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59315BAB1E92776E00337C1C /* CharacterBullet.cpp */; };
 		5951815A1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595181581EF59CFD00CC1F18 /* SharePopup.cpp */; };
 		5951815B1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595181581EF59CFD00CC1F18 /* SharePopup.cpp */; };
+		59E1A5EE1F1291F3003020B9 /* UnityAdsAPIs_Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A5EC1F1291F3003020B9 /* UnityAdsAPIs_Android.cpp */; };
+		59E1A5EF1F1291F3003020B9 /* UnityAdsAPIs_Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A5EC1F1291F3003020B9 /* UnityAdsAPIs_Android.cpp */; };
+		59E1A5F51F129332003020B9 /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A5F41F129332003020B9 /* UnityAds.framework */; };
+		59E1A5F61F129332003020B9 /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A5F41F129332003020B9 /* UnityAds.framework */; };
+		59E1A6051F13C292003020B9 /* UnityAdsAPIs_IOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A6041F13C292003020B9 /* UnityAdsAPIs_IOS.mm */; };
+		59E1A6061F13C292003020B9 /* UnityAdsAPIs_IOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A6041F13C292003020B9 /* UnityAdsAPIs_IOS.mm */; };
+		59E1A6091F13E56D003020B9 /* UnityAdsAPIs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A6081F13E56D003020B9 /* UnityAdsAPIs.cpp */; };
+		59E1A60A1F13E56D003020B9 /* UnityAdsAPIs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A6081F13E56D003020B9 /* UnityAdsAPIs.cpp */; };
 		610E425E9DB522E05A190348 /* PluginFacebook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 392D48748E4840CC0EC39E61 /* PluginFacebook.framework */; };
 		89D8468A885D51FF77F0ED94 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C944AEBA4B542B4548E39EC /* Bolts.framework */; };
 		9312B4781D58A0A800FE954C /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9312B4771D58A0A800FE954C /* CoreText.framework */; };
@@ -295,6 +303,12 @@
 		59315BAC1E92776E00337C1C /* CharacterBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterBullet.hpp; sourceTree = "<group>"; };
 		595181581EF59CFD00CC1F18 /* SharePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SharePopup.cpp; sourceTree = "<group>"; };
 		595181591EF59CFD00CC1F18 /* SharePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SharePopup.hpp; sourceTree = "<group>"; };
+		59E1A5EB1F129175003020B9 /* UnityAdsAPIs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityAdsAPIs.h; sourceTree = "<group>"; };
+		59E1A5EC1F1291F3003020B9 /* UnityAdsAPIs_Android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnityAdsAPIs_Android.cpp; sourceTree = "<group>"; };
+		59E1A5F41F129332003020B9 /* UnityAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UnityAds.framework; sourceTree = "<group>"; };
+		59E1A6041F13C292003020B9 /* UnityAdsAPIs_IOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UnityAdsAPIs_IOS.mm; sourceTree = "<group>"; };
+		59E1A6071F13C2B2003020B9 /* UnityAdsAPIs_IOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityAdsAPIs_IOS.h; sourceTree = "<group>"; };
+		59E1A6081F13E56D003020B9 /* UnityAdsAPIs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnityAdsAPIs.cpp; sourceTree = "<group>"; };
 		7C944AEBA4B542B4548E39EC /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = SOURCE_ROOT; };
 		803948579A13A3F02433115C /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AdSupport.framework; sourceTree = DEVELOPER_DIR; };
 		9312B4771D58A0A800FE954C /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
@@ -602,6 +616,7 @@
 				89D8468A885D51FF77F0ED94 /* Bolts.framework in Frameworks */,
 				94084000BE5507E572AA858E /* AdSupport.framework in Frameworks */,
 				FBA1498C9B1CFB16D0DC46F3 /* SystemConfiguration.framework in Frameworks */,
+				59E1A5F51F129332003020B9 /* UnityAds.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -614,6 +629,7 @@
 				503AE11B17EB9C5A00D1A890 /* IOKit.framework in Frameworks */,
 				5087E78B17EB975400C73F5D /* OpenGL.framework in Frameworks */,
 				5087E78917EB974C00C73F5D /* AppKit.framework in Frameworks */,
+				59E1A5F61F129332003020B9 /* UnityAds.framework in Frameworks */,
 				5087E76317EB910900C73F5D /* Foundation.framework in Frameworks */,
 				5087E76817EB910900C73F5D /* QuartzCore.framework in Frameworks */,
 				5087E76917EB910900C73F5D /* OpenAL.framework in Frameworks */,
@@ -676,6 +692,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59E1A5F41F129332003020B9 /* UnityAds.framework */,
 				9312B47A1D58A10100FE954C /* Security.framework */,
 				9312B4771D58A0A800FE954C /* CoreText.framework */,
 				93865F3E1D588C39007ECE5A /* libiconv.tbd */,
@@ -768,6 +785,18 @@
 			path = ios;
 			sourceTree = SOURCE_ROOT;
 		};
+		59E1A5EA1F129175003020B9 /* APIs */ = {
+			isa = PBXGroup;
+			children = (
+				59E1A6081F13E56D003020B9 /* UnityAdsAPIs.cpp */,
+				59E1A5EB1F129175003020B9 /* UnityAdsAPIs.h */,
+				59E1A5EC1F1291F3003020B9 /* UnityAdsAPIs_Android.cpp */,
+				59E1A6041F13C292003020B9 /* UnityAdsAPIs_IOS.mm */,
+				59E1A6071F13C2B2003020B9 /* UnityAdsAPIs_IOS.h */,
+			);
+			path = APIs;
+			sourceTree = "<group>";
+		};
 		936D4C921E9E06B8003786E6 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
@@ -784,6 +813,7 @@
 		93706E461E7A6890009A2CA0 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				59E1A5EA1F129175003020B9 /* APIs */,
 				93706FBA1E7A8BF8009A2CA0 /* Facebook */,
 				93706E531E7A6890009A2CA0 /* AppDelegate.cpp */,
 				93706E541E7A6890009A2CA0 /* AppDelegate.h */,
@@ -1244,7 +1274,7 @@
 				LastUpgradeCheck = 0500;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = MDDB52YB8L;
+						DevelopmentTeam = SKJ632L67S;
 					};
 				};
 			};
@@ -1443,12 +1473,14 @@
 				93706F861E7A6891009A2CA0 /* AchievementCompleteNoticePopup.cpp in Sources */,
 				93706F5D1E7A6891009A2CA0 /* Bullet.cpp in Sources */,
 				93706F671E7A6891009A2CA0 /* TargetMark.cpp in Sources */,
+				59E1A6091F13E56D003020B9 /* UnityAdsAPIs.cpp in Sources */,
 				93706F821E7A6891009A2CA0 /* LevelProgressBar.cpp in Sources */,
 				93706F771E7A6891009A2CA0 /* json_reader.cpp in Sources */,
 				93706FD01E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
 				93706FA11E7A6891009A2CA0 /* ScoreUI.cpp in Sources */,
 				93706FAE1E7A6891009A2CA0 /* SDKUtil.cpp in Sources */,
 				93706FA21E7A6891009A2CA0 /* SpeechBubble.cpp in Sources */,
+				59E1A6051F13C292003020B9 /* UnityAdsAPIs_IOS.mm in Sources */,
 				93706F4B1E7A6891009A2CA0 /* StringUtility.cpp in Sources */,
 				93706F851E7A6891009A2CA0 /* MyButton.cpp in Sources */,
 				93706F9C1E7A6891009A2CA0 /* TitleCompleteNoticePopup.cpp in Sources */,
@@ -1467,6 +1499,7 @@
 				93706FAC1E7A6891009A2CA0 /* MenuScene.cpp in Sources */,
 				93B7F4501EB845890019D36C /* AchievementPopupDP.cpp in Sources */,
 				93706F701E7A6891009A2CA0 /* Planet.cpp in Sources */,
+				59E1A5EE1F1291F3003020B9 /* UnityAdsAPIs_Android.cpp in Sources */,
 				93706F601E7A6891009A2CA0 /* NormalMissile.cpp in Sources */,
 				93706F811E7A6891009A2CA0 /* ItemProgress.cpp in Sources */,
 				93706F8B1E7A6891009A2CA0 /* EarnCoinPopup.cpp in Sources */,
@@ -1481,12 +1514,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				932C6B941E83A2710043BE02 /* FacebookRankPopupDP.cpp in Sources */,
+				59E1A6061F13C292003020B9 /* UnityAdsAPIs_IOS.mm in Sources */,
 				5951815B1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */,
 				93783B911E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
 				93706FD11E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
 				93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
 				93B7F44D1EB843DD0019D36C /* AchievementPopup.cpp in Sources */,
+				59E1A5EF1F1291F3003020B9 /* UnityAdsAPIs_Android.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				93706FCC1E7F70E4009A2CA0 /* FacebookAPITestPopup.cpp in Sources */,
 				936D4C9E1E9E0875003786E6 /* TutorialStep.cpp in Sources */,
@@ -1495,6 +1530,7 @@
 				93A1166C1E91F9F600095230 /* RivalBullet.cpp in Sources */,
 				93706FBE1E7A8BF8009A2CA0 /* FacebookManager.cpp in Sources */,
 				936D4CA21E9E2578003786E6 /* TutorialHelper.cpp in Sources */,
+				59E1A60A1F13E56D003020B9 /* UnityAdsAPIs.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1519,9 +1555,14 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = SKJ632L67S;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1554,6 +1595,7 @@
 					"$(_COCOS_LIB_IOS_END)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = kr.HongSeongHee.StarStarStar;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
@@ -1566,9 +1608,14 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = SKJ632L67S;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ios/Prefix.pch;
@@ -1599,6 +1646,7 @@
 					"$(_COCOS_LIB_IOS_END)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = kr.HongSeongHee.StarStarStar;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
@@ -1613,6 +1661,10 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1646,6 +1698,10 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = mac/Prefix.pch;
