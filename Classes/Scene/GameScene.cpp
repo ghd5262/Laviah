@@ -44,8 +44,7 @@
 #include "../DataManager/NetworkManager.hpp"
 #include "../DataManager/FreeRewardManager.hpp"
 #include "../AI/States/RocketStates.h"
-#include "../SDKUtil/SDKUtil.h"
-#include "../Facebook/FacebookManager.hpp"
+#include "../SDKBOX/SDKBox.h"
 
 #include <array>
 
@@ -516,7 +515,7 @@ void CGameScene::createHelpPopup()
 
 void CGameScene::createExitPopup(bool resume)
 {
-    CSDKUtil::Instance()->AutoSave();
+    CUserDataManager::Instance()->SaveUserDataAutomatically();
     
     this->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){

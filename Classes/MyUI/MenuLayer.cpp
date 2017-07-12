@@ -6,7 +6,7 @@
 #include "Popup/TitleCompleteNoticePopup.hpp"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
-#include "../Facebook/FacebookManager.hpp"
+#include "../SDKBOX/SDKBox.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Rocket.h"
 #include "../GameObject/Planet.h"

@@ -13,8 +13,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
-#include "../../Facebook/FacebookManager.hpp"
-#include "../../APIs/UnityAdsAPIs.h"
+#include "../../SDKBOX/SDKBox.h"
 #include <array>
 
 CResultPopup* CResultPopup::create()
@@ -433,7 +432,7 @@ void CResultPopup::End(Node* sender){
 
 void CResultPopup::GetCoinFromVideo(cocos2d::Node* sender)
 {
-    CUnityAdsAPIs::Instance()->ShowUnityAds([=](){
+    CUnityAdsManager::Instance()->ShowUnityAds([=](){
         this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 50);
     });
 }

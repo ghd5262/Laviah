@@ -2,7 +2,7 @@
 #include "../MyButton.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../Scene/GameScene.h"
-#include "../../Facebook/FacebookManager.hpp"
+#include "../../SDKBOX/SDKBox.h"
 
 CSharePopup* CSharePopup::create()
 {

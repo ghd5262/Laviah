@@ -3,8 +3,8 @@
 #include "Scene/MenuScene.h"
 #include "Scene/LoadingScene.h"
 #include "Common/AudioManager.h"
-#include "PluginFacebook/PluginFacebook.h"
-#include "APIs/UnityAdsAPIs.h"
+#include "DataManager/UserDataManager.h"
+#include "SDKBOX/SDKBox.h"
 
 USING_NS_CC;
 
@@ -66,9 +66,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // run
     director->runWithScene(scene);
     
-    // facebook sdk init
-    sdkbox::PluginFacebook::init();
-    CUnityAdsAPIs::Instance()->UnityAdsInitialize(true);
+    // facebook init
+    CFacebookManager::Instance()->Initialize();
+    
+    // sdkbox play init
+//    CPlayManager::Instance()->Initialize();
+    
+    // unity ads init
+    CUnityAdsManager::Instance()->Initialize(true);
     
     return true;
 }
@@ -78,11 +83,6 @@ void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
     CAudioManager::Instance()->AllPause();
     
-    //GamePause
-    if(CGameScene::getGameScene() != nullptr){
-        CGameScene::getGameScene()->OpenGamePausePopup();
-    }
-    
     // if you use SimpleAudioEngine, it must be pause
     // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
@@ -91,6 +91,13 @@ void AppDelegate::applicationDidEnterBackground() {
 void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
     CAudioManager::Instance()->AllResume();
+    
+    //GamePause
+    if(CGameScene::getGameScene() != nullptr){
+        CGameScene::getGameScene()->OpenGamePausePopup();
+    }
+    
+    CUserDataManager::Instance()->SaveUserDataAutomatically();
     
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();

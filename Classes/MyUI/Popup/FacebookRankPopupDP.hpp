@@ -1,9 +1,7 @@
 #pragma once
-#include "cocos2d.h"
-#include "../../Facebook/FacebookManager.hpp"
+#include "ui/UIWidget.h"
 
-USING_NS_CC;
-
+struct FBUSER_PARAM;
 class CFacebookRankPopupDP : public cocos2d::ui::Widget
 {
 public:

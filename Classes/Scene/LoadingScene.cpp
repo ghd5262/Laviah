@@ -9,6 +9,8 @@
 #include "../SDKUtil/SDKUtil.h"
 #include "../MyUI/Popup.h"
 #include "../Common/NoticeDefine.h"
+#include "../SDKBOX/Sdkbox.h"
+//#include "../SDKBOX/Play/PlayManager.hpp"
 
 USING_NS_CC;
 //USING_NS_CC_EXT;
@@ -91,7 +93,8 @@ void CLoadingScene::callbackNetworkResult()
 			// 인터넷 연결되어 있다면 패키지 버전 비교 후 정상 실행
 			m_Downlaoder = CDownloadManager::create();
 			m_Downlaoder->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			m_Downlaoder->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.45f));
+			m_Downlaoder->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                                           this->getContentSize().height * 0.45f));
 			addChild(m_Downlaoder);
 		}
 		else{
@@ -120,20 +123,12 @@ void CLoadingScene::callbackDownloadFail(Ref* object)
 void CLoadingScene::callbackDownloadComplete(Ref* object)
 {
 	CCLOG("Loading Scene %s", __FUNCTION__);
-
-//	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-    if(0){
-		CSDKUtil::Instance()->GoogleLogin();
-	}
-	else{
-		callbackLoginResult(object);
-	}
+//    CPlayManager::Instance()->Login();
 }
 
 void CLoadingScene::callbackLoginResult(Ref* object)
 {
 	CCLOG("Loading Scene %s", __FUNCTION__);
-
 	CUserDataManager::Instance()->UserDataLoad();
 }
 

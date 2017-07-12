@@ -4,7 +4,7 @@
 #include "../ItemManager.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/UrlSprite.hpp"
-#include "../../Facebook/FacebookManager.hpp"
+#include "../../SDKBOX/SDKBox.h"
 
 using namespace cocos2d;
 

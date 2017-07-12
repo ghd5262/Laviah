@@ -7,7 +7,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
 #include "../../DataManager/UserDataManager.h"
-#include "../../APIs/UnityAdsAPIs.h"
+#include "../../SDKBOX/SDKBox.h"
 #include <array>
 
 CPausePopup::CPausePopup(){}
@@ -194,7 +194,7 @@ void CPausePopup::Skip(CGoalPopupDP *sender, int posIndex)
 
 	CGameScene::getGameScene()->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
-        CUnityAdsAPIs::Instance()->ShowUnityAds([=](){
+        CUnityAdsManager::Instance()->ShowUnityAds([=](){
             auto achievementMng = CAchievementDataManager::Instance();
             auto index = dp->getAchievementParam()._index;
             auto data  = achievementMng->getNormalAchievementByIndex(index);

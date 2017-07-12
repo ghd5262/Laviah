@@ -1,6 +1,6 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 
-#include "UnityAdsAPIs.h"
+#include "UnityAdsManager.hpp"
 #include "AppDelegate.h"
 #include "cocos2d.h"
 
@@ -21,7 +21,7 @@ extern "C" {
         char* ret = NULL;
         ret = jstringTostring(env, zoneid);
         cocos2d::Director::getInstance()->getScheduler()->schedule([=](float delta){
-            CUnityAdsAPIs::Instance()->CallUnityAdsSavedFunction();
+            CUnityAdsManager::Instance()->CallUnityAdsSavedFunction();
         }, cocos2d::Director::getInstance(), 0.f, 0, 0.f, false, "CallUnityAdsSavedFunction");
     }
     

@@ -4,7 +4,7 @@
 #include "../CountDown.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
-#include "../../SDKUtil/SDKUtil.h"
+#include "../../SDKBOX/SDKBox.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
 #include <array>
@@ -201,7 +201,7 @@ void CVideoPopup::ReviveByCoin(cocos2d::Node* sender)
 
 void CVideoPopup::ReviveByVideo(cocos2d::Node* sender)
 {
-    CSDKUtil::Instance()->ShowRewardUnityAds([=](){this->Resume(); });
+    CUnityAdsManager::Instance()->ShowUnityAds([=](){this->Resume(); });
 }
 
 void CVideoPopup::Resume()

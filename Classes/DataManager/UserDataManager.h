@@ -27,6 +27,7 @@ namespace USERDATA_KEY {
 	const std::string LAST_SAVED_TIME		    = "USER_DATA_LAST_SAVED_TIME";
     const std::string FIRST_LOAD			    = "USER_DATA_FIRSTLOAD";
 	const std::string DATA_REVISION				= "USER_DATA_SAVE_REVISION";
+    const std::string DATA_SAVE_AUTO            = "USER_DATA_SAVE_AUTO";
 
     const std::string LEVEL                     = "USER_LEVEL";
     const std::string EXP                       = "USER_EXP";
@@ -86,7 +87,9 @@ public:
     bool getUserData_IsItemExistWithParam(std::string key, int paramIdx, int value);
     
 	void SaveUserData(bool saveToCloud = false, bool forceSave = false);
+    void SaveUserDataAutomatically();
     void setSaveRevision(int value);
+    void setUserData_CloudSaved(std::string cryptoValue);
     void setUserData_Number(std::string key, int value);
     void setUserData_NumberAdd(std::string key, int value);
     void setUserData_ItemGet(std::string key, int itemIdx);
@@ -107,19 +110,17 @@ private:
 
 	void dataLoadFromXML();
 
-	void dataLoadFromGoogleCloud();
+	void dataLoadFromCloud();
 
 	void convertJsonToUserData(sUSER_DATA &data, std::string valueJson);
 
 	void convertUserDataToJson(sUSER_DATA &data, std::string &valueJson);
 
-	void googleCloudDataLoad(std::string cryptoValue);
+	void overwriteXmlByCloud(std::string valueJson);
 
-	void overwriteXmlByGoogleCloud(std::string valueJson);
+	bool isCloudRevisionHigher();
 
-	bool isGoogleRevisionHigher();
-
-	void saveUserDataToGoogleCloud(std::string key, std::string data, bool forceSave = false);
+	void saveUserDataToCloud(std::string key, std::string data, bool forceSave = false);
 
     ARRAY_DATA* getUserData_ListRef(std::string key);
     
@@ -153,7 +154,7 @@ private:
     sUSER_DATA m_UserData;
 
 	std::string m_JsonUserDataFromXML;
-	std::string m_JsonUserDataFromGoogleCloud;
+	std::string m_JsonUserDataFromCloud;
 	
 	// 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
     //bool m_IsFirstRevisionCall;

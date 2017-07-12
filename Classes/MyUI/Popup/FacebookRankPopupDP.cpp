@@ -5,6 +5,10 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../Common/StringUtility.h"
 #include "../../Scene/GameScene.h"
+#include "../../SDKBOX/SDKBox.h"
+
+USING_NS_CC;
+using namespace cocos2d::ui;
 
 CFacebookRankPopupDP* CFacebookRankPopupDP::create(const FBUSER_PARAM* user, int number, bool me/* = false*/)
 {

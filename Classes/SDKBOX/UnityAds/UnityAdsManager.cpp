@@ -1,18 +1,18 @@
-#include "UnityAdsAPIs.h"
+#include "UnityAdsManager.hpp"
 
-CUnityAdsAPIs* CUnityAdsAPIs::Instance()
+CUnityAdsManager* CUnityAdsManager::Instance()
 {
-    static CUnityAdsAPIs instance;
+    static CUnityAdsManager instance;
     return &instance;
 }
 
-CUnityAdsAPIs::CUnityAdsAPIs()
+CUnityAdsManager::CUnityAdsManager()
 : m_UnityAdsSavedFunc(nullptr)
 , m_NetworkConnectSavedFunc(nullptr){}
 
-CUnityAdsAPIs::~CUnityAdsAPIs(){}
+CUnityAdsManager::~CUnityAdsManager(){}
 
-void CUnityAdsAPIs::UnityAdsInitialize(bool testMode/* = false*/)
+void CUnityAdsManager::Initialize(bool testMode/* = false*/)
 {
     std::string gameID = "1474731";
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
@@ -21,7 +21,7 @@ void CUnityAdsAPIs::UnityAdsInitialize(bool testMode/* = false*/)
     UnityAdsInit(gameID.c_str(), testMode);
 }
 
-void CUnityAdsAPIs::ShowUnityAds(const std::function<void(void)> &func, bool isRewarded/* = true*/)
+void CUnityAdsManager::ShowUnityAds(const std::function<void(void)> &func, bool isRewarded/* = true*/)
 {
     std::string placementID     = "rewardedVideo";
     if(!isRewarded) placementID = "video";
@@ -34,17 +34,17 @@ void CUnityAdsAPIs::ShowUnityAds(const std::function<void(void)> &func, bool isR
     }
 }
 
-void CUnityAdsAPIs::Toast(std::string content)
+void CUnityAdsManager::Toast(std::string content)
 {
 //    m_SDKUtil->Toast(content);
 }
 
-void CUnityAdsAPIs::IsNetworkConnect()
+void CUnityAdsManager::IsNetworkConnect()
 {
 //    m_SDKUtil->IsNetworkConnect();
 }
 
-void CUnityAdsAPIs::CallUnityAdsSavedFunction()
+void CUnityAdsManager::CallUnityAdsSavedFunction()
 {
     if (m_UnityAdsSavedFunc != nullptr)
     {
@@ -55,7 +55,7 @@ void CUnityAdsAPIs::CallUnityAdsSavedFunction()
         CCASSERT(false, "CallUnityAdsSavedFunction : No function was saved.");
 }
 
-void CUnityAdsAPIs::CallNetworkConnectSavedFunction()
+void CUnityAdsManager::CallNetworkConnectSavedFunction()
 {
     if (m_NetworkConnectSavedFunc != nullptr)
     {

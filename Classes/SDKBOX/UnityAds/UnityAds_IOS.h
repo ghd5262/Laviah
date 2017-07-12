@@ -2,7 +2,7 @@
 #import <UnityAds/UnityAds.h>
 
 
-@interface UnityAdsAPIs : UIViewController<UnityAdsDelegate>
+@interface UnityAdsBridge : UIViewController<UnityAdsDelegate>
 
 + (UIViewController* ) viewController;
 

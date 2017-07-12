@@ -1,16 +1,10 @@
-#ifndef UNITYADS2DEMO_UNITYADSJNI_H
-#define UNITYADS2DEMO_UNITYADSJNI_H
+#pragma once
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-#include <jni.h>
-#include "platform/android/jni/JniHelper.h"
-#endif
-
-class CUnityAdsAPIs{
+class CUnityAdsManager{
 public:
-    static CUnityAdsAPIs* Instance();
+    static CUnityAdsManager* Instance();
     
-    void UnityAdsInitialize(bool testMode = false);
+    void Initialize(bool testMode = false);
     
     void ShowUnityAds(const std::function<void(void)> &func, bool isRewarded = true);
     
@@ -22,8 +16,8 @@ public:
     
     void CallNetworkConnectSavedFunction();
 private:
-    CUnityAdsAPIs();
-    ~CUnityAdsAPIs();
+    CUnityAdsManager();
+    ~CUnityAdsManager();
     
     CC_SYNTHESIZE(bool, m_IsNetworkConnect, IsNetworkConnect);
     CC_SYNTHESIZE(std::function<void(void)>, m_UnityAdsSavedFunc, UnityAdsSavedFunc);
@@ -37,6 +31,9 @@ extern "C" {
 #endif
     
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#include <jni.h>
+#include "platform/android/jni/JniHelper.h"
+    
     JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_UnityAdsJNI_reward (JNIEnv *, jobject, jstring s);
     static char* jstringTostring(JNIEnv* env, jstring jstr);
     static std::string jstringToStdstring(JNIEnv* env, jstring jstr);
@@ -74,5 +71,3 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-#endif //UNITYADS2DEMO_UNITYADSJNI_H

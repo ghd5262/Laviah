@@ -7,7 +7,9 @@
 #include "../json/json.h"
 #include "../DataManager/WorkshopItemDataManager.h"
 #include "../SDKUtil/SDKUtil.h"
-#include "../GoogleCloud/GoogleCloudManager.h"
+//#include "../Cloud/CloudManager.h"
+#include "../SDKBOX/SDKBox.h"
+//#include "../SDKBOX/Play/PlayManager.hpp"
 #include "../Common/NoticeDefine.h"
 #include <algorithm>     /* qsort */
 
@@ -43,7 +45,7 @@ namespace USERDATA{
 
 CUserDataManager::CUserDataManager()
 : m_JsonUserDataFromXML("")
-, m_JsonUserDataFromGoogleCloud("")
+, m_JsonUserDataFromCloud("")
 // 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
 //: m_IsFirstRevisionCall(false)
 //, m_IsDataLoadFinish(false)
@@ -109,13 +111,13 @@ void CUserDataManager::UserDataLoad()
     this->initUserDefaultValue(m_UserData);
     //TODO: FIX 이부분 문제 요지 (기기를 바꾸고 첫번째 플레이 시 구글 연결이 안된 경우 아래 루틴을 탄다.)
 	if (this->getIsFirstPlay() &&
-        CGoogleCloudManager::Instance()->getIsConnected() &&
+//        CPlayManager::Instance()->IsLoggedIn() &&
         CSDKUtil::Instance()->getIsNetworkConnect())
 	{
         CSDKUtil::Instance()->Toast("This is first play");
         
 		// 첫 로드일 경우 구글 클라우드 로드를 기다린다.
-		this->dataLoadFromGoogleCloud();
+		this->dataLoadFromCloud();
 		this->dataLoadFromXML();
 	}
 	else
@@ -138,13 +140,13 @@ void CUserDataManager::dataLoadFromXML()
 	m_JsonUserDataFromXML = decrypto_value;
 }
 
-void CUserDataManager::dataLoadFromGoogleCloud()
+void CUserDataManager::dataLoadFromCloud()
 {
 	std::string crypto_key = MakeCryptoString(USERDATA::GOOGLE_DATA_KEY, USERDATA::CRYPTO_KEY);
 	       
-	// google sdk와 통신후 googleCloudDataLoad 호출됨
-	// googleCloudDataLoad 호출 후에는 revision 비교 후 더 높은 것을 채택함
-	CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
+	// google sdk와 통신후 CloudDataLoad 호출됨
+	// CloudDataLoad 호출 후에는 revision 비교 후 더 높은 것을 채택함
+//    CPlayManager::Instance()->DataLoad(crypto_key);
 }
 
 void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string json)
@@ -292,53 +294,29 @@ void CUserDataManager::convertUserDataToJson(sUSER_DATA &data, std::string &valu
     valueJson = writer.write(root);
 }
 
-void CUserDataManager::googleCloudDataLoad(std::string cryptoValue)
-{
-	std::string decrypto_value = MakeCryptoString(cryptoValue, USERDATA::CRYPTO_KEY);
-
-	m_JsonUserDataFromGoogleCloud = decrypto_value;
-
-	if (this->isGoogleRevisionHigher())
-	{
-        CSDKUtil::Instance()->Toast("Google revision");
-        
-		this->convertJsonToUserData(m_UserData, m_JsonUserDataFromGoogleCloud);
-		this->overwriteXmlByGoogleCloud(m_JsonUserDataFromGoogleCloud);
-        UserDefault::getInstance()->setBoolForKey(USERDATA_KEY::FIRST_LOAD.c_str(), false);
-	}
-	else
-	{
-        CSDKUtil::Instance()->Toast("xml revision");
-        
-		this->convertJsonToUserData(m_UserData, m_JsonUserDataFromXML);
-	}
-    
-    __NotificationCenter::getInstance()->postNotification(NOTICE::USERDATA_LOAD_FINISH, NULL);
-}
-
-void CUserDataManager::overwriteXmlByGoogleCloud(std::string valueJson)
+void CUserDataManager::overwriteXmlByCloud(std::string valueJson)
 {
     CSDKUtil::Instance()->Toast("Overwrite to xml");
     UserDefault::getInstance()->setStringForKey(USERDATA::GOOGLE_DATA_KEY.c_str(), valueJson);
 }
 
-bool CUserDataManager::isGoogleRevisionHigher()
+bool CUserDataManager::isCloudRevisionHigher()
 {
 	int googleRevision = 0;
 	int xmlRevision = 0;
 	std::string key = USERDATA_KEY::DATA_REVISION;
-	if (m_JsonUserDataFromGoogleCloud != "")
+	if (m_JsonUserDataFromCloud != "")
 	{
 		Json::Value googleJsonRoot;
 		Json::Reader googleJsonReader;
 
-		bool parsingSuccessful = googleJsonReader.parse(m_JsonUserDataFromGoogleCloud, googleJsonRoot);
+		bool parsingSuccessful = googleJsonReader.parse(m_JsonUserDataFromCloud, googleJsonRoot);
 		if (!parsingSuccessful)
 		{
-			CCASSERT(false, MakeString("parser failed : \n %s", m_JsonUserDataFromGoogleCloud.c_str()).c_str());
+			CCASSERT(false, MakeString("parser failed : \n %s", m_JsonUserDataFromCloud.c_str()).c_str());
 			return false;
 		}
-		CCLOG("UserData JSON : \n %s\n", m_JsonUserDataFromGoogleCloud.c_str());
+		CCLOG("UserData JSON : \n %s\n", m_JsonUserDataFromCloud.c_str());
 
 		const Json::Value dataArray = googleJsonRoot["data"];
 		googleRevision = dataArray[key.c_str()].asInt();
@@ -364,18 +342,18 @@ bool CUserDataManager::isGoogleRevisionHigher()
     return (googleRevision > xmlRevision);
 }
 
-void CUserDataManager::saveUserDataToGoogleCloud(std::string key, std::string data, bool forceSave/*= false*/)
+void CUserDataManager::saveUserDataToCloud(std::string key, std::string data, bool forceSave/*= false*/)
 {
-    if (CSDKUtil::Instance()->getIsNetworkConnect())
-        CGoogleCloudManager::Instance()->GoogleCloudDataSave(key.c_str(), data);
-    else
+    if (CSDKUtil::Instance()->getIsNetworkConnect()){
+//        CPlayManager::Instance()->DataSave(key.c_str(), data);
+    }else
     {
-        if (!forceSave) return;
+        if (!forceSave) return; //auto save
         
         CGameScene::getGameScene()->CreateAlertPopup()
         ->setPositiveButton([=](Node* sender){
             CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
-                this->saveUserDataToGoogleCloud(key, data, forceSave);
+                this->saveUserDataToCloud(key, data, forceSave);
             });
             CSDKUtil::Instance()->IsNetworkConnect();
         }, TRANSLATE("BUTTON_OK"))
@@ -489,6 +467,12 @@ bool CUserDataManager::getUserData_IsItemExistWithParam(std::string key, int par
 #pragma mark -
 #pragma mark [ interface function setter ]
 
+void CUserDataManager::SaveUserDataAutomatically()
+{
+    if(this->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO))
+        this->SaveUserData(true);
+}
+
 void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/, bool forceSave/* = false*/)
 {
     this->setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
@@ -500,11 +484,10 @@ void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/, bool forceSave
     std::string crypto_value = MakeCryptoString(jsonString, USERDATA::CRYPTO_KEY);
     
     UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
-    CGoogleCloudManager::Instance()->AddDataToAutoSaveList(crypto_key.c_str(), crypto_value);
     
     if (saveToCloud) {
         CSDKUtil::Instance()->setNetworkConnectSavedFunc([=](){
-            this->saveUserDataToGoogleCloud(crypto_key, crypto_value, forceSave);
+            this->saveUserDataToCloud(crypto_key, crypto_value, forceSave);
         });
         CSDKUtil::Instance()->IsNetworkConnect();
     }
@@ -515,6 +498,30 @@ void CUserDataManager::setSaveRevision(int value)
     auto iter = m_UserData._userDataIntMap.find(USERDATA_KEY::DATA_REVISION);
     if(iter != m_UserData._userDataIntMap.end())
         iter->second = value;
+}
+
+void CUserDataManager::setUserData_CloudSaved(std::string cryptoValue)
+{
+    std::string decrypto_value = MakeCryptoString(cryptoValue, USERDATA::CRYPTO_KEY);
+    
+    m_JsonUserDataFromCloud = decrypto_value;
+    
+    if (this->isCloudRevisionHigher())
+    {
+        CSDKUtil::Instance()->Toast("cloud revision");
+        
+        this->convertJsonToUserData(m_UserData, m_JsonUserDataFromCloud);
+        this->overwriteXmlByCloud(m_JsonUserDataFromCloud);
+        UserDefault::getInstance()->setBoolForKey(USERDATA_KEY::FIRST_LOAD.c_str(), false);
+    }
+    else
+    {
+        CSDKUtil::Instance()->Toast("xml revision");
+        
+        this->convertJsonToUserData(m_UserData, m_JsonUserDataFromXML);
+    }
+    
+    __NotificationCenter::getInstance()->postNotification(NOTICE::USERDATA_LOAD_FINISH, NULL);
 }
 
 void CUserDataManager::setUserData_Number(std::string key, int value)
@@ -690,13 +697,13 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
 //void CUserDataManager::GoogleLoginResult()
 //{
 //    CCLOG("GoogleLoginResult : Called");
-//    if (CGoogleCloudManager::Instance()->getIsConnected())
+//    if (CCloudManager::Instance()->getIsConnected())
 //    {
 //        CCLOG("GoogleLoginResult : Call google revision function");
 //        
 //        // 리비전 비교 위해 함수 호출
 //        std::string crypto_key = MakeCryptoString(USERDATA_KEY::DATA_REVISION, USERDATA::CRYPTO_KEY);
-//        CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
+//        CSDKUtil::Instance()->CloudLoad(crypto_key.c_str());
 //        
 //        m_IsFirstRevisionCall = true;
 //    }
@@ -853,7 +860,7 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
 //        dataLoadFromXML();
 //    }
 //    else{
-//        dataLoadFromGoogleCloud();
+//        dataLoadFromCloud();
 //        /* 구글 클라우드의 Revision이 높을때(새로 다운 받았을 경우)
 //         * 마침 인터넷이 연결되어 있지 않다면 데이터가 날아갈 수 있다.(연결되어 있지 않다면 xml에서 로드 하기때문)
 //         * 때문에 게임을 새로 설치한 경우에는 항상 로그인을 하도록 하고 XML에 모두 저장한다. */
@@ -872,14 +879,14 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
 //    m_IsDataLoadFinish = true;
 //}
 //
-//void CUserDataManager::dataLoadFromGoogleCloud()
+//void CUserDataManager::dataLoadFromCloud()
 //{
 //    for(auto keyInfo : m_UserDataKeyList)
 //    {
 //        std::string crypto_key = MakeCryptoString(keyInfo.first.c_str(), USERDATA::CRYPTO_KEY);
 //        
 //        // google sdk와 통신후 convertJsonToUserData 호출됨
-//        CSDKUtil::Instance()->GoogleCloudLoad(crypto_key.c_str());
+//        CSDKUtil::Instance()->CloudLoad(crypto_key.c_str());
 //    }
 //}
 //
@@ -889,7 +896,7 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
 //    std::string decrypto_key = MakeCryptoString(key, USERDATA::CRYPTO_KEY);
 //    std::string decrypto_value = MakeCryptoString(valueJson, USERDATA::CRYPTO_KEY);
 //    
-//    CCLOG("=======================GoogleCloudLoad========================");
+//    CCLOG("=======================CloudLoad========================");
 //    CCLOG("Decrypto Key : %s", decrypto_key.c_str());
 //    CCLOG("Decrypto Value : %s", decrypto_value.c_str());
 //    CCLOG("==============================================================");
@@ -960,8 +967,8 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
 //    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
 //    setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
 //    
-//    if (CGoogleCloudManager::Instance()->getIsConnected())
-//        CGoogleCloudManager::Instance()->GoogleCloudDataSave(crypto_key.c_str(), crypto_value);
+//    if (CCloudManager::Instance()->getIsConnected())
+//        CCloudManager::Instance()->CloudDataSave(crypto_key.c_str(), crypto_value);
 //}
 //
 //void CUserDataManager::convertUserDataToJson_List(std::string key)
@@ -984,8 +991,8 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
 //    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
 //    setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
 //    
-//    if (CGoogleCloudManager::Instance()->getIsConnected())
-//        CGoogleCloudManager::Instance()->GoogleCloudDataSave(crypto_key.c_str(), crypto_value);
+//    if (CCloudManager::Instance()->getIsConnected())
+//        CCloudManager::Instance()->CloudDataSave(crypto_key.c_str(), crypto_value);
 //}
 //
 //void CUserDataManager::convertUserDataToJson_Revision()
@@ -1002,8 +1009,8 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
 //    
 //    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
 //    
-//    if (CGoogleCloudManager::Instance()->getIsConnected())
-//        CGoogleCloudManager::Instance()->GoogleCloudDataSave(crypto_key.c_str(), crypto_value);
+//    if (CCloudManager::Instance()->getIsConnected())
+//        CCloudManager::Instance()->CloudDataSave(crypto_key.c_str(), crypto_value);
 //}
 //
 //void CUserDataManager::addKey(std::string keyKind, std::string key)
@@ -1012,7 +1019,7 @@ int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex
 //    CCLOG("Kind : %s Add Key : %s ", keyKind.c_str(), key.c_str());
 //}
 //
-//void CUserDataManager::overwriteXmlByGoogleCloud(std::string key, std::string valueJson)
+//void CUserDataManager::overwriteXmlByCloud(std::string key, std::string valueJson)
 //{
 //    CCLOG("Overwrite Xml by Google cloud data - key : %s value : %s ", key.c_str(), valueJson.c_str());
 //    UserDefault::getInstance()->setStringForKey(key.c_str(), valueJson);

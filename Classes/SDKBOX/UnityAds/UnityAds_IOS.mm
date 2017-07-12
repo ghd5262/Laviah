@@ -1,8 +1,8 @@
-#import "UnityAdsAPIs.h"
-#import "UnityAdsAPIs_IOS.h"
+#import "UnityAdsManager.hpp"
+#import "UnityAds_IOS.h"
 #import "AppController.h"
 
-@implementation UnityAdsAPIs
+@implementation UnityAdsBridge
 
 + (UIViewController* ) viewController {
     
@@ -31,7 +31,7 @@
           withFinishState:(UnityAdsFinishState)state{
     if(state == kUnityAdsFinishStateCompleted) {
         cocos2d::Director::getInstance()->getScheduler()->schedule([=](float delta){
-            CUnityAdsAPIs::Instance()->CallUnityAdsSavedFunction();
+            CUnityAdsManager::Instance()->CallUnityAdsSavedFunction();
         }, cocos2d::Director::getInstance(), 0.f, 0, 0.f, false, "CallUnityAdsSavedFunction");
     }
 }
@@ -47,7 +47,7 @@ void UnityAdsInit (const char *gameIdParameter, bool testMode) {
     
     NSLog(@"[UnityAds] UnityAdsInit");
     
-    UnityAdsAPIs* bridge = [UnityAdsAPIs new];
+    UnityAdsBridge* bridge = [UnityAdsBridge new];
     NSString* gameId = [NSString stringWithFormat:@"%s", gameIdParameter];
     [UnityAds initialize:gameId delegate:bridge testMode:testMode];
 }
@@ -60,7 +60,7 @@ bool UnityAdsIsReady (const char *parameter){
 
 void UnityAdsShow (const char *parameter){
     NSString* placementId = [NSString stringWithFormat:@"%s", parameter];
-    [UnityAds show:[UnityAdsAPIs viewController] placementId:placementId];
+    [UnityAds show:[UnityAdsBridge viewController] placementId:placementId];
 }
 
 bool UnityAdsGetDebugMode() {
