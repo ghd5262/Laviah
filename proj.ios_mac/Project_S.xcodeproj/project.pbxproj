@@ -64,6 +64,7 @@
 		59E1A64D1F162E0A003020B9 /* UnityAds_IOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A6451F162E0A003020B9 /* UnityAds_IOS.mm */; };
 		59E1A6511F163E11003020B9 /* PlayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A64F1F163E11003020B9 /* PlayManager.cpp */; };
 		59E1A6521F163E11003020B9 /* PlayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A64F1F163E11003020B9 /* PlayManager.cpp */; };
+		59E1A6551F17EA6F003020B9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A6541F17EA6F003020B9 /* UIKit.framework */; };
 		610E425E9DB522E05A190348 /* PluginFacebook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 392D48748E4840CC0EC39E61 /* PluginFacebook.framework */; };
 		6973462299528F1D5CC62264 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F05845EDAD10602FC05D93CB /* GameController.framework */; };
 		6EC2465CA7F98942C19CDA5C /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56864C3B9CC7F082E5C29A7E /* EventKit.framework */; };
@@ -333,6 +334,7 @@
 		59E1A64E1F162E6B003020B9 /* SDKBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKBox.h; sourceTree = "<group>"; };
 		59E1A64F1F163E11003020B9 /* PlayManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayManager.cpp; sourceTree = "<group>"; };
 		59E1A6501F163E11003020B9 /* PlayManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlayManager.hpp; sourceTree = "<group>"; };
+		59E1A6541F17EA6F003020B9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		7C944AEBA4B542B4548E39EC /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = SOURCE_ROOT; };
 		803948579A13A3F02433115C /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AdSupport.framework; sourceTree = DEVELOPER_DIR; };
 		9312B4771D58A0A800FE954C /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
@@ -620,6 +622,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59E1A6551F17EA6F003020B9 /* UIKit.framework in Frameworks */,
 				9312B47C1D58A12600FE954C /* libiconv.tbd in Frameworks */,
 				9312B4781D58A0A800FE954C /* CoreText.framework in Frameworks */,
 				52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */,
@@ -729,6 +732,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59E1A6541F17EA6F003020B9 /* UIKit.framework */,
 				59E1A5F41F129332003020B9 /* UnityAds.framework */,
 				9312B47A1D58A10100FE954C /* Security.framework */,
 				9312B4771D58A0A800FE954C /* CoreText.framework */,

@@ -42,14 +42,14 @@
         "sdkboxplay": {
             "leaderboards": [
                 {
-                    "id": "ldb1", 
+                    "id": "test_1", 
                     "name": "ldb1"
                 }
             ], 
             "achievements": [
                 {
                     "incremental": false, 
-                    "id": "tengames", 
+                    "id": "achievement_test_1", 
                     "name": "ten-games"
                 }, 
                 {
