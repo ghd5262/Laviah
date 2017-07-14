@@ -1,8 +1,4 @@
 #include "PlayManager.hpp"
-#include "network/HttpRequest.h"
-#include "network/HttpClient.h"
-#include "../../MyUI/MyButton.h"
-#include "../../MyUI/UrlSprite.hpp"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/DataManagerUtils.h"
 #include "../../Common/NoticeDefine.h"
@@ -10,39 +6,30 @@
 using namespace cocos2d;
 using namespace cocos2d::ui;
 
-CPlayManager* CPlayManager::m_Instance = nullptr;
-
-CPlayManager::~CPlayManager()
-{
-    this->ClearData();
-    m_Instance = nullptr;
-}
+CPlayManager::~CPlayManager(){}
 
 CPlayManager* CPlayManager::Instance()
 {
-    if(m_Instance != nullptr) return m_Instance;
-    
-    m_Instance = new(std::nothrow) CPlayManager();
-    if (m_Instance && m_Instance->init())
-    {
-        m_Instance->autorelease();
-        return m_Instance;
-    }
-    else
-    {
-        delete m_Instance;
-        m_Instance = NULL;
-        return NULL;
-    }
+    static CPlayManager instance;
+    return &instance;
 }
+
 void CPlayManager::Initialize()
 {
+    sdkbox::PluginSdkboxPlay::setListener(this);
     sdkbox::PluginSdkboxPlay::init();
 }
 
-void CPlayManager::Login()
+void CPlayManager::Login(VOID_LISTENER listener)
 {
+    this->setLoginListener(listener);
     sdkbox::PluginSdkboxPlay::signin();
+}
+
+void CPlayManager::Logout(VOID_LISTENER listener)
+{
+    this->setLogoutListener(listener);
+    sdkbox::PluginSdkboxPlay::signout();
 }
 
 bool CPlayManager::IsLoggedIn()
@@ -50,21 +37,64 @@ bool CPlayManager::IsLoggedIn()
     return sdkbox::PluginSdkboxPlay::isSignedIn();
 }
 
-void CPlayManager::DataLoad(std::string key)
+void CPlayManager::DataLoad(DATA_LISTENER listener, std::string key)
 {
+    this->setDataLoadListener(listener);
     sdkbox::PluginSdkboxPlay::loadGameData(key);
 }
 
-void CPlayManager::DataSave(std::string key, std::string data)
+void CPlayManager::DataSave(DATA_LISTENER listener, std::string key, std::string data)
 {
+    this->setDataSaveListener(listener);
     sdkbox::PluginSdkboxPlay::saveGameData(key, data);
+}
+
+void CPlayManager::OpenLeaderboard()
+{
+    sdkbox::PluginSdkboxPlay::showAllLeaderboards();
+}
+
+void CPlayManager::OpenAchievement()
+{
+    sdkbox::PluginSdkboxPlay::showAchievements();
+}
+
+void CPlayManager::ScoreSave(std::string key, int score)
+{
+    sdkbox::PluginSdkboxPlay::submitScore(key, score);
+}
+
+void CPlayManager::callVoidListener(VOID_LISTENER& listener)
+{
+    if(listener)
+    {
+        listener();
+        listener = nullptr;
+    }
+}
+
+void CPlayManager::callDataListener(DATA_LISTENER& listener, std::string data)
+{
+    if(listener)
+    {
+        listener(data);
+        listener = nullptr;
+    }
 }
 
 void CPlayManager::onConnectionStatusChanged(int connection_status)
 {
+    CCLOG("connection status change: %d", connection_status);
     Director::getInstance()->getScheduler()->schedule([=](float delta){
-        if(sdkbox::PluginSdkboxPlay::isSignedIn())
-            __NotificationCenter::getInstance()->postNotification(NOTICE::LOGIN_RESULT, NULL);
+        switch (connection_status) {
+            case sdkbox::GPS_CONNECTED:    this->callVoidListener(m_LoginListener); break;
+            case sdkbox::GPS_DISCONNECTED: this->callVoidListener(m_LoginListener); break;
+            default:{
+                MessageBox("Notice", "login canceled.");
+                m_LoginListener  = nullptr;
+                m_LogoutListener = nullptr;
+            } break;
+        }
     }, Director::getInstance(), 0.f, 0, 0.f, false, "LoginSucceed");
 }
 
@@ -81,14 +111,6 @@ void CPlayManager::onIncrementalAchievementUnlocked(const std::string& achieveme
 {
     
 }
-
-//    void CPlayManager::onIncrementalAchievementStep(const std::string& achievement_name,
-//                                              int step) // DEPRECATED
-
-//    void CPlayManager::onIncrementalAchievementStepError(const std::string& name,
-//                                                   int steps,
-//                                                   int error_code,
-//                                                   const std::string& error_description ) // DEPRECATED
 
 void CPlayManager::onIncrementalAchievementStep(const std::string& achievement_name,
                                                 double step )
@@ -122,14 +144,6 @@ void CPlayManager::onAchievementsLoaded(bool reload_forced,
 {
     
 }
-
-//    void CPlayManager::onSetSteps(const std::string& name,
-//                            int steps) // DEPRECATED
-
-//    void CPlayManager::onSetStepsError(const std::string& name,
-//                                 int steps,
-//                                 int error_code,
-//                                 const std::string& error_description) // DEPRECATED
 
 void CPlayManager::onSetSteps(const std::string& name,
                               double steps)
@@ -212,14 +226,8 @@ void CPlayManager::onGameData(const std::string& action,
     }
     
     CCLOG("%s succeed", action.c_str());
-    if(action == "save"){
-        
-    }
-    else if(action == "load"){
-        CUserDataManager::Instance()->setUserData_CloudSaved(data);
-    }
-    else{
-        
-        return;
-    }
+    
+    if(action == "save")        this->callDataListener(m_DataSaveListener, data);
+    else if(action == "load")   this->callDataListener(m_DataLoadListener, data);
+    else                        {}
 }

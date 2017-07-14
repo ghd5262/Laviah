@@ -132,8 +132,8 @@ bool CResultPopup::init()
     
 
     auto createNormalLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize, bool addScore = true){
-		if ((GLOBAL->TOTAL_SCORE + score < INT_MAX) && addScore)
-            GLOBAL->TOTAL_SCORE += score;
+		if ((GVALUE->TOTAL_SCORE + score < INT_MAX) && addScore)
+            GVALUE->TOTAL_SCORE += score;
 
 		auto layerBG = createLayerBG(layerPos, "resultPopup_2.png");
         createIcon(layerBG, Vec2(layerBG->getContentSize().width * 0.1f,
@@ -149,8 +149,8 @@ bool CResultPopup::init()
 	};
 
 	auto createMultipleLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize, int multiple){
-		if (GLOBAL->TOTAL_SCORE + (score * multiple) < INT_MAX)
-			GLOBAL->TOTAL_SCORE += score * multiple;
+		if (GVALUE->TOTAL_SCORE + (score * multiple) < INT_MAX)
+			GVALUE->TOTAL_SCORE += score * multiple;
 
         auto layerBG = createLayerBG(layerPos, "resultPopup_2.png");
         createIcon(layerBG, Vec2(layerBG->getContentSize().width * 0.1f,
@@ -177,46 +177,46 @@ bool CResultPopup::init()
     
 	scoreLayerArray.at(0) = createNormalLayer(resultIcon[0],
                                               resultContent[0],
-                                              GLOBAL->STAR_SCORE,
+                                              GVALUE->STAR_SCORE,
                                               posArray[0], 50);
     
 	scoreLayerArray.at(1) = createNormalLayer(resultIcon[1],
                                               resultContent[1],
-                                              GLOBAL->BEST_COMBO,
+                                              GVALUE->BEST_COMBO,
                                               posArray[1], 50);
     
     scoreLayerArray.at(2) = createMultipleLayer(resultIcon[2],
                                                 resultContent[2],
-                                                GLOBAL->COIN_SCORE,
+                                                GVALUE->COIN_SCORE,
                                                 posArray[2], 50, 10);
     
 	scoreLayerArray.at(3) = createMultipleLayer(resultIcon[3],
                                                 resultContent[3],
-                                                GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT,
+                                                GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT,
                                                 posArray[3], 50, 100);
     
     // combo가 user best combo면 저장한다.
 	auto bestCombo = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_COMBO);
-	if (GLOBAL->BEST_COMBO > bestCombo)
+	if (GVALUE->BEST_COMBO > bestCombo)
 	{
-		CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_COMBO, GLOBAL->BEST_COMBO);
+		CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_COMBO, GVALUE->BEST_COMBO);
 	}
 
     // total score가 best score면 저장한다.
     auto bestScore = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
     std::string totalContent = TRANSLATE("RESULT_TOTAL_SCORE");
-    if (GLOBAL->TOTAL_SCORE > bestScore){
+    if (GVALUE->TOTAL_SCORE > bestScore){
         totalContent = TRANSLATE("RESULT_BEST_SCORE");
-        bestScore = GLOBAL->TOTAL_SCORE;
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, GLOBAL->TOTAL_SCORE);
+        bestScore = GVALUE->TOTAL_SCORE;
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BEST_SCORE, GVALUE->TOTAL_SCORE);
     }
     
     // save score to facebook
     if (CFacebookManager::IsScoresEnabled()){
         auto oldScore = CFacebookManager::Instance()->getMyFacebookData()->_score;
-        if(oldScore < GLOBAL->TOTAL_SCORE){
+        if(oldScore < GVALUE->TOTAL_SCORE){
             // save score to facebook data
-            CFacebookManager::Instance()->SaveScore(GLOBAL->TOTAL_SCORE);
+            CFacebookManager::Instance()->SaveScore(GVALUE->TOTAL_SCORE);
             CFacebookManager::Instance()->setSaveScoreListener([=](){
                 auto oldRank = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK);
                 auto newRank = CFacebookManager::Instance()->getMyRank();
@@ -240,7 +240,7 @@ bool CResultPopup::init()
     // create total score label;
     createScoreLabel(totalScoreBG, Vec2(totalScoreBG->getContentSize().width * 0.9f,
                                         totalScoreBG->getContentSize().height * 0.5f),
-                     GLOBAL->TOTAL_SCORE, 60)
+                     GVALUE->TOTAL_SCORE, 60)
     ->setColor(COLOR::BRIGHTGRAY);
     
     // create my best score layer
@@ -250,14 +250,14 @@ bool CResultPopup::init()
                                               posArray[5], 50, false);
     
     // update coin
-    CUserDataManager::Instance()->CoinUpdate(GLOBAL->COIN_SCORE);
+    CUserDataManager::Instance()->CoinUpdate(GVALUE->COIN_SCORE);
     
     // get exp
-    CUserDataManager::Instance()->ExpAdd(std::max(1, GLOBAL->TOTAL_SCORE / 100));
+    CUserDataManager::Instance()->ExpAdd(std::max(1, GVALUE->TOTAL_SCORE / 100));
     
     // Check all of achievement.
     bool achievementAll    = CAchievementDataManager::Instance()->CheckCompleteAll();
-    m_GoalPopupOpen = (GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT || achievementAll);
+    m_GoalPopupOpen = (GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT || achievementAll);
     
     // create button lambda
     auto createButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, bool visible){

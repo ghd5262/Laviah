@@ -165,12 +165,12 @@ bool CAchievementDataManager::CheckAchievementComplete(int index, bool isHidden)
     auto paramIndex = 0;
     auto paramState = 0;
     if (isHidden){
-        GLOBAL->HIDDEN_ACHIEVEMENT_CLEAR_COUNT += 1;
+        GVALUE->HIDDEN_ACHIEVEMENT_CLEAR_COUNT += 1;
         paramIndex  = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
         paramState  = ACHIEVEMENT_STATE::COMPLETED;
     }
     else{
-        GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT += 1;
+        GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT += 1;
         
         // Clear count +1
         CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::NORMAL_CLEAR_COUNT, 1);
@@ -197,12 +197,12 @@ const ACHIEVEMENT* CAchievementDataManager::CompleteCheckRealTime(bool isHidden)
     for(auto achievement : achievementList)
     {
         auto index = achievement.second->_index;
-        auto normalOriginCount = GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT;
-        auto hiddenOriginCount = GLOBAL->HIDDEN_ACHIEVEMENT_CLEAR_COUNT;
+        auto normalOriginCount = GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT;
+        auto hiddenOriginCount = GVALUE->HIDDEN_ACHIEVEMENT_CLEAR_COUNT;
         if (this->CheckAchievementComplete(index, isHidden)){
-            if (normalOriginCount < GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT)
+            if (normalOriginCount < GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT)
                 return this->getNormalAchievementByIndex(index);
-            if (hiddenOriginCount < GLOBAL->HIDDEN_ACHIEVEMENT_CLEAR_COUNT)
+            if (hiddenOriginCount < GVALUE->HIDDEN_ACHIEVEMENT_CLEAR_COUNT)
                 return this->getHiddenAchievementByIndex(index);
         }
     }
@@ -465,7 +465,7 @@ int CAchievementDataManager::getHiddenAchievementCurrentValue(int index)
                 checker->second(mtrlValue, curValue);
                 break;
             case CHECKER_TYPE::GLOBAL_DATA:
-                curValue += GLOBAL->getVariable(key);
+                curValue += GVALUE->getVariable(key);
                 break;
                 
             case CHECKER_TYPE::SINGLE_DATA:

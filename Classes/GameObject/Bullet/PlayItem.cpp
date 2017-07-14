@@ -50,12 +50,12 @@ void CPlayItem::CollisionWithPlayer()
     auto type = (eITEM_TYPE)(this->getSymbol() - 'A' + 1);
 	CItemManager::Instance()->StartItemTimer(type);
     switch (type) {
-        case eITEM_TYPE_coin:       GLOBAL->COIN_ITEM_USE += 1;     break;
-        case eITEM_TYPE_star:       GLOBAL->STAR_ITEM_USE += 1;     break;
-        case eITEM_TYPE_bonustime:  GLOBAL->BONUS_ITEM_USE += 1;    break;
-        case eITEM_TYPE_giant:      GLOBAL->GIANT_ITEM_USE += 1;    break;
-        case eITEM_TYPE_magnet:     GLOBAL->MAGNET_ITEM_USE += 1;   break;
-        case eITEM_TYPE_shield:     GLOBAL->BARRIER_ITEM_USE += 1;  break;
+        case eITEM_TYPE_coin:       GVALUE->COIN_ITEM_USE += 1;     break;
+        case eITEM_TYPE_star:       GVALUE->STAR_ITEM_USE += 1;     break;
+        case eITEM_TYPE_bonustime:  GVALUE->BONUS_ITEM_USE += 1;    break;
+        case eITEM_TYPE_giant:      GVALUE->GIANT_ITEM_USE += 1;    break;
+        case eITEM_TYPE_magnet:     GVALUE->MAGNET_ITEM_USE += 1;   break;
+        case eITEM_TYPE_shield:     GVALUE->BARRIER_ITEM_USE += 1;  break;
         default: break;
     }
 }

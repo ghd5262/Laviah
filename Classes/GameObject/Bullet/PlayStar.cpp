@@ -50,7 +50,7 @@ void CPlayStar::CollisionWithPlayer()
 
 //	auto value = CItemManager::Instance()->getValueOfStar((eSTAR_TYPE)(this->getSymbol() - 'P' + 1));
     CComboScore::Instance()->AddCombo();
-	GLOBAL->STAR_COUNT += 1;
+	GVALUE->STAR_COUNT += 1;
 }
 
 void CPlayStar::Execute(float delta)
@@ -65,11 +65,11 @@ void CPlayStar::Execute(float delta)
 
 void CPlayStar::updateStateByCombo()
 {
-    if(m_OldLevel == GLOBAL->COMBO_LEVEL) return;
+    if(m_OldLevel == GVALUE->COMBO_LEVEL) return;
     
-    m_OldLevel = GLOBAL->COMBO_LEVEL;
+    m_OldLevel = GVALUE->COMBO_LEVEL;
     
-    auto name  = StringUtils::format("star_%d.png", ((GLOBAL->COMBO_LEVEL - 1) % 5) + 1);
+    auto name  = StringUtils::format("star_%d.png", ((GVALUE->COMBO_LEVEL - 1) % 5) + 1);
     this->getBulletSprite()->setSpriteFrame(name);
     this->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(m_OldLevel));
 

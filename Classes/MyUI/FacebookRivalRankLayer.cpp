@@ -81,7 +81,7 @@ void CFacebookRivalRankLayer::InitListView()
         this->addChild(m_ListView);
         
         // My score will be recorded after I pass the first record.
-        m_ListView->pushBackCustomItem(createRankDP(GLOBAL->STAR_SCORE, myData->_url, 1));
+        m_ListView->pushBackCustomItem(createRankDP(GVALUE->STAR_SCORE, myData->_url, 1));
         
         auto rank = 1;
         // create dp
@@ -106,9 +106,9 @@ void CFacebookRivalRankLayer::update(float delta)
     if(CObjectManager::Instance()->getIsGamePause()) return;
     if(m_ListView == nullptr) return;
     
-    if(m_PrevScore != GLOBAL->STAR_SCORE)
+    if(m_PrevScore != GVALUE->STAR_SCORE)
     {
-        m_PrevScore = GLOBAL->STAR_SCORE;
+        m_PrevScore = GVALUE->STAR_SCORE;
         auto currentRank = CFacebookManager::Instance()->getRankByScore(m_PrevScore);
         if(currentRank >= 10) return;
         if(m_PrevRank > currentRank)

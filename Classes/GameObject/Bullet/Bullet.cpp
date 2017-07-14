@@ -376,12 +376,12 @@ void CBullet::createScoreCurrentPos(int score)
     scoreBullet->setAnchorPoint(Vec2::ZERO);
     CGameScene::getZoomLayer()->addChild(scoreBullet);
     CComboScore::Instance()->AddCombo();
-    GLOBAL->STAR_SCORE += score;
+    GVALUE->STAR_SCORE += score;
 }
 
 void CBullet::CollisionWithPlanet()
 {
-    GLOBAL->COLLISION_COUNT += 1;
+    GVALUE->COLLISION_COUNT += 1;
     if (this->getIsFly()){
         this->createCollisionParticle();
         this->ReturnToMemoryBlock();

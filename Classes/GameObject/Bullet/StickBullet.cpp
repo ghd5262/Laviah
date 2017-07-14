@@ -50,7 +50,7 @@ bool CStickBullet::init()
 
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
     
-    this->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GLOBAL->PATTERN_LEVEL));
+    this->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->PATTERN_LEVEL));
     
     return true;
 }
@@ -91,11 +91,11 @@ void CStickBullet::CollisionWithPlayer()
         
 //        if(CObjectManager::Instance()->IsHitWithSlowPoint(this))
 //            CObjectManager::Instance()->SlowMotion();
-        GLOBAL->GIANT_COUNT_TOTAL += 1;
-        GLOBAL->GIANT_COUNT_STICK += 1;
-        GLOBAL->GIANT_SCORE_TOTAL += (GLOBAL->COMBO_LEVEL * 2);
-        GLOBAL->GIANT_SCORE_STICK += (GLOBAL->COMBO_LEVEL * 2);
-        this->createScoreCurrentPos(GLOBAL->COMBO_LEVEL * 2);
+        GVALUE->GIANT_COUNT_TOTAL += 1;
+        GVALUE->GIANT_COUNT_STICK += 1;
+        GVALUE->GIANT_SCORE_TOTAL += (GVALUE->COMBO_LEVEL * 2);
+        GVALUE->GIANT_SCORE_STICK += (GVALUE->COMBO_LEVEL * 2);
+        this->createScoreCurrentPos(GVALUE->COMBO_LEVEL * 2);
         this->R_BezierWithRotation(Vec2(2000, 3000), Vec2(540, 1500), Vec2(900, 2000), 1.f);
         
     }
@@ -108,9 +108,9 @@ void CStickBullet::CollisionWithPlayer()
 
 void CStickBullet::CollisionWithBarrier()
 {
-    GLOBAL->BARRIER_COUNT += 1;
-    GLOBAL->BARRIER_SCORE += (GLOBAL->COMBO_LEVEL * 2);
-    this->createScoreCurrentPos(GLOBAL->COMBO_LEVEL * 2);
+    GVALUE->BARRIER_COUNT += 1;
+    GVALUE->BARRIER_SCORE += (GVALUE->COMBO_LEVEL * 2);
+    this->createScoreCurrentPos(GVALUE->COMBO_LEVEL * 2);
     this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
 }
 

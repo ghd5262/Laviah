@@ -10,7 +10,7 @@ using namespace cocos2d;
 
 bool CAchievementClearChecker::checkWithGlobal(std::string key, int value)
 {
-    return value <= GLOBAL->getVariable(key);
+    return value <= GVALUE->getVariable(key);
 }
 
 bool CAchievementClearChecker::checkWithSingleUserData(std::string key, int value)

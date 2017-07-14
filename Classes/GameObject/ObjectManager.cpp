@@ -96,7 +96,7 @@ void CObjectManager::Clear()
 	m_PatternTimer = 0.f;
     m_LevelTimer = 0.f;
     m_BulletPatternPaddingLimit = 0.f;
-    GLOBAL->STAGE_LEVEL = 0;
+    GVALUE->STAGE_LEVEL = 0;
     m_SpeedController->setScale(1.f);
 	m_IsGamePause = true;
     m_BulletCreator->Clear();
@@ -293,7 +293,7 @@ void CObjectManager::GiantMode()
 {
 //    m_SlowMotionAble = true;
     m_GiantSpeed = 1.5f;
-    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
+    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom * 1.25f, 1.f, true);
 }
 
@@ -301,7 +301,7 @@ void CObjectManager::NormalMode()
 {
 //    m_SlowMotionAble = false;
     m_GiantSpeed = 1.f;
-    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
+    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 1.f, true);
 //    this->SlowMotionFinish();
 }
@@ -310,7 +310,7 @@ void CObjectManager::setGameStateByLevel()
 {
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
-    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
+    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
     this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
     this->SpeedControl(1.f, levelData._speed / BULLETCREATOR::ROTATION_SPEED);
 }
@@ -327,7 +327,7 @@ void CObjectManager::SlowMotion()
 
 void CObjectManager::SlowMotionFinish()
 {
-    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
+    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
     this->SpeedControl(0.5f, levelData._speed / BULLETCREATOR::ROTATION_SPEED, true);
 }
 
@@ -406,7 +406,7 @@ void CObjectManager::createBulletByTimer(float delta)
         m_PatternTimer += delta;
 	if (m_PatternTimer < m_BulletPatternPaddingLimit) return;
 
-    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
+    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
     auto pattern = levelData._pattern;
     auto below = levelData._below;
     auto data = m_PatternManager->getRandomNormalPatternByLevel(pattern, below);
@@ -482,17 +482,17 @@ void CObjectManager::setGameLevelByTimer()
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
     m_LevelTimer += m_Delta;
-    auto levelData = m_LevelList.at(GLOBAL->STAGE_LEVEL);
+    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
     if(levelData._time < m_LevelTimer)
     {
-        if(m_LevelList.size() > GLOBAL->STAGE_LEVEL+1){
-            GLOBAL->STAGE_LEVEL++;
-            GLOBAL->PATTERN_LEVEL = levelData._level;
+        if(m_LevelList.size() > GVALUE->STAGE_LEVEL+1){
+            GVALUE->STAGE_LEVEL++;
+            GVALUE->PATTERN_LEVEL = levelData._level;
             this->setGameStateByLevel();
     
-            if(m_OriginPatternLevel != GLOBAL->PATTERN_LEVEL){
+            if(m_OriginPatternLevel != GVALUE->PATTERN_LEVEL){
                 CUILayer::Instance()->LevelUPNotice();
-                m_OriginPatternLevel        = GLOBAL->PATTERN_LEVEL;
+                m_OriginPatternLevel        = GVALUE->PATTERN_LEVEL;
                 m_BulletPatternPaddingLimit = 2.f;
                 m_PatternTimer              = 0.f;
             }
@@ -693,7 +693,7 @@ void CObjectManager::InitTutorialStep()
         createMessageBox("그럼, 힘내서 함께 탈출하자고요!!");
         CTutorialStep::create()
         ->addBeginListener([=](CTutorialStep* sender){
-            GLOBAL->Clear();
+            GVALUE->Clear();
         })
         ->addUpdateListener([=](float delta, CTutorialStep* sender){
             if(sender->getTime() > 0)
@@ -843,7 +843,7 @@ cocos2d::Node* CObjectManager::Capture(float width/* = 1080*/,
         
         // score
         {
-            createScoreUI("starIcon.png", GLOBAL->TOTAL_SCORE, Vec2(layerSize.width * 0.025f,
+            createScoreUI("starIcon.png", GVALUE->TOTAL_SCORE, Vec2(layerSize.width * 0.025f,
                                                                     layerSize.height * 0.96f ));
         }
         
@@ -856,11 +856,11 @@ cocos2d::Node* CObjectManager::Capture(float width/* = 1080*/,
         
         // level
         {
-            auto label = createLabel(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL + 1), 50,
+            auto label = createLabel(StringUtils::format("LEVEL %d", GVALUE->PATTERN_LEVEL + 1), 50,
                                      Vec2(layerSize.width * 0.5f, layerSize.height * 0.96f ));
             label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             label->setOpacity(255 * 0.4f);
-            //        auto label = Label::createWithTTF(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL),
+            //        auto label = Label::createWithTTF(StringUtils::format("LEVEL %d", GVALUE->PATTERN_LEVEL),
             //                                          FONT::MALGUNBD, 150);
             //        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             //        label->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.825f));

@@ -37,11 +37,6 @@ CFacebookManager* CFacebookManager::Instance()
     }
 }
 
-void CFacebookManager::Initialize()
-{
-    sdkbox::PluginFacebook::init();
-}
-
 int CFacebookManager::getMyRank()
 {
     auto userList = getFBUserList();

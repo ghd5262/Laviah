@@ -35,12 +35,12 @@ bool CGoalPopupDP::init()
 	auto popupSize = this->getContentSize();
     auto index = m_Achievement._index;
     auto levelData = CAchievementDataManager::Instance()->getCurLevelDataByIndex(index, false);
-    auto value = GLOBAL->getVariable(levelData._materialList.at(0)._materialKey);
+    auto value = GVALUE->getVariable(levelData._materialList.at(0)._materialKey);
     auto mtrlValue = levelData._contentsValue;
 //    
 //	auto value = 0;
 //	for (auto key : m_Achievement._materialKeyList)
-//		value += GLOBAL->getVariable(key);
+//		value += GVALUE->getVariable(key);
 //
 //	auto mtrlValue = 0;
 //	for (auto value : m_Achievement._materialValueList)

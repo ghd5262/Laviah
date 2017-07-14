@@ -46,6 +46,7 @@ namespace USERDATA{
 CUserDataManager::CUserDataManager()
 : m_JsonUserDataFromXML("")
 , m_JsonUserDataFromCloud("")
+, m_DataLoadFinished(false)
 // 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
 //: m_IsFirstRevisionCall(false)
 //, m_IsDataLoadFinish(false)
@@ -111,7 +112,7 @@ void CUserDataManager::UserDataLoad()
     this->initUserDefaultValue(m_UserData);
     //TODO: FIX 이부분 문제 요지 (기기를 바꾸고 첫번째 플레이 시 구글 연결이 안된 경우 아래 루틴을 탄다.)
 	if (this->getIsFirstPlay() &&
-//        CPlayManager::Instance()->IsLoggedIn() &&
+        CPlayManager::Instance()->IsLoggedIn() &&
         CSDKUtil::Instance()->getIsNetworkConnect())
 	{
         CSDKUtil::Instance()->Toast("This is first play");
@@ -127,6 +128,7 @@ void CUserDataManager::UserDataLoad()
 		// 첫 로드가 아닐 경우 xml에서 로드
 		this->dataLoadFromXML();
 		this->convertJsonToUserData(m_UserData, m_JsonUserDataFromXML);
+        this->setDataLoadFinished(true);
         __NotificationCenter::getInstance()->postNotification(NOTICE::USERDATA_LOAD_FINISH, NULL);
 	}
 }
@@ -146,7 +148,9 @@ void CUserDataManager::dataLoadFromCloud()
 	       
 	// google sdk와 통신후 CloudDataLoad 호출됨
 	// CloudDataLoad 호출 후에는 revision 비교 후 더 높은 것을 채택함
-//    CPlayManager::Instance()->DataLoad(crypto_key);
+    CPlayManager::Instance()->DataLoad([=](std::string data){
+        this->setUserData_CloudSaved(data);
+    }, crypto_key);
 }
 
 void CUserDataManager::convertJsonToUserData(sUSER_DATA &data, std::string json)
@@ -345,8 +349,16 @@ bool CUserDataManager::isCloudRevisionHigher()
 void CUserDataManager::saveUserDataToCloud(std::string key, std::string data, bool forceSave/*= false*/)
 {
     if (CSDKUtil::Instance()->getIsNetworkConnect()){
-//        CPlayManager::Instance()->DataSave(key.c_str(), data);
-    }else
+        CPlayManager::Instance()->DataSave([=](std::string data){
+            
+            CGameScene::getGameScene()->CreateAlertPopup()
+            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
+            ->setMessage("저장이 완료되었습니다.")
+            ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
+            
+        }, key.c_str(), data);
+    }
+    else
     {
         if (!forceSave) return; //auto save
         
@@ -469,6 +481,8 @@ bool CUserDataManager::getUserData_IsItemExistWithParam(std::string key, int par
 
 void CUserDataManager::SaveUserDataAutomatically()
 {
+    if(!this->getDataLoadFinished()) return;
+    
     if(this->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO))
         this->SaveUserData(true);
 }
@@ -520,7 +534,7 @@ void CUserDataManager::setUserData_CloudSaved(std::string cryptoValue)
         
         this->convertJsonToUserData(m_UserData, m_JsonUserDataFromXML);
     }
-    
+    this->setDataLoadFinished(true);
     __NotificationCenter::getInstance()->postNotification(NOTICE::USERDATA_LOAD_FINISH, NULL);
 }
 

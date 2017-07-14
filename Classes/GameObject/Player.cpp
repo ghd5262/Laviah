@@ -170,7 +170,7 @@ void CPlayer::Rotation(float speed)
 	m_Particle->setGravity(Vec2(-90 * (speed < 0 ? -1 : 1), 0));
 	m_Texture->setRotation(m_Angle);
 
-    GLOBAL->RUN_SCORE += 1;
+    GVALUE->RUN_SCORE += 1;
 }
 
 void CPlayer::GiantMode()

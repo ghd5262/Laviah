@@ -1,24 +1,35 @@
 #pragma once
+#include <iostream>
+#include "cocos2d.h"
 #include "PluginSdkboxPlay/PluginSdkboxPlay.h"
-//#include "../../Common/HSHUtility.h"
-//#include "../../json/json.h"
 #include <vector>
 
-class CPlayManager : public cocos2d::Node, sdkbox::SdkboxPlayListener
+typedef std::function<void(void)>        VOID_LISTENER;
+typedef std::function<void(std::string)> DATA_LISTENER;
+
+class CPlayManager : public sdkbox::SdkboxPlayListener
 {
 public:
     static CPlayManager* Instance();
     void Initialize();
-    void Login();
+    void Login(VOID_LISTENER listener);
+    void Logout(VOID_LISTENER listener);
     bool IsLoggedIn();
-    void DataLoad(std::string key);
-    void DataSave(std::string key, std::string data);
-    void ClearData();
+    void DataLoad(DATA_LISTENER listener, std::string key);
+    void DataSave(DATA_LISTENER listener, std::string key, std::string data);
+    void OpenLeaderboard();
+    void OpenAchievement();
+    void ScoreSave(std::string key, int score);
     
-protected:
-    virtual bool init() override;
-    
+    CC_SYNTHESIZE(VOID_LISTENER, m_LoginListener,    LoginListener);
+    CC_SYNTHESIZE(VOID_LISTENER, m_LogoutListener,   LogoutListener);
+    CC_SYNTHESIZE(DATA_LISTENER, m_DataLoadListener, DataLoadListener);
+    CC_SYNTHESIZE(DATA_LISTENER, m_DataSaveListener, DataSaveListener);
+
 private:
+    void callVoidListener(VOID_LISTENER& listener);
+    void callDataListener(DATA_LISTENER& listener, std::string data);
+
     // Callbacks
     virtual void onConnectionStatusChanged(int connection_status) override;
     
@@ -29,13 +40,6 @@ private:
                                   bool maxScoreToday) override;
     
     virtual void onIncrementalAchievementUnlocked(const std::string& achievement_name) override;
-//    virtual void onIncrementalAchievementStep(const std::string& achievement_name,
-//                                              int step) override; // DEPRECATED
-    
-//    virtual void onIncrementalAchievementStepError(const std::string& name,
-//                                                   int steps,
-//                                                   int error_code,
-//                                                   const std::string& error_description ) override; // DEPRECATED
     
     virtual void onIncrementalAchievementStep(const std::string& achievement_name,
                                               double step ) override;
@@ -54,14 +58,6 @@ private:
     
     virtual void onAchievementsLoaded(bool reload_forced,
                                       const std::string& json_achievements_info ) override;
-    
-//    virtual void onSetSteps(const std::string& name,
-//                            int steps) override; // DEPRECATED
-    
-//    virtual void onSetStepsError(const std::string& name,
-//                                 int steps,
-//                                 int error_code,
-//                                 const std::string& error_description) override; // DEPRECATED
     
     virtual void onSetSteps(const std::string& name,
                             double steps) override;
@@ -113,7 +109,4 @@ private:
     
     CPlayManager(){};
     virtual ~CPlayManager();
-    
-private:
-    static CPlayManager* m_Instance;
 };

@@ -59,4 +59,4 @@ public:
     int HIDDEN_ACHIEVEMENT_CLEAR_COUNT;
 };
 
-#define GLOBAL Global::Instance()
+#define GVALUE Global::Instance()

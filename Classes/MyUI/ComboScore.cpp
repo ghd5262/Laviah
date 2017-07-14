@@ -67,31 +67,31 @@ void CComboScore::AddCombo()
 	// 타이머 초기화
 	m_Time = 0.f;
 
-    GLOBAL->STAR_SCORE  += GLOBAL->COMBO_LEVEL;
-    GLOBAL->COMBO_SCORE += 1;
+    GVALUE->STAR_SCORE  += GVALUE->COMBO_LEVEL;
+    GVALUE->COMBO_SCORE += 1;
     
 	// UI visible On
 	m_ComboLabel->setVisible(true);
-    m_ComboLabel->setString(StringUtils::format("%d", GLOBAL->COMBO_SCORE).c_str());
+    m_ComboLabel->setString(StringUtils::format("%d", GVALUE->COMBO_SCORE).c_str());
 
     // Star score ui action
-    CUILayer::Instance()->ScoreAction(GLOBAL->COMBO_LEVEL);
+    CUILayer::Instance()->ScoreAction(GVALUE->COMBO_LEVEL);
     
-	GLOBAL->COMBO_LEVEL = (int(GLOBAL->COMBO_SCORE / 50)) + 1;
-    if(m_OldLevel != GLOBAL->COMBO_LEVEL){
-        m_OldLevel = GLOBAL->COMBO_LEVEL;
+	GVALUE->COMBO_LEVEL = (int(GVALUE->COMBO_SCORE / 50)) + 1;
+    if(m_OldLevel != GVALUE->COMBO_LEVEL){
+        m_OldLevel = GVALUE->COMBO_LEVEL;
         m_ComboLabel->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(m_OldLevel));
         //        this->runAction(JumpBy::create(0.3f, Vec2(0, 0), 50, 1));
-        //        GLOBAL->STAR_SCORE += (m_MultipleNumber / 100) * 100000;
+        //        GVALUE->STAR_SCORE += (m_MultipleNumber / 100) * 100000;
     }
 }
 
 void CComboScore::ComboScoreReset()
 {
-    GLOBAL->COMBO_LEVEL = 1;
-    if(GLOBAL->COMBO_SCORE > GLOBAL->BEST_COMBO)
-        GLOBAL->BEST_COMBO = GLOBAL->COMBO_SCORE;
-    GLOBAL->COMBO_SCORE = 0;
+    GVALUE->COMBO_LEVEL = 1;
+    if(GVALUE->COMBO_SCORE > GVALUE->BEST_COMBO)
+        GVALUE->BEST_COMBO = GVALUE->COMBO_SCORE;
+    GVALUE->COMBO_SCORE = 0;
 	m_ComboLabel->setVisible(false);// UI visible Off
 }
 

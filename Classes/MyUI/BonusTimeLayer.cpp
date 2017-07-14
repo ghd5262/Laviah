@@ -56,9 +56,9 @@ bool CBonusTimeLayer::init()
         Vec2(popupSize.width * 0.96f, popupSize.height * 0.925f)
     };
     
-    m_StarScoreUI = createScoreUI(GLOBAL->STAR_SCORE, "starIcon_s.png", Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
-    m_CoinScoreUI = createScoreUI(GLOBAL->COIN_SCORE, "coinIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT,  scoreUIPos[1]);
-    m_RunScoreUI  = createScoreUI(GLOBAL->RUN_SCORE,  "runIcon_s.png",	Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
+    m_StarScoreUI = createScoreUI(GVALUE->STAR_SCORE, "starIcon_s.png", Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[0]);
+    m_CoinScoreUI = createScoreUI(GVALUE->COIN_SCORE, "coinIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT,  scoreUIPos[1]);
+    m_RunScoreUI  = createScoreUI(GVALUE->RUN_SCORE,  "runIcon_s.png",	Vec2::ANCHOR_MIDDLE_RIGHT, scoreUIPos[2]);
     
     CMyButton::create()
     ->addEventListener(std::bind(&CObjectManager::BonusTimeTouchEvent, CObjectManager::Instance(), -2.f), eMYBUTTON_STATE::EXECUTE)
@@ -91,9 +91,9 @@ void CBonusTimeLayer::update(float delta)
     else if(!CObjectManager::Instance()->getIsGamePause() && m_Pause)
         this->play();
     
-   /* m_StarScoreUI->setValue(GLOBAL->STAR_SCORE);
-    m_CoinScoreUI->setValue(GLOBAL->COIN_SCORE);
-    m_RunScoreUI->setValue(GLOBAL->RUN_SCORE);*/
+   /* m_StarScoreUI->setValue(GVALUE->STAR_SCORE);
+    m_CoinScoreUI->setValue(GVALUE->COIN_SCORE);
+    m_RunScoreUI->setValue(GVALUE->RUN_SCORE);*/
 }
 
 void CBonusTimeLayer::onPauseButton(cocos2d::Node* sender)

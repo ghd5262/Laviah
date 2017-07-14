@@ -34,7 +34,6 @@ class CFacebookManager : public cocos2d::Node, sdkbox::FacebookListener
 public:
     static CFacebookManager* Instance();
 
-    void Initialize();
     int getMyRank();
     int getRankByScore(int score);
     const FBUSER_PARAM* getFriendByRank(int rank);

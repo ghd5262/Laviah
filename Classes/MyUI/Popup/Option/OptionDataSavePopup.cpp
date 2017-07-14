@@ -84,15 +84,15 @@ bool COptionDataSavePopup::init()
         alertCreate([](Node* sender){
             CUserDataManager::Instance()->SaveUserData(true, true);
         }, TRANSLATE("OPTION_DATASAVE_SAVE_CHECK"));
-    }, TRANSLATE("OPTION_DATASAVE_SAVE"), Vec2(layer->getContentSize().width * 0.265f, layer->getContentSize().height * 0.2f), COLOR::DARKGRAY_ALPHA);
+    }, TRANSLATE("OPTION_DATASAVE_SAVE"), Vec2(layer->getContentSize().width * 0.265f, layer->getContentSize().height * 0.2f), COLOR::BRIGHTRED_ALPHA);
     
     buttonCreate([=](Node* sender){
         alertCreate([](Node* sender){
-            CUserDataManager::Instance()->setUserData_Reset();
-            CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::COIN, 1000000);
-            CUserDataManager::Instance()->SaveUserData(true, true);
+//            CUserDataManager::Instance()->setUserData_Reset();
+//            CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::COIN, 1000000);
+//            CUserDataManager::Instance()->SaveUserData(true, true);
         }, TRANSLATE("OPTION_DATASAVE_RESET_CHECK"));
-    }, TRANSLATE("OPTION_DATASAVE_RESET"), Vec2(layer->getContentSize().width * 0.735f, layer->getContentSize().height * 0.2f), COLOR::BRIGHTRED_ALPHA);
+    }, "불러오기", Vec2(layer->getContentSize().width * 0.735f, layer->getContentSize().height * 0.2f), COLOR::DARKGRAY_ALPHA);
     
     return true;
 }

@@ -29,6 +29,7 @@ void AppDelegate::initGLContextAttrs()
 
 bool AppDelegate::applicationDidFinishLaunching() {
     
+    CCLOG("AppDelegate %s", __FUNCTION__);
     auto createWritablePath = [=](std::string path){
         auto writable = FileUtils::getInstance()->getWritablePath();
         auto fullPath = writable + path + "/";
@@ -67,10 +68,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->runWithScene(scene);
     
     // facebook init
-    CFacebookManager::Instance()->Initialize();
+    sdkbox::PluginFacebook::init();    
     
     // sdkbox play init
-//    CPlayManager::Instance()->Initialize();
+//    sdkbox::PluginSdkboxPlay::init();
+    CPlayManager::Instance()->Initialize();
     
     // unity ads init
     CUnityAdsManager::Instance()->Initialize(true);

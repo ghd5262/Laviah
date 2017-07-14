@@ -1,4 +1,8 @@
 #pragma once
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    #include <jni.h>
+    #include "platform/android/jni/JniHelper.h"
+#endif
 
 class CUnityAdsManager{
 public:
@@ -31,8 +35,6 @@ extern "C" {
 #endif
     
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-#include <jni.h>
-#include "platform/android/jni/JniHelper.h"
     
     JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_UnityAdsJNI_reward (JNIEnv *, jobject, jstring s);
     static char* jstringTostring(JNIEnv* env, jstring jstr);

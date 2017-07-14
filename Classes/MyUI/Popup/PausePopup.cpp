@@ -200,7 +200,7 @@ void CPausePopup::Skip(CGoalPopupDP *sender, int posIndex)
             auto data  = achievementMng->getNormalAchievementByIndex(index);
             
             achievementMng->setAchievementStateByIndex(index, ACHIEVEMENT_STATE::FINISHED, false);
-            GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT += 1;
+            GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT += 1;
             dp->popupClose();
             this->createAchievementDP(data, posIndex);
         });

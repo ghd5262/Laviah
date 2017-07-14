@@ -40,7 +40,7 @@ void CAchievementProgressBar::update(float delta)
 
     // calculate percent
     auto levelData = CAchievementDataManager::Instance()->getCurLevelDataByIndex(m_AchievementData->_index, false);
-    auto value = GLOBAL->getVariable(levelData._materialList.at(0)._materialKey);
+    auto value = GVALUE->getVariable(levelData._materialList.at(0)._materialKey);
     {
         if(value != m_CurrentValue) {
             m_CurrentValue = value;

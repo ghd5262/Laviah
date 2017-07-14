@@ -79,7 +79,7 @@ void CGameEndPopup::End(Node* sender){
         CTutorialManager::Instance()->ChangeTutorial(TUTORIAL_KEY::REVIVE);
     }
     else{
-        if (GLOBAL->RUN_SCORE < 0 || GLOBAL->REVIVE_COUNT)	CGameScene::getGameScene()->GameResult();
+        if (GVALUE->RUN_SCORE < 0 || GVALUE->REVIVE_COUNT)	CGameScene::getGameScene()->GameResult();
         else                                                CGameScene::getGameScene()->OpenVideoPopup();
     }
 

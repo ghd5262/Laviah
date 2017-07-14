@@ -71,9 +71,9 @@ bool CUILayer::init()
         Vec2(popupSize.width * 0.025f, popupSize.height * 0.925f ),
 		Vec2(popupSize.width * 0.9f,   popupSize.height * 0.96f)
     };
-	m_StarScoreUI = createScoreUI(GLOBAL->STAR_SCORE, "starIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[0]);
-	createScoreUI(GLOBAL->COIN_SCORE, "coinIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[1]);
-//	createScoreUI(GLOBAL->RUN_SCORE, "runIcon_s.png", Vec2::ANCHOR_MIDDLE, scoreUIPos[2]);
+	m_StarScoreUI = createScoreUI(GVALUE->STAR_SCORE, "starIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[0]);
+	createScoreUI(GVALUE->COIN_SCORE, "coinIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[1]);
+//	createScoreUI(GVALUE->RUN_SCORE, "runIcon_s.png", Vec2::ANCHOR_MIDDLE, scoreUIPos[2]);
 
 //    auto bonusTime = CBonusTimeUI::create();
 //    bonusTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -160,7 +160,7 @@ void CUILayer::ScoreAction(int score)
     
     m_StarScoreLabel->setString(StringUtils::format("+ %d", score));
     m_StarScoreLabel->setPosition(Vec2(uiPos.x + uiSize.width, uiPos.y));
-    m_StarScoreLabel->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(GLOBAL->COMBO_LEVEL));
+    m_StarScoreLabel->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(GVALUE->COMBO_LEVEL));
     auto fadeIn   = FadeTo::create(0.3f, 255 * 0.8);
     auto delay    = DelayTime::create(0.3f);
     auto fadeTo   = FadeTo::create(0.3f, 0);
@@ -186,8 +186,8 @@ void CUILayer::LevelUPNotice()
         auto sequence     = Sequence::create(downAction, delayAction, upAction, nullptr);
         
         m_LevelLabel->setOpacity(0);
-        m_LevelLabel->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GLOBAL->PATTERN_LEVEL));
-        m_LevelLabel->setString(StringUtils::format("LEVEL %d", GLOBAL->PATTERN_LEVEL + 1));
+        m_LevelLabel->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->PATTERN_LEVEL));
+        m_LevelLabel->setString(StringUtils::format("LEVEL %d", GVALUE->PATTERN_LEVEL + 1));
         m_LevelLabel->runAction(sequence);
         
     }, 4.f, "LevelNoticeDelay");

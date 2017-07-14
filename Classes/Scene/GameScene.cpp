@@ -111,7 +111,6 @@ bool CGameScene::init()
     m_GameScene = this;
     m_VisibleSize = Director::getInstance()->getVisibleSize();
     m_TouchPos = m_VisibleSize / 2;
-    
     this->scheduleUpdate();
     this->initMemoryPool();
     this->createFacebookManager();
@@ -459,7 +458,7 @@ void CGameScene::clearData()
 
 void CGameScene::cleanGlobalData()
 {
-    GLOBAL->Clear();
+    GVALUE->Clear();
 }
 
 void CGameScene::createPausePopup()

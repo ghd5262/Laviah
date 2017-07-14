@@ -46,6 +46,7 @@ void CLoadingScene::clearData()
 
 bool CLoadingScene::init()
 {
+    CCLOG("Loading Scene %s", __FUNCTION__);
 	scheduleUpdate();
 	if (!Layer::init()) return false;
 	
@@ -123,6 +124,7 @@ void CLoadingScene::callbackDownloadFail(Ref* object)
 void CLoadingScene::callbackDownloadComplete(Ref* object)
 {
 	CCLOG("Loading Scene %s", __FUNCTION__);
+    callbackLoginResult(nullptr);
 //    CPlayManager::Instance()->Login();
 }
 

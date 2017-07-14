@@ -105,6 +105,7 @@ public:
     
     static int getUserDataSequenceFromList(std::string key, int itemIndex);
     
+    CC_SYNTHESIZE(bool, m_DataLoadFinished, DataLoadFinished);
 private:
 	void initUserDefaultValue(sUSER_DATA &data);
 

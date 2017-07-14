@@ -35,7 +35,7 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
     std::fill(m_AchievementList.begin(), m_AchievementList.end(), nullptr);
 
 	// To avoid duplicate check.
-	GLOBAL->Clear();
+	GVALUE->Clear();
 
     auto popupSize = this->getContentSize();
     m_DPStartPosArray = {
@@ -234,7 +234,7 @@ void CGoalPopup::Skip(CGoalPopupDP *sender, int posIndex)
             auto data  = achievementMng->getNormalAchievementByIndex(index);
             
             achievementMng->setAchievementStateByIndex(index, ACHIEVEMENT_STATE::FINISHED, false);
-            GLOBAL->NORMAL_ACHIEVEMENT_CLEAR_COUNT += 1;
+            GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT += 1;
             dp->popupClose();
             this->createAchievementDP(data, posIndex, true);
         });

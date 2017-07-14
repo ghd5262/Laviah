@@ -58,7 +58,7 @@ bool COptionTitlePopup::init()
 ////                break;
 //            case CHECKER_TYPE::GLOBAL_DATA:
 //                for (auto key : data->_materialKeyList)
-//                    value += GLOBAL->getVariable(key);
+//                    value += GVALUE->getVariable(key);
 //                break;
 //            case CHECKER_TYPE::SINGLE_DATA:
 //                for (auto key : data->_materialKeyList)
