@@ -513,9 +513,7 @@ void CGameScene::createHelpPopup()
 }
 
 void CGameScene::createExitPopup(bool resume)
-{
-    CUserDataManager::Instance()->SaveUserDataAutomatically();
-    
+{    
     this->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
         Director::getInstance()->end();
@@ -1064,15 +1062,15 @@ void CGameScene::intro()
     };
     
     std::array<float, 9> durations = {
-        9.0f,
-        7.0f,
-        7.4f,
-        7.8f,
-        8.2f,
-        8.6f,
+        11.0f,
         9.0f,
         9.4f,
-        10.0f
+        9.8f,
+        10.2f,
+        10.6f,
+        11.0f,
+        11.4f,
+        12.0f
     };
     
     auto uiListAction = [=](bool skip){
@@ -1094,7 +1092,7 @@ void CGameScene::intro()
         
         auto introAction = [=](bool skip){
             uiListAction(skip);
-            CObjectManager::Instance()->Intro(m_ZoomLayer, 12.5f, PLANET_DEFINE::MENU_POS, skip, [=](){            skipBtn->removeFromParent();
+            CObjectManager::Instance()->Intro(m_ZoomLayer, 14.5f, PLANET_DEFINE::MENU_POS, skip, [=](){            skipBtn->removeFromParent();
                 this->menuOpen();
                 uiListRemove();
             });

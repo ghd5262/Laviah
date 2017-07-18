@@ -29,7 +29,7 @@
                     "name": "incremental"
                 }
             ], 
-            "clound_save": false, 
+            "clound_save": true, 
             "connect_on_start": false, 
             "show_achievement_notification": true, 
             "debug": true
@@ -88,7 +88,7 @@
                     "name": "flip_cards3"
                 }
             ], 
-            "connect_on_start": false, 
+            "connect_on_start": true, 
             "show_achievement_notification": true, 
             "debug": true
         }, 

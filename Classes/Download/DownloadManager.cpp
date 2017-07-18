@@ -1,8 +1,8 @@
-﻿#include "json/document.h"
+﻿#include "DownloadManager.h"
+#include "json/document.h"
 #include "unzip/unzip.h"
-#include "DownloadManager.h"
+#include "network/HttpRequest.h"
 #include "../json/json.h"
-#include "../Common/NoticeDefine.h"
 #include "../MyUI/LevelProgressBar.h"
 
 using namespace std;
@@ -41,11 +41,23 @@ CDownloadManager::CDownloadManager()
 , m_DecompressProgressCurrentIndex(0)
 , m_DecompressProgressMax(0)
 , m_CurrentGuage(0)
-{
-	m_WritablePath = FileUtils::getInstance()->getWritablePath();
-}
+, m_DownloadSucceedListener(nullptr)
+, m_DownloadFailedListener(nullptr){}
 
-CDownloadManager::~CDownloadManager() {
+CDownloadManager::~CDownloadManager() {}
+
+void CDownloadManager::IsNetworkConnected(std::function<void(bool)> listener)
+{
+    network::HttpRequest* request = new network::HttpRequest();
+    request->setUrl("https://www.google.com");
+    request->setRequestType(network::HttpRequest::Type::GET);
+    request->setResponseCallback([=](network::HttpClient* client,
+                                     network::HttpResponse* response) {
+        auto disConnected = (!response || !response->isSucceed());
+        listener(!disConnected);
+    });
+    network::HttpClient::getInstance()->send(request);
+    request->release();
 }
 
 bool CDownloadManager::init() {
@@ -67,6 +79,8 @@ bool CDownloadManager::init() {
 	m_DownloadGauge->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	m_DownloadGauge->setPosition(this->getContentSize() / 2);
 	this->addChild(m_DownloadGauge);
+
+    m_WritablePath = FileUtils::getInstance()->getWritablePath();
 
 	// Request to server to download the file that include new package infomation.
 	this->downloadPackageInfoFile();
@@ -111,9 +125,9 @@ void CDownloadManager::downloadNextFile() {
 	if (m_DownloadMax <= m_DownloadCurrentIndex) {
 
 		auto downloadComplete = [=](){
-			sendNotice(NOTICE::DOWN_COMPLETE);
-			removeFromParentAndCleanup(true);
-		};
+            this->callVoidListener(m_DownloadSucceedListener);
+            this->removeFromParent();
+        };
 
 		// 다운로드한 버전 파일을 저장한다.
 		auto versionFilePath = m_WritablePath + PACKAGE_FILE_PATH;
@@ -352,8 +366,8 @@ void CDownloadManager::initPackageInfo(sPACKAGE_INFO& packageInfo, std::string j
 
 void CDownloadManager::packageLoadFailed()
 {
-	sendNotice(NOTICE::DOWN_ERROR);
-	removeFromParentAndCleanup(true);
+    this->callVoidListener(m_DownloadFailedListener);
+    this->removeFromParent();
 }
 
 void CDownloadManager::requestDownload(std::string url, ccHttpRequestCallback callback)
@@ -544,4 +558,15 @@ bool CDownloadManager::decompress(const string &zip) {
 
 	unzClose(zipfile);
 	return true;
+}
+
+void CDownloadManager::callVoidListener(VOID_LISTENER& listener)
+{
+    if(listener)
+    {
+        this->retain();
+        listener();
+        listener = nullptr;
+        this->release();
+    }
 }

@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "cocos2d.h"
-#include "../network/HttpClient.h"
+#include "network/HttpClient.h"
 
 using namespace cocos2d;
 using namespace cocos2d::network;
@@ -35,7 +35,13 @@ class CDownloadManager : public cocos2d::Node {
 
 public:
 	CREATE_FUNC(CDownloadManager);
+    
+    typedef std::function<void(void)> VOID_LISTENER;
+    CC_SYNTHESIZE(VOID_LISTENER, m_DownloadSucceedListener, DownloadSucceedListener);
+    CC_SYNTHESIZE(VOID_LISTENER, m_DownloadFailedListener,  DownloadFailedListener);
 
+    static void IsNetworkConnected(std::function<void(bool)> listener);
+    
 protected:
 	virtual bool init() override;
 	virtual void onExit() override;
@@ -69,6 +75,7 @@ private:
 	bool savePackageFile(const std::string path, const std::vector<char> *buf);
 	bool saveDataToFile(const std::string mode, const std::string path, const std::string &data);
 	bool decompress(const std::string &zip);
+    void callVoidListener(VOID_LISTENER& listener);
 
 private:
 	CLevelProgressBar* m_DownloadGauge;

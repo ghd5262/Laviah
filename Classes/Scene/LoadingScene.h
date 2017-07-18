@@ -2,37 +2,27 @@
 
 #include "cocos2d.h"
 
-class CDownloadManager;
-class CBackGround;
 class CLoadingScene : public cocos2d::Layer
 {
 public:
 	CREATE_FUNC(CLoadingScene);
 	static cocos2d::Scene* createScene();
-	virtual void update(float delta) override;
-
+    void startDownload();
+    
 	//callback
-	void callbackNetworkResult();
-	void callbackLoginResult(Ref* object);
-	void callbackUserDataLoadFinish(Ref* object);
-	void callbackDownloadFail(Ref* object);
-	void callbackDownloadComplete(Ref* object);
-
-	//getter & setter
-	static CLoadingScene* getLoadingScene(){ return m_LoadingScene; }
+	void callbackDownloadFail();
+	void callbackDownloadComplete();
 
 protected:
 	virtual bool init() override;
 
 private:
+    CLoadingScene();
 	virtual ~CLoadingScene();
 
-	void clearData();
-	void InitLoadingSceneUI();
 	void createMenuScene();
 	void createNetworkConnectPopup();
 
 private:
-	static CLoadingScene* m_LoadingScene;
-	CDownloadManager* m_Downlaoder;
+    int m_DownloadRetryCount;
 };

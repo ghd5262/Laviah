@@ -177,7 +177,7 @@ void CRewardPopup::createUFO()
     m_UFO = Sprite::create("deliveryShip.png");
     m_UFO->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_UFO->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 1.5f));
-    this->addChild(m_UFO, 1);
+    this->addChild(m_UFO, 10);
     
     m_UFOLight = Sprite::create("deliveryShipLight.png");
     m_UFOLight->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -222,7 +222,7 @@ void CRewardPopup::createRewardBox()
     auto rewardBox = CMyButton::create()
     ->addEventListener([=](Node* sender){
         if(m_RewardDP == nullptr) return;
-        dynamic_cast<CRewardPopupDP*>(m_RewardDP)->Open();
+//        dynamic_cast<CRewardPopupDP*>(m_RewardDP)->Open();
         sender->removeFromParent();
     })
     ->setButtonSingleUse(true)
@@ -272,7 +272,7 @@ void CRewardPopup::lightOn()
     }
     
     auto particle = CParticle_BackGround::createWithTotalParticles(100, "whiteSquare.png");
-    particle->setPosition(Vec2(this->getContentSize().width * 0.5f, m_UFO->getPosition().y + 230));
+    particle->setPosition(Vec2(m_UFO->getContentSize().width * 0.5f, m_UFO->getContentSize().height * 0.7f));
     particle->setPosVar(Vec2(100, 0));
     particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     particle->setLife(1.5f);
@@ -283,7 +283,7 @@ void CRewardPopup::lightOn()
     particle->setDuration(2.f);
     particle->setGravity(Vec2(0, 90));
     particle->setRotation(180);
-    this->addChild(particle);
+    m_UFO->addChild(particle, -1);
 }
 
 void CRewardPopup::open()
@@ -314,7 +314,7 @@ void CRewardPopup::open()
 	m_RewardDP      = this->createRewardDP(m_LastSavedData);
     
     this->lightOn();
-    this->createRewardBox();
+//    this->createRewardBox();
     m_GetButton->setVisible(false);
     m_PlayButton->setVisible(false);
 	m_RewardIndex++;

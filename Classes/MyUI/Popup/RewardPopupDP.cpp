@@ -13,7 +13,7 @@ USING_NS_CC;
 
 CRewardPopupDP* CRewardPopupDP::create()
 {
-	CRewardPopupDP *pRet = new(std::nothrow) CRewardPopupDP();
+    CRewardPopupDP *pRet = new(std::nothrow) CRewardPopupDP();
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -29,15 +29,43 @@ CRewardPopupDP* CRewardPopupDP::create()
 
 CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* = 0*/)
 {
-    //m_TouchDisable = CMyButton::create()
-    //->addEventListener([](Node* sender){})
-    //->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-    //->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080, 1920))
-    //->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    //->setButtonPosition(this->getContentSize() / 2)
-    //->show(this, -1);
+    auto rewardKey    = m_Reward._key;
+    auto rewardValue  = m_Reward._value;
+    std::string value = "";
+    
+    if (ACHIEVEMENT_REWARD_KEY::REWARD_COIN == rewardKey){
+        value = StringUtils::format("%d Gold", rewardValue);
+        this->goldReward();
+    }
+    if (ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER == rewardKey){
+        auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
+        value = TRANSLATE(data->_name);
+        this->characterReward();
+    }
+    
+    // create title
+    auto title = Label::createWithSystemFont(value, FONT::MALGUNBD, 80,
+                                             Size(this->getContentSize().width * 0.8f,
+                                                  this->getContentSize().height),
+                                             TextHAlignment::CENTER,
+                                             TextVAlignment::CENTER);
+    title->setCascadeOpacityEnabled(true);
+    title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    title->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                            this->getContentSize().height * 0.3f));
+    this->addChild(title);
+    
+    this->setOpacity(0);
+    this->setOpenAnimation([=](Node* sender){
+        this->runAction(FadeIn::create(0.5f));
+    }, 3.f);
+    
+    this->setCloseAnimation([=](Node* sender){
+        this->runAction(FadeTo::create(0.3f, 0));
+    });
     
     this->setDefaultCallback([=](Node* sender){}, false);
+    
     return CPopup::show(parent, zOrder);
 }
 
@@ -65,46 +93,15 @@ CRewardPopupDP* CRewardPopupDP::setRewardData(sREWARD_DATA reward)
     return this;
 }
 
-void CRewardPopupDP::Open()
-{
-    auto rewardKey    = m_Reward._key;
-    auto rewardValue  = m_Reward._value;
-    std::string value = "";
-    
-    if (ACHIEVEMENT_REWARD_KEY::REWARD_COIN == rewardKey){
-        value = StringUtils::format("%d Gold", rewardValue);
-        this->goldReward();
-    }
-    if (ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER == rewardKey){
-        auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
-        value = TRANSLATE(data->_name);
-        this->characterReward();
-    }
-    
-    // create title
-    auto title = Label::createWithSystemFont(value, FONT::MALGUNBD, 80,
-                                             Size(this->getContentSize().width * 0.8f,
-                                                  this->getContentSize().height),
-                                             TextHAlignment::CENTER,
-                                             TextVAlignment::CENTER);
-    title->setCascadeOpacityEnabled(true);
-    title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    title->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                            this->getContentSize().height * 0.3f));
-    this->addChild(title);
-    //this->scheduleOnce([=](float delay){
-    //    m_TouchDisable->setVisible(false);
-    //}, 3.f, "skipEnable");
-}
-
 void CRewardPopupDP::goldReward()
 {
     auto action = [=](Node* sender){
         auto layerSize   = this->getContentSize();
-        sender->setPosition(CBullet::getCirclePosition(random<float>(0.f, 360.f), 1500, layerSize / 2));
+//        sender->setPosition(CBullet::getCirclePosition(random<float>(0.f, 360.f), 1500, layerSize / 2));
+        sender->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.75f));
         sender->setRotation(random<float>(0.f, 360.f));
         
-        auto targetPos   = CBullet::getSquarePosition(random<int>(30, 330), random<int>(100, 1500));
+        auto targetPos   = CBullet::getSquarePosition(random<int>(30, 330), random<int>(150, 1200));
         auto moveAction  = MoveTo::create(1.5f, targetPos);
         auto easeAction  = EaseExponentialInOut::create(moveAction);
         auto delayAction = DelayTime::create(random<float>(1.f, 3.f));
@@ -159,6 +156,7 @@ void CRewardPopupDP::goldReward()
     {
         auto gold = Sprite::createWithSpriteFrameName("coin_1.png");
         gold->setColor(COLOR::GOLD);
+        gold->setScale(0.6f);
         this->addChild(gold);
         action(gold);
     }
@@ -186,7 +184,7 @@ void CRewardPopupDP::characterReward()
 void CRewardPopupDP::characterCreator1(cocos2d::Sprite* character)
 {
     character->setOpacity(0);
-
+    
     auto delay      = DelayTime::create(2.f);
     auto fadeIn     = FadeIn::create(1.f);
     auto sequence   = Sequence::create(delay, fadeIn, nullptr);
@@ -211,7 +209,7 @@ void CRewardPopupDP::characterCreator1(cocos2d::Sprite* character)
 }
 
 void CRewardPopupDP::characterCreator2(cocos2d::Sprite* character)
-{    
+{
     character->setPosition(Vec2(-this->getContentSize().width * 0.5f,
                                 this->getContentSize().height * 0.5f));
     auto move    = MoveTo::create(3.f, this->getContentSize() / 2);
@@ -222,7 +220,7 @@ void CRewardPopupDP::characterCreator2(cocos2d::Sprite* character)
     auto function= CallFunc::create([=](){
         
         auto moveOut   = MoveTo::create(3.f, Vec2(this->getContentSize().width * 1.5f,
-                                                 this->getContentSize().height * 0.5f));
+                                                  this->getContentSize().height * 0.5f));
         auto spinOut   = RotateBy::create(3.f, 360);
         auto spawnOut  = Spawn::createWithTwoActions(moveOut, spinOut);
         auto elastic   = EaseElasticIn::create(spawnOut, 1);

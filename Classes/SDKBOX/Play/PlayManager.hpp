@@ -107,6 +107,6 @@ private:
                             const std::string& error) override;
     
     
-    CPlayManager(){};
+    CPlayManager();
     virtual ~CPlayManager();
 };

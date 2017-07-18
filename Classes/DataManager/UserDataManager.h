@@ -65,17 +65,16 @@ namespace USERDATA_KEY {
     const std::string HIDDEN_ACHIEVEMENT_LIST   = "USER_HIDDEN_ACHIEVEMENT_LIST";
 };
 
-class CGoogleCloudManager;
 class CUserDataManager
 {
-    friend CGoogleCloudManager;
     typedef std::function<int(int, int)> LIST_COMPARE;
 public:
     static CUserDataManager* Instance();
-    void UserDataLoad();
-
+    void Initialize();
+    
     //getter & setter
     bool getIsFirstPlay();
+    void setIsFirstPlay(bool isFirst);
 	tm* getLastSavedTime();
     long long getLastTimestamp();
     long long getFreeRewardTimestamp();
@@ -86,10 +85,10 @@ public:
     bool getUserData_IsItemHave(std::string key, int itemIdx);
     bool getUserData_IsItemExistWithParam(std::string key, int paramIdx, int value);
     
-	void SaveUserData(bool saveToCloud = false, bool forceSave = false);
-    void SaveUserDataAutomatically();
+	void SaveUserData(bool saveToCloud = false);
+    void LoadUserDataFromXML();
+    void LoadUserDataFromCloud();
     void setSaveRevision(int value);
-    void setUserData_CloudSaved(std::string cryptoValue);
     void setUserData_Number(std::string key, int value);
     void setUserData_NumberAdd(std::string key, int value);
     void setUserData_ItemGet(std::string key, int itemIdx);
@@ -109,19 +108,11 @@ public:
 private:
 	void initUserDefaultValue(sUSER_DATA &data);
 
-	void dataLoadFromXML();
-
-	void dataLoadFromCloud();
-
 	void convertJsonToUserData(sUSER_DATA &data, std::string valueJson);
 
 	void convertUserDataToJson(sUSER_DATA &data, std::string &valueJson);
 
 	void overwriteXmlByCloud(std::string valueJson);
-
-	bool isCloudRevisionHigher();
-
-	void saveUserDataToCloud(std::string key, std::string data, bool forceSave = false);
 
     ARRAY_DATA* getUserData_ListRef(std::string key);
     
@@ -129,25 +120,6 @@ private:
 
     static void sortUserDataList(std::string key, const LIST_COMPARE& compare);
 	
-	// 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
-    /*void callbackFirstRevision();
-    
-    void dataLoad();
-    void dataLoadFromXML();
-	void dataLoadFromGoogleCloud();
-    
-    void convertJsonToUserData(std::string key, std::string valueJson);
-    void convertJsonToUserData_Number(std::string key, std::string valueJson);
-    void convertJsonToUserData_List(std::string key, std::string valueJson);
-
-    void convertUserDataToJson_Number(std::string key);
-    void convertUserDataToJson_List(std::string key);
-    void convertUserDataToJson_Revision();
-    
-    void addKey(std::string keyKind, std::string key);
-    
-    void overwriteXmlByGoogleCloud(std::string key, std::string valueJson);*/
-    
     CUserDataManager();
     virtual ~CUserDataManager();
     
@@ -156,7 +128,4 @@ private:
 
 	std::string m_JsonUserDataFromXML;
 	std::string m_JsonUserDataFromCloud;
-	
-	// 데이터 한번에 저장 및 로드를 위해 주석처리 - 2016. 9. 3
-    //bool m_IsFirstRevisionCall;
 };

@@ -99,8 +99,6 @@ void AppDelegate::applicationWillEnterForeground() {
         CGameScene::getGameScene()->OpenGamePausePopup();
     }
     
-    CUserDataManager::Instance()->SaveUserDataAutomatically();
-    
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }

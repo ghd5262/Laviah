@@ -51,7 +51,8 @@ public:
     
     void changeContents(std::string contents);
     void changeFontColor(cocos2d::Color3B fontColor);
- 
+    void changeButtonImage(std::string imageName);
+    
 	/* 버튼이 가지는 Execute callback함수 호출 */
 	virtual void update(float delta = 0.f) override;
 

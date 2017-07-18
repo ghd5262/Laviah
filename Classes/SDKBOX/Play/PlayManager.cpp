@@ -1,10 +1,15 @@
 #include "PlayManager.hpp"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/DataManagerUtils.h"
-#include "../../Common/NoticeDefine.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
+
+CPlayManager::CPlayManager()
+: m_LoginListener(nullptr)
+, m_LogoutListener(nullptr)
+, m_DataLoadListener(nullptr)
+, m_DataSaveListener(nullptr){}
 
 CPlayManager::~CPlayManager(){}
 
@@ -28,6 +33,8 @@ void CPlayManager::Login(VOID_LISTENER listener)
 
 void CPlayManager::Logout(VOID_LISTENER listener)
 {
+    if(!this->IsLoggedIn()) return;
+    
     this->setLogoutListener(listener);
     sdkbox::PluginSdkboxPlay::signout();
 }
@@ -39,28 +46,39 @@ bool CPlayManager::IsLoggedIn()
 
 void CPlayManager::DataLoad(DATA_LISTENER listener, std::string key)
 {
+    if(!this->IsLoggedIn()) return;
+    
     this->setDataLoadListener(listener);
     sdkbox::PluginSdkboxPlay::loadGameData(key);
 }
 
 void CPlayManager::DataSave(DATA_LISTENER listener, std::string key, std::string data)
 {
+    if(!this->IsLoggedIn()) return;
+    
+    CCLOG("Data Save %s", data.c_str());
     this->setDataSaveListener(listener);
     sdkbox::PluginSdkboxPlay::saveGameData(key, data);
 }
 
 void CPlayManager::OpenLeaderboard()
 {
+    if(!this->IsLoggedIn()) return;
+    
     sdkbox::PluginSdkboxPlay::showAllLeaderboards();
 }
 
 void CPlayManager::OpenAchievement()
 {
+    if(!this->IsLoggedIn()) return;
+    
     sdkbox::PluginSdkboxPlay::showAchievements();
 }
 
 void CPlayManager::ScoreSave(std::string key, int score)
 {
+    if(!this->IsLoggedIn()) return;
+    
     sdkbox::PluginSdkboxPlay::submitScore(key, score);
 }
 
@@ -87,10 +105,10 @@ void CPlayManager::onConnectionStatusChanged(int connection_status)
     CCLOG("connection status change: %d", connection_status);
     Director::getInstance()->getScheduler()->schedule([=](float delta){
         switch (connection_status) {
-            case sdkbox::GPS_CONNECTED:    this->callVoidListener(m_LoginListener); break;
-            case sdkbox::GPS_DISCONNECTED: this->callVoidListener(m_LoginListener); break;
+            case sdkbox::GPS_CONNECTED:     this->callVoidListener(m_LoginListener);  break;
+            case sdkbox::GPS_DISCONNECTED:  this->callVoidListener(m_LogoutListener); break;
             default:{
-                MessageBox("Notice", "login canceled.");
+                MessageBox("Login canceled.", "Notice");
                 m_LoginListener  = nullptr;
                 m_LogoutListener = nullptr;
             } break;
@@ -221,6 +239,7 @@ void CPlayManager::onGameData(const std::string& action,
 {
     if(error.length())
     {
+        MessageBox(error.c_str(), "Notice");
         CCLOG("%s failed : %s", action.c_str(), error.c_str());
         return;
     }

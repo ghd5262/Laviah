@@ -237,6 +237,14 @@ void CMyButton::changeFontColor(cocos2d::Color3B fontColor)
     }
 }
 
+void CMyButton::changeButtonImage(std::string imageName)
+{
+    if(m_ButtonImage != nullptr)
+    {
+        m_ButtonImage->setTexture(imageName);
+    }
+}
+
 /* 버튼 눌릴 때 Effect 실행*/
 void CMyButton::playButtonStartAnimation()
 {
