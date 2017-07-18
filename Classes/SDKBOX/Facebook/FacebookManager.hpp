@@ -1,7 +1,6 @@
 #pragma once
+#include "cocos2d.h"
 #include "PluginFacebook/PluginFacebook.h"
-//#include "../../Common/HSHUtility.h"
-//#include "../../json/json.h"
 #include <vector>
 
 namespace Json{
@@ -62,7 +61,8 @@ public:
     static bool IsPermissionAllowed(std::string id);
     static void OpenPhotoShareDialog(std::string title);
     static void OpenLinkShareDialog(std::string title, std::string text);
-    
+    static void OpenInviteDialog();
+
 private:
     //Facebook callback
     virtual void onLogin(bool isLogin, const std::string& msg) override;

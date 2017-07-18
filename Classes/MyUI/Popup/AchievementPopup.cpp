@@ -7,6 +7,7 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../DataManager/AchievementDataManager.hpp"
+#include "../../SDKBOX/SDKBox.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -118,17 +119,29 @@ bool CAchievementPopup::init()
                                     bg->getContentSize().height * 0.05f),
                                true);
     
-    auto btnTwit = createButton([=](Node* sender){ this->End(sender); },
-                               "twitterShareIcon_s.png",
-                               Vec2(bg->getContentSize().width * 0.08f,
-                                    bg->getContentSize().height * 0.05f),
-                               false);
+//    auto btnTwit = createButton([=](Node* sender){ this->End(sender); },
+//                               "twitterShareIcon_s.png",
+//                               Vec2(bg->getContentSize().width * 0.08f,
+//                                    bg->getContentSize().height * 0.05f),
+//                               false);
+//    
+//    auto btnFace = createButton([=](Node* sender){ this->End(sender); },
+//                               "facebookShareIcon_s.png",
+//                               Vec2(bg->getContentSize().width * 0.2f,
+//                                    bg->getContentSize().height * 0.05f),
+//                               false);
     
-    auto btnFace = createButton([=](Node* sender){ this->End(sender); },
-                               "facebookShareIcon_s.png",
-                               Vec2(bg->getContentSize().width * 0.2f,
-                                    bg->getContentSize().height * 0.05f),
-                               false);
+    auto btnLeaderboards = createButton([=](Node* sender){ CPlayManager::Instance()->OpenLeaderboard(); },
+                                        "googleLeaderboardsIcon.png",
+                                        Vec2(bg->getContentSize().width * 0.08f,
+                                             bg->getContentSize().height * 0.05f),
+                                        false);
+    
+    auto btnAchievements = createButton([=](Node* sender){ CPlayManager::Instance()->OpenAchievement(); },
+                                        "googleAchievementsIcon.png",
+                                        Vec2(bg->getContentSize().width * 0.2f,
+                                             bg->getContentSize().height * 0.05f),
+                                        false);
     
     auto btnUserCoin = CUserCoinButton::create();
     if (btnUserCoin != nullptr)
@@ -149,9 +162,11 @@ bool CAchievementPopup::init()
         };
         
         action(btnEnd);
-        action(btnTwit);
-        action(btnFace);
-        
+//        action(btnTwit);
+//        action(btnFace);
+        action(btnLeaderboards);
+        action(btnAchievements);
+
         action(rankingLabel);
         action(btnUserCoin);
         
@@ -165,8 +180,10 @@ bool CAchievementPopup::init()
         bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
                                                                              layerSize.height * 1.5f))));
         btnEnd->runAction(FadeTo::create(0.3f, 0));
-        btnTwit->runAction(FadeTo::create(0.3f, 0));
-        btnFace->runAction(FadeTo::create(0.3f, 0));
+//        btnTwit->runAction(FadeTo::create(0.3f, 0));
+//        btnFace->runAction(FadeTo::create(0.3f, 0));
+        btnLeaderboards->runAction(FadeTo::create(0.3f, 0));
+        btnAchievements->runAction(FadeTo::create(0.3f, 0));
 
         rankingLabel->runAction(FadeTo::create(0.3f, 0));
         btnUserCoin->runAction(FadeTo::create(0.3f, 0));

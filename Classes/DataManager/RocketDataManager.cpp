@@ -1,7 +1,6 @@
 #include "RocketDataManager.hpp"
 #include "UserDataManager.h"
 #include "DataManagerUtils.h"
-#include "../SDKUtil/SDKUtil.h"
 
 using namespace cocos2d;
 

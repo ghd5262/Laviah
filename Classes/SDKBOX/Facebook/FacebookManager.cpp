@@ -205,6 +205,12 @@ void CFacebookManager::OpenLinkShareDialog(std::string title, std::string text)
     sdkbox::PluginFacebook::dialog(info);
 }
 
+void CFacebookManager::OpenInviteDialog()
+{
+    sdkbox::PluginFacebook::inviteFriends("http://www.cocos2d-x.org",
+                                          "http://cocos2d-x.org/images/logo.png");
+}
+
 // on "init" you need to initialize your instance
 bool CFacebookManager::init()
 {

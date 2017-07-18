@@ -15,7 +15,6 @@
 #include "../MyUI/Popup/WorkshopPopup.h"
 #include "../MyUI/Popup/GachaPopup.h"
 #include "../MyUI/Popup/PatternTestPopup.h"
-#include "../SDKUtil/SDKUtil.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/GradientDataManager.h"

@@ -6,6 +6,7 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../SDKBOX/SDKBox.h"
+#include "../../Common/StringUtility.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -93,16 +94,34 @@ bool CFacebookRankPopup::init()
         }
     }
     
-    auto btnEnd = CMyButton::create()
-    ->addEventListener([=](Node* sender){
-        this->End(sender);
-    })
-    ->setButtonSingleUse(true)
-    ->setButtonNormalImage("endIcon.png")
-    ->setButtonPosition(Vec2(bg->getContentSize().width * 0.92f,
-                             bg->getContentSize().height * 0.05f))
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->show(bg);
+    auto createButton = [=](std::function<void(Node*)> callback, std::string icon, Vec2 pos, bool use){
+        return CMyButton::create()
+        ->addEventListener(callback)
+        ->setButtonSingleUse(use)
+        ->setButtonNormalImage(icon)
+        ->setButtonPosition(pos)
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->show(bg);
+    };
+    
+    auto btnEnd = createButton([=](Node* sender){ this->End(sender); },
+                               "endIcon.png",
+                               Vec2(bg->getContentSize().width * 0.92f,
+                                    bg->getContentSize().height * 0.05f), true);
+    
+    auto btnInvite = createButton([=](Node* sender){ CFacebookManager::Instance()->OpenInviteDialog(); },
+                               "facebookInviteIcon.png",
+                               Vec2(bg->getContentSize().width * 0.08f,
+                                    bg->getContentSize().height * 0.05f), false);
+    
+    auto fbData   = CFacebookManager::Instance()->getMyFacebookData();
+    auto fbScore  = fbData->_score;
+    auto btnShare = createButton([=](Node* sender){
+        auto contents = StringUtils::format("제 점수는요!\n%s", StringUtility::toCommaString(fbScore).c_str());
+        CFacebookManager::Instance()->OpenLinkShareDialog(contents, "내가 이렇게 점수가 높다!!");
+    }, "shareIcon_1.png", Vec2(bg->getContentSize().width * 0.2f,
+                               bg->getContentSize().height * 0.05f), false);
+    
     
     this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* owner){
@@ -114,6 +133,8 @@ bool CFacebookRankPopup::init()
         };
         
         action(btnEnd);
+        action(btnInvite);
+        action(btnShare);
         action(rankingLabel);
 
         auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
@@ -126,6 +147,8 @@ bool CFacebookRankPopup::init()
         bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
                                                                              layerSize.height * 1.5f))));
         btnEnd->runAction(FadeTo::create(0.3f, 0));
+        btnInvite->runAction(FadeTo::create(0.3f, 0));
+        btnShare->runAction(FadeTo::create(0.3f, 0));
         rankingLabel->runAction(FadeTo::create(0.3f, 0));
     });
     
