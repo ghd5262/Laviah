@@ -6,7 +6,7 @@
 enum ZORDER{
     BACKGROUND = -1,
     BULLET,
-    PLANET,
+    PLANETZ,
     PLAYER,
     POPUP,
     SCREENFADE = 100,

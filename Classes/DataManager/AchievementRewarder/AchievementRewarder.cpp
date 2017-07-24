@@ -44,7 +44,7 @@ sREWARD_DATA CAchievementRewarder::characterRewardRandom(sREWARD_DATA data) {
 	auto characterData = CCharacterDataManager::Instance()->getNewRandomCharacter();
 	if (characterData == nullptr) return coinRewardRandom(sREWARD_DATA(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0));
 
-	data._value = characterData->_idx;
+	data._value = characterData->_index;
     
 	CCLOG("CHARACTER REWARD RADNOM %d", data._value);
 	return characterReward(data);

@@ -43,16 +43,17 @@ bool CAchievementClearChecker::checkWithContinuingType(std::string key, int valu
 
 bool CAchievementClearChecker::characterRareCountCheck(int value, int& currentValue)
 {
-	auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST);
-	if (!list.size()) return false;
-
-	auto rareList = DATA_MANAGER_UTILS::getNonPtrListByFunc([=](int index){
-		auto data = CCharacterDataManager::Instance()->getCharacterByIndex(index);
-		return (data->_grade == CHARACTER_GRADE::RARE);
-	}, list);
-    
-    currentValue += rareList.size();
-	return (value <= rareList.size());
+//	auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::CHARACTER_LIST);
+//	if (!list.size()) return false;
+//
+//	auto rareList = DATA_MANAGER_UTILS::getNonPtrListByFunc([=](int index){
+//		auto data = CCharacterDataManager::Instance()->getCharacterByIndex(index);
+//		return (data->_grade == CHARACTER_GRADE::RARE);
+//	}, list);
+//    
+//    currentValue += rareList.size();
+//	return (value <= rareList.size());
+    return false;
 }
 
 bool CAchievementClearChecker::rocketRareCountCheck(int value, int& currentValue)

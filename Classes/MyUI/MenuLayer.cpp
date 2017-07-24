@@ -158,11 +158,6 @@ bool CMenuLayer::init()
 //        }, "R", testButtonPos[5], Size(100, 100)),
     };*/
     
-    // character select button
-    createLayerButton([=](Node* sender){
-        CGameScene::getGameScene()->OpenCharacterSelectPopup();
-    }, "", Vec2(popupSize.width * 0.5f, popupSize.height * 0.7f), Size(100, 100));
-    
     // workshop button
     createButton([=](Node* sender){
         CGameScene::getGameScene()->OpenWorkshopPopup();
@@ -178,15 +173,14 @@ bool CMenuLayer::init()
         CGameScene::getGameScene()->OpenFBTestPopup();
     }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
     
-    // option button
+    // facebook rank button
     createButton([=](Node* sender){
         CGameScene::getGameScene()->OpenPermRequestPopup([=](){
-            CCLOG("########## Open Rank popup");
             CGameScene::getGameScene()->OpenRankPopup();
         });
     }, "rankingIcon.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f));
     
-    // option button
+    // achievement button
     m_AchievementButton = createButton([=](Node* sender){
         CGameScene::getGameScene()->OpenAchievementPopup();
     }, "achievementIcon.png", Vec2(popupSize.width * 0.32f, popupSize.height * 0.95f));
@@ -196,6 +190,11 @@ bool CMenuLayer::init()
     m_NewIcon->setPosition(m_AchievementButton->getContentSize() / 2);
     m_NewIcon->setVisible(false);
     m_AchievementButton->addChild(m_NewIcon);
+    
+    // character select button
+    createButton([=](Node* sender){
+        CGameScene::getGameScene()->OpenCharacterSelectPopup();
+    }, "characterIcon.png", Vec2(popupSize.width * 0.44f, popupSize.height * 0.95f));
     
     // start button
     auto startBtn = CMyButton::create()

@@ -91,7 +91,6 @@ bool CCharacterSelectPopup::init()
 		for (auto iter : characterList)
 		{
             auto character = iter.second;
-			if (!character->_prepared) continue;
 
 			auto characterDP = CCharacterSelectPopupDP::create(character);
 			characterDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -108,7 +107,7 @@ bool CCharacterSelectPopup::init()
             });
 			listView->pushBackCustomItem(characterDP);
 
-			if (character->_idx == currentCharacterIdx){
+			if (character->_index == currentCharacterIdx){
 				currentCharacterDPIdx = dpIdx;
 			}
             dpIdx++;
@@ -204,7 +203,7 @@ bool CCharacterSelectPopup::init()
                                                                            visibleSize.height * 1.5f))));
         
         auto curIndex = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
-        if(m_CenterDP->getCharacterParam()->_idx == curIndex)
+        if(m_CenterDP->getCharacterParam()->_index == curIndex)
             m_CenterDP->setVisible(false);
 	});
     
@@ -231,7 +230,7 @@ void CCharacterSelectPopup::Select(Node* sender)
 	auto centerCharacterParam = m_CenterDP->getCharacterParam();
 
 	if (CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST,
-                                                             centerCharacterParam->_idx))
+                                                             centerCharacterParam->_index))
 	{
 		m_CenterDP->Select();
 		CObjectManager::Instance()->ChangeCharacter();
@@ -280,12 +279,6 @@ void CCharacterSelectPopup::ScrollCallback(cocos2d::Ref* ref, cocos2d::ui::Scrol
 
     // Change name label
     m_CenterCharacterNameLabel->setString(TRANSLATE(centerCharacterParam->_name));
-    
-	// If do not have and no random item, Change the name string to ???
-    if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, centerCharacterParam->_idx)){
-        if(!centerCharacterParam->_random)
-            m_CenterCharacterNameLabel->setString("???");
-    }
 	
 	// Size down the other dp
 	for (auto characterDP : listView->getChildren())

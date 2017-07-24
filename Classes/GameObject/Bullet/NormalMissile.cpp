@@ -16,6 +16,7 @@
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementChecker/AchievementClearChecker.h"
 #include "../../DataManager/GradientDataManager.h"
+#include "../../DataManager/BulletPatternDataManager.h"
 
 using namespace cocos2d;
 
@@ -121,7 +122,7 @@ void CNormalMissile::ChangeToCoin()
 	if (!m_bIsTargetMarkCreate) return;
 
 	this->setAlive(false);
-	auto patternIndex = CObjectManager::Instance()->getCharacterParam()->_idx;
+	auto patternIndex = CObjectManager::Instance()->getCharacterParam()->_index;
     auto data = CBulletPatternDataManager::Instance()->getMissilePatternByIndex(patternIndex);
 	float distance = m_TargetVec.distance(getPosition());
 
@@ -135,7 +136,7 @@ void CNormalMissile::ChangeToStar()
 	if (!m_bIsTargetMarkCreate) return;
 
 	this->setAlive(false);
-	auto patternIndex = CObjectManager::Instance()->getCharacterParam()->_idx;
+	auto patternIndex = CObjectManager::Instance()->getCharacterParam()->_index;
     auto data = CBulletPatternDataManager::Instance()->getMissilePatternByIndex(patternIndex);
     float distance = m_TargetVec.distance(getPosition());
     

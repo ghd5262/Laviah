@@ -11,12 +11,17 @@
 #include "../AI/States/RocketStates.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
+#include "../DataManager/CharacterDataManager.h"
+#include "../DataManager/RocketDataManager.hpp"
+#include "../DataManager/PlanetDataManager.hpp"
+#include "../DataManager/BulletPatternDataManager.h"
 #include "../SDKBOX/SDKBox.h"
 #include "../MyUI/Tutorial/TutorialHelper.hpp"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/UILayer.hpp"
 #include "../MyUI/ScoreUI.h"
 #include "../MyUI/UrlSprite.hpp"
+#include "../MyUI/ComboScore.h"
 #include "../Common/StringUtility.h"
 #include <algorithm>
 
@@ -32,6 +37,7 @@ CObjectManager::CObjectManager()
 , m_Background(nullptr)
 , m_BarrierItemRange(nullptr)
 , m_StarItemRange(nullptr)
+, m_MagnetItemRange(nullptr)
 , m_SpeedController(nullptr)
 , m_CharacterParam(nullptr)
 , m_ItemManager(CItemManager::Instance())
@@ -106,7 +112,8 @@ void CObjectManager::Clear()
 	m_StarItemRange->Clear();
 	m_CoinItemRange->Clear();
     m_PhotoShareAble = false;
-    
+    CComboScore::Instance()->ComboScoreReset();
+
     this->ReturnToMemoryBlockAll();
 //    this->setGameStateByLevel();
 //	this->EndBonusTime();
@@ -170,12 +177,6 @@ void CObjectManager::ChangeCharacter()
     
     if(m_Player)
         m_Player->setCharacterParam(m_CharacterParam);
-    
-    if(m_Planet)
-        m_Planet->setPlanetTexture(m_CharacterParam->_planetTextureName);
-    
-    if(m_BulletCreator)
-        m_BulletCreator->setCharacterInfo(m_CharacterParam);
 }
 
 void CObjectManager::ChangeRocket()
@@ -186,6 +187,19 @@ void CObjectManager::ChangeRocket()
     if(m_Rocket)
         m_Rocket->setRocketParam(m_RocketParam);
 }
+
+void CObjectManager::ChangePlanet()
+{
+    auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+    m_PlanetParam = CPlanetDataManager::Instance()->getPlanetByIndex(index);
+    
+    if(m_Planet)
+        m_Planet->setPlanetParam(m_PlanetParam);
+    
+    if(m_BulletCreator)
+        m_BulletCreator->setPlanetInfo(m_PlanetParam);
+}
+
 
 void CObjectManager::StartBonusTime()
 {
@@ -902,7 +916,7 @@ cocos2d::Node* CObjectManager::Capture(float width/* = 1080*/,
     
     // planet
     {
-        auto planet  = Sprite::createWithSpriteFrameName(m_CharacterParam->_planetTextureName);
+        auto planet  = Sprite::createWithSpriteFrameName(m_PlanetParam->_planetTexture);
         planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         planet->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.35f));
         planet->setRotation(m_CaptureInfo._planetAngle);
@@ -911,7 +925,7 @@ cocos2d::Node* CObjectManager::Capture(float width/* = 1080*/,
     
     // character
     {
-        auto character = Sprite::createWithSpriteFrameName(m_CharacterParam->_normalTextureName);
+        auto character = Sprite::createWithSpriteFrameName(m_CharacterParam->_texture);
         character->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         character->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.35f
                                     +  PLANET_DEFINE::BOUNDING_RADIUS

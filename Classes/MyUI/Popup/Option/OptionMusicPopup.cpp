@@ -29,11 +29,11 @@ bool COptionMusicPopup::init()
 {
     if (!CPopup::init()) return false;
     
-    this->setContentSize(Size(1080.f, 750.f));
+    this->setContentSize(Size(1080.f, 1500.f));
 
     auto layer = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA,
                                     getContentSize().width * 0.9f,
-                                    getContentSize().height);
+                                    getContentSize().height * 0.5f);
     layer->setIgnoreAnchorPointForPosition(false);
     layer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     layer->setPosition(this->getContentSize() / 2);

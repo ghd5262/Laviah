@@ -3,7 +3,6 @@
 #include "DataManagerUtils.h"
 
 using namespace cocos2d;
-using namespace CHARACTER_TEXTUREPACK;
 
 CCharacterDataManager::CCharacterDataManager()
 {
@@ -23,50 +22,51 @@ CCharacterDataManager* CCharacterDataManager::Instance()
 
 void CCharacterDataManager::initWithJson(CHARACTER_LIST &list, std::string fileName)
 {
-	Json::Value root;
-	Json::Reader reader;
-
-	std::string strCharacterList = FileUtils::getInstance()->fullPathForFilename(fileName);
-	std::string characterListClearData = FileUtils::getInstance()->getStringFromFile(strCharacterList);
-	size_t pos = characterListClearData.rfind("}");
-	characterListClearData = characterListClearData.substr(0, pos + 1);
-	bool parsingSuccessful = reader.parse(characterListClearData, root);
-	if (!parsingSuccessful)
+	Json::Value        root;
+	Json::Reader       reader;
+	auto jsonString  = FileUtils::getInstance()->fullPathForFilename(fileName);
+	auto clearString = FileUtils::getInstance()->getStringFromFile(jsonString);
+	auto pos         = clearString.rfind("}");
+	clearString      = clearString.substr(0, pos + 1);
+	bool succeed     = reader.parse(clearString, root);
+	if (!succeed)
 	{
-		CCASSERT(false, MakeString("parser failed : \n %s", characterListClearData.c_str()).c_str());
+		CCASSERT(false, StringUtils::format("parser failed : \n %s", clearString.c_str()).c_str());
 		return;
 	}
-	CCLOG("strCharacterList JSON : \n %s\n", characterListClearData.c_str());
-
-    const Json::Value normalCharacterArray = root["normalCharacterPackList"];
-    this->addNormalCharacterTexturePack(normalCharacterArray);
+	CCLOG("Character JSON : \n %s\n", clearString.c_str());
     
-    const Json::Value defaultPackArray = root["defaultTexturePackList"];
-    m_DefaultTexturePackCount = defaultPackArray.size();
-    this->addNormalCharacterTexturePack(defaultPackArray);
-    
-    m_NormalCharacterDefaultSet = root["normalCharacterDefaultSet"];
-    m_RareCharacterDefaultSet = root["rareCharacterDefaultSet"];
-    
-	const Json::Value itemArray = root["characters"];
-	for (unsigned int itemCount = 0; itemCount < itemArray.size(); ++itemCount)
-	{
-		const Json::Value valueItem = itemArray[itemCount];
-        this->addCharacterToList(valueItem);
-	}
-    
-    // test planet init
-    // 이부분이 성능저하의 원인 다른방법을 찾아보자.
-//    for(int index = 0; index < 13; index++)
-        this->addTexturePackToCache(StringUtils::format("test_planet/test_planet_%d", 13));
+	const Json::Value array = root["characters"];
+    for(auto character : array)
+        this->addCharacterToList(character);
 }
 
-void CCharacterDataManager::addNormalCharacterTexturePack(const Json::Value& array)
+void CCharacterDataManager::addCharacterToList(const Json::Value& json)
 {
-    for (unsigned int itemCount = 0; itemCount < array.size(); ++itemCount)
+    auto data      = new CHARACTER();
+    
+    data->_index       = json["index"].asInt();
+    data->_level       = json["openLevel"].asInt();
+    data->_name        = StringUtils::format(CHARACTER_DEFINE::NAME.c_str(),    data->_index);
+    data->_texture     = StringUtils::format(CHARACTER_DEFINE::TEXTURE.c_str(), data->_index);
+    data->_texturePack = StringUtils::format(CHARACTER_DEFINE::TEXTURE_PACK.c_str(), data->_index);
+    
+    this->addSkillToCharacter(data->_skillList, json["defaultSkill"]);
+    this->addTexturePackToCache(data->_texturePack);
+    
+    m_CharacterList.emplace(std::pair<int, const CHARACTER*>(data->_index, data));
+}
+
+void CCharacterDataManager::addSkillToCharacter(SKILL_LIST& list, const Json::Value& json)
+{
+    for(auto skillData : json)
     {
-        auto normalTexturePackName = array[itemCount].asString();
-        this->addTexturePackToCache(normalTexturePackName);
+        CHARACTER_SKILL skill;
+        
+        skill._skillIndex   = skillData["skillindex"].asInt();
+        skill._value        = skillData["value"].asDouble();
+        
+        list.emplace(std::pair<int, CHARACTER_SKILL>(skill._skillIndex, skill));
     }
 }
 
@@ -88,81 +88,7 @@ void CCharacterDataManager::addTexturePackToCache(std::string fileName)
     }
 }
 
-void CCharacterDataManager::setTextureNameByGrade(sCHARACTER_PARAM* data)
-{
-    auto getName = [=](std::string key, int index){
-        return StringUtils::format(key.c_str(), index);
-    };
-    
-    if(data->_grade > 1)
-    {
-        data->_planetTextureName        = getName(R_PLANET,           data->_idx);
-        data->_normalBulletTextureName  = getName(R_BULLET_NORMAL,    data->_idx);
-        data->_stickBulletTextureName   = getName(R_BULLET_STICK,     data->_idx);
-        data->_normalTextureName        = getName(R_CHARACTER_NORMAL, data->_idx);
-        data->_giantTextureName         = getName(R_CHARACTER_GIANT,  data->_idx);
-        data->_normalMissileTextureName = getName(R_MISSILE_NORMAL,   data->_idx);
-        data->_aimingMissileTextureName = getName(R_MISSILE_AIMING,   data->_idx);
-        data->_texturePackName          = getName(R_TEXTUREPACK,      data->_idx);
-        
-        this->addTexturePackToCache(data->_texturePackName);
-    }
-    else{
-        auto index = random<int>(0, m_DefaultTexturePackCount-1);
-//        data->_planetTextureName        = getName(N_PLANET,           index);
-//        data->_planetTextureName        = getName("test_planet_%d.png", random<int>(0, 98));
-        data->_planetTextureName        = getName("test_planet_%d.png", 100 );
-        data->_normalBulletTextureName  = getName(N_BULLET_NORMAL,    index);
-        data->_stickBulletTextureName   = getName(N_BULLET_STICK,     index);
-        data->_normalTextureName        = getName(N_CHARACTER_NORMAL, data->_idx);
-        data->_giantTextureName         = getName(N_CHARACTER_GIANT,  data->_idx);
-        data->_normalMissileTextureName = getName(N_MISSILE_NORMAL,   index);
-        data->_aimingMissileTextureName = getName(N_MISSILE_AIMING,   index);
-        data->_texturePackName          = getName(N_TEXTUREPACK,      index);
-    }
-}
-
-void CCharacterDataManager::addCharacterToList(const Json::Value& data)
-{
-    sCHARACTER_PARAM* param = new sCHARACTER_PARAM();
-    
-    param->_idx             = data["index"].asInt();
-    param->_grade           = data["grade"].asInt();
-    
-    auto initData = [=](std::string key){
-        return this->initCharacterWithDefaultValue(param->_grade, key, data[key.c_str()]);
-    };
-
-    param->_starItemTime    = initData("defaultStarItemTime").asInt();
-    param->_coinItemTime    = initData("defaultCoinItemTime").asInt();
-    param->_bonusItemTime   = initData("defaultBonusItemTime").asInt();
-    param->_magnetItemTime  = initData("defaultMagnetItemTime").asInt();
-    param->_giantItemTime   = initData("defaultGiantItemTime").asInt();
-    param->_magnetItemSize  = initData("defaultMagnetItemSize").asInt();
-    
-    param->_random          = initData("random").asBool();
-    param->_visible         = initData("visible").asBool();
-    param->_prepared        = initData("prepared").asBool();
-
-	param->_name			= StringUtils::format(CHARACTER_DEFINE::NAME.c_str(), param->_idx);
-    
-    this->setTextureNameByGrade(param);
-    m_CharacterList.emplace(std::pair<int, const sCHARACTER_PARAM*>(param->_idx, param));
-}
-
-const Json::Value CCharacterDataManager::initCharacterWithDefaultValue(int grade,
-                                                                       std::string key,
-                                                                       const Json::Value data)
-{
-    if(data.isNull())
-    {
-        if(grade == 1) return m_NormalCharacterDefaultSet[key.c_str()];
-        else           return m_RareCharacterDefaultSet[key.c_str()];
-    }
-    return data;
-}
-
-const sCHARACTER_PARAM* CCharacterDataManager::getCharacterByIndex(int index) const
+const CHARACTER* CCharacterDataManager::getCharacterByIndex(int index) const
 {
     auto data = m_CharacterList.find(index);
     if(data == m_CharacterList.end()) {
@@ -173,13 +99,27 @@ const sCHARACTER_PARAM* CCharacterDataManager::getCharacterByIndex(int index) co
 	return data->second;
 } 
 
-const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacter()
+const CHARACTER* CCharacterDataManager::getNewRandomCharacter()
 {
 	auto newList = getNonCollectedCharacterList();
 	return getNewRandomCharacterFromList(newList);
 }
 
-const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacterFromList(CHARACTER_LIST &list)
+float CCharacterDataManager::getDefaultValueBySkillIndex(int index, int skillIdx)
+{
+    auto characterData = this->getCharacterByIndex(index);
+    auto skillList     = characterData->_skillList;
+    
+    auto data = skillList.find(skillIdx);
+    if(data == skillList.end()) {
+        CCLOG("Wrong skill index : %d, character index : %d", skillIdx, index);
+        CCASSERT(false, "Wrong skill index");
+        return 0.f;
+    }
+    return (data->second)._value;
+}
+
+const CHARACTER* CCharacterDataManager::getNewRandomCharacterFromList(CHARACTER_LIST &list)
 {
 	auto size = list.size();
 	if (size <= 0) {
@@ -190,7 +130,7 @@ const sCHARACTER_PARAM* CCharacterDataManager::getNewRandomCharacterFromList(CHA
     std::advance(picked, random<int>(0, int(list.size()-1)));
     
     CCLOG("Pick a character :: idx %d name %s",
-          (picked->second)->_idx,
+          (picked->second)->_index,
           (picked->second)->_name.c_str());
     
     return (picked->second);
@@ -200,39 +140,10 @@ CHARACTER_LIST CCharacterDataManager::getNonCollectedCharacterList()
 {
 	auto userDataMng = CUserDataManager::Instance();
 
-	return DATA_MANAGER_UTILS::getMapByFunc([=](const sCHARACTER_PARAM* data){
+	return DATA_MANAGER_UTILS::getMapByFunc([=](const CHARACTER* data){
 
-		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, data->_idx)) return false;
+		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, data->_index)) return false;
         
-        if (!data->_random) return false;
-		if (!data->_prepared) return false;
-
 		return true;
 	}, m_CharacterList);
-}
-
-
-void CCharacterDataManager::PrintCharacterInfo(int index)
-{
-	auto character = m_CharacterList.at(index);
-	CCLOG("=======================Character Info=======================");
-	CCLOG("Index                            : %d", character->_idx);
-    CCLOG("Grade                            : %d", character->_grade);
-    CCLOG("Random                           : %s", character->_random ? "random" : "non-random");
-	CCLOG("Star Item Time                   : %f", character->_starItemTime);
-	CCLOG("Coin Item Time                   : %f", character->_coinItemTime);
-	CCLOG("Magnet Item Time                 : %f", character->_magnetItemTime);
-	CCLOG("Bonus Item Time                  : %f", character->_bonusItemTime);
-	CCLOG("Giant Item Time                  : %f", character->_giantItemTime);
-	CCLOG("Magnet Item Size                 : %f", character->_magnetItemSize);
-	CCLOG("Normal Texture Name              : %s", character->_normalTextureName.c_str());
-	CCLOG("Giant Texture Name               : %s", character->_giantTextureName.c_str());
-	CCLOG("Planet Texture Name              : %s", character->_planetTextureName.c_str());
-	CCLOG("Normal Bullet Texture Name       : %s", character->_normalBulletTextureName.c_str());
-	CCLOG("Stick Bullet Texture Name        : %s", character->_stickBulletTextureName.c_str());
-	CCLOG("Normal Missile Texture Name      : %s", character->_normalMissileTextureName.c_str());
-	CCLOG("Aiming Missile Texture Name      : %s", character->_aimingMissileTextureName.c_str());
-	CCLOG("Name                             : %s", TRANSLATE(character->_name).c_str());
-    CCLOG("Texture Pack Name                : %s", character->_texturePackName.c_str());
-	CCLOG("============================================================");
 }

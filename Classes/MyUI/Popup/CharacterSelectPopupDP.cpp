@@ -2,7 +2,7 @@
 #include "../MyButton.h"
 #include "../../DataManager/UserDataManager.h"
 
-CCharacterSelectPopupDP* CCharacterSelectPopupDP::create(const sCHARACTER_PARAM* character)
+CCharacterSelectPopupDP* CCharacterSelectPopupDP::create(const CHARACTER* character)
 {
     CCharacterSelectPopupDP *pRet = new(std::nothrow) CCharacterSelectPopupDP(character);
     if (pRet && pRet->init())
@@ -32,7 +32,7 @@ bool CCharacterSelectPopupDP::init()
         this->addChild(bg);
     }
     
-    m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character->_normalTextureName.c_str());
+    m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character->_texture.c_str());
     if (m_CharacterImg != nullptr)
     {
         m_CharacterImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -40,11 +40,8 @@ bool CCharacterSelectPopupDP::init()
         bg->addChild(m_CharacterImg);
     }
     
-    if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx)){
-        if(m_Character->_random)
-            m_CharacterImg->setColor(COLOR::DARKGRAY);
-        else
-            m_CharacterImg->setColor(Color3B::BLACK);
+    if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_index)){
+        m_CharacterImg->setColor(COLOR::DARKGRAY);
     }
 
     auto btn = CMyButton::create()
@@ -64,7 +61,6 @@ bool CCharacterSelectPopupDP::init()
     btn->setSwallowTouches(false);
     
     auto content = TRANSLATE("CURRENCY_UNIT");
-    if(!m_Character->_random) content = "?";
     m_CostLabel = Label::createWithSystemFont(content, FONT::MALGUNBD, 23,
                                               Size(this->getContentSize().width * 2.f,
                                                    this->getContentSize().height + 1.05f),
@@ -84,8 +80,8 @@ void CCharacterSelectPopupDP::Buy()
     if (CUserDataManager::Instance()->CoinUpdate(-0)){
     
         // USER Data Save
-        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx);
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_idx);
+        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Character->_index);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_index);
 
 		// change color to white
 		m_CharacterImg->setColor(Color3B::WHITE);
@@ -96,13 +92,13 @@ void CCharacterSelectPopupDP::Buy()
 void CCharacterSelectPopupDP::Select()
 {
     // USER Data Save
-    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_idx);
+    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_index);
 }
 
 void CCharacterSelectPopupDP::Center()
 {
     m_CharacterImg->setScale(2.f);
-    auto alreadyHave = CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_idx);
+    auto alreadyHave = CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, m_Character->_index);
     m_CostLabel->setVisible(!alreadyHave);
 }
 

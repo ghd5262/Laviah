@@ -168,7 +168,7 @@ void CRewardPopupDP::characterReward()
 {
     // create character
     auto data       = CCharacterDataManager::Instance()->getCharacterByIndex(m_Reward._value);
-    auto character  = Sprite::createWithSpriteFrameName(data->_normalTextureName);
+    auto character  = Sprite::createWithSpriteFrameName(data->_texture);
     character->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     character->setPosition(this->getContentSize() / 2);
     character->setScale(2.5f);

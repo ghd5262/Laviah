@@ -5,6 +5,7 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementRewarder/AchievementRewarder.hpp"
+#include "../../DataManager/CharacterDataManager.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../DataManager/DataManagerUtils.h"

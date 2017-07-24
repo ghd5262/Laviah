@@ -3,8 +3,6 @@
 #include "Planet.h"
 #include "../Common/HSHUtility.h"
 #include "../AI/StateMachine.h"
-#include "../DataManager/CharacterDataManager.h"
-#include "../DataManager/RocketDataManager.hpp"
 
 /*------------------------------ObjectManager 클래스설명----------------------------------
 *
@@ -21,6 +19,11 @@ enum MOVE_DIRECTION{
     DOWN,
     MIDDLE
 };
+
+struct PLANET;
+struct CHARACTER;
+struct sROCKET_PARAM;
+
 class CBullet;
 class CPlanet;
 class CPlayer;
@@ -30,6 +33,7 @@ class CBulletCreator;
 class CItemManager;
 class CBulletPatternDataManager;
 class CItemRange;
+class CMagnetEffect;
 class CObjectManager
 {
     // 회전 가속도 
@@ -48,6 +52,7 @@ public:
     void SpeedControl(float duration, float speed, bool force = false);
     void ChangeCharacter();
     void ChangeRocket();
+    void ChangePlanet();
     void ChangeState(CState<CObjectManager>* newState)
     { m_FSM->ChangeState(newState); };
     void StartBonusTime();
@@ -102,12 +107,14 @@ public:
 	CC_SYNTHESIZE(CItemRange*, m_BarrierItemRange, BarrierItemRange);
 	CC_SYNTHESIZE(CItemRange*, m_StarItemRange, StarItemRange);
 	CC_SYNTHESIZE(CItemRange*, m_CoinItemRange, CoinItemRange);
+    CC_SYNTHESIZE(CMagnetEffect*, m_MagnetItemRange, MagnetItemRange);
 	CC_SYNTHESIZE(float, m_PatternTimer, PatternTimer);
     CC_SYNTHESIZE(float, m_LevelTimer, LevelTimer);
     CC_SYNTHESIZE(float, m_Delta, Delta);
 	CC_SYNTHESIZE(bool, m_IsGamePause, IsGamePause);
-    CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterParam, CharacterParam);
+    CC_SYNTHESIZE(const CHARACTER*, m_CharacterParam, CharacterParam);
     CC_SYNTHESIZE(const sROCKET_PARAM*, m_RocketParam, RocketParam);
+    CC_SYNTHESIZE(const PLANET*, m_PlanetParam, PlanetParam);
     CC_SYNTHESIZE(bool, m_PhotoShareAble, PhotoShareAble);
     CC_SYNTHESIZE(bool, m_SlowMotionAble, SlowMotionAble);
     

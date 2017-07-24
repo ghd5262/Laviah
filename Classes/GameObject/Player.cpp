@@ -2,7 +2,6 @@
 #include "ItemManager.h"
 #include "ItemRange.h"
 #include "ObjectManager.h"
-#include "MagnetEffect.h"
 #include "Rocket.h"
 #include "../AI/States/PlayerStates.h"
 #include "../AI/States/GameStates.h"
@@ -11,7 +10,6 @@
 #include "../MyUI/ScoreUI.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/WorkshopItemDataManager.h"
-#include "../MyUI/ComboScore.h"
 
 using namespace cocos2d;
 using namespace PLAYER_DEFINE;
@@ -36,15 +34,12 @@ CPlayer::CPlayer()
 : m_CharacterParam(nullptr)
 , m_Texture(nullptr)
 , m_Angle(0.f)
-, m_fMaxLife(0)
-, m_fLife(0)
-, m_fMagnetLimitTime(0)
-, m_fMagnetLimitRadius(0)
+, m_MaxLife(0)
+, m_Life(0)
+, m_GiantScale(0)
 , m_EffectItemTypes(eITEM_FLAG_none)
 , m_Particle(nullptr)
-, m_MagnetEffect(nullptr)
 , m_Invincibility(false)
-, m_ComboScore(nullptr)
 {}
 
 bool CPlayer::init()
@@ -61,7 +56,7 @@ bool CPlayer::init()
     this->ChangeState(CPlayerNormal::Instance());
     
 	m_CharacterParam = CObjectManager::Instance()->getCharacterParam();
-    m_Texture = Sprite::createWithSpriteFrameName(m_CharacterParam->_normalTextureName);
+    m_Texture = Sprite::createWithSpriteFrameName(m_CharacterParam->_texture);
     if (m_Texture != nullptr){
         this->setContentSize(m_Texture->getContentSize());
         m_Texture->setPosition(this->getContentSize() / 2);
@@ -69,32 +64,23 @@ bool CPlayer::init()
 		addChild(m_Texture);
     }
     
-    m_MagnetEffect = CMagnetEffect::create();
-    if (m_MagnetEffect != nullptr)
-    {
-        m_MagnetEffect->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_MagnetEffect->setPosition(PLAYER_DEFINE::POSITION);
-        CGameScene::getZoomLayer()->addChild(m_MagnetEffect);
-    }
-    
     this->createRunParticle();
 	this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
-	this->ChangeDataByCharacter();
     return true;
 }
 
 void CPlayer::Execute(float delta)
 {
 	m_FSM->Execute(delta);
-    m_MagnetEffect->Execute(delta);
 }
 
 void CPlayer::Clear()
 {
-    this->TakeOffRocket();
+//    this->TakeOffRocket();
+    m_MaxLife = 1;
     m_Texture->setRotation(0);
     m_Particle->setGravity(Vec2(0, -270));
-    CComboScore::Instance()->ComboScoreReset();
+    m_GiantScale = CUserDataManager::Instance()->getItemValueBySkillIndex(6);
 }
 
 void CPlayer::GameStart()
@@ -106,7 +92,7 @@ void CPlayer::GameStart()
     }
     else{
         this->setVisible(true);
-        m_fLife = m_fMaxLife;
+        m_Life = m_MaxLife;
     }
 }
     
@@ -114,7 +100,7 @@ void CPlayer::PlayerAlive()
 {
     this->setVisible(false);
     this->createAliveParticle();
-	this->setPlayerTexture(m_CharacterParam->_normalTextureName);
+	this->setPlayerTexture(m_CharacterParam->_texture);
     this->InvincibilityMode(INVINCIVILITY_TIME); // 1초간 무적 카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
     this->scheduleOnce([=](float delta){
         this->setVisible(true);
@@ -125,35 +111,34 @@ void CPlayer::PlayerAlive()
 
 void CPlayer::PlayerDead(){
     m_Particle->setVisible(false);
-	m_MagnetEffect->setMagnetAlive(false);
     this->createDeadParticle();
     this->setVisible(false);
 }
 
 void CPlayer::GotSomeHealth(float health)
 {
-	if (0.f < m_fLife) return;
+	if (0.f < m_Life) return;
     
-	if (m_fMaxLife > (m_fLife + health))
+	if (m_MaxLife > (m_Life + health))
 	{
-		m_fLife += health;
+		m_Life += health;
 	}
 	else{
-		m_fLife = m_fMaxLife;
+		m_Life = m_MaxLife;
 	}
 }
 
 void CPlayer::LostSomeHealth(float loseHealth)
 {
-	if (m_Invincibility || !m_fLife) return;
+	if (m_Invincibility || !m_Life) return;
     
 //    CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
-	if (0.f < (m_fLife - loseHealth))
+	if (0.f < (m_Life - loseHealth))
 	{
-		m_fLife -= loseHealth;
+		m_Life -= loseHealth;
 	}
 	else{
-        m_fLife = 0.f;
+        m_Life = 0.f;
 		this->PlayerDead();
         CGameScene::getGameScene()->GameEnd();
     }
@@ -177,11 +162,10 @@ void CPlayer::GiantMode()
 {
     CObjectManager::Instance()->GiantMode();
     
-    auto action = Sequence::create(ScaleTo::create(0.5f, GIANT_SCALE),
+    auto action = Sequence::create(ScaleTo::create(0.5f, m_GiantScale),
                                    CallFunc::create([=](){
-        this->setPlayerTexture(m_CharacterParam->_giantTextureName);
-        this->setBoundingRadius(GIANT_BOUNDING_RADIUS);
-        m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * GIANT_SCALE);
+        this->setBoundingRadius(GIANT_BOUNDING_RADIUS * m_GiantScale);
+        m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * m_GiantScale);
         m_Particle->setEndSize(40.f);
     }), nullptr);
     m_Texture->runAction(action);
@@ -195,7 +179,6 @@ void CPlayer::NormalMode()
     InvincibilityMode(1.5f);
     auto action = Sequence::create(ScaleTo::create(0.5f, NORMAL_SCALE),
                                    CallFunc::create([=](){
-        this->setPlayerTexture(m_CharacterParam->_normalTextureName);
         this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
         m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
         m_Particle->setEndSize(4.f);
@@ -247,7 +230,7 @@ float CPlayer::HealthCalculatorInNormal(float delta)
 	// 5.0f == 가장 레벨이 낮을때 한 번에 빠지는 생명력의 양
 	// 이후에 펫 효과나 버프 등과 함께 계산해야한다.
 	//LostSomeHealth(1.0f * delta);
-	return (m_fLife / m_fMaxLife) * 100;
+	return (m_Life / m_MaxLife) * 100;
 }
 
 // callback 보너스 타임에 적용되는 생명력 계산함수
@@ -257,18 +240,12 @@ float CPlayer::HealthCalculatorInBonusTime(float delta)
 	// 이후에 펫 효과나 버프 등과 함께 계산해야한다.
 	// 보너스 타임이기 때문에 더느리게 줄어든다.
 	//LostSomeHealth(0.5f);
-	return (m_fLife / m_fMaxLife) * 100;
+	return (m_Life / m_MaxLife) * 100;
 }
 
 void CPlayer::Crushed()
 {
     CObjectManager::Shake(0.01f, 0.2f, 0.1f, 3.0f, m_Texture, this->getContentSize() / 2);
-}
-
-void CPlayer::GotMagnetItem()
-{
-    m_MagnetEffect->setPosition(this->getPosition());
-    m_MagnetEffect->GotMagnetItem();
 }
 
 void CPlayer::InvincibilityMode(float time)
@@ -284,30 +261,10 @@ void CPlayer::InvincibilityMode(float time)
 	}, time, "SetPlayerNormalMode");
 }
 
-void CPlayer::ChangeDataByCharacter()
-{
-	auto getValue = [=](int index){
-        return CWorkshopItemDataManager::Instance()->getCurrentItemValue(index);
-	};
-
-	m_fMagnetLimitTime		= m_CharacterParam->_magnetItemTime	+ getValue(1);
-	m_fCoinLimitTime		= m_CharacterParam->_coinItemTime	+ getValue(2);
-	m_fStarLimitTime		= m_CharacterParam->_starItemTime	+ getValue(3);
-    m_fGiantLimitTime		= m_CharacterParam->_giantItemTime	+ getValue(4);
-    m_fBonusTimeLimitTime	= m_CharacterParam->_bonusItemTime	+ getValue(5);
-    m_fMagnetLimitRadius	= m_CharacterParam->_magnetItemSize	+ getValue(6);
-    
-	m_fMaxLife				= 1;
-
-	m_MagnetEffect->setLimitTime(m_fMagnetLimitTime);
-	m_MagnetEffect->setOriginBoundingRadius(m_fMagnetLimitRadius);
-	this->setPlayerTexture(m_CharacterParam->_normalTextureName);
-}
-
-void CPlayer::setCharacterParam(const sCHARACTER_PARAM* data)
+void CPlayer::setCharacterParam(const CHARACTER* data)
 {
 	m_CharacterParam = data;
-	this->ChangeDataByCharacter();
+    this->setPlayerTexture(m_CharacterParam->_texture);
 }
 
 void CPlayer::setPlayerTexture(std::string textureName)
@@ -329,7 +286,7 @@ void CPlayer::setPlayerTexture(std::string textureName)
 
 void CPlayer::createAliveParticle()
 {
-	auto particle = CParticle_Explosion_2::create(m_CharacterParam->_normalTextureName);
+	auto particle = CParticle_Explosion_2::create(m_CharacterParam->_texture);
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());
@@ -342,7 +299,7 @@ void CPlayer::createAliveParticle()
 
 void CPlayer::createDeadParticle()
 {
-	auto particle = CParticle_Explosion_2::create(m_CharacterParam->_normalTextureName);
+	auto particle = CParticle_Explosion_2::create(m_CharacterParam->_texture);
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());
@@ -352,7 +309,7 @@ void CPlayer::createDeadParticle()
 
 void CPlayer::createRunParticle()
 {
-	m_Particle = CParticle_Flame::create(m_CharacterParam->_normalTextureName);
+	m_Particle = CParticle_Flame::create(m_CharacterParam->_texture);
     if (m_Particle != nullptr){
         m_Particle->setPosition(this->getPosition());
         m_Particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

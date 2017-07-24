@@ -321,8 +321,8 @@ const ACHIEVEMENT* CAchievementDataManager::getNormalAchievementByIndex(int inde
 {
     auto data = m_NormalAchievementDataList.find(index);
     if(data == m_NormalAchievementDataList.end()) {
-        CCLOG("Wrong character index : %d", index);
-        CCASSERT(false, "Wrong character index");
+        CCLOG("Wrong achievement index : %d", index);
+        CCASSERT(false, "Wrong achievement index");
         return nullptr;
     }
     return data->second;
@@ -332,8 +332,8 @@ const ACHIEVEMENT* CAchievementDataManager::getHiddenAchievementByIndex(int inde
 {
     auto data = m_HiddenAchievementDataList.find(index);
     if(data == m_HiddenAchievementDataList.end()) {
-        CCLOG("Wrong character index : %d", index);
-        CCASSERT(false, "Wrong character index");
+        CCLOG("Wrong achievement index : %d", index);
+        CCASSERT(false, "Wrong achievement index");
         return nullptr;
     }
     return data->second;

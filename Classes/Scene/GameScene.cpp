@@ -12,6 +12,7 @@
 #include "../GameObject/BulletCreator.h"
 #include "../GameObject/Rocket.h"
 #include "../GameObject/ItemRange.h"
+#include "../GameObject/MagnetEffect.h"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/MenuLayer.hpp"
 #include "../MyUI/UILayer.hpp"
@@ -31,6 +32,7 @@
 #include "../MyUI/Popup/Option/OptionPopup.hpp"
 #include "../MyUI/Popup/WorkshopPopup.h"
 #include "../MyUI/Popup/CharacterSelectPopup.h"
+#include "../MyUI/Popup/CharacterPopup.hpp"
 #include "../MyUI/Popup/GameEndPopup.hpp"
 #include "../MyUI/Popup/FacebookAPITestPopup.hpp"
 #include "../MyUI/Popup/FacebookRankPopup.hpp"
@@ -43,6 +45,7 @@
 #include "../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 #include "../DataManager/NetworkManager.hpp"
 #include "../DataManager/FreeRewardManager.hpp"
+#include "../DataManager/BulletPatternDataManager.h"
 #include "../AI/States/RocketStates.h"
 #include "../SDKBOX/SDKBox.h"
 
@@ -259,7 +262,7 @@ void CGameScene::OpenWorkshopPopup()
 
 void CGameScene::OpenCharacterSelectPopup()
 {
-    CObjectManager::Instance()->ZoomIn2();
+    CObjectManager::Instance()->ZoomInRank();
     this->createCharacterSelectPopup();
     this->MenuFadeOut();
 }
@@ -564,7 +567,7 @@ void CGameScene::createWorkshopPopup()
 
 void CGameScene::createCharacterSelectPopup()
 {
-    CCharacterSelectPopup::create()
+    CCharacterPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
@@ -772,21 +775,21 @@ void CGameScene::createBackground()
 
 void CGameScene::createPlanet()
 {
-    CObjectManager::Instance()->ChangeCharacter();
-    
+    CObjectManager::Instance()->ChangePlanet();
+
     auto planet = CPlanet::create();
     planet->setPosition(m_VisibleSize / 2);
     planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_ZoomLayer->addChild(planet, ZORDER::PLANET);
+    m_ZoomLayer->addChild(planet, ZORDER::PLANETZ);
     CObjectManager::Instance()->setPlanet(planet);
 }
 
 void CGameScene::createPlayer()
 {
+    CObjectManager::Instance()->ChangeCharacter();
+
     auto player = CPlayer::create();
-    player->setPosition(Vec2(m_VisibleSize.width * 0.5f, (m_VisibleSize.height * 0.5f) +
-                             (PLANET_DEFINE::BOUNDING_RADIUS) +
-                             (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.71f)));
+    player->setPosition(PLAYER_DEFINE::POSITION);
     player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_ZoomLayer->addChild(player, ZORDER::PLAYER);
     player->setVisible(false);
@@ -870,6 +873,13 @@ void CGameScene::createItemRanges()
     CObjectManager::Instance()->setBarrierItemRange(createRange("barrier2.png"));
     CObjectManager::Instance()->setStarItemRange(createRange("barrier3.png"));
     CObjectManager::Instance()->setCoinItemRange(createRange("barrier3.png"));
+    
+    
+    auto magnetRange = CMagnetEffect::create();
+    magnetRange->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    magnetRange->setPosition(PLAYER_DEFINE::POSITION);
+    m_ZoomLayer->addChild(magnetRange, ZORDER::PLAYER);
+    CObjectManager::Instance()->setMagnetItemRange(magnetRange);
 }
 
 void CGameScene::createComboUI()
@@ -990,7 +1000,7 @@ void CGameScene::createBackKeyButton()
 void CGameScene::createIntroUI()
 {
     std::array<Vec2, 9> startPos = {
-        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 1.4f),
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 1.1f),
         Vec2(m_VisibleSize.width * 0.5f, 0),
         Vec2(m_VisibleSize.width * 0.5f, 0),
         Vec2(m_VisibleSize.width * 0.5f, 0),
@@ -1050,7 +1060,7 @@ void CGameScene::intro()
                                   m_VisibleSize.height * 1.5f));
     
     std::array<Vec2, 9> targetPos = {
-        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -.3f),
+        Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -0.15f),
         Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
         Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
         Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * -1.5f),
@@ -1062,7 +1072,7 @@ void CGameScene::intro()
     };
     
     std::array<float, 9> durations = {
-        11.0f,
+        14.0f,
         9.0f,
         9.4f,
         9.8f,

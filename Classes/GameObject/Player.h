@@ -14,23 +14,17 @@
 
 namespace PLAYER_DEFINE{
     static const float NORMAL_BOUNDING_RADIUS = 40;
-    static const float GIANT_BOUNDING_RADIUS = NORMAL_BOUNDING_RADIUS * 3.f;
+    static const float GIANT_BOUNDING_RADIUS  = 100;
     static const float NORMAL_SCALE = 1.f;
-    static const float GIANT_SCALE = 2.f;
     static const float INVINCIVILITY_TIME = 5.f;
     static const float NORMAL_ROTATION_SPEED = ((PLANET_DEFINE::BOUNDING_RADIUS / NORMAL_BOUNDING_RADIUS) * BULLETCREATOR::ROTATION_SPEED);
     static const float GIANT_ROTATION_SPEED = NORMAL_ROTATION_SPEED * 0.7f;
     static const cocos2d::Vec2 POSITION
-    = cocos2d::Vec2(PLANET_DEFINE::MENU_POS.x,
-                    PLANET_DEFINE::MENU_POS.y +
-                    (PLANET_DEFINE::BOUNDING_RADIUS) +
-                    (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.8f));
+    = cocos2d::Vec2(540, 960 + (PLANET_DEFINE::BOUNDING_RADIUS) + (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.8f));
 };
 
 class CScoreUI;
 class CItemRange;
-class CMagnetEffect;
-class CComboScore;
 class CPlayer : public CGameObject {
 public:
 	static CPlayer* create();
@@ -40,7 +34,6 @@ public:
     
 	void GotSomeHealth(float health);
 	void LostSomeHealth(float loseHealth);
-    void GotMagnetItem();
 	void GiantMode();
 	void NormalMode();
 	void TakeOnRocket();
@@ -80,26 +73,18 @@ public:
 
 	// time 동안무적
 	void InvincibilityMode(float time);
-
-	void ChangeDataByCharacter();
     
 	//getter & setter
-	void setCharacterParam(const sCHARACTER_PARAM* data);
+	void setCharacterParam(const CHARACTER* data);
 
 protected:
 	virtual bool init() override;
 
 	//getter & setter
 	CC_SYNTHESIZE(float, m_Angle, Angle);
-	CC_SYNTHESIZE(float, m_fMaxLife, MaxLife);
-	CC_SYNTHESIZE(float, m_fLife, Life);
-	CC_SYNTHESIZE(float, m_fLevel, Level);
-	CC_SYNTHESIZE(float, m_fMagnetLimitTime, MagnetLimitTime);
-	CC_SYNTHESIZE(float, m_fMagnetLimitRadius, MagnetLimitRadius);
-	CC_SYNTHESIZE(float, m_fCoinLimitTime, CoinLimitTime);
-	CC_SYNTHESIZE(float, m_fStarLimitTime, StarLimitTime);
-	CC_SYNTHESIZE(float, m_fGiantLimitTime, GiantLimitTime);
-	CC_SYNTHESIZE(float, m_fBonusTimeLimitTime, BonusTimeLimitTime);
+	CC_SYNTHESIZE(float, m_MaxLife, MaxLife);
+	CC_SYNTHESIZE(float, m_Life, Life);
+    CC_SYNTHESIZE(float, m_GiantScale, GiantScale);
     CC_SYNTHESIZE_READONLY(cocos2d::Sprite*, m_Texture, Texture);
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
@@ -114,10 +99,8 @@ private:
 
 private:
 	std::shared_ptr<CStateMachine<CPlayer>> m_FSM;
-	CComboScore* m_ComboScore;
 	cocos2d::ParticleSystemQuad* m_Particle;
-    CMagnetEffect* m_MagnetEffect;
-	const sCHARACTER_PARAM* m_CharacterParam;
+	const CHARACTER* m_CharacterParam;
 	bool m_Invincibility;
 
 	// 영향을 받는 아이템 타입 
