@@ -13,6 +13,7 @@ namespace PLANET_DEFINE {
     static const cocos2d::Vec2 RANK_POS   = cocos2d::Vec2(270.f, 1440.f);
 }
 
+struct PLANET;
 class CPlanet : public CGameObject {
 public:
 	static CPlanet* create();
@@ -26,7 +27,7 @@ public:
 
 	//getter & setter
     void setPlanetTexture(std::string textureName);
-
+    void setPlanetParam(const PLANET* param);
 protected:
 	virtual bool init() override;
 
@@ -39,5 +40,5 @@ private:
 
 private:
 	cocos2d::Sprite* m_Texture;
-	float m_fElapsed;
+    const PLANET* m_PlanetParam;
 };

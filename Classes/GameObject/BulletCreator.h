@@ -1,10 +1,6 @@
 #pragma once
-#include "Planet.h"
 #include "Bullet/Bullet.h"
 #include "../Common/HSHUtility.h"
-#include "../DataManager/BulletPatternDataManager.h"
-#include "../DataManager/CharacterDataManager.h"
-
 
 namespace BULLETCREATOR{
 	const static float PATTERN_PADDING_LIMIT	= 1.5f;
@@ -15,6 +11,9 @@ namespace BULLETCREATOR{
 	static bool COIN_CREATE						= false;
 };
 
+struct PLANET;
+struct sBULLET_PATTERN;
+class CBullet;
 class CBulletDataManager;
 class CBulletCreator : public cocos2d::Node{
 public:
@@ -51,7 +50,7 @@ public:
     
     static void CreateConstellation(const sBULLET_PATTERN* data);
     
-    CC_SYNTHESIZE(const sCHARACTER_PARAM*, m_CharacterInfo, CharacterInfo);
+    CC_SYNTHESIZE(const PLANET*, m_PlanetInfo, PlanetInfo);
 	CC_SYNTHESIZE(float, m_RotationAngle, RotationAngle);
     CC_SYNTHESIZE(float, m_LineIntervalLimit, LineIntervalLimit);
     CC_SYNTHESIZE(float, m_CreateDistance, CreateDistance);

@@ -9,6 +9,7 @@
 #include "../GameObject/ItemManager.h"
 #include "../GameObject/Player.h"
 #include "../DataManager/UserDataManager.h"
+#include "../DataManager/RocketDataManager.hpp"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/Popup/RewardPopup.h"
 #include "../DataManager/AchievementRewarder/AchievementRewarder.hpp"

@@ -1,11 +1,13 @@
 #include "BulletCreator.h"
 #include "Bullet/BulletHeaders.h"
-#include "../DataManager/BulletDataManager.h"
 #include "../Scene/GameScene.h"
-#include "../DataManager/UserDataManager.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/ItemManager.h"
 #include "../MyUI/Tutorial/TutorialManager.hpp"
+#include "../DataManager/PlanetDataManager.hpp"
+#include "../DataManager/UserDataManager.h"
+#include "../DataManager/BulletPatternDataManager.h"
+#include "../DataManager/BulletDataManager.h"
 
 using namespace cocos2d;
 using namespace BULLETCREATOR;
@@ -15,7 +17,7 @@ using namespace PLANET_DEFINE;
 
 CBulletCreator::CBulletCreator()
 : m_CurrentPattern(nullptr)
-, m_CharacterInfo(nullptr)
+, m_PlanetInfo(nullptr)
 , m_BulletDataManager(CBulletDataManager::Instance())
 , m_RotationAngle(0.f)
 , m_CurrentHeight(0)
@@ -54,7 +56,7 @@ bool CBulletCreator::init()
     this->Clear();
     
     auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
-    m_CharacterInfo = CCharacterDataManager::Instance()->getCharacterByIndex(index);
+    m_PlanetInfo = CPlanetDataManager::Instance()->getPlanetByIndex(index);
     
     return true;
 }
@@ -278,34 +280,34 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
     std::string name = "hello.png";
     
     switch (symbol) {
-        case '1':  name = m_CharacterInfo->_normalBulletTextureName;   break;
-        case '4':  name = m_CharacterInfo->_normalMissileTextureName;  break;
-        case '5':  name = m_CharacterInfo->_aimingMissileTextureName;  break;
-        case '6':  name = m_CharacterInfo->_stickBulletTextureName;    break;
-        case '7':  name = m_CharacterInfo->_stickBulletTextureName;    break;
-        case '8':  name = "ship.png";                                  break;
+        case '1':  name = m_PlanetInfo->_normalBulletTexture;   break;
+        case '4':  name = m_PlanetInfo->_normalMissileTexture;  break;
+        case '5':  name = m_PlanetInfo->_normalMissileTexture;  break;
+        case '6':  name = m_PlanetInfo->_stickBulletTexture;    break;
+        case '7':  name = m_PlanetInfo->_standBulletTexture;    break;
+        case '8':  name = "ship.png";                           break;
 
-        case 'A':  name = "playItem_1.png";                            break;
-        case 'B':  name = "playItem_2.png";                            break;
-        case 'C':  name = "playItem_3.png";                            break;
-        case 'D':  name = "playItem_4.png";                            break;
-        case 'E':  name = "playItem_5.png";                            break;
-        case 'F':  name = "playItem_6.png";                            break;
-        case 'G':  name = "playItem_7.png";                            break;
+        case 'A':  name = "playItem_1.png";                     break;
+        case 'B':  name = "playItem_2.png";                     break;
+        case 'C':  name = "playItem_3.png";                     break;
+        case 'D':  name = "playItem_4.png";                     break;
+        case 'E':  name = "playItem_5.png";                     break;
+        case 'F':  name = "playItem_6.png";                     break;
+        case 'G':  name = "playItem_7.png";                     break;
             
-        case 'P':  name = "star_1.png";                                break;
-        case 'Q':  name = "star_2.png";                                break;
-        case 'R':  name = "star_3.png";                                break;
-        case 'S':  name = "star_4.png";                                break;
-        case 'T':  name = "star_5.png";                                break;
+        case 'P':  name = "star_1.png";                         break;
+        case 'Q':  name = "star_2.png";                         break;
+        case 'R':  name = "star_3.png";                         break;
+        case 'S':  name = "star_4.png";                         break;
+        case 'T':  name = "star_5.png";                         break;
             
-        case 'U':  name = "coin_1.png";                                break;
-        case 'V':  name = "coin_2.png";                                break;
-        case 'W':  name = "coin_3.png";                                break;
-        case 'X':  name = "coin_4.png";                                break;
-        case 'Y':  name = "coin_5.png";                                break;
+        case 'U':  name = "coin_1.png";                         break;
+        case 'V':  name = "coin_2.png";                         break;
+        case 'W':  name = "coin_3.png";                         break;
+        case 'X':  name = "coin_4.png";                         break;
+        case 'Y':  name = "coin_5.png";                         break;
             
-        case 'Z':  name = "bonusLetter_0.png";                         break;
+        case 'Z':  name = "bonusLetter_0.png";                  break;
         default: break;
     }
     

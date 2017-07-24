@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.h"
 #include "../AI/StateMachine.h"
-#include "../DataManager/RocketDataManager.hpp"
 #include <vector>
 
 namespace ROCKET_DEFINE{
@@ -14,6 +13,7 @@ namespace ROCKET_DEFINE{
 	static float			ARRIVE_RADIUS = 10.f;
 };
 
+struct sROCKET_PARAM;
 class CBullet;
 class CPlayer;
 class CMyButton;

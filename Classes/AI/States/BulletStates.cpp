@@ -5,6 +5,7 @@
 #include "../../GameObject/ItemManager.h"
 #include "../../GameObject/Bullet/Bullet.h"
 #include "../../GameObject/ItemRange.h"
+#include "../../GameObject/MagnetEffect.h"
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementChecker/AchievementClearChecker.h"
 
@@ -30,7 +31,7 @@ void CBulletNormal::Execute(CBullet* bullet, float delta)
 	}
 
 	if (bullet->IsEffectWithItem(eITEM_FLAG_shield) && 
-		bullet->IsHit(bullet->getPlanet()->getPosition(),
+		bullet->IsHit(bullet->getPlayer()->getPosition(),
 		CObjectManager::Instance()->getBarrierItemRange()->getBoundingRadius()))
 	{
 		bullet->CollisionWithBarrier();
@@ -115,8 +116,8 @@ void CBulletMagnetItem::Execute(CBullet* bullet, float delta)
 	if (bullet->getIsFly() || bullet->getIsPlayerGet())
 		bullet->Seek(delta);
 
-	auto player = bullet->getPlayer();
-	float magnetSize = player->getMagnetLimitRadius();
+	auto player      = bullet->getPlayer();
+    float magnetSize = CObjectManager::Instance()->getMagnetItemRange()->getBoundingRadius();
 
 	if (bullet->IsHit(bullet->getPlayer()))
 	{

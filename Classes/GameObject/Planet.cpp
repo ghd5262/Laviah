@@ -3,6 +3,7 @@
 #include "ObjectManager.h"
 #include "BulletCreator.h"
 #include "../Scene/GameScene.h"
+#include "../DataManager/PlanetDataManager.hpp"
 
 using namespace cocos2d;
 using namespace PLANET_DEFINE;
@@ -25,7 +26,6 @@ CPlanet* CPlanet::create()
 
 CPlanet::CPlanet()
 : m_Angle(0.f)
-, m_fElapsed(0.0f)
 {}
 
 bool CPlanet::init()
@@ -33,8 +33,8 @@ bool CPlanet::init()
 	//this->DrawDebugBinding();   //for debug
     if (!Node::init()) return false;
     
-	auto data = CObjectManager::Instance()->getCharacterParam();
-	m_Texture = Sprite::createWithSpriteFrameName(data->_planetTextureName);
+	auto data = CObjectManager::Instance()->getPlanetParam();
+	m_Texture = Sprite::createWithSpriteFrameName(data->_planetTexture);
     if (m_Texture != nullptr){
 		this->setContentSize(m_Texture->getContentSize());
 		m_Texture->setPosition(this->getContentSize() / 2);
@@ -44,27 +44,6 @@ bool CPlanet::init()
     }
     
     this->setBoundingRadius(PLANET_DEFINE::BOUNDING_RADIUS);
-    
-//    // blur test
-//    auto getGLProgram = [=](std::string fileName){
-//        auto fileUtiles = FileUtils::getInstance();
-//        auto fragmentFullPath = fileUtiles->fullPathForFilename(fileName);
-//        auto fragSource = fileUtiles->getStringFromFile(fragmentFullPath);
-//        auto glprogram = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert,
-//                                                         fragSource.c_str());
-//    
-//        return GLProgramState::getOrCreateWithGLProgram(glprogram);
-//    };
-//
-//    m_Texture->setGLProgramState(getGLProgram("example_Blur.fsh"));
-//    Size size = m_Texture->getTexture()->getContentSizeInPixels();
-//    m_Texture->getGLProgramState()->setUniformVec2("resolution", size);
-//#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
-//    m_Texture->getGLProgramState()->setUniformFloat("blurRadius", 10);
-//    m_Texture->getGLProgramState()->setUniformFloat("sampleNum", 100);
-//#endif
-    
-//    this->setScale(PLANET_DEFINE::SCALE_SIZE);
 
     return true;
 }
@@ -96,4 +75,10 @@ void CPlanet::setPlanetTexture(std::string textureName)
     if(m_Texture != nullptr){
         this->m_Texture->setSpriteFrame(textureName);
     }
+}
+
+void CPlanet::setPlanetParam(const PLANET* param)
+{
+    m_PlanetParam = param;
+    this->setPlanetTexture(m_PlanetParam->_planetTexture);
 }
