@@ -41,7 +41,8 @@ namespace USERDATA_KEY {
 
     const std::string PET                       = "USER_CUR_PET";
     const std::string ROCKET                    = "USER_CUR_ROCKET";
-    
+    const std::string PLANET                    = "USER_CUR_PLANET";
+
     const std::string BEST_COMBO                = "USER_BEST_COMBO";
     const std::string BEST_SCORE                = "USER_BEST_TOTAL_SCORE";
 
@@ -78,6 +79,8 @@ public:
 	tm* getLastSavedTime();
     long long getLastTimestamp();
     long long getFreeRewardTimestamp();
+    float getItemValueByItemIndex(int itemIndex);
+    float getItemValueBySkillIndex(int skillIndex);
     int getUserData_Number(std::string key);
     ARRAY_DATA getUserData_List(std::string key);
     PARAM_DATA_ARRAY getUserData_ParamList(std::string key);

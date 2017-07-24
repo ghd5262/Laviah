@@ -122,8 +122,8 @@ bool CUILayer::init()
 		Vec2(popupSize.width * 0.5f, popupSize.height * 0.64f)
 	};
 	std::fill(m_ProgressList.begin(), m_ProgressList.end(), nullptr);
-    for(int count = 1; count < eITEM_TYPE_MAX; count++)
-		this->createItemTimerUI((eITEM_TYPE)count, Color3B::WHITE);
+//    for(int count = 1; count < eITEM_TYPE_MAX; count++)
+//		this->createItemTimerUI((eITEM_TYPE)count, Color3B::WHITE);
     
     m_AchievementProgressBar = CAchievementProgressBar::create()
     ->setBarBGColor(COLOR::WHITEGRAY_ALPHA)
@@ -287,13 +287,13 @@ void CUILayer::initItemTestButton()
     Size popupSize = this->getContentSize();
 
     array<Vec2, 7> itemPosArray = {
-        Vec2(popupSize.width * 0.08f, popupSize.height * 0.5f   ),
-        Vec2(popupSize.width * 0.08f, popupSize.height * 0.475f ),
-        Vec2(popupSize.width * 0.08f, popupSize.height * 0.45f  ),
-        Vec2(popupSize.width * 0.08f, popupSize.height * 0.425f ),
-        Vec2(popupSize.width * 0.08f, popupSize.height * 0.4f   ),
-        Vec2(popupSize.width * 0.08f, popupSize.height * 0.375f ),
-        Vec2(popupSize.width * 0.08f, popupSize.height * 0.35f  )
+        Vec2(popupSize.width * 0.08f, popupSize.height * 0.7f ),
+        Vec2(popupSize.width * 0.08f, popupSize.height * 0.6f ),
+        Vec2(popupSize.width * 0.08f, popupSize.height * 0.5f ),
+        Vec2(popupSize.width * 0.08f, popupSize.height * 0.4f ),
+        Vec2(popupSize.width * 0.08f, popupSize.height * 0.3f ),
+        Vec2(popupSize.width * 0.08f, popupSize.height * 0.2f ),
+//        Vec2(popupSize.width * 0.08f, popupSize.height * 0.1f )
     };
     
     for (int idx = 0; idx < itemPosArray.size(); idx++)

@@ -9,6 +9,7 @@
 #include "../../DataManager/FreeRewardManager.hpp"
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementRewarder/AchievementRewarder.hpp"
+#include "../../DataManager/UserLevelDataManager.hpp"
 #include "../../Common/StringUtility.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
@@ -46,44 +47,46 @@ bool CResultPopup::init()
 	}
     auto layerSize = bg->getContentSize();
     
-    std::array<Vec2, 6> posDown  = {
+    std::array<Vec2, 7> posDown  = {
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.3f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.1f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.0f),
         Vec2(layerSize.width * 0.5f, layerSize.height * -.1f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * -.2f),
     };
     
-    std::array<Vec2, 6> posArray = {
+    std::array<Vec2, 7> posArray = {
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.7f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.65f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.6f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.55f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.45f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f),
     };
     
-    std::array<std::string, 6> resultIcon = {
+    std::array<std::string, 7> resultIcon = {
 		"starIcon.png",
 		"comboIcon.png",
         "coinIcon.png",
         "achievementIcon.png",
         "",
-        "bestScoreIcon.png"
+        "bestScoreIcon.png",
+        "expIcon.png"
     };
     
-    std::array<std::string, 6> resultContent = {
+    std::array<std::string, 7> resultContent = {
 		TRANSLATE("RESULT_SCORE"),
 		TRANSLATE("RESULT_COMBO"),
         TRANSLATE("RESULT_COIN"),
         TRANSLATE("RESULT_GOAL"),
         "",
-        TRANSLATE("RESULT_BEST_SCORE")
+        TRANSLATE("RESULT_BEST_SCORE"),
+        "레벨"
     };
     
-    
-    // 총 점수 = 달린 총거리 + 별 + 코인 + (보너스타임횟수 * 10000) + (외계주민 * 10000) + (도전과제 * 10000)
     
     auto createLayerBG = [=](Vec2 pos, std::string spriteName){
         auto layerBG = Sprite::create(spriteName);
@@ -114,57 +117,67 @@ bool CResultPopup::init()
         return contentLabel;
     };
     
-    auto createScoreLabel = [=](Node* parent, Vec2 pos, int score, int fontSize){
-        auto scoreLabel = Label::createWithTTF(StringUtility::toCommaString(score), FONT::MALGUNBD, fontSize);
-        scoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-        scoreLabel->setPosition(pos);
-        parent->addChild(scoreLabel);
+    auto createNLabel = [=](Node* parent, Vec2 pos, int score, int fontSize){
+        auto label = Label::createWithTTF(StringUtility::toCommaString(score), FONT::MALGUNBD, fontSize);
+        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+        label->setPosition(pos);
+        parent->addChild(label);
         
-        return scoreLabel;
+        return label;
     };
     
-    auto createMultipleLabel = [=](Node* parent, Vec2 pos, int multiple){
-		auto multipleLabel = Label::createWithTTF(StringUtils::format("%d x ", multiple), FONT::MALGUNBD, 25);
-        multipleLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-        multipleLabel->setPosition(pos);
-        parent->addChild(multipleLabel);
+    auto createSLabel = [=](Node* parent, Vec2 pos, int score, std::string symbol, int fontSize){
+        auto commaStr = StringUtility::toCommaString(score);
+        auto text     = StringUtils::format("%s %s  ", commaStr.c_str(), symbol.c_str());
+		auto label    = Label::createWithTTF(text, FONT::MALGUNBD, fontSize);
+        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+        label->setPosition(pos);
+        parent->addChild(label);
     };
     
 
-    auto createNormalLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize, bool addScore = true){
+    auto createNLayer = [=](std::string iconImg,
+                            std::string content,
+                            int score,
+                            Vec2 layerPos,
+                            int fontSize,
+                            bool addScore = true){
+        
 		if ((GVALUE->TOTAL_SCORE + score < INT_MAX) && addScore)
             GVALUE->TOTAL_SCORE += score;
 
 		auto layerBG = createLayerBG(layerPos, "resultPopup_2.png");
-        createIcon(layerBG, Vec2(layerBG->getContentSize().width * 0.1f,
-                                 layerBG->getContentSize().height * 0.5f), iconImg);
+        auto bgSize  = layerBG->getContentSize();
         
-        createContent(layerBG, Vec2(layerBG->getContentSize().width * 0.15f,
-                                    layerBG->getContentSize().height * 0.5f), content, fontSize);
-        
-        createScoreLabel(layerBG, Vec2(layerBG->getContentSize().width * 0.9f,
-                                       layerBG->getContentSize().height * 0.5f), score, fontSize);
+        createIcon(layerBG,     Vec2(bgSize.width * 0.1f,   bgSize.height * 0.5f), iconImg);
+        createContent(layerBG,  Vec2(bgSize.width * 0.15f,  bgSize.height * 0.5f), content, fontSize);
+        createNLabel(layerBG,   Vec2(bgSize.width * 0.9f,   bgSize.height * 0.5f), score, fontSize);
         
 		return layerBG;
 	};
 
-	auto createMultipleLayer = [=](std::string iconImg, std::string content, int score, Vec2 layerPos, int fontSize, int multiple){
-		if (GVALUE->TOTAL_SCORE + (score * multiple) < INT_MAX)
+    auto createMLayer = [=](std::string iconImg,
+                            std::string content,
+                            int score,
+                            Vec2 layerPos,
+                            int fontSize,
+                            int multiple,
+                            std::string symbol,
+                            bool addScore = true){
+        
+		if ((GVALUE->TOTAL_SCORE + (score * multiple) < INT_MAX) && addScore)
 			GVALUE->TOTAL_SCORE += score * multiple;
 
         auto layerBG = createLayerBG(layerPos, "resultPopup_2.png");
-        createIcon(layerBG, Vec2(layerBG->getContentSize().width * 0.1f,
-                                 layerBG->getContentSize().height * 0.5f), iconImg);
+        auto bgSize  = layerBG->getContentSize();
+
+        createIcon(layerBG,     Vec2(bgSize.width * 0.1f,   bgSize.height * 0.5f), iconImg);
+        createContent(layerBG,  Vec2(bgSize.width * 0.15f,  bgSize.height * 0.5f), content, fontSize);
         
-        createContent(layerBG, Vec2(layerBG->getContentSize().width * 0.15f,
-                                    layerBG->getContentSize().height * 0.5f), content, fontSize);
-        
-        auto scoreLabel = createScoreLabel(layerBG,
-                                           Vec2(layerBG->getContentSize().width * 0.9f,
-                                                layerBG->getContentSize().height * 0.5f), score, fontSize);
-        
-        createMultipleLabel(layerBG, Vec2(scoreLabel->getPosition().x - scoreLabel->getContentSize().width,
-			layerBG->getContentSize().height * 0.4f), multiple);
+        auto scoreLabel = createNLabel(layerBG, Vec2(bgSize.width * 0.9f, bgSize.height * 0.5f), score, fontSize);
+        auto labelSize  = scoreLabel->getContentSize();
+        auto lebelPos   = Vec2(scoreLabel->getPosition().x - labelSize.width, bgSize.height * 0.4f);
+        createSLabel(layerBG, lebelPos, multiple, symbol, 25);
 
 		return layerBG;
 	};
@@ -173,27 +186,13 @@ bool CResultPopup::init()
     CComboScore::Instance()->ComboScoreReset();
         
     // score layer array
-    std::array<Node*, 6> scoreLayerArray;
+    std::array<Node*, 7> scoreLayer;
     
-	scoreLayerArray.at(0) = createNormalLayer(resultIcon[0],
-                                              resultContent[0],
-                                              GVALUE->STAR_SCORE,
-                                              posArray[0], 50);
-    
-	scoreLayerArray.at(1) = createNormalLayer(resultIcon[1],
-                                              resultContent[1],
-                                              GVALUE->BEST_COMBO,
-                                              posArray[1], 50);
-    
-    scoreLayerArray.at(2) = createMultipleLayer(resultIcon[2],
-                                                resultContent[2],
-                                                GVALUE->COIN_SCORE,
-                                                posArray[2], 50, 10);
-    
-	scoreLayerArray.at(3) = createMultipleLayer(resultIcon[3],
-                                                resultContent[3],
-                                                GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT,
-                                                posArray[3], 50, 100);
+	scoreLayer.at(0) = createNLayer(resultIcon[0], resultContent[0], GVALUE->STAR_SCORE, posArray[0], 50);
+	scoreLayer.at(1) = createNLayer(resultIcon[1], resultContent[1], GVALUE->BEST_COMBO, posArray[1], 50);
+    scoreLayer.at(2) = createMLayer(resultIcon[2], resultContent[2], GVALUE->COIN_SCORE, posArray[2], 50, 10, "x");
+	scoreLayer.at(3) = createMLayer(resultIcon[3], resultContent[3], GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT,
+                                    posArray[3], 50, 100, "x");
     
     // combo가 user best combo면 저장한다.
 	auto bestCombo = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_COMBO);
@@ -228,39 +227,70 @@ bool CResultPopup::init()
         }
     }
     
-    auto totalScoreBG     = createLayerBG(posArray[4], "resultPopup_1.png");
-    scoreLayerArray.at(4) = totalScoreBG;
+    auto totalScoreBG = createLayerBG(posArray[4], "resultPopup_1.png");
+    auto totalSize    = totalScoreBG->getContentSize();
+    scoreLayer.at(4)  = totalScoreBG;
     
     // create total score content label
-    createContent(totalScoreBG, Vec2(totalScoreBG->getContentSize().width * 0.08f,
-                                     totalScoreBG->getContentSize().height * 0.5f),
-                  totalContent, 60)
+    createContent(totalScoreBG, Vec2(totalSize.width * 0.08f, totalSize.height * 0.5f), totalContent, 60)
     ->setColor(COLOR::BRIGHTGRAY);
     
     // create total score label;
-    createScoreLabel(totalScoreBG, Vec2(totalScoreBG->getContentSize().width * 0.9f,
-                                        totalScoreBG->getContentSize().height * 0.5f),
-                     GVALUE->TOTAL_SCORE, 60)
+    createNLabel(totalScoreBG, Vec2(totalSize.width * 0.9f, totalSize.height * 0.5f), GVALUE->TOTAL_SCORE, 60)
     ->setColor(COLOR::BRIGHTGRAY);
     
     // create my best score layer
-    scoreLayerArray.at(5) = createNormalLayer(resultIcon[5],
-                                              resultContent[5],
-                                              bestScore,
-                                              posArray[5], 50, false);
+    scoreLayer.at(5)  = createNLayer(resultIcon[5], resultContent[5], bestScore, posArray[5], 50, false);
+    
+    // create level layer
+    {
+        auto createBar    = [=](Node* parent, Color4B color){
+            auto bar      = Sprite::create("expProgress.png");
+            bar->setColor(Color3B(color.r, color.g, color.b));
+            auto progress = ProgressTimer::create(bar);
+            progress->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            progress->setPosition(parent->getContentSize() / 2);
+            progress->setMidpoint(Vec2(0, 0));
+            progress->setType(ProgressTimer::Type::BAR);
+            progress->setBarChangeRate(Vec2(1, 0));
+            progress->setOpacity(color.a);
+            parent->addChild(progress, -1);
+            return progress;
+        };
+        auto getPercent   = [=](float value, float max){
+            if(value != 0 && max != 0)
+                if(value >= max) return 100.f;
+            return (value / max) * 100.f;
+            return 0.f;
+        };
+        auto progressRun  = [=](ProgressTimer* bar, int max, int value, float duration){
+            bar->runAction(ProgressTo::create(duration, getPercent(value, max)));
+        };
+        auto currentLevel = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
+        auto currentEXP   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EXP);
+        auto content      = StringUtils::format("%s %d", resultContent[6].c_str(), currentLevel);
+        auto levelData    = CUserLevelDataManager::Instance()->getLevelDataByIndex(currentLevel);
+        scoreLayer.at(6)  = createMLayer(resultIcon[6], content, currentEXP, posArray[6], 50,
+                                         GVALUE->TOTAL_SCORE, // add exp
+                                         "+", false);
+        auto bar_1        = createBar(scoreLayer.at(6), Color4B(255, 223, 0, 255 * 0.4f));
+        auto bar_2        = createBar(scoreLayer.at(6), Color4B(255, 223, 0, 255));
+        progressRun(bar_1, levelData._levelExp, currentEXP + GVALUE->TOTAL_SCORE, 2.f);
+        progressRun(bar_2, levelData._levelExp, currentEXP, 0.f);
+        
+        // get exp
+        CUserDataManager::Instance()->ExpAdd(GVALUE->TOTAL_SCORE);
+    }
     
     // update coin
     CUserDataManager::Instance()->CoinUpdate(GVALUE->COIN_SCORE);
     
-    // get exp
-    CUserDataManager::Instance()->ExpAdd(std::max(1, GVALUE->TOTAL_SCORE / 100));
-    
     // Check all of achievement.
-    bool achievementAll    = CAchievementDataManager::Instance()->CheckCompleteAll();
-    m_GoalPopupOpen = (GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT || achievementAll);
+    bool achievementAll = CAchievementDataManager::Instance()->CheckCompleteAll();
+    m_GoalPopupOpen     = (GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT || achievementAll);
     
     // create button lambda
-    auto createButton = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, bool visible){
+    auto createButton   = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, bool visible){
         auto button = CMyButton::create()
         ->addEventListener(callback)
         ->setButtonSingleUse(true)
@@ -396,8 +426,8 @@ bool CResultPopup::init()
                 sprite->runAction(spawn);
             };
             
-            for(int index = 0; index < scoreLayerArray.size(); index++){
-                action(scoreLayerArray.at(index), posDown.at(index));
+            for(int index = 0; index < scoreLayer.size(); index++){
+                action(scoreLayer.at(index), posDown.at(index));
             }
         }
         else {

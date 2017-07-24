@@ -6,6 +6,8 @@
 #include "../MyUI/Popup/EarnCoinPopup.h"
 #include "../json/json.h"
 #include "../DataManager/WorkshopItemDataManager.h"
+#include "../DataManager/CharacterDataManager.h"
+#include "../DataManager/UserLevelDataManager.hpp"
 #include "../Download/DownloadManager.h"
 #include "../SDKBOX/SDKBox.h"
 #include <algorithm>     /* qsort */
@@ -104,6 +106,25 @@ long long CUserDataManager::getFreeRewardTimestamp()
     return UserDefault::getInstance()->getDoubleForKey(crypto_key.c_str(), true);
 }
 
+float CUserDataManager::getItemValueByItemIndex(int itemIndex)
+{
+    auto skillIndex     = CWorkshopItemDataManager::Instance()->getSkillIndexByItemIndex(itemIndex);
+    return this->getItemValueBySkillIndex(skillIndex);
+}
+
+float CUserDataManager::getItemValueBySkillIndex(int skillIndex)
+{
+    auto characterIndex = this->getUserData_Number(USERDATA_KEY::CHARACTER);
+    auto characterValue = CCharacterDataManager::Instance()->getDefaultValueBySkillIndex(characterIndex, skillIndex);
+    
+    auto workShopLevel  = this->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
+                                                      skillIndex,
+                                                      USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
+                                                      0);
+    auto workShopData   = CWorkshopItemDataManager::Instance()->getItemDataByIndex(skillIndex);
+    auto userValue      = workShopData->_valuePerLevel * workShopLevel;
+    return characterValue + userValue;
+}
 
 #pragma mark -
 #pragma mark [ interface function getter ]
@@ -381,12 +402,14 @@ void CUserDataManager::ExpAdd(int exp)
     auto oldLevel = this->getUserData_Number(USERDATA_KEY::LEVEL);
     
     auto newExp   = oldExp + exp;
-    auto newlevel = std::max(0, newExp / 300);
-    
-    this->setUserData_Number(USERDATA_KEY::EXP, newExp);
-    
-    if(oldLevel < newlevel)
-        this->setUserData_Number(USERDATA_KEY::LEVEL, newlevel);
+    if(CUserLevelDataManager::Instance()->LevelUpCheck(oldLevel, newExp))
+    {
+        this->setUserData_Number(USERDATA_KEY::EXP, 0);
+        this->setUserData_Number(USERDATA_KEY::LEVEL, oldLevel + 1);
+    }
+    else{
+        this->setUserData_Number(USERDATA_KEY::EXP, newExp);
+    }
 }
 
 int CUserDataManager::getUserDataSequenceFromList(std::string key, int itemIndex)
