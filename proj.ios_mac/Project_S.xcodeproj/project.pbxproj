@@ -52,6 +52,14 @@
 		59315BAF1E92776E00337C1C /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59315BAB1E92776E00337C1C /* CharacterBullet.cpp */; };
 		5951815A1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595181581EF59CFD00CC1F18 /* SharePopup.cpp */; };
 		5951815B1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595181581EF59CFD00CC1F18 /* SharePopup.cpp */; };
+		598A41341F20D2AD00D567CB /* CharacterPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41321F20D2AD00D567CB /* CharacterPopup.cpp */; };
+		598A41351F20D2AD00D567CB /* CharacterPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41321F20D2AD00D567CB /* CharacterPopup.cpp */; };
+		598A41391F20D7B800D567CB /* CharacterPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */; };
+		598A413A1F20D7B800D567CB /* CharacterPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */; };
+		599B77C41F2262D40066D32E /* PlanetDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77C21F2262D40066D32E /* PlanetDataManager.cpp */; };
+		599B77C51F2262D40066D32E /* PlanetDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77C21F2262D40066D32E /* PlanetDataManager.cpp */; };
+		599B77C91F2661800066D32E /* UserLevelDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77C71F26617F0066D32E /* UserLevelDataManager.cpp */; };
+		599B77CA1F2661800066D32E /* UserLevelDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77C71F26617F0066D32E /* UserLevelDataManager.cpp */; };
 		59E1A5F51F129332003020B9 /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A5F41F129332003020B9 /* UnityAds.framework */; };
 		59E1A5F61F129332003020B9 /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A5F41F129332003020B9 /* UnityAds.framework */; };
 		59E1A6461F162E0A003020B9 /* FacebookManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A63D1F162E0A003020B9 /* FacebookManager.cpp */; };
@@ -271,7 +279,7 @@
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D6058910D05DD3D006BFB54 /* Project_S iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Project_S iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* LAVIAH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LAVIAH.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2E2940258CC385C9601CCDD4 /* sdkbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = sdkbox.framework; sourceTree = SOURCE_ROOT; };
@@ -290,7 +298,7 @@
 		503AE10417EB98FF00D1A890 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = mac/Prefix.pch; sourceTree = "<group>"; };
 		503AE11117EB99EE00D1A890 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		503AE11A17EB9C5A00D1A890 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		5087E76F17EB910900C73F5D /* Project_S Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Project_S Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5087E76F17EB910900C73F5D /* LAVIAH Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LAVIAH Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5087E77217EB970100C73F5D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		5087E77317EB970100C73F5D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		5087E77417EB970100C73F5D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
@@ -318,6 +326,14 @@
 		59315BAC1E92776E00337C1C /* CharacterBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterBullet.hpp; sourceTree = "<group>"; };
 		595181581EF59CFD00CC1F18 /* SharePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SharePopup.cpp; sourceTree = "<group>"; };
 		595181591EF59CFD00CC1F18 /* SharePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SharePopup.hpp; sourceTree = "<group>"; };
+		598A41321F20D2AD00D567CB /* CharacterPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterPopup.cpp; sourceTree = "<group>"; };
+		598A41331F20D2AD00D567CB /* CharacterPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterPopup.hpp; sourceTree = "<group>"; };
+		598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterPopupDP.cpp; sourceTree = "<group>"; };
+		598A41381F20D7B800D567CB /* CharacterPopupDP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterPopupDP.hpp; sourceTree = "<group>"; };
+		599B77C21F2262D40066D32E /* PlanetDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlanetDataManager.cpp; sourceTree = "<group>"; };
+		599B77C31F2262D40066D32E /* PlanetDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlanetDataManager.hpp; sourceTree = "<group>"; };
+		599B77C71F26617F0066D32E /* UserLevelDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UserLevelDataManager.cpp; sourceTree = "<group>"; };
+		599B77C81F2661800066D32E /* UserLevelDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UserLevelDataManager.hpp; sourceTree = "<group>"; };
 		59E1A5F41F129332003020B9 /* UnityAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UnityAds.framework; sourceTree = "<group>"; };
 		59E1A6221F14B7FF003020B9 /* Project_S iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Project_S iOS.entitlements"; sourceTree = "<group>"; };
 		59E1A63D1F162E0A003020B9 /* FacebookManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookManager.cpp; sourceTree = "<group>"; };
@@ -684,8 +700,8 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* Project_S iOS.app */,
-				5087E76F17EB910900C73F5D /* Project_S Mac.app */,
+				1D6058910D05DD3D006BFB54 /* LAVIAH.app */,
+				5087E76F17EB910900C73F5D /* LAVIAH Mac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -968,6 +984,10 @@
 				93706E7E1E7A6890009A2CA0 /* UserDataManager.h */,
 				93706E7F1E7A6890009A2CA0 /* WorkshopItemDataManager.cpp */,
 				93706E801E7A6890009A2CA0 /* WorkshopItemDataManager.h */,
+				599B77C21F2262D40066D32E /* PlanetDataManager.cpp */,
+				599B77C31F2262D40066D32E /* PlanetDataManager.hpp */,
+				599B77C71F26617F0066D32E /* UserLevelDataManager.cpp */,
+				599B77C81F2661800066D32E /* UserLevelDataManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -1134,6 +1154,10 @@
 				93706EEA1E7A6890009A2CA0 /* CharacterSelectPopup.h */,
 				93706EEB1E7A6890009A2CA0 /* CharacterSelectPopupDP.cpp */,
 				93706EEC1E7A6890009A2CA0 /* CharacterSelectPopupDP.h */,
+				598A41321F20D2AD00D567CB /* CharacterPopup.cpp */,
+				598A41331F20D2AD00D567CB /* CharacterPopup.hpp */,
+				598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */,
+				598A41381F20D7B800D567CB /* CharacterPopupDP.hpp */,
 				93706EED1E7A6890009A2CA0 /* EarnCoinPopup.cpp */,
 				93706EEE1E7A6890009A2CA0 /* EarnCoinPopup.h */,
 				93706EEF1E7A6890009A2CA0 /* GachaPopup.cpp */,
@@ -1259,9 +1283,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* Project_S iOS */ = {
+		1D6058900D05DD3D006BFB54 /* LAVIAH */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Project_S iOS" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "LAVIAH" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -1272,14 +1296,14 @@
 			dependencies = (
 				1AC6FB25180E99E1004C840B /* PBXTargetDependency */,
 			);
-			name = "Project_S iOS";
+			name = LAVIAH;
 			productName = iphone;
-			productReference = 1D6058910D05DD3D006BFB54 /* Project_S iOS.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* LAVIAH.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5087E73D17EB910900C73F5D /* Project_S Mac */ = {
+		5087E73D17EB910900C73F5D /* LAVIAH Mac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "Project_S Mac" */;
+			buildConfigurationList = 5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "LAVIAH Mac" */;
 			buildPhases = (
 				5087E74817EB910900C73F5D /* Resources */,
 				5087E75617EB910900C73F5D /* Sources */,
@@ -1290,9 +1314,9 @@
 			dependencies = (
 				1AC6FB16180E9959004C840B /* PBXTargetDependency */,
 			);
-			name = "Project_S Mac";
+			name = "LAVIAH Mac";
 			productName = iphone;
-			productReference = 5087E76F17EB910900C73F5D /* Project_S Mac.app */;
+			productReference = 5087E76F17EB910900C73F5D /* LAVIAH Mac.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1333,8 +1357,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* Project_S iOS */,
-				5087E73D17EB910900C73F5D /* Project_S Mac */,
+				1D6058900D05DD3D006BFB54 /* LAVIAH */,
+				5087E73D17EB910900C73F5D /* LAVIAH Mac */,
 			);
 		};
 /* End PBXProject section */
@@ -1423,6 +1447,7 @@
 				93706F4A1E7A6891009A2CA0 /* HSHUitlity.cpp in Sources */,
 				93706F4F1E7A6891009A2CA0 /* AchievementDataManager.cpp in Sources */,
 				93706F481E7A6891009A2CA0 /* AudioManager.cpp in Sources */,
+				598A41341F20D2AD00D567CB /* CharacterPopup.cpp in Sources */,
 				93706F531E7A6891009A2CA0 /* GradientDataManager.cpp in Sources */,
 				93706F931E7A6891009A2CA0 /* OptionMoreGamesPopup.cpp in Sources */,
 				93B7F4481EB81E1A0019D36C /* AchievementClearChecker.cpp in Sources */,
@@ -1482,6 +1507,7 @@
 				59E1A6481F162E0A003020B9 /* UnityAdsManager.cpp in Sources */,
 				93706F6C1E7A6891009A2CA0 /* MagnetEffect.cpp in Sources */,
 				93706F721E7A6891009A2CA0 /* Rocket.cpp in Sources */,
+				599B77C41F2262D40066D32E /* PlanetDataManager.cpp in Sources */,
 				93706F661E7A6891009A2CA0 /* StickBullet.cpp in Sources */,
 				93706F801E7A6891009A2CA0 /* HealthBarUI.cpp in Sources */,
 				93706F581E7A6891009A2CA0 /* UserDataManager.cpp in Sources */,
@@ -1497,12 +1523,14 @@
 				93706F711E7A6891009A2CA0 /* Player.cpp in Sources */,
 				93706F5C1E7A6891009A2CA0 /* BonusLetter.cpp in Sources */,
 				93706F541E7A6891009A2CA0 /* MoreGamesDataManager.cpp in Sources */,
+				599B77C91F2661800066D32E /* UserLevelDataManager.cpp in Sources */,
 				93783B901E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
 				93706F521E7A6891009A2CA0 /* FreeRewardManager.cpp in Sources */,
 				93706F4C1E7A6891009A2CA0 /* BulletDataManager.cpp in Sources */,
 				93706F551E7A6891009A2CA0 /* NetworkManager.cpp in Sources */,
 				93706F6E1E7A6891009A2CA0 /* Mover.cpp in Sources */,
 				93706F991E7A6891009A2CA0 /* ResultPopup.cpp in Sources */,
+				598A41391F20D7B800D567CB /* CharacterPopupDP.cpp in Sources */,
 				93706F981E7A6891009A2CA0 /* PausePopup.cpp in Sources */,
 				93706F861E7A6891009A2CA0 /* AchievementCompleteNoticePopup.cpp in Sources */,
 				93706F5D1E7A6891009A2CA0 /* Bullet.cpp in Sources */,
@@ -1547,9 +1575,12 @@
 			files = (
 				932C6B941E83A2710043BE02 /* FacebookRankPopupDP.cpp in Sources */,
 				5951815B1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */,
+				599B77CA1F2661800066D32E /* UserLevelDataManager.cpp in Sources */,
 				93783B911E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
 				59E1A64D1F162E0A003020B9 /* UnityAds_IOS.mm in Sources */,
+				598A41351F20D2AD00D567CB /* CharacterPopup.cpp in Sources */,
 				93706FD11E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
+				598A413A1F20D7B800D567CB /* CharacterPopupDP.cpp in Sources */,
 				93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
 				93B7F44D1EB843DD0019D36C /* AchievementPopup.cpp in Sources */,
@@ -1564,6 +1595,7 @@
 				59E1A6521F163E11003020B9 /* PlayManager.cpp in Sources */,
 				936D4CA21E9E2578003786E6 /* TutorialHelper.cpp in Sources */,
 				59E1A6491F162E0A003020B9 /* UnityAdsManager.cpp in Sources */,
+				599B77C51F2262D40066D32E /* PlanetDataManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1831,7 +1863,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Project_S iOS" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "LAVIAH" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -1840,7 +1872,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "Project_S Mac" */ = {
+		5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "LAVIAH Mac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5087E76D17EB910900C73F5D /* Debug */,
