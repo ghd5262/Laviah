@@ -1,5 +1,10 @@
 #include "MagnetEffect.h"
 #include "../Particle/Particles.h"
+#include "../DataManager/UserDataManager.h"
+#include "../DataManager/CharacterDataManager.h"
+#include "../Scene/GameScene.h"
+#include "../GameObject/ObjectManager.h"
+#include "../GameObject/Bullet/Bullet.h"
 
 using namespace cocos2d;
 
@@ -20,8 +25,8 @@ CMagnetEffect* CMagnetEffect::create()
 }
 
 CMagnetEffect::CMagnetEffect()
-: m_OriginBoundingRadius(0.f)
-, m_bMagnetAlive(false)
+: m_Particle(nullptr)
+, m_Texture(nullptr)
 , m_LimitTime(0.f)
 , m_Timer(0.f)
 , m_IntervalTimer(MAGNET_INTERVAL)
@@ -32,56 +37,56 @@ bool CMagnetEffect::init()
 {
     if (!Node::init()) return false;
     
-    scheduleUpdate();
+    this->scheduleUpdate();
     
-    m_pTexture = Sprite::create("barrier.png");
-    if (m_pTexture != nullptr){
-        m_pTexture->setAnchorPoint(Vec2(0.5f, 0.5f));
-        addChild(m_pTexture);
+    m_Texture = Sprite::create("barrier.png");
+    if (m_Texture != nullptr){
+        m_Texture->setAnchorPoint(Vec2(0.5f, 0.5f));
+        addChild(m_Texture);
     }
     
-    m_pTexture->setScale(0);
+    m_Texture->setScale(0);
     
     return true;
 }
 
-void CMagnetEffect::Execute(float delta)
+void CMagnetEffect::update(float delta)
 {
-    if (m_bMagnetAlive)
+    if(CObjectManager::Instance()->getIsGamePause()) return;
+    
+    m_Timer += delta;
+    m_IntervalTimer += delta;
+    
+    if (m_Timer > m_LimitTime) return;
+    
+    if (m_IntervalTimer > MAGNET_INTERVAL)
     {
-        m_Timer += delta;
-        m_IntervalTimer += delta;
+        m_Particle = CParticle_Explosion_2::create("fire.png");
+        m_Particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_Particle->setPosition(Vec2::ZERO);
+        m_Particle->setStartRadius(m_BoundingRadius);
+        m_Particle->setEndRadius(0);
+        m_Particle->setDuration(MAGNET_INTERVAL);
+        m_Particle->setTotalParticles(10);
+        m_Particle->setStartSize(10);
+        this->addChild(m_Particle, ZORDER::PLAYER);
         
-		if (m_Timer > m_LimitTime)
-            this->setMagnetAlive(false);
+        auto boundingSizeByPercent = ((m_BoundingRadius * 2.f) / m_Texture->getContentSize().width);
+        auto scaleDown = ScaleTo::create(MAGNET_INTERVAL - 0.2f, 0);
+        auto ease      = EaseOut::create(scaleDown, 0.3f);
+        auto scaleUp   = ScaleTo::create(0, boundingSizeByPercent);
+        auto sequence  = Sequence::createWithTwoActions(scaleUp, ease);
         
-        if (m_IntervalTimer > MAGNET_INTERVAL)
-        {
-			m_pParticle = CParticle_Explosion_2::create("fire.png");
-			if (m_pParticle != nullptr){
-				m_pParticle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-				m_pParticle->setPosition(Vec2::ZERO);
-				m_pParticle->setStartRadius(m_OriginBoundingRadius);
-				m_pParticle->setEndRadius(0);
-				m_pParticle->setDuration(MAGNET_INTERVAL);
-				m_pParticle->setTotalParticles(10);
-				m_pParticle->setStartSize(10);
-				addChild(m_pParticle, 101);
-			}
-			auto boundingSizeByPercent = (m_OriginBoundingRadius / m_pTexture->getContentSize().width) * 2;
-			m_pTexture->runAction(Sequence::create(
-				ScaleTo::create(0, boundingSizeByPercent), 
-				EaseOut::create(
-				ScaleTo::create(MAGNET_INTERVAL - 0.2f, 0), 0.3f), NULL));
-            m_IntervalTimer = 0.f;
-        }
+        m_Texture->runAction(sequence);
+        m_IntervalTimer = 0.f;
     }
 }
 
 void CMagnetEffect::GotMagnetItem(){
-    m_Timer = 0.f;
-    m_IntervalTimer = MAGNET_INTERVAL;
-    m_bMagnetAlive = true;
+    m_LimitTime      = CUserDataManager::Instance()->getItemValueBySkillIndex(3);
+    m_BoundingRadius = CUserDataManager::Instance()->getItemValueBySkillIndex(4);
+    m_Timer          = 0.f;
+    m_IntervalTimer  = MAGNET_INTERVAL;
 }
 
 

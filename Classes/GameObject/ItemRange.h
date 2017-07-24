@@ -1,12 +1,6 @@
 #pragma once
 #include "GameObject.h"
 
-namespace ITEMRANGE{
-	const float STAY_DISTANCE = 700.f;
-	const float STAY_DURATION = 0.5f;
-	const float TARGET_DISTANCE = 1600.f;
-	const float TARGET_DURATION = 0.5f;
-};
 
 class CItemRange : public CGameObject {
 public:
@@ -19,14 +13,7 @@ public:
 
     virtual void update(float delta) override;
 
-protected:
-    
-    //getter & setter
-	CC_SYNTHESIZE(bool, m_IsStayStatus, IsStayStatus);
-    
 private:
-	void stayTimeUP();
-
     CItemRange();
     virtual ~CItemRange(){}
     

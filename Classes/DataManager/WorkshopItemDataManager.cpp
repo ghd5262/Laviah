@@ -11,7 +11,7 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 	Json::Value root;
 	Json::Reader reader;
 
-	std::string strData = FileUtils::getInstance()->fullPathForFilename("workshopItemList.json");
+	std::string strData   = FileUtils::getInstance()->fullPathForFilename("workshopItemList.json");
 	std::string clearData = FileUtils::getInstance()->getStringFromFile(strData);
 	size_t pos = clearData.rfind("}");
 	clearData = clearData.substr(0, pos + 1);
@@ -24,23 +24,22 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 	}
 	CCLOG("workshopItemList JSON : \n %s\n", clearData.c_str());
 
-	const Json::Value itemArray = root["workshopitems"];
+	const Json::Value itemArray = root["workshopItems"];
 	for (unsigned int itemCount = 0; itemCount < itemArray.size(); ++itemCount)
 	{
 		const Json::Value valueItem = itemArray[itemCount];
 
 		auto param = new WORKSHOPITEM_PARAM();
 		
-		param->_idx				= valueItem["idx"].asInt();
-		param->_textureName		= valueItem["textureName"].asString();
-		param->_maxLevel		= valueItem["max_level"].asInt();
-		param->_valuePerLevel	= valueItem["value_per_level"].asDouble();
-		param->_isSelling		= valueItem["selling"].asBool();
+		param->_index         = valueItem["index"].asInt();
+        param->_itemIndex     = valueItem["itemIndex"].asInt();
+		param->_maxLevel      = valueItem["maxLevel"].asInt();
+		param->_valuePerLevel = valueItem["valuePerLevel"].asDouble();
+		param->_name          = StringUtils::format(WORKSHOP_DEFINE::NAME.c_str(),    param->_index);
+		param->_explain       = StringUtils::format(WORKSHOP_DEFINE::EXPLAIN.c_str(), param->_index);
+        param->_textureName   = StringUtils::format(WORKSHOP_DEFINE::TEXTURE.c_str(), param->_index);
 
-		param->_name			= StringUtils::format(WORKSHOP_DEFINE::NAME.c_str(), param->_idx);
-		param->_explain			= StringUtils::format(WORKSHOP_DEFINE::EXPLAIN.c_str(), param->_idx);
-
-		const Json::Value costPerLevelArray = valueItem["cost_per_level"];
+		const Json::Value costPerLevelArray = valueItem["cost"];
 
 		int i = 0;
 		for (auto costIdx : costPerLevelArray)
@@ -50,7 +49,7 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 			param->_costPerLevel.emplace_back(costIdx.asInt());
 		}
 
-        m_WorkshopItemList.emplace(std::pair<int, WORKSHOPITEM_PARAM*>(param->_idx, param));
+        m_WorkshopItemList.emplace(std::pair<int, WORKSHOPITEM_PARAM*>(param->_index, param));
 	}
 }
 
@@ -81,19 +80,21 @@ ITEM_LIST CWorkshopItemDataManager::getItemList()
     return m_WorkshopItemList;
 }
 
-ITEM_LIST CWorkshopItemDataManager::getSellingItemList()
+int CWorkshopItemDataManager::getSkillIndexByItemIndex(int itemIndex)
 {
-    return DATA_MANAGER_UTILS::getMapByFunc([=](const WORKSHOPITEM_PARAM* data){
-        return data->_isSelling;
+    auto list = DATA_MANAGER_UTILS::getMapByFunc([=](const WORKSHOPITEM_PARAM* data){
+        return (data->_itemIndex == itemIndex);
     }, m_WorkshopItemList);
-}
-
-float CWorkshopItemDataManager::getCurrentItemValue(int index)
-{
-    auto data  = this->getItemDataByIndex(index);
-    auto level = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
-                                                                     index,
-                                                                     USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
-                                                                     0);
-    return data->_valuePerLevel * level;
+    
+    if(list.size() <= 0){
+        CCLOG("Wrong item index : %d", itemIndex);
+        return 0;
+    }
+    
+    int index = 0;
+    for(auto data : list){
+        index = (data.second)->_index;
+        break;
+    }
+    return index;
 }

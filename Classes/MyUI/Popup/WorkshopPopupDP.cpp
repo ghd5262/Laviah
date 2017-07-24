@@ -28,7 +28,7 @@ bool CWorkshopPopupDP::init()
     
 //    auto currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem->_userDataKey);
     auto currentLevel = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
-                                                                            m_WorkshopItem->_idx,
+                                                                            m_WorkshopItem->_index,
                                                                             USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
                                                                             0);
     
@@ -138,14 +138,14 @@ void CWorkshopPopupDP::Buy(Node* sender)
 //    unsigned value = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem->_userDataKey);
     
     auto value = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
-                                                                     m_WorkshopItem->_idx,
+                                                                     m_WorkshopItem->_index,
                                                                      USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
                                                                      0);
     
     if (CUserDataManager::Instance()->CoinUpdate(-m_WorkshopItem->_costPerLevel.at(value))){
 		value += 1;
         CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::ITEM_LEVEL,
-                                                            m_WorkshopItem->_idx,
+                                                            m_WorkshopItem->_index,
                                                             USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
                                                             value);
         
@@ -164,7 +164,7 @@ void CWorkshopPopupDP::Buy(Node* sender)
         m_LevelProgressBar->UpdateProgress();
         
         // set current selected item idx
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::SELECT_ITEM, m_WorkshopItem->_idx);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::SELECT_ITEM, m_WorkshopItem->_index);
         
         // set current player data by item level
         CObjectManager::Instance()->ChangeCharacter();

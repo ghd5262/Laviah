@@ -10,22 +10,19 @@ public:
     static CMagnetEffect* create();
     
     void GotMagnetItem();
-    virtual void Execute(float delta) override;
+    virtual void update(float delta) override;
     
 protected:
     virtual bool init() override;
     
-    //getter & setter
-    CC_SYNTHESIZE(bool, m_bMagnetAlive, MagnetAlive);
-	CC_SYNTHESIZE(float, m_LimitTime, LimitTime);
-	CC_SYNTHESIZE(float, m_OriginBoundingRadius, OriginBoundingRadius);
 private:
     CMagnetEffect();
     virtual ~CMagnetEffect(){}
     
 private:
-    cocos2d::Sprite* m_pTexture;
+    cocos2d::ParticleSystemQuad* m_Particle;
+    cocos2d::Sprite* m_Texture;
     float m_Timer;
     float m_IntervalTimer;
-    cocos2d::ParticleSystemQuad* m_pParticle;
+    float m_LimitTime;
 };

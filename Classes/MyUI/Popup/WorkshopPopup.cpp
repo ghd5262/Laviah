@@ -51,10 +51,10 @@ bool CWorkshopPopup::init()
 		this->addChild(workShopLabel);
 	}
 
-	auto itemList = CWorkshopItemDataManager::Instance()->getSellingItemList();
-	Size dpSize = Size(1080, 200);
-	size_t dpDistance = 15;
-	float spawnCount = 4;
+	auto itemList       = CWorkshopItemDataManager::Instance()->getItemList();
+	Size dpSize         = Size(1080, 200);
+	size_t dpDistance   = 15;
+	float spawnCount    = 4;
 
 	unsigned currentItemIdx = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::SELECT_ITEM);
 
@@ -82,7 +82,7 @@ bool CWorkshopPopup::init()
 			itemDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 			listView->pushBackCustomItem(itemDP);
 
-			if (item->_idx == currentItemIdx){
+			if (item->_index == currentItemIdx){
 				currentItemDPIdx = dpIdx;
 			}
 			dpIdx++;
