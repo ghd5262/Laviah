@@ -336,7 +336,6 @@ void CRewardPopup::play()
 
 void CRewardPopup::end()
 {
-    CObjectManager::Instance()->MoveAction(MOVE_DIRECTION::MIDDLE);
     this->popupClose(1.3f);
 }
 

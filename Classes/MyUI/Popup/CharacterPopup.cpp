@@ -181,7 +181,7 @@ bool CCharacterPopup::init()
 
 void CCharacterPopup::end(){
     CCLOG("format popup End");
-    CObjectManager::Instance()->ZoomOutRank();
+    CObjectManager::Instance()->ZoomMoveMiddle();
     CGameScene::getGameScene()->MenuFadeIn();
     
     this->popupClose(1.3f);

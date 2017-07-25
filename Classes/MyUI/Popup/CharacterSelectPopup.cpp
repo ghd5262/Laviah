@@ -216,7 +216,7 @@ bool CCharacterSelectPopup::init()
 
 void CCharacterSelectPopup::End(Node* sender){
 	CCLOG("format popup End");
-    CObjectManager::Instance()->ZoomIn();
+    CObjectManager::Instance()->ZoomMoveMiddle();
     CGameScene::getGameScene()->MenuFadeIn();
     CMenuLayer::Instance()->setVisible(true);
 	this->popupClose(1.3f);

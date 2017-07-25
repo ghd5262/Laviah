@@ -62,12 +62,10 @@ public:
                cocos2d::Vec2 tPos,
                bool skip,
                std::function<void()> endListener = nullptr);
-    void ZoomIn();
-    void ZoomIn2();
-    void ZoomInRank();
-    void ZoomOutRank();
-    void MoveAction(MOVE_DIRECTION dir);
+    void ZoomMoveDown();
+    void ZoomMoveMiddle();
     void MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir);
+    void MoveAction(cocos2d::Node* owner, cocos2d::Vec2 pos);
     void GiantMode();
     void NormalMode();
     void InitTutorialStep();

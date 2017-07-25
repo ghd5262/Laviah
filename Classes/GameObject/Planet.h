@@ -24,7 +24,9 @@ public:
 	virtual void Execute(float delta = 0.f) override;
 
 	void Rotation(float speed);
-
+    void StartRotation();
+    void StopRotation();
+    
 	//getter & setter
     void setPlanetTexture(std::string textureName);
     void setPlanetParam(const PLANET* param);

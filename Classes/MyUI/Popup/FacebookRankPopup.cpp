@@ -160,7 +160,7 @@ bool CFacebookRankPopup::init()
 }
 
 void CFacebookRankPopup::End(Node* sender){
-    CObjectManager::Instance()->ZoomOutRank();
+    CObjectManager::Instance()->ZoomMoveMiddle();
     CGameScene::getGameScene()->MenuFadeIn();
     
     this->popupClose(1.3f);

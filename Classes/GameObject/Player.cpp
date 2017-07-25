@@ -81,31 +81,28 @@ void CPlayer::Clear()
     m_Texture->setRotation(0);
     m_Particle->setGravity(Vec2(0, -270));
     m_GiantScale = CUserDataManager::Instance()->getItemValueBySkillIndex(6);
+    m_Particle->setPosition(this->getPosition());
 }
 
 void CPlayer::GameStart()
 {
-    m_Particle->setPosition(this->getPosition());
-    if(!this->isVisible())
-    {
-        this->PlayerAlive();
-    }
-    else{
-        this->setVisible(true);
-        m_Life = m_MaxLife;
-    }
+    m_Life = m_MaxLife;
+        
+    this->setVisible(true);
+    this->setPlayerTexture(m_CharacterParam->_texture);
 }
     
 void CPlayer::PlayerAlive()
 {
+    m_Life = m_MaxLife;
+
     this->setVisible(false);
     this->createAliveParticle();
 	this->setPlayerTexture(m_CharacterParam->_texture);
     this->InvincibilityMode(INVINCIVILITY_TIME); // 1초간 무적 카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
     this->scheduleOnce([=](float delta){
         this->setVisible(true);
-        this->GameStart();
-	}, 1.5f, "PlayerAlive");
+	}, 1.f, "PlayerAlive");
 
 }
 
@@ -290,7 +287,7 @@ void CPlayer::createAliveParticle()
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());
-        particle->setStartRadius(160);
+        particle->setStartRadius(40);
         particle->setEndRadius(0);
         particle->setDuration(0.5f);
         CGameScene::getZoomLayer()->addChild(particle, ZORDER::PLAYER);

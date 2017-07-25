@@ -151,7 +151,7 @@ bool CGameScene::init()
 ////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
 //        rewardPopup->setIsPaidFeature(-1500);
 //        rewardPopup->setExitCallback([=](){
-//            CObjectManager::Instance()->ZoomIn();
+//            CObjectManager::Instance()->ZoomMoveMiddle();
 //            this->menuOpen();
 //        });
 //    });
@@ -181,14 +181,14 @@ void CGameScene::GameStart()
     this->clearData();
     this->GameResume();
     this->MenuFadeOut();
-//    this->pauseRotation();
     
     m_UILayer->setVisible(true);
     m_UILayer->setDefaultCallbackToTopAgain();
     
-    CObjectManager::Instance()->ZoomIn();
+    CObjectManager::Instance()->ZoomMoveMiddle();
     CObjectManager::Instance()->getPlayer()->GameStart();
     CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
+    CObjectManager::Instance()->getPlanet()->StopRotation();
     dynamic_cast<CFacebookRivalRankLayer*>( m_RivalRankLayer )->InitListView();
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
     
@@ -209,7 +209,7 @@ void CGameScene::GamePause()
 
 void CGameScene::GameResult()
 {
-    CObjectManager::Instance()->ZoomInRank();    
+    CObjectManager::Instance()->ZoomMoveDown();    
     this->createResultPopup();
     this->GamePause();
 }
@@ -240,36 +240,35 @@ void CGameScene::OpenGamePausePopup()
 void CGameScene::OpenGameMenuLayer()
 {
     this->ScreenFade([=](){
-        CObjectManager::Instance()->ZoomIn();
+        CObjectManager::Instance()->ZoomMoveMiddle();
         this->menuOpen();
     });
 }
 
 void CGameScene::OpenOptionPopup(int scrollIndex/* = 0*/)
 {
-    //    CObjectManager::Instance()->MoveAction(CGameScene::getZoomLayer(), MOVE_DIRECTION::RIGHT);
-    CObjectManager::Instance()->ZoomInRank();
+    CObjectManager::Instance()->ZoomMoveDown();
     this->createOptionPopup(scrollIndex);
     this->MenuFadeOut();
 }
 
 void CGameScene::OpenWorkshopPopup()
 {
-    CObjectManager::Instance()->ZoomInRank();
+    CObjectManager::Instance()->ZoomMoveDown();
     this->createWorkshopPopup();
     this->MenuFadeOut();
 }
 
 void CGameScene::OpenCharacterSelectPopup()
 {
-    CObjectManager::Instance()->ZoomInRank();
+    CObjectManager::Instance()->ZoomMoveDown();
     this->createCharacterSelectPopup();
     this->MenuFadeOut();
 }
 
 void CGameScene::OpenRankPopup()
 {
-    CObjectManager::Instance()->ZoomInRank();
+    CObjectManager::Instance()->ZoomMoveDown();
     this->createRankPopup();
     this->MenuFadeOut();
 }
@@ -329,7 +328,7 @@ void CGameScene::OpenFBTestPopup()
 
 void CGameScene::OpenAchievementPopup()
 {
-    CObjectManager::Instance()->ZoomInRank();
+    CObjectManager::Instance()->ZoomMoveDown();
     this->createAchievementPopup();
     this->MenuFadeOut();
 }
@@ -438,11 +437,14 @@ void CGameScene::Reward(std::function<void(bool)> exitCallback,
                         std::vector<sREWARD_DATA> list,
                         int cost/* = 0*/)
 {
-    CObjectManager::Instance()->MoveAction(MOVE_DIRECTION::DOWN);
+    CObjectManager::Instance()->MoveAction(m_PopupLayer, MOVE_DIRECTION::DOWN);
     
     CRewardPopup::create()
     ->AddRewardToList(list)
-    ->setExitCallback(exitCallback)
+    ->setExitCallback([=](bool isPlay){
+        exitCallback(isPlay);
+        CObjectManager::Instance()->MoveAction(m_PopupLayer, m_VisibleSize / 2);
+    })
     ->setIsPaidFeature(cost)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -467,6 +469,7 @@ void CGameScene::cleanGlobalData()
 void CGameScene::createPausePopup()
 {
     CPausePopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(m_PopupLayer, ZORDER::POPUP);
@@ -621,13 +624,12 @@ void CGameScene::menuOpen()
     //        this->createRandomCoin();
     this->getFreeReward();
     this->MenuFadeIn();
+    
     m_UILayer->setVisible(false);
     m_MenuLayer->setDefaultCallbackToTopAgain();
     CObjectManager::Instance()->getRocket()->ComebackHome();
-    
-//    m_ZoomLayer->scheduleOnce([=](float delta){
-//        this->resumeRotation();
-//    }, 1.3f, GAMESCENE_DEFINE::RESUME_ROTATION);
+    CObjectManager::Instance()->getPlanet()->StartRotation();
+    CObjectManager::Instance()->getPlayer()->setVisible(false);
 }
 
 void CGameScene::turnDownSound()
@@ -701,25 +703,6 @@ void CGameScene::getFreeReward()
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
 }
-
-void CGameScene::resumeRotation()
-{
-    if(!m_ZoomLayer) return;
-    if(m_ZoomLayer->getActionByTag(GAMESCENE_DEFINE::ROTATION_TAG)) return;
-    
-    auto rotation = RotateBy::create(120.f, 360);
-    auto repeat   = RepeatForever::create(rotation);
-    repeat->setTag(GAMESCENE_DEFINE::ROTATION_TAG);
-    m_ZoomLayer->runAction(repeat);
-}
-
-void CGameScene::pauseRotation()
-{
-    if(!m_ZoomLayer) return;
-
-    m_ZoomLayer->stopActionByTag(GAMESCENE_DEFINE::ROTATION_TAG);
-}
-
 
 // The following items are initialized only once.
 void CGameScene::initMemoryPool()
@@ -1094,31 +1077,31 @@ void CGameScene::intro()
         m_IntroUIList.clear();
     };
     
-    this->ScreenFade([=](){
-        
-        this->createIntroUI();
-        
-        CMyButton* skipBtn = CMyButton::create();
-        
-        auto introAction = [=](bool skip){
+    this->createIntroUI();
+    CMyButton* skipBtn = CMyButton::create();
+
+    auto introAction = [=](bool skip){
+        this->ScreenFade([=](){
+            
             uiListAction(skip);
             CObjectManager::Instance()->Intro(m_ZoomLayer, 14.5f, PLANET_DEFINE::MENU_POS, skip, [=](){            skipBtn->removeFromParent();
                 this->menuOpen();
                 uiListRemove();
             });
-        };
-        
-        skipBtn->addEventListener([=](Node* sender){
-            introAction(true);
-        })
-        ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-        ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, m_VisibleSize.width, m_VisibleSize.height))
-        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-        ->setButtonPosition(m_VisibleSize / 2)
-        ->setButtonSingleUse(true)
-        ->show(this);
-        
-        
-        introAction(false);
-    });
+            
+        });
+    };
+    
+    skipBtn->addEventListener([=](Node* sender){
+        introAction(true);
+    })
+    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, m_VisibleSize.width, m_VisibleSize.height))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(m_VisibleSize / 2)
+    ->setButtonSingleUse(true)
+    ->show(this);
+    
+    
+    introAction(false);
 }

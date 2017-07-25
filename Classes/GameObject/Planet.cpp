@@ -50,7 +50,7 @@ bool CPlanet::init()
 
 void CPlanet::Clear()
 {
-    this->setRotation(0);
+//    this->setRotation(0);
 }
 
 void CPlanet::Crushed()
@@ -82,3 +82,20 @@ void CPlanet::setPlanetParam(const PLANET* param)
     m_PlanetParam = param;
     this->setPlanetTexture(m_PlanetParam->_planetTexture);
 }
+
+void CPlanet::StartRotation()
+{
+    if(this->getActionByTag(100)) return;
+    
+    auto rotation = RotateBy::create(120.f, 360);
+    auto repeat   = RepeatForever::create(rotation);
+    repeat->setTag(100);
+    this->runAction(repeat);
+}
+
+void CPlanet::StopRotation()
+{
+    this->stopActionByTag(100);
+//    this->setRotation(0);
+}
+

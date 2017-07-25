@@ -10,7 +10,8 @@
 #include "../../SDKBOX/SDKBox.h"
 #include <array>
 
-CPausePopup::CPausePopup(){}
+CPausePopup::CPausePopup()
+: m_AchievementBG(nullptr){}
 
 CPausePopup::~CPausePopup(){}
 
@@ -41,37 +42,40 @@ bool CPausePopup::init()
     
 //    this->createRewardBox();
     
-    auto pauseBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
-	if (pauseBG != nullptr){
-		pauseBG->setIgnoreAnchorPointForPosition(false);
-		pauseBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		pauseBG->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f));
-		this->addChild(pauseBG);
+    m_AchievementBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
+	if (m_AchievementBG != nullptr){
+		m_AchievementBG->setIgnoreAnchorPointForPosition(false);
+		m_AchievementBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_AchievementBG->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f));
+		this->addChild(m_AchievementBG);
 	}
     
     this->initAchievementList();
 
 	std::string btnImageName[] = {
-		"homeButton.png",
-		"restartButton.png",
+		"homeIcon.png",
+		"resetIcon.png",
 		"playButton.png",
 		"playIcon.png",
 		"exitButton.png"
 	};
 
 	std::array<Vec2, 5> btnStartPosArray = {
-		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.85f),
-		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.7f),
-		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.55f),
+//		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.85f),
+//		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.7f),
+//		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.55f),
+        Vec2(this->getContentSize().width * 0.68f, this->getContentSize().height * 0.05f),
+        Vec2(this->getContentSize().width * 0.80f, this->getContentSize().height * 0.05f),
+        Vec2(this->getContentSize().width * 0.92f, this->getContentSize().height * 0.05f),
 		Vec2(this->getContentSize().width * 0.92f, this->getContentSize().height * 0.05f),
 		Vec2(this->getContentSize().width * 0.08f, this->getContentSize().height * 0.05f)
 	};
 
-	std::array<Vec2, 3> btnOriginPosArray = {
-		Vec2(pauseBG->getContentSize().width * 0.15f, pauseBG->getContentSize().height * 0.85f),
-		Vec2(pauseBG->getContentSize().width * 0.15f, pauseBG->getContentSize().height * 0.7f),
-		Vec2(pauseBG->getContentSize().width * 0.15f, pauseBG->getContentSize().height * 0.55f)
-	};
+//	std::array<Vec2, 3> btnOriginPosArray = {
+//		Vec2(pauseBG->getContentSize().width * 0.15f, pauseBG->getContentSize().height * 0.85f),
+//		Vec2(pauseBG->getContentSize().width * 0.15f, pauseBG->getContentSize().height * 0.7f),
+//		Vec2(pauseBG->getContentSize().width * 0.15f, pauseBG->getContentSize().height * 0.55f)
+//	};
 
 	auto createButton = [=](const std::function<void(Node*)> &callback, std::string imageName, Vec2 pos)->CMyButton*{
 		return CMyButton::create()
@@ -82,8 +86,8 @@ bool CPausePopup::init()
 			->setButtonPosition(pos);
 	};
 	
-	auto btnHome = createButton([=](Node* sender){ this->GoHome(sender); }, btnImageName[0], btnStartPosArray[0])->show(pauseBG);
-	auto btnReset = createButton([=](Node* sender){ this->Reset(sender); }, btnImageName[1], btnStartPosArray[1])->show(pauseBG);
+	auto btnHome = createButton([=](Node* sender){ this->GoHome(sender); }, btnImageName[0], btnStartPosArray[0])->show(this);
+	auto btnReset = createButton([=](Node* sender){ this->Reset(sender); }, btnImageName[1], btnStartPosArray[1])->show(this);
 //	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[2], btnStartPosArray[2])->show(pauseBG);
 	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[3], btnStartPosArray[3])->show(this);
 	btnPlay->setOpacity(0);
@@ -99,29 +103,34 @@ bool CPausePopup::init()
 		this->addChild(btnUserCoin);
 	}
     
-    CAchievementProgressBar::create()
-    ->setBarBGColor(COLOR::TRANSPARENT_ALPHA)
-    ->setBarColor(COLOR::GOLD)
-    ->setBarAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM)
-    ->setBarPosition(Vec2(pauseBG->getContentSize().width * 0.5f, 0))
-    ->setLabelVisible(false)
-    ->show(pauseBG);
+//    CAchievementProgressBar::create()
+//    ->setBarBGColor(COLOR::TRANSPARENT_ALPHA)
+//    ->setBarColor(COLOR::GOLD)
+//    ->setBarAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM)
+//    ->setBarPosition(Vec2(pauseBG->getContentSize().width * 0.5f, 0))
+//    ->setLabelVisible(false)
+//    ->show(pauseBG);
 
     this->setOpenAnimation([=](Node* sender){
 
-		auto action = [=](Node* sender, Vec2 pos){
-			auto delayAction = DelayTime::create(0.1f);
-			auto moveAction = MoveTo::create(1.f, pos);
-			auto exponentialAction = EaseExponentialOut::create(moveAction);
-			auto sequence = Sequence::createWithTwoActions(delayAction, exponentialAction);
-			sender->runAction(sequence);
-		};
-
-		action(btnHome, btnOriginPosArray[0]);
-		action(btnReset, btnOriginPosArray[1]);
+//		auto action = [=](Node* sender, Vec2 pos){
+//			auto delayAction = DelayTime::create(0.1f);
+//			auto moveAction = MoveTo::create(1.f, pos);
+//			auto exponentialAction = EaseExponentialOut::create(moveAction);
+//			auto sequence = Sequence::createWithTwoActions(delayAction, exponentialAction);
+//			sender->runAction(sequence);
+//		};
+//
+//		action(btnHome, btnOriginPosArray[0]);
+//		action(btnReset, btnOriginPosArray[1]);
 		//			action(btnPlay, 0.55f);
 
-		pauseBG->runAction(EaseExponentialOut::create(MoveTo::create(0.5f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.86f))));
+        auto move = MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.86f));
+        auto ease = EaseExponentialOut::create(move);
+		m_AchievementBG->runAction(ease);
+        
+        btnHome->runAction(FadeIn::create(0.5f));
+        btnReset->runAction(FadeIn::create(0.5f));
 		btnExit->runAction(FadeIn::create(0.5f));
 		btnPlay->runAction(FadeIn::create(0.5f));
 		btnUserCoin->runAction(FadeIn::create(0.5f));
@@ -129,26 +138,26 @@ bool CPausePopup::init()
 
 	this->setCloseAnimation([=](Node* sender){
 
-		auto action = [=](Node* sender, Vec2 pos){
-			auto moveAction = MoveTo::create(0.4f, pos);
-			auto easeAction = EaseSineIn::create(moveAction);
-			sender->runAction(easeAction);
-		};
+//		auto action = [=](Node* sender, Vec2 pos){
+//			auto moveAction = MoveTo::create(0.4f, pos);
+//			auto easeAction = EaseSineIn::create(moveAction);
+//			sender->runAction(easeAction);
+//		};
 
-		action(btnHome, btnStartPosArray[0]);
-		action(btnReset, btnStartPosArray[1]);
+//		action(btnHome, btnStartPosArray[0]);
+//		action(btnReset, btnStartPosArray[1]);
 //		action(btnPlay, 0.55f);
 
-		this->scheduleOnce([=](float delta){
-
-			btnExit->runAction(FadeTo::create(0.5f, 0));
-			btnPlay->runAction(FadeTo::create(0.5f, 0));
-			btnUserCoin->runAction(FadeTo::create(0.5f, 0));
-			pauseBG->runAction(Sequence::create(
-				EaseSineIn::create(
-				MoveTo::create(0.3f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f))), NULL));
-		}, 0.1f, "PausePopupClose");
-
+        auto move = MoveTo::create(0.3f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f));
+        auto ease = EaseSineIn::create(move);
+        m_AchievementBG->runAction(ease);
+        
+        btnHome->runAction(FadeTo::create(0.5f, 0));
+        btnReset->runAction(FadeTo::create(0.5f, 0));
+        btnExit->runAction(FadeTo::create(0.5f, 0));
+        btnPlay->runAction(FadeTo::create(0.5f, 0));
+        btnUserCoin->runAction(FadeTo::create(0.5f, 0));
+			
         for (auto dp : m_AchievementList){
             if(dp == nullptr) continue;
             
@@ -228,22 +237,23 @@ void CPausePopup::initAchievementList()
 
 void CPausePopup::createAchievementDP(const ACHIEVEMENT* data, int posIndex)
 {
-    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Size visibleSize = m_AchievementBG->getContentSize();
     Vec2 posArray[] = {
+        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.75f),
         Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f),
-        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.425f),
-        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.35f)
+        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.25f)
     };
     
     auto dp = CGoalPopupDP::create(*data, posIndex)
     ->addSkipEventListner([=](CGoalPopupDP* sender, int posIdx){
         this->Skip(sender, posIdx);
     })
+    ->setOpenAnimation(nullptr)
     ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(posArray[posIndex])
-    ->show(this, ZORDER::POPUP);
+    ->show(m_AchievementBG);
     dp->setColor(COLOR::DARKGRAY);
     m_AchievementList.at(posIndex) = dp;
 }

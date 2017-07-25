@@ -199,12 +199,19 @@ bool CMenuLayer::init()
     // start button
     auto startBtn = CMyButton::create()
     ->addEventListener([=](Node* sender){
-        CGameScene::getGameScene()->GameStart();
+        dynamic_cast<CMyButton*>(sender)->setTouchEnable(false);
+        CGameScene::getGameScene()->ScreenFade([=](){
+            dynamic_cast<CMyButton*>(sender)->setTouchEnable(true);
+            CGameScene::getGameScene()->GameStart();
+        });
     })
-    ->setContents(TRANSLATE("BUTTON_MENU_START"))
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height * 0.3f))
+    ->setContents(TRANSLATE("BUTTON_MENU_START"), Vec2(0.5f, 0.5f))
+    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f))
     ->show(this);
+    startBtn->setSwallowTouches(false);
     
     CTranslateManager::Instance()->addTranslateEventListener([=](){
         startBtn->changeContents(TRANSLATE("BUTTON_MENU_START"));
@@ -237,10 +244,10 @@ void CMenuLayer::AchievementButtonState(bool enable, bool newIcon/* = false*/)
 
 bool CMenuLayer::TouchBegan(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
 {
-	Point touchLocation = pTouch->getLocationInView();
-	touchLocation = Director::getInstance()->convertToGL(touchLocation);
-	CGameScene::getGameScene()->setTouchPos(convertToNodeSpace(touchLocation));
-	CObjectManager::Instance()->getRocket()->ChangeState(CFlyToTouchArea::Instance());
+//	Point touchLocation = pTouch->getLocationInView();
+//	touchLocation = Director::getInstance()->convertToGL(touchLocation);
+//	CGameScene::getGameScene()->setTouchPos(convertToNodeSpace(touchLocation));
+//	CObjectManager::Instance()->getRocket()->ChangeState(CFlyToTouchArea::Instance());
 
 	return true;
 }

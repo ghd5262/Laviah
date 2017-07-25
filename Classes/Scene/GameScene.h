@@ -98,8 +98,6 @@ private:
     void turnUpSound();
     void startTutorial();
     void getFreeReward();
-    void resumeRotation();
-    void pauseRotation();
     
     // The following items are initialized only once.
     void initMemoryPool();

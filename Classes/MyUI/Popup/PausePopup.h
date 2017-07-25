@@ -28,4 +28,5 @@ private:
     
 private:
     std::vector<CPopup*> m_AchievementList;
+    cocos2d::LayerColor* m_AchievementBG;
 };

@@ -192,7 +192,7 @@ COptionPopup* COptionPopup::setInitialScrollIndex(int index)
 
 void COptionPopup::End(Node* sender){
     CCLOG("format popup End");
-    CObjectManager::Instance()->ZoomOutRank();
+    CObjectManager::Instance()->ZoomMoveMiddle();
     CGameScene::getGameScene()->MenuFadeIn();
     
     this->popupClose(1.3f);

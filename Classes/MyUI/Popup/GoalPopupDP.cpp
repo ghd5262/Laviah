@@ -29,7 +29,6 @@ bool CGoalPopupDP::init()
 
 	float delayTime = m_PosIndex * 0.4f;
 	this->setCascadeColorEnabled(true);
-	this->setOpacity(0);
 	this->setContentSize(Size(1080, 270));
     
 	auto popupSize = this->getContentSize();
@@ -119,6 +118,7 @@ bool CGoalPopupDP::init()
 		auto delayAction  = DelayTime::create(delayTime + 0.3f);
 		auto fadeInAction = FadeIn::create(0.5f);
 		auto sequence     = Sequence::createWithTwoActions(delayAction, fadeInAction);
+        this->setOpacity(0);
 		this->runAction(sequence);
     });
     

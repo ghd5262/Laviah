@@ -103,7 +103,7 @@ void CObjectManager::Clear()
     m_LevelTimer = 0.f;
     m_BulletPatternPaddingLimit = 0.f;
     GVALUE->STAGE_LEVEL = 0;
-    m_SpeedController->setScale(1.f);
+    m_SpeedController->setScale(0.f);
 	m_IsGamePause = true;
     m_BulletCreator->Clear();
     m_Planet->Clear();
@@ -231,7 +231,7 @@ void CObjectManager::Intro(Node* obj,
 {
     float delayTime = 2.5f;
     if(skip) {
-        duration    *= 0.15f;
+        duration    = 0.0f;
         delayTime   = 0.f;
     }
     obj->stopActionByTag(100);
@@ -249,58 +249,35 @@ void CObjectManager::Intro(Node* obj,
     obj->runAction(sequence);
 }
 
-void CObjectManager::ZoomIn()
-{
-    this->zoom(CGameScene::getZoomLayer(),
-               PLANET_DEFINE::MENU_POS,
-               0,
-               PLANET_DEFINE::MENU_SIZE,
-               1.2f,
-               true);
-    m_Rocket->setVisible(true);
-    m_Player->setVisible(true);
-}
-
-void CObjectManager::ZoomIn2()
-{
-    this->zoom(CGameScene::getZoomLayer(),
-               PLANET_DEFINE::SELECT_POS,
-               0,
-               PLANET_DEFINE::SELECT_SIZE,
-               1.2f,
-               true);
-    m_Rocket->setVisible(false);
-}
-
-void CObjectManager::ZoomInRank()
+void CObjectManager::ZoomMoveDown()
 {
     this->MoveAction(CGameScene::getZoomLayer(), MOVE_DIRECTION::DOWN);
     m_Rocket->setVisible(false);
 }
 
-void CObjectManager::ZoomOutRank()
+void CObjectManager::ZoomMoveMiddle()
 {
     this->MoveAction(CGameScene::getZoomLayer(), MOVE_DIRECTION::MIDDLE);
     m_Rocket->setVisible(true);
-}
-
-void CObjectManager::MoveAction(MOVE_DIRECTION dir)
-{
-    this->MoveAction(CGameScene::getPopupLayer(), dir);
 }
 
 void CObjectManager::MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir)
 {
     auto winSize    = Director::getInstance()->getWinSize();
     Vec2 posArray[] = {
-        Vec2( -winSize.width * 0.5f,  winSize.height * 0.5f),
-        Vec2(  winSize.width * 1.5f,  winSize.height * 0.5f),
+        Vec2( -winSize.width * 0.5f,  900.f),
+        Vec2(  winSize.width * 1.5f,  900.f),
         Vec2(  winSize.width * 0.5f,  winSize.height * 1.5f),
-        Vec2(  winSize.width * 0.5f, -winSize.height * 0.5f),
-        Vec2(  winSize.width * 0.5f,  winSize.height * 0.5f),
+        Vec2(  winSize.width * 0.5f, -900.f),
+        Vec2(  winSize.width * 0.5f,  900.f),
     };
     
-    this->zoom(owner, posArray[dir], -1, 1.f, 1.2f, true);
+    this->MoveAction(owner, posArray[dir]);
+}
+
+void CObjectManager::MoveAction(cocos2d::Node* owner, cocos2d::Vec2 pos)
+{
+    this->zoom(owner, pos, -1, 1.f, 1.2f, true);
 }
 
 void CObjectManager::GiantMode()

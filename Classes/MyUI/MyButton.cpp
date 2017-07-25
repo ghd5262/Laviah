@@ -93,7 +93,8 @@ CMyButton* CMyButton::show(Node* parent, int zOrder/* = 0*/)
             m_ContentsLabel->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
         }
         m_ContentsLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_ContentsLabel->setPosition(this->getContentSize() / 2);
+        m_ContentsLabel->setPosition(Vec2(this->getContentSize().width * m_ContentAlignment.x,
+                                          this->getContentSize().height * m_ContentAlignment.y));
         m_ContentsLabel->setColor(m_FontColor);
         this->addChild(m_ContentsLabel);
     }
@@ -192,10 +193,10 @@ CMyButton* CMyButton::setButtonSingleUse(bool singleUse)
     return this;
 }
 
-CMyButton* CMyButton::setContents(std::string contents)
+CMyButton* CMyButton::setContents(std::string contents, cocos2d::Vec2 alignment/* = ANCHOR_MIDDLE*/)
 {
     m_Contents = contents;
-    
+    m_ContentAlignment = alignment;
     return this;
 }
 
