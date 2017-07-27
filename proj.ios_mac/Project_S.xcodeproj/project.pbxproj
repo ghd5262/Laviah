@@ -60,6 +60,12 @@
 		599B77C51F2262D40066D32E /* PlanetDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77C21F2262D40066D32E /* PlanetDataManager.cpp */; };
 		599B77C91F2661800066D32E /* UserLevelDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77C71F26617F0066D32E /* UserLevelDataManager.cpp */; };
 		599B77CA1F2661800066D32E /* UserLevelDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77C71F26617F0066D32E /* UserLevelDataManager.cpp */; };
+		599B77CD1F27E1CE0066D32E /* CharacterCostumePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77CB1F27E1CE0066D32E /* CharacterCostumePopup.cpp */; };
+		599B77CE1F27E1CE0066D32E /* CharacterCostumePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77CB1F27E1CE0066D32E /* CharacterCostumePopup.cpp */; };
+		599B77D11F27E26D0066D32E /* CharacterCostumePopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77CF1F27E26D0066D32E /* CharacterCostumePopupDP.cpp */; };
+		599B77D21F27E26D0066D32E /* CharacterCostumePopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77CF1F27E26D0066D32E /* CharacterCostumePopupDP.cpp */; };
+		599B77D51F27EEEC0066D32E /* CostumeDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77D31F27EEEC0066D32E /* CostumeDataManager.cpp */; };
+		599B77D61F27EEEC0066D32E /* CostumeDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77D31F27EEEC0066D32E /* CostumeDataManager.cpp */; };
 		59E1A5F51F129332003020B9 /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A5F41F129332003020B9 /* UnityAds.framework */; };
 		59E1A5F61F129332003020B9 /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A5F41F129332003020B9 /* UnityAds.framework */; };
 		59E1A6461F162E0A003020B9 /* FacebookManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A63D1F162E0A003020B9 /* FacebookManager.cpp */; };
@@ -334,6 +340,12 @@
 		599B77C31F2262D40066D32E /* PlanetDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlanetDataManager.hpp; sourceTree = "<group>"; };
 		599B77C71F26617F0066D32E /* UserLevelDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UserLevelDataManager.cpp; sourceTree = "<group>"; };
 		599B77C81F2661800066D32E /* UserLevelDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UserLevelDataManager.hpp; sourceTree = "<group>"; };
+		599B77CB1F27E1CE0066D32E /* CharacterCostumePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterCostumePopup.cpp; sourceTree = "<group>"; };
+		599B77CC1F27E1CE0066D32E /* CharacterCostumePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterCostumePopup.hpp; sourceTree = "<group>"; };
+		599B77CF1F27E26D0066D32E /* CharacterCostumePopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterCostumePopupDP.cpp; sourceTree = "<group>"; };
+		599B77D01F27E26D0066D32E /* CharacterCostumePopupDP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterCostumePopupDP.hpp; sourceTree = "<group>"; };
+		599B77D31F27EEEC0066D32E /* CostumeDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CostumeDataManager.cpp; sourceTree = "<group>"; };
+		599B77D41F27EEEC0066D32E /* CostumeDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CostumeDataManager.hpp; sourceTree = "<group>"; };
 		59E1A5F41F129332003020B9 /* UnityAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UnityAds.framework; sourceTree = "<group>"; };
 		59E1A6221F14B7FF003020B9 /* Project_S iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Project_S iOS.entitlements"; sourceTree = "<group>"; };
 		59E1A63D1F162E0A003020B9 /* FacebookManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookManager.cpp; sourceTree = "<group>"; };
@@ -988,6 +1000,8 @@
 				599B77C31F2262D40066D32E /* PlanetDataManager.hpp */,
 				599B77C71F26617F0066D32E /* UserLevelDataManager.cpp */,
 				599B77C81F2661800066D32E /* UserLevelDataManager.hpp */,
+				599B77D31F27EEEC0066D32E /* CostumeDataManager.cpp */,
+				599B77D41F27EEEC0066D32E /* CostumeDataManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -1158,6 +1172,10 @@
 				598A41331F20D2AD00D567CB /* CharacterPopup.hpp */,
 				598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */,
 				598A41381F20D7B800D567CB /* CharacterPopupDP.hpp */,
+				599B77CB1F27E1CE0066D32E /* CharacterCostumePopup.cpp */,
+				599B77CC1F27E1CE0066D32E /* CharacterCostumePopup.hpp */,
+				599B77CF1F27E26D0066D32E /* CharacterCostumePopupDP.cpp */,
+				599B77D01F27E26D0066D32E /* CharacterCostumePopupDP.hpp */,
 				93706EED1E7A6890009A2CA0 /* EarnCoinPopup.cpp */,
 				93706EEE1E7A6890009A2CA0 /* EarnCoinPopup.h */,
 				93706EEF1E7A6890009A2CA0 /* GachaPopup.cpp */,
@@ -1459,6 +1477,7 @@
 				93706F4D1E7A6891009A2CA0 /* BulletPatternDataManager.cpp in Sources */,
 				93706F5E1E7A6891009A2CA0 /* ItemBubble.cpp in Sources */,
 				93706F8A1E7A6891009A2CA0 /* CharacterSelectPopupDP.cpp in Sources */,
+				599B77D11F27E26D0066D32E /* CharacterCostumePopupDP.cpp in Sources */,
 				936D4CA11E9E2578003786E6 /* TutorialHelper.cpp in Sources */,
 				93706F611E7A6891009A2CA0 /* PlayCoin.cpp in Sources */,
 				93706F841E7A6891009A2CA0 /* ComboScore.cpp in Sources */,
@@ -1471,6 +1490,7 @@
 				93706F9D1E7A6891009A2CA0 /* VideoPopup.cpp in Sources */,
 				93706F571E7A6891009A2CA0 /* TranslateManager.cpp in Sources */,
 				93706F941E7A6891009A2CA0 /* OptionMusicPopup.cpp in Sources */,
+				599B77CD1F27E1CE0066D32E /* CharacterCostumePopup.cpp in Sources */,
 				93706FA71E7A6891009A2CA0 /* UserCoinButton.cpp in Sources */,
 				93706F681E7A6891009A2CA0 /* BulletCreator.cpp in Sources */,
 				932C6B991E89FC640043BE02 /* FacebookRivalRankLayer.cpp in Sources */,
@@ -1540,6 +1560,7 @@
 				93706FD01E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
 				93706FA11E7A6891009A2CA0 /* ScoreUI.cpp in Sources */,
 				93706FA21E7A6891009A2CA0 /* SpeechBubble.cpp in Sources */,
+				599B77D51F27EEEC0066D32E /* CostumeDataManager.cpp in Sources */,
 				93706F4B1E7A6891009A2CA0 /* StringUtility.cpp in Sources */,
 				93706F851E7A6891009A2CA0 /* MyButton.cpp in Sources */,
 				93706F9C1E7A6891009A2CA0 /* TitleCompleteNoticePopup.cpp in Sources */,
@@ -1576,13 +1597,16 @@
 				932C6B941E83A2710043BE02 /* FacebookRankPopupDP.cpp in Sources */,
 				5951815B1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */,
 				599B77CA1F2661800066D32E /* UserLevelDataManager.cpp in Sources */,
+				599B77CE1F27E1CE0066D32E /* CharacterCostumePopup.cpp in Sources */,
 				93783B911E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
 				59E1A64D1F162E0A003020B9 /* UnityAds_IOS.mm in Sources */,
 				598A41351F20D2AD00D567CB /* CharacterPopup.cpp in Sources */,
 				93706FD11E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
+				599B77D61F27EEEC0066D32E /* CostumeDataManager.cpp in Sources */,
 				598A413A1F20D7B800D567CB /* CharacterPopupDP.cpp in Sources */,
 				93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
+				599B77D21F27E26D0066D32E /* CharacterCostumePopupDP.cpp in Sources */,
 				93B7F44D1EB843DD0019D36C /* AchievementPopup.cpp in Sources */,
 				59E1A64B1F162E0A003020B9 /* UnityAds_Android.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
