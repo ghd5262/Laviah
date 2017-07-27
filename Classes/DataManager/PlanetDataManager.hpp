@@ -45,11 +45,11 @@ public:
     
     PLANET_LIST getPlanetList(){ return m_PlanetList; };
     const PLANET* getPlanetByIndex(int index) const;
-    
+    const PLANET* getCurPlanet() const;
+
 private:
     void initWithJson(PLANET_LIST &list, std::string fileName);
     void addPlanetToList(const Json::Value& json);
-    void addTexturePackToCache(std::string fileName);
     
     CPlanetDataManager();
     virtual ~CPlanetDataManager();

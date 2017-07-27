@@ -67,7 +67,7 @@ bool CRocket::init()
     m_FlyLimitMax = visibleSize.width * 0.9f;
     m_FlyLimitMin = visibleSize.width * 0.1f;
     
-    m_RocketParam = CObjectManager::Instance()->getRocketParam();
+    m_RocketParam = CRocketDataManager::Instance()->getCurRocket();
     m_Texture = Sprite::createWithSpriteFrameName(m_RocketParam->_textureName);
     if (m_Texture != nullptr){
         this->setContentSize(m_Texture->getContentSize());

@@ -1,6 +1,7 @@
 #include "PlanetDataManager.hpp"
 #include "UserDataManager.h"
 #include "DataManagerUtils.h"
+#include "CharacterDataManager.h"
 
 using namespace cocos2d;
 
@@ -41,24 +42,6 @@ void CPlanetDataManager::initWithJson(PLANET_LIST &list, std::string fileName)
         this->addPlanetToList(planet);
 }
 
-void CPlanetDataManager::addTexturePackToCache(std::string fileName)
-{
-    if(fileName == "") return;
-
-    std::string texturepackPNG = MakeString("%s.png", fileName.c_str());
-    std::string texturepackPLIST = MakeString("%s.plist", fileName.c_str());
-
-    auto util = FileUtils::getInstance();
-    auto spriteFrameCache = SpriteFrameCache::getInstance();
-
-    if (util->isFileExist(texturepackPNG) && util->isFileExist(texturepackPLIST))
-    {
-        if (!spriteFrameCache->isSpriteFramesWithFileLoaded(texturepackPLIST)){
-            spriteFrameCache->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
-        }
-    }
-}
-
 void CPlanetDataManager::addPlanetToList(const Json::Value& json)
 {
     auto data      = new PLANET();
@@ -73,7 +56,7 @@ void CPlanetDataManager::addPlanetToList(const Json::Value& json)
     data->_standBulletTexture   = StringUtils::format(PLANET_DEFINE::STICK_BULLET.c_str(),   data->_index);
     data->_texturePack          = StringUtils::format(PLANET_DEFINE::TEXTURE_PACK.c_str(),   data->_index);
     
-    this->addTexturePackToCache(data->_texturePack);
+    CCharacterDataManager::addTexturePackToCache(data->_texturePack);
     m_PlanetList.emplace(std::pair<int, const PLANET*>(data->_index, data));
 }
 
@@ -86,4 +69,10 @@ const PLANET* CPlanetDataManager::getPlanetByIndex(int index) const
         return nullptr;
     }
     return data->second;
+}
+
+const PLANET* CPlanetDataManager::getCurPlanet() const
+{
+    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+    return this->getPlanetByIndex(currentPlanet);
 }

@@ -31,7 +31,7 @@ enum ACHIEVEMENT_STATE{
 
 enum USERDATA_PARAM_ACHIEVEMENT_HIDDEN{
     HIDDEN_LEVEL = 0,
-     HIDDEN_STATE= 1,
+    HIDDEN_STATE = 1,
 };
 
 class CAchievementClearChecker;

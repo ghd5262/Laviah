@@ -38,7 +38,9 @@ public:
     void OpenGameMenuLayer();
     void OpenOptionPopup(int scrollIndex = 0);
     void OpenWorkshopPopup();
-    void OpenCharacterSelectPopup();
+    void OpenCharacterPopup();
+    void OpenCostumePopup(const VOID_CALLBACK& callback,
+                          int index);
     void OpenRankPopup();
     void OpenRankUpPopup();
     void OpenPermRequestPopup(const VOID_CALLBACK& callback);
@@ -86,7 +88,9 @@ private:
     void createExitPopup(bool resume);
     void createOptionPopup(int index);
     void createWorkshopPopup();
-    void createCharacterSelectPopup();
+    void createCharacterPopup();
+    void createCostumePopup(const VOID_CALLBACK& callback,
+                            int index);
     void createRankPopup();
     void createRankUpPopup();
     void createAchievementPopup();

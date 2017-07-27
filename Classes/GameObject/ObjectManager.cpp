@@ -14,6 +14,7 @@
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/RocketDataManager.hpp"
 #include "../DataManager/PlanetDataManager.hpp"
+#include "../DataManager/CostumeDataManager.hpp"
 #include "../DataManager/BulletPatternDataManager.h"
 #include "../SDKBOX/SDKBox.h"
 #include "../MyUI/Tutorial/TutorialHelper.hpp"
@@ -172,34 +173,31 @@ void CObjectManager::SpeedControl(float duration, float speed, bool force/* = fa
 
 void CObjectManager::ChangeCharacter()
 {
-    auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
-    m_CharacterParam = CCharacterDataManager::Instance()->getCharacterByIndex(index);
-    
-    if(m_Player)
-        m_Player->setCharacterParam(m_CharacterParam);
+    m_CharacterParam = CCharacterDataManager::Instance()->getCurCharacter();
+    if(m_Player) m_Player->setCharacterParam(m_CharacterParam);
+    this->ChangeCostume();
+}
+
+void CObjectManager::ChangeCostume()
+{
+    auto character = CCharacterDataManager::Instance()->getCurCharacter();
+    auto index     = character->_index;
+    m_CostumeParam = CCostumeDataManager::Instance()->getCurCostumeByCharacter(index);
+    if(m_Player) m_Player->setCostumeParam(m_CostumeParam);
 }
 
 void CObjectManager::ChangeRocket()
 {
-    auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::ROCKET);
-    m_RocketParam = CRocketDataManager::Instance()->getRocketByIndex(index);
-    
-    if(m_Rocket)
-        m_Rocket->setRocketParam(m_RocketParam);
+    m_RocketParam = CRocketDataManager::Instance()->getCurRocket();
+    if(m_Rocket) m_Rocket->setRocketParam(m_RocketParam);
 }
 
 void CObjectManager::ChangePlanet()
 {
-    auto index = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
-    m_PlanetParam = CPlanetDataManager::Instance()->getPlanetByIndex(index);
-    
-    if(m_Planet)
-        m_Planet->setPlanetParam(m_PlanetParam);
-    
-    if(m_BulletCreator)
-        m_BulletCreator->setPlanetInfo(m_PlanetParam);
+    m_PlanetParam = CPlanetDataManager::Instance()->getCurPlanet();
+    if(m_Planet)        m_Planet->setPlanetParam(m_PlanetParam);
+    if(m_BulletCreator) m_BulletCreator->setPlanetInfo(m_PlanetParam);
 }
-
 
 void CObjectManager::StartBonusTime()
 {

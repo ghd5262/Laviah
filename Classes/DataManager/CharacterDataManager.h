@@ -7,6 +7,7 @@
 namespace CHARACTER_DEFINE {
 	static const std::string NAME         = "CHARACTER_NAME_%d";
     static const std::string TEXTURE      = "character_texture_%d.png";
+    static const std::string TEXTURE_600  = "character_texture_600_%d.png";
     static const std::string TEXTURE_PACK = "character_texture_pack_%d";
 }
 
@@ -25,6 +26,7 @@ struct CHARACTER{
     int _level;
     std::string _name;
     std::string _texture;
+    std::string _texture_600;
     std::string _texturePack;
     SKILL_LIST _skillList;
     
@@ -33,6 +35,7 @@ struct CHARACTER{
     , _level(0)
     , _name("")
     , _texture("")
+    , _texture_600("")
     , _texturePack(""){
         _skillList.clear();
     };
@@ -48,13 +51,16 @@ public:
     CHARACTER_LIST getCharacterList(){ return m_CharacterList; };
     const CHARACTER* getCharacterByIndex(int index) const;
 	const CHARACTER* getNewRandomCharacter();
+    const CHARACTER* getCurCharacter();
+
     float getDefaultValueBySkillIndex(int index, int skillIdx);
+    
+    static void addTexturePackToCache(std::string fileName);
     
 private:
     void initWithJson(CHARACTER_LIST &list, std::string fileName);
     void addCharacterToList(const Json::Value& json);
     void addSkillToCharacter(SKILL_LIST& list, const Json::Value& json);
-    void addTexturePackToCache(std::string fileName);
     
 	const CHARACTER* getNewRandomCharacterFromList(CHARACTER_LIST &list);
 	CHARACTER_LIST getNonCollectedCharacterList();

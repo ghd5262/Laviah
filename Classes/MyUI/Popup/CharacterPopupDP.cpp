@@ -1,6 +1,7 @@
 #include "CharacterPopupDP.hpp"
 #include "../MyButton.h"
 #include "../../DataManager/UserDataManager.h"
+#include "../../DataManager/CostumeDataManager.hpp"
 
 CCharacterPopupDP* CCharacterPopupDP::create(const CHARACTER* character)
 {
@@ -32,11 +33,19 @@ bool CCharacterPopupDP::init()
     this->addChild(layer);
     
     
-    m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character->_texture.c_str());
+    m_CharacterImg = Sprite::createWithSpriteFrameName(m_Character->_texture_600.c_str());
     m_CharacterImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_CharacterImg->setPosition(layerSize / 2);
-    m_CharacterImg->setScale(4.f);
+    m_CharacterImg->setScale(1.5f);
     this->addChild(m_CharacterImg);
+    
+    auto data = CCostumeDataManager::Instance()->getCurCostumeByCharacter(m_Character->_index);
+    m_CostumeOriginIndex = data->_index;
+    m_CostumeImg = Sprite::createWithSpriteFrameName(data->_texture_600.c_str());
+    m_CostumeImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_CostumeImg->setPosition(layerSize / 2);
+    m_CostumeImg->setScale(1.5f);
+    this->addChild(m_CostumeImg);
     
     if (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL) < m_Character->_level){
         m_CharacterImg->setColor(COLOR::DARKGRAY);
@@ -45,15 +54,20 @@ bool CCharacterPopupDP::init()
     return true;
 }
 
-void CCharacterPopupDP::Buy()
+void CCharacterPopupDP::ChangeCostume()
 {
-    if (CUserDataManager::Instance()->CoinUpdate(-0)){
-        
-        // USER Data Save
-        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Character->_index);
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Character->_index);
-        
-        // change color to white
-        m_CharacterImg->setColor(Color3B::WHITE);
-    }
+    if(!m_CostumeImg) return;
+    
+    m_CostumeImg->setVisible(true);
+    auto data = CCostumeDataManager::Instance()->getCurCostumeByCharacter(m_Character->_index);
+    if(m_CostumeOriginIndex == data->_index) return;
+    
+    m_CostumeOriginIndex = data->_index;
+    m_CostumeImg->setSpriteFrame(data->_texture_600);
+}
+
+void CCharacterPopupDP::CostumeOff()
+{
+    if(!m_CostumeImg) return;
+    m_CostumeImg->setVisible(false);
 }

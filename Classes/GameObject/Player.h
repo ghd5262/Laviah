@@ -23,6 +23,7 @@ namespace PLAYER_DEFINE{
     = cocos2d::Vec2(540, 960 + (PLANET_DEFINE::BOUNDING_RADIUS) + (PLAYER_DEFINE::NORMAL_BOUNDING_RADIUS * 0.8f));
 };
 
+struct COSTUME;
 class CScoreUI;
 class CItemRange;
 class CPlayer : public CGameObject {
@@ -76,7 +77,7 @@ public:
     
 	//getter & setter
 	void setCharacterParam(const CHARACTER* data);
-
+    void setCostumeParam(const COSTUME* data);
 protected:
 	virtual bool init() override;
 
@@ -85,7 +86,7 @@ protected:
 	CC_SYNTHESIZE(float, m_MaxLife, MaxLife);
 	CC_SYNTHESIZE(float, m_Life, Life);
     CC_SYNTHESIZE(float, m_GiantScale, GiantScale);
-    CC_SYNTHESIZE_READONLY(cocos2d::Sprite*, m_Texture, Texture);
+//    CC_SYNTHESIZE_READONLY(cocos2d::Sprite*, m_Texture, Texture);
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
 
@@ -101,6 +102,9 @@ private:
 	std::shared_ptr<CStateMachine<CPlayer>> m_FSM;
 	cocos2d::ParticleSystemQuad* m_Particle;
 	const CHARACTER* m_CharacterParam;
+    const COSTUME* m_CostumeParam;
+    cocos2d::Sprite* m_Texture;
+    cocos2d::Sprite* m_Costume;
 	bool m_Invincibility;
 
 	// 영향을 받는 아이템 타입 

@@ -47,12 +47,13 @@ void CCharacterDataManager::addCharacterToList(const Json::Value& json)
     
     data->_index       = json["index"].asInt();
     data->_level       = json["openLevel"].asInt();
-    data->_name        = StringUtils::format(CHARACTER_DEFINE::NAME.c_str(),    data->_index);
-    data->_texture     = StringUtils::format(CHARACTER_DEFINE::TEXTURE.c_str(), data->_index);
+    data->_name        = StringUtils::format(CHARACTER_DEFINE::NAME.c_str(),         data->_index);
+    data->_texture     = StringUtils::format(CHARACTER_DEFINE::TEXTURE.c_str(),      data->_index);
+    data->_texture_600 = StringUtils::format(CHARACTER_DEFINE::TEXTURE_600.c_str(),  data->_index);
     data->_texturePack = StringUtils::format(CHARACTER_DEFINE::TEXTURE_PACK.c_str(), data->_index);
     
     this->addSkillToCharacter(data->_skillList, json["defaultSkill"]);
-    this->addTexturePackToCache(data->_texturePack);
+    CCharacterDataManager::addTexturePackToCache(data->_texturePack);
     
     m_CharacterList.emplace(std::pair<int, const CHARACTER*>(data->_index, data));
 }
@@ -103,6 +104,12 @@ const CHARACTER* CCharacterDataManager::getNewRandomCharacter()
 {
 	auto newList = getNonCollectedCharacterList();
 	return getNewRandomCharacterFromList(newList);
+}
+
+const CHARACTER* CCharacterDataManager::getCurCharacter()
+{
+    auto currentCharacter = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::CHARACTER);
+    return this->getCharacterByIndex(currentCharacter);
 }
 
 float CCharacterDataManager::getDefaultValueBySkillIndex(int index, int skillIdx)

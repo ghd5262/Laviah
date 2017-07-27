@@ -193,7 +193,7 @@ bool CMenuLayer::init()
     
     // character select button
     createButton([=](Node* sender){
-        CGameScene::getGameScene()->OpenCharacterSelectPopup();
+        CGameScene::getGameScene()->OpenCharacterPopup();
     }, "characterIcon.png", Vec2(popupSize.width * 0.44f, popupSize.height * 0.95f));
     
     // start button

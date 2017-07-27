@@ -72,6 +72,7 @@ bool CCharacterPopup::init()
         
         auto topBtn = Button::create("empty_150x150.png");
         topBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        topBtn->setCascadeOpacityEnabled(true);
         topBtn->addClickEventListener([=](Ref* sender){
             
             auto btn = dynamic_cast<Button*>(sender);
@@ -95,20 +96,23 @@ bool CCharacterPopup::init()
     this->addChild(btnUserCoin);
 
     
-    auto createButton = [=](const std::function<void(Node*)> &callback, std::string imageName, Vec2 pos)->CMyButton*{
+    auto createButton = [=](const std::function<void(Node*)> &callback, std::string imageName, Vec2 pos, bool use = false){
         return CMyButton::create()
         ->addEventListener(callback)
-        ->setButtonSingleUse(true)
+        ->setButtonSingleUse(use)
         ->setButtonNormalImage(imageName)
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(pos)
         ->show(this);
     };
     
-    auto btnEnd = createButton([=](Node* sender){
-        this->end();
-    }, "endIcon.png", Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f));
+    m_CostumeButton = createButton([=](Node* sender){
+        this->costume();
+    }, "costumeIcon.png", Vec2(layerSize.width * 0.08f, layerSize.height * 0.05f));
     
+    m_ExitButton = createButton([=](Node* sender){
+        this->end();
+    }, "endIcon.png", Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f), true);
     
     m_SelectButton = CMyButton::create()
     ->addEventListener([=](Node* sender){
@@ -119,6 +123,18 @@ bool CCharacterPopup::init()
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f))
     ->show(this);
+    
+    // costume button disable.
+    CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        m_CostumeButton->setTouchEnable(false);
+    }, eMYBUTTON_STATE::BEGIN)
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height * 0.8f))
+    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f))
+    ->show(this)
+    ->setSwallowTouches(false);
     
     // create explain bg
 //    auto explainBG = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, layerSize.width * 0.9f, layerSize.height * 0.2f);
@@ -147,10 +163,11 @@ bool CCharacterPopup::init()
             owner->runAction(sequence);
         };
         
-        action(btnEnd);
         action(btnUserCoin);
+        action(m_ExitButton);
         action(m_SelectButton);
-        
+        action(m_CostumeButton);
+
         auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
         auto easeAction = EaseExponentialInOut::create(moveAction);
         
@@ -164,9 +181,10 @@ bool CCharacterPopup::init()
     }, 1.2f);
     
     this->setCloseAnimation([=](Node* sender){
-        btnEnd->runAction(FadeTo::create(0.3f, 0));
         btnUserCoin->runAction(FadeTo::create(0.3f, 0));
+        m_ExitButton->runAction(FadeTo::create(0.3f, 0));
         m_SelectButton->runAction(FadeTo::create(0.3f, 0));
+        m_CostumeButton->runAction(FadeTo::create(0.3f, 0));
 
         bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
                                                                              layerSize.height * 1.5f))));
@@ -197,6 +215,32 @@ void CCharacterPopup::select()
         CObjectManager::Instance()->ChangeCharacter();
     }
     this->end();
+}
+
+void CCharacterPopup::costume()
+{
+    if(!m_ContentScrollView) return;
+    auto center        = m_ContentScrollView->getCenterItemInCurrentView();
+    auto centerIdx     = m_ContentScrollView->getIndex(center);
+    auto centerChild   = m_ContentScrollView->getChildren().at(centerIdx);
+    auto centerBG      = dynamic_cast<Widget*>(centerChild);
+    auto centerContent = dynamic_cast<CCharacterPopupDP*>(centerBG->getChildByTag(100));
+    if (centerContent == nullptr) return;
+    
+    m_TitleScrollView->runAction(FadeTo::create(0.3f, 0));
+    m_CostumeButton->runAction(FadeTo::create(0.3f, 0));
+    m_SelectButton->runAction(FadeTo::create(0.3f, 0));
+    m_ExitButton->runAction(FadeTo::create(0.3f, 0));
+    centerContent->CostumeOff();
+    
+    CGameScene::getGameScene()->OpenCostumePopup([=](){
+        m_TitleScrollView->runAction(FadeIn::create(0.3f));
+        m_CostumeButton->runAction(FadeIn::create(0.3f));
+        m_SelectButton->runAction(FadeIn::create(0.3f));
+        m_ExitButton->runAction(FadeIn::create(0.3f));
+        centerContent->ChangeCostume();
+        
+    }, m_CurrentData->_index);
 }
 
 void CCharacterPopup::TitleScrollCallback(cocos2d::Ref* ref, ScrollView::EventType type)
@@ -250,6 +294,9 @@ void CCharacterPopup::ContentScrollCallback(cocos2d::Ref* ref, PageView::EventTy
     
     m_SelectButton->setTouchEnable(selectable);
     m_SelectButton->changeContents(text);
+    
+    // enable costume button
+    m_CostumeButton->setTouchEnable(selectable);
 
     // scroll title view
     m_TitleScrollView->scrollToItem(centerIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, .5f);
@@ -265,6 +312,7 @@ cocos2d::ui::ListView* CCharacterPopup::createListView(Size size, size_t distanc
     listView->setItemsMargin(distance);
     listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     listView->setPosition(pos);
+    listView->setCascadeOpacityEnabled(true);
     listView->setMagneticType(ListView::MagneticType::CENTER);
     listView->ScrollView::addEventListener((ListView::ccScrollViewCallback)CC_CALLBACK_2(CCharacterPopup::TitleScrollCallback, this));
     return listView;

@@ -23,6 +23,7 @@ enum MOVE_DIRECTION{
 struct PLANET;
 struct CHARACTER;
 struct sROCKET_PARAM;
+struct COSTUME;
 
 class CBullet;
 class CPlanet;
@@ -53,6 +54,7 @@ public:
     void ChangeCharacter();
     void ChangeRocket();
     void ChangePlanet();
+    void ChangeCostume();
     void ChangeState(CState<CObjectManager>* newState)
     { m_FSM->ChangeState(newState); };
     void StartBonusTime();
@@ -113,6 +115,7 @@ public:
     CC_SYNTHESIZE(const CHARACTER*, m_CharacterParam, CharacterParam);
     CC_SYNTHESIZE(const sROCKET_PARAM*, m_RocketParam, RocketParam);
     CC_SYNTHESIZE(const PLANET*, m_PlanetParam, PlanetParam);
+    CC_SYNTHESIZE(const COSTUME*, m_CostumeParam, CostumeParam);
     CC_SYNTHESIZE(bool, m_PhotoShareAble, PhotoShareAble);
     CC_SYNTHESIZE(bool, m_SlowMotionAble, SlowMotionAble);
     

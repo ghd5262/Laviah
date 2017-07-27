@@ -1,6 +1,7 @@
 #include "RocketDataManager.hpp"
 #include "UserDataManager.h"
 #include "DataManagerUtils.h"
+#include "CharacterDataManager.h"
 
 using namespace cocos2d;
 
@@ -55,25 +56,7 @@ void CRocketDataManager::addRocketTexturePack(const Json::Value& array)
     for (unsigned int itemCount = 0; itemCount < array.size(); ++itemCount)
     {
         auto normalTexturePackName = array[itemCount].asString();
-        this->addTexturePackToCache(normalTexturePackName);
-    }
-}
-
-void CRocketDataManager::addTexturePackToCache(std::string fileName)
-{
-    if(fileName == "") return;
-    
-    std::string texturepackPNG = MakeString("%s.png", fileName.c_str());
-    std::string texturepackPLIST = MakeString("%s.plist", fileName.c_str());
-    
-    auto util = FileUtils::getInstance();
-    auto spriteFrameCache = SpriteFrameCache::getInstance();
-    
-    if (util->isFileExist(texturepackPNG) && util->isFileExist(texturepackPLIST))
-    {
-        if (!spriteFrameCache->isSpriteFramesWithFileLoaded(texturepackPLIST)){
-            spriteFrameCache->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
-        }
+        CCharacterDataManager::addTexturePackToCache(normalTexturePackName);
     }
 }
 
@@ -119,6 +102,12 @@ const sROCKET_PARAM* CRocketDataManager::getNewRandomRocket()
 {
     auto newList = getNonCollectedRocketList();
     return getNewRandomRocketFromList(newList);
+}
+
+const sROCKET_PARAM* CRocketDataManager::getCurRocket()
+{
+    auto currentRocket = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::ROCKET);
+    return this->getRocketByIndex(currentRocket);
 }
 
 const sROCKET_PARAM* CRocketDataManager::getNewRandomRocketFromList(ROCKET_LIST &list)

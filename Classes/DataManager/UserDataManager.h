@@ -55,6 +55,7 @@ namespace USERDATA_KEY {
     const std::string CURRENT_LANGUAGE          = "USER_CURRENT_LANGUAGE";
     
     const std::string CHARACTER_LIST            = "USER_CHARACTER_LIST";
+    const std::string COSTUME_LIST              = "USER_COSTUME_LIST";
     const std::string ROCKET_LIST               = "USER_ROCKET_LIST";
     const std::string PET_LIST                  = "USER_PET_LIST";
 
@@ -62,6 +63,7 @@ namespace USERDATA_KEY {
     const std::string HIDDEN_CLEAR_COUNT        = "USER_HIDDEN_ACHIEVEMENT_COUNT";
     
     const std::string ITEM_LEVEL                = "USER_ITEM_LEVEL";
+    const std::string CHARACTER_COSTUME         = "USER_CHARACTER_COSTUME";
     const std::string NORMAL_ACHIEVEMENT_LIST   = "USER_NORMAL_ACHIEVEMENT_LIST";
     const std::string HIDDEN_ACHIEVEMENT_LIST   = "USER_HIDDEN_ACHIEVEMENT_LIST";
 };

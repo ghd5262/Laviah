@@ -33,6 +33,7 @@
 #include "../MyUI/Popup/WorkshopPopup.h"
 #include "../MyUI/Popup/CharacterSelectPopup.h"
 #include "../MyUI/Popup/CharacterPopup.hpp"
+#include "../MyUI/Popup/CharacterCostumePopup.hpp"
 #include "../MyUI/Popup/GameEndPopup.hpp"
 #include "../MyUI/Popup/FacebookAPITestPopup.hpp"
 #include "../MyUI/Popup/FacebookRankPopup.hpp"
@@ -53,10 +54,6 @@
 
 USING_NS_CC;
 
-namespace GAMESCENE_DEFINE {
-    static int ROTATION_TAG = 1000;
-    static std::string RESUME_ROTATION = "RESUME_ROTATION";
-}
 
 CGameScene* CGameScene::m_GameScene = nullptr;
 cocos2d::Layer* CGameScene::m_ZoomLayer = nullptr;
@@ -259,10 +256,18 @@ void CGameScene::OpenWorkshopPopup()
     this->MenuFadeOut();
 }
 
-void CGameScene::OpenCharacterSelectPopup()
+void CGameScene::OpenCharacterPopup()
 {
     CObjectManager::Instance()->ZoomMoveDown();
-    this->createCharacterSelectPopup();
+    this->createCharacterPopup();
+    this->MenuFadeOut();
+}
+
+void CGameScene::OpenCostumePopup(const VOID_CALLBACK& callback,
+                                  int index)
+{
+    CObjectManager::Instance()->ZoomMoveDown();
+    this->createCostumePopup(callback, index);
     this->MenuFadeOut();
 }
 
@@ -568,9 +573,21 @@ void CGameScene::createWorkshopPopup()
     ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
-void CGameScene::createCharacterSelectPopup()
+void CGameScene::createCharacterPopup()
 {
     CCharacterPopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(m_PopupLayer, ZORDER::POPUP);
+}
+
+void CGameScene::createCostumePopup(const VOID_CALLBACK& callback,
+                                    int index)
+{
+    CCharacterCostumePopup::create()
+    ->setExitCallback(callback)
+    ->setCharacter(index)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
@@ -758,8 +775,6 @@ void CGameScene::createBackground()
 
 void CGameScene::createPlanet()
 {
-    CObjectManager::Instance()->ChangePlanet();
-
     auto planet = CPlanet::create();
     planet->setPosition(m_VisibleSize / 2);
     planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -769,8 +784,6 @@ void CGameScene::createPlanet()
 
 void CGameScene::createPlayer()
 {
-    CObjectManager::Instance()->ChangeCharacter();
-
     auto player = CPlayer::create();
     player->setPosition(PLAYER_DEFINE::POSITION);
     player->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -780,9 +793,7 @@ void CGameScene::createPlayer()
 }
 
 void CGameScene::createRocket()
-{
-    CObjectManager::Instance()->ChangeRocket();
-    
+{    
     auto rocket = CRocket::create();
     rocket->setSpeed(ROCKET_DEFINE::SPEED);
     rocket->setDistance(ROCKET_DEFINE::FLYAROUND_DISTANCE);

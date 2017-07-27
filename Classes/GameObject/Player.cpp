@@ -10,6 +10,7 @@
 #include "../MyUI/ScoreUI.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/WorkshopItemDataManager.h"
+#include "../DataManager/CostumeDataManager.hpp"
 
 using namespace cocos2d;
 using namespace PLAYER_DEFINE;
@@ -32,7 +33,9 @@ CPlayer* CPlayer::create()
 
 CPlayer::CPlayer()
 : m_CharacterParam(nullptr)
+, m_CostumeParam(nullptr)
 , m_Texture(nullptr)
+, m_Costume(nullptr)
 , m_Angle(0.f)
 , m_MaxLife(0)
 , m_Life(0)
@@ -55,13 +58,21 @@ bool CPlayer::init()
     });
     this->ChangeState(CPlayerNormal::Instance());
     
-	m_CharacterParam = CObjectManager::Instance()->getCharacterParam();
+	m_CharacterParam = CCharacterDataManager::Instance()->getCurCharacter();
     m_Texture = Sprite::createWithSpriteFrameName(m_CharacterParam->_texture);
     if (m_Texture != nullptr){
         this->setContentSize(m_Texture->getContentSize());
         m_Texture->setPosition(this->getContentSize() / 2);
         m_Texture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		addChild(m_Texture);
+    }
+    
+    m_CostumeParam = CCostumeDataManager::Instance()->getCurCostumeByCharacter(m_CharacterParam->_index);
+    m_Costume = Sprite::createWithSpriteFrameName(m_CostumeParam->_texture);
+    if (m_Costume != nullptr){
+        m_Costume->setPosition(m_Texture->getContentSize() / 2);
+        m_Costume->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_Texture->addChild(m_Costume);
     }
     
     this->createRunParticle();
@@ -262,6 +273,12 @@ void CPlayer::setCharacterParam(const CHARACTER* data)
 {
 	m_CharacterParam = data;
     this->setPlayerTexture(m_CharacterParam->_texture);
+}
+
+void CPlayer::setCostumeParam(const COSTUME* data)
+{
+    m_CostumeParam = data;
+    if(m_Costume) m_Costume->setSpriteFrame(m_CostumeParam->_texture);
 }
 
 void CPlayer::setPlayerTexture(std::string textureName)

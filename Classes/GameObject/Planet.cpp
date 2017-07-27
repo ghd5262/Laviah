@@ -33,7 +33,7 @@ bool CPlanet::init()
 	//this->DrawDebugBinding();   //for debug
     if (!Node::init()) return false;
     
-	auto data = CObjectManager::Instance()->getPlanetParam();
+    auto data = CPlanetDataManager::Instance()->getCurPlanet();
 	m_Texture = Sprite::createWithSpriteFrameName(data->_planetTexture);
     if (m_Texture != nullptr){
 		this->setContentSize(m_Texture->getContentSize());
