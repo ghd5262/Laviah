@@ -39,7 +39,9 @@ bool COptionMusicPopup::init()
     layer->setPosition(this->getContentSize() / 2);
     this->addChild(layer);
     
-    auto createSlider = [=](std::function<void(int)> listener,
+    auto layerSize = layer->getContentSize();
+    
+    auto createSlider = [=](std::function<void(float)> listener,
                             std::string content,
                             Vec2 contentPos,
                             float percent,
@@ -48,7 +50,6 @@ bool COptionMusicPopup::init()
         auto label = Label::createWithSystemFont(content, FONT::MALGUNBD, 40);
         label->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
         label->setPosition(contentPos);
-//        label->setColor(COLOR::DARKGRAY);
         layer->addChild(label);
         
         auto volumeSlider = Slider::create();
@@ -69,36 +70,28 @@ bool COptionMusicPopup::init()
         layer->addChild(volumeSlider);
     };
     
-    m_BGMVolume     = int(CAudioManager::Instance()->getBGMVolume() * 100.f);
-    m_EffectVolume  = int(CAudioManager::Instance()->getEffectSoundVolume() * 100.f);
+    m_BGMVolume     = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME);
+    m_EffectVolume  = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME);
     
     
-    createSlider([&](int percent){
-        if(m_BGMVolume == percent) return;
-        
+    createSlider([&](float percent){
         m_BGMVolume = percent;
-        CAudioManager::Instance()->setBGMVolume(m_BGMVolume / 100.f);
-        CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_BGMVolume / 100.f);
+        CAudioManager::Instance()->setBGMVolume(m_BGMVolume);
+        CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_BGMVolume);
     }, TRANSLATE("OPTION_MUSIC_BGM"),
-                 Vec2(layer->getContentSize().width * 0.135f,
-                      layer->getContentSize().height * 0.8f),
-                 m_BGMVolume, Vec2(layer->getContentSize().width * 0.5f,
-                                   layer->getContentSize().height * 0.7f));
+                 Vec2(layerSize.width * 0.135f, layerSize.height * 0.8f), m_BGMVolume,
+                 Vec2(layerSize.width * 0.5f,   layerSize.height * 0.7f));
     
-    createSlider([&](int percent){
-        if(m_EffectVolume == percent) return;
-        
+    createSlider([&](float percent){
         m_EffectVolume = percent;
-        CAudioManager::Instance()->setEffectSoundVolume(m_EffectVolume / 100.f);
-        CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_EffectVolume / 100.f);
+        CAudioManager::Instance()->setEffectSoundVolume(m_EffectVolume);
+        CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_EffectVolume);
     }, TRANSLATE("OPTION_MUSIC_EFFECT"),
-                 Vec2(layer->getContentSize().width * 0.135f,
-                      layer->getContentSize().height * 0.5f),
-                 m_EffectVolume, Vec2(layer->getContentSize().width * 0.5f,
-                                      layer->getContentSize().height * 0.4f));
+                 Vec2(layerSize.width * 0.135f, layerSize.height * 0.5f), m_EffectVolume,
+                 Vec2(layerSize.width * 0.5f,   layerSize.height * 0.4f));
     
     this->setOnExitCallback([=](){
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BGM_VOLUME, m_BGMVolume);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BGM_VOLUME,    m_BGMVolume);
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::EFFECT_VOLUME, m_EffectVolume);
     });
     

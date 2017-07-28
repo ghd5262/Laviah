@@ -129,6 +129,7 @@ bool CCharacterPopup::init()
     ->addEventListener([=](Node* sender){
         m_CostumeButton->setTouchEnable(false);
     }, eMYBUTTON_STATE::BEGIN)
+    ->setEnableSound(false)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height * 0.8f))
     ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

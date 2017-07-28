@@ -205,6 +205,7 @@ bool CMenuLayer::init()
             CGameScene::getGameScene()->GameStart();
         });
     })
+    ->setEnableSound(false)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height * 0.3f))
     ->setContents(TRANSLATE("BUTTON_MENU_START"), Vec2(0.5f, 0.5f))
     ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)

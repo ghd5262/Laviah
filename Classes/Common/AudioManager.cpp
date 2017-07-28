@@ -32,8 +32,8 @@ void CAudioManager::Clear()
 {
 	AudioEngine::stopAll();
 	m_BGMID = 0;
-    m_BGMSoundVolume = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME) / 100.f;
-	m_EffectSoundVolume = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME) / 100.f;
+    m_BGMSoundVolume    = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME);
+	m_EffectSoundVolume = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME);
     this->EmptyCurrentPlayingList();
 }
 
@@ -52,7 +52,7 @@ void CAudioManager::PlayEffectSound(
 		audio->_nCount++;
         volume = volume != -1.f ? volume : m_EffectSoundVolume;
         //		volume = m_EffectSoundVolume != 1.f ? m_EffectSoundVolume : volume;
-		int id = AudioEngine::play2d(filePath, loop, volume, profile);
+		int id = AudioEngine::play2d(filePath, loop, volume / 100.f, profile);
 		AudioEngine::setFinishCallback(id, [this](int id, const std::string& path)
 		{
 			sAUDIO_INFO* temp;
@@ -69,13 +69,13 @@ void CAudioManager::PlayBGM(
 	const AudioProfile *profile/* = nullptr*/)
 {
     volume = volume != -1.f ? volume : m_BGMSoundVolume;
-	m_BGMID = AudioEngine::play2d(filePath, loop, volume, profile);
+	m_BGMID = AudioEngine::play2d(filePath, loop, volume / 100.f, profile);
 }
 
 void CAudioManager::setBGMVolume(float volume)
 {
     m_BGMSoundVolume = volume;
-	AudioEngine::setVolume(m_BGMID, volume);
+	AudioEngine::setVolume(m_BGMID, m_BGMSoundVolume / 100.f);
 }
 
 float CAudioManager::getBGMVolume()

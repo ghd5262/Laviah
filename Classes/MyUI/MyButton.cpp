@@ -15,7 +15,7 @@ CMyButton::CMyButton()
 , m_ButtonNormalImage("")
 , m_ButtonClickedImage("")
 , m_Contents("")
-, m_ClickBeganSound("")
+, m_ClickBeganSound("Click_2-1.mp3")
 , m_ClickEndedSound("")
 , m_FontColor(Color3B::WHITE)
 , m_FontSize(40)
@@ -316,9 +316,9 @@ bool CMyButton::onTouchBegan()
 
 	this->playButtonStartAnimation();
 
-	//this->playClickedSound(m_ClickBeganSound);
-	if (CAudioManager::Instance())
-		this->playClickedSound(CAudioManager::Instance()->PUBLIC_CLICK_SOUND.first);
+	this->playClickedSound(m_ClickBeganSound);
+//	if (CAudioManager::Instance())
+//		this->playClickedSound(CAudioManager::Instance()->PUBLIC_CLICK_SOUND.first);
 
     m_IsSelect = true;
 //    m_MultiTouchesDisable = true;
@@ -339,9 +339,9 @@ void CMyButton::onTouchEnded()
 	// 종료 이펙트
 	this->playButtonEndAnimation();
 	
-	//this->playClickedSound(m_ClickEndedSound);
-	if (CAudioManager::Instance())
-		this->playClickedSound(CAudioManager::Instance()->PUBLIC_CLICK_SOUND.second);
+//	this->playClickedSound(m_ClickEndedSound);
+//	if (CAudioManager::Instance())
+//		this->playClickedSound(CAudioManager::Instance()->PUBLIC_CLICK_SOUND.second);
 
     // 버튼 눌림 종료
     m_IsSelect = false;
@@ -354,9 +354,9 @@ void CMyButton::onTouchCancelled()
     // 종료 이펙트
 	this->playButtonEndAnimation();
 	
-	//this->playClickedSound(m_ClickEndedSound);
-	if (CAudioManager::Instance())
-		this->playClickedSound(CAudioManager::Instance()->PUBLIC_CLICK_SOUND.second);
+//	this->playClickedSound(m_ClickEndedSound);
+//	if (CAudioManager::Instance())
+//		this->playClickedSound(CAudioManager::Instance()->PUBLIC_CLICK_SOUND.second);
 
     // 버튼 눌림 종료
     m_IsSelect = false;

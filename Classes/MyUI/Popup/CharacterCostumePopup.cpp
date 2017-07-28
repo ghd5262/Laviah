@@ -116,7 +116,7 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
     }, 1.f);
     
     this->setCloseAnimation([=](Node* sender){
-//        m_ScrollView->runAction(FadeTo::create(0.3f, 0));
+        m_ScrollView->runAction(FadeTo::create(0.1f, 0));
 //        m_SelectButton->runAction(FadeTo::create(0.3f, 0));
 //        m_NameLabel->runAction(FadeTo::create(0.3f, 0));
 //        btnEnd->runAction(FadeTo::create(0.3f, 0));

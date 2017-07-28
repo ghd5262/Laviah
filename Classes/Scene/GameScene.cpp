@@ -641,7 +641,8 @@ void CGameScene::menuOpen()
     //        this->createRandomCoin();
     this->getFreeReward();
     this->MenuFadeIn();
-    
+    this->turnUpSound();
+
     m_UILayer->setVisible(false);
     m_MenuLayer->setDefaultCallbackToTopAgain();
     CObjectManager::Instance()->getRocket()->ComebackHome();
@@ -652,19 +653,19 @@ void CGameScene::menuOpen()
 void CGameScene::turnDownSound()
 {
     auto userBGMVolume      = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME);
-    auto userEffectVolume   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME);
+//    auto userEffectVolume   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME);
     
-    CAudioManager::Instance()->setBGMVolume((userBGMVolume / 100.f) * 0.1f);
-    CAudioManager::Instance()->setEffectSoundVolume((userEffectVolume / 100.f) * 0.1f);
+    CAudioManager::Instance()->setBGMVolume(userBGMVolume * 0.1f);
+//    CAudioManager::Instance()->setEffectSoundVolume(userEffectVolume * 0.1f);
 }
 
 void CGameScene::turnUpSound()
 {
     auto userBGMVolume      = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME);
-    auto userEffectVolume   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME);
+//    auto userEffectVolume   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME);
     
-    CAudioManager::Instance()->setBGMVolume((userBGMVolume / 100.f));
-    CAudioManager::Instance()->setEffectSoundVolume((userEffectVolume / 100.f));
+    CAudioManager::Instance()->setBGMVolume(userBGMVolume);
+//    CAudioManager::Instance()->setEffectSoundVolume(userEffectVolume);
 }
 
 void CGameScene::initKeyboardListener()
@@ -1106,6 +1107,7 @@ void CGameScene::intro()
     skipBtn->addEventListener([=](Node* sender){
         introAction(true);
     })
+    ->setEnableSound(false)
     ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, m_VisibleSize.width, m_VisibleSize.height))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

@@ -37,6 +37,7 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
     auto createTouchDisable = [=](Node* parent, Size size, int zOrder = 0){
         CMyButton::create()
         ->addEventListener([](Node* sender){})
+        ->setEnableSound(false)
         ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
         ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, size.width, size.height))
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -52,6 +53,7 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
         if(m_IsPaidFeature) return;
         this->open();
     })
+    ->setEnableSound(false)
     ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

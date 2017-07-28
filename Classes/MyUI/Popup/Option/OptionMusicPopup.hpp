@@ -11,11 +11,11 @@ protected:
     
 private:
     COptionMusicPopup()
-    : m_BGMVolume(0)
-    , m_EffectVolume(0){};
+    : m_BGMVolume(0.f)
+    , m_EffectVolume(0.f){};
     virtual ~COptionMusicPopup(){};
     
 private:
-    int m_BGMVolume;
-    int m_EffectVolume;
+    float m_BGMVolume;
+    float m_EffectVolume;
 };

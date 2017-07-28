@@ -227,7 +227,7 @@ void CObjectManager::Intro(Node* obj,
                            bool skip,
                            std::function<void()> endListener/* = nullptr*/)
 {
-    float delayTime = 2.5f;
+    float delayTime = 1.9f;
     if(skip) {
         duration    = 0.0f;
         delayTime   = 0.f;
