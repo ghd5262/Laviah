@@ -11,9 +11,7 @@
 #include "../DataManager/BulletDataManager.h"
 #include "../DataManager/WorkshopItemDataManager.h"
 #include "../DataManager/UserDataManager.h"
-#include "../MyUI/Popup/CharacterSelectPopup.h"
 #include "../MyUI/Popup/WorkshopPopup.h"
-#include "../MyUI/Popup/GachaPopup.h"
 #include "../MyUI/Popup/PatternTestPopup.h"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
@@ -140,7 +138,7 @@ void CMenuScene::InitMenuSceneUI()
 	};
 
 	createTestButton([=](Node* sender){ createOneButtonPopup("Share is comming soon"); }, TRANSLATE("BUTTON_MENU_SHARE"), testButtonPos[0], Size(200, 150));
-	createTestButton([=](Node* sender){	createWidgetPopup(CCharacterSelectPopup::create());	}, "Select", testButtonPos[1], Size(200, 150));
+//	createTestButton([=](Node* sender){	createWidgetPopup(CCharacterSelectPopup::create());	}, "Select", testButtonPos[1], Size(200, 150));
 	createTestButton([=](Node* sender){	this->createGameScene(sender); }, TRANSLATE("BUTTON_MENU_START"), testButtonPos[2], Size(200, 150));
 	createTestButton([=](Node* sender){	createWidgetPopup(CWorkshopPopup::create()); }, TRANSLATE("BUTTON_MENU_WORKSHOP"), testButtonPos[3], Size(200, 150));
 

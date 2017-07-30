@@ -381,7 +381,6 @@ void CBullet::createScoreCurrentPos(int score)
 
 void CBullet::CollisionWithPlanet()
 {
-    GVALUE->COLLISION_COUNT += 1;
     if (this->getIsFly()){
         this->createCollisionParticle();
         this->ReturnToMemoryBlock();

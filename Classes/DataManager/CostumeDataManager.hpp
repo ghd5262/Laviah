@@ -4,10 +4,6 @@
 #include <vector>
 #include <map>
 
-enum USERDATA_PARAM_COSTUME{
-    COSTUME_INDEX = 0
-};
-
 namespace COSTUME_DEFINE {
     static const std::string NAME         = "COSTUME_NAME_%d";
     static const std::string TEXTURE      = "costume_texture_%d.png";
@@ -45,7 +41,7 @@ public:
     const COSTUME* getCostumeByIndex(int index) const;
     const COSTUME* getNewRandomCostume();
     const COSTUME* getCurCostumeByCharacter(int index);
-
+    
 private:
     void initWithJson(COSTUME_LIST &list, std::string fileName);
     void addCostumeToList(const Json::Value& json);

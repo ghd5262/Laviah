@@ -24,7 +24,6 @@ void Global::Clear()
     COIN_COUNT = 0;
 	STAR_COUNT = 0;
 	REVIVE_COUNT = 0;
-    COLLISION_COUNT = 0;
 
     GIANT_SCORE_TOTAL = 0;
     GIANT_SCORE_BULLET = 0;
@@ -80,7 +79,6 @@ void Global::addVariableToList()
     addVariable( ACHIEVEMENT_DATA_KEY::COIN_COUNT            , COIN_COUNT             );
     addVariable( ACHIEVEMENT_DATA_KEY::STAR_COUNT            , STAR_COUNT             );
     addVariable( ACHIEVEMENT_DATA_KEY::REVIVE_COUNT          , REVIVE_COUNT           );
-    addVariable( ACHIEVEMENT_DATA_KEY::COLLISION_COUNT       , COLLISION_COUNT        );
 
     addVariable( ACHIEVEMENT_DATA_KEY::GIANT_SCORE_TOTAL     , GIANT_SCORE_TOTAL      );
     addVariable( ACHIEVEMENT_DATA_KEY::GIANT_SCORE_BULLET    , GIANT_SCORE_BULLET     );

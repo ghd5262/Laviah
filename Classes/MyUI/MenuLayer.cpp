@@ -1,6 +1,5 @@
 #include "MenuLayer.hpp"
 #include "MyButton.h"
-#include "Popup/CharacterSelectPopup.h"
 #include "Popup/WorkshopPopup.h"
 #include "Popup/Option/OptionPopup.hpp"
 #include "Popup/TitleCompleteNoticePopup.hpp"

@@ -54,9 +54,8 @@ public:
     const CHARACTER* getCurCharacter();
 
     float getDefaultValueBySkillIndex(int index, int skillIdx);
-    
+
     static void addTexturePackToCache(std::string fileName);
-    
 private:
     void initWithJson(CHARACTER_LIST &list, std::string fileName);
     void addCharacterToList(const Json::Value& json);

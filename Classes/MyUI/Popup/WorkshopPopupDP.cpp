@@ -29,7 +29,7 @@ bool CWorkshopPopupDP::init()
 //    auto currentLevel = CUserDataManager::Instance()->getUserData_Number(m_WorkshopItem->_userDataKey);
     auto currentLevel = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
                                                                             m_WorkshopItem->_index,
-                                                                            USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
+                                                                            PARAM_WORKSHOP::ITEM_LEVEL,
                                                                             0);
     
     auto itemName     = TRANSLATE(m_WorkshopItem->_name);
@@ -139,14 +139,14 @@ void CWorkshopPopupDP::Buy(Node* sender)
     
     auto value = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
                                                                      m_WorkshopItem->_index,
-                                                                     USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
+                                                                     PARAM_WORKSHOP::ITEM_LEVEL,
                                                                      0);
     
     if (CUserDataManager::Instance()->CoinUpdate(-m_WorkshopItem->_costPerLevel.at(value))){
 		value += 1;
         CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::ITEM_LEVEL,
                                                             m_WorkshopItem->_index,
-                                                            USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
+                                                            PARAM_WORKSHOP::ITEM_LEVEL,
                                                             value);
         
         // Update button ui

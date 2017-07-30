@@ -2,10 +2,6 @@
 #include "../Common/HSHUtility.h"
 #include <map>
 
-enum USERDATA_PARAM_WORKSHOP{
-    ITEM_LEVEL = 0,
-};
-
 namespace WORKSHOP_DEFINE {
 	static const std::string NAME    = "WORKSHOP_ITEM_NAME_%d";
 	static const std::string EXPLAIN = "WORKSHOP_ITEM_EXPLAIN_%d";

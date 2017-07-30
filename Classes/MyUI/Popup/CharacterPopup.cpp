@@ -128,6 +128,7 @@ bool CCharacterPopup::init()
     CMyButton::create()
     ->addEventListener([=](Node* sender){
         m_CostumeButton->setTouchEnable(false);
+        m_SelectButton->setTouchEnable(false);
     }, eMYBUTTON_STATE::BEGIN)
     ->setEnableSound(false)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height * 0.8f))

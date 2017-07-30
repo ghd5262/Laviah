@@ -282,6 +282,9 @@ bool CResultPopup::init()
         CUserDataManager::Instance()->ExpAdd(GVALUE->TOTAL_SCORE);
     }
     
+    // play count +1
+    CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::PLAY_COUNT, 1);
+    
     // update coin
     CUserDataManager::Instance()->CoinUpdate(GVALUE->COIN_SCORE);
     

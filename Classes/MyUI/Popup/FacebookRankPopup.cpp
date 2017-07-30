@@ -92,6 +92,9 @@ bool CFacebookRankPopup::init()
                 }, 0.f, "ScrollToItem");
             }
         }
+        
+        // set my friend count
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::FACEBOOK_COUNT, index-1);
     }
     
     auto createButton = [=](std::function<void(Node*)> callback, std::string icon, Vec2 pos, bool use){

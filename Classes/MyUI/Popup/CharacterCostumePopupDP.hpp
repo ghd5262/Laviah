@@ -8,9 +8,7 @@ class CCharacterCostumePopupDP : public cocos2d::ui::Widget
 {
 public:
     static CCharacterCostumePopupDP* create(const COSTUME* costume);
-    
-    void Buy();
-    
+        
     //setter & getter
     const COSTUME* getCostumeParam() const { return m_Costume; }
     
