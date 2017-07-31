@@ -163,10 +163,7 @@
 		93706F861E7A6891009A2CA0 /* AchievementCompleteNoticePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE31E7A6890009A2CA0 /* AchievementCompleteNoticePopup.cpp */; };
 		93706F871E7A6891009A2CA0 /* GoalPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE51E7A6890009A2CA0 /* GoalPopup.cpp */; };
 		93706F881E7A6891009A2CA0 /* GoalPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE71E7A6890009A2CA0 /* GoalPopupDP.cpp */; };
-		93706F891E7A6891009A2CA0 /* CharacterSelectPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EE91E7A6890009A2CA0 /* CharacterSelectPopup.cpp */; };
-		93706F8A1E7A6891009A2CA0 /* CharacterSelectPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EEB1E7A6890009A2CA0 /* CharacterSelectPopupDP.cpp */; };
 		93706F8B1E7A6891009A2CA0 /* EarnCoinPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EED1E7A6890009A2CA0 /* EarnCoinPopup.cpp */; };
-		93706F8C1E7A6891009A2CA0 /* GachaPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EEF1E7A6890009A2CA0 /* GachaPopup.cpp */; };
 		93706F8D1E7A6891009A2CA0 /* GameEndPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EF11E7A6890009A2CA0 /* GameEndPopup.cpp */; };
 		93706F8E1E7A6891009A2CA0 /* HelpPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EF31E7A6890009A2CA0 /* HelpPopup.cpp */; };
 		93706F8F1E7A6891009A2CA0 /* MessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93706EF51E7A6890009A2CA0 /* MessageBox.cpp */; };
@@ -328,6 +325,7 @@
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		56864C3B9CC7F082E5C29A7E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKit.framework; sourceTree = DEVELOPER_DIR; };
+		5918FE7C1F2B6E3000063833 /* UserDataDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataDefine.h; sourceTree = "<group>"; };
 		59315BAB1E92776E00337C1C /* CharacterBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterBullet.cpp; sourceTree = "<group>"; };
 		59315BAC1E92776E00337C1C /* CharacterBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterBullet.hpp; sourceTree = "<group>"; };
 		595181581EF59CFD00CC1F18 /* SharePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SharePopup.cpp; sourceTree = "<group>"; };
@@ -515,14 +513,8 @@
 		93706EE61E7A6890009A2CA0 /* GoalPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoalPopup.h; sourceTree = "<group>"; };
 		93706EE71E7A6890009A2CA0 /* GoalPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoalPopupDP.cpp; sourceTree = "<group>"; };
 		93706EE81E7A6890009A2CA0 /* GoalPopupDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoalPopupDP.h; sourceTree = "<group>"; };
-		93706EE91E7A6890009A2CA0 /* CharacterSelectPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterSelectPopup.cpp; sourceTree = "<group>"; };
-		93706EEA1E7A6890009A2CA0 /* CharacterSelectPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterSelectPopup.h; sourceTree = "<group>"; };
-		93706EEB1E7A6890009A2CA0 /* CharacterSelectPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterSelectPopupDP.cpp; sourceTree = "<group>"; };
-		93706EEC1E7A6890009A2CA0 /* CharacterSelectPopupDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterSelectPopupDP.h; sourceTree = "<group>"; };
 		93706EED1E7A6890009A2CA0 /* EarnCoinPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EarnCoinPopup.cpp; sourceTree = "<group>"; };
 		93706EEE1E7A6890009A2CA0 /* EarnCoinPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EarnCoinPopup.h; sourceTree = "<group>"; };
-		93706EEF1E7A6890009A2CA0 /* GachaPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GachaPopup.cpp; sourceTree = "<group>"; };
-		93706EF01E7A6890009A2CA0 /* GachaPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GachaPopup.h; sourceTree = "<group>"; };
 		93706EF11E7A6890009A2CA0 /* GameEndPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameEndPopup.cpp; sourceTree = "<group>"; };
 		93706EF21E7A6890009A2CA0 /* GameEndPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GameEndPopup.hpp; sourceTree = "<group>"; };
 		93706EF31E7A6890009A2CA0 /* HelpPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelpPopup.cpp; sourceTree = "<group>"; };
@@ -994,6 +986,7 @@
 				93706E7C1E7A6890009A2CA0 /* TranslateManager.hpp */,
 				93706E7D1E7A6890009A2CA0 /* UserDataManager.cpp */,
 				93706E7E1E7A6890009A2CA0 /* UserDataManager.h */,
+				5918FE7C1F2B6E3000063833 /* UserDataDefine.h */,
 				93706E7F1E7A6890009A2CA0 /* WorkshopItemDataManager.cpp */,
 				93706E801E7A6890009A2CA0 /* WorkshopItemDataManager.h */,
 				599B77C21F2262D40066D32E /* PlanetDataManager.cpp */,
@@ -1124,8 +1117,8 @@
 				93706ED71E7A6890009A2CA0 /* HealthBarUI.h */,
 				93706ED81E7A6890009A2CA0 /* ItemProgress.cpp */,
 				93706ED91E7A6890009A2CA0 /* ItemProgress.hpp */,
-				93706EDA1E7A6890009A2CA0 /* LevelProgressBar.cpp */,
 				93706EDB1E7A6890009A2CA0 /* LevelProgressBar.h */,
+				93706EDA1E7A6890009A2CA0 /* LevelProgressBar.cpp */,
 				93706EDC1E7A6890009A2CA0 /* MenuLayer.cpp */,
 				93706EDD1E7A6890009A2CA0 /* MenuLayer.hpp */,
 				93706EDE1E7A6890009A2CA0 /* ComboScore.cpp */,
@@ -1164,10 +1157,6 @@
 				93706EE61E7A6890009A2CA0 /* GoalPopup.h */,
 				93706EE71E7A6890009A2CA0 /* GoalPopupDP.cpp */,
 				93706EE81E7A6890009A2CA0 /* GoalPopupDP.h */,
-				93706EE91E7A6890009A2CA0 /* CharacterSelectPopup.cpp */,
-				93706EEA1E7A6890009A2CA0 /* CharacterSelectPopup.h */,
-				93706EEB1E7A6890009A2CA0 /* CharacterSelectPopupDP.cpp */,
-				93706EEC1E7A6890009A2CA0 /* CharacterSelectPopupDP.h */,
 				598A41321F20D2AD00D567CB /* CharacterPopup.cpp */,
 				598A41331F20D2AD00D567CB /* CharacterPopup.hpp */,
 				598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */,
@@ -1178,8 +1167,6 @@
 				599B77D01F27E26D0066D32E /* CharacterCostumePopupDP.hpp */,
 				93706EED1E7A6890009A2CA0 /* EarnCoinPopup.cpp */,
 				93706EEE1E7A6890009A2CA0 /* EarnCoinPopup.h */,
-				93706EEF1E7A6890009A2CA0 /* GachaPopup.cpp */,
-				93706EF01E7A6890009A2CA0 /* GachaPopup.h */,
 				93706EF11E7A6890009A2CA0 /* GameEndPopup.cpp */,
 				93706EF21E7A6890009A2CA0 /* GameEndPopup.hpp */,
 				93706EF31E7A6890009A2CA0 /* HelpPopup.cpp */,
@@ -1456,7 +1443,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93706F8C1E7A6891009A2CA0 /* GachaPopup.cpp in Sources */,
 				59E1A64C1F162E0A003020B9 /* UnityAds_IOS.mm in Sources */,
 				93706F9F1E7A6891009A2CA0 /* WorkshopPopupDP.cpp in Sources */,
 				93B7F44C1EB843DD0019D36C /* AchievementPopup.cpp in Sources */,
@@ -1476,7 +1462,6 @@
 				93706F971E7A6891009A2CA0 /* PatternTestPopup.cpp in Sources */,
 				93706F4D1E7A6891009A2CA0 /* BulletPatternDataManager.cpp in Sources */,
 				93706F5E1E7A6891009A2CA0 /* ItemBubble.cpp in Sources */,
-				93706F8A1E7A6891009A2CA0 /* CharacterSelectPopupDP.cpp in Sources */,
 				599B77D11F27E26D0066D32E /* CharacterCostumePopupDP.cpp in Sources */,
 				936D4CA11E9E2578003786E6 /* TutorialHelper.cpp in Sources */,
 				93706F611E7A6891009A2CA0 /* PlayCoin.cpp in Sources */,
@@ -1534,7 +1519,6 @@
 				93706F6A1E7A6891009A2CA0 /* ItemManager.cpp in Sources */,
 				93706F8F1E7A6891009A2CA0 /* MessageBox.cpp in Sources */,
 				93A116701E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
-				93706F891E7A6891009A2CA0 /* CharacterSelectPopup.cpp in Sources */,
 				93706F8E1E7A6891009A2CA0 /* HelpPopup.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				93706F5B1E7A6891009A2CA0 /* BackGround.cpp in Sources */,
