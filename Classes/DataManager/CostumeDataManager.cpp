@@ -86,7 +86,7 @@ const COSTUME* CCostumeDataManager::getNewRandomCostume()
 
 const COSTUME* CCostumeDataManager::getCurCostumeByCharacter(int index)
 {
-    auto currentCostume = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::CHARACTER_COSTUME, index, USERDATA_PARAM_COSTUME::COSTUME_INDEX, 0);
+    auto currentCostume = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::CHARACTER_LIST, index, PARAM_CHARACTER::COSTUME_INDEX, 0);
     return this->getCostumeByIndex(currentCostume);
 }
 
@@ -113,8 +113,8 @@ COSTUME_LIST CCostumeDataManager::getNonCollectedCostumeList()
     
     return DATA_MANAGER_UTILS::getMapByFunc([=](const COSTUME* data){
         
-        if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::COSTUME_LIST, data->_index)) return false;
-        
+        if (userDataMng->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST, data->_index))
+            return false;
         return true;
     }, m_CostumeList);
 }

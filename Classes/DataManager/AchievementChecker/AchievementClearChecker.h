@@ -35,28 +35,11 @@ namespace ACHIEVEMENT_DATA_KEY {
     const std::string MAGNET_ITEM_USE      = "MAGNET_ITEM_USE";
     const std::string BARRIER_ITEM_USE     = "BARRIER_ITEM_USE";
     
-    const std::string CHARACTER_COLLECT    = "USER_CHARACTER_LIST";
-    const std::string ROCKET_COLLECT       = "USER_ROCKET_LIST";
-    
-    const std::string CHARACTER_COUNT      = "USER_CHARACTER_LIST";
     const std::string CHARACTER_RARE_COUNT = "CHARACTER_RARE_COUNT";
-    
-    const std::string ROCKET_COUNT         = "USER_ROCKET_LIST";
     const std::string ROCKET_RARE_COUNT	   = "ROCKET_RARE_COUNT";
     
-    const std::string USER_LEVEL           = "USER_LEVEL";
-    const std::string ITEM_LEVEL           = "USER_ITEM_LEVEL";
-    
-    const std::string ROCKET_COIN_COUNT    = "ROCKET_COIN_COUNT";
-    
-    const std::string BEST_SCORE           = "USER_BEST_TOTAL_SCORE";
-    const std::string BEST_COMBO           = "USER_BEST_COMBO";
-    const std::string COIN                 = "USER_COIN";
-    const std::string SAVED_RUN			   = "USER_SAVED_RUN";
-    const std::string SAVED_SCORE		   = "USER_SAVED_SCORE";
-    const std::string SAVED_REVIVE		   = "USER_SAVED_REVIVE";
-    const std::string NORMAL_CLEAR_COUNT   = "USER_NORMAL_ACHIEVEMENT_COUNT";
-    const std::string HIDDEN_CLEAR_COUNT   = "USER_HIDDEN_ACHIEVEMENT_COUNT";
+    const std::string ACHIEVEMENT_N_CLEAR  = "NORMAL_ACHIEVEMENT_CLEAR_COUNT";
+    const std::string ACHIEVEMENT_H_CLEAR  = "HIDDEN_ACHIEVEMENT_CLEAR_COUNT";
 };
 
 class CAchievementClearChecker {

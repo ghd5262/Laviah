@@ -18,20 +18,12 @@ enum CHECKER_TYPE{
 	CONTINUE = 6,
 };
 
-enum USERDATA_PARAM_ACHIEVEMENT_NORMAL{
-    NORMAL_STATE = 0, ///< 0: non-completed, 1: running, 2: finished, 3: completed
-};
 
 enum ACHIEVEMENT_STATE{
     NON_COMPLETED = 0,
     RUNNING,
     FINISHED,
     COMPLETED,
-};
-
-enum USERDATA_PARAM_ACHIEVEMENT_HIDDEN{
-    HIDDEN_LEVEL = 0,
-    HIDDEN_STATE = 1,
 };
 
 class CAchievementClearChecker;

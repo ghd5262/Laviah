@@ -106,6 +106,20 @@ bool CCharacterPopup::init()
         ->show(this);
     };
     
+    // costume button disable.
+    CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        m_CostumeButton->setTouchEnable(false);
+        m_SelectButton->setTouchEnable(false);
+    }, eMYBUTTON_STATE::BEGIN)
+    ->setEnableSound(false)
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height * 0.8f))
+    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f))
+    ->show(this)
+    ->setSwallowTouches(false);
+    
     m_CostumeButton = createButton([=](Node* sender){
         this->costume();
     }, "costumeIcon.png", Vec2(layerSize.width * 0.08f, layerSize.height * 0.05f));
@@ -123,20 +137,6 @@ bool CCharacterPopup::init()
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f))
     ->show(this);
-    
-    // costume button disable.
-    CMyButton::create()
-    ->addEventListener([=](Node* sender){
-        m_CostumeButton->setTouchEnable(false);
-        m_SelectButton->setTouchEnable(false);
-    }, eMYBUTTON_STATE::BEGIN)
-    ->setEnableSound(false)
-    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height * 0.8f))
-    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f))
-    ->show(this)
-    ->setSwallowTouches(false);
     
     // create explain bg
 //    auto explainBG = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, layerSize.width * 0.9f, layerSize.height * 0.2f);
@@ -212,7 +212,16 @@ void CCharacterPopup::select()
     auto manager = CUserDataManager::Instance();
     auto index   = m_CurrentData->_index;
     
-    if(manager->getUserData_Number(USERDATA_KEY::CHARACTER) != index) {
+    if(!manager->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST, index))
+    {
+        auto costumeName = TRANSLATE(m_CurrentData->_name);
+        CGameScene::getGameScene()->CreateAlertPopup()
+        ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
+        ->setMessage("캐릭터가 잠겨 있습니다. 업적을 획득하여 잠금을 해제해주세요.")
+        ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
+        return;
+    }
+    else if(manager->getUserData_Number(USERDATA_KEY::CHARACTER) != index) {
         manager->setUserData_Number(USERDATA_KEY::CHARACTER, index);
         CObjectManager::Instance()->ChangeCharacter();
     }
@@ -288,17 +297,21 @@ void CCharacterPopup::ContentScrollCallback(cocos2d::Ref* ref, PageView::EventTy
     if (centerContent == nullptr) return;
 
     // update button
-    auto currentLevel  = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
+    auto userDataMng   = CUserDataManager::Instance();
+    auto currentLevel  = userDataMng->getUserData_Number(USERDATA_KEY::LEVEL);
     m_CurrentData      = centerContent->getCharacterParam();
-    bool selectable    = currentLevel >= m_CurrentData->_level;
+    bool openLevel     = currentLevel >= m_CurrentData->_level;
+    bool isExist       = userDataMng->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST,
+                                                              m_CurrentData->_index);
     std::string text   = "Select";
-    if(!selectable)text = StringUtils::format("LV.%d", m_CurrentData->_level);
+    if(!openLevel)    text = StringUtils::format("LV.%d", m_CurrentData->_level);
+    else if(!isExist) text = "Locked";
     
-    m_SelectButton->setTouchEnable(selectable);
+    m_SelectButton->setTouchEnable(openLevel);
     m_SelectButton->changeContents(text);
     
     // enable costume button
-    m_CostumeButton->setTouchEnable(selectable);
+    m_CostumeButton->setTouchEnable(openLevel && isExist);
 
     // scroll title view
     m_TitleScrollView->scrollToItem(centerIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, .5f);

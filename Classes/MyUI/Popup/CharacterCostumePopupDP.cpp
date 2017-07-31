@@ -39,22 +39,10 @@ bool CCharacterCostumePopupDP::init()
     m_CostumeImg->setScale(1.5f);
     this->addChild(m_CostumeImg);
     
-    if (!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::COSTUME_LIST, m_Costume->_index)){
+    if (!CUserDataManager::Instance()->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST,
+                                                               m_Costume->_index)){
         m_CostumeImg->setColor(COLOR::DARKGRAY);
     }
     
     return true;
-}
-
-void CCharacterCostumePopupDP::Buy()
-{
-    if (CUserDataManager::Instance()->CoinUpdate(-0)){
-        
-        // USER Data Save
-        CUserDataManager::Instance()->setUserData_ItemGet(USERDATA_KEY::CHARACTER_LIST, m_Costume->_index);
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, m_Costume->_index);
-        
-        // change color to white
-        m_CostumeImg->setColor(Color3B::WHITE);
-    }
 }

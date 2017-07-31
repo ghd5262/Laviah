@@ -133,7 +133,7 @@ ROCKET_LIST CRocketDataManager::getNonCollectedRocketList()
     
     return DATA_MANAGER_UTILS::getMapByFunc([=](const sROCKET_PARAM* data){
         
-        if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::ROCKET_LIST, data->_idx)) return false;
+        if (userDataMng->getUserData_IsItemExist(USERDATA_KEY::ROCKET_LIST, data->_idx)) return false;
         
         return true;
     }, m_RocketList);

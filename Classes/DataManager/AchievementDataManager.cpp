@@ -68,9 +68,9 @@ bool CAchievementDataManager::CheckCompleteAll()
     
     // Gets a list of achievements in running or finished.
     auto list = DATA_MANAGER_UTILS::getMapByFunc([=](PARAM_DATA* param){
-        if(param->size() <= USERDATA_PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE) return false;
+        if(param->size() <= PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE) return false;
         
-        auto state = param->at(USERDATA_PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE);
+        auto state = param->at(PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE);
         if(state == ACHIEVEMENT_STATE::FINISHED) return true;
         if(state == ACHIEVEMENT_STATE::RUNNING)  return true;
         
@@ -166,7 +166,7 @@ bool CAchievementDataManager::CheckAchievementComplete(int index, bool isHidden)
     auto paramState = 0;
     if (isHidden){
         GVALUE->HIDDEN_ACHIEVEMENT_CLEAR_COUNT += 1;
-        paramIndex  = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
+        paramIndex  = PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
         paramState  = ACHIEVEMENT_STATE::COMPLETED;
     }
     else{
@@ -174,7 +174,7 @@ bool CAchievementDataManager::CheckAchievementComplete(int index, bool isHidden)
         
         // Clear count +1
         CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::NORMAL_CLEAR_COUNT, 1);
-        paramIndex  = USERDATA_PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE;
+        paramIndex  = PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE;
         paramState  = ACHIEVEMENT_STATE::FINISHED;
     }
     
@@ -245,7 +245,7 @@ bool CAchievementDataManager::CompletedAllOfLevels(int index)
 bool CAchievementDataManager::ExistCompletedHiddenAchievement()
 {
     auto key1   = USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST;
-    auto key2   = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
+    auto key2   = PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
     auto key3   = ACHIEVEMENT_STATE::COMPLETED;
     return CUserDataManager::Instance()->getUserData_IsItemExistWithParam(key1, key2, key3);
 }
@@ -473,11 +473,11 @@ int CAchievementDataManager::getHiddenAchievementCurrentValue(int index)
                 break;
                 
             case CHECKER_TYPE::ITEM_EXIST:
-                curValue += CUserDataManager::Instance()->getUserData_IsItemHave(key, mtrlValue);
+                curValue += CUserDataManager::Instance()->getUserData_IsItemExist(key, mtrlValue);
                 break;
                 
             case CHECKER_TYPE::ITEM_COUNT:
-                curValue += CUserDataManager::Instance()->getUserData_List(key).size();
+                curValue += CUserDataManager::Instance()->getUserData_ParamList(key).size();
                 break;
                 
             case CHECKER_TYPE::ITEM_PARAM:{
@@ -499,18 +499,18 @@ int CAchievementDataManager::getAchievementLevelByIndex(int index, bool isHidden
     if(isHidden)
         return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST,
                                                                    index,
-                                                                   USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_LEVEL, 0);
+                                                                   PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_LEVEL, 0);
     else return CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
 }
 
 int CAchievementDataManager::getAchievementStateByIndex(int index, bool isHidden)
 {
     std::string userDataKey = USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST;
-    int         paramIndex  = USERDATA_PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE;
+    int         paramIndex  = PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE;
     
     if(isHidden) {
         userDataKey = USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST;
-        paramIndex  = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
+        paramIndex  = PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
     }
     return CUserDataManager::Instance()->getUserData_ParamData(userDataKey, index,
                                                                paramIndex, 0);
@@ -519,11 +519,11 @@ int CAchievementDataManager::getAchievementStateByIndex(int index, bool isHidden
 void CAchievementDataManager::setAchievementStateByIndex(int index, int state, bool isHidden)
 {
     std::string userDataKey = USERDATA_KEY::NORMAL_ACHIEVEMENT_LIST;
-    int         paramIndex  = USERDATA_PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE;
+    int         paramIndex  = PARAM_ACHIEVEMENT_NORMAL::NORMAL_STATE;
     
     if(isHidden) {
         userDataKey = USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST;
-        paramIndex  = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
+        paramIndex  = PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_STATE;
     }
     
     CUserDataManager::Instance()->setUserData_ItemParam(userDataKey, index, paramIndex, state);
@@ -532,7 +532,7 @@ void CAchievementDataManager::setAchievementStateByIndex(int index, int state, b
 void CAchievementDataManager::setAchievementLevelByIndex(int index, int level)
 {
     auto userDataKey = USERDATA_KEY::HIDDEN_ACHIEVEMENT_LIST;
-    auto paramIndex  = USERDATA_PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_LEVEL;
+    auto paramIndex  = PARAM_ACHIEVEMENT_HIDDEN::HIDDEN_LEVEL;
 
     CUserDataManager::Instance()->setUserData_ItemParam(userDataKey, index, paramIndex, level);
 }
@@ -603,13 +603,13 @@ void CAchievementDataManager::initRewarderList()
     
    	initRewarder(REWARD_COIN,			  CC_CALLBACK_1(CAchievementRewarder::coinReward			, m_Rewarder));
 	initRewarder(REWARD_CHARACTER,		  CC_CALLBACK_1(CAchievementRewarder::characterReward       , m_Rewarder));
-	initRewarder(REWARD_ROCKET,			  CC_CALLBACK_1(CAchievementRewarder::RocketReward          , m_Rewarder));
-	initRewarder(REWARD_PET,			  CC_CALLBACK_1(CAchievementRewarder::PetReward             , m_Rewarder));
+	initRewarder(REWARD_ROCKET,			  CC_CALLBACK_1(CAchievementRewarder::rocketReward          , m_Rewarder));
+	initRewarder(REWARD_PET,			  CC_CALLBACK_1(CAchievementRewarder::petReward             , m_Rewarder));
 
 	initRewarder(REWARD_COIN_RANDOM,	  CC_CALLBACK_1(CAchievementRewarder::coinRewardRandom      , m_Rewarder));
 	initRewarder(REWARD_CHARACTER_RANDOM, CC_CALLBACK_1(CAchievementRewarder::characterRewardRandom , m_Rewarder));
-	initRewarder(REWARD_ROCKET_RANDOM,	  CC_CALLBACK_1(CAchievementRewarder::RocketRewardRandom    , m_Rewarder));
-	initRewarder(REWARD_PET_RANDOM,		  CC_CALLBACK_1(CAchievementRewarder::PetRewardRandom       , m_Rewarder));
+	initRewarder(REWARD_ROCKET_RANDOM,	  CC_CALLBACK_1(CAchievementRewarder::rocketRewardRandom    , m_Rewarder));
+	initRewarder(REWARD_PET_RANDOM,		  CC_CALLBACK_1(CAchievementRewarder::petRewardRandom       , m_Rewarder));
 }
 
 void CAchievementDataManager::addAchievementToList(ACHIEVEMENT_LIST &list, 

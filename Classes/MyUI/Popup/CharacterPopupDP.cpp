@@ -47,7 +47,10 @@ bool CCharacterPopupDP::init()
     m_CostumeImg->setScale(1.5f);
     this->addChild(m_CostumeImg);
     
-    if (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL) < m_Character->_level){
+    auto userDataMng = CUserDataManager::Instance();
+    auto openLevel   = userDataMng->getUserData_Number(USERDATA_KEY::LEVEL) >= m_Character->_level;
+    auto isExist     = userDataMng->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST, m_Character->_index);
+    if (!openLevel || !isExist){
         m_CharacterImg->setColor(COLOR::DARKGRAY);
     }
     

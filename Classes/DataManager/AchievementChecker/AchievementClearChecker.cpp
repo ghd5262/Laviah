@@ -20,12 +20,12 @@ bool CAchievementClearChecker::checkWithSingleUserData(std::string key, int valu
 
 bool CAchievementClearChecker::checkWithItemExist(std::string key, int value)
 {
-	return CUserDataManager::Instance()->getUserData_IsItemHave(key, value);
+	return CUserDataManager::Instance()->getUserData_IsItemExist(key, value);
 }
 
 bool CAchievementClearChecker::checkWithCount(std::string key, int value)
 {
-	return (value <= CUserDataManager::Instance()->getUserData_List(key).size());
+	return (value <= CUserDataManager::Instance()->getUserData_ParamList(key).size());
 }
 
 bool CAchievementClearChecker::checkWithItemParam(std::string key, int itemIndex,

@@ -1,5 +1,6 @@
 #pragma once
 #include "../Common/HSHUtility.h"
+#include "UserDataDefine.h"
 #include <vector>
 #include <map>
 
@@ -20,54 +21,6 @@ struct sUSER_DATA{
     PARAM_DATA_ARRAY_LIST _userDataParamListMap; ///< { key, {0, 0}, {1, 1}, {2, 2} }
 };
 
-namespace USERDATA_KEY {
-    const std::string FREE_REWARD_LEVEL         = "USER_DATA_FREE_REWARD_LEVEL";
-    const std::string FREE_REWARD_TIMESTAMP     = "USER_DATA_FREE_REWARD_TIMESTAMP";
-    const std::string LAST_TIMESTAMP            = "USER_DATA_LAST_TIMESTAMP";
-	const std::string LAST_SAVED_TIME		    = "USER_DATA_LAST_SAVED_TIME";
-    const std::string FIRST_LOAD			    = "USER_DATA_FIRSTLOAD";
-	const std::string DATA_REVISION				= "USER_DATA_SAVE_REVISION";
-    const std::string DATA_SAVE_AUTO            = "USER_DATA_SAVE_AUTO";
-
-    const std::string LEVEL                     = "USER_LEVEL";
-    const std::string EXP                       = "USER_EXP";
-    const std::string RANK                      = "USER_RANK";
-    const std::string CHARACTER                 = "USER_CUR_CHARACTER";
-    const std::string COIN                      = "USER_COIN";
-
-	const std::string SAVED_RUN					= "USER_SAVED_RUN";
-	const std::string SAVED_SCORE				= "USER_SAVED_SCORE";
-	const std::string SAVED_REVIVE				= "USER_SAVED_REVIVE";
-
-    const std::string PET                       = "USER_CUR_PET";
-    const std::string ROCKET                    = "USER_CUR_ROCKET";
-    const std::string PLANET                    = "USER_CUR_PLANET";
-
-    const std::string BEST_COMBO                = "USER_BEST_COMBO";
-    const std::string BEST_SCORE                = "USER_BEST_TOTAL_SCORE";
-
-    const std::string SELECT_ITEM               = "USER_CUR_SELECT_ITEM";
-    const std::string LAST_COM_ACHIEVEMENT      = "USER_LAST_COM_ACHIEVEMENT";
-    
-    const std::string BGM_VOLUME                = "USER_BGM_VOLUME";
-    const std::string EFFECT_VOLUME             = "USER_EFFECT_VOLUME";
-    
-    const std::string CURRENT_LANGUAGE          = "USER_CURRENT_LANGUAGE";
-    
-    const std::string CHARACTER_LIST            = "USER_CHARACTER_LIST";
-    const std::string COSTUME_LIST              = "USER_COSTUME_LIST";
-    const std::string ROCKET_LIST               = "USER_ROCKET_LIST";
-    const std::string PET_LIST                  = "USER_PET_LIST";
-
-    const std::string NORMAL_CLEAR_COUNT        = "USER_NORMAL_ACHIEVEMENT_COUNT";
-    const std::string HIDDEN_CLEAR_COUNT        = "USER_HIDDEN_ACHIEVEMENT_COUNT";
-    
-    const std::string ITEM_LEVEL                = "USER_ITEM_LEVEL";
-    const std::string CHARACTER_COSTUME         = "USER_CHARACTER_COSTUME";
-    const std::string NORMAL_ACHIEVEMENT_LIST   = "USER_NORMAL_ACHIEVEMENT_LIST";
-    const std::string HIDDEN_ACHIEVEMENT_LIST   = "USER_HIDDEN_ACHIEVEMENT_LIST";
-};
-
 class CUserDataManager
 {
     typedef std::function<int(int, int)> LIST_COMPARE;
@@ -81,29 +34,35 @@ public:
 	tm* getLastSavedTime();
     long long getLastTimestamp();
     long long getFreeRewardTimestamp();
+    
     float getItemValueByItemIndex(int itemIndex);
     float getItemValueBySkillIndex(int skillIndex);
-    int getUserData_Number(std::string key);
+    
     ARRAY_DATA getUserData_List(std::string key);
     PARAM_DATA_ARRAY getUserData_ParamList(std::string key);
+    
+    int getUserData_Number(std::string key);
     int getUserData_ParamData(std::string key, int index, int paramIdx, int defaultValue);
-    bool getUserData_IsItemHave(std::string key, int itemIdx);
+    bool getUserData_IsItemExist(std::string key, int itemIdx);
     bool getUserData_IsItemExistWithParam(std::string key, int paramIdx, int value);
     
 	void SaveUserData(bool saveToCloud = false);
+    
     void LoadUserDataFromXML();
     void LoadUserDataFromCloud();
+    
     void setSaveRevision(int value);
+    
     void setUserData_Number(std::string key, int value);
     void setUserData_NumberAdd(std::string key, int value);
-    void setUserData_ItemGet(std::string key, int itemIdx);
+    void setUserData_ItemExist(std::string key, int itemIdx);
     void setUserData_ItemParam(std::string key, int itemIdx, int paramIdx, int value);
-	void setUserData_ItemRemove(std::string key, int itemIdx);
-    void setUserData_ItemRemoveAll(std::string key);
     void setUserData_Reset();
+    
     void setLastSavedTime(long long unixTime);
     void setLastTimestamp(long long timestamp);
     void setFreeRewardTimestamp(long long timestamp);
+    
     bool CoinUpdate(int value);
     void ExpAdd(int exp);
     
@@ -123,6 +82,8 @@ private:
     
     PARAM_DATA_ARRAY* getUserData_ParamListRef(std::string key);
 
+    void userDataClean(sUSER_DATA &data);
+    
     static void sortUserDataList(std::string key, const LIST_COMPARE& compare);
 	
     CUserDataManager();

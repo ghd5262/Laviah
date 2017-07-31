@@ -89,7 +89,19 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(bg);
     
-
+    // costume button disable.
+    CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        m_SelectButton->setTouchEnable(false);
+    }, eMYBUTTON_STATE::BEGIN)
+    ->setEnableSound(false)
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height * 0.8f))
+    ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f))
+    ->show(this)
+    ->setSwallowTouches(false);
+    
     m_SelectButton = CMyButton::create()
     ->addEventListener([=](Node* sender){
         this->select();
@@ -158,9 +170,9 @@ void CCharacterCostumePopup::select()
     auto manager = CUserDataManager::Instance();
     auto index   = m_CurrentData->_index;
     
-    if(manager->getUserData_IsItemHave(USERDATA_KEY::COSTUME_LIST, index)) {
-        manager->setUserData_ItemParam(USERDATA_KEY::CHARACTER_COSTUME, m_CharacterIndex,
-                                       USERDATA_PARAM_COSTUME::COSTUME_INDEX, index);
+    if(manager->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST, index)) {
+        manager->setUserData_ItemParam(USERDATA_KEY::CHARACTER_LIST, m_CharacterIndex,
+                                       PARAM_CHARACTER::COSTUME_INDEX, index);
         CObjectManager::Instance()->ChangeCostume();
     }
     else{
@@ -206,7 +218,7 @@ void CCharacterCostumePopup::scrollCallback(cocos2d::Ref* ref, PageView::EventTy
     
     // update button
     m_CurrentData      = centerContent->getCostumeParam();
-    bool selectable    = CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::COSTUME_LIST, m_CurrentData->_index);
+    bool selectable    = CUserDataManager::Instance()->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST, m_CurrentData->_index);
     std::string text   = "Select";
     if(!selectable)text = "Locked";
     

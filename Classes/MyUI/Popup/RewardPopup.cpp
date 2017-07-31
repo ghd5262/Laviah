@@ -328,7 +328,7 @@ void CRewardPopup::play()
     this->exit(true);
     
     auto index = m_LastSavedData._value;
-    if(!CUserDataManager::Instance()->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, index))
+    if(!CUserDataManager::Instance()->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST, index))
         return;
     
     CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, index);

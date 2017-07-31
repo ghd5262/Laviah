@@ -149,8 +149,8 @@ CHARACTER_LIST CCharacterDataManager::getNonCollectedCharacterList()
 
 	return DATA_MANAGER_UTILS::getMapByFunc([=](const CHARACTER* data){
 
-		if (userDataMng->getUserData_IsItemHave(USERDATA_KEY::CHARACTER_LIST, data->_index)) return false;
-        
+        if (userDataMng->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST, data->_index))
+            return false;
 		return true;
 	}, m_CharacterList);
 }

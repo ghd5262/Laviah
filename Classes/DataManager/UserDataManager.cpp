@@ -49,16 +49,7 @@ CUserDataManager::CUserDataManager()
 
 CUserDataManager::~CUserDataManager()
 {
-    auto cleanUserData = [=](sUSER_DATA& data){
-        DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataListMap);
-        
-        for(auto paramArray : data._userDataParamListMap)
-            DATA_MANAGER_UTILS::mapDeleteAndClean(*paramArray.second);
-        
-        DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataParamListMap);
-    };
-    
-    cleanUserData(m_UserData);
+    this->userDataClean(m_UserData);
 }
 
 CUserDataManager* CUserDataManager::Instance()
@@ -119,7 +110,7 @@ float CUserDataManager::getItemValueBySkillIndex(int skillIndex)
     
     auto workShopLevel  = this->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL,
                                                       skillIndex,
-                                                      USERDATA_PARAM_WORKSHOP::ITEM_LEVEL,
+                                                      PARAM_WORKSHOP::ITEM_LEVEL,
                                                       0);
     auto workShopData   = CWorkshopItemDataManager::Instance()->getItemDataByIndex(skillIndex);
     auto userValue      = workShopData->_valuePerLevel * workShopLevel;
@@ -168,25 +159,14 @@ int CUserDataManager::getUserData_ParamData(std::string key, int index, int para
     return paramDataList->at(paramIdx);
 }
 
-bool CUserDataManager::getUserData_IsItemHave(std::string key, int itemIdx)
+bool CUserDataManager::getUserData_IsItemExist(std::string key, int itemIdx)
 {
-    if(m_UserData._userDataListMap.find(key) == m_UserData._userDataListMap.end()){
-        CCLOG("There is no list with this key %s", key.c_str());
-        CCASSERT(false, "Wrong Key");
-    }
+    auto list = this->getUserData_ParamList(key);
     
-    auto itemList = m_UserData._userDataListMap.find(key)->second;
-    size_t listSize = itemList->size();
-    
-    if (listSize > 0)
-    {
-        for(auto item : *itemList)
-        {
-            if(item == itemIdx)
-                return true;
-        }
-    }
-    return false;
+    // Find the PARAM_DATA as the index.
+    auto iter = list.find(itemIdx);
+    if(iter == list.end()) return false;
+    else                   return true;
 }
 
 bool CUserDataManager::getUserData_IsItemExistWithParam(std::string key, int paramIdx, int value)
@@ -287,26 +267,15 @@ void CUserDataManager::setUserData_NumberAdd(std::string key, int value)
     this->setUserData_Number(key, origin + value);
 }
 
-void CUserDataManager::setUserData_ItemGet(std::string key, int itemIdx)
+void CUserDataManager::setUserData_ItemExist(std::string key, int itemIdx)
 {
-    if(this->getUserData_IsItemHave(key, itemIdx))
-    {
-        CCLOG("Item get : Already have %s index %d", key.c_str(), itemIdx);
-        return;
+    auto paramListMap = this->getUserData_ParamListRef(key);
+    auto iter = paramListMap->find(itemIdx);
+    if (iter == paramListMap->end()) {
+        // Add param to list.
+        auto paramData = new PARAM_DATA();
+        paramListMap->emplace(std::pair<int, PARAM_DATA*>(itemIdx, paramData));
     }
-    
-    ARRAY_DATA* arrayData = nullptr;
-    auto iter = m_UserData._userDataListMap.find(key);
-    if (iter == m_UserData._userDataListMap.end()){
-        arrayData = new ARRAY_DATA();
-        m_UserData._userDataListMap.emplace(std::pair<std::string, ARRAY_DATA*>(key, arrayData));
-    }
-    else arrayData = iter->second;
-    
-    arrayData->push_back(itemIdx);
-    
-    this->sortUserDataList(key, compare);
-    this->SaveUserData();
 }
 
 // TODO: refactoring - initUserDefaultValue 부분과 비슷한 부분이 있다.
@@ -328,40 +297,17 @@ void CUserDataManager::setUserData_ItemParam(std::string key, int itemIdx, int p
     if(paramData->size() <= paramIdx)
         paramData->resize(paramIdx+1);
     
-    paramData->at(paramIdx) = value;
-    
-    this->SaveUserData();
-}
-
-void CUserDataManager::setUserData_ItemRemove(std::string key, int itemIdx)
-{
-    if (!this->getUserData_IsItemHave(key, itemIdx))
-    {
-        CCLOG("Item remove : Do not have %s index %d", key.c_str(), itemIdx);
+    if(paramData->at(paramIdx) != value)
+        paramData->at(paramIdx) = value;
+    else
         return;
-    }
     
-    auto itemList = m_UserData._userDataListMap.find(key);
-    if (itemList != m_UserData._userDataListMap.end()){
-        auto list = itemList->second;
-        list->erase(std::remove(std::begin(*list), std::end(*list), itemIdx), std::end(*list));
-        this->sortUserDataList(key, compare);
-    }
-    this->SaveUserData();
-}
-
-void CUserDataManager::setUserData_ItemRemoveAll(std::string key)
-{
-    auto itemList = m_UserData._userDataListMap.find(key);
-    if (itemList != m_UserData._userDataListMap.end()){
-        auto list = itemList->second;
-        list->clear();
-    }
     this->SaveUserData();
 }
 
 void CUserDataManager::setUserData_Reset()
 {
+    this->userDataClean(m_UserData);
     this->initUserDefaultValue(m_UserData);
    	this->SaveUserData();
 }
@@ -599,6 +545,16 @@ PARAM_DATA_ARRAY* CUserDataManager::getUserData_ParamListRef(std::string key)
     }
     CCLOG("There is no user data key : %s", key.c_str());
     CCASSERT(false, "Wrong Key");
+}
+
+void CUserDataManager::userDataClean(sUSER_DATA &data)
+{
+    DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataListMap);
+    
+    for(auto paramArray : data._userDataParamListMap)
+        DATA_MANAGER_UTILS::mapDeleteAndClean(*paramArray.second);
+    
+    DATA_MANAGER_UTILS::mapDeleteAndClean(data._userDataParamListMap);
 }
 
 void CUserDataManager::sortUserDataList(std::string key, const LIST_COMPARE& compare)
