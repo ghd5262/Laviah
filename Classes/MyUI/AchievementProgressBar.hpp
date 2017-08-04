@@ -17,7 +17,7 @@ public:
     CAchievementProgressBar* setBarAnchorPoint(cocos2d::Vec2 anchorPoint);
     CAchievementProgressBar* show(cocos2d::Node* parent, int zOrder = 0);
     
-    virtual void update(float delta) override;
+    void Update(float delta);
     virtual bool init() override;
     
     void Reset();

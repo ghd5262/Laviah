@@ -1,5 +1,6 @@
 #include "AchievementProgressBar.hpp"
 #include "../DataManager/UserDataManager.h"
+#include "../GameObject/ObjectManager.h"
 
 using namespace cocos2d;
 
@@ -23,24 +24,20 @@ bool CAchievementProgressBar::init()
 {
     if(!Node::init()) return false;
     
-    this->scheduleUpdate();
+    this->schedule([=](float delta){
+        this->Update(delta);
+    }, 0.5f, "Update");
     
     return true;
 }
 
-void CAchievementProgressBar::update(float delta)
+void CAchievementProgressBar::Update(float delta)
 {
-	// If current achievement is differs from previous achievement.
-    auto data = CAchievementDataManager::Instance()->getFirstFromNonCompleted();
-    if (!data && !m_AchievementData)  return;
-    if (m_AchievementData != data  ){
-        this->Reset();
-        return;
-    }
+    if(CObjectManager::Instance()->getIsGamePause()) return;
+    if (!m_AchievementData) return;
 
     // calculate percent
-    auto levelData = CAchievementDataManager::Instance()->getCurLevelDataByIndex(m_AchievementData->_index, false);
-    auto value = GVALUE->getVariable(levelData._materialList.at(0)._materialKey);
+    auto value = CAchievementDataManager::Instance()->getNormalAchievementCurrentValue(m_AchievementData->_index);
     {
         if(value != m_CurrentValue) {
             m_CurrentValue = value;
@@ -60,6 +57,7 @@ void CAchievementProgressBar::update(float delta)
         // do last event callback.
         this->retain();
         this->processEventListener();
+        this->Reset();
         this->release();
         return;
     }
@@ -94,8 +92,7 @@ CAchievementProgressBar* CAchievementProgressBar::show(cocos2d::Node* parent, in
     // achievement name label
     {
         m_TitleLabel = Label::createWithSystemFont("", FONT::MALGUNBD, 35,
-                                            Size(getContentSize().width * 0.9f,
-                                                 0),
+                                            Size(getContentSize().width * 0.9f, 0),
                                             TextHAlignment::CENTER,
                                             TextVAlignment::TOP);
         m_TitleLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -152,25 +149,16 @@ CAchievementProgressBar* CAchievementProgressBar::setBarAnchorPoint(Vec2 anchorP
 
 void CAchievementProgressBar::Reset()
 {
-    //이부분은 여기서 할게 아니라 게임을 처음에 키면 동작해야할듯하다.
-//    auto list = CUserDataManager::Instance()->getUserData_List(USERDATA_KEY::ACHIEVEMENT_CUR_LIST);
-//    if(!list.size()) {
-//        CAchievementDataManager::Instance()->getNewAchievements();
-//        return;
-//    }
-    
-    
+    auto achievementMng = CAchievementDataManager::Instance();
     m_BarBG->updateDisplayedOpacity(0);
     m_TitleLabel->setString("");
     m_ProgressBar->runAction(ProgressTo::create(0.5f, 0));
-    m_AchievementData = CAchievementDataManager::Instance()->getFirstFromNonCompleted();
+    m_AchievementData = achievementMng->getFirstFromNonCompleted();
     if(!m_AchievementData) return;
     
     m_CurrentAchievementIndex = m_AchievementData->_index;
-    auto levelData = CAchievementDataManager::Instance()->getCurLevelDataByIndex(m_CurrentAchievementIndex, false);
-	m_GoalValue    = levelData._contentsValue;
-    auto content   = CAchievementDataManager::Instance()->getAchievementContentsByIndex(m_CurrentAchievementIndex,
-                                                                                        false);
+    m_GoalValue  = achievementMng->getNormalAchievementMaterialValue(m_CurrentAchievementIndex);
+    auto content = achievementMng->getAchievementContentsByIndex(m_CurrentAchievementIndex, false);
 	m_TitleLabel->setString(content);
     m_ProgressBar->setColor(m_BarColor);
     m_BarBG->updateDisplayedOpacity(m_BarBGColor.a);

@@ -72,7 +72,7 @@ bool CUILayer::init()
 		Vec2(popupSize.width * 0.9f,   popupSize.height * 0.96f)
     };
 	m_StarScoreUI = createScoreUI(GVALUE->STAR_SCORE, "starIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[0]);
-	createScoreUI(GVALUE->COIN_SCORE, "coinIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[1]);
+	createScoreUI(GVALUE->COIN_COUNT, "coinIcon_s.png", Vec2::ANCHOR_MIDDLE_LEFT, scoreUIPos[1]);
 //	createScoreUI(GVALUE->RUN_SCORE, "runIcon_s.png", Vec2::ANCHOR_MIDDLE, scoreUIPos[2]);
 
 //    auto bonusTime = CBonusTimeUI::create();
@@ -246,7 +246,11 @@ void CUILayer::play()
     auto move = MoveTo::create(0.5f, Vec2(this->getContentSize().width * 0.5f,
                                           this->getContentSize().height));
     auto exponential = EaseExponentialOut::create(move);
-    m_AchievementProgressBar->runAction(exponential);
+    auto call = CallFunc::create([=](){
+        m_AchievementProgressBar->Reset();
+    });
+    auto seq  = Sequence::createWithTwoActions(call, exponential);
+    m_AchievementProgressBar->runAction(seq);
 }
 
 void CUILayer::onPauseButton(cocos2d::Node* sender)
