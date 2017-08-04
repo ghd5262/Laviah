@@ -40,16 +40,22 @@ namespace ACHIEVEMENT_DATA_KEY {
     
     const std::string ACHIEVEMENT_N_CLEAR  = "NORMAL_ACHIEVEMENT_CLEAR_COUNT";
     const std::string ACHIEVEMENT_H_CLEAR  = "HIDDEN_ACHIEVEMENT_CLEAR_COUNT";
+    
+    const std::string STAR_BARRIER_COUNT   = "STAR_BARRIER_COUNT";
+    const std::string COIN_BARRIER_COUNT   = "COIN_BARRIER_COUNT";
+    
+    const std::string CURRENT_CHARACTER    = "CURRENT_CHARACTER";
+    const std::string CURRENT_COSTUME      = "CURRENT_COSTUME";
 };
 
 class CAchievementClearChecker {
 public:
-    bool checkWithGlobal		(std::string key, int value);
-	bool checkWithSingleUserData(std::string key, int value);
+    bool checkWithGlobal		(std::string key, int value, bool isFit);
+	bool checkWithSingleUserData(std::string key, int value, bool isFit);
 	bool checkWithItemExist		(std::string key, int value);
 	bool checkWithCount			(std::string key, int value);
     bool checkWithItemParam     (std::string key, int itemIndex,
-                                 int paramIndex,  int value);
+                                 int paramIndex,  int value, bool isFit);
     bool checkWithContinuingType(std::string key, int value);
 
 	bool characterRareCountCheck(int value, int& currentValue);

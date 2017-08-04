@@ -104,7 +104,8 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
             auto dp         = dynamic_cast<CGoalPopupDP*>(node);
             auto data       = dp->getAchievementParam();
             auto levelData  = CAchievementDataManager::Instance()->getCurLevelDataByIndex(data._index, false);
-            rewardList.emplace_back(levelData._rewardKey, levelData._rewardValue);
+            auto value      = CAchievementDataManager::Instance()->getNormalAchievementRewardValue(data._index);
+            rewardList.emplace_back(levelData._rewardKey, value);
         }
         
         CGameScene::getGameScene()->Reward([=](bool isPlay){

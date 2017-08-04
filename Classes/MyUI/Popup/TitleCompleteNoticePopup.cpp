@@ -91,7 +91,7 @@ void CTitleCompleteNoticePopup::checkAchievementCompleteOnRealTime()
     auto data = CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
     if(data != nullptr){
         auto level  = CAchievementDataManager::getAchievementLevelByIndex(data->_index, true);
-        auto hidden = (data->_hiddenType && level <= 0);
+        auto hidden = ((data->_type == ACHIEVEMENT_TYPE::HIDDEN_TYPE) && level <= 0);
         m_ShowList.push(COMPLETED_ACHIEVEMENT(data->_index, level, hidden));
     }
     
@@ -139,7 +139,7 @@ void CTitleCompleteNoticePopup::show()
     m_NewIcon->setVisible(data._isHidden);
 
     // Save the index of the last completed achievement
-    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::LAST_COM_ACHIEVEMENT, data._index);
+//    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::LAST_COM_ACHIEVEMENT, data._index);
     
     this->scheduleOnce([=](float delta){
         

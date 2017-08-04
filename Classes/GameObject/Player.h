@@ -13,7 +13,7 @@
 *-----------------------------------------------------------------*/
 
 namespace PLAYER_DEFINE{
-    static const float NORMAL_BOUNDING_RADIUS = 40;
+    static const float NORMAL_BOUNDING_RADIUS = 35;
     static const float GIANT_BOUNDING_RADIUS  = 100;
     static const float NORMAL_SCALE = 1.f;
     static const float INVINCIVILITY_TIME = 5.f;

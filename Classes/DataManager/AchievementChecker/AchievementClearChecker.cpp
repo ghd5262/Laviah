@@ -8,14 +8,16 @@
 
 using namespace cocos2d;
 
-bool CAchievementClearChecker::checkWithGlobal(std::string key, int value)
+bool CAchievementClearChecker::checkWithGlobal(std::string key, int value, bool isFit)
 {
-    return value <= GVALUE->getVariable(key);
+    if(isFit) return value == GVALUE->getVariable(key);
+    else      return value <= GVALUE->getVariable(key);
 }
 
-bool CAchievementClearChecker::checkWithSingleUserData(std::string key, int value)
+bool CAchievementClearChecker::checkWithSingleUserData(std::string key, int value, bool isFit)
 {
-	return (value <= CUserDataManager::Instance()->getUserData_Number(key));
+    if(isFit) return (value == CUserDataManager::Instance()->getUserData_Number(key));
+    else      return (value <= CUserDataManager::Instance()->getUserData_Number(key));
 }
 
 bool CAchievementClearChecker::checkWithItemExist(std::string key, int value)
@@ -29,11 +31,12 @@ bool CAchievementClearChecker::checkWithCount(std::string key, int value)
 }
 
 bool CAchievementClearChecker::checkWithItemParam(std::string key, int itemIndex,
-                                                  int paramIndex, int value)
+                                                  int paramIndex, int value, bool isFit)
 {
-    return (value <= CUserDataManager::Instance()->getUserData_ParamData(key,
-                                                                         itemIndex,
-                                                                         paramIndex, 0));
+    auto userValue = CUserDataManager::Instance()->getUserData_ParamData(key, itemIndex,
+                                                                         paramIndex, 0);
+    if(isFit) return (value == userValue);
+    else      return (value <= userValue);
 }
 
 bool CAchievementClearChecker::checkWithContinuingType(std::string key, int value)

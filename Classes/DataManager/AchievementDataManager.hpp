@@ -26,25 +26,38 @@ enum ACHIEVEMENT_STATE{
     COMPLETED,
 };
 
+enum ACHIEVEMENT_TYPE{
+    NORMAL_TYPE = 0,
+    HIDDEN_TYPE,
+    STORY_TYPE,
+};
+
 class CAchievementClearChecker;
 class CAchievementRewarder;
 
 typedef std::vector<int> MATERIAL_VALUES;
 struct ACHIEVEMENT_MATERIAL {
+    int _itemIndex;
+    int _materialValue;
     std::string _materialKey;
     MATERIAL_VALUES _materialValues;
-    
+    bool _isFit;
+
     ACHIEVEMENT_MATERIAL()
-    : _materialKey(""){
+    : _itemIndex(0)
+    , _materialValue(0)
+    , _materialKey("")
+    , _isFit(false){
         _materialValues.clear();
     };
 };
 
 typedef std::vector<ACHIEVEMENT_MATERIAL> MATERIAL_LIST;
 struct ACHIEVEMENT_LEVEL {
-    std::string _rewardKey;
     int _rewardValue;
     int _contentsValue;
+    int _characterIndex;
+    std::string _rewardKey;
     CHECKER_TYPE _checkerType;
     MATERIAL_LIST _materialList;
     
@@ -52,6 +65,7 @@ struct ACHIEVEMENT_LEVEL {
     : _rewardKey("")
     , _rewardValue(0)
     , _contentsValue(0)
+    , _characterIndex(-1)
     , _checkerType(CHECKER_TYPE::ETC){
         _materialList.clear();
     };
@@ -60,24 +74,24 @@ struct ACHIEVEMENT_LEVEL {
 typedef std::vector<ACHIEVEMENT_LEVEL> ACHIEVEMENT_LEVEL_LIST;
 struct ACHIEVEMENT {
     int _index;
-    bool _hiddenType;
+    int _openLevel;
     bool _visibleType;
-    int _currentValue;
+    ACHIEVEMENT_TYPE _type;
     ACHIEVEMENT_LEVEL_LIST _levelList;
     
     ACHIEVEMENT()
     : _index(-1)
-    , _hiddenType(false)
-    , _visibleType(false)
-    , _currentValue(0){
+    , _openLevel(0)
+    , _type(ACHIEVEMENT_TYPE::NORMAL_TYPE)
+    , _visibleType(false){
         _levelList.clear();
     }
 };
 
 namespace ACHIEVEMENT_DEFINE {
 	static const int LIMIT_COUNT = 3;
-	static const std::string NORMAL_CONTENT = "ACHIEVEMENT_NORMAL_CONTENT_%d";
-    static const std::string HIDDEN_CONTENT = "ACHIEVEMENT_HIDDEN_CONTENT_%d";
+	static const std::string NORMAL_CONTENT = "ACHIEVEMENT_NORMAL_CONTENT_%d_%d";
+    static const std::string HIDDEN_CONTENT = "ACHIEVEMENT_HIDDEN_CONTENT_%d_%d";
 	static const std::string HIDDEN_TITLE   = "ACHIEVEMENT_HIDDEN_TITLE_%d_%d";
 }
 
@@ -128,16 +142,20 @@ public:
     std::string getAchievementTitleByIndex(int index);
     std::string getAchievementTitle(int index, int level);
     std::string getAchievementContentsByIndex(int index, bool isHidden);
+    std::string getAchievementContents(int index, int level, bool isHidden);
     ACHIEVEMENT_LIST getHiddenAchievementList() const;
-    ACHIEVEMENT_LIST getNonCompletedAchievementList() const;
+    ACHIEVEMENT_LIST getNonCompletedAchievementList();
     ACHIEVEMENT_LIST getPickedAchievementList() const;
     ACHIEVEMENT_LIST getRunnnigAchievementList() const;
     int getAchievementMaxLevelByIndex(int index, bool isHidden);
     int getHiddenAchievementCurrentValue(int index);
+    int getNormalAchievementCurrentValue(int index);
+    int getNormalAchievementMaterialValue(int index);
+    int getNormalAchievementRewardValue(int index);
     
     static int getAchievementLevelByIndex(int index, bool isHidden);
     static int getAchievementStateByIndex(int index, bool isHidden);
-    static void setAchievementLevelByIndex(int index, int level);
+    static void setAchievementLevelByIndex(int index, int level, bool isHidden);
     static void setAchievementStateByIndex(int index, int state, bool isHidden);
 private:
     void initWithJson(ACHIEVEMENT_LIST &list, std::string fileName);

@@ -89,7 +89,8 @@ enum PARAM_WORKSHOP{
 };
 
 enum PARAM_ACHIEVEMENT_NORMAL{
-    NORMAL_STATE    = 0, ///< 0: non-completed, 1: running, 2: finished, 3: completed
+    NORMAL_LEVEL    = 0,
+    NORMAL_STATE    = 1, ///< 0: non-completed, 1: running, 2: finished, 3: completed
 };
 
 enum PARAM_ACHIEVEMENT_HIDDEN{
