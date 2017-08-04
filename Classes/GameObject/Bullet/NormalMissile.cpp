@@ -100,6 +100,7 @@ void CNormalMissile::CollisionWithPlayer()
 		R_BezierWithRotation(Vec2(2000, 3000), Vec2(540, 1500), Vec2(900, 2000), 1.f);
 	}
 	else{
+        CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::DEAD_BY_MISSILE, 1);
 		m_Player->LostSomeHealth(this->getPower());
         m_Player->Crushed();
         m_Planet->Crushed();
@@ -127,6 +128,7 @@ void CNormalMissile::ChangeToCoin()
 	float distance = m_TargetVec.distance(getPosition());
 
 	CObjectManager::Instance()->getBulletCreator()->CreateImmediately(data, getAngle(), distance, eITEM_FLAG_coin);
+    CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::CHANGE_TO_COIN, 1);
     
     this->ReturnToMemoryBlock();
 }
@@ -141,6 +143,7 @@ void CNormalMissile::ChangeToStar()
     float distance = m_TargetVec.distance(getPosition());
     
     CObjectManager::Instance()->getBulletCreator()->CreateImmediately(data, getAngle(), distance, eITEM_FLAG_star);
+    CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::CHANGE_TO_STAR, 1);
     this->ReturnToMemoryBlock();
 }
 

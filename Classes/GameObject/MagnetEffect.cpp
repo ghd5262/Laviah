@@ -30,8 +30,7 @@ CMagnetEffect::CMagnetEffect()
 , m_LimitTime(0.f)
 , m_Timer(0.f)
 , m_IntervalTimer(MAGNET_INTERVAL)
-{
-}
+{}
 
 bool CMagnetEffect::init()
 {
@@ -89,4 +88,9 @@ void CMagnetEffect::GotMagnetItem(){
     m_IntervalTimer  = MAGNET_INTERVAL;
 }
 
-
+void CMagnetEffect::Clear()
+{
+    m_BoundingRadius = (0);
+    m_LimitTime      = 0.f;
+    this->stopAllActions();
+}

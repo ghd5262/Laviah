@@ -10,8 +10,9 @@ public:
     static CMagnetEffect* create();
     
     void GotMagnetItem();
+    void Clear();
+
     virtual void update(float delta) override;
-    
 protected:
     virtual bool init() override;
     

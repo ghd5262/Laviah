@@ -1,4 +1,7 @@
 #include "UnityAdsManager.hpp"
+#include "cocos2d.h"
+
+using namespace cocos2d;
 
 CUnityAdsManager* CUnityAdsManager::Instance()
 {
@@ -7,8 +10,7 @@ CUnityAdsManager* CUnityAdsManager::Instance()
 }
 
 CUnityAdsManager::CUnityAdsManager()
-: m_UnityAdsSavedFunc(nullptr)
-, m_NetworkConnectSavedFunc(nullptr){}
+: m_UnityAdsSavedFunc(nullptr){}
 
 CUnityAdsManager::~CUnityAdsManager(){}
 
@@ -34,16 +36,6 @@ void CUnityAdsManager::ShowUnityAds(const std::function<void(void)> &func, bool 
     }
 }
 
-void CUnityAdsManager::Toast(std::string content)
-{
-//    m_SDKUtil->Toast(content);
-}
-
-void CUnityAdsManager::IsNetworkConnect()
-{
-//    m_SDKUtil->IsNetworkConnect();
-}
-
 void CUnityAdsManager::CallUnityAdsSavedFunction()
 {
     if (m_UnityAdsSavedFunc != nullptr)
@@ -53,15 +45,4 @@ void CUnityAdsManager::CallUnityAdsSavedFunction()
     }
     else
         CCASSERT(false, "CallUnityAdsSavedFunction : No function was saved.");
-}
-
-void CUnityAdsManager::CallNetworkConnectSavedFunction()
-{
-    if (m_NetworkConnectSavedFunc != nullptr)
-    {
-        m_NetworkConnectSavedFunc();
-        m_NetworkConnectSavedFunc = nullptr;
-    }
-    else
-        CCASSERT(false, "CallNetworkConnectSavedFunction : No function was saved.");
 }

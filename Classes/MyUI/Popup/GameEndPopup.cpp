@@ -37,6 +37,7 @@ bool CGameEndPopup::init()
     ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
     ->setButtonSingleUse(true)
     ->setButtonPosition(popupSize / 2)
+    ->setEnableSound(false)
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(this);
     btnScreen->setOpacity(0);

@@ -51,6 +51,9 @@ void CPlayStar::CollisionWithPlayer()
 //	auto value = CItemManager::Instance()->getValueOfStar((eSTAR_TYPE)(this->getSymbol() - 'P' + 1));
     CComboScore::Instance()->AddCombo();
 	GVALUE->STAR_COUNT += 1;
+    
+    if(eITEM_FLAG_star & CItemManager::Instance()->getCurrentItem())
+        GVALUE->STAR_BARRIER_COUNT += 1;
 }
 
 void CPlayStar::Execute(float delta)

@@ -67,15 +67,15 @@ bool CBackGround::init()
 void CBackGround::update(float delta)
 {
     if(CObjectManager::Instance()->getIsGamePause()) return;
+    if(!m_Gradient) return;
     
     m_Time += delta;
-    if (m_Time > m_fLimitTime)
-    {
-        changeBackground();
-        m_Time = 0.f;
-    }
     
-    if (m_IsChanging && m_Gradient != nullptr){
+    if (m_Time > m_fLimitTime)
+        this->changeBackground();
+    
+    
+    if (m_IsChanging){
         m_Gradient->setStartColor(m_tempStartGradient->getColor());
         m_Gradient->setEndColor(m_tempEndGradient->getColor());
     }
@@ -128,6 +128,7 @@ void CBackGround::changeBackground()
     m_tempStartGradient->runAction(TintTo::create(1.5f, data._rightColor));
     m_tempEndGradient->runAction(Sequence::create(TintTo::create(1.5f, data._leftColor),
                                                   CallFunc::create([=](){
+        m_Time = 0.f;
         m_IsChanging = false;
     }), nullptr));
     

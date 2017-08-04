@@ -98,7 +98,10 @@ void CPlayer::Clear()
 void CPlayer::GameStart()
 {
     m_Life = m_MaxLife;
-        
+    
+    GVALUE->CURRENT_CHARACTER = m_CharacterParam->_index;
+    GVALUE->CURRENT_COSTUME   = m_CostumeParam->_index;
+    
     this->setVisible(true);
     this->setPlayerTexture(m_CharacterParam->_texture);
 }
@@ -304,9 +307,9 @@ void CPlayer::createAliveParticle()
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());
-        particle->setStartRadius(40);
+        particle->setStartRadius(200);
         particle->setEndRadius(0);
-        particle->setDuration(0.5f);
+        particle->setDuration(1.0f);
         CGameScene::getZoomLayer()->addChild(particle, ZORDER::PLAYER);
     }
 }

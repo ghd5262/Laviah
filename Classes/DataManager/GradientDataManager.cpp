@@ -89,13 +89,18 @@ CGradientDataManager::CGradientDataManager()
 //    addScoreColor( 187, 212, 76  );
 //    addScoreColor( 255, 215, 36  );
 
-    addScoreColor( 237, 207, 85  );
-    addScoreColor( 203, 214, 75  );
-    addScoreColor( 14 , 191, 124 );
-    addScoreColor( 14 , 187, 207 );
-    addScoreColor( 0  , 158, 176 );
-    addScoreColor( 0  , 120, 176 );
-
+//    addScoreColor( 237, 207, 85  );
+//    addScoreColor( 203, 214, 75  );
+//    addScoreColor( 14 , 191, 124 );
+//    addScoreColor( 14 , 187, 207 );
+//    addScoreColor( 0  , 158, 176 );
+//    addScoreColor( 0  , 120, 176 );
+    
+    addScoreColor( 174, 171, 160  );
+    addScoreColor( 194, 187, 161  );
+    addScoreColor( 211, 199, 150  );
+    addScoreColor( 222, 203, 124  );
+    addScoreColor( 237, 207, 85   );
     
     auto addBulletColor = [=](int r, int g, int b){
         m_BulletColorList.emplace_back(Color3B(r, g, b));
@@ -149,9 +154,8 @@ sGRADIENT_PARAM CGradientDataManager::getRandomGradient() const
 
 sGRADIENT_PARAM CGradientDataManager::getNextGradient()
 {
-	m_GradientIdx = m_GradientIdx % (m_GradientList.size() - 1);
+	m_GradientIdx = ++m_GradientIdx % (m_GradientList.size());
 	auto result = m_GradientList.at(m_GradientIdx);
-	m_GradientIdx++;
 
 	return result;
 }

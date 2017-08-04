@@ -393,6 +393,7 @@ void CGameScene::MenuFadeIn()
     auto fadeAction     = FadeIn::create(0.5f);
     auto callFunc       = CallFunc::create([=](){
         m_IsMenuLayerFront = true;
+        this->startAppreciatePlanet();
     });
     auto sequenceAction = Sequence::create(delayAction, fadeAction, callFunc, nullptr);
     m_MenuLayer->runAction(sequenceAction);
@@ -401,10 +402,10 @@ void CGameScene::MenuFadeIn()
     bool enable = CAchievementDataManager::Instance()->ExistCompletedHiddenAchievement();
     CMenuLayer::Instance()->AchievementButtonState(enable);
     
-    if(!enable){
+//    if(!enable){
         // Save the index of the last completed achievement
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::LAST_COM_ACHIEVEMENT, 0);
-    }
+//        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::LAST_COM_ACHIEVEMENT, 0);
+//    }
 }
 
 void CGameScene::MenuFadeOut()
@@ -413,6 +414,7 @@ void CGameScene::MenuFadeOut()
     auto callFunc       = CallFunc::create([=](){
         m_MenuLayer->setVisible(false);
         m_IsMenuLayerFront = false;
+        this->stopAppreciatePlanet();
     });
     auto sequenceAction = Sequence::createWithTwoActions(fadeAction, callFunc);
     m_MenuLayer->runAction(sequenceAction);
@@ -533,10 +535,11 @@ void CGameScene::createExitPopup(bool resume)
     }, TRANSLATE("BUTTON_YES"))
     ->setNegativeButton([=](Node* sender){
         if (resume) this->GameResume();
+        else        this->turnUpSound();
     }, TRANSLATE("BUTTON_NO"))
     ->setDefaultCallback([=](Node* sender){
         if (resume) this->GameResume();
-        
+        else        this->turnUpSound();
         auto popup = dynamic_cast<CPopup*>(sender);
         popup->popupClose();
     })
@@ -712,13 +715,25 @@ void CGameScene::getFreeReward()
             CUserDataManager::Instance()->setFreeRewardTimestamp(currentTimestamp);
             
             // notice popup (for debug)
-            this->CreateAlertPopup()
-            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-            ->setMessage("free reward")
-            ->show(m_PopupLayer, ZORDER::POPUP);
+//            this->CreateAlertPopup()
+//            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
+//            ->setMessage("free reward")
+//            ->show(m_PopupLayer, ZORDER::POPUP);
         }
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
+}
+
+void CGameScene::startAppreciatePlanet()
+{
+    this->scheduleOnce([=](float delta){
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::APPRECIATE_PLANET, 600);
+    }, 600.f, "START_APPRECIATE_PLANET");
+}
+
+void CGameScene::stopAppreciatePlanet()
+{
+    this->unschedule("START_APPRECIATE_PLANET");
 }
 
 // The following items are initialized only once.
@@ -780,6 +795,7 @@ void CGameScene::createPlanet()
     planet->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_ZoomLayer->addChild(planet, ZORDER::PLANETZ);
     CObjectManager::Instance()->setPlanet(planet);
+    CObjectManager::Instance()->ChangePlanet();
 }
 
 void CGameScene::createPlayer()
@@ -790,6 +806,7 @@ void CGameScene::createPlayer()
     m_ZoomLayer->addChild(player, ZORDER::PLAYER);
     player->setVisible(false);
     CObjectManager::Instance()->setPlayer(player);
+    CObjectManager::Instance()->ChangeCharacter();
 }
 
 void CGameScene::createRocket()
@@ -803,6 +820,7 @@ void CGameScene::createRocket()
     rocket->ChangeState(CFlyToTarget::Instance());
     m_ZoomLayer->addChild(rocket, ZORDER::POPUP);
     CObjectManager::Instance()->setRocket(rocket);
+    CObjectManager::Instance()->ChangeRocket();
 }
 
 void CGameScene::createSlowPoint()
@@ -1038,10 +1056,10 @@ void CGameScene::setTimestamp()
             CUserDataManager::Instance()->setLastTimestamp(today);
             
             // notice popup (for debug)
-            this->CreateAlertPopup()
-            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-            ->setMessage("normal achievement reseted")
-            ->show(m_PopupLayer, ZORDER::POPUP);
+//            this->CreateAlertPopup()
+//            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
+//            ->setMessage("normal achievement reseted")
+//            ->show(m_PopupLayer, ZORDER::POPUP);
         }
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);

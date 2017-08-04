@@ -97,8 +97,8 @@ void CRewardPopupDP::goldReward()
 {
     auto action = [=](Node* sender){
         auto layerSize   = this->getContentSize();
-//        sender->setPosition(CBullet::getCirclePosition(random<float>(0.f, 360.f), 1500, layerSize / 2));
-        sender->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.75f));
+        sender->setPosition(CBullet::getCirclePosition(random<float>(0.f, 360.f), 1500, layerSize / 2));
+//        sender->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.75f));
         sender->setRotation(random<float>(0.f, 360.f));
         
         auto targetPos   = CBullet::getSquarePosition(random<int>(30, 330), random<int>(150, 1200));
@@ -168,10 +168,10 @@ void CRewardPopupDP::characterReward()
 {
     // create character
     auto data       = CCharacterDataManager::Instance()->getCharacterByIndex(m_Reward._value);
-    auto character  = Sprite::createWithSpriteFrameName(data->_texture);
+    auto character  = Sprite::createWithSpriteFrameName(data->_texture_600);
     character->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     character->setPosition(this->getContentSize() / 2);
-    character->setScale(2.5f);
+    character->setScale(0.8f);
     character->setCascadeOpacityEnabled(true);
     this->addChild(character);
     

@@ -102,6 +102,9 @@ private:
     void turnUpSound();
     void startTutorial();
     void getFreeReward();
+    void startAppreciatePlanet();
+    void stopAppreciatePlanet();
+    
     
     // The following items are initialized only once.
     void initMemoryPool();

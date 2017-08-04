@@ -44,8 +44,11 @@ void CPlayCoin::CollisionWithPlayer()
 {
 //	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
     this->R_UpAndBezier();
-    auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
+//    auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
     CComboScore::Instance()->AddCombo();
-    GVALUE->COIN_SCORE += value;
+//    GVALUE->COIN_SCORE += value;
 	GVALUE->COIN_COUNT += 1;
+    
+    if(eITEM_FLAG_coin & CItemManager::Instance()->getCurrentItem())
+        GVALUE->COIN_BARRIER_COUNT += 1;
 }

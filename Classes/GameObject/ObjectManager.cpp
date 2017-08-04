@@ -6,6 +6,7 @@
 #include "BulletCreator.h"
 #include "Rocket.h"
 #include "ItemRange.h"
+#include "MagnetEffect.h"
 #include "Bullet/Bullet.h"
 #include "../AI/States/GameStates.h"
 #include "../AI/States/RocketStates.h"
@@ -112,6 +113,7 @@ void CObjectManager::Clear()
 	m_BarrierItemRange->Clear();
 	m_StarItemRange->Clear();
 	m_CoinItemRange->Clear();
+    m_MagnetItemRange->Clear();
     m_PhotoShareAble = false;
     CComboScore::Instance()->ComboScoreReset();
 

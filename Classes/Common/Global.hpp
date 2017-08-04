@@ -56,6 +56,12 @@ public:
     
     int NORMAL_ACHIEVEMENT_CLEAR_COUNT;
     int HIDDEN_ACHIEVEMENT_CLEAR_COUNT;
+    
+    int STAR_BARRIER_COUNT;
+    int COIN_BARRIER_COUNT;
+    
+    int CURRENT_CHARACTER;
+    int CURRENT_COSTUME;
 };
 
 #define GVALUE Global::Instance()

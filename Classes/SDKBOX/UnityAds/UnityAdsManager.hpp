@@ -11,21 +11,13 @@ public:
     void Initialize(bool testMode = false);
     
     void ShowUnityAds(const std::function<void(void)> &func, bool isRewarded = true);
-    
-    void Toast(std::string content);
-    
-    void IsNetworkConnect();
-    
+        
     void CallUnityAdsSavedFunction();
-    
-    void CallNetworkConnectSavedFunction();
 private:
     CUnityAdsManager();
     ~CUnityAdsManager();
     
-    CC_SYNTHESIZE(bool, m_IsNetworkConnect, IsNetworkConnect);
     CC_SYNTHESIZE(std::function<void(void)>, m_UnityAdsSavedFunc, UnityAdsSavedFunc);
-    CC_SYNTHESIZE(std::function<void(void)>, m_NetworkConnectSavedFunc, NetworkConnectSavedFunc);
 };
 
 

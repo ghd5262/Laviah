@@ -153,12 +153,12 @@ bool COptionDataSavePopup::init()
         ->addEventListener([=](Node* sender){
             alertCreate([](Node* sender){
                 CUserDataManager::Instance()->setUserData_Reset();
-                CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::COIN, 1000000);
-                CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::LEVEL, 10);
+//                CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::COIN, 1000000);
+//                CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::LEVEL, 10);
                 
-                CUserDataManager::Instance()->setUserData_ItemExist(USERDATA_KEY::COSTUME_LIST, 1);
-                CUserDataManager::Instance()->setUserData_ItemExist(USERDATA_KEY::COSTUME_LIST, 5);
-
+//                CUserDataManager::Instance()->setUserData_ItemExist(USERDATA_KEY::COSTUME_LIST, 1);
+//                CUserDataManager::Instance()->setUserData_ItemExist(USERDATA_KEY::COSTUME_LIST, 5);
+//
             }, TRANSLATE("OPTION_DATASAVE_RESET_CHECK"));
         })
         ->setButtonNormalImage("endIcon.png")

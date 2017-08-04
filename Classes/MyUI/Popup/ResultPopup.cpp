@@ -190,7 +190,7 @@ bool CResultPopup::init()
     
 	scoreLayer.at(0) = createNLayer(resultIcon[0], resultContent[0], GVALUE->STAR_SCORE, posArray[0], 50);
 	scoreLayer.at(1) = createNLayer(resultIcon[1], resultContent[1], GVALUE->BEST_COMBO, posArray[1], 50);
-    scoreLayer.at(2) = createMLayer(resultIcon[2], resultContent[2], GVALUE->COIN_SCORE, posArray[2], 50, 10, "x");
+    scoreLayer.at(2) = createMLayer(resultIcon[2], resultContent[2], GVALUE->COIN_COUNT, posArray[2], 50, 10, "x");
 	scoreLayer.at(3) = createMLayer(resultIcon[3], resultContent[3], GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT,
                                     posArray[3], 50, 100, "x");
     
@@ -286,7 +286,7 @@ bool CResultPopup::init()
     CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::PLAY_COUNT, 1);
     
     // update coin
-    CUserDataManager::Instance()->CoinUpdate(GVALUE->COIN_SCORE);
+    CUserDataManager::Instance()->CoinUpdate(GVALUE->COIN_COUNT);
     
     // Check all of achievement.
     bool achievementAll = CAchievementDataManager::Instance()->CheckCompleteAll();
@@ -485,7 +485,7 @@ void CResultPopup::GetFreeReward(cocos2d::Node* sender)
 
 void CResultPopup::createRewardPopup(std::string key, int value)
 {
-    CGameScene::getGameScene()->Reward(nullptr, {
+    CGameScene::getGameScene()->Reward([=](bool isPlay){}, {
         sREWARD_DATA(key, value)
     });
 }
