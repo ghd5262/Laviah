@@ -56,6 +56,35 @@ bool CAchievementPopup::init()
     Size dpSize           = Size(1080, 200);
     size_t dpDistance     = 15;
     int spawnCount        = 4;
+    auto userLevel        = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
+    
+    
+    typedef std::pair<int, const ACHIEVEMENT*> PAIR;
+    auto sortedList       = std::vector<PAIR>(achievementList.begin(), achievementList.end());
+    // sort
+    {
+        // sort by clear (clear achievements locate to the top.)
+        std::stable_sort(sortedList.begin(), sortedList.end(), [=](PAIR dataA, PAIR dataB){
+            auto stateA = CAchievementDataManager::getAchievementStateByIndex(dataA.second->_index, true);
+            auto stateB = CAchievementDataManager::getAchievementStateByIndex(dataB.second->_index, true);
+            if(stateA != ACHIEVEMENT_STATE::COMPLETED && stateB != ACHIEVEMENT_STATE::COMPLETED) return false;
+            return (stateA > stateB);
+        });
+        // sort by hidden type (hidden achievements locate to the top.)
+        std::stable_sort(sortedList.begin(), sortedList.end(), [=](PAIR dataA, PAIR dataB){
+            auto storyA = (dataA.second->_type == ACHIEVEMENT_TYPE::STORY_TYPE);
+            auto storyB = (dataB.second->_type == ACHIEVEMENT_TYPE::STORY_TYPE);
+
+            return (storyA > storyB);
+        });
+        // sort by complete (completed achievements locate to the bottom.)
+        std::stable_sort(sortedList.begin(), sortedList.end(), [=](PAIR dataA, PAIR dataB){
+            auto stateA = CAchievementDataManager::Instance()->CompletedAllOfLevels(dataA.second->_index);
+            auto stateB = CAchievementDataManager::Instance()->CompletedAllOfLevels(dataB.second->_index);
+            
+            return (stateA < stateB);
+        });
+    }
     
     // Create the list view
     auto listView = ListView::create();
@@ -72,16 +101,17 @@ bool CAchievementPopup::init()
         listView->setCascadeOpacityEnabled(true);
         bg->addChild(listView);
         
-        int lastCompletedIndex = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LAST_COM_ACHIEVEMENT);
+//        int lastCompletedIndex = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LAST_COM_ACHIEVEMENT);
         int dpIndex = 0;
         int scrollIndex = 0;
-        for(auto achievement : achievementList)
+        for(auto achievement : sortedList)
         {
             auto data  = achievement.second;
 
             if(!data->_visibleType) continue;
+            if(userLevel < data->_openLevel) continue;
             if(CAchievementDataManager::Instance()->IsHiddenAchievement(data->_index)) continue;
-            if(lastCompletedIndex == data->_index) scrollIndex = dpIndex;
+//            if(lastCompletedIndex == data->_index) scrollIndex = dpIndex;
             
             auto achievementDP = CAchievementPopupDP::create(data);
             achievementDP->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -93,7 +123,7 @@ bool CAchievementPopup::init()
             dpIndex++;
         }
         
-        if(achievementList.size() > spawnCount){
+        if(sortedList.size() > spawnCount){
             // Scrolling to last completed achievement
             if(scrollIndex > spawnCount){
                 this->scheduleOnce([=](float delta){

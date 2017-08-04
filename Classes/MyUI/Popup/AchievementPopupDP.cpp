@@ -60,26 +60,12 @@ bool CAchievementPopupDP::init()
 //                              this->getContentSize().height * 0.5f));
     }
     
-    // create new icon
-    {
-        auto newIcon = Sprite::create("newIcon.png");
-        newIcon->setAnchorPoint(Vec2::ZERO);
-        contentBG->addChild(newIcon);
-        
-        // update
-        m_ListenerList.emplace_back([=](){
-            auto level = CAchievementDataManager::Instance()->getAchievementLevelByIndex(index, true);
-            auto isNew = (m_AchievementData->_hiddenType && (level < 1));
-            newIcon->setVisible(isNew);
-        });
-    }
-    
     // create title
     {
         auto title = Label::createWithSystemFont("", FONT::MALGUNBD, 40);
         title->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        title->setPosition(Vec2(contentBG->getContentSize().width * 0.25f,
-                               contentBG->getContentSize().height * 0.8f));
+        title->setPosition(Vec2(contentBG->getContentSize().width * 0.05f,
+                                contentBG->getContentSize().height * 0.8f));
         title->setColor(COLOR::GOLD);
         contentBG->addChild(title);
         
@@ -92,12 +78,12 @@ bool CAchievementPopupDP::init()
     // create content
     {
         auto content = Label::createWithSystemFont("", FONT::MALGUN, 30,
-                                                   Size(contentBG->getContentSize().width * 0.7f,
+                                                   Size(contentBG->getContentSize().width * 0.9f,
                                                         contentBG->getContentSize().height * 0.45f),
                                                    TextHAlignment::LEFT,
                                                    TextVAlignment::CENTER);
         content->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        content->setPosition(Vec2(contentBG->getContentSize().width * 0.25f,
+        content->setPosition(Vec2(contentBG->getContentSize().width * 0.05f,
                                   contentBG->getContentSize().height * 0.5f));
         contentBG->addChild(content);
         
@@ -107,16 +93,25 @@ bool CAchievementPopupDP::init()
         });
     }
     
+    // create type icon
+    {
+        auto iconName = StringUtils::format("achievementTypeIcon_%d.png", m_AchievementData->_type);
+        auto typeIcon = Sprite::create(iconName);
+        typeIcon->setPosition(Vec2(contentBG->getContentSize()));
+        typeIcon->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+        contentBG->addChild(typeIcon);
+    }
+    
     // create star
     {
         auto maxLevel = CAchievementDataManager::Instance()->getAchievementMaxLevelByIndex(index, true);
         std::vector<Sprite*> starList;
-        for(int count = 0; count <= maxLevel; count++)
+        for(int count = 0; count <= maxLevel && 0 < maxLevel; count++)
         {
             auto star = Sprite::create("starIcon_s.png");
             star->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-            star->setPosition(Vec2((contentBG->getContentSize().width * 0.66f) + (count * 50),
-                                    contentBG->getContentSize().height * 0.25f));
+            star->setPosition(Vec2((contentBG->getContentSize().width * 0.45f) + (count * 50),
+                                    contentBG->getContentSize().height * 0.2f));
             contentBG->addChild(star);
             starList.push_back(star);
         }
@@ -200,8 +195,8 @@ bool CAchievementPopupDP::init()
             barBG->setColor(Color3B::BLACK);
             barBG->setOpacity(255 * 0.8f);
             barBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-            barBG->setPosition(contentBG->getContentSize().width * 0.25f,
-                               contentBG->getContentSize().height * 0.25f);
+            barBG->setPosition(contentBG->getContentSize().width * 0.05f,
+                               contentBG->getContentSize().height * 0.2f);
             contentBG->addChild(barBG);
         }
         
@@ -211,8 +206,8 @@ bool CAchievementPopupDP::init()
             bar->setColor(COLOR::GOLD);
             auto progressBar = ProgressTimer::create(bar);
             progressBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-            progressBar->setPosition(contentBG->getContentSize().width * 0.25f,
-                                     contentBG->getContentSize().height * 0.25f);
+            progressBar->setPosition(contentBG->getContentSize().width * 0.05f,
+                                     contentBG->getContentSize().height * 0.2f);
             progressBar->setMidpoint(Vec2(0, 0));
             progressBar->setType(ProgressTimer::Type::BAR);
             progressBar->setBarChangeRate(Vec2(1, 0));
@@ -232,6 +227,9 @@ bool CAchievementPopupDP::init()
                 
                 auto state = CAchievementDataManager::getAchievementStateByIndex(index, true);
                 if(state == ACHIEVEMENT_STATE::COMPLETED && value < max)
+                    value  = max;
+                
+                if(CAchievementDataManager::Instance()->CompletedAllOfLevels(index))
                     value  = max;
             
                 goalLabel->setString(StringUtils::format("%d / %d", value, max));
