@@ -121,6 +121,7 @@ bool CVideoPopup::init()
     
     m_CountDown = CCountDown::create()
     ->addLastEventListner([=](Node* sender){
+        if(m_ReviveButtonTouched) return;
         this->End(sender);
     })
     ->setFont(Color4B::WHITE, 65)
@@ -186,6 +187,7 @@ bool CVideoPopup::init()
 }
 
 void CVideoPopup::End(Node* sender){
+    m_IsEnded = true;
     m_CountDown->Pause();
     m_CountDown->setVisible(false);
     CGameScene::getGameScene()->GameResult();
@@ -194,13 +196,17 @@ void CVideoPopup::End(Node* sender){
 
 void CVideoPopup::ReviveByCoin(cocos2d::Node* sender)
 {
+    if(m_IsEnded) return;
     if (CUserDataManager::Instance()->CoinUpdate(-g_coinToRevive)){
+        m_ReviveButtonTouched = true;
         this->Resume();
     }
 }
 
 void CVideoPopup::ReviveByVideo(cocos2d::Node* sender)
 {
+    if(m_IsEnded) return;
+    m_ReviveButtonTouched = true;
     CUnityAdsManager::Instance()->ShowUnityAds([=](){this->Resume(); });
 }
 

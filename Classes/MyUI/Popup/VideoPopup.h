@@ -19,9 +19,13 @@ private:
     void ReviveByVideo(cocos2d::Node* sender);
 	void Resume();
         
-	CVideoPopup(){};
+	CVideoPopup()
+    : m_ReviveButtonTouched(false)
+    , m_IsEnded(false){};
 	virtual ~CVideoPopup(){};
     
 private:
     CCountDown* m_CountDown;
+    bool m_ReviveButtonTouched;
+    bool m_IsEnded;
 };
