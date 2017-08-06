@@ -3,10 +3,22 @@
 #include "cocos2d.h"
 #include "PluginSdkboxPlay/PluginSdkboxPlay.h"
 #include <vector>
+#include <map>
 
-typedef std::function<void(void)>        VOID_LISTENER;
-typedef std::function<void(std::string)> DATA_LISTENER;
+struct LEADERBOARD{
+    int _rank;
+    int _dailyScore;
+    int _allTimeScore;
+    
+    LEADERBOARD()
+    : _rank(0)
+    , _dailyScore(0)
+    , _allTimeScore(0){}
+};
 
+typedef std::function<void(void)>           VOID_LISTENER;
+typedef std::function<void(std::string)>    DATA_LISTENER;
+typedef std::map<std::string, LEADERBOARD*> LEADERBOARDS;
 class CPlayManager : public sdkbox::SdkboxPlayListener
 {
 public:
@@ -19,17 +31,25 @@ public:
     void DataSave(DATA_LISTENER listener, std::string key, std::string data);
     void OpenLeaderboard();
     void OpenAchievement();
-    void ScoreSave(std::string key, int score);
+    void ScoreSave(VOID_LISTENER listener, std::string key, int score);
+    void ScoreLoad(VOID_LISTENER listener, std::string key,
+                   int score, int time_span);
+    bool IsNewHighScore(std::string key, int score, int time_span);
+    LEADERBOARD* getLeaderboardData(std::string key);
     
-    CC_SYNTHESIZE(VOID_LISTENER, m_LoginListener,    LoginListener);
-    CC_SYNTHESIZE(VOID_LISTENER, m_LogoutListener,   LogoutListener);
-    CC_SYNTHESIZE(DATA_LISTENER, m_DataLoadListener, DataLoadListener);
-    CC_SYNTHESIZE(DATA_LISTENER, m_DataSaveListener, DataSaveListener);
+    CC_SYNTHESIZE(VOID_LISTENER, m_LoginListener,     LoginListener);
+    CC_SYNTHESIZE(VOID_LISTENER, m_LogoutListener,    LogoutListener);
+    CC_SYNTHESIZE(VOID_LISTENER, m_SaveScoreListener, SaveScoreListener);
+    CC_SYNTHESIZE(VOID_LISTENER, m_LoadScoreListener, LoadScoreListener);
+    CC_SYNTHESIZE(DATA_LISTENER, m_DataLoadListener,  DataLoadListener);
+    CC_SYNTHESIZE(DATA_LISTENER, m_DataSaveListener,  DataSaveListener);
 
 private:
     void callVoidListener(VOID_LISTENER& listener);
     void callDataListener(DATA_LISTENER& listener, std::string data);
-
+    void saveScoreToMap(std::string key, int score,
+                        int time_span, int rank = 0);
+    
     // Callbacks
     virtual void onConnectionStatusChanged(int connection_status) override;
     
@@ -87,19 +107,13 @@ private:
     virtual void onPlayerCenteredScores(const std::string& leaderboard_name,
                                         int time_span,
                                         int collection_type,
-                                        const std::string& json_with_score_entries ) override;
+                                        const std::string& jsonData) override;
     
     virtual void onPlayerCenteredScoresError(const std::string& leaderboard_name,
                                              int time_span,
                                              int collection_type,
                                              int error_code,
                                              const std::string& error_description) override;
-    
-    virtual void onScoreSubmitted(const std::string& leaderboard_name,
-                                  int score,
-                                  bool maxScoreAllTime,
-                                  bool maxScoreWeek,
-                                  bool maxScoreToday);
     
     virtual void onGameData(const std::string& action,
                             const std::string& name,
@@ -109,4 +123,7 @@ private:
     
     CPlayManager();
     virtual ~CPlayManager();
+    
+private:
+    LEADERBOARDS m_Leaderboards;
 };

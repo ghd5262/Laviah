@@ -47,7 +47,9 @@ void CPlanetDataManager::addPlanetToList(const Json::Value& json)
     auto data      = new PLANET();
     
     data->_index                = json["index"].asInt();
-    data->_level                = json["level"].asInt();
+    data->_openLevel            = json["openLevel"].asInt();
+    data->_leaderboard          = json["leaderboard"].asString();
+    data->_enable               = json["enable"].asBool();
     data->_name                 = StringUtils::format(PLANET_DEFINE::NAME.c_str(),           data->_index);
     data->_planetTexture        = StringUtils::format(PLANET_DEFINE::PLANET_TEXTURE.c_str(), data->_index);
     data->_normalBulletTexture  = StringUtils::format(PLANET_DEFINE::NORMAL_BULLET.c_str(),  data->_index);

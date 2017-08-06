@@ -1,32 +1,54 @@
 #pragma once
 #include "../Popup.h"
+#include <vector>
 
 class CMyButton;
 class CUserCoinButton;
 class CResultPopup : public CPopup
 {
 public:
-	static CResultPopup* create();
-
-protected:
-	virtual bool init() override;
-
-private: 
-	void Reset(cocos2d::Node* sender);
-	void GoHome(cocos2d::Node* sender);
-    void End(cocos2d::Node* sender);
-    void GetCoinFromVideo(cocos2d::Node* sender);
-    void GetNewCharacter(cocos2d::Node* sender);
-    void GetFreeReward(cocos2d::Node* sender);
-    void Share(cocos2d::Node* sender);
+    static CResultPopup* create();
     
-    void createRewardPopup(std::string key, int value);
+protected:
+    virtual bool init() override;
+    
+private:
+    void reset();
+    void home();
+    void end();
+    void getCoinFromVideo();
+    void getNewCharacter();
+    void getFreeReward();
+    void share();
     void exit();
     
-	CResultPopup()
-    : m_GoalPopupOpen(false){};
-	virtual ~CResultPopup(){};
-
+    void createRewardPopup(std::string key, int value);
+    cocos2d::Node* createIconLayer(std::string iconName,
+                                   std::string text);
+    void createScoreLayer(std::string iconName,
+                          std::string text,
+                          int value);
+    void createBonusScoreLayer(std::string iconName,
+                               std::string text,
+                               int value,
+                               int bonus);
+    void createTotalScoreLayer(int value);
+    void createRankingLayer();
+    void createLevelLayer();
+    void createChangeLabelAction(cocos2d::Label* label,
+                                 std::string text1,
+                                 std::string text2);
+    void userDataUpdate();
+    
+    CResultPopup()
+    : m_BG(nullptr)
+    , m_GoalPopupOpen(false)
+    , m_Ended(false){};
+    virtual ~CResultPopup(){};
+    
 private:
+    std::vector<Node*> m_ScoreLayerList;
+    cocos2d::LayerColor* m_BG;
     bool m_GoalPopupOpen;
+    bool m_Ended;
 };

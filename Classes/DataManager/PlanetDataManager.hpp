@@ -16,7 +16,8 @@ namespace PLANET_DEFINE {
 
 struct PLANET{
     int _index;
-    int _level;
+    int _openLevel;
+    std::string _leaderboard;
     std::string _name;
     std::string _planetTexture;
     std::string _normalBulletTexture;
@@ -24,17 +25,20 @@ struct PLANET{
     std::string _stickBulletTexture;
     std::string _standBulletTexture;
     std::string _texturePack;
-    
+    bool _enable;
+
     PLANET()
     : _index(-1)
-    , _level(0)
+    , _openLevel(0)
+    , _leaderboard("")
     , _name("")
     , _planetTexture("")
     , _normalBulletTexture("")
     , _normalMissileTexture("")
     , _stickBulletTexture("")
     , _standBulletTexture("")
-    , _texturePack(""){};
+    , _texturePack("")
+    , _enable(false){};
 };
 
 typedef std::map<int, const PLANET*> PLANET_LIST;
