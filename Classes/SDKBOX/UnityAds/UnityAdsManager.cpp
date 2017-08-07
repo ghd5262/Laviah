@@ -1,5 +1,7 @@
 #include "UnityAdsManager.hpp"
 #include "cocos2d.h"
+#include "../../Scene/GameScene.h"
+#include "../../MyUI/Popup.h"
 
 using namespace cocos2d;
 
@@ -10,7 +12,8 @@ CUnityAdsManager* CUnityAdsManager::Instance()
 }
 
 CUnityAdsManager::CUnityAdsManager()
-: m_UnityAdsSavedFunc(nullptr){}
+: m_UnityAdsSucceedCallback(nullptr)
+, m_UnityAdsFailedCallback(nullptr){}
 
 CUnityAdsManager::~CUnityAdsManager(){}
 
@@ -29,20 +32,29 @@ void CUnityAdsManager::ShowUnityAds(const std::function<void(void)> &func, bool 
     if(!isRewarded) placementID = "video";
     
     if(UnityAdsIsReady(placementID.c_str())) {
-        m_UnityAdsSavedFunc = func;
+        m_UnityAdsSucceedCallback = func;
         UnityAdsShow(placementID.c_str());
     } else {
         CCLOG("%s : yet cannot show", placementID.c_str());
+        CGameScene::getGameScene()->CreateAlertPopup()
+        ->setPositiveButton([=](Node* sender){
+            this->callListener(m_UnityAdsFailedCallback);
+        }, TRANSLATE("BUTTON_OK"))
+        ->setMessage("네트워크 연결을 확인해 주세요.")
+        ->show(CGameScene::getGameScene(), ZORDER::POPUP);
     }
 }
 
 void CUnityAdsManager::CallUnityAdsSavedFunction()
 {
-    if (m_UnityAdsSavedFunc != nullptr)
+    this->callListener(m_UnityAdsSucceedCallback);
+}
+
+void CUnityAdsManager::callListener(std::function<void(void)>& listener)
+{
+    if (listener != nullptr)
     {
-        m_UnityAdsSavedFunc();
-        m_UnityAdsSavedFunc = nullptr;
+        listener();
+        listener = nullptr;
     }
-    else
-        CCASSERT(false, "CallUnityAdsSavedFunction : No function was saved.");
 }

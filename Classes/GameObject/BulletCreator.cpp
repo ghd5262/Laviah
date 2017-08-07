@@ -244,7 +244,7 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
     else if (symbol >= 'A' && symbol <= 'F')    bullet = CPlayItem::create();
 	else if (symbol >= 'P' && symbol <= 'T')    bullet = CPlayStar::create();
 	else if (symbol >= 'U' && symbol <= 'Y')    bullet = CPlayCoin::create();
-    else if (symbol == 'Z')                     bullet = CBonusLetter::create();
+//    else if (symbol == 'Z')                     bullet = CBonusLetter::create();
     else                                        return nullptr;
     
     auto data = *(CBulletDataManager::Instance()->getBulletInfo(symbol));

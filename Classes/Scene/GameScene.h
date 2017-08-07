@@ -57,10 +57,13 @@ public:
     void MenuFadeIn();
     void MenuFadeOut();
 
+    void getFreeReward();
+
 	CPopup* CreateAlertPopup();
 	void Reward(std::function<void(bool)> exitCallback,
                 std::vector<sREWARD_DATA> list,
-                int cost = 0);
+                int cost = 0,
+                bool ufoEnable = false);
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
@@ -101,7 +104,7 @@ private:
     void turnDownSound();
     void turnUpSound();
     void startTutorial();
-    void getFreeReward();
+    void freeRewardCheck();
     void startAppreciatePlanet();
     void stopAppreciatePlanet();
     

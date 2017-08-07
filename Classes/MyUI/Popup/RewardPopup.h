@@ -14,13 +14,16 @@ public:
     CRewardPopup* AddRewardToList(std::vector<sREWARD_DATA> list);
     CRewardPopup* setExitCallback(const EXIT_CALLBACK &callback);
     CRewardPopup* setIsPaidFeature(int cost);
+    CRewardPopup* setIsUFOEnable(bool enable);
     CPopup* show(Node* parent = nullptr, int zOrder = 0);
     void AddRewardToList(std::string key, int value);
 
+    static void createFlyAction(Node* sender,
+                                Vec2 targetPos1,
+                                Vec2 targetPos2);
 private:
 	CPopup* createRewardDP(sREWARD_DATA data);
     void createUFO();
-    void createRewardBox();
     void lightOn();
 	void open();
     void play();
@@ -38,7 +41,8 @@ private:
     , m_UFOLight(nullptr)
     , m_RewardIndex(0)
     , m_Cost(0)
-    , m_IsPaidFeature(false){};
+    , m_IsPaidFeature(false)
+    , m_IsUFOEnable(false){};
 	virtual ~CRewardPopup(){};
 
 private:
@@ -53,4 +57,5 @@ private:
 	int m_RewardIndex;
     int m_Cost;
     bool m_IsPaidFeature;
+    bool m_IsUFOEnable;
 };

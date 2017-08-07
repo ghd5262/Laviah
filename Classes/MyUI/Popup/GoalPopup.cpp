@@ -42,7 +42,7 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
         Vec2(popupSize.width * 0.5f, popupSize.height * 0.3f),
         Vec2(popupSize.width * 0.5f, popupSize.height * 0.1f),
         Vec2(popupSize.width * 0.5f, popupSize.height * 0.0f),
-        Vec2(popupSize.width * 0.5f, popupSize.height * -0.1f)
+        Vec2(popupSize.width * 0.5f, popupSize.height * -0.5f)
     };
     
     m_DPTargetPosArray = {
@@ -79,7 +79,6 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
 			->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
 			->setButtonPosition(pos)
 			->show(this);
-        btn->setOpacity(0);
         btn->setCascadeOpacityEnabled(true);
         
         return btn;
@@ -125,9 +124,10 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
         // TODO: If there are no more achievements. do not open achievement popup
         CAchievementDataManager::Instance()->getNewAchievements();
         
-	}, "rewardIcon.png", m_DPStartPosArray[3])
-    ->setTouchEnable(false, Color3B::WHITE);
+    }, "freeCoinIcon.png", m_DPStartPosArray[3]);
+    btnReward->setVisible(false);
 
+    
 	this->setOpenAnimation([=](Node* sender){
 		auto action = [=](Node* btn, Vec2 pos){
 			btn->runAction(
@@ -143,11 +143,15 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
             action(dp, m_DPTargetPosArray[dpIndex++]);
         }
 
-        action(btnReward, m_DPTargetPosArray[3]);
-        btnReset->runAction(FadeIn::create(0.5f));
-        btnHome->runAction(FadeIn::create(0.5f));
-        achievementsLabel->runAction(FadeIn::create(0.5f));
-	}, 1.3f);
+        auto fadeIn = [=](Node* sender){
+            sender->setOpacity(0);
+            sender->runAction(FadeIn::create(0.5f));
+        };
+        
+        fadeIn(btnReset);
+        fadeIn(btnHome);
+        fadeIn(achievementsLabel);
+    }, 1.3f);
 
 	this->setCloseAnimation([=](Node* sender){
 
@@ -167,9 +171,9 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
         }
         
 		action(btnReward, m_DPStartPosArray[3]);
-        btnReset->runAction(FadeTo::create(0.5f, 0));
-        btnHome->runAction(FadeTo::create(0.5f, 0));
-        achievementsLabel->runAction(FadeTo::create(0.5f, 0));
+        btnReset->runAction(FadeTo::create(0.3f, 0));
+        btnHome->runAction(FadeTo::create(0.3f, 0));
+        achievementsLabel->runAction(FadeTo::create(0.3f, 0));
     });
 
     this->setDefaultCallback([=](Node* sender){
@@ -178,8 +182,9 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
     
     // Do below when achievement was completed all.
     if (CAchievementDataManager::Instance()->CheckCompleteAll()){
-        btnReward->setTouchEnable(true);
-        btnReward->setColor(COLOR::GOLD);
+        CRewardPopup::createFlyAction(btnReward,
+                                      Vec2(popupSize.width * 0.5f, popupSize.height * 0.25f),
+                                      Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f));
         btnReset->setVisible(false);
         btnHome->setVisible(false);
         this->setDefaultCallback([=](Node* sender){});

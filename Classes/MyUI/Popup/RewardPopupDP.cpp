@@ -29,15 +29,17 @@ CRewardPopupDP* CRewardPopupDP::create()
 
 CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* = 0*/)
 {
-    auto rewardKey    = m_Reward._key;
-    auto rewardValue  = m_Reward._value;
-    std::string value = "";
-    
+    auto rewardKey     = m_Reward._key;
+    auto rewardValue   = m_Reward._value;
+    auto skipDelayTime = 0.5f;
+    std::string value  = "";
+
     if (ACHIEVEMENT_REWARD_KEY::REWARD_COIN == rewardKey){
         value = StringUtils::format("%d Gold", rewardValue);
         this->goldReward();
     }
     if (ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER == rewardKey){
+        skipDelayTime = 3.f;
         auto data = CCharacterDataManager::Instance()->getCharacterByIndex(rewardValue);
         value = TRANSLATE(data->_name);
         this->characterReward();
@@ -52,13 +54,13 @@ CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* =
     title->setCascadeOpacityEnabled(true);
     title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     title->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                            this->getContentSize().height * 0.3f));
+                            this->getContentSize().height * 0.8f));
     this->addChild(title);
     
     this->setOpacity(0);
     this->setOpenAnimation([=](Node* sender){
         this->runAction(FadeIn::create(0.5f));
-    }, 3.f);
+    }, skipDelayTime);
     
     this->setCloseAnimation([=](Node* sender){
         this->runAction(FadeTo::create(0.3f, 0));
@@ -101,7 +103,7 @@ void CRewardPopupDP::goldReward()
 //        sender->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.75f));
         sender->setRotation(random<float>(0.f, 360.f));
         
-        auto targetPos   = CBullet::getSquarePosition(random<int>(30, 330), random<int>(150, 1200));
+        auto targetPos   = CBullet::getSquarePosition(random<int>(30, 330), random<int>(150, 1500));
         auto moveAction  = MoveTo::create(1.5f, targetPos);
         auto easeAction  = EaseExponentialInOut::create(moveAction);
         auto delayAction = DelayTime::create(random<float>(1.f, 3.f));

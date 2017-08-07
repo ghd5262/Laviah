@@ -14,10 +14,13 @@ public:
         
     void CallUnityAdsSavedFunction();
 private:
+    void callListener(std::function<void(void)>& listener);
+    
     CUnityAdsManager();
     ~CUnityAdsManager();
     
-    CC_SYNTHESIZE(std::function<void(void)>, m_UnityAdsSavedFunc, UnityAdsSavedFunc);
+    CC_SYNTHESIZE(std::function<void(void)>, m_UnityAdsSucceedCallback, UnityAdsSucceedCallback);
+    CC_SYNTHESIZE(std::function<void(void)>, m_UnityAdsFailedCallback, UnityAdsFailedCallback);
 };
 
 

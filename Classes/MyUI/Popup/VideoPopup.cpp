@@ -65,7 +65,7 @@ bool CVideoPopup::init()
         icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         icon->setPosition(Vec2(btnSize.width * 0.5f - (contentLabel->getContentSize().width / 2) - 50, btnSize.height * 0.5f));
         icon->setColor(color);
-        icon->setScale(80 / icon->getContentSize().height);
+        icon->setScale(100 / icon->getContentSize().height);
         button->addChild(icon);
     
         return button;
@@ -207,7 +207,16 @@ void CVideoPopup::ReviveByVideo(cocos2d::Node* sender)
 {
     if(m_IsEnded) return;
     m_ReviveButtonTouched = true;
+    m_CountDown->Pause();
+
     CUnityAdsManager::Instance()->ShowUnityAds([=](){this->Resume(); });
+    CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){
+        auto button = dynamic_cast<CMyButton*>(sender);
+        if(!button) return;
+        button->setTouchEnable(true);
+        m_ReviveButtonTouched = false;
+        m_CountDown->Resume();
+    });
 }
 
 void CVideoPopup::Resume()

@@ -441,9 +441,12 @@ void CGameScene::BonusTimeEnd()
 
 void CGameScene::Reward(std::function<void(bool)> exitCallback,
                         std::vector<sREWARD_DATA> list,
-                        int cost/* = 0*/)
+                        int cost/* = 0*/,
+                        bool ufoEnable/* = false*/)
 {
-    CObjectManager::Instance()->MoveAction(m_PopupLayer, MOVE_DIRECTION::DOWN);
+    CObjectManager::Instance()->MoveAction(m_PopupLayer,
+                                           Vec2(m_VisibleSize.width * 0.5f,
+                                                m_VisibleSize.height * -.5f));
     
     CRewardPopup::create()
     ->AddRewardToList(list)
@@ -452,6 +455,7 @@ void CGameScene::Reward(std::function<void(bool)> exitCallback,
         CObjectManager::Instance()->MoveAction(m_PopupLayer, m_VisibleSize / 2);
     })
     ->setIsPaidFeature(cost)
+    ->setIsUFOEnable(ufoEnable)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 1.5f))
@@ -641,7 +645,7 @@ void CGameScene::menuOpen()
 {
     this->clearData();
     //        this->createRandomCoin();
-    this->getFreeReward();
+    this->freeRewardCheck();
     this->MenuFadeIn();
     this->turnUpSound();
 
@@ -696,30 +700,35 @@ void CGameScene::startTutorial()
     }
 }
 
-void CGameScene::getFreeReward()
+void CGameScene::freeRewardCheck()
 {
     SERVER_REQUEST([=](Json::Value data){
+        
+        CCLOG("server request succeed");
         auto rewardTimestamp   = CUserDataManager::Instance()->getFreeRewardTimestamp();
         auto currentTimestamp  = time_t(data["seconds"].asDouble());
         auto freeRewardTime    = CFreeRewardManager::Instance()->getFreeRewardTimeLimit();
-        
-        if((currentTimestamp - rewardTimestamp) > freeRewardTime){
+        auto passedTime        = currentTimestamp - rewardTimestamp;
+        if(passedTime > freeRewardTime){
+            
             CFreeRewardManager::Instance()->setRewardAble(true);
-//            CObjectManager::Instance()->getRocket()->ComebackHome();
-//            CObjectManager::Instance()->getRocket()->Gift();
-            
-            // reward level up
-            CFreeRewardManager::Instance()->FreeRewardLevelUP();
-            
-            // set time stamp again
-            CUserDataManager::Instance()->setFreeRewardTimestamp(currentTimestamp);
-            
-            // notice popup (for debug)
-//            this->CreateAlertPopup()
-//            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-//            ->setMessage("free reward")
-//            ->show(m_PopupLayer, ZORDER::POPUP);
         }
+    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
+}
+
+void CGameScene::getFreeReward()
+{
+    SERVER_REQUEST([=](Json::Value data){
+        CCLOG("server request succeed");
+        auto currentTimestamp  = time_t(data["seconds"].asDouble());
+        
+        CFreeRewardManager::Instance()->setRewardAble(false);
+        
+        // reward level up
+        CFreeRewardManager::Instance()->FreeRewardLevelUP();
+        
+        // set time stamp again
+        CUserDataManager::Instance()->setFreeRewardTimestamp(currentTimestamp);
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
 }

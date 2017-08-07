@@ -48,7 +48,7 @@ bool CResultPopup::init()
     }
     auto layerSize = m_BG->getContentSize();
     
-    std::array<Vec2, 7> posDown  = {
+    std::array<Vec2, 8> posDown  = {
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.3f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f),
@@ -56,6 +56,7 @@ bool CResultPopup::init()
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.0f),
         Vec2(layerSize.width * 0.5f, layerSize.height * -.1f),
         Vec2(layerSize.width * 0.5f, layerSize.height * -.2f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * -.5f),
     };
     
     std::array<Vec2, 7> posArray = {
@@ -90,9 +91,19 @@ bool CResultPopup::init()
     this->createTotalScoreLayer(GVALUE->TOTAL_SCORE);
     this->createRankingLayer();
     this->createLevelLayer();
+//    for(int index = 0; index < btnLayerListenerArray.size(); index++){
+//        if(!btnLayerVisibleArray[index]) continue;
+//        this->createButtonLayer(btnLayerListenerArray[index],
+//                                btnLayerIconArray[index],
+//                                btnLayerTextArray[index],
+//                                COLOR::GOLD);
+//    }
     
-    for(int index = 0; index < posArray.size(); index++)
+    
+    for(int index = 0; index < m_ScoreLayerList.size(); index++)
         m_ScoreLayerList.at(index)->setPosition(posArray[index]);
+    
+    
     
     // create button lambda
     auto createButton   = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, bool visible){
@@ -107,52 +118,90 @@ bool CResultPopup::init()
         return button;
     };
     
-    std::array<Vec2, 7> btnPosArray = {
+    std::array<Vec2, 3> btnPosArray = {
         Vec2(layerSize.width * 0.08f, layerSize.height * 0.05f),
         Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f),
         Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f),
-        Vec2(layerSize.width * 0.25f, layerSize.height * 0.35f),
-        Vec2(layerSize.width * 0.5f,  layerSize.height * 0.35f),
-        Vec2(layerSize.width * 0.75f, layerSize.height * 0.35f),
-        Vec2(layerSize.width * 0.1f,  layerSize.height * 0.2f ),
     };
     
-    std::array<std::string, 7> btnIconArray = {
+    std::array<std::string, 3> btnIconArray = {
         "homeIcon.png",
         "resetIcon.png",
         "endIcon.png",
-        "videoIcon.png",
-        "characterIcon.png",
-        "rewardIcon.png",
-        "polaroidIcon.png"
     };
     
-    std::array<std::function<void(Node*)>, 7> btnListenerArray = {
+    std::array<std::function<void(Node*)>, 3> btnListenerArray = {
         [=](Node* sender) { this->home();             },
         [=](Node* sender) { this->reset();            },
         [=](Node* sender) { this->end();              },
-        [=](Node* sender) { this->getCoinFromVideo(); },
-        [=](Node* sender) { this->getNewCharacter();  },
-        [=](Node* sender) { this->getFreeReward();    },
-        [=](Node* sender) { this->share();            },
+//        [=](Node* sender) { this->getCoinFromVideo(); },
+//        [=](Node* sender) { this->getNewCharacter();  },
+//        [=](Node* sender) { this->getFreeReward();    },
+//        [=](Node* sender) { this->share();            },
     };
     
-    std::array<bool, 7> btnVisibleArray = {
+    std::array<bool, 3> btnVisibleArray = {
         (!m_GoalPopupOpen),
         (!m_GoalPopupOpen),
         ( m_GoalPopupOpen),
-        ( true ),
-        ( CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1000 ),
-        ( CFreeRewardManager::Instance()->getRewardAble() ),
-        ( CObjectManager::Instance()->getPhotoShareAble() )
+//        ( true ),
+//        ( CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1000 ),
+//        ( CFreeRewardManager::Instance()->getRewardAble() ),
+//        ( CObjectManager::Instance()->getPhotoShareAble() )
     };
+    
+    // create reward button
+    {
+        std::array<bool, 3> rewardBtnVisibleArray = {
+            ( random<bool>(false, true) ),
+            ( CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1500 ),
+            ( CFreeRewardManager::Instance()->getRewardAble() )
+        };
+        
+        std::array<std::string, 3> rewardBtnIconArray = {
+            "unityAdsIcon.png",
+            "buyCostumeIcon.png",
+            "freeCoinIcon.png"
+        };
+        
+        std::array<std::function<void(Node*)>, 3> rewardBtnListenerArray = {
+            [=](Node* sender) { this->getCoinFromVideo(sender); },
+            [=](Node* sender) { this->getNewCharacter(sender);  },
+            [=](Node* sender) { this->getFreeReward();    }
+        };
+        
+        std::vector<Node*> rewardBtnArray;
+        for(int index = 0; index < rewardBtnVisibleArray.size(); index++)
+        {
+            if(!rewardBtnVisibleArray[index]) continue;
+            
+            auto rewardBtn = CMyButton::create()
+            ->addEventListener(rewardBtnListenerArray[index])
+            ->setButtonSingleUse(true)
+            ->setButtonNormalImage(rewardBtnIconArray[index])
+            ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+            ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * -0.5f))
+            ->show(m_BG);
+            rewardBtn->setVisible(false);
+
+            rewardBtnArray.emplace_back(rewardBtn);
+        }
+        
+        if(rewardBtnArray.size() > 0){
+            auto rewardBtn = rewardBtnArray[rewardBtnArray.size()-1];
+            m_ScoreLayerList.emplace_back(rewardBtn);
+            CRewardPopup::createFlyAction(rewardBtn,
+                                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.25f),
+                                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f));
+        }
+    }
     
     
     // create button array
-    std::array<CMyButton*, 7> btnArray;
+    std::array<CMyButton*, 3> btnArray;
     
     // create buttons
-    for(int i = 0; i < 7; i++)
+    for(int i = 0; i < 3; i++)
         btnArray[i] = createButton(btnListenerArray[i], btnIconArray[i], btnPosArray[i], btnVisibleArray[i]);
     
     
@@ -234,6 +283,8 @@ bool CResultPopup::init()
             for(int index = 0; index < m_ScoreLayerList.size(); index++){
                 action(m_ScoreLayerList.at(index), posDown.at(index));
             }
+            
+            
         }
         else {
             auto move = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
@@ -265,24 +316,37 @@ void CResultPopup::end(){
     this->exit();
 }
 
-void CResultPopup::getCoinFromVideo()
+void CResultPopup::getCoinFromVideo(Node* sender)
 {
     CUnityAdsManager::Instance()->ShowUnityAds([=](){
         this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 50);
     });
+    CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){
+        auto button = dynamic_cast<CMyButton*>(sender);
+        if(!button) return;
+        
+        button->setTouchEnable(true);
+    });
 }
 
-void CResultPopup::getNewCharacter()
+void CResultPopup::getNewCharacter(Node* sender)
 {
     CGameScene::getGameScene()->Reward([=](bool isPlay){
-        if(isPlay) this->popupClose();
-    }, {}, -1500);
+        if(isPlay) {
+            this->popupClose();
+            return;
+        }
+        
+        auto button = dynamic_cast<CMyButton*>(sender);
+        if(!button) return;
+        button->setTouchEnable(true);
+    }, {}, -1500, true);
 }
 
 void CResultPopup::getFreeReward()
 {
     this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 150);
-    CFreeRewardManager::Instance()->setRewardAble(false);
+    CGameScene::getGameScene()->getFreeReward();
 }
 
 void CResultPopup::share()
@@ -316,7 +380,7 @@ cocos2d::Node* CResultPopup::createIconLayer(std::string iconName, std::string t
     auto icon = Sprite::create(iconName);
     icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     icon->setPosition(Vec2(layerSize.width * 0.1f, layerSize.height * 0.5f));
-    icon->setScale(80 / icon->getContentSize().height);
+    icon->setScale(100 / icon->getContentSize().height);
     layer->addChild(icon);
     
     auto textLabel = Label::createWithSystemFont(text, FONT::MALGUNBD, 50);
@@ -403,7 +467,7 @@ void CResultPopup::createRankingLayer()
     auto icon = Sprite::create("googleLeaderboardsIcon.png");
     icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     icon->setPosition(Vec2(layerSize.width * 0.1f, layerSize.height * 0.5f));
-    icon->setScale(80 / icon->getContentSize().height);
+    icon->setScale(100 / icon->getContentSize().height);
     layer->addChild(icon);
     
     auto textLabel = Label::createWithSystemFont("", FONT::MALGUNBD, 50);
@@ -455,6 +519,7 @@ void CResultPopup::createLevelLayer()
         progress->setType(ProgressTimer::Type::BAR);
         progress->setBarChangeRate(Vec2(1, 0));
         progress->setOpacity(color.a);
+        progress->setCascadeOpacityEnabled(true);
         parent->addChild(progress, -1);
         return progress;
     };
@@ -513,6 +578,33 @@ void CResultPopup::createChangeLabelAction(cocos2d::Label* label, std::string te
     auto seq      = Sequence::create(fadeOut, callFunc, fadeIn, delay, NULL);
     label->runAction(RepeatForever::create(seq));
     label->setString(text1);
+}
+
+void CResultPopup::createButtonLayer(std::function<void(Node*)> &callback,
+                                     std::string iconName, std::string text, Color3B color)
+{
+    auto button = CMyButton::create()
+    ->addEventListener(callback)
+    ->setButtonSingleUse(true)
+    ->setButtonNormalImage("resultPopup_1.png")
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->show(m_BG);
+    button->setCascadeOpacityEnabled(true);
+    
+    auto btnSize = button->getContentSize();
+    
+    auto icon = Sprite::create(iconName);
+    icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    icon->setPosition(Vec2(btnSize.width * 0.1f, btnSize.height * 0.5f));
+    icon->setScale(100 / icon->getContentSize().height);
+    button->addChild(icon);
+    
+    auto textLabel = Label::createWithSystemFont(text, FONT::MALGUNBD, 50);
+    textLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    textLabel->setPosition(Vec2(btnSize.width * 0.15f,  btnSize.height * 0.5f));
+    button->addChild(textLabel);
+    
+    m_ScoreLayerList.emplace_back(button);
 }
 
 void CResultPopup::userDataUpdate()

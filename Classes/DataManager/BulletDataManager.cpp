@@ -60,15 +60,6 @@ CBulletDataManager::CBulletDataManager()
                                                       BULLET_DEFAULT_PACK::DEFAULT_PNG);
         }
     }
-    
-    if (util->isFileExist(BULLET_DEFAULT_PACK::PATTERN_TEST_PNG) &&
-        util->isFileExist(BULLET_DEFAULT_PACK::PATTERN_TEST_PLIST))
-    {
-        if (!spriteFrameCache->isSpriteFramesWithFileLoaded(BULLET_DEFAULT_PACK::PATTERN_TEST_PLIST)){
-            spriteFrameCache->addSpriteFramesWithFile(BULLET_DEFAULT_PACK::PATTERN_TEST_PLIST,
-                                                      BULLET_DEFAULT_PACK::PATTERN_TEST_PNG);
-        }
-    }
 }
 
 CBulletDataManager::~CBulletDataManager()

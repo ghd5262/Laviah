@@ -16,8 +16,8 @@ private:
     void reset();
     void home();
     void end();
-    void getCoinFromVideo();
-    void getNewCharacter();
+    void getCoinFromVideo(Node* sender);
+    void getNewCharacter(Node* sender);
     void getFreeReward();
     void share();
     void exit();
@@ -38,6 +38,10 @@ private:
     void createChangeLabelAction(cocos2d::Label* label,
                                  std::string text1,
                                  std::string text2);
+    void createButtonLayer(std::function<void(Node*)> &callback,
+                           std::string iconName,
+                           std::string text,
+                           Color3B color);
     void userDataUpdate();
     
     CResultPopup()
