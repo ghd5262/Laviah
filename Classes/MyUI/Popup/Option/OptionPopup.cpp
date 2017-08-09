@@ -74,8 +74,8 @@ bool COptionPopup::init()
         COptionDataSavePopup::create(),
         COptionLanguagePopup::create(),
 //        COptionTitlePopup::create(),
-//        COptionDeveloperPopup::create(),
-        COptionMoreGamesPopup::create(),
+        COptionDeveloperPopup::create(),
+//        COptionMoreGamesPopup::create(),
     };
     
     int iconIndex = 0;

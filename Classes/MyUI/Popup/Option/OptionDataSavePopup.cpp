@@ -124,31 +124,31 @@ bool COptionDataSavePopup::init()
     
     
     // create sign button
-    {
-        auto buttonUpdate = [=](CMyButton* btn){
-            std::string imageName = "signButtonGameCenter";
-#if(CC_PLATFORM_ANDROID == CC_TARGET_PLATFORM)
-            imageName = "signButtonGoogle";
-#endif
-            imageName += StringUtils::format("_%d.png", int(CPlayManager::Instance()->IsLoggedIn()));
-            btn->changeButtonImage(imageName);
-        };
-        
-        CMyButton* signButton = CMyButton::create()
-        ->addEventListener([=](Node* sender){
-            auto btn      = dynamic_cast<CMyButton*>(sender);
-            auto loggedIn = CPlayManager::Instance()->IsLoggedIn();
-            
-            if(loggedIn)    CPlayManager::Instance()->Logout([=](){ buttonUpdate(btn); });
-            else            CPlayManager::Instance()->Login([=](){ buttonUpdate(btn); });
-        })
-        ->setButtonNormalImage("signButtonGameCenter_0.png")
-        ->setButtonPosition(Vec2(layer->getContentSize().width * 0.5f, 0))
-        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP)
-        ->show(layer);
-        signButton->setSwallowTouches(false);
-        buttonUpdate(signButton);
-        
+//    {
+//        auto buttonUpdate = [=](CMyButton* btn){
+//            std::string imageName = "signButtonGameCenter";
+//#if(CC_PLATFORM_ANDROID == CC_TARGET_PLATFORM)
+//            imageName = "signButtonGoogle";
+//#endif
+//            imageName += StringUtils::format("_%d.png", int(CPlayManager::Instance()->IsLoggedIn()));
+//            btn->changeButtonImage(imageName);
+//        };
+//        
+//        CMyButton* signButton = CMyButton::create()
+//        ->addEventListener([=](Node* sender){
+//            auto btn      = dynamic_cast<CMyButton*>(sender);
+//            auto loggedIn = CPlayManager::Instance()->IsLoggedIn();
+//            
+//            if(loggedIn)    CPlayManager::Instance()->Logout([=](){ buttonUpdate(btn); });
+//            else            CPlayManager::Instance()->Login([=](){ buttonUpdate(btn); });
+//        })
+//        ->setButtonNormalImage("signButtonGameCenter_0.png")
+//        ->setButtonPosition(Vec2(layer->getContentSize().width * 0.5f, 0))
+//        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP)
+//        ->show(layer);
+//        signButton->setSwallowTouches(false);
+//        buttonUpdate(signButton);
+//        
         CMyButton::create()
         ->addEventListener([=](Node* sender){
             alertCreate([](Node* sender){
@@ -166,51 +166,51 @@ bool COptionDataSavePopup::init()
         ->setButtonAnchorPoint(Vec2::ANCHOR_TOP_RIGHT)
         ->show(layer)
         ->setSwallowTouches(false);
-    }
-    
-    // create auto save button
-    {
-        auto userDataMng  = CUserDataManager::Instance();
-        auto buttonUpdate = [=](CMyButton* btn){
-            auto imageName = StringUtils::format("autoSaveButton_%d.png",
-                                                 int(userDataMng->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO)));
-            btn->changeButtonImage(imageName);
-        };
-        
-        auto label = Label::createWithSystemFont("Auto Save", FONT::MALGUNBD, 40);
-        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        label->setPosition(Vec2(layer->getContentSize().width * 0.5f,
-                                layer->getContentSize().height * 0.4f));
-        layer->addChild(label);
-        
-        CMyButton* autoSaveButton = CMyButton::create()
-        ->addEventListener([=](Node* sender){
-            auto origin = (bool)userDataMng->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO);
-            auto btn    = dynamic_cast<CMyButton*>(sender);
-            if(!origin){
-                
-                CGameScene::getGameScene()->CreateAlertPopup()
-                ->setPositiveButton([=](Node* sender){
-                    userDataMng->setUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO, !origin);
-                    buttonUpdate(btn);
-                }, TRANSLATE("BUTTON_YES"))
-                ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
-                ->setMessage("자동 저장 옵션을 켜면 네트워크가 연결되어 있는 동안 클라우드에 항상 저장됩니다.")
-                ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
-            }
-            else{
-                userDataMng->setUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO, !origin);
-                buttonUpdate(dynamic_cast<CMyButton*>(btn));
-            }
-        })
-        ->setButtonNormalImage("autoSaveButton_0.png")
-        ->setButtonPosition(Vec2(layer->getContentSize().width * 0.5f
-                                 - (label->getContentSize().width * 0.5f + 40),
-                                 layer->getContentSize().height * 0.4f))
-        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-        ->show(layer);
-        autoSaveButton->setSwallowTouches(false);
-        buttonUpdate(autoSaveButton);
-    }
+//    }
+//    
+//    // create auto save button
+//    {
+//        auto userDataMng  = CUserDataManager::Instance();
+//        auto buttonUpdate = [=](CMyButton* btn){
+//            auto imageName = StringUtils::format("autoSaveButton_%d.png",
+//                                                 int(userDataMng->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO)));
+//            btn->changeButtonImage(imageName);
+//        };
+//        
+//        auto label = Label::createWithSystemFont("Auto Save", FONT::MALGUNBD, 40);
+//        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//        label->setPosition(Vec2(layer->getContentSize().width * 0.5f,
+//                                layer->getContentSize().height * 0.4f));
+//        layer->addChild(label);
+//        
+//        CMyButton* autoSaveButton = CMyButton::create()
+//        ->addEventListener([=](Node* sender){
+//            auto origin = (bool)userDataMng->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO);
+//            auto btn    = dynamic_cast<CMyButton*>(sender);
+//            if(!origin){
+//                
+//                CGameScene::getGameScene()->CreateAlertPopup()
+//                ->setPositiveButton([=](Node* sender){
+//                    userDataMng->setUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO, !origin);
+//                    buttonUpdate(btn);
+//                }, TRANSLATE("BUTTON_YES"))
+//                ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
+//                ->setMessage("자동 저장 옵션을 켜면 네트워크가 연결되어 있는 동안 클라우드에 항상 저장됩니다.")
+//                ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
+//            }
+//            else{
+//                userDataMng->setUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO, !origin);
+//                buttonUpdate(dynamic_cast<CMyButton*>(btn));
+//            }
+//        })
+//        ->setButtonNormalImage("autoSaveButton_0.png")
+//        ->setButtonPosition(Vec2(layer->getContentSize().width * 0.5f
+//                                 - (label->getContentSize().width * 0.5f + 40),
+//                                 layer->getContentSize().height * 0.4f))
+//        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//        ->show(layer);
+//        autoSaveButton->setSwallowTouches(false);
+//        buttonUpdate(autoSaveButton);
+//    }
     return true;
 }

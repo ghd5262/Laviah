@@ -77,7 +77,7 @@ bool COptionMusicPopup::init()
     createSlider([&](float percent){
         m_BGMVolume = percent;
         CAudioManager::Instance()->setBGMVolume(m_BGMVolume);
-        CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_BGMVolume);
+//        CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_BGMVolume);
     }, TRANSLATE("OPTION_MUSIC_BGM"),
                  Vec2(layerSize.width * 0.135f, layerSize.height * 0.8f), m_BGMVolume,
                  Vec2(layerSize.width * 0.5f,   layerSize.height * 0.7f));
@@ -85,7 +85,7 @@ bool COptionMusicPopup::init()
     createSlider([&](float percent){
         m_EffectVolume = percent;
         CAudioManager::Instance()->setEffectSoundVolume(m_EffectVolume);
-        CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_EffectVolume);
+//        CAudioManager::Instance()->PlayEffectSound("sounds/Click_4-1.mp3", false, m_EffectVolume);
     }, TRANSLATE("OPTION_MUSIC_EFFECT"),
                  Vec2(layerSize.width * 0.135f, layerSize.height * 0.5f), m_EffectVolume,
                  Vec2(layerSize.width * 0.5f,   layerSize.height * 0.4f));
