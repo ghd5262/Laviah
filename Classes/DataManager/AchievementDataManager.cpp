@@ -727,11 +727,13 @@ void CAchievementDataManager::initRewarderList()
     
    	initRewarder(REWARD_COIN,			  CC_CALLBACK_1(CAchievementRewarder::coinReward			, m_Rewarder));
 	initRewarder(REWARD_CHARACTER,		  CC_CALLBACK_1(CAchievementRewarder::characterReward       , m_Rewarder));
+    initRewarder(REWARD_COSTUME,		  CC_CALLBACK_1(CAchievementRewarder::costumeReward         , m_Rewarder));
 	initRewarder(REWARD_ROCKET,			  CC_CALLBACK_1(CAchievementRewarder::rocketReward          , m_Rewarder));
 	initRewarder(REWARD_PET,			  CC_CALLBACK_1(CAchievementRewarder::petReward             , m_Rewarder));
 
 	initRewarder(REWARD_COIN_RANDOM,	  CC_CALLBACK_1(CAchievementRewarder::coinRewardRandom      , m_Rewarder));
 	initRewarder(REWARD_CHARACTER_RANDOM, CC_CALLBACK_1(CAchievementRewarder::characterRewardRandom , m_Rewarder));
+    initRewarder(REWARD_COSTUME_RANDOM,   CC_CALLBACK_1(CAchievementRewarder::costumeRewardRandom   , m_Rewarder));
 	initRewarder(REWARD_ROCKET_RANDOM,	  CC_CALLBACK_1(CAchievementRewarder::rocketRewardRandom    , m_Rewarder));
 	initRewarder(REWARD_PET_RANDOM,		  CC_CALLBACK_1(CAchievementRewarder::petRewardRandom       , m_Rewarder));
 }

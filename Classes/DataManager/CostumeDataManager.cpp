@@ -113,8 +113,10 @@ COSTUME_LIST CCostumeDataManager::getNonCollectedCostumeList()
     
     return DATA_MANAGER_UTILS::getMapByFunc([=](const COSTUME* data){
         
-        if (userDataMng->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST, data->_index))
-            return false;
+        if(data->_index == 0) return false;
+        if(userDataMng->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST, data->_index))              return false;
+        if(!userDataMng->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST, data->_characterIndex))  return false;
+        
         return true;
     }, m_CostumeList);
 }

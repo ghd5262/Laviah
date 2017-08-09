@@ -1,4 +1,5 @@
 #include "RewardPopupDP.hpp"
+#include "RewardPopup.h"
 #include "../MyButton.h"
 #include "../Popup.h"
 #include "../../Scene/GameScene.h"
@@ -6,6 +7,7 @@
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 #include "../../DataManager/CharacterDataManager.h"
+#include "../../DataManager/CostumeDataManager.hpp"
 #include "../../GameObject/BulletCreator.h"
 #include "../../Particle/Particles.h"
 
@@ -33,6 +35,11 @@ CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* =
     auto rewardValue   = m_Reward._value;
     auto skipDelayTime = 0.5f;
     std::string value  = "";
+    
+    auto popupSize     = this->getContentSize();
+    Vec2 labelPosition = Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f);
+    if(m_IsUFOEnabled)
+        labelPosition = Vec2(popupSize.width * 0.5f, popupSize.height * 0.3f);
 
     if (ACHIEVEMENT_REWARD_KEY::REWARD_COIN == rewardKey){
         value = StringUtils::format("%d Gold", rewardValue);
@@ -44,17 +51,21 @@ CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* =
         value = TRANSLATE(data->_name);
         this->characterReward();
     }
+    if(ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME == rewardKey){
+        skipDelayTime = 3.f;
+        auto data = CCostumeDataManager::Instance()->getCostumeByIndex(rewardValue);
+        value = TRANSLATE(data->_name);
+        this->costumeReward();
+    }
     
     // create title
     auto title = Label::createWithSystemFont(value, FONT::MALGUNBD, 80,
-                                             Size(this->getContentSize().width * 0.8f,
-                                                  this->getContentSize().height),
+                                             Size(popupSize.width * 0.8f, popupSize.height),
                                              TextHAlignment::CENTER,
                                              TextVAlignment::CENTER);
     title->setCascadeOpacityEnabled(true);
     title->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    title->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                            this->getContentSize().height * 0.8f));
+    title->setPosition(labelPosition);
     this->addChild(title);
     
     this->setOpacity(0);
@@ -74,6 +85,12 @@ CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* =
 CRewardPopupDP* CRewardPopupDP::setExitCallback(std::function<void()> listener)
 {
     m_ExitListener = listener;
+    return this;
+}
+
+CRewardPopupDP* CRewardPopupDP::setIsUFOEnable(bool enable)
+{
+    m_IsUFOEnabled = enable;
     return this;
 }
 
@@ -181,6 +198,39 @@ void CRewardPopupDP::characterReward()
         case 1: this->characterCreator1(character); break;
         case 2: this->characterCreator2(character); break;
     }
+}
+
+void CRewardPopupDP::costumeReward()
+{
+    // create costume
+    auto popupSize  = this->getContentSize();
+    auto data       = CCostumeDataManager::Instance()->getCostumeByIndex(m_Reward._value);
+    auto costume  = Sprite::createWithSpriteFrameName(data->_texture_600);
+    costume->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    costume->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f));
+    costume->setCascadeOpacityEnabled(true);
+    this->addChild(costume);
+    
+    auto moveDown     = MoveTo::create(2.5f, Vec2(popupSize.width * 0.5f, popupSize.height * -0.5f));
+    auto sineMove     = EaseSineIn::create(moveDown);
+    auto rotateAction = RotateTo::create(2.5f, 0);
+    auto sineRotate   = EaseSineIn::create(rotateAction);
+    auto spawn        = Spawn::create(sineMove, sineRotate, nullptr);
+    auto sequence     = Sequence::create(spawn, CallFunc::create([=](){
+        
+        costume->setScale(1.f);
+        costume->setOpacity(255);
+        costume->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * -0.5f));
+        CRewardPopup::createFlyAction(costume, Vec2(popupSize.width * 0.5f, popupSize.height * 0.525f),
+                                      Vec2(popupSize.width * 0.5f, popupSize.height * 0.475f));
+    }), NULL);
+    
+    costume->setScale(0.3f);
+    costume->setOpacity(255 * 0.4f);
+    costume->setRotation(random<int>(0, 360));
+    costume->runAction(sequence);
+
+    this->exitWithDelay(6.5f);
 }
 
 void CRewardPopupDP::characterCreator1(cocos2d::Sprite* character)

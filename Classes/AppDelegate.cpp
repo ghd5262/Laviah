@@ -75,7 +75,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     CPlayManager::Instance()->Initialize();
     
     // unity ads init
-    CUnityAdsManager::Instance()->Initialize(true);
+    CUnityAdsManager::Instance()->Initialize(false);
     
     return true;
 }

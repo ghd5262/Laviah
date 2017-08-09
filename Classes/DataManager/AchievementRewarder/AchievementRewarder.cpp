@@ -57,7 +57,7 @@ sREWARD_DATA CAchievementRewarder::characterRewardRandom(sREWARD_DATA data) {
     
 	auto characterData = CCharacterDataManager::Instance()->getNewRandomCharacter();
 	if (characterData == nullptr)
-        return coinRewardRandom(sREWARD_DATA(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0));
+        return coinRewardRandom(sREWARD_DATA(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 500));
 
 	data._value = characterData->_index;
     
@@ -69,7 +69,7 @@ sREWARD_DATA CAchievementRewarder::costumeRewardRandom(sREWARD_DATA data) {
     
     auto costumeData = CCostumeDataManager::Instance()->getNewRandomCostume();
     if (costumeData == nullptr)
-        return coinRewardRandom(sREWARD_DATA(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0));
+        return coinRewardRandom(sREWARD_DATA(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 500));
     
     data._value = costumeData->_index;
     

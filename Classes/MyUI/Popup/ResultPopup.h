@@ -17,7 +17,7 @@ private:
     void home();
     void end();
     void getCoinFromVideo(Node* sender);
-    void getNewCharacter(Node* sender);
+    void getNewCostume(Node* sender);
     void getFreeReward();
     void share();
     void exit();

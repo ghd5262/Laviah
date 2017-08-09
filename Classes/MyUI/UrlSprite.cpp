@@ -123,7 +123,7 @@ void CUrlSprite::downloadSucceed(network::HttpClient* client,
     auto succeed = image->initWithImageData((unsigned char*)responseStr.c_str(), responseStr.size());
     if(!succeed){
         CCLOG("Image initializing with data failed. Check the data of Image");
-        MessageBox("Remote image download failed", "Error");
+//        MessageBox("Remote image download failed", "Error");
         this->downloadFailed();
         return;
     }

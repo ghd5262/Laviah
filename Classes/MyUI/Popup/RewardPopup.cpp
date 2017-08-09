@@ -6,6 +6,7 @@
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 #include "../../DataManager/CharacterDataManager.h"
+#include "../../DataManager/CostumeDataManager.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../DataManager/DataManagerUtils.h"
@@ -207,6 +208,7 @@ CPopup* CRewardPopup::createRewardDP(sREWARD_DATA data)
         else                     this->showButtons();
     })
     ->setRewardData(data)
+    ->setIsUFOEnable(m_IsUFOEnable)
 //    ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -270,13 +272,13 @@ void CRewardPopup::open()
 	}
     
     if (m_IsPaidFeature){
-        if(!CCharacterDataManager::Instance()->getNewRandomCharacter()) {
+        if(!CCostumeDataManager::Instance()->getNewRandomCostume()) {
             CGameScene::getGameScene()->CreateAlertPopup()
             ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-            ->setMessage("There are no more characters to get.")
+            ->setMessage("There are no more costume to get.")
             ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
         }
-        else this->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
+        else this->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME_RANDOM, 0);
     }
     
     if (!this->isItemRemain() || !CUserDataManager::Instance()->CoinUpdate(m_Cost)){
@@ -301,10 +303,26 @@ void CRewardPopup::play()
     this->exit(true);
     
     auto index = m_LastSavedData._value;
-    if(!CUserDataManager::Instance()->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST, index))
-        return;
     
-    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, index);
+    if(m_LastSavedData._key == ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM ||
+       m_LastSavedData._key == ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER){
+        if(!CUserDataManager::Instance()->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST, index))
+            return;
+        
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, index);
+    }
+    if(m_LastSavedData._key == ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME_RANDOM ||
+       m_LastSavedData._key == ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME){
+        if(!CUserDataManager::Instance()->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST, index))
+            return;
+        
+        auto data = CCostumeDataManager::Instance()->getCostumeByIndex(index);
+        auto characterIndex = data->_characterIndex;
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CHARACTER, characterIndex);
+        CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::CHARACTER_LIST, characterIndex,
+                                                            PARAM_CHARACTER::COSTUME_INDEX, index);
+    }
+    
     CObjectManager::Instance()->ChangeCharacter();
     CGameScene::getGameScene()->GameStart();
 }
@@ -339,7 +357,9 @@ void CRewardPopup::showButtons()
     auto layerSize = this->getContentSize();
     
     if(m_LastSavedData._key == ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM ||
-       m_LastSavedData._key == ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER){
+       m_LastSavedData._key == ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER ||
+       m_LastSavedData._key == ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME_RANDOM ||
+       m_LastSavedData._key == ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME){
         m_PlayButton->setPosition(Vec2(layerSize.width * 0.275f, layerSize.height * 0.2f));
         m_GetButton->setPosition(Vec2(layerSize.width * 0.725f, layerSize.height * 0.2f));
         action(m_PlayButton);

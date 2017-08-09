@@ -91,19 +91,9 @@ bool CResultPopup::init()
     this->createTotalScoreLayer(GVALUE->TOTAL_SCORE);
     this->createRankingLayer();
     this->createLevelLayer();
-//    for(int index = 0; index < btnLayerListenerArray.size(); index++){
-//        if(!btnLayerVisibleArray[index]) continue;
-//        this->createButtonLayer(btnLayerListenerArray[index],
-//                                btnLayerIconArray[index],
-//                                btnLayerTextArray[index],
-//                                COLOR::GOLD);
-//    }
-    
     
     for(int index = 0; index < m_ScoreLayerList.size(); index++)
         m_ScoreLayerList.at(index)->setPosition(posArray[index]);
-    
-    
     
     // create button lambda
     auto createButton   = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, bool visible){
@@ -133,27 +123,19 @@ bool CResultPopup::init()
     std::array<std::function<void(Node*)>, 3> btnListenerArray = {
         [=](Node* sender) { this->home();             },
         [=](Node* sender) { this->reset();            },
-        [=](Node* sender) { this->end();              },
-//        [=](Node* sender) { this->getCoinFromVideo(); },
-//        [=](Node* sender) { this->getNewCharacter();  },
-//        [=](Node* sender) { this->getFreeReward();    },
-//        [=](Node* sender) { this->share();            },
+        [=](Node* sender) { this->end();              }
     };
     
     std::array<bool, 3> btnVisibleArray = {
         (!m_GoalPopupOpen),
         (!m_GoalPopupOpen),
-        ( m_GoalPopupOpen),
-//        ( true ),
-//        ( CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1000 ),
-//        ( CFreeRewardManager::Instance()->getRewardAble() ),
-//        ( CObjectManager::Instance()->getPhotoShareAble() )
+        ( m_GoalPopupOpen)
     };
     
     // create reward button
     {
         std::array<bool, 3> rewardBtnVisibleArray = {
-            ( random<bool>(false, true) ),
+            ( random<int>(0, 1) == 1 ),
             ( CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1500 ),
             ( CFreeRewardManager::Instance()->getRewardAble() )
         };
@@ -166,7 +148,7 @@ bool CResultPopup::init()
         
         std::array<std::function<void(Node*)>, 3> rewardBtnListenerArray = {
             [=](Node* sender) { this->getCoinFromVideo(sender); },
-            [=](Node* sender) { this->getNewCharacter(sender);  },
+            [=](Node* sender) { this->getNewCostume(sender);  },
             [=](Node* sender) { this->getFreeReward();    }
         };
         
@@ -329,7 +311,7 @@ void CResultPopup::getCoinFromVideo(Node* sender)
     });
 }
 
-void CResultPopup::getNewCharacter(Node* sender)
+void CResultPopup::getNewCostume(Node* sender)
 {
     CGameScene::getGameScene()->Reward([=](bool isPlay){
         if(isPlay) {
