@@ -206,7 +206,7 @@ void CUserDataManager::LoadUserDataFromCloud()
     }, crypto_key);
 }
 
-void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/)
+void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/, bool autoSave/* = false*/)
 {
     this->setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
     std::string jsonString   = "";
@@ -222,14 +222,14 @@ void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/)
     
     UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), crypto_value);
     
-    if (saveToCloud || this->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO)) {
+    if (saveToCloud) {
         
         CPlayManager::Instance()->DataSave([=](std::string data){
             time_t time;
             std::time(&time);
             this->setLastSavedTime(time);
             
-            if(saveToCloud)
+            if(!autoSave)
             {
                 CGameScene::getGameScene()->CreateAlertPopup()
                 ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
@@ -276,6 +276,8 @@ void CUserDataManager::setUserData_ItemExist(std::string key, int itemIdx)
         auto paramData = new PARAM_DATA();
         paramListMap->emplace(std::pair<int, PARAM_DATA*>(itemIdx, paramData));
     }
+    
+    this->SaveUserData();
 }
 
 // TODO: refactoring - initUserDefaultValue 부분과 비슷한 부분이 있다.

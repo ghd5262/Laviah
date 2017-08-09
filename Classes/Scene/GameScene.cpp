@@ -133,25 +133,23 @@ bool CGameScene::init()
     this->initKeyboardListener();
     this->setTimestamp();
     this->intro();
-
+    
+    this->schedule([=](float delta){
+        if(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO))
+            CUserDataManager::Instance()->SaveUserData(true, true);
+    }, 300.f, "AutoSave");
     
 //    this->ScreenFade([=](){
-//        auto rewardPopup = dynamic_cast<CRewardPopup*>(this->Reward());
-////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
-////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
-////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
-////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
-////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
-////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
-////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 0);
-////        rewardPopup->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER_RANDOM, 0);
-//        rewardPopup->setIsPaidFeature(-1500);
-//        rewardPopup->setExitCallback([=](){
+//        this->Reward([=](bool isPlay){
 //            CObjectManager::Instance()->ZoomMoveMiddle();
 //            this->menuOpen();
-//        });
+//        }, {
+//            sREWARD_DATA(ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME_RANDOM, 0),
+//            sREWARD_DATA(ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME_RANDOM, 0)
+//
+//        }, 0, true);
 //    });
-    
+//    
 //    CObjectManager::Instance()->setPhotoShareAble(true);
 //    this->createResultPopup();
     

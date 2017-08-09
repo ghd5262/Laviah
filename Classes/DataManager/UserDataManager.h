@@ -46,7 +46,7 @@ public:
     bool getUserData_IsItemExist(std::string key, int itemIdx);
     bool getUserData_IsItemExistWithParam(std::string key, int paramIdx, int value);
     
-	void SaveUserData(bool saveToCloud = false);
+	void SaveUserData(bool saveToCloud = false, bool autoSave = false);
     
     void LoadUserDataFromXML();
     void LoadUserDataFromCloud();
