@@ -112,6 +112,27 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
     ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f))
     ->show(this);
     
+    m_FingerIcon = Sprite::create("fingerIcon.png");
+    m_FingerIcon->setPosition(Vec2(layerSize.width * 0.8f, layerSize.height * 0.3f));
+    m_FingerIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_FingerIcon->setOpacity(0);
+    this->addChild(m_FingerIcon);
+    
+    auto delay1  = DelayTime::create(3.5f);
+    auto fadeIn  = FadeTo::create(0.5f, 255 * .8f);
+    auto delay2  = DelayTime::create(0.6f);
+    auto fadeOut = FadeTo::create(0.5f, 0);
+    auto seq1    = Sequence::create(delay1, fadeIn, delay2, fadeOut, NULL);
+    
+    auto delay3  = DelayTime::create(3.5f);
+    auto moveTo  = MoveTo::create(1.6f, Vec2(layerSize.width * 0.2f, layerSize.height * 0.3f));
+    auto ease    = EaseSineInOut::create(moveTo);
+    auto moveFrom= MoveTo::create(0.f, Vec2(layerSize.width * 0.8f, layerSize.height * 0.3f));
+    auto seq2    = Sequence::create(delay3, ease, moveFrom, NULL);
+    auto spawn   = Spawn::create(seq1, seq2, NULL);
+    
+    m_FingerIcon->runAction(RepeatForever::create(spawn));
+    
     this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* owner){
             auto fade  = FadeIn::create(0.5f);
@@ -227,4 +248,5 @@ void CCharacterCostumePopup::scrollCallback(cocos2d::Ref* ref, PageView::EventTy
     
     m_SelectButton->setTouchEnable(selectable);
     m_SelectButton->changeContents(text);
+    m_FingerIcon->setVisible(false);
 }

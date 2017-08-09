@@ -26,6 +26,7 @@ private:
     , m_ScrollView(nullptr)
     , m_CurrentData(nullptr)
     , m_ExitCallback(nullptr)
+    , m_FingerIcon(nullptr)
     , m_CharacterIndex(0){};
     virtual ~CCharacterCostumePopup(){};
     
@@ -35,5 +36,6 @@ private:
     cocos2d::ui::PageView* m_ScrollView;
     const COSTUME* m_CurrentData;
     VOID_CALLBACK m_ExitCallback;
+    cocos2d::Sprite* m_FingerIcon;
     int m_CharacterIndex;
 };
