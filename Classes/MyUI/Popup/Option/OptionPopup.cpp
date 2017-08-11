@@ -136,8 +136,17 @@ bool COptionPopup::init()
     auto btnShare = CMyButton::create()
     ->addEventListener([=](Node* sender){
         //        CFacebookManager::Instance()->CaptureScreen();
-        CObjectManager::Instance()->ShowCapturingAction();
+//        CObjectManager::Instance()->ShowCapturingAction();
         //        this->End(sender);
+//        auto capture = CObjectManager::Instance()->Capture(500,800);
+//        capture->setPosition(CGameScene::getGameScene()->getContentSize() / 2);
+//        auto test = Sprite::create("shareIcon_2.png");
+//        test->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//        test->setPosition(capture->getContentSize() / 2);
+//        capture->addChild(test);
+        
+//        CGameScene::getGameScene()->addChild(capture, ZORDER::POPUP);
+
     })
     ->setButtonNormalImage("shareIcon_2.png")
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

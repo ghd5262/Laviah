@@ -78,5 +78,4 @@ void CRivalBullet::CollisionWithPlayer()
 {
     this->createScoreCurrentPos(100);
     this->R_BezierWithRotation(Vec2(2000, 3000), Vec2(540, 1500), Vec2(900, 2000), 1.f);
-    CObjectManager::Instance()->ShowCapturingAction();
 }

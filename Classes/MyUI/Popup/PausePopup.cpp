@@ -64,11 +64,11 @@ bool CPausePopup::init()
 //		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.85f),
 //		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.7f),
 //		Vec2(pauseBG->getContentSize().width * -1.1f, pauseBG->getContentSize().height * 0.55f),
-        Vec2(this->getContentSize().width * 0.68f, this->getContentSize().height * 0.05f),
-        Vec2(this->getContentSize().width * 0.80f, this->getContentSize().height * 0.05f),
-        Vec2(this->getContentSize().width * 0.92f, this->getContentSize().height * 0.05f),
-		Vec2(this->getContentSize().width * 0.92f, this->getContentSize().height * 0.05f),
-		Vec2(this->getContentSize().width * 0.08f, this->getContentSize().height * 0.05f)
+        Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.05f),
+        Vec2(visibleSize.width * 0.20f, visibleSize.height * 0.05f),
+        Vec2(visibleSize.width * 0.92f, visibleSize.height * 0.05f),
+		Vec2(visibleSize.width * 0.92f, visibleSize.height * 0.05f),
+		Vec2(visibleSize.width * 0.08f, visibleSize.height * 0.05f)
 	};
 
 //	std::array<Vec2, 3> btnOriginPosArray = {
@@ -90,16 +90,13 @@ bool CPausePopup::init()
 	auto btnReset = createButton([=](Node* sender){ this->Reset(sender); }, btnImageName[1], btnStartPosArray[1])->show(this);
 //	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[2], btnStartPosArray[2])->show(pauseBG);
 	auto btnPlay = createButton([=](Node* sender){ this->Play(sender); }, btnImageName[3], btnStartPosArray[3])->show(this);
-	btnPlay->setOpacity(0);
-	auto btnExit = createButton([=](Node* sender){ this->GameExit(sender); }, btnImageName[4], btnStartPosArray[4])->show(this);
-	btnExit->setOpacity(0);
+//	auto btnExit = createButton([=](Node* sender){ this->GameExit(sender); }, btnImageName[4], btnStartPosArray[4])->show(this);
 
 	auto btnUserCoin = CUserCoinButton::create();
 	if (btnUserCoin != nullptr)
 	{
-		btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.05f));
+		btnUserCoin->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.05f));
 		btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		btnUserCoin->setOpacity(0);
 		this->addChild(btnUserCoin);
 	}
     
@@ -129,11 +126,17 @@ bool CPausePopup::init()
         auto ease = EaseExponentialOut::create(move);
 		m_AchievementBG->runAction(ease);
         
-        btnHome->runAction(FadeIn::create(0.5f));
-        btnReset->runAction(FadeIn::create(0.5f));
-		btnExit->runAction(FadeIn::create(0.5f));
-		btnPlay->runAction(FadeIn::create(0.5f));
-		btnUserCoin->runAction(FadeIn::create(0.5f));
+        auto fadeAction = [=](Node* node){
+            auto fade = FadeIn::create(0.5f);
+            node->setOpacity(0);
+            node->runAction(fade);
+        };
+        
+        fadeAction(btnHome);
+        fadeAction(btnReset);
+        fadeAction(btnPlay);
+        fadeAction(btnUserCoin);
+        
 	}, 1.f);
 
 	this->setCloseAnimation([=](Node* sender){
@@ -154,7 +157,7 @@ bool CPausePopup::init()
         
         btnHome->runAction(FadeTo::create(0.5f, 0));
         btnReset->runAction(FadeTo::create(0.5f, 0));
-        btnExit->runAction(FadeTo::create(0.5f, 0));
+//        btnExit->runAction(FadeTo::create(0.5f, 0));
         btnPlay->runAction(FadeTo::create(0.5f, 0));
         btnUserCoin->runAction(FadeTo::create(0.5f, 0));
 			

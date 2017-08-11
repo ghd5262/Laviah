@@ -292,7 +292,8 @@ void CPlayManager::onGameData(const std::string& action,
 {
     if(error.length())
     {
-        MessageBox(error.c_str(), "Notice");
+        std::string errorMsg = "클라우드에 데이터를 저장하던 중 에러가 발생했습니다. IOS를 사용하고 있는 경우 설정 > 상단의 계정정보 > iCloud > Laviah의 cloud 설정을 껐다가 다시 켜주세요.";
+        MessageBox(error.c_str(), "클라우드 저장 에러");
         CCLOG("%s failed : %s", action.c_str(), error.c_str());
         return;
     }

@@ -96,10 +96,10 @@ bool CResultPopup::init()
         m_ScoreLayerList.at(index)->setPosition(posArray[index]);
     
     // create button lambda
-    auto createButton   = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, bool visible){
+    auto createButton   = [=](const std::function<void(Node*)> &callback, std::string name, Vec2 pos, bool visible, bool use = true){
         auto button = CMyButton::create()
         ->addEventListener(callback)
-        ->setButtonSingleUse(true)
+        ->setButtonSingleUse(use)
         ->setButtonNormalImage(name)
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(pos)
@@ -203,19 +203,28 @@ bool CResultPopup::init()
     this->addChild(btnUserCoin);
     
     
-    //    // create captured picture
-    //    auto pictureBtn = CMyButton::create()
-    //    ->addEventListener([=](Node* sender){ this->Share(sender); })
-    //    ->setLayer(LayerColor::create(Color4B::WHITE, 100, 160))
-    //    ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f))
-    //    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    //    ->show(this);
-    //
-    //    auto picture    = CObjectManager::Instance()->Capture(90, 160, false);
-    //    picture->setPosition(Vec2(pictureBtn->getContentSize().width * 0.5f,
-    //                              pictureBtn->getContentSize().height * 0.47f));
-    //    picture->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    //    pictureBtn->addChild(picture);
+    // create captured picture
+    auto pictureBtn = createButton([=](Node* sender){
+        this->share();
+    }, "shareIcon_1.png", Vec2(layerSize.width * 0.2f, layerSize.height * 0.05f), true, false);
+    
+    auto captureBack = LayerColor::create(Color4B::WHITE, layerSize.width, layerSize.height);
+    captureBack->setIgnoreAnchorPointForPosition(false);
+    captureBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    captureBack->setPosition(Vec2(pictureBtn->getContentSize().width * 0.8f,
+                                  pictureBtn->getContentSize().height * 0.8f));
+    captureBack->setRotation(-45);
+    captureBack->setScale(0.11f, 0.1f);
+    captureBack->setCascadeOpacityEnabled(true);
+    pictureBtn->addChild(captureBack, -1);
+    
+    auto captureNode = CObjectManager::Instance()->getCaptureNode();
+    auto copiedNode  = Sprite::createWithTexture(captureNode->getTexture());
+    copiedNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    copiedNode->setScale(0.85f, -0.9f);
+    copiedNode->setPosition(captureBack->getContentSize() / 2);
+    copiedNode->setCascadeOpacityEnabled(true);
+    captureBack->addChild(copiedNode);
     
     
     this->setOpenAnimation([=](Node* sender){
@@ -240,7 +249,7 @@ bool CResultPopup::init()
         
         action(resultLabel);
         action(btnUserCoin);
-        //        action(pictureBtn);
+        action(pictureBtn);
     }, 1.2f);
     
     this->setCloseAnimation([=](Node* sender){
@@ -250,7 +259,7 @@ bool CResultPopup::init()
         
         resultLabel->runAction(FadeTo::create(0.3f, 0));
         btnUserCoin->runAction(FadeTo::create(0.3f, 0));
-        //        pictureBtn->runAction(FadeTo::create(0.3f, 0));
+        pictureBtn->runAction(FadeTo::create(0.3f, 0));
         
         if( m_GoalPopupOpen ){
             auto action = [=](Node* sprite, Vec2 pos){
@@ -645,6 +654,11 @@ void CResultPopup::userDataUpdate()
                 }
             });
         }
+    }
+    
+    // save exp
+    {
+        userDataMng->ExpAdd(GVALUE->TOTAL_SCORE);
     }
     
     // save score to leaderboard

@@ -285,7 +285,7 @@ void CBulletCreator::setBulletDataByUserData(sBULLET_PARAM& data, char symbol)
         case '5':  name = m_PlanetInfo->_normalMissileTexture;  break;
         case '6':  name = m_PlanetInfo->_stickBulletTexture;    break;
         case '7':  name = m_PlanetInfo->_standBulletTexture;    break;
-        case '8':  name = "ship.png";                           break;
+        case '8':  name = "rivalBullet_3.png";                           break;
 
         case 'A':  name = "playItem_1.png";                     break;
         case 'B':  name = "playItem_2.png";                     break;
