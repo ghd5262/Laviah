@@ -55,15 +55,24 @@ void CLoadingScene::startDownload()
             downloadManager->setDownloadSucceedListener([=](){
                 this->callbackDownloadComplete();
             });
+            downloadManager->setRequireNextVersion([=](){
+                auto appUrl = downloadManager->getAppUrl();
+                this->callbackRequireLatestVersion(appUrl);
+            });
             downloadManager->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             downloadManager->setPosition(Vec2(this->getContentSize().width * 0.5f,
                                               this->getContentSize().height * 0.45f));
             this->addChild(downloadManager);
         }
         else{
-            if(CUserDataManager::Instance()->getIsFirstPlay())
-                 this->createNetworkConnectPopup();
-            else this->callbackDownloadComplete();
+            auto firstPlay   = CUserDataManager::Instance()->getIsFirstPlay();
+            auto lastVersion = CUserDataManager::Instance()->getLastResourcesVersion();
+            auto curVersion  = Application::getInstance()->getVersion();
+            
+            auto downloadEnable = (firstPlay || (lastVersion != curVersion));
+            
+            if(downloadEnable) this->createNetworkConnectPopup();
+            else               this->callbackDownloadComplete();
             
         }
     });
@@ -78,7 +87,7 @@ void CLoadingScene::callbackDownloadFail()
         this->startDownload();
     }, "OK")
     ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-    ->setMessage("Download failed. \nCheck your internet connection. \nIf you see this message again after connecting, please email the developer.")
+    ->setMessage("Download failed. \nCheck your internet connection. \nIf you see this message again after connecting, please email to the developer.")
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(this->getContentSize() / 2)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
@@ -90,6 +99,20 @@ void CLoadingScene::callbackDownloadComplete()
 	CCLOG("Loading Scene %s", __FUNCTION__);
     CUserDataManager::Instance()->Initialize();
     this->createMenuScene();
+}
+
+void CLoadingScene::callbackRequireLatestVersion(std::string appUrl)
+{
+    CPopup::create()
+    ->setPositiveButton([=](Node* sender){
+        Application::getInstance()->openURL(appUrl);
+    }, "OK")
+    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+    ->setMessage("Please download the latest version of the game.")
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(this->getContentSize() / 2)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->show(this, ZORDER::POPUP);
 }
 
 void CLoadingScene::createMenuScene()
@@ -106,7 +129,7 @@ void CLoadingScene::createNetworkConnectPopup()
         this->startDownload();
     }, "OK")
 	->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
-    ->setMessage("Please connect to the internet\nto download resources.")
+    ->setMessage("Please connect the network to download resources of the new version of game.")
 	->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
 	->setPopupPosition(this->getContentSize() / 2)
 	->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)

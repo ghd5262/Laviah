@@ -12,7 +12,7 @@ public:
 	//callback
 	void callbackDownloadFail();
 	void callbackDownloadComplete();
-
+    void callbackRequireLatestVersion(std::string appUrl);
 protected:
 	virtual bool init() override;
 
