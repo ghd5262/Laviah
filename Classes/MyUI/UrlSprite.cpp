@@ -153,7 +153,7 @@ void CUrlSprite::downloadFailed()
 {
     if(m_RetryLimit <= 0){
         CCLOG("Download failed try to load default image");
-        MessageBox("Remote image download failed", "Error");
+//        MessageBox("Remote image download failed", "Error");
         return;
     }
 

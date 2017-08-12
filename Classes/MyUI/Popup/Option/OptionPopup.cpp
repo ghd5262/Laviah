@@ -133,8 +133,8 @@ bool COptionPopup::init()
     }, "endIcon.png", Vec2(layerSize.width * 0.92f,
                            layerSize.height * 0.05f));
     
-    auto btnShare = CMyButton::create()
-    ->addEventListener([=](Node* sender){
+//    auto btnShare = CMyButton::create()
+//    ->addEventListener([=](Node* sender){
         //        CFacebookManager::Instance()->CaptureScreen();
 //        CObjectManager::Instance()->ShowCapturingAction();
         //        this->End(sender);
@@ -147,13 +147,13 @@ bool COptionPopup::init()
         
 //        CGameScene::getGameScene()->addChild(capture, ZORDER::POPUP);
 
-    })
-    ->setButtonNormalImage("shareIcon_2.png")
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setButtonPosition(Vec2(layerSize.width * 0.08f,
-                             layerSize.height * 0.05f))
-    ->show(this);
-    
+//    })
+//    ->setButtonNormalImage("shareIcon_2.png")
+//    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//    ->setButtonPosition(Vec2(layerSize.width * 0.08f,
+//                             layerSize.height * 0.05f))
+//    ->show(this);
+
     
     this->setOpenAnimation([=](Node* sender){
         auto action = [=](Node* owner){
@@ -165,7 +165,7 @@ bool COptionPopup::init()
         };
         
         action(btnEnd);
-        action(btnShare);
+//        action(btnShare);
         action(btnUserCoin);
         
         auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
@@ -179,7 +179,7 @@ bool COptionPopup::init()
     
     this->setCloseAnimation([=](Node* sender){
         btnEnd->runAction(FadeTo::create(0.3f, 0));
-        btnShare->runAction(FadeTo::create(0.3f, 0));
+//        btnShare->runAction(FadeTo::create(0.3f, 0));
         btnUserCoin->runAction(FadeTo::create(0.3f, 0));
         
         bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,

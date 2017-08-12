@@ -235,7 +235,7 @@ void CFacebookManager::onLogin(bool isLogin, const std::string& error)
     if(!isLogin) {
         std::string title = "login ";
         title.append((isLogin ? "success" : "failed"));
-        MessageBox(error.c_str(), title.c_str());
+        MessageBox(title.c_str(), "Notice");
         m_LoginListener = nullptr;
         return;
     }
@@ -289,19 +289,19 @@ void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData
 void CFacebookManager::onSharedSuccess(const std::string& message)
 {
     CCLOG("##FB onSharedSuccess:%s", message.c_str());
-    MessageBox(message.c_str(), "share success");
+    MessageBox("Share succeed.", "Notice");
 }
 
 void CFacebookManager::onSharedFailed(const std::string& message)
 {
     CCLOG("##FB onSharedFailed:%s", message.c_str());
-    MessageBox(message.c_str(), "share failed");
+    MessageBox("Share failed.", "Notice");
 }
 
 void CFacebookManager::onSharedCancel()
 {
     CCLOG("##FB onSharedCancel");
-    MessageBox("", "share cancel");
+    MessageBox("Share canceled.", "Notice");
 }
 
 void CFacebookManager::onPermission(bool isLogin, const std::string& error)
@@ -311,7 +311,7 @@ void CFacebookManager::onPermission(bool isLogin, const std::string& error)
     if(!isLogin) {
         std::string title = "permission ";
         title.append((isLogin ? "success" : "failed"));
-        MessageBox(error.c_str(), title.c_str());
+        MessageBox(title.c_str(), "Notice");
         m_PermissionListener = nullptr;
         return;
     }
@@ -351,7 +351,7 @@ void CFacebookManager::onFetchFriends(bool ok, const std::string& msg)
 //        ->show(this);
     }
     
-    MessageBox("", "fetch friends");
+    MessageBox("Fetch friends.", "Notice");
 }
 
 void CFacebookManager::onRequestInvitableFriends( const sdkbox::FBInvitableFriendsInfo& friends )
