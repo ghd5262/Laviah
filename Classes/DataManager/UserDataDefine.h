@@ -6,6 +6,8 @@ namespace USERDATA_KEY {
     const std::string LAST_TIMESTAMP            = "USER_DATA_LAST_TIMESTAMP";
     const std::string LAST_SAVED_TIME		    = "USER_DATA_LAST_SAVED_TIME";
     const std::string FIRST_LOAD			    = "USER_DATA_FIRSTLOAD";
+    const std::string LAST_RES_VERSION			= "USER_DATA_LAST_RES_VERSION";
+
     const std::string DATA_REVISION				= "USER_DATA_SAVE_REVISION";
     const std::string DATA_SAVE_AUTO            = "USER_DATA_SAVE_AUTO";
     

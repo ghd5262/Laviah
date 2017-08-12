@@ -64,6 +64,9 @@ void CUserDataManager::Initialize()
     this->LoadUserDataFromXML();
     this->setDataLoadFinished(true);
     this->setIsFirstPlay(false);
+    
+    auto version = Application::getInstance()->getVersion();
+    this->setLastResourcesVersion(version);
 }
 
 bool CUserDataManager::getIsFirstPlay()
@@ -76,6 +79,18 @@ void CUserDataManager::setIsFirstPlay(bool isFirst)
 {
     std::string crypto_key = MakeCryptoString(USERDATA_KEY::FIRST_LOAD, USERDATA::CRYPTO_KEY);
     UserDefault::getInstance()->setBoolForKey(crypto_key.c_str(), isFirst);
+}
+
+std::string CUserDataManager::getLastResourcesVersion()
+{
+    std::string crypto_key = MakeCryptoString(USERDATA_KEY::LAST_RES_VERSION, USERDATA::CRYPTO_KEY);
+    return UserDefault::getInstance()->getStringForKey(crypto_key.c_str(), "");
+}
+
+void CUserDataManager::setLastResourcesVersion(std::string version)
+{
+    std::string crypto_key = MakeCryptoString(USERDATA_KEY::LAST_RES_VERSION, USERDATA::CRYPTO_KEY);
+    UserDefault::getInstance()->setStringForKey(crypto_key.c_str(), version);
 }
 
 tm* CUserDataManager::getLastSavedTime()

@@ -31,6 +31,8 @@ public:
     //getter & setter
     bool getIsFirstPlay();
     void setIsFirstPlay(bool isFirst);
+    std::string getLastResourcesVersion();
+    void setLastResourcesVersion(std::string version);
 	tm* getLastSavedTime();
     long long getLastTimestamp();
     long long getFreeRewardTimestamp();
