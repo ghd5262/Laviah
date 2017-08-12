@@ -2,8 +2,11 @@
 #include "json/document.h"
 #include "unzip/unzip.h"
 #include "network/HttpRequest.h"
+#include "../Common/StringUtility.h"
 #include "../json/json.h"
 #include "../MyUI/LevelProgressBar.h"
+#include "../MyUI/Popup.h"
+#include <regex>
 
 using namespace std;
 
@@ -45,6 +48,16 @@ CDownloadManager::CDownloadManager()
 , m_DownloadFailedListener(nullptr){}
 
 CDownloadManager::~CDownloadManager() {}
+
+std::string CDownloadManager::getAppUrl()
+{
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    return m_NewPackage._appLinkIos;
+#endif
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    return m_NewPackage._appLinkAndroid;
+#endif
+}
 
 void CDownloadManager::IsNetworkConnected(std::function<void(bool)> listener)
 {
@@ -111,8 +124,15 @@ void CDownloadManager::downloadCompletePackageInfoFile(HttpClient *client, HttpR
 	this->initPackageInfo(m_NewPackage, m_ServerVersionFileData);
 	this->loadLocalPackageInfoFile();
 
-	if (isThereAnyNewVersion()) this->initDownloadList();
-	
+    if (this->newVersionExist()) {
+        if(this->isMinBuildVersion())
+            this->initDownloadList();
+        else{
+            this->callVoidListener(m_RequireNextVersion);
+            this->removeFromParent();
+            return;
+        }
+    }
 	// 업데이트 패키지 파일 다운로드를 시작한다.
 	this->downloadNextFile();
 }
@@ -293,9 +313,30 @@ void CDownloadManager::initDownloadList()
 	m_DownloadMax = m_DownloadList.size();
 }
 
-bool CDownloadManager::isThereAnyNewVersion()
+bool CDownloadManager::newVersionExist()
 {
 	return (m_NewPackage._packageVersion > m_CurrentPackage._packageVersion);
+}
+
+bool CDownloadManager::isMinBuildVersion()
+{
+    std::string requireMinVersion = "";
+    std::string currentVersion    = Application::getInstance()->getVersion();
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    requireMinVersion = m_NewPackage._minBuildVersionIos;
+#endif
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    requireMinVersion = m_NewPackage._minBuildVersionAndroid;
+#endif
+    
+    requireMinVersion = std::regex_replace(requireMinVersion, std::regex("[^0-9]"), "");
+    currentVersion    = std::regex_replace(currentVersion,    std::regex("[^0-9]"), "");
+
+    
+    int requireMinVer = StringUtility::toNumber<int>(requireMinVersion);
+    int currentVer    = StringUtility::toNumber<int>(currentVersion);
+    
+    return requireMinVer <= currentVer;
 }
 
 void CDownloadManager::loadLocalPackageInfoFile()
@@ -343,10 +384,14 @@ void CDownloadManager::initPackageInfo(sPACKAGE_INFO& packageInfo, std::string j
 	}
 	CCLOG("Download list JSON : \n %s\n", data.c_str());
 
-	packageInfo._packageVersion = root["patchversion"].asInt();
+	packageInfo._packageVersion         = root["patchversion"].asInt();
+    packageInfo._minBuildVersionAndroid = root["minBuildVersionAndroid"].asString();
+    packageInfo._minBuildVersionIos     = root["minBuildVersionIos"].asString();
+    packageInfo._appLinkAndroid         = root["appLinkAndroid"].asString();
+    packageInfo._appLinkIos             = root["appLinkIos"].asString();
 
 	auto fileArray = root["files"];
-	packageInfo._downloadFileCount = fileArray.size();
+	packageInfo._downloadFileCount  = fileArray.size();
 
 	for (unsigned int fileCount = 0; fileCount < packageInfo._downloadFileCount; fileCount++)
 	{

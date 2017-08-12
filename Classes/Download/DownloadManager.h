@@ -26,11 +26,19 @@ class CDownloadManager : public cocos2d::Node {
 	struct sPACKAGE_INFO{
 		int _packageVersion;
 		int _downloadFileCount;
+        std::string _minBuildVersionAndroid;
+        std::string _minBuildVersionIos;
+        std::string _appLinkAndroid;
+        std::string _appLinkIos;
 		DOWNLOAD_LIST _fileInfoList;
 
 		sPACKAGE_INFO()
-			: _packageVersion(0)
-			, _downloadFileCount(0){};
+        : _packageVersion(0)
+        , _downloadFileCount(0)
+        , _minBuildVersionAndroid("1.0.0")
+        , _minBuildVersionIos("1.0")
+        , _appLinkAndroid("")
+        , _appLinkIos(""){};
 	};
 
 public:
@@ -39,7 +47,9 @@ public:
     typedef std::function<void(void)> VOID_LISTENER;
     CC_SYNTHESIZE(VOID_LISTENER, m_DownloadSucceedListener, DownloadSucceedListener);
     CC_SYNTHESIZE(VOID_LISTENER, m_DownloadFailedListener,  DownloadFailedListener);
+    CC_SYNTHESIZE(VOID_LISTENER, m_RequireNextVersion,      RequireNextVersion);
 
+    std::string getAppUrl();
     static void IsNetworkConnected(std::function<void(bool)> listener);
     
 protected:
@@ -55,7 +65,8 @@ private:
 	void downloadPackageInfoFile();
 	void downloadCompletePackageInfoFile(HttpClient *client, HttpResponse *response);
 
-	bool isThereAnyNewVersion();
+	bool newVersionExist();
+    bool isMinBuildVersion();
 	void initDownloadList();
 
 	void downloadNextFile();
