@@ -129,6 +129,7 @@ bool CGameScene::init()
     this->createUILayer();
     this->createRivalRankLayer();
     this->createTutorialLayer();
+    this->createCaptureNode();
     this->createBackKeyButton();
     this->initKeyboardListener();
     this->setTimestamp();
@@ -154,7 +155,7 @@ bool CGameScene::init()
 //    this->createResultPopup();
     
     CAudioManager::Instance()->Clear();
-    CAudioManager::Instance()->PlayBGM("sounds/menuBGM.mp3", true);
+    CAudioManager::Instance()->PlayBGM("sounds/menuBGM.wav", false);
     
     return true;
 }
@@ -234,6 +235,7 @@ void CGameScene::OpenGamePausePopup()
 void CGameScene::OpenGameMenuLayer()
 {
     this->ScreenFade([=](){
+        CAudioManager::Instance()->StopBGM();
         CObjectManager::Instance()->ZoomMoveMiddle();
         this->menuOpen();
     });
@@ -853,6 +855,7 @@ void CGameScene::createCountDown()
         CObjectManager::Instance()->setIsGamePause(false);
         CObjectManager::Instance()->setGameStateByLevel();
         m_ZoomLayer->resume();
+        CAudioManager::Instance()->PlayBGM("sounds/inGameBGM.mp3", true);
     })
     ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(3)
@@ -938,27 +941,28 @@ void CGameScene::createRivalRankLayer()
         // create rival bullet
         auto data   = CFacebookManager::Instance()->getFriendByRank(rank);
         auto bullet = CBulletCreator::CreateBullet('8', random<int>(0, 360), 2700, false);
+        bullet->getBulletSprite()->setSpriteFrame(StringUtils::format("rivalBullet_%d.png", rank + 1));
+
+//        auto flag      = Sprite::createWithSpriteFrameName("flag.png");
+//        flag->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+//        flag->setPosition(Vec2(bullet->getContentSize().width * 1.1f,
+//                               bullet->getContentSize().height * 0.4f));
+//        flag->setScale(1.5f);
+//        bullet->addChild(flag);
         
-        auto flag      = Sprite::createWithSpriteFrameName("flag.png");
-        flag->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        flag->setPosition(Vec2(bullet->getContentSize().width * 1.1f,
-                               bullet->getContentSize().height * 0.4f));
-        flag->setScale(1.5f);
-        bullet->addChild(flag);
-        
-        auto label     = Label::createWithTTF(StringUtils::format("%d", rank + 1), FONT::MALGUNBD, 30);
-        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        label->setPosition(Vec2(flag->getContentSize().width * 0.7f,
-                                flag->getContentSize().height * 0.6f));
-        label->setRotation(90);
-        label->setColor(COLOR::DARKGRAY);
-        flag->addChild(label);
+//        auto label     = Label::createWithTTF(StringUtils::format("%d", rank + 1), FONT::MALGUNBD, 30);
+//        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//        label->setPosition(Vec2(flag->getContentSize().width * 0.7f,
+//                                flag->getContentSize().height * 0.6f));
+//        label->setRotation(90);
+//        label->setColor(COLOR::DARKGRAY);
+//        flag->addChild(label);
         
         // cliper
         auto circleStencil = DrawNode::create();
-        circleStencil->drawSolidCircle(Vec2(bullet->getContentSize().width * 0.6f,
-                                            bullet->getContentSize().height * 0.48f),
-                                            35, 0, 20, 1, 1, Color4F::GREEN);
+        circleStencil->drawSolidCircle(Vec2(bullet->getContentSize().width * 0.65f,
+                                            bullet->getContentSize().height * 0.5f),
+                                            80, 0, 20, 1, 1, Color4F::GREEN);
         
         auto circleClipper = ClippingNode::create(circleStencil);
         circleClipper->setCascadeOpacityEnabled(true);
@@ -966,13 +970,13 @@ void CGameScene::createRivalRankLayer()
         bullet->addChild(circleClipper);
         
         auto pic = CUrlSprite::create()
-        ->setSize(Size(70, 70))
+        ->setSize(Size(160, 160))
         ->setUrl(data->_url, data->_url)
         ->setSaveToFileEnable(true)
         ->build(circleClipper, -1);
         pic->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        pic->setPosition(Vec2(bullet->getContentSize().width * 0.6f,
-                              bullet->getContentSize().height * 0.48f));
+        pic->setPosition(Vec2(bullet->getContentSize().width * 0.65f,
+                              bullet->getContentSize().height * 0.5f));
         pic->setRotation(90);
 //
 //        CUrlSprite::create()
@@ -1042,6 +1046,15 @@ void CGameScene::createIntroUI()
         this->addChild(sprite, zOrder[i]);
         m_IntroUIList.push_back(sprite);
     }
+}
+
+void CGameScene::createCaptureNode()
+{
+    auto captureNode = Sprite::create("empty_150x150.png");
+    captureNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    captureNode->setPosition(Vec2(-500, -500));
+    this->addChild(captureNode);
+    CObjectManager::Instance()->setCaptureNode(captureNode);
 }
 
 void CGameScene::setTimestamp()
@@ -1120,9 +1133,10 @@ void CGameScene::intro()
         this->ScreenFade([=](){
             
             uiListAction(skip);
-            CObjectManager::Instance()->Intro(m_ZoomLayer, 14.5f, PLANET_DEFINE::MENU_POS, skip, [=](){            skipBtn->removeFromParent();
+            CObjectManager::Instance()->Intro(m_ZoomLayer, 14.5f, PLANET_DEFINE::MENU_POS, skip, [=](){
                 this->menuOpen();
                 uiListRemove();
+                skipBtn->removeFromParent();
             });
             
         });

@@ -129,6 +129,7 @@ private:
     void createRivalRankLayer();
     void createTutorialLayer();
     void createIntroUI();
+    void createCaptureNode();
     void createBackKeyButton();
     void initKeyboardListener();
     void setTimestamp();

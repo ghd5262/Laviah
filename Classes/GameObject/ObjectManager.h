@@ -71,12 +71,9 @@ public:
     void GiantMode();
     void NormalMode();
     void InitTutorialStep();
-    void Share();
     void ShowCapturingAction();
-    void SaveCaptureInfo();
-    cocos2d::Node* Capture(float width = 1080,
-                           float height = 1920,
-                           bool uiEnable = true);
+    void AddUIToCapturedNode(cocos2d::Node* captured);
+    void CaptureZoomLayer();
     void setGameStateByLevel();
     void SlowMotion();
     void SlowMotionFinish();
@@ -108,6 +105,7 @@ public:
 	CC_SYNTHESIZE(CItemRange*, m_StarItemRange, StarItemRange);
 	CC_SYNTHESIZE(CItemRange*, m_CoinItemRange, CoinItemRange);
     CC_SYNTHESIZE(CMagnetEffect*, m_MagnetItemRange, MagnetItemRange);
+    CC_SYNTHESIZE(cocos2d::Sprite*, m_CaptureNode, CaptureNode);
 	CC_SYNTHESIZE(float, m_PatternTimer, PatternTimer);
     CC_SYNTHESIZE(float, m_LevelTimer, LevelTimer);
     CC_SYNTHESIZE(float, m_Delta, Delta);
@@ -123,7 +121,7 @@ private:
 	void createBulletByTimer(float delta);
     void inGameUpdate(float delta);
     void inMenuUpdate(float delta);
-    void inBonusGameUpdate();
+    void returnToMemoryBlock();
     void removeAllBullet();	// Delete함수 호출! 이유는 구현부에~
     void bulletListExecute();
     void bulletListRotate();
@@ -168,19 +166,6 @@ private:
         , _pos(pos)
         , _below(below){}
     };
-    
-    struct CAPTURE_INFO{
-        cocos2d::Color3B _backColorStart;
-        cocos2d::Color3B _backColorEnd;
-        float _characterAngle;
-        float _planetAngle;
-        
-        CAPTURE_INFO()
-        : _backColorStart(0, 0, 16)
-        , _backColorEnd(30, 18, 90)
-        , _characterAngle(30.f)
-        , _planetAngle(30.f){};
-    };
 
 private:
     std::shared_ptr<CStateMachine<CObjectManager>> m_FSM;
@@ -189,7 +174,6 @@ private:
     cocos2d::Node* m_SpeedController;
     CItemManager* m_ItemManager;
     CBulletPatternDataManager* m_PatternManager;
-    CAPTURE_INFO m_CaptureInfo;
     float m_RotationSpeed;
     float m_GiantSpeed;
     float m_BulletPatternPaddingLimit;

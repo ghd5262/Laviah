@@ -6,6 +6,7 @@ using namespace cocos2d;
 CMover::CMover()
 {
 	this->setVisible(true);
+    this->m_ReturnToMemoryBlock = false;
 	this->m_bAlive = true;
 	this->m_bHasPointer = true; // false를 만들어 주는 부분은 없다. 종료시 Delete의 플래그로 쓰기 때문
 }

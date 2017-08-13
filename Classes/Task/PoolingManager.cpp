@@ -69,8 +69,9 @@ void* CPoolingManager::BulletNew()
 
 void CPoolingManager::Bullet_ReturnToFreeMemory(void* bullet)
 {
-    this->changeUsedMemoryToFree(static_cast<char*>(bullet), m_BulletSize);
-	//memset(bullet, 0, m_BulletSize + 1);
+    auto memoryBlock = static_cast<char*>(bullet);
+    this->changeUsedMemoryToFree(memoryBlock, m_BulletSize);
+	memset(memoryBlock, 0, m_BulletSize + 1);
 }
 
 CPoolingManager::MEMORYBLOCK CPoolingManager::newMemoryBlock(size_t size) const

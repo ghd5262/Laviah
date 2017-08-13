@@ -33,8 +33,10 @@ public:
 	bool IsAlive()const { return m_bAlive; }		
 	void setAlive(bool alive){ m_bAlive = alive; }
 	bool HasPointer()const { return m_bHasPointer; }
-
+    bool IsReturnToMemoryBlock() const { return m_ReturnToMemoryBlock; }
+    void setReturnToMemoryBlock(bool value) {m_ReturnToMemoryBlock = value;}
 private:
+    bool m_ReturnToMemoryBlock;
 	bool m_bAlive;// 메모리 풀의 Alive와 동일시 되어야 한다.
 	bool m_bHasPointer;// 한번이라도 create된적이 있다면 true
 };
