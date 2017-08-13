@@ -92,6 +92,11 @@ bool CResultPopup::init()
     this->createRankingLayer();
     this->createLevelLayer();
     
+    // save exp - should be save after create level layer.
+    {
+        CUserDataManager::Instance()->ExpAdd(GVALUE->TOTAL_SCORE);
+    }
+    
     for(int index = 0; index < m_ScoreLayerList.size(); index++)
         m_ScoreLayerList.at(index)->setPosition(posArray[index]);
     
@@ -654,11 +659,6 @@ void CResultPopup::userDataUpdate()
                 }
             });
         }
-    }
-    
-    // save exp
-    {
-        userDataMng->ExpAdd(GVALUE->TOTAL_SCORE);
     }
     
     // save score to leaderboard

@@ -27,6 +27,7 @@ public:
     float getBGMVolume();
     void AllPause();
     void AllResume();
+    void StopBGM();
     
 	// 초기화
 	void Clear();

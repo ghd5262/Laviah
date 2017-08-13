@@ -5,6 +5,7 @@
 #include "Popup/TitleCompleteNoticePopup.hpp"
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
+#include "../Download/DownloadManager.h"
 #include "../SDKBOX/SDKBox.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Rocket.h"
@@ -167,16 +168,24 @@ bool CMenuLayer::init()
         CGameScene::getGameScene()->OpenOptionPopup(0);
     }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.95f));
     
-    // option button
-    createButton([=](Node* sender){
-        CGameScene::getGameScene()->OpenFBTestPopup();
-    }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
+//    // option button
+//    createButton([=](Node* sender){
+//        CGameScene::getGameScene()->OpenFBTestPopup();
+//    }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
     
     // facebook rank button
     createButton([=](Node* sender){
-        CGameScene::getGameScene()->OpenPermRequestPopup([=](){
-            CGameScene::getGameScene()->OpenRankPopup();
+        CDownloadManager::IsNetworkConnected([=](bool isConnected){
+            if(isConnected){
+                CGameScene::getGameScene()->OpenPermRequestPopup([=](){
+                    CGameScene::getGameScene()->OpenRankPopup();
+                });
+            }
+            else{
+                createOneButtonPopup([=](Node* sender){}, "네트워크 연결을 확인해주세요.");
+            }
         });
+        
     }, "rankingIcon.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f));
     
     // achievement button

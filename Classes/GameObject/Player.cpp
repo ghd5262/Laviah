@@ -121,6 +121,8 @@ void CPlayer::PlayerAlive()
 }
 
 void CPlayer::PlayerDead(){
+    CCLOG("Player dead");
+    CObjectManager::Instance()->CaptureZoomLayer();
     m_Particle->setVisible(false);
     this->createDeadParticle();
     this->setVisible(false);

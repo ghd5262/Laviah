@@ -2,7 +2,7 @@
 #include "HSHUtility.h"
 #include "../DataManager/UserDataManager.h"
 CAudioManager::CAudioManager()
-: m_BGMID(0)
+: m_BGMID(-1)
 , m_BGMSoundVolume(0)
 , m_EffectSoundVolume(0)
 {
@@ -31,7 +31,7 @@ CAudioManager* CAudioManager::Instance()
 void CAudioManager::Clear()
 {
 	AudioEngine::stopAll();
-	m_BGMID = 0;
+	m_BGMID = -1;
     m_BGMSoundVolume    = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BGM_VOLUME);
 	m_EffectSoundVolume = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EFFECT_VOLUME);
     this->EmptyCurrentPlayingList();
@@ -69,6 +69,7 @@ void CAudioManager::PlayBGM(
 	const AudioProfile *profile/* = nullptr*/)
 {
     volume = volume != -1.f ? volume : m_BGMSoundVolume;
+    this->StopBGM();
 	m_BGMID = AudioEngine::play2d(filePath, loop, volume / 100.f, profile);
 }
 
@@ -117,4 +118,11 @@ void CAudioManager::AllPause()
 void CAudioManager::AllResume()
 {
     AudioEngine::resumeAll();
+}
+
+void CAudioManager::StopBGM()
+{
+    if(m_BGMID == -1) return;
+    
+    AudioEngine::stop(m_BGMID);
 }

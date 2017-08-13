@@ -24,54 +24,63 @@ bool CSharePopup::init()
 {
     if (!CPopup::init()) return false;
     
-    auto popupSize = this->getContentSize();
+    auto popupSize   = this->getContentSize();
+
+//    auto back        = LayerColor::create(Color4B::WHITE, popupSize.width, popupSize.height);
+//    back->setIgnoreAnchorPointForPosition(false);
+//    back->setCascadeOpacityEnabled(true);
+//    back->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//    back->setPosition(popupSize / 2);
+//    back->setScale(0.75f);
+//    this->addChild(back);
     
-    auto back = LayerColor::create(Color4B::WHITE, 1000, 1600);
-    back->setCascadeOpacityEnabled(true);
-    back->setIgnoreAnchorPointForPosition(false);
-    back->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    back->setPosition(popupSize / 2);
-    this->addChild(back);
+    auto screen      = Node::create();
+    screen->setContentSize(popupSize);
+    screen->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    screen->setCascadeOpacityEnabled(true);
+    screen->setPosition(popupSize / 2);
+    this->addChild(screen);
     
-    auto pic  = CObjectManager::Instance()->Capture(900, 1600);
-    pic->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    pic->setPosition(Vec2(back->getContentSize().width * 0.5f,
-                          back->getContentSize().height * 0.47f));
-    back->addChild(pic);
+    auto captureNode = CObjectManager::Instance()->getCaptureNode();
+    auto copiedNode  = Sprite::createWithTexture(captureNode->getTexture());
+    copiedNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    copiedNode->setScaleY(-1);
+    copiedNode->setPosition(popupSize / 2);
+    copiedNode->setCascadeOpacityEnabled(true);
+    screen->addChild(copiedNode);
     
-    auto date = Label::createWithTTF(CTranslateManager::Instance()->getCurrentDate(false),
-                                     FONT::MALGUN, 50);
-    date->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-    date->setPosition(Vec2(back->getContentSize().width * 0.06f,
-                           back->getContentSize().height * 0.16f));
-    date->setColor(COLOR::DARKGRAY);
-    back->addChild(date);
+    auto ui          = Node::create();
+    ui->setContentSize(popupSize);
+    ui->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    ui->setPosition(popupSize / 2);
+    ui->setCascadeOpacityEnabled(true);
+    screen->addChild(ui);
     
-    auto createBtn = [=](const std::function<void(Node*)> &callback, std::string icon, Vec2 pos){
+    CObjectManager::Instance()->AddUIToCapturedNode(ui);
+    
+    auto createBtn = [=](const std::function<void(Node*)> &callback, std::string icon, Vec2 pos, bool use){
         auto btn = CMyButton::create()
         ->addEventListener(callback)
-        ->setButtonSingleUse(true)
+        ->setButtonSingleUse(use)
         ->setButtonNormalImage(icon)
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->setButtonPosition(pos)
         ->show(this);
-        btn->setColor(COLOR::DARKGRAY);
+        btn->setCascadeOpacityEnabled(true);
         
         return btn;
     };
     
     auto btnEnd = createBtn([=](Node* sender){
         this->End();
-    }, "endIcon.png", Vec2(popupSize.width * 0.88f,
-                           popupSize.height * 0.14f));
+    }, "endIcon.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.05f), true);
     
     auto btnShare = createBtn([=](Node* sender){
         CGameScene::getGameScene()->OpenPermRequestPopup([=](){
-            if(CFacebookManager::Instance()->SaveNodeToFile(back))
+            if(CFacebookManager::Instance()->SaveNodeToFile(screen))
                 CFacebookManager::OpenPhotoShareDialog("");
         });
-    }, "shareIcon_1.png", Vec2(popupSize.width * 0.12f,
-                               popupSize.height * 0.14f));
+    }, "shareIcon_1.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f), false);
     
     this->setOpenAnimation([=](Node* sender){
         
@@ -83,16 +92,20 @@ bool CSharePopup::init()
             sender->runAction(sequence);
         };
         
-        action(back, 0.f);
+        action(screen, 0.f);
         action(btnEnd, 0.3f);
         action(btnShare, 0.3f);
+
+//        action(back, 0.f);
     }, 0.6f);
     
     this->setCloseAnimation([=](Node* sender){
         
-        back->runAction(FadeTo::create(0.3f, 0));
+        screen->runAction(FadeTo::create(0.3f, 0));
         btnEnd->runAction(FadeTo::create(0.3f, 0));
         btnShare->runAction(FadeTo::create(0.3f, 0));
+
+//        back->runAction(FadeTo::create(0.3f, 0));
     });
     
     this->setDefaultCallback([=](Node* sender){
