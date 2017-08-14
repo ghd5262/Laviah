@@ -15,7 +15,7 @@
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
-#include "../../SDKBOX/SDKBox.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 #include <array>
 
 CResultPopup* CResultPopup::create()

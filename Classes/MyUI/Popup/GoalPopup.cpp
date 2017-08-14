@@ -4,7 +4,7 @@
 #include "../MyButton.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../Scene/GameScene.h"
-#include "../../SDKBOX/SDKBox.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 #include <array>
 
 CGoalPopup* CGoalPopup::create()

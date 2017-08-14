@@ -4,7 +4,7 @@
 #include "../ItemManager.h"
 #include "../../Scene/GameScene.h"
 #include "../../MyUI/UrlSprite.hpp"
-#include "../../SDKBOX/SDKBox.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 
 using namespace cocos2d;
 

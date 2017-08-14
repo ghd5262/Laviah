@@ -4,7 +4,7 @@
 #include "../CountDown.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
-#include "../../SDKBOX/SDKBox.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
 #include <array>

@@ -9,7 +9,7 @@
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/UserLevelDataManager.hpp"
 #include "../Download/DownloadManager.h"
-#include "../SDKBOX/SDKBox.h"
+#include "../SDKBOX/SDKBoxHeaders.h"
 #include <algorithm>     /* qsort */
 
 //#define JSONREADER_CREATE \

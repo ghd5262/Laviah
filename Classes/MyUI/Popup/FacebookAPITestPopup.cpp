@@ -3,7 +3,7 @@
 #include "../UrlSprite.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
-#include "../../SDKBOX/SDKBox.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 #include "../../json/json.h"
 #include "ui/UIScrollView.h"
 #include "ui/UIListView.h"

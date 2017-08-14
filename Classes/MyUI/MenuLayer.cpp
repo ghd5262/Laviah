@@ -6,7 +6,7 @@
 #include "../Scene/GameScene.h"
 #include "../DataManager/UserDataManager.h"
 #include "../Download/DownloadManager.h"
-#include "../SDKBOX/SDKBox.h"
+#include "../SDKBOX/SDKBoxHeaders.h"
 #include "../GameObject/ObjectManager.h"
 #include "../GameObject/Rocket.h"
 #include "../GameObject/Planet.h"

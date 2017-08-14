@@ -7,7 +7,7 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../DataManager/AchievementDataManager.hpp"
-#include "../../SDKBOX/SDKBox.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;

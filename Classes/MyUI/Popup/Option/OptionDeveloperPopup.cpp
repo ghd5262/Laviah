@@ -2,7 +2,7 @@
 #include "../../MyButton.h"
 #include "../../../Scene/GameScene.h"
 #include "../../../DataManager/UserDataManager.h"
-#include "../../../SDKBOX/SDKBox.h"
+#include "../../../SDKBOX/SDKBoxHeaders.h"
 #include "ui/UICheckbox.h"
 #include <array>
 

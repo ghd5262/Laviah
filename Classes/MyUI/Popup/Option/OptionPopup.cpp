@@ -5,7 +5,7 @@
 #include "../../../GameObject/ObjectManager.h"
 #include "../../../Scene/GameScene.h"
 #include "../../../DataManager/UserDataManager.h"
-#include "../../../SDKBOX/SDKBox.h"
+#include "../../../SDKBOX/SDKBoxHeaders.h"
 #include "network/HttpClient.h"
 
 #include <array>

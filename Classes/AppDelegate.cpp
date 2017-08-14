@@ -4,7 +4,7 @@
 #include "Scene/LoadingScene.h"
 #include "Common/AudioManager.h"
 #include "DataManager/UserDataManager.h"
-#include "SDKBOX/SDKBox.h"
+#include "SDKBOX/SDKBoxHeaders.h"
 
 USING_NS_CC;
 
@@ -71,11 +71,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
     sdkbox::PluginFacebook::init();    
     
     // sdkbox play init
-//    sdkbox::PluginSdkboxPlay::init();
     CPlayManager::Instance()->Initialize();
     
     // unity ads init
     CUnityAdsManager::Instance()->Initialize(false);
+    
+    // share init
+    CShareManager::Instance()->Initialize();
     
     return true;
 }

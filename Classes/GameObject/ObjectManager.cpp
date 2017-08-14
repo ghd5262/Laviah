@@ -18,7 +18,7 @@
 #include "../DataManager/PlanetDataManager.hpp"
 #include "../DataManager/CostumeDataManager.hpp"
 #include "../DataManager/BulletPatternDataManager.h"
-#include "../SDKBOX/SDKBox.h"
+#include "../SDKBOX/SDKBoxHeaders.h"
 #include "../MyUI/Tutorial/TutorialHelper.hpp"
 #include "../MyUI/MyButton.h"
 #include "../MyUI/UILayer.hpp"

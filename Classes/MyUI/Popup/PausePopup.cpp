@@ -7,7 +7,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
 #include "../../DataManager/UserDataManager.h"
-#include "../../SDKBOX/SDKBox.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 #include <array>
 
 CPausePopup::CPausePopup()

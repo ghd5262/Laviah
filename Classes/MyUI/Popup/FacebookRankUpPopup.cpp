@@ -2,7 +2,7 @@
 #include "FacebookRankPopupDP.hpp"
 #include "../MyButton.h"
 #include "../../Scene/GameScene.h"
-#include "../../SDKBOX/SDKBox.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;

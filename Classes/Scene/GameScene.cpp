@@ -47,7 +47,7 @@
 #include "../DataManager/FreeRewardManager.hpp"
 #include "../DataManager/BulletPatternDataManager.h"
 #include "../AI/States/RocketStates.h"
-#include "../SDKBOX/SDKBox.h"
+#include "../SDKBOX/SDKBoxHeaders.h"
 
 #include <array>
 
