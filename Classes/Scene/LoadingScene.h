@@ -13,6 +13,9 @@ public:
 	void callbackDownloadFail();
 	void callbackDownloadComplete();
     void callbackRequireLatestVersion(std::string appUrl);
+    void callbackFileDownloadProgress(int current, int max);
+    void callbackFileDecompressProgress(int current, int max);
+    
 protected:
 	virtual bool init() override;
 

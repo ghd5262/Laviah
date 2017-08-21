@@ -34,7 +34,7 @@ bool CLoadingScene::init()
     
     this->setContentSize(Director::getInstance()->getVisibleSize());
     this->startDownload();
-
+    
 	return true;
 }
 
@@ -46,7 +46,7 @@ void CLoadingScene::startDownload()
             m_DownloadRetryCount--;
             
             // 인터넷 연결되어 있다면 패키지 버전 비교 후 정상 실행
-            auto downloadManager = CDownloadManager::create();
+            auto downloadManager = CDownloadManager::Instance();
             downloadManager->setDownloadFailedListener([=](){
                 CCLOG("Download retry count %d", m_DownloadRetryCount);
                 if(m_DownloadRetryCount)    this->startDownload();
@@ -59,10 +59,13 @@ void CLoadingScene::startDownload()
                 auto appUrl = downloadManager->getAppUrl();
                 this->callbackRequireLatestVersion(appUrl);
             });
-            downloadManager->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            downloadManager->setPosition(Vec2(this->getContentSize().width * 0.5f,
-                                              this->getContentSize().height * 0.45f));
-            this->addChild(downloadManager);
+            downloadManager->setFileDownloadProgress([=](int current, int max){
+                this->callbackFileDownloadProgress(current, max);
+            });
+            downloadManager->setFileDecompressProgress([=](int current, int max){
+                this->callbackFileDecompressProgress(current, max);
+            });
+            downloadManager->DownloadStart();
         }
         else{
             auto firstPlay   = CUserDataManager::Instance()->getIsFirstPlay();
@@ -113,6 +116,16 @@ void CLoadingScene::callbackRequireLatestVersion(std::string appUrl)
     ->setPopupPosition(this->getContentSize() / 2)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->show(this, ZORDER::POPUP);
+}
+
+void CLoadingScene::callbackFileDownloadProgress(int current, int max)
+{
+    CCLOG("Download : %d / %d", current, max);
+}
+
+void CLoadingScene::callbackFileDecompressProgress(int current, int max)
+{
+    CCLOG("Decompress : %d / %d", current, max);
 }
 
 void CLoadingScene::createMenuScene()

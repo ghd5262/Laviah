@@ -13,20 +13,11 @@ using namespace std;
 #define	BUFFER_SIZE		8000 // 5MB
 #define	MAX_FILENAME	512
 
-namespace DOWNLOAD_NOTICE {
-    const static std::string DECOMPRESS_PROCESS     = "decompressProcess";
-    const static std::string DOWNLOAD_PROCESS       = "downloadProcess";
-}
-
 namespace DOWNLOAD_DEFINE {
 	const static std::string PACKAGE_FILE_PATH		= "update/package.json";
 	const static std::string PACKAGE_INFO_FILE_PATH = std::string("http://www.hshgames.com/game/project_s/") + PACKAGE_FILE_PATH;
-	const static int TAG_ACTION_DOWNLOADING			= 100;
 }
-
-using namespace DOWNLOAD_NOTICE;
 using namespace DOWNLOAD_DEFINE;
-
 
 static string basename(const string &path) {
     size_t found = path.find_last_of("/\\");
@@ -43,11 +34,24 @@ CDownloadManager::CDownloadManager()
 , m_DownloadMax(0)
 , m_DecompressProgressCurrentIndex(0)
 , m_DecompressProgressMax(0)
-, m_CurrentGuage(0)
 , m_DownloadSucceedListener(nullptr)
-, m_DownloadFailedListener(nullptr){}
+, m_DownloadFailedListener(nullptr)
+, m_RequireNextVersion(nullptr)
+, m_FileDownloadProgress(nullptr)
+, m_FileDecompressProgress(nullptr){}
 
-CDownloadManager::~CDownloadManager() {}
+CDownloadManager::~CDownloadManager(){}
+
+CDownloadManager* CDownloadManager::Instance()
+{
+    static CDownloadManager instance;
+    return &instance;
+}
+
+void CDownloadManager::DownloadStart(){
+    m_WritablePath = FileUtils::getInstance()->getWritablePath();
+    this->downloadPackageInfoFile();
+}
 
 std::string CDownloadManager::getAppUrl()
 {
@@ -73,41 +77,15 @@ void CDownloadManager::IsNetworkConnected(std::function<void(bool)> listener)
     request->release();
 }
 
-bool CDownloadManager::init() {
-	CCLOG("%s", __FUNCTION__);
-
-	if (!Node::init()) return false;
-    
-    auto createNotice = [=](cocos2d::SEL_CallFuncO selector, std::string name){
-        __NotificationCenter::getInstance()->addObserver(this, selector, name, NULL);
-    };
-    
-	createNotice(callfuncO_selector(CDownloadManager::progressDownloadPackageFile),	  DOWNLOAD_NOTICE::DOWNLOAD_PROCESS);
-	createNotice(callfuncO_selector(CDownloadManager::progressDecompressPackageFile), DOWNLOAD_NOTICE::DECOMPRESS_PROCESS);
-
-	Size progressBarSize = Size(Director::getInstance()->getVisibleSize().width * 0.7f, 30);
-
-	this->setContentSize(progressBarSize);
-	m_DownloadGauge = CLevelProgressBar::create(progressBarSize, 20);
-	m_DownloadGauge->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	m_DownloadGauge->setPosition(this->getContentSize() / 2);
-	this->addChild(m_DownloadGauge);
-
-    m_WritablePath = FileUtils::getInstance()->getWritablePath();
-
-	// Request to server to download the file that include new package infomation.
-	this->downloadPackageInfoFile();
-
-	return true;
-}
-
 void CDownloadManager::downloadPackageInfoFile() {
 	CCLOG("%s", __FUNCTION__);
 
 	auto versionFilePath = m_WritablePath + "update/";
     if (FileUtils::getInstance()->createDirectory(versionFilePath))
     {
-		this->requestDownload(PACKAGE_INFO_FILE_PATH, (ccHttpRequestCallback)CC_CALLBACK_2(CDownloadManager::downloadCompletePackageInfoFile, this));
+        this->requestDownload(PACKAGE_INFO_FILE_PATH, [=](HttpClient *client, HttpResponse *response){
+            this->downloadCompletePackageInfoFile(client, response);
+        });
     }
 }
 
@@ -116,7 +94,10 @@ void CDownloadManager::downloadCompletePackageInfoFile(HttpClient *client, HttpR
 	CCLOG("%s", __FUNCTION__);
 
 	// 리소스 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
-	if (response == NULL || !response->isSucceed()) { this->packageLoadFailed(); return; }
+	if (response == NULL || !response->isSucceed() || response->getResponseCode() != 200) {
+        this->packageLoadFailed();
+        return;
+    }
 
 	auto data = response->getResponseData();
 
@@ -129,7 +110,6 @@ void CDownloadManager::downloadCompletePackageInfoFile(HttpClient *client, HttpR
             this->initDownloadList();
         else{
             this->callVoidListener(m_RequireNextVersion);
-            this->removeFromParent();
             return;
         }
     }
@@ -144,66 +124,26 @@ void CDownloadManager::downloadNextFile() {
 	// 모든 패키지 파일 다운로드가 완료되었을 경우
 	if (m_DownloadMax <= m_DownloadCurrentIndex) {
 
-		auto downloadComplete = [=](){
-            this->callVoidListener(m_DownloadSucceedListener);
-            this->removeFromParent();
-        };
-
 		// 다운로드한 버전 파일을 저장한다.
 		auto versionFilePath = m_WritablePath + PACKAGE_FILE_PATH;
-		savePackageInfoFile(versionFilePath, m_ServerVersionFileData);
-
-		m_CurrentGuage = m_DownloadGauge->getCurrentLevel();
-		auto MaxLevel = m_DownloadGauge->getMaxLevel();
-		if (m_CurrentGuage < MaxLevel)
-		{
-			auto action = Sequence::create(Repeat::create(Sequence::create(CallFunc::create([=](){
-
-				m_DownloadGauge->setCurrentLevel(++m_CurrentGuage);
-				m_DownloadGauge->UpdateProgress();
-
-			}), DelayTime::create(1.f / float(MaxLevel)), nullptr), m_DownloadGauge->getMaxLevel()), 
-				DelayTime::create(0.5f),
-				CallFunc::create([=](){
-
-				downloadComplete();
-
-			}), nullptr);
-
-			this->runAction(action);
-		}
-		else
-		{
-			downloadComplete();
-		}
+		this->savePackageInfoFile(versionFilePath, m_ServerVersionFileData);
+        this->callVoidListener(m_DownloadSucceedListener);
+        m_FileDownloadProgress   = nullptr;
+        m_FileDecompressProgress = nullptr;
+        
 		return;
     }
 
 	// 패키지 파일의 다운로드를 요청한다.
 	auto url = m_DownloadList.at(m_DownloadCurrentIndex)._url;
-	this->requestDownload(url, (ccHttpRequestCallback)CC_CALLBACK_2(CDownloadManager::downloadCompletePackageFile, this));
-	
-	// 요청한 패키지 파일의 다운로드 진행 상태를 0.5초에 한번씩 Polling하여 모니터링한다.
-	auto action = RepeatForever::create(Sequence::createWithTwoActions(DelayTime::create(0.5f), CallFunc::create([=]() {
-
-		CCLOG("Download %d / %d", m_DownloadCurrentIndex, m_DownloadMax);
-
-		this->sendNotice(DOWNLOAD_NOTICE::DOWNLOAD_PROCESS);
-
-		// 다운로드가 완료되었다면
-		if (m_DownloadMax <= m_DownloadCurrentIndex) {
-			// 모니터링을 그만둔다.
-			stopActionByTag(TAG_ACTION_DOWNLOADING);
-		}
-	})));
-
-	action->setTag(TAG_ACTION_DOWNLOADING);
-	runAction(action);
+    this->requestDownload(url, [=](HttpClient *client, HttpResponse *response){
+        this->downloadCompletePackageFile(client, response);
+    });
 }
 
 // 패키지 파일 다운로드가 진행되는 동안 호출된다.
-void CDownloadManager::progressDownloadPackageFile(Ref *object) {
-	this->updateProgressBar();
+void CDownloadManager::progressDownloadPackageFile() {
+    this->callProgressListener(m_FileDownloadProgress, m_DownloadCurrentIndex, m_DownloadMax);
 }
 
 // 패키지 파일 다운로드가 완료되면 호출된다.
@@ -211,7 +151,10 @@ void CDownloadManager::downloadCompletePackageFile(HttpClient *client, HttpRespo
 	CCLOG("%s", __FUNCTION__);
 
 	// 애셋 버전 파일 다운로드에 실패했다면 로고 화면으로 전환한다.
-	if (response == NULL || !response->isSucceed()) { this->packageLoadFailed(); return; }
+	if (response == NULL || !response->isSucceed()) {
+        this->packageLoadFailed();
+        return;
+    }
 
 	if (m_DownloadList.size() > m_DownloadCurrentIndex){
 		auto downloadedFile = m_DownloadList.at(m_DownloadCurrentIndex);
@@ -226,19 +169,15 @@ void CDownloadManager::downloadCompletePackageFile(HttpClient *client, HttpRespo
         if(downloadedFile._isCompressed){
             // 패키지 파일의 압축을 푼다.
             int currentDownloadIdx = m_DownloadCurrentIndex;
-			auto action = Sequence::createWithTwoActions(DelayTime::create(1.0f), CallFunc::create([=]() {
-				decompressPackageFile(currentDownloadIdx);
-			}));
-            runAction(action);
+            this->scheduleAfterDelay([=]() {
+                this->decompressPackageFile(currentDownloadIdx);
+            }, 1.f, "DecompressPackageFile");
         }
         else{
-            
             // 나머지 업데이트 패키지 파일 다운로드를 시작한다.
-            auto action = Sequence::createWithTwoActions(DelayTime::create(1.0f),
-				CallFunc::create([=](){
-				this->downloadNextFile();
-			}));
-            runAction(action);
+            this->scheduleAfterDelay([=](){
+                this->downloadNextFile();
+            }, 1.f, "DownloadNextFile");
         }
         
         ++m_DownloadCurrentIndex;
@@ -255,7 +194,10 @@ void CDownloadManager::decompressPackageFile(int fileIdx) {
             string packageFilePath = m_WritablePath + downloadedFile._localPath + downloadedFile._fileName;
             
             // 패키지 파일의 압축을 푸는데 실패하면 로고 화면으로 전환한다.
-			if (!decompress(packageFilePath)) { this->packageLoadFailed(); return; }
+			if (!decompress(packageFilePath)) {
+                this->packageLoadFailed();
+                return;
+            }
             
             // 압축을 푼 패키지 파일을 삭제한다.
             FileUtils::getInstance()->removeFile(packageFilePath);
@@ -265,10 +207,12 @@ void CDownloadManager::decompressPackageFile(int fileIdx) {
     }
 }
 
-void CDownloadManager::progressDecompressPackageFile(Ref *object) {
+void CDownloadManager::progressDecompressPackageFile() {
 
-	CCLOG("Decompressing... %d / %d", m_DecompressProgressCurrentIndex, m_DecompressProgressMax);
-  
+    this->callProgressListener(m_FileDecompressProgress,
+                               m_DecompressProgressCurrentIndex,
+                               m_DecompressProgressMax);
+    
 	// If decompress file finished 
 	if (m_DecompressProgressMax <= m_DecompressProgressCurrentIndex) {
 
@@ -276,10 +220,9 @@ void CDownloadManager::progressDecompressPackageFile(Ref *object) {
 		m_DecompressProgressCurrentIndex = 0;
 
 		// 나머지 업데이트 패키지 파일 다운로드를 시작한다.
-		auto action = Sequence::createWithTwoActions(DelayTime::create(1.0f), CallFunc::create([=]() {
-			this->downloadNextFile();
-		}));
-		runAction(action);
+        this->scheduleAfterDelay([=]() {
+            this->downloadNextFile();
+        }, 1.f, "DownloadNextFile");
 	}
 }
 
@@ -288,7 +231,7 @@ void CDownloadManager::initDownloadList()
 	auto isNewFile = [=](string fileName)->bool {
 
 		auto findDataFromList = [=](const DOWNLOAD_LIST& list) {
-			return std::find_if(std::begin(list), std::end(list), [=](sDOWNLOADFILE data){
+			return std::find_if(std::begin(list), std::end(list), [=](DOWNLOAD_FILE data){
 				return (data._fileName == fileName);
 			});
 		};
@@ -359,14 +302,7 @@ void CDownloadManager::loadLocalPackageInfoFile()
 	this->initPackageInfo(m_CurrentPackage, packageInfo);
 }
 
-void CDownloadManager::onExit() {
-	Node::onExit();
-
-	stopAllActions();
-	__NotificationCenter::getInstance()->removeAllObservers(this);
-}
-
-void CDownloadManager::initPackageInfo(sPACKAGE_INFO& packageInfo, std::string jsonData)
+void CDownloadManager::initPackageInfo(PACKAGE_DATA& packageInfo, std::string jsonData)
 {
 	if (jsonData.size() == 0) return;
 
@@ -379,8 +315,9 @@ void CDownloadManager::initPackageInfo(sPACKAGE_INFO& packageInfo, std::string j
 
 	if (!reader.parse(data, root))
 	{
-		CCASSERT(false, StringUtils::format("parser failed : \n %s", data.c_str()).c_str());
-		return;
+        MessageBox("File not found", "Error");
+        CCASSERT(false, StringUtils::format("parser failed : \n %s", data.c_str()).c_str());
+        return;
 	}
 	CCLOG("Download list JSON : \n %s\n", data.c_str());
 
@@ -397,7 +334,7 @@ void CDownloadManager::initPackageInfo(sPACKAGE_INFO& packageInfo, std::string j
 	{
 		auto file = fileArray[fileCount];
 
-		sDOWNLOADFILE downloadInfo;
+		DOWNLOAD_FILE downloadInfo;
 
 		downloadInfo._fileName		= file["filename"].asString();
 		downloadInfo._url			= file["url"].asString();
@@ -412,7 +349,8 @@ void CDownloadManager::initPackageInfo(sPACKAGE_INFO& packageInfo, std::string j
 void CDownloadManager::packageLoadFailed()
 {
     this->callVoidListener(m_DownloadFailedListener);
-    this->removeFromParent();
+    m_FileDownloadProgress = nullptr;
+    m_FileDecompressProgress = nullptr;
 }
 
 void CDownloadManager::requestDownload(std::string url, ccHttpRequestCallback callback)
@@ -428,21 +366,6 @@ void CDownloadManager::requestDownload(std::string url, ccHttpRequestCallback ca
 
 	HttpClient::getInstance()->send(request);
 	request->release();
-}
-
-void CDownloadManager::sendNotice(std::string key, Ref* sender/* = nullptr*/)
-{
-	__NotificationCenter::getInstance()->postNotification(key, sender);
-}
-
-void CDownloadManager::updateProgressBar()
-{
-	auto perMaxLevel = float(m_DownloadGauge->getMaxLevel()) / float(m_DownloadMax);
-
-	auto currentLevel = int(perMaxLevel * m_DownloadCurrentIndex);
-
-	m_DownloadGauge->setCurrentLevel(currentLevel);
-	m_DownloadGauge->UpdateProgress();
 }
 
 bool CDownloadManager::savePackageInfoFile(const string path, const string &data)
@@ -521,11 +444,11 @@ bool CDownloadManager::decompress(const string &zip) {
 
 		// 패키지 파일 압축을 풀기 진행 상황을 알린다.
 		Director::getInstance()->getScheduler()->performFunctionInCocosThread([=]{
-			m_DecompressProgressMax = global_info.number_entry;
+			m_DecompressProgressMax          = global_info.number_entry;
 			m_DecompressProgressCurrentIndex = i + 1;
 
-			this->sendNotice(DOWNLOAD_NOTICE::DECOMPRESS_PROCESS, nullptr);
-		});
+            this->progressDecompressPackageFile();
+        });
 
 		const std::string fullPath = rootPath + fileName;
 
@@ -609,9 +532,26 @@ void CDownloadManager::callVoidListener(VOID_LISTENER& listener)
 {
     if(listener)
     {
-        this->retain();
         listener();
         listener = nullptr;
-        this->release();
     }
+}
+
+void CDownloadManager::callProgressListener(PROGRESS_LISTENER& listener,
+                                            int cur, int max)
+{
+    if(listener)
+    {
+        listener(cur, max);
+    }
+}
+
+void CDownloadManager::scheduleAfterDelay(std::function<void()> listener,
+                                          float delay, std::string key)
+{
+    cocos2d::Director::getInstance()->getScheduler()->schedule([=](float delta){
+        if(listener == nullptr) return;
+        
+        listener();
+    }, cocos2d::Director::getInstance(), 0.f, 0, delay, false, key);
 }
