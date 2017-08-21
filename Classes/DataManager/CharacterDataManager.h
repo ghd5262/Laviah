@@ -9,6 +9,7 @@ namespace CHARACTER_DEFINE {
     static const std::string TEXTURE      = "character_texture_%d.png";
     static const std::string TEXTURE_600  = "character_texture_600_%d.png";
     static const std::string TEXTURE_PACK = "character_texture_pack_%d";
+    static const std::string CROWN_PACK = "crown_texture_pack";
 }
 
 struct CHARACTER_SKILL{

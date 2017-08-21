@@ -36,6 +36,7 @@ CPlayer::CPlayer()
 , m_CostumeParam(nullptr)
 , m_Texture(nullptr)
 , m_Costume(nullptr)
+, m_Crown(nullptr)
 , m_Angle(0.f)
 , m_MaxLife(0)
 , m_Life(0)
@@ -67,6 +68,14 @@ bool CPlayer::init()
 		addChild(m_Texture);
     }
     
+    auto crownName = StringUtils::format("crown_%d.png", m_CharacterParam->_index);
+    m_Crown = Sprite::createWithSpriteFrameName(crownName);
+    if(m_Crown != nullptr){
+        m_Crown->setPosition(m_Texture->getContentSize() / 2);
+        m_Crown->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_Texture->addChild(m_Crown);
+    }
+    
     m_CostumeParam = CCostumeDataManager::Instance()->getCurCostumeByCharacter(m_CharacterParam->_index);
     m_Costume = Sprite::createWithSpriteFrameName(m_CostumeParam->_texture);
     if (m_Costume != nullptr){
@@ -93,6 +102,7 @@ void CPlayer::Clear()
     m_Particle->setGravity(Vec2(0, -270));
     m_GiantScale = CUserDataManager::Instance()->getItemValueBySkillIndex(6);
     m_Particle->setPosition(this->getPosition());
+    this->CrownEnable(false);
 }
 
 void CPlayer::GameStart()
@@ -169,6 +179,32 @@ void CPlayer::Rotation(float speed)
 	m_Texture->setRotation(m_Angle);
 
     GVALUE->RUN_SCORE += 1;
+}
+
+void CPlayer::CrownEnable(bool enable)
+{
+    if(!m_Crown) return;
+    
+    auto crownName = StringUtils::format("crown_%d.png", m_CharacterParam->_index);
+    m_Crown->setSpriteFrame(crownName);
+    m_Crown->setScale(0.f);
+    m_Crown->setVisible(enable);
+
+    if(enable){
+        
+        auto scaleDown = ScaleTo::create(0.0f, 0.5f);
+        auto scaleUp = ScaleTo::create(0.5f, 1.f);
+        auto elastic = EaseElasticOut::create(scaleUp, 0.5f);
+//        auto scaleDown2 = ScaleTo::create(0.05f, 1.f);
+        auto delay   = DelayTime::create(5.f);
+        auto seq     = Sequence::create(scaleDown, elastic, delay, nullptr);
+        auto repeat  = RepeatForever::create(seq);
+        repeat->setTag(1000);
+        m_Crown->runAction(RepeatForever::create(seq));
+    }
+    else {
+        m_Crown->stopActionByTag(1000);
+    }
 }
 
 void CPlayer::GiantMode()

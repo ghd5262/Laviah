@@ -39,6 +39,9 @@ void CCharacterDataManager::initWithJson(CHARACTER_LIST &list, std::string fileN
 	const Json::Value array = root["characters"];
     for(auto character : array)
         this->addCharacterToList(character);
+    
+    // crown
+    CCharacterDataManager::addTexturePackToCache(CHARACTER_DEFINE::CROWN_PACK);
 }
 
 void CCharacterDataManager::addCharacterToList(const Json::Value& json)

@@ -42,6 +42,7 @@ public:
 	void StartBonusTime();
 	void EndBonusTime();
 	void Rotation(float speed);
+    void CrownEnable(bool enable);
     void ParticleVisible(bool visible)
     { m_Particle->setVisible(visible); };
     void ChangeState(CState<CPlayer>* newState)
@@ -86,7 +87,7 @@ protected:
 	CC_SYNTHESIZE(float, m_MaxLife, MaxLife);
 	CC_SYNTHESIZE(float, m_Life, Life);
     CC_SYNTHESIZE(float, m_GiantScale, GiantScale);
-//    CC_SYNTHESIZE_READONLY(cocos2d::Sprite*, m_Texture, Texture);
+
 private:
 	bool on(eITEM_FLAG itemType){ return (m_EffectItemTypes & itemType) == itemType; }
 
@@ -105,6 +106,8 @@ private:
     const COSTUME* m_CostumeParam;
     cocos2d::Sprite* m_Texture;
     cocos2d::Sprite* m_Costume;
+    cocos2d::Sprite* m_Crown;
+    
 	bool m_Invincibility;
 
 	// 영향을 받는 아이템 타입 
