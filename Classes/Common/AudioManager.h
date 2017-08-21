@@ -47,5 +47,6 @@ private:
 	const int AUDIO_PLAY_MAX = 5;
 	std::map<std::string, sAUDIO_INFO*> m_CurrentPlayingList;
 	int m_BGMID;
+    int m_FadeCount;
 };
 

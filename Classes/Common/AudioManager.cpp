@@ -1,10 +1,12 @@
 #include "AudioManager.h"
 #include "HSHUtility.h"
 #include "../DataManager/UserDataManager.h"
+
 CAudioManager::CAudioManager()
 : m_BGMID(-1)
 , m_BGMSoundVolume(0)
 , m_EffectSoundVolume(0)
+, m_FadeCount(0)
 {
     // audio will be called by AppDelegate as fast than complete setting user data.
     // So I can not operate like the code below.
@@ -69,7 +71,6 @@ void CAudioManager::PlayBGM(
 	const AudioProfile *profile/* = nullptr*/)
 {
     volume = volume != -1.f ? volume : m_BGMSoundVolume;
-    this->StopBGM();
 	m_BGMID = AudioEngine::play2d(filePath, loop, volume / 100.f, profile);
 }
 
@@ -124,5 +125,21 @@ void CAudioManager::StopBGM()
 {
     if(m_BGMID == -1) return;
     
-    AudioEngine::stop(m_BGMID);
+    auto director  = cocos2d::Director::getInstance();
+    auto stopSound = [=](int id){
+        AudioEngine::stop(id);
+        director->getScheduler()->unschedule("SoundFadeout", director);
+    };
+    
+    if(director->getScheduler()->isScheduled("SoundFadeout", director)) stopSound(m_BGMID);
+    
+    auto bgmID     = m_BGMID;
+    m_FadeCount    = 0;
+    
+    director->getScheduler()->schedule([=](float delta){
+        if((0.05f * m_FadeCount) > 1.f) stopSound(bgmID);
+        
+        AudioEngine::setVolume(bgmID, (m_BGMSoundVolume / 100.f) - (0.025f * m_FadeCount));
+        m_FadeCount++;
+    }, cocos2d::Director::getInstance(), 0.1f, CC_REPEAT_FOREVER, 0.f, false, "SoundFadeout");
 }
