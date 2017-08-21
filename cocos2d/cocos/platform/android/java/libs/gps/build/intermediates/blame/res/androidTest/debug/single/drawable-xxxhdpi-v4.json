@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/hsh/Projects/Project_Laviah/cocos2d/cocos/platform/android/java/libs/gps/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/powered_by_google_dark.png",
+        "source": "/Users/hsh/Projects/Project_Laviah/cocos2d/cocos/platform/android/java/libs/gps/build/intermediates/bundles/debug/res/drawable-xxxhdpi-v4/powered_by_google_dark.png"
+    },
+    {
+        "merged": "/Users/hsh/Projects/Project_Laviah/cocos2d/cocos/platform/android/java/libs/gps/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/powered_by_google_light.png",
+        "source": "/Users/hsh/Projects/Project_Laviah/cocos2d/cocos/platform/android/java/libs/gps/build/intermediates/bundles/debug/res/drawable-xxxhdpi-v4/powered_by_google_light.png"
+    }
+]
