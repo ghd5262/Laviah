@@ -1,36 +1,34 @@
 {
     "android": {
+        "Share": {
+            "platforms": {
+                "SMS": {}, 
+                "Twitter": {
+                    "params": {
+                        "secret": "njPdELbVq50U8UvqopyZCcORjo9l2NuEC4Ixc11NFJkEcwjUVR", 
+                        "key": "5d9jX1zKjWRAiRvD6DNT92GGS"
+                    }
+                }, 
+                "Facebook": {}, 
+                "Mail": {}
+            }
+        }, 
         "sdkboxplay": {
             "leaderboards": [
                 {
-                    "id": "CgkI0sux8sMWEAIQAA", 
-                    "name": "ldb1"
+                    "id": "CgkIv8-JndQUEAIQBw", 
+                    "name": "Laviah"
                 }
             ], 
             "achievements": [
                 {
                     "incremental": false, 
-                    "id": "CgkI0sux8sMWEAIQAg", 
-                    "name": "ten-games"
-                }, 
-                {
-                    "incremental": false, 
-                    "id": "CgkI0sux8sMWEAIQAw", 
-                    "name": "hunter"
-                }, 
-                {
-                    "incremental": false, 
-                    "id": "CgkI0sux8sMWEAIQBA", 
-                    "name": "craftsman"
-                }, 
-                {
-                    "incremental": true, 
-                    "id": "CgkI0sux8sMWEAIQBQ", 
-                    "name": "incremental"
+                    "id": "CgkIv8-JndQUEAIQBg", 
+                    "name": "test-1"
                 }
             ], 
             "clound_save": true, 
-            "connect_on_start": false, 
+            "connect_on_start": true, 
             "show_achievement_notification": true, 
             "debug": true
         }, 
@@ -39,11 +37,24 @@
         }
     }, 
     "ios": {
+        "Share": {
+            "platforms": {
+                "SMS": {}, 
+                "Twitter": {
+                    "params": {
+                        "secret": "njPdELbVq50U8UvqopyZCcORjo9l2NuEC4Ixc11NFJkEcwjUVR", 
+                        "key": "5d9jX1zKjWRAiRvD6DNT92GGS"
+                    }
+                }, 
+                "Facebook": {}, 
+                "Mail": {}
+            }
+        }, 
         "sdkboxplay": {
             "leaderboards": [
                 {
-                    "id": "test_1", 
-                    "name": "ldb1"
+                    "id": "Laviah", 
+                    "name": "Laviah"
                 }
             ], 
             "achievements": [
@@ -51,46 +62,11 @@
                     "incremental": false, 
                     "id": "achievement_test_1", 
                     "name": "ten-games"
-                }, 
-                {
-                    "incremental": false, 
-                    "id": "hunter", 
-                    "name": "hunter"
-                }, 
-                {
-                    "incremental": false, 
-                    "id": "craftsman", 
-                    "name": "craftsman"
-                }, 
-                {
-                    "incremental": true, 
-                    "id": "Incremental", 
-                    "name": "incremental"
-                }, 
-                {
-                    "incremental": false, 
-                    "id": "hidden_incremental", 
-                    "name": "hidden"
-                }, 
-                {
-                    "incremental": true, 
-                    "id": "flip_cards1", 
-                    "name": "flip_cards1"
-                }, 
-                {
-                    "incremental": true, 
-                    "id": "flip_cards2", 
-                    "name": "flip_cards2"
-                }, 
-                {
-                    "incremental": true, 
-                    "id": "flip_cards3", 
-                    "name": "flip_cards3"
                 }
             ], 
+            "debug": true, 
             "connect_on_start": true, 
-            "show_achievement_notification": true, 
-            "debug": true
+            "show_achievement_notification": true
         }, 
         "Facebook": {
             "debug": true
