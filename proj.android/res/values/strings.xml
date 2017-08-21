@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string name="app_name">BangBang_Ver-1</string>
+    <string name="app_name">Laviah</string>
     <string name="update">Update</string>
     <string name="load">Load</string>
     <string name="migrate">Migrate</string>
@@ -40,6 +40,6 @@
     <string name="format_minutes_ago">%d minutes ago</string>
     <string name="format_seconds_ago">%d seconds ago</string>
     <string name="moments_ago">moments ago</string>
-    <string name="facebook_app_id">1475213369178890</string>
+    <string name="facebook_app_id">1475210845845809</string>
     <string name="google_app_id">709804320703</string>
 </resources>

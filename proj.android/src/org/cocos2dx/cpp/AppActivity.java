@@ -26,6 +26,8 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.cpp;
 
+//import com.crashlytics.android.Crashlytics;
+//import io.fabric.sdk.android.Fabric;
 import java.util.HashMap;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
@@ -75,6 +77,7 @@ public class AppActivity extends Cocos2dxActivity{
     		{
     			Toast.makeText(m_AppActivity, m_ToastMessage, Toast.LENGTH_SHORT).show();
     			super.handleMessage(msg);
+		    	//Fabric.with(this, new Crashlytics());
     		}
     	};
         
