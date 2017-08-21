@@ -258,13 +258,15 @@ void CObjectManager::Intro(Node* obj,
 void CObjectManager::ZoomMoveDown()
 {
     this->MoveAction(CGameScene::getZoomLayer(), MOVE_DIRECTION::DOWN);
-    m_Rocket->setVisible(false);
+    if(m_Rocket)
+        m_Rocket->setVisible(false);
 }
 
 void CObjectManager::ZoomMoveMiddle()
 {
     this->MoveAction(CGameScene::getZoomLayer(), MOVE_DIRECTION::MIDDLE);
-    m_Rocket->setVisible(true);
+    if(m_Rocket)
+        m_Rocket->setVisible(true);
 }
 
 void CObjectManager::MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir)
@@ -437,7 +439,8 @@ void CObjectManager::inGameUpdate(float delta)
 
 void CObjectManager::inMenuUpdate(float delta)
 {
-    m_Rocket->Execute(delta);
+    if(m_Rocket)
+        m_Rocket->Execute(delta);
 }
 
 void CObjectManager::returnToMemoryBlock()
@@ -748,16 +751,6 @@ void CObjectManager::AddUIToCapturedNode(Node* captured){
     
 
     auto layerSize  = captured->getContentSize();
-    auto createIcon = [=](std::string iconImg, Vec2 pos){
-        auto icon = Sprite::create(iconImg);
-        icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        icon->setPosition(Vec2(pos.x, pos.y));
-        icon->setOpacity(255 * 0.8f);
-        icon->setScale(100 / icon->getContentSize().height);
-        captured->addChild(icon);
-        return icon;
-    };
-    
     auto createLabel = [=](std::string value, float size, Vec2 pos){
         auto label = Label::createWithTTF(value, FONT::MALGUNBD, size);
         label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -768,18 +761,9 @@ void CObjectManager::AddUIToCapturedNode(Node* captured){
         return label;
     };
     
-    auto createScoreUI = [=](std::string iconImg, int value, Vec2 pos){
-//        createIcon(iconImg, Vec2(pos.x + 45, pos.y));
-        createLabel(StringUtility::toCommaString(value), 80, pos);
-    };
-    
     // score
-    createScoreUI("starIcon.png", GVALUE->TOTAL_SCORE, Vec2(layerSize.width * 0.03f,
-                                                            layerSize.height * 0.96f));
-    
-    // combo
-//    createScoreUI("comboIcon.png", GVALUE->BEST_COMBO, Vec2(layerSize.width * 0.025f,
-//                                                            låayerSize.height * 0.925f));
+    createLabel(StringUtility::toCommaString(GVALUE->TOTAL_SCORE), 80, Vec2(layerSize.width * 0.03f,
+                                                                            layerSize.height * 0.96f));
     
     // logo
     auto logo = Sprite::create("background_0.png");

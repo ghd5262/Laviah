@@ -46,13 +46,11 @@ private:
     
     CResultPopup()
     : m_BG(nullptr)
-    , m_GoalPopupOpen(false)
-    , m_Ended(false){};
-    virtual ~CResultPopup(){};
+    , m_GoalPopupOpen(false){};
+    virtual ~CResultPopup();
     
 private:
     std::vector<Node*> m_ScoreLayerList;
     cocos2d::LayerColor* m_BG;
     bool m_GoalPopupOpen;
-    bool m_Ended;
 };

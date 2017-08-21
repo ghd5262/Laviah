@@ -132,7 +132,7 @@ extern "C" {
         if (! JniHelper::getStaticMethodInfo(methodInfo, CLASS_NAME, "UnityAdsGetPlacementState", "(Ljava/lang/String;)Ljava/lang/String;"))
         {
             LOGD("Failed to find static method of UnityAdsGetPlacementState");
-            return false;
+            return std::string("");
         }
         
         jstring placementId = methodInfo.env->NewStringUTF(parameter);
@@ -151,7 +151,7 @@ extern "C" {
         if (! JniHelper::getStaticMethodInfo(methodInfo, CLASS_NAME, "UnityAdsGetVersion", "()Ljava/lang/String;"))
         {
             LOGD("Failed to find static method of UnityAdsGetVersion");
-            return false;
+            return std::string("");
         }
         jstring ans = (jstring)methodInfo.env->CallStaticObjectMethod(methodInfo.classID, methodInfo.methodID);
         

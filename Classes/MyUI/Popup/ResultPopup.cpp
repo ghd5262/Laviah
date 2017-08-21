@@ -18,6 +18,10 @@
 #include "../../SDKBOX/SDKBoxHeaders.h"
 #include <array>
 
+CResultPopup::~CResultPopup(){
+    CCLOG("ResultPopup destroied");
+}
+
 CResultPopup* CResultPopup::create()
 {
     CResultPopup *pRet = new(std::nothrow) CResultPopup();
@@ -352,7 +356,6 @@ void CResultPopup::share()
 
 void CResultPopup::exit()
 {
-    m_Ended = true;
     if(m_GoalPopupOpen) this->popupClose();
     else                this->popupClose(1.3f);
 }
@@ -482,8 +485,9 @@ void CResultPopup::createRankingLayer()
         auto planet = CObjectManager::Instance()->getPlanetParam();
         auto key    = planet->_leaderboard;
         
+        this->retain();
+        
         CPlayManager::Instance()->ScoreLoad([=](){
-            if(m_Ended) return;
             
             auto data      = CPlayManager::Instance()->getLeaderboardData(key);
             auto bestScore = data->_allTimeScore;
@@ -492,6 +496,7 @@ void CResultPopup::createRankingLayer()
             this->createChangeLabelAction(valueLabel, StringUtility::toCommaString(ranking),
                                           StringUtility::toCommaString(bestScore));
             
+            this->release();
         }, key, GVALUE->TOTAL_SCORE, sdkbox::TIME_SCOPE::ALL_TIME);
         
     }
