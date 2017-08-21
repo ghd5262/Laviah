@@ -56,18 +56,20 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1475213369178890</string>
+				<string>fb1475210845845809</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>FacebookAppID</key>
-	<string>1475213369178890</string>
+	<string>1475210845845809</string>
 	<key>FacebookDisplayName</key>
-	<string>BangBang - Test1</string>
+	<string>Laviah</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -80,7 +82,7 @@
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<false/>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>cocos2d-x.org</key>
@@ -101,7 +103,7 @@
 				<key>NSTemporaryExceptionMinimumTLSVersion</key>
 				<string>TLSv1.1</string>
 			</dict>
-			<key>www.hshgames.com</key>
+			<key>www.google.com</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>
@@ -110,7 +112,7 @@
 				<key>NSTemporaryExceptionMinimumTLSVersion</key>
 				<string>TLSv1.1</string>
 			</dict>
-			<key>www.google.com</key>
+			<key>www.hshgames.com</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>
