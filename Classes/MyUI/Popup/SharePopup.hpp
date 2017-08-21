@@ -10,7 +10,7 @@ protected:
     virtual bool init() override;
     
 private:
-    void End();
+    void end();
     
     CSharePopup(){};
     virtual ~CSharePopup(){};

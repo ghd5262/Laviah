@@ -2,7 +2,7 @@
 #include "../MyButton.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../Scene/GameScene.h"
-#include "../../SDKBOX/SDKBox.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 
 CSharePopup* CSharePopup::create()
 {
@@ -56,7 +56,14 @@ bool CSharePopup::init()
     ui->setCascadeOpacityEnabled(true);
     screen->addChild(ui);
     
+    // save to file
     CObjectManager::Instance()->AddUIToCapturedNode(ui);
+    CShareManager::SaveNodeToFile(screen);
+
+//    auto sprite = Sprite::create(CShareManager::Instance()->getCapturePath());
+//    sprite->setPosition(popupSize / 2);
+//    sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//    this->addChild(sprite, 10);
     
     auto createBtn = [=](const std::function<void(Node*)> &callback, std::string icon, Vec2 pos, bool use){
         auto btn = CMyButton::create()
@@ -72,15 +79,21 @@ bool CSharePopup::init()
     };
     
     auto btnEnd = createBtn([=](Node* sender){
-        this->End();
+        this->end();
     }, "endIcon.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.05f), true);
     
-    auto btnShare = createBtn([=](Node* sender){
-        CGameScene::getGameScene()->OpenPermRequestPopup([=](){
-            if(CFacebookManager::Instance()->SaveNodeToFile(screen))
-                CFacebookManager::OpenPhotoShareDialog("");
-        });
-    }, "shareIcon_1.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f), false);
+    auto btnShareFacebook = createBtn([=](Node* sender){
+        CShareManager::Share(true, sdkbox::SocialPlatform::Platform_Facebook);
+//        CFacebookManager::Instance()->OpenPhotoShareDialog("");
+    }, "shareFacebook.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f), false);
+    
+    auto btnShareTwitter  = createBtn([=](Node* sender){
+        CShareManager::Share(true, sdkbox::SocialPlatform::Platform_Twitter);
+    }, "shareTwitter.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.05f), false);
+    
+    auto btnShareNative   = createBtn([=](Node* sender){
+        CShareManager::ShareNative();
+    }, "shareNative.png", Vec2(popupSize.width * 0.32f, popupSize.height * 0.05f), false);
     
     this->setOpenAnimation([=](Node* sender){
         
@@ -94,7 +107,9 @@ bool CSharePopup::init()
         
         action(screen, 0.f);
         action(btnEnd, 0.3f);
-        action(btnShare, 0.3f);
+        action(btnShareFacebook, 0.3f);
+        action(btnShareTwitter, 0.3f);
+        action(btnShareNative, 0.3f);
 
 //        action(back, 0.f);
     }, 0.6f);
@@ -103,18 +118,20 @@ bool CSharePopup::init()
         
         screen->runAction(FadeTo::create(0.3f, 0));
         btnEnd->runAction(FadeTo::create(0.3f, 0));
-        btnShare->runAction(FadeTo::create(0.3f, 0));
+        btnShareFacebook->runAction(FadeTo::create(0.3f, 0));
+        btnShareTwitter->runAction(FadeTo::create(0.3f, 0));
+        btnShareNative->runAction(FadeTo::create(0.3f, 0));
 
 //        back->runAction(FadeTo::create(0.3f, 0));
     });
     
     this->setDefaultCallback([=](Node* sender){
-        this->End();
+        this->end();
     });
     
     return true;
 }
 
-void CSharePopup::End(){
+void CSharePopup::end(){
     this->popupClose();
 }
