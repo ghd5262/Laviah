@@ -79,7 +79,7 @@ bool CAchievementDataManager::CheckCompleteAll()
     
     // If the size of list is less than 3, Get 3 new achievements.
     if(list.size() < ACHIEVEMENT_DEFINE::LIMIT_COUNT) {
-        this->getNewAchievements();
+//        this->getNewAchievements();
         return false;
     }
     

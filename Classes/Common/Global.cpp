@@ -2,6 +2,7 @@
 #include "../DataManager/AchievementChecker/AchievementClearChecker.h"
 
 Global::Global()
+: WATCH_AD_COUNT(0)
 {
     this->addVariableToList();
     this->Clear();
@@ -19,12 +20,12 @@ void Global::Clear()
     COMBO_LEVEL = 1;
     BEST_COMBO = 0;
     STAGE_LEVEL = 0;
-    PATTERN_LEVEL = 0;
+    NOTICE_LEVEL = 0;
 
     COIN_COUNT = 0;
 	STAR_COUNT = 0;
 	REVIVE_COUNT = 0;
-
+    
     GIANT_SCORE_TOTAL = 0;
     GIANT_SCORE_BULLET = 0;
     GIANT_SCORE_MISSILE = 0;

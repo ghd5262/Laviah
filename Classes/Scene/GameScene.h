@@ -49,6 +49,7 @@ public:
     void OpenGoalPopup();
     void OpenVideoPopup();
     void OpenSharePopup();
+    void OpenDownloadPopup();
     
     void RandomCoin();
     void BonusTimeStart();
@@ -105,6 +106,7 @@ private:
     void turnUpSound();
     void startTutorial();
     void freeRewardCheck();
+    void dailyGoalResetCheck();
     void startAppreciatePlanet();
     void stopAppreciatePlanet();
     
@@ -132,7 +134,6 @@ private:
     void createCaptureNode();
     void createBackKeyButton();
     void initKeyboardListener();
-    void setTimestamp();
     void intro();
     
 private:

@@ -110,19 +110,20 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
         CGameScene::getGameScene()->Reward([=](bool isPlay){
             // If there are more non-completed achievements than limit count.
             // Set achievements until non-exist.
-            if (CAchievementDataManager::Instance()->NonCompleteAchievementExist() >= ACHIEVEMENT_DEFINE::LIMIT_COUNT){
+//            if (CAchievementDataManager::Instance()->NonCompleteAchievementExist() >= ACHIEVEMENT_DEFINE::LIMIT_COUNT){
                 // Do open achievement popup again.
-                CGameScene::getGameScene()->OpenGoalPopup();
-                this->popupClose();
-            }
-            else{
+//                CGameScene::getGameScene()->OpenGoalPopup();
+//                this->popupClose();
+//            }
+//            else{
+            CAchievementDataManager::Instance()->ResetNormalAchievements();
                 this->GoHome(nullptr);
-            }
+//            }
         }, rewardList);
 
         
         // TODO: If there are no more achievements. do not open achievement popup
-        CAchievementDataManager::Instance()->getNewAchievements();
+//        CAchievementDataManager::Instance()->getNewAchievements();
         
     }, "freeCoinIcon.png", m_DPStartPosArray[3]);
     btnReward->setVisible(false);

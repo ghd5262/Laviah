@@ -39,6 +39,7 @@
 #include "../MyUI/Popup/FacebookRankUpPopup.hpp"
 #include "../MyUI/Popup/AchievementPopup.hpp"
 #include "../MyUI/Popup/SharePopup.hpp"
+#include "../MyUI/Popup/DownloadPopup.hpp"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/AchievementDataManager.hpp"
@@ -132,7 +133,6 @@ bool CGameScene::init()
     this->createCaptureNode();
     this->createBackKeyButton();
     this->initKeyboardListener();
-    this->setTimestamp();
     this->intro();
     
     this->schedule([=](float delta){
@@ -184,7 +184,11 @@ void CGameScene::GameStart()
     CObjectManager::Instance()->getPlayer()->GameStart();
     CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
     CObjectManager::Instance()->getPlanet()->StopRotation();
-    dynamic_cast<CFacebookRivalRankLayer*>( m_RivalRankLayer )->InitListView();
+    dynamic_cast<CFacebookRivalRankLayer*>( m_RivalRankLayer )->Reset();
+    CAudioManager::Instance()->StopBGM();
+    CAudioManager::Instance()->PlayBGM("sounds/inGameBGM.mp3", true, false);
+
+    
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
     
     //    });
@@ -204,9 +208,22 @@ void CGameScene::GamePause()
 
 void CGameScene::GameResult()
 {
-    CObjectManager::Instance()->ZoomMoveDown();    
-    this->createResultPopup();
+    CObjectManager::Instance()->ZoomMoveDown();
     this->GamePause();
+
+    if(GVALUE->WATCH_AD_COUNT){
+        
+        CUnityAdsManager::Instance()->ShowUnityAds([=](){
+            this->createResultPopup();
+            GVALUE->WATCH_AD_COUNT = 0;
+        });
+        CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){
+            this->createResultPopup();
+            GVALUE->WATCH_AD_COUNT += 1;
+        });
+    }else{
+        this->createResultPopup();
+    }
 }
 
 void CGameScene::GameEnd()
@@ -286,39 +303,50 @@ void CGameScene::OpenRankUpPopup()
 
 void CGameScene::OpenPermRequestPopup(const VOID_CALLBACK& callback)
 {
-    auto afterLogin = [=](){
-        CFacebookManager::Instance()->RequestPermission([=](){
-            CFacebookManager::RequestFriendList();
-            CFacebookManager::Instance()->setFriendListListener([=](){
-                CFacebookManager::Instance()->RequestPermission(callback, sdkbox::FB_PERM_PUBLISH_POST);
+    auto login = [=](){
+        CFacebookManager::Instance()->Login([=](){
+            
+            CFacebookManager::Instance()->ClearData();
+            CFacebookManager::RequestMyInfo();
+            CFacebookManager::Instance()->setMyInfoListener([=](){
+                CFacebookManager::Instance()->RequestPermission([=](){
+                    CFacebookManager::RequestFriendList();
+                    CFacebookManager::Instance()->setFriendListListener([=](){
+                        CFacebookManager::Instance()->RequestPermission(callback, sdkbox::FB_PERM_PUBLISH_POST);
+                    });
+                }, sdkbox::FB_PERM_READ_USER_FRIENDS);
             });
-        }, sdkbox::FB_PERM_READ_USER_FRIENDS);
+        });
     };
     
-    if(CFacebookManager::IsScoresEnabled()) afterLogin();
+    if(CFacebookManager::IsScoresEnabled()) callback();
     else {
-        std::string message = "점수 기록 및 랭킹 시스템을 이용하려면 권한\n(";
-        if(!sdkbox::PluginFacebook::isLoggedIn())
-            message += std::string(" 페이스북 로그인,");
-        if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_READ_USER_FRIENDS))
-            message += std::string(" 친구 리스트,");
-        if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_PUBLISH_POST))
-            message += std::string(" 게시 권한,");
+        std::string message = TRANSLATE("FACEBOOK_ALERT_MESSAGE_FIRST") + std::string("\n(");
+        bool createAlert = false;
+        if(!sdkbox::PluginFacebook::isLoggedIn()){
+            createAlert = true;
+            message += std::string(TRANSLATE("FACEBOOK_PERMISSION_LOGIN"));
+        }if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_READ_USER_FRIENDS)){
+            createAlert = true;
+            message += std::string(TRANSLATE("FACEBOOK_PERMISSION_FRIEND"));
+        }if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_PUBLISH_POST)){
+            createAlert = true;
+            message += std::string(TRANSLATE("FACEBOOK_PERMISSION_PUBLISH"));
+        }
         message.pop_back();// 마지막 쉼표를 빼줌
-        message += std::string(" )\n이 필요합니다.\n실제 게시물을 올리지 않습니다. 걱정하지 마세요!");
+        message += std::string(" )\n") + std::string(TRANSLATE("FACEBOOK_ALERT_MESSAGE_LAST"));
         
-        this->CreateAlertPopup()
-        ->setPositiveButton([=](Node* sender){
-            CFacebookManager::Instance()->Login([=](){
-                
-                CFacebookManager::Instance()->ClearData();
-                CFacebookManager::RequestMyInfo();
-                CFacebookManager::Instance()->setMyInfoListener(afterLogin);
-            });
-        }, TRANSLATE("BUTTON_YES"))
-        ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_NO"))
-        ->setMessage(message)
-        ->show(m_PopupLayer, ZORDER::POPUP);
+        if(createAlert){
+            this->CreateAlertPopup()
+            ->setPositiveButton([=](Node* sender){
+                login();
+            }, TRANSLATE("BUTTON_YES"))
+            ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_NO"))
+            ->setMessage(message)
+            ->show(m_PopupLayer, ZORDER::POPUP);
+        }else{
+            login();
+        }
     }
 }
 
@@ -357,6 +385,18 @@ void CGameScene::OpenSharePopup()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(m_PopupLayer, ZORDER::POPUP);
+}
+
+void CGameScene::OpenDownloadPopup()
+{
+    CObjectManager::Instance()->ReturnToMemoryBlockAll();
+    CObjectManager::Instance()->ZoomMoveDown();
+    CDownloadPopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(m_PopupLayer, ZORDER::POPUP);
+    this->MenuFadeOut();
 }
 
 void CGameScene::RandomCoin()
@@ -646,6 +686,7 @@ void CGameScene::menuOpen()
     this->clearData();
     //        this->createRandomCoin();
     this->freeRewardCheck();
+    this->dailyGoalResetCheck();
     this->MenuFadeIn();
     this->turnUpSound();
 
@@ -729,6 +770,45 @@ void CGameScene::getFreeReward()
         
         // set time stamp again
         CUserDataManager::Instance()->setFreeRewardTimestamp(currentTimestamp);
+        
+    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
+}
+
+
+void CGameScene::dailyGoalResetCheck()
+{
+    bool exist = (CAchievementDataManager::Instance()->getPickedAchievementList().size() > 0);
+    if(exist) return;
+    
+    SERVER_REQUEST([=](Json::Value data){
+        auto lastTimestamp    = CUserDataManager::Instance()->getLastTimestamp();
+        auto currentTimestamp = time_t(data["seconds"].asDouble());
+        auto tm1              = gmtime(&currentTimestamp);
+        //        auto today            = mktime(tm1);
+        
+        auto year = tm1->tm_year+1900;
+        auto mon  = tm1->tm_mon+1;
+        auto day  = tm1->tm_mday;
+        auto hour = tm1->tm_hour;
+        auto min  = tm1->tm_min;
+        auto sec  = tm1->tm_sec;
+        
+        CCLOG("Current GMT is %d-%d-%d %d : %d : %d", year, mon, day, hour, min, sec);
+        CCLOG("Last saved day : %lld", lastTimestamp);
+        if(lastTimestamp != day){
+            // reset daily achievements
+            //            CAchievementDataManager::Instance()->ResetNormalAchievements();
+            CAchievementDataManager::Instance()->getNewAchievements();
+            //            CAchievementDataManager::Instance()->CheckCompleteAll();
+            // set time stamp again
+                        CUserDataManager::Instance()->setLastTimestamp(day);
+            
+            // notice popup (for debug)
+            //            this->CreateAlertPopup()
+            //            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
+            //            ->setMessage("normal achievement reseted")
+            //            ->show(m_PopupLayer, ZORDER::POPUP);
+        }
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
 }
@@ -819,13 +899,12 @@ void CGameScene::createPlayer()
 }
 
 void CGameScene::createRocket()
-{    
+{
     auto rocket = CRocket::create();
     rocket->setSpeed(ROCKET_DEFINE::SPEED);
     rocket->setDistance(ROCKET_DEFINE::FLYAROUND_DISTANCE);
     rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    rocket->setPosition(m_VisibleSize);
-    rocket->setTargetPos(CBullet::getCirclePosition(90, ROCKET_DEFINE::FLYAWAY_DISTANCE, m_VisibleSize / 2));
+    rocket->setPosition(CBullet::getCirclePosition(90, ROCKET_DEFINE::FLYAWAY_DISTANCE, m_VisibleSize / 2));
     rocket->ChangeState(CFlyToTarget::Instance());
     m_ZoomLayer->addChild(rocket, ZORDER::POPUP);
     CObjectManager::Instance()->setRocket(rocket);
@@ -855,7 +934,6 @@ void CGameScene::createCountDown()
         CObjectManager::Instance()->setIsGamePause(false);
         CObjectManager::Instance()->setGameStateByLevel();
         m_ZoomLayer->resume();
-        CAudioManager::Instance()->PlayBGM("sounds/inGameBGM.mp3", true);
     })
     ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(3)
@@ -908,6 +986,7 @@ void CGameScene::createComboUI()
 {
     auto multiscore = CComboScore::Instance();
     m_PopupLayer->addChild(multiscore, ZORDER::POPUP);
+//    multiscore->setVisible(false);//ui less
 }
 
 void CGameScene::createMenuLayer()
@@ -938,25 +1017,15 @@ void CGameScene::createRivalRankLayer()
 {
     m_RivalRankLayer = CFacebookRivalRankLayer::create()
     ->setRankUPListener([=](int rank){
+        
+        if(rank >= 3) return;
+        
         // create rival bullet
         auto data   = CFacebookManager::Instance()->getFriendByRank(rank);
         auto bullet = CBulletCreator::CreateBullet('8', random<int>(0, 360), 2700, false);
         bullet->getBulletSprite()->setSpriteFrame(StringUtils::format("rivalBullet_%d.png", rank + 1));
-
-//        auto flag      = Sprite::createWithSpriteFrameName("flag.png");
-//        flag->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-//        flag->setPosition(Vec2(bullet->getContentSize().width * 1.1f,
-//                               bullet->getContentSize().height * 0.4f));
-//        flag->setScale(1.5f);
-//        bullet->addChild(flag);
         
-//        auto label     = Label::createWithTTF(StringUtils::format("%d", rank + 1), FONT::MALGUNBD, 30);
-//        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-//        label->setPosition(Vec2(flag->getContentSize().width * 0.7f,
-//                                flag->getContentSize().height * 0.6f));
-//        label->setRotation(90);
-//        label->setColor(COLOR::DARKGRAY);
-//        flag->addChild(label);
+        CObjectManager::Instance()->getPlayer()->CrownEnable(true);
         
         // cliper
         auto circleStencil = DrawNode::create();
@@ -978,20 +1047,6 @@ void CGameScene::createRivalRankLayer()
         pic->setPosition(Vec2(bullet->getContentSize().width * 0.65f,
                               bullet->getContentSize().height * 0.5f));
         pic->setRotation(90);
-//
-//        CUrlSprite::create()
-//        ->setUrl(data->_url, data->_url)
-//        ->setSaveToFileEnable(true)
-//        ->setSize(Size(55.f, 55.f))
-//        ->build(bullet)
-//        ->setPosition(Vec2(bullet->getContentSize().width,
-//                           bullet->getContentSize().height * 0.5f));
-//        
-//        auto number = Label::createWithTTF(StringUtils::format("%d", rank + 1), FONT::MALGUNBD, 55);
-//        number->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-//        number->setPosition(Vec2(bullet->getContentSize().width * 1.5f,
-//                                 bullet->getContentSize().height * 0.5f));
-//        bullet->addChild(number);
     })
     ->setDefaultCallbackEnable(false)
     ->setBackgroundVisible(false)
@@ -1055,34 +1110,6 @@ void CGameScene::createCaptureNode()
     captureNode->setPosition(Vec2(-500, -500));
     this->addChild(captureNode);
     CObjectManager::Instance()->setCaptureNode(captureNode);
-}
-
-void CGameScene::setTimestamp()
-{
-    bool exist = (CAchievementDataManager::Instance()->NonCompleteAchievementExist() >= ACHIEVEMENT_DEFINE::LIMIT_COUNT);
-    if(exist) return;
-    
-    SERVER_REQUEST([=](Json::Value data){
-        auto lastTimestamp    = CUserDataManager::Instance()->getLastTimestamp();
-        auto currentTimestamp = time_t(data["seconds"].asDouble());
-        auto tm1              = gmtime(&currentTimestamp);
-        auto today            = mktime(tm1);
-        
-        if((currentTimestamp - lastTimestamp) > 86400){
-            // reset daily achievements
-            CAchievementDataManager::Instance()->ResetNormalAchievements();
-            
-            // set time stamp again
-            CUserDataManager::Instance()->setLastTimestamp(today);
-            
-            // notice popup (for debug)
-//            this->CreateAlertPopup()
-//            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-//            ->setMessage("normal achievement reseted")
-//            ->show(m_PopupLayer, ZORDER::POPUP);
-        }
-        
-    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
 }
 
 void CGameScene::intro()
