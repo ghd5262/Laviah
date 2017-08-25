@@ -5,6 +5,7 @@
 #include "../../MyUI/UrlSprite.hpp"
 #include "../../DataManager/DataManagerUtils.h"
 #include "../../json/json.h"
+#include "../../Download/DownloadManager.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -164,9 +165,10 @@ void CFacebookManager::SaveScore(int score)
 
 bool CFacebookManager::IsScoresEnabled()
 {
-    if(!sdkbox::PluginFacebook::isLoggedIn()) return false;
-    if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_READ_USER_FRIENDS)) return false;
-    if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_PUBLISH_POST)) return false;
+    if(!CFacebookManager::Instance()->getMyDataInitialized())   return false;
+    if(!sdkbox::PluginFacebook::isLoggedIn())                   return false;
+    if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_READ_USER_FRIENDS))   return false;
+    if(!CFacebookManager::IsPermissionAllowed(sdkbox::FB_PERM_PUBLISH_POST))        return false;
     
     return true;
 }
@@ -198,7 +200,7 @@ void CFacebookManager::OpenLinkShareDialog(std::string title, std::string text)
 {
     sdkbox::FBShareInfo info;
     info.type  = sdkbox::FB_LINK;
-    info.link  = "http://www.cocos2d-x.org";
+    info.link  = CDownloadManager::Instance()->getAppUrl();
     info.title = title;
     info.text  = text;
     info.image = "http://cocos2d-x.org/images/logo.png";
@@ -207,7 +209,7 @@ void CFacebookManager::OpenLinkShareDialog(std::string title, std::string text)
 
 void CFacebookManager::OpenInviteDialog()
 {
-    sdkbox::PluginFacebook::inviteFriends("http://www.cocos2d-x.org",
+    sdkbox::PluginFacebook::inviteFriends(CDownloadManager::Instance()->getAppUrl(),
                                           "http://cocos2d-x.org/images/logo.png");
 }
 
@@ -224,8 +226,12 @@ bool CFacebookManager::init()
 
     m_MyFacebookData = new FBUSER_PARAM();
     
-    CFacebookManager::RequestMyInfo();
-    CFacebookManager::RequestFriendList();
+    CDownloadManager::IsNetworkConnected([=](bool isConnected){
+        if(isConnected){
+            CFacebookManager::RequestMyInfo();
+            CFacebookManager::RequestFriendList();
+        }
+    });
     
     return true;
 }
@@ -260,6 +266,7 @@ void CFacebookManager::onAPI(const std::string& tag, const std::string& jsonData
 
     // if tag is "me" set my info of facebook
     if(tag == FACEBOOK_DEFINE::TAG_API_ME){
+        m_MyDataInitialized = true;
         this->initFacebookUserDataByJson(m_MyFacebookData, root);
         this->callAPIListener(m_MyInfoListener);
     }

@@ -9,7 +9,8 @@ class CFacebookRivalRankLayer : public CPopup
 public:
     static CFacebookRivalRankLayer* create();
     CFacebookRivalRankLayer* setRankUPListener(const RANKUP_LISTENER& listener);
-    void InitListView();
+    void Reset();
+    
     
     virtual void update(float delta) override;
 
@@ -17,6 +18,7 @@ protected:
     virtual bool init() override;
     
 private:
+    void initListView();
     cocos2d::ui::Widget* createRankDP(int &scoreRef, std::string url, int rank);
     void callListener(int rank);
     

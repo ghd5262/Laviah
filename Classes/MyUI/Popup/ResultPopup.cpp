@@ -16,6 +16,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/Player.h"
 #include "../../SDKBOX/SDKBoxHeaders.h"
+#include "../../Download/DownloadManager.h"
 #include <array>
 
 CResultPopup::~CResultPopup(){
@@ -492,7 +493,7 @@ void CResultPopup::createRankingLayer()
             auto data      = CPlayManager::Instance()->getLeaderboardData(key);
             auto bestScore = data->_allTimeScore;
             auto ranking   = data->_rank;
-            this->createChangeLabelAction(textLabel, "랭킹", TRANSLATE("RESULT_BEST_SCORE"));
+            this->createChangeLabelAction(textLabel, TRANSLATE("RESULT_RANK"), TRANSLATE("RESULT_BEST_SCORE"));
             this->createChangeLabelAction(valueLabel, StringUtility::toCommaString(ranking),
                                           StringUtility::toCommaString(bestScore));
             
@@ -536,7 +537,7 @@ void CResultPopup::createLevelLayer()
     
     auto currentLevel = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
     auto currentEXP   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::EXP);
-    auto text         = StringUtils::format("%s %d", "레벨", currentLevel);
+    auto text         = StringUtils::format("%s %d", TRANSLATE("RESULT_PLAYER_LEVEL").c_str(), currentLevel);
     auto levelData    = CUserLevelDataManager::Instance()->getLevelDataByIndex(currentLevel);
     
     auto layer        = this->createIconLayer("characterIcon.png", text);
@@ -650,20 +651,31 @@ void CResultPopup::userDataUpdate()
 
     // save score to facebook
     if (CFacebookManager::IsScoresEnabled()){
-        auto oldScore = CFacebookManager::Instance()->getMyFacebookData()->_score;
-        if(GVALUE->TOTAL_SCORE > oldScore){
-            
-            // save score to facebook data
-            CFacebookManager::Instance()->SaveScore(GVALUE->TOTAL_SCORE);
-            CFacebookManager::Instance()->setSaveScoreListener([=](){
-                auto oldRank = userDataMng->getUserData_Number(USERDATA_KEY::RANK);
-                auto newRank = CFacebookManager::Instance()->getMyRank();
-                if(oldRank != newRank){
-//                    CGameScene::getGameScene()->OpenRankUpPopup();
-                    userDataMng->setUserData_Number(USERDATA_KEY::RANK, newRank);
+        this->retain();
+        
+        CDownloadManager::IsNetworkConnected([=](bool isConnected){
+            if(isConnected){
+                auto oldScore = CFacebookManager::Instance()->getMyFacebookData()->_score;
+                if(GVALUE->TOTAL_SCORE > oldScore){
+                    
+                    // save score to facebook data
+                    CFacebookManager::Instance()->SaveScore(GVALUE->TOTAL_SCORE);
+                    CFacebookManager::Instance()->setSaveScoreListener([=](){
+                        auto oldRank = userDataMng->getUserData_Number(USERDATA_KEY::RANK);
+                        auto newRank = CFacebookManager::Instance()->getMyRank();
+                        if(oldRank != newRank){
+                            //                    CGameScene::getGameScene()->OpenRankUpPopup();
+                            userDataMng->setUserData_Number(USERDATA_KEY::RANK, newRank);
+                        }
+                        
+                        this->release();
+                    });
                 }
-            });
-        }
+            }
+            else{
+                this->release();
+            }
+        });
     }
     
     // save score to leaderboard

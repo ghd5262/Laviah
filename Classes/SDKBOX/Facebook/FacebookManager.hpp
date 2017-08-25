@@ -52,7 +52,8 @@ public:
     CC_SYNTHESIZE(API_LISTENER, m_FriendListListener,   FriendListListener);
     CC_SYNTHESIZE(API_LISTENER, m_PermissionListener,   PermissionListener);
     CC_SYNTHESIZE(std::string,  m_FacebookCapture,      FacebookCapture);
-
+    CC_SYNTHESIZE(bool,         m_MyDataInitialized,    MyDataInitialized);
+    
     static void CheckFacebookStatus();
     static void RequestMyInfo();
     static void RequestFriendList();
@@ -93,7 +94,8 @@ private:
     , m_MyInfoListener(nullptr)
     , m_FriendListListener(nullptr)
     , m_PermissionListener(nullptr)
-    , m_FacebookCapture(""){};
+    , m_FacebookCapture("")
+    , m_MyDataInitialized(false){};
     virtual ~CFacebookManager();
     
 private:

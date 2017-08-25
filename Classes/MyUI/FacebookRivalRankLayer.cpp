@@ -8,6 +8,7 @@
 #include "../GameObject/ObjectManager.h"
 #include "../SDKBOX/SDKBoxHeaders.h"
 #include "../Common/StringUtility.h"
+#include "../Download/DownloadManager.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -33,8 +34,8 @@ bool CFacebookRivalRankLayer::init()
     if (!CPopup::init()) return false;
     
     this->setContentSize(Size(1080.f, 60.f));
-    this->InitListView();
     this->scheduleUpdate();
+    this->Reset();
     
     return true;
 }
@@ -45,15 +46,42 @@ CFacebookRivalRankLayer* CFacebookRivalRankLayer::setRankUPListener(const RANKUP
     return this;
 }
 
-void CFacebookRivalRankLayer::InitListView()
+void CFacebookRivalRankLayer::Reset()
 {
     if(m_ListView) {
         m_ListView->removeFromParent();
         m_ListView = nullptr;
     }
     
-    if(!CFacebookManager::IsScoresEnabled()) return;
+    CDownloadManager::IsNetworkConnected([=](bool isConnected){
+        if(isConnected){
+            this->initListView();
+        }
+    });
+}
+
+void CFacebookRivalRankLayer::update(float delta)
+{
+    if(CObjectManager::Instance()->getIsGamePause()) return;
+    if(m_ListView == nullptr) return;
     
+    if(m_PrevScore != GVALUE->STAR_SCORE)
+    {
+        m_PrevScore = GVALUE->STAR_SCORE;
+        auto currentRank = CFacebookManager::Instance()->getRankByScore(m_PrevScore);
+        if(currentRank >= 10) return;
+        if(m_PrevRank > currentRank)
+        {
+            m_PrevRank = currentRank;
+            m_ListView->scrollToItem(m_PrevRank, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
+            this->callListener(m_PrevRank);
+        }
+    }
+}
+
+void CFacebookRivalRankLayer::initListView()
+{
+    if(!CFacebookManager::IsScoresEnabled()) return;
     auto userList   = CFacebookManager::Instance()->getFBUserList();
     auto myData     = CFacebookManager::Instance()->getMyFacebookData();
     
@@ -98,25 +126,6 @@ void CFacebookRivalRankLayer::InitListView()
         this->scheduleOnce([=](float delta){
             m_ListView->jumpToItem(m_PrevRank, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
         }, 0.f, "ScrollToItem");
-    }
-}
-
-void CFacebookRivalRankLayer::update(float delta)
-{
-    if(CObjectManager::Instance()->getIsGamePause()) return;
-    if(m_ListView == nullptr) return;
-    
-    if(m_PrevScore != GVALUE->STAR_SCORE)
-    {
-        m_PrevScore = GVALUE->STAR_SCORE;
-        auto currentRank = CFacebookManager::Instance()->getRankByScore(m_PrevScore);
-        if(currentRank >= 10) return;
-        if(m_PrevRank > currentRank)
-        {
-            m_PrevRank = currentRank;
-            m_ListView->scrollToItem(m_PrevRank, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
-            this->callListener(m_PrevRank);
-        }
     }
 }
 
