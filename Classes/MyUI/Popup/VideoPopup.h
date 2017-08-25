@@ -16,7 +16,7 @@ protected:
 private:
 	void End(cocos2d::Node* sender);
 	void ReviveByCoin(cocos2d::Node* sender);
-    void ReviveByVideo(cocos2d::Node* sender);
+    void ReviveByVideo(cocos2d::Node* videoBtn);
 	void Resume();
         
 	CVideoPopup()
