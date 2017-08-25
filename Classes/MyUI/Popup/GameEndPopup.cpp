@@ -42,12 +42,14 @@ bool CGameEndPopup::init()
     ->show(this);
     btnScreen->setOpacity(0);
     
+//    auto labelCrash = Label::createWithSystemFont("", FONT::MALGUNBD, 80);//ui less
     auto labelCrash = Label::createWithSystemFont(" 충돌!!", FONT::MALGUNBD, 80);
     labelCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     labelCrash->setPosition(Vec2(btnScreen->getContentSize().width * 0.5f,
                                  btnScreen->getContentSize().height * 0.8f));
     btnScreen->addChild(labelCrash);
     
+//    auto labelCrashTip = Label::createWithSystemFont("", FONT::MALGUNBD, 40);//ui less
     auto labelCrashTip = Label::createWithSystemFont(" 항상 총알을 조심하세요!", FONT::MALGUNBD, 40);
     labelCrashTip->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     labelCrashTip->setPosition(Vec2(btnScreen->getContentSize().width * 0.5f,
@@ -81,6 +83,7 @@ void CGameEndPopup::End(Node* sender){
     }
     else{
         if (GVALUE->RUN_SCORE < 0 || GVALUE->REVIVE_COUNT)	CGameScene::getGameScene()->GameResult();
+//        else                                                CGameScene::getGameScene()->OpenDownloadPopup();//ui less
         else                                                CGameScene::getGameScene()->OpenVideoPopup();
     }
 

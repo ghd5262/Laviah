@@ -62,6 +62,7 @@ bool CUILayer::init()
         ->show(this);
         scoreUI->setPosition(pos);
         scoreUI->setOpacity(255 * 0.8f);
+//        scoreUI->setVisible(false);//ui less
 //        scoreUI->setAnchorPoint(labelAnchor);
         return scoreUI;
     };
@@ -85,11 +86,13 @@ bool CUILayer::init()
     m_StarScoreLabel = Label::createWithTTF("", FONT::MALGUNBD, 40);
     m_StarScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     this->addChild(m_StarScoreLabel);
+//    m_StarScoreLabel->setVisible(false);//ui less
     
     m_LevelLabel = Label::createWithTTF("", FONT::MALGUNBD, 150);
     m_LevelLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_LevelLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.825f));
     this->addChild(m_LevelLabel);
+//    m_LevelLabel->setVisible(false);//ui less
     
     CMyButton::create()
     ->addEventListener([](Node* sender){
@@ -131,6 +134,7 @@ bool CUILayer::init()
     ->setBarAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP)
     ->setBarPosition(Vec2(popupSize.width * 0.5f, popupSize.height))
     ->show(this);
+//    m_AchievementProgressBar->setVisible(false);//ui less
     
 	CAchievementCompleteNoticePopup::create()
     ->setDefaultCallbackEnable(false)
@@ -186,8 +190,8 @@ void CUILayer::LevelUPNotice()
         auto sequence     = Sequence::create(downAction, delayAction, upAction, nullptr);
         
         m_LevelLabel->setOpacity(0);
-        m_LevelLabel->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->PATTERN_LEVEL));
-        m_LevelLabel->setString(StringUtils::format("LEVEL %d", GVALUE->PATTERN_LEVEL + 1));
+        m_LevelLabel->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->NOTICE_LEVEL));
+        m_LevelLabel->setString(StringUtils::format("LEVEL %d", GVALUE->NOTICE_LEVEL + 1));
         m_LevelLabel->runAction(sequence);
         
     }, 4.f, "LevelNoticeDelay");
@@ -214,7 +218,8 @@ void CUILayer::setItemTimer(eITEM_TYPE type, float limitTime)
 }
 
 void CUILayer::update(float delta)
-{    
+{
+//    return;//ui less
     if(CObjectManager::Instance()->getIsGamePause() && !m_Pause)
         this->stop();
     else if(!CObjectManager::Instance()->getIsGamePause() && m_Pause)

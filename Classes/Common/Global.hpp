@@ -27,11 +27,12 @@ public:
     int COMBO_LEVEL;
     int BEST_COMBO;
     int STAGE_LEVEL;
-    int PATTERN_LEVEL;
+    int NOTICE_LEVEL;
     
     int COIN_COUNT;
     int STAR_COUNT;
     int REVIVE_COUNT;
+    int WATCH_AD_COUNT;
     
     int GIANT_SCORE_TOTAL;
     int GIANT_SCORE_BULLET;

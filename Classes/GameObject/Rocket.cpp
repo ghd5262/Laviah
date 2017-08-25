@@ -107,6 +107,7 @@ bool CRocket::init()
 
 void CRocket::Execute(float delta)
 {
+    return;
 	m_FSM->Execute(delta);
 }
 
