@@ -56,6 +56,8 @@
 		5940E3821F41CA4600F0C8F1 /* ShareManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5940E37F1F41CA4600F0C8F1 /* ShareManager.cpp */; };
 		5951815A1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595181581EF59CFD00CC1F18 /* SharePopup.cpp */; };
 		5951815B1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595181581EF59CFD00CC1F18 /* SharePopup.cpp */; };
+		59787E761F4DB3520034FB66 /* StageDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59787E741F4DB3520034FB66 /* StageDataManager.cpp */; };
+		59787E771F4DB3520034FB66 /* StageDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59787E741F4DB3520034FB66 /* StageDataManager.cpp */; };
 		598A41341F20D2AD00D567CB /* CharacterPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41321F20D2AD00D567CB /* CharacterPopup.cpp */; };
 		598A41351F20D2AD00D567CB /* CharacterPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41321F20D2AD00D567CB /* CharacterPopup.cpp */; };
 		598A41391F20D7B800D567CB /* CharacterPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */; };
@@ -70,6 +72,8 @@
 		599B77D21F27E26D0066D32E /* CharacterCostumePopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77CF1F27E26D0066D32E /* CharacterCostumePopupDP.cpp */; };
 		599B77D51F27EEEC0066D32E /* CostumeDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77D31F27EEEC0066D32E /* CostumeDataManager.cpp */; };
 		599B77D61F27EEEC0066D32E /* CostumeDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77D31F27EEEC0066D32E /* CostumeDataManager.cpp */; };
+		59A8AD4B1F4B196A00D4CA42 /* DownloadPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59A8AD491F4B196600D4CA42 /* DownloadPopup.cpp */; };
+		59A8AD4C1F4B196B00D4CA42 /* DownloadPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59A8AD491F4B196600D4CA42 /* DownloadPopup.cpp */; };
 		59E1A5F51F129332003020B9 /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A5F41F129332003020B9 /* UnityAds.framework */; };
 		59E1A5F61F129332003020B9 /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A5F41F129332003020B9 /* UnityAds.framework */; };
 		59E1A6461F162E0A003020B9 /* FacebookManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A63D1F162E0A003020B9 /* FacebookManager.cpp */; };
@@ -363,6 +367,8 @@
 		5940E3801F41CA4600F0C8F1 /* ShareManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShareManager.hpp; sourceTree = "<group>"; };
 		595181581EF59CFD00CC1F18 /* SharePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SharePopup.cpp; sourceTree = "<group>"; };
 		595181591EF59CFD00CC1F18 /* SharePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SharePopup.hpp; sourceTree = "<group>"; };
+		59787E741F4DB3520034FB66 /* StageDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StageDataManager.cpp; sourceTree = "<group>"; };
+		59787E751F4DB3520034FB66 /* StageDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StageDataManager.hpp; sourceTree = "<group>"; };
 		598A41321F20D2AD00D567CB /* CharacterPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterPopup.cpp; sourceTree = "<group>"; };
 		598A41331F20D2AD00D567CB /* CharacterPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterPopup.hpp; sourceTree = "<group>"; };
 		598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterPopupDP.cpp; sourceTree = "<group>"; };
@@ -377,6 +383,8 @@
 		599B77D01F27E26D0066D32E /* CharacterCostumePopupDP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterCostumePopupDP.hpp; sourceTree = "<group>"; };
 		599B77D31F27EEEC0066D32E /* CostumeDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CostumeDataManager.cpp; sourceTree = "<group>"; };
 		599B77D41F27EEEC0066D32E /* CostumeDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CostumeDataManager.hpp; sourceTree = "<group>"; };
+		59A8AD491F4B196600D4CA42 /* DownloadPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DownloadPopup.cpp; sourceTree = "<group>"; };
+		59A8AD4A1F4B196700D4CA42 /* DownloadPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DownloadPopup.hpp; sourceTree = "<group>"; };
 		59E1A5F41F129332003020B9 /* UnityAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UnityAds.framework; sourceTree = "<group>"; };
 		59E1A6221F14B7FF003020B9 /* Project_S iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Project_S iOS.entitlements"; sourceTree = "<group>"; };
 		59E1A63D1F162E0A003020B9 /* FacebookManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookManager.cpp; sourceTree = "<group>"; };
@@ -1089,6 +1097,8 @@
 				599B77C81F2661800066D32E /* UserLevelDataManager.hpp */,
 				599B77D31F27EEEC0066D32E /* CostumeDataManager.cpp */,
 				599B77D41F27EEEC0066D32E /* CostumeDataManager.hpp */,
+				59787E741F4DB3520034FB66 /* StageDataManager.cpp */,
+				59787E751F4DB3520034FB66 /* StageDataManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -1259,6 +1269,8 @@
 				599B77CC1F27E1CE0066D32E /* CharacterCostumePopup.hpp */,
 				599B77CF1F27E26D0066D32E /* CharacterCostumePopupDP.cpp */,
 				599B77D01F27E26D0066D32E /* CharacterCostumePopupDP.hpp */,
+				59A8AD491F4B196600D4CA42 /* DownloadPopup.cpp */,
+				59A8AD4A1F4B196700D4CA42 /* DownloadPopup.hpp */,
 				93706EED1E7A6890009A2CA0 /* EarnCoinPopup.cpp */,
 				93706EEE1E7A6890009A2CA0 /* EarnCoinPopup.h */,
 				93706EF11E7A6890009A2CA0 /* GameEndPopup.cpp */,
@@ -1603,6 +1615,7 @@
 				93706FAD1E7A6891009A2CA0 /* SceneTransition.cpp in Sources */,
 				93706F691E7A6891009A2CA0 /* GameObject.cpp in Sources */,
 				93706F641E7A6891009A2CA0 /* ScoreBullet.cpp in Sources */,
+				59787E761F4DB3520034FB66 /* StageDataManager.cpp in Sources */,
 				93706F961E7A6891009A2CA0 /* OptionTitlePopup.cpp in Sources */,
 				93706F561E7A6891009A2CA0 /* RocketDataManager.cpp in Sources */,
 				93706FAA1E7A6891009A2CA0 /* GameScene.cpp in Sources */,
@@ -1641,6 +1654,7 @@
 				93706F671E7A6891009A2CA0 /* TargetMark.cpp in Sources */,
 				93706F821E7A6891009A2CA0 /* LevelProgressBar.cpp in Sources */,
 				93706F771E7A6891009A2CA0 /* json_reader.cpp in Sources */,
+				59A8AD4B1F4B196A00D4CA42 /* DownloadPopup.cpp in Sources */,
 				93706FD01E7FAA21009A2CA0 /* UrlSprite.cpp in Sources */,
 				93706FA11E7A6891009A2CA0 /* ScoreUI.cpp in Sources */,
 				93706FA21E7A6891009A2CA0 /* SpeechBubble.cpp in Sources */,
@@ -1693,6 +1707,7 @@
 				93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
 				599B77D21F27E26D0066D32E /* CharacterCostumePopupDP.cpp in Sources */,
+				59A8AD4C1F4B196B00D4CA42 /* DownloadPopup.cpp in Sources */,
 				93B7F44D1EB843DD0019D36C /* AchievementPopup.cpp in Sources */,
 				59E1A64B1F162E0A003020B9 /* UnityAds_Android.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
@@ -1700,6 +1715,7 @@
 				93706FCC1E7F70E4009A2CA0 /* FacebookAPITestPopup.cpp in Sources */,
 				936D4C9E1E9E0875003786E6 /* TutorialStep.cpp in Sources */,
 				936D4C9C1E9E0875003786E6 /* TutorialManager.cpp in Sources */,
+				59787E771F4DB3520034FB66 /* StageDataManager.cpp in Sources */,
 				93B7F4511EB845890019D36C /* AchievementPopupDP.cpp in Sources */,
 				93A1166C1E91F9F600095230 /* RivalBullet.cpp in Sources */,
 				59E1A6521F163E11003020B9 /* PlayManager.cpp in Sources */,
