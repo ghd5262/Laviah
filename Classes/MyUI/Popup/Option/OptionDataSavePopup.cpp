@@ -87,12 +87,12 @@ bool COptionDataSavePopup::init()
         else{
             alertCreate([=](Node* sender){
                 CPlayManager::Instance()->Login([=](){ afterLogin(); });
-            }, "로그인이 필요합니다.");
+            }, TRANSLATE("ALERT_LOGIN"));
         }
     };
     
     auto networkPopup = [=](){
-        alertCreate([=](Node* sender){}, "네트워크 연결을 확인해주세요.");
+        alertCreate([=](Node* sender){}, TRANSLATE("NETWORK_CONNECT_CHECK"));
     };
     
     buttonCreate([=](Node* sender){
@@ -119,8 +119,8 @@ bool COptionDataSavePopup::init()
                 }
                 else networkPopup();
             });
-        }, "서버에 저장된 데이터를 불러오시겠습니까? \n기존의 기기에 저장되었던 데이터는 삭제됩니다.");
-    }, "불러오기", Vec2(layer->getContentSize().width * 0.735f, layer->getContentSize().height * 0.2f), COLOR::DARKGRAY_ALPHA);
+        }, TRANSLATE("DATA_LOAD_ALERT"));
+    }, TRANSLATE("BUTTON_LOAD"), Vec2(layer->getContentSize().width * 0.735f, layer->getContentSize().height * 0.2f), COLOR::DARKGRAY_ALPHA);
     
     
     // create sign button

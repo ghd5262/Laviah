@@ -50,8 +50,8 @@ bool COptionDeveloperPopup::init()
     };
 
     std::array<MEMBER, 2> members = {
-        MEMBER("Hong Seonghee", "Developer & Artist"),
-        MEMBER("Kim Heaseong", "Sound Design")
+        MEMBER(TRANSLATE("OPTION_DEVELOPER_0"), TRANSLATE("OPTION_JOB_0")),
+        MEMBER(TRANSLATE("OPTION_DEVELOPER_1"), TRANSLATE("OPTION_JOB_1"))
     };
     
     Size dpSize = Size(popupSize.width * 0.9f, popupSize.height * 0.08f);
@@ -110,7 +110,7 @@ bool COptionDeveloperPopup::init()
             ->setNegativeButton([=](Node* sender){
                 btn->setSelected(true);
             }, TRANSLATE("BUTTON_NO"))
-            ->setMessage("정말로 로그아웃 하시겠습니까? 클라우드 저장 및 다른기능이 제대로 동작하지 않을 수 있습니다.")
+            ->setMessage(TRANSLATE("OPTION_ALERT_LOGOUT"))
             ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
         }
     };
@@ -133,7 +133,7 @@ bool COptionDeveloperPopup::init()
             ->setNegativeButton([=](Node* sender){
                 btn->setSelected(false);
             }, TRANSLATE("BUTTON_NO"))
-            ->setMessage("자동 저장 옵션을 켜면 네트워크가 연결되어 있는 동안 클라우드에 항상 저장됩니다.")
+            ->setMessage(TRANSLATE("OPTION_ALERT_AUTO_SAVE"))
             ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
         }
         else{
@@ -238,17 +238,17 @@ bool COptionDeveloperPopup::init()
 
     
     std::array<Node*, 4> info = {
-        createLabel("Login"),
-        createLabel("Auto Save"),
-        createLabel("Version"),
-        createLabel("Support"),
+        createLabel(TRANSLATE("OPTION_LOGIN")),
+        createLabel(TRANSLATE("OPTION_AUTO_SAVE")),
+        createLabel(TRANSLATE("OPTION_VERSION")),
+        createLabel(TRANSLATE("OPTION_SUPPORT")),
     };
     
     std::array<Node*, 4> data = {
         createOnOff(loginListener,    getLoginOriginValue()),
         createOnOff(autoSaveListener, getAutoSaveOriginValue()),
         createLabel(Application::getInstance()->getVersion()),
-        createLabel("ghd5262@gmail.com")
+        createLabel(TRANSLATE("OPTION_EMAIL"))
     };
     
     std::array<float, 4> posY = {

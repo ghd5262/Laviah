@@ -40,7 +40,7 @@ void CUnityAdsManager::ShowUnityAds(const std::function<void(void)> &func, bool 
         ->setPositiveButton([=](Node* sender){
             this->callListener(m_UnityAdsFailedCallback);
         }, TRANSLATE("BUTTON_OK"))
-        ->setMessage("네트워크 연결을 확인해 주세요.")
+        ->setMessage(TRANSLATE("NETWORK_CONNECT_CHECK"))
         ->show(CGameScene::getGameScene(), ZORDER::POPUP);
     }
 }

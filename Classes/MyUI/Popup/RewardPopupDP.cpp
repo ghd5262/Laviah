@@ -42,7 +42,7 @@ CPopup* CRewardPopupDP::show(cocos2d::Node* parent/* = nullptr*/, int zOrder/* =
         labelPosition = Vec2(popupSize.width * 0.5f, popupSize.height * 0.3f);
 
     if (ACHIEVEMENT_REWARD_KEY::REWARD_COIN == rewardKey){
-        value = StringUtils::format("%d Gold", rewardValue);
+        value = StringUtils::format("%d Coin", rewardValue);
         this->goldReward();
     }
     if (ACHIEVEMENT_REWARD_KEY::REWARD_CHARACTER == rewardKey){

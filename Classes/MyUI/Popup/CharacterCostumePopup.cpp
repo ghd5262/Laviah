@@ -107,7 +107,7 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
         this->select();
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 430, 150))
-    ->setContents("Select")
+    ->setContents(TRANSLATE("CHARACTER_SELECT_BUTTON"))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f))
     ->show(this);

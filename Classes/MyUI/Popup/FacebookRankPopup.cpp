@@ -42,12 +42,13 @@ bool CFacebookRankPopup::init()
     }
     
     /* ranking label*/
-    auto rankingLabel = Label::createWithSystemFont("Record", FONT::MALGUNBD, 80);
+    auto rankingLabel = Label::createWithSystemFont(TRANSLATE("RANK_POPUP_TITLE"), FONT::MALGUNBD, 80);
     if (rankingLabel != nullptr)
     {
         rankingLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         rankingLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f,
                                        bg->getContentSize().height * 0.8f));
+        rankingLabel->setOpacity(0);
         this->addChild(rankingLabel);
     }
     
@@ -120,8 +121,9 @@ bool CFacebookRankPopup::init()
     auto fbData   = CFacebookManager::Instance()->getMyFacebookData();
     auto fbScore  = fbData->_score;
     auto btnShare = createButton([=](Node* sender){
-        auto contents = StringUtils::format("제 점수는요!\n%s", StringUtility::toCommaString(fbScore).c_str());
-        CFacebookManager::Instance()->OpenLinkShareDialog(contents, "내가 이렇게 점수가 높다!!");
+        auto contents = StringUtils::format("%s\n%s", TRANSLATE("FACEBOOK_SHARE_TEXT").c_str(),
+                                            StringUtility::toCommaString(fbScore).c_str());
+        CFacebookManager::Instance()->OpenLinkShareDialog(contents, TRANSLATE("FACEBOOK_SHARE_TITLE"));
     }, "shareIcon_1.png", Vec2(bg->getContentSize().width * 0.2f,
                                bg->getContentSize().height * 0.05f), false);
     

@@ -173,8 +173,15 @@ bool CMenuLayer::init()
 //        CGameScene::getGameScene()->OpenFBTestPopup();
 //    }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
     
+    // map button
+    createButton([=](Node* sender){
+        createOneButtonPopup([=](Node* sender){}, "Coming soon");
+    }, "mapIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
+    
     // facebook rank button
     createButton([=](Node* sender){
+        auto button = dynamic_cast<CMyButton*>(sender);
+        button->setTouchEnable(false, Color3B::WHITE);
         CDownloadManager::IsNetworkConnected([=](bool isConnected){
             if(isConnected){
                 CGameScene::getGameScene()->OpenPermRequestPopup([=](){
@@ -182,8 +189,9 @@ bool CMenuLayer::init()
                 });
             }
             else{
-                createOneButtonPopup([=](Node* sender){}, "네트워크 연결을 확인해주세요.");
+                createOneButtonPopup([=](Node* sender){}, TRANSLATE("NETWORK_CONNECT_CHECK"));
             }
+            button->setTouchEnable(true);
         });
         
     }, "rankingIcon.png", Vec2(popupSize.width * 0.2f, popupSize.height * 0.95f));
@@ -214,7 +222,7 @@ bool CMenuLayer::init()
         });
     })
     ->setEnableSound(false)
-    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height * 0.3f))
+    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, popupSize.width, popupSize.height * 0.2f))
     ->setContents(TRANSLATE("BUTTON_MENU_START"), Vec2(0.5f, 0.5f))
     ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)

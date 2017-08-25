@@ -43,7 +43,7 @@ bool CAchievementPopup::init()
     }
     
     /* ranking label*/
-    auto rankingLabel = Label::createWithSystemFont("Achievement", FONT::MALGUNBD, 80);
+    auto rankingLabel = Label::createWithSystemFont(TRANSLATE("ACHIEVEMENT_POPUP_TITLE"), FONT::MALGUNBD, 80);
     if (rankingLabel != nullptr)
     {
         rankingLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

@@ -124,8 +124,8 @@ void CTitleCompleteNoticePopup::show()
     
     auto data   = m_ShowList.front();
     auto title  = CAchievementDataManager::Instance()->getAchievementTitle(data._index, data._level);
-    std::string ment = "\n업적을 획득하셨습니다!";
-    if(data._isHidden) ment = "\n숨겨진 업적을 발견했습니다!";
+    std::string ment = std::string("\n") + TRANSLATE("GET_ACHIEVEMENT");
+    if(data._isHidden) ment = std::string("\n") + TRANSLATE("GET_HIDDEN_ACHIEVEMENT");
     
     m_AchievementLabelBack->setString(title + ment);
     m_AchievementLabelFront->setString(title + std::string("\n"));

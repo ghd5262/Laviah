@@ -165,14 +165,14 @@ bool CAchievementPopupDP::init()
                data._rewardKey != ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM)
             {
                 rewardLabel->setVisible(false);
-                rewardBtn->changeContents("GET");
+                rewardBtn->changeContents(TRANSLATE("ACHIEVEMENT_GET_BUTTON"));
                 rewardBtn->setFont(COLOR::GOLD, 35);
             }
             
             if(CAchievementDataManager::Instance()->CompletedAllOfLevels(index))
             {
                 rewardLabel->setVisible(false);
-                rewardBtn->changeContents("COMPLETE");
+                rewardBtn->changeContents(TRANSLATE("ACHIEVEMENT_COMPLETE_BUTTON"));
                 rewardBtn->setFont(Color3B::WHITE, 35);
             }
             

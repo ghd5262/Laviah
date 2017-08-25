@@ -67,7 +67,7 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
         this->open();
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 430, 150))
-    ->setContents("Get")
+    ->setContents(TRANSLATE("BUTTON_GET"))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.2f))
     ->show(this);
@@ -78,7 +78,7 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
         this->play();
     })
     ->setLayer(LayerColor::create(COLOR::BRIGHTRED_ALPHA, 430, 150))
-    ->setContents("Play")
+    ->setContents(TRANSLATE("BUTTON_PLAY"))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(popupSize.width * 0.275f, popupSize.height * 0.2f))
     ->show(this);
@@ -275,7 +275,7 @@ void CRewardPopup::open()
         if(!CCostumeDataManager::Instance()->getNewRandomCostume()) {
             CGameScene::getGameScene()->CreateAlertPopup()
             ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-            ->setMessage("There are no more costume to get.")
+            ->setMessage(TRANSLATE("NO_MORE_COSTUME"))
             ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
         }
         else this->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME_RANDOM, 0);
@@ -365,8 +365,8 @@ void CRewardPopup::showButtons()
         action(m_PlayButton);
     }
     
-    if(!isItemRemain()) m_GetButton->changeContents("Confirm");
-    if(m_IsPaidFeature) m_GetButton->changeContents(StringUtils::format("Get %d", m_Cost));
+    if(!isItemRemain()) m_GetButton->changeContents(TRANSLATE("BUTTON_CONFIRM"));
+    if(m_IsPaidFeature) m_GetButton->changeContents(StringUtils::format(TRANSLATE("BUY_COSTUME").c_str(), m_Cost));
     
     action(m_GetButton);
 }

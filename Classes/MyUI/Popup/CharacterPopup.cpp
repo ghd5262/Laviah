@@ -133,7 +133,7 @@ bool CCharacterPopup::init()
         this->select();
     })
     ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA, 430, 150))
-    ->setContents("Select")
+    ->setContents(TRANSLATE("CHARACTER_SELECT_BUTTON"))
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f))
     ->show(this);
@@ -217,7 +217,7 @@ void CCharacterPopup::select()
         auto costumeName = TRANSLATE(m_CurrentData->_name);
         CGameScene::getGameScene()->CreateAlertPopup()
         ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-        ->setMessage("캐릭터가 잠겨 있습니다. 업적을 획득하여 잠금을 해제해주세요.")
+        ->setMessage(TRANSLATE("CHARACTER_ALERT_LOCKED"))
         ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
         return;
     }
@@ -303,9 +303,9 @@ void CCharacterPopup::ContentScrollCallback(cocos2d::Ref* ref, PageView::EventTy
     bool openLevel     = currentLevel >= m_CurrentData->_level;
     bool isExist       = userDataMng->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST,
                                                               m_CurrentData->_index);
-    std::string text   = "Select";
+    std::string text   = TRANSLATE("CHARACTER_SELECT_BUTTON");
     if(!openLevel)    text = StringUtils::format("LV.%d", m_CurrentData->_level);
-    else if(!isExist) text = "Locked";
+    else if(!isExist) text = TRANSLATE("CHARACTER_LOCKED_BUTTON");
     
     m_SelectButton->setTouchEnable(openLevel);
     m_SelectButton->changeContents(text);

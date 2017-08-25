@@ -215,7 +215,7 @@ void CUserDataManager::LoadUserDataFromCloud()
         
         CGameScene::getGameScene()->CreateAlertPopup()
         ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-        ->setMessage("불러오기가 완료되었습니다.")
+        ->setMessage(TRANSLATE("DATA_LOAD_SUCCEED"))
         ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
         
     }, crypto_key);
@@ -248,7 +248,7 @@ void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/, bool autoSave/
             {
                 CGameScene::getGameScene()->CreateAlertPopup()
                 ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-                ->setMessage("저장이 완료되었습니다.")
+                ->setMessage(TRANSLATE("DATA_SAVE_SUCCEED"))
                 ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
             }
         }, crypto_key.c_str(), crypto_value);
@@ -353,7 +353,7 @@ bool CUserDataManager::CoinUpdate(int value)
     
     CGameScene::getGameScene()->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-    ->setMessage("골드가 부족합니다.")
+    ->setMessage(TRANSLATE("ALERT_COIN_LESS"))
     ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
     
     return false;

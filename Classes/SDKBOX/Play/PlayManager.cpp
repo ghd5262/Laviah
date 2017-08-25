@@ -292,7 +292,7 @@ void CPlayManager::onGameData(const std::string& action,
 {
     if(error.length())
     {
-        std::string errorMsg = "클라우드에 데이터를 저장할 수 없습니다.";
+        std::string errorMsg = TRANSLATE("DATA_SAVE_FAILED");
         MessageBox(errorMsg.c_str(), "Notice");
         CCLOG("%s failed : %s", action.c_str(), error.c_str());
         return;
