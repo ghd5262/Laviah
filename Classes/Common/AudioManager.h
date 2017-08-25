@@ -21,7 +21,7 @@ public:
 	static CAudioManager* Instance();
 
 	void PlayEffectSound(const std::string& filePath, bool loop = false, float volume = -1.0f, const AudioProfile *profile = nullptr);
-	void PlayBGM(const std::string& filePath, bool loop = false, float volume = -1.0f, const AudioProfile *profile = nullptr);
+	void PlayBGM(const std::string& filePath, bool loop = false, bool fadeIn = true);
 	void EmptyCurrentPlayingList();
 	void setBGMVolume(float volume);
     float getBGMVolume();

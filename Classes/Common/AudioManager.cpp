@@ -64,14 +64,30 @@ void CAudioManager::PlayEffectSound(
 	}
 }
 
-void CAudioManager::PlayBGM(
-	const std::string& filePath,
-	bool loop/* = false*/,
-	float volume/* = -1.0f*/,
-	const AudioProfile *profile/* = nullptr*/)
+void CAudioManager::PlayBGM(const std::string& filePath,
+                            bool loop/* = false*/,
+                            bool fadeIn/* = true*/)
 {
-    volume = volume != -1.f ? volume : m_BGMSoundVolume;
-	m_BGMID = AudioEngine::play2d(filePath, loop, volume / 100.f, profile);
+    auto volume = fadeIn ? 0 : m_BGMSoundVolume;
+	m_BGMID = AudioEngine::play2d(filePath, loop, volume / 100.f);
+    if(fadeIn){
+        auto director   = cocos2d::Director::getInstance();
+        auto unSchedule = [=](){
+            director->getScheduler()->unschedule("SoundFadein", director);
+        };
+        
+        if(director->getScheduler()->isScheduled("SoundFadein", director)) unSchedule();
+        
+        auto bgmID     = m_BGMID;
+        m_FadeCount    = 0;
+        
+        director->getScheduler()->schedule([=](float delta){
+            if((0.025f * m_FadeCount) >= (m_BGMSoundVolume / 100.f)) unSchedule();
+            
+            AudioEngine::setVolume(bgmID, (0.025f * m_FadeCount));
+            m_FadeCount++;
+        }, cocos2d::Director::getInstance(), 0.1f, CC_REPEAT_FOREVER, 0.f, false, "SoundFadein");
+    }
 }
 
 void CAudioManager::setBGMVolume(float volume)
@@ -137,9 +153,9 @@ void CAudioManager::StopBGM()
     m_FadeCount    = 0;
     
     director->getScheduler()->schedule([=](float delta){
-        if((0.05f * m_FadeCount) > 1.f) stopSound(bgmID);
+        if((0.035f * m_FadeCount) > 1.f) stopSound(bgmID);
         
-        AudioEngine::setVolume(bgmID, (m_BGMSoundVolume / 100.f) - (0.025f * m_FadeCount));
+        AudioEngine::setVolume(bgmID, (m_BGMSoundVolume / 100.f) - (0.035f * m_FadeCount));
         m_FadeCount++;
     }, cocos2d::Director::getInstance(), 0.1f, CC_REPEAT_FOREVER, 0.f, false, "SoundFadeout");
 }
