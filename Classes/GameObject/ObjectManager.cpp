@@ -65,34 +65,6 @@ CObjectManager::CObjectManager()
     if(CGameScene::getGameScene()){
         CGameScene::getGameScene()->addChild(m_SpeedController);
     }
-    
-    auto insertLevel = [=](sLEVEL_BALANCE data){
-        m_LevelList.emplace_back(data);
-    };
-
-    insertLevel(sLEVEL_BALANCE(20,  80.f,  1, 0.66f, 0, 0, Vec2(540.f, 672.f)));
-    
-    insertLevel(sLEVEL_BALANCE(30,  90.f,  2, 0.66f, 0, 0, Vec2(540.f, 672.f)));
-    
-    insertLevel(sLEVEL_BALANCE(40,  95.f,  3, 0.66f, 0, 1, Vec2(540.f, 672.f)));
-    
-    insertLevel(sLEVEL_BALANCE(60,  100.f, 4, 0.66f, 0, 2, Vec2(540.f, 672.f)));
-    
-    insertLevel(sLEVEL_BALANCE(80,  100.f, 5, 0.66f, 0, 3, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(90,  100.f, 5, 0.45f, 0, 3, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(100, 100.f, 5, 0.8f,  0, 3, Vec2(540.f, 400.f)));
-    
-    insertLevel(sLEVEL_BALANCE(110, 110.f, 5, 0.66f, 0, 4, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(120, 110.f, 5, 0.45f, 0, 4, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(130, 110.f, 5, 0.8f,  0, 4, Vec2(540.f, 400.f)));
-    
-    insertLevel(sLEVEL_BALANCE(140, 120.f, 5, 0.66f, 0, 5, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(150, 120.f, 5, 0.45f, 0, 5, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(160, 120.f, 5, 0.8f,  0, 5, Vec2(540.f, 400.f)));
-    
-    insertLevel(sLEVEL_BALANCE(170, 120.f, 5, 0.8f,  0, 6, Vec2(540.f, 100.f)));
-    insertLevel(sLEVEL_BALANCE(190, 130.f, 5, 0.45f, 0, 6, Vec2(540.f, 672.f)));
-    insertLevel(sLEVEL_BALANCE(210, 130.f, 5, 0.66f, 0, 6, Vec2(540.f, 672.f)));
 }
 
 CObjectManager* CObjectManager::Instance()
@@ -118,7 +90,7 @@ void CObjectManager::Clear()
     m_MagnetItemRange->Clear();
     m_PhotoShareAble = false;
     CComboScore::Instance()->ComboScoreReset();
-
+    m_CurrentStage = CStageDataManager::Instance()->getStageByUserLevel()->_stageDataLiat;
     this->ReturnToMemoryBlockAll();
 //    this->setGameStateByLevel();
 //	this->EndBonusTime();
@@ -285,33 +257,55 @@ void CObjectManager::MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir)
 
 void CObjectManager::MoveAction(cocos2d::Node* owner, cocos2d::Vec2 pos)
 {
-    this->zoom(owner, pos, -1, 1.f, 1.2f, true);
+    this->zoom(owner, pos, 0, 1.f, 1.2f, true);
 }
 
 void CObjectManager::GiantMode()
 {
-//    m_SlowMotionAble = true;
-    m_GiantSpeed = 1.5f;
-    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
-    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom * 1.25f, 1.f, true);
+    m_GiantSpeed = 1.2f;
+    if(CTutorialManager::Instance()->getIsRunning()) {
+        this->zoom(CGameScene::getZoomLayer(),
+                   PLANET_DEFINE::GAME_POS,
+                   0, 0.9f, 1.f, true, true);
+    }else{
+        auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
+        this->zoom(CGameScene::getZoomLayer(),
+                   data._pos, data._zoomAngle,
+                   data._zoomSize * 1.25f, 1.f,
+                   true, true);
+    }
+
+    
+
 }
 
 void CObjectManager::NormalMode()
 {
-//    m_SlowMotionAble = false;
     m_GiantSpeed = 1.f;
-    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
-    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 1.f, true);
-//    this->SlowMotionFinish();
+    if(CTutorialManager::Instance()->getIsRunning()) {
+        this->zoom(CGameScene::getZoomLayer(),
+                   PLANET_DEFINE::GAME_POS,
+                   0, 0.8f, 2.f, true, true);
+    }else{
+        auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
+        this->zoom(CGameScene::getZoomLayer(),
+                   data._pos, data._zoomAngle,
+                   data._zoomSize, 3.f,
+                   true, true);
+    }
 }
 
 void CObjectManager::setGameStateByLevel()
 {
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
-    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
-    this->zoom(CGameScene::getZoomLayer(), levelData._pos, levelData._angle, levelData._zoom, 8);
-    this->SpeedControl(1.f, levelData._speed / BULLETCREATOR::ROTATION_SPEED);
+    auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
+    this->zoom(CGameScene::getZoomLayer(),
+               data._pos, data._zoomAngle,
+               data._zoomSize, data._duration,
+               false, true);
+    
+    this->SpeedControl(1.f, data._speed / BULLETCREATOR::ROTATION_SPEED);
 }
 
 void CObjectManager::SlowMotion()
@@ -326,8 +320,8 @@ void CObjectManager::SlowMotion()
 
 void CObjectManager::SlowMotionFinish()
 {
-    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
-    this->SpeedControl(0.5f, levelData._speed / BULLETCREATOR::ROTATION_SPEED, true);
+    auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
+    this->SpeedControl(0.5f, data._speed / BULLETCREATOR::ROTATION_SPEED, true);
 }
 
 bool CObjectManager::IsHitWithSlowPoint(CBullet* bullet)
@@ -407,11 +401,11 @@ void CObjectManager::createBulletByTimer(float delta)
         m_PatternTimer += delta;
 	if (m_PatternTimer < m_BulletPatternPaddingLimit) return;
 
-    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
-    auto pattern = levelData._pattern;
-    auto below = levelData._below;
-    auto data = m_PatternManager->getRandomNormalPatternByLevel(pattern, below);
-    m_BulletCreator->setPattern(data);
+    auto data    = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
+    auto pattern = data._patternLevel;
+    auto below   = (data._type == STAGE_DATA_TYPE::BELOW_RANDOM);
+    auto patternData = m_PatternManager->getRandomNormalPatternByLevel(pattern, below);
+    m_BulletCreator->setPattern(patternData);
     
     m_BulletPatternPaddingLimit = BULLETCREATOR::PATTERN_PADDING_LIMIT;
 	m_PatternTimer = 0.f;
@@ -493,17 +487,17 @@ void CObjectManager::setGameLevelByTimer()
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
     m_LevelTimer += m_Delta;
-    auto levelData = m_LevelList.at(GVALUE->STAGE_LEVEL);
-    if(levelData._time < m_LevelTimer)
+    auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
+    if(data._changeTime < m_LevelTimer)
     {
-        if(m_LevelList.size() > GVALUE->STAGE_LEVEL+1){
+        if(m_CurrentStage.size() > GVALUE->STAGE_LEVEL+1){
             GVALUE->STAGE_LEVEL++;
-            GVALUE->PATTERN_LEVEL = levelData._level;
+            GVALUE->NOTICE_LEVEL = data._noticeLevel;
             this->setGameStateByLevel();
     
-            if(m_OriginPatternLevel != GVALUE->PATTERN_LEVEL){
+            if(m_OriginPatternLevel != GVALUE->NOTICE_LEVEL){
                 CUILayer::Instance()->LevelUPNotice();
-                m_OriginPatternLevel        = GVALUE->PATTERN_LEVEL;
+                m_OriginPatternLevel        = GVALUE->NOTICE_LEVEL;
                 m_BulletPatternPaddingLimit = 2.f;
                 m_PatternTimer              = 0.f;
             }
@@ -516,7 +510,8 @@ void CObjectManager::zoom(cocos2d::Node* obj,
                           float zoomAngle,
                           float zoomSize,
                           float duration,
-                          bool force)
+                          bool force,
+                          bool sine)
 {
     if(force) obj->stopActionByTag(100);
     if(obj->getActionByTag(100)) return;
@@ -525,9 +520,12 @@ void CObjectManager::zoom(cocos2d::Node* obj,
     auto moveAction   = MoveTo::create(duration,   zoomPos);
     auto rotateAction = RotateTo::create(duration, zoomAngle);
     auto spawnAction  = Spawn::create(moveAction, scaleAction , rotateAction, nullptr);
-    auto exponential  = EaseExponentialInOut::create(spawnAction);
-    exponential->setTag(100);
-    obj->runAction(exponential);
+    FiniteTimeAction* easeAction = nullptr;
+    
+    if(sine) easeAction = EaseSineInOut::create(spawnAction);
+    else     easeAction = EaseExponentialInOut::create(spawnAction);
+    easeAction->setTag(100);
+    obj->runAction(easeAction);
 }
 
 void CObjectManager::InitTutorialStep()
@@ -558,7 +556,7 @@ void CObjectManager::InitTutorialStep()
     // REVIVE
     {
         CTutorialHelper::Instance()->CreateMessageBox(TUTORIAL_KEY::REVIVE,
-                                                      "자! 다시 한 번 도전해보세요!",
+                                                      TRANSLATE("TUTORIAL_MENT_30"),
                                                       Vec2(layerSize.width * 0.5f, layerSize.height * 0.65f),
                                                       Vec2::ANCHOR_MIDDLE_BOTTOM,
                                                       eMYBUTTON_STATE::BEGIN);
@@ -579,7 +577,7 @@ void CObjectManager::InitTutorialStep()
         ->addBeginListener([=](CTutorialStep* sender){
             this->zoom(CGameScene::getZoomLayer(),
                        PLANET_DEFINE::GAME_POS,
-                       0, 0.8f, 2.f, true);
+                       0, 0.8f, 2.5f, true);
         })
         ->addUpdateListener([=](float delta, CTutorialStep* sender){
             if(sender->getTime() > 2.2)
@@ -591,22 +589,23 @@ void CObjectManager::InitTutorialStep()
         
         rotationEnable(false);
         
-        createMessageBox("우주 해적이 여기까지 쫒아 왔어요!!");
-        createMessageBox("이 행성도 더 이상 안전하지 않은 것 같아요!!");
-        createMessageBox("어서 빨리 탈출하세요!!");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_0"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_1"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_2"));
         
         
         createPattern(0);
         nextStep(2.5f);
-        createMessageBox("이건 해적들이 쏘는 총알이에요!!");
-        createMessageBox("한번이라도 맞으면 끝이니까 조심해야해요!!");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_3"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_4"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_5"));
         
         
         nextStep(3.f);
         createPattern(1);
         nextStep(1.f);
         rotationEnable(true);
-        createMessageBox("화면을 길게 누르면 반대 방향으로 피할 수 있어요!!");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_6"));
         
         
         nextStep(4.f);
@@ -618,51 +617,51 @@ void CObjectManager::InitTutorialStep()
 //        createMessageBox("test2");
         createPattern(3);
         nextStep(2.f);
-        createMessageBox("하얀색 빛은 곧 미사일이 떨어진다는 표시이니 주의 해야해요.");
-        
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_7"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_8"));
+
         
         nextStep(3.5f);
 //        createMessageBox("test3");
         createPattern(4);
         nextStep(2.f);
-        createMessageBox("위험해요!! 우주에 떠다니는 크리스탈 운석이에요.");
-        createMessageBox("스치지 않도록 주의하세요.");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_9"));
         nextStep(1.0f);
-        createMessageBox("땅에 떨어지고 나서도 잠시동안 유지되니까 조심하세요!");
-        
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_10"));
+
         
         nextStep(4.f);
 //        createMessageBox("test4");
         createPattern(5);
         nextStep(1.f);
-        createMessageBox("행성이 불안정하기 때문에 땅에서 위험한 것들이 솟아나기도 하니까 조심 해야해요.");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_11"));
         
         
         nextStep(5.f);
 //        createMessageBox("test5");
         createPattern(6);
         nextStep(1.f);
-        createMessageBox("오! 별이에요!!");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_12"));
         nextStep(3.5f);
-        createMessageBox("별을 먹으면 점수가 올라요.",
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_13"),
                          Vec2(layerSize.width * 0.45f, layerSize.height * 0.91f),
                          Vec2::ANCHOR_TOP_LEFT);
         
         
         nextStep(2.5f);
-        createMessageBox("별을 먹을수록 콤보가 올라가요.",
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_14"),
                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
-        createMessageBox("콤보가 높으면 별 한개 당 점수가 높아져요.",
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_15"),
                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
-        createMessageBox("일정시간 별을 먹지 않으면 콤보가 끊기니까 주의하세요!!",
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_16"),
                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
         
 //        createMessageBox("test6");
         createPattern(7);
         nextStep(0.5f);
-        createMessageBox("이제 아이템을 설명할 차례네요.");
-        createMessageBox("아이템은 공격을 피하는데 큰 도움이 될거에요.");
-        createMessageBox("먼저 모든 것을 별로 바꿔주는 별마법 아이템이에요.");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_17"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_18"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_19"));
         
         
         nextStep(4.5f);
@@ -673,8 +672,8 @@ void CObjectManager::InitTutorialStep()
 //        createMessageBox("test8");
         createPattern(9);
         nextStep(1.f);
-        createMessageBox("다음은 모든 것을 코인으로 바꿔주는 코인마법 아이템이에요.");
-        createMessageBox("코인으로 아이템 능력을 업그레이드 시킬수도 있다는 사실!! 잊지마세요.");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_20"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_21"));
         
         nextStep(4.0f);
 //        createMessageBox("test9");
@@ -683,25 +682,26 @@ void CObjectManager::InitTutorialStep()
         nextStep(9.0f);
 //        createMessageBox("test10");
         createPattern(11);
-        nextStep(2.5f);
-        createMessageBox("이런, 이번엔 정말로 위험한 것 같은데요?!");
+        nextStep(3.0f);
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_22"));
         nextStep(1.0f);
-        createMessageBox("걱정하지 마시라!! 이게 바로 방어마법 아이템의 능력이죠!!");
-        createMessageBox("방어도 하고 콤보도 올리고!! 이게 바로 일석이조!!");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_23"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_24"));
+        
         
         nextStep(2.f);
 //        createMessageBox("test11");
         createPattern(12);
+        nextStep(5.f);
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_25"));
         nextStep(2.f);
-        createMessageBox("자!! 이제 마지막 거인마법 아이템으로 모두 날려 버리세요!!");
-        nextStep(3.f);
-        createMessageBox("마찬가지로 날려버린 것들에 대해서 콤보가 올라갑니다.");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_26"));
         nextStep(6.f);
         
         
-        createMessageBox("이제 튜토리얼은 끝났습니다.");
-        createMessageBox("튜토리얼을 다시 보고 싶다면 설정에서 다시보기 버튼을 눌러주세요.");
-        createMessageBox("그럼, 힘내서 함께 탈출하자고요!!");
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_27"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_28"));
+        createMessageBox(TRANSLATE("TUTORIAL_MENT_29"));
         CTutorialStep::create()
         ->addBeginListener([=](CTutorialStep* sender){
             GVALUE->Clear();
@@ -716,34 +716,6 @@ void CObjectManager::InitTutorialStep()
         
         CTutorialManager::Instance()->ChangeTutorial(TUTORIAL_KEY::BEGINER);
     }
-}
-
-void CObjectManager::ShowCapturingAction(){
-    
-//    auto gameScene  = CGameScene::getGameScene();
-//    auto popupLayer = CGameScene::getPopupLayer();
-//    auto layerSize  = popupLayer->getContentSize();
-//    gameScene->scheduleOnce([=](float delta){
-//        
-//        m_PhotoShareAble = true;
-//        pic->setPosition(popupLayer->getContentSize() / 2);
-//        popupLayer->addChild(pic, ZORDER::POPUP);
-//        pic->setOpacity(255 * 0.4f);
-//        auto scale   = ScaleTo::create(0.3f, 0.9f);
-//        auto easeOut = EaseSineOut::create(scale);
-//        auto delay   = DelayTime::create(0.2f);
-//        auto move    = MoveBy::create(0.3f, Vec2(0, 200));
-//        auto fadeOut = FadeTo::create(0.2f, 0);
-//        auto spawn   = Spawn::createWithTwoActions(move, fadeOut);
-//        auto ease    = EaseSineIn::create(spawn);
-//        auto func    = CallFunc::create([=](){
-//            pic->removeFromParent();
-//        });
-//        auto sequence = Sequence::create(easeOut, delay, ease, func, nullptr);
-//        
-//        pic->runAction(sequence);
-//        
-//    }, 0.5f, "capturingDelay");
 }
 
 void CObjectManager::AddUIToCapturedNode(Node* captured){
@@ -778,7 +750,7 @@ void CObjectManager::CaptureZoomLayer()
     if(!m_CaptureNode) return;
 
     // render texture
-    auto renderTexture = RenderTexture::create(1080, 1920); //이거랑 zoomlayer랑 하면 터짐
+    auto renderTexture = RenderTexture::create(1080, 1920);
     renderTexture->begin();
 
     m_Background->cocos2d::Node::visit();

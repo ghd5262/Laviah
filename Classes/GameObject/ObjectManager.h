@@ -3,6 +3,7 @@
 #include "Planet.h"
 #include "../Common/HSHUtility.h"
 #include "../AI/StateMachine.h"
+#include "../DataManager/StageDataManager.hpp"
 
 /*------------------------------ObjectManager 클래스설명----------------------------------
 *
@@ -71,7 +72,6 @@ public:
     void GiantMode();
     void NormalMode();
     void InitTutorialStep();
-    void ShowCapturingAction();
     void AddUIToCapturedNode(cocos2d::Node* captured);
     void CaptureZoomLayer();
     void setGameStateByLevel();
@@ -131,46 +131,16 @@ private:
               float zoomAngle,
               float zoomSize,
               float duration,
-              bool force = false);
+              bool force = false,
+              bool sine  = false);
     
     CObjectManager();
 	~CObjectManager(){};
     
-    struct sLEVEL_BALANCE{
-        float _time;
-        float _speed;
-        int   _pattern;
-        float _zoom;
-        int   _angle;
-        int   _level;
-        cocos2d::Vec2 _pos;
-        bool  _below;
-        
-        sLEVEL_BALANCE()
-        : _time(0.f)
-        , _speed(0.f)
-        , _pattern(0)
-        , _zoom(1.f)
-        , _angle(0)
-        , _level(0)
-        , _pos(PLANET_DEFINE::GAME_POS)
-        , _below(true){}
-
-        sLEVEL_BALANCE(float time, float speed, int pattern, float zoom, int angle, int level, cocos2d::Vec2 pos, bool below = true)
-        : _time(time)
-        , _speed(speed)
-        , _pattern(pattern)
-        , _zoom(zoom)
-        , _angle(angle)
-        , _level(level)
-        , _pos(pos)
-        , _below(below){}
-    };
-
 private:
     std::shared_ptr<CStateMachine<CObjectManager>> m_FSM;
 	std::vector<CBullet*> m_BulletList;
-    std::vector<sLEVEL_BALANCE> m_LevelList;
+    STAGE_DATA_LIST m_CurrentStage;
     cocos2d::Node* m_SpeedController;
     CItemManager* m_ItemManager;
     CBulletPatternDataManager* m_PatternManager;
