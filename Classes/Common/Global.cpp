@@ -2,7 +2,6 @@
 #include "../DataManager/AchievementChecker/AchievementClearChecker.h"
 
 Global::Global()
-: WATCH_AD_COUNT(0)
 {
     this->addVariableToList();
     this->Clear();

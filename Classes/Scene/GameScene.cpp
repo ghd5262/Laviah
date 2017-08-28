@@ -209,21 +209,8 @@ void CGameScene::GamePause()
 void CGameScene::GameResult()
 {
     CObjectManager::Instance()->ZoomMoveDown();
+    this->createResultPopup();
     this->GamePause();
-
-    if(GVALUE->WATCH_AD_COUNT){
-        
-        CUnityAdsManager::Instance()->ShowUnityAds([=](){
-            this->createResultPopup();
-            GVALUE->WATCH_AD_COUNT = 0;
-        });
-        CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){
-            this->createResultPopup();
-            GVALUE->WATCH_AD_COUNT += 1;
-        });
-    }else{
-        this->createResultPopup();
-    }
 }
 
 void CGameScene::GameEnd()

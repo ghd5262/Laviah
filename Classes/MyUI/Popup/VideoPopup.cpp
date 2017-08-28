@@ -204,14 +204,14 @@ void CVideoPopup::ReviveByCoin(cocos2d::Node* sender)
     }
 }
 
-void CVideoPopup::ReviveByVideo(cocos2d::Node* videoBtn)
+void CVideoPopup::ReviveByVideo(cocos2d::Node* sender)
 {
     if(m_IsEnded) return;
     m_ReviveButtonTouched = true;
     m_CountDown->Pause();
     
     auto showAdsFailed = [=](){
-        auto button = dynamic_cast<CMyButton*>(videoBtn);
+        auto button = dynamic_cast<CMyButton*>(sender);
         if(!button) return;
         button->setTouchEnable(true);
         m_ReviveButtonTouched = false;
@@ -220,16 +220,10 @@ void CVideoPopup::ReviveByVideo(cocos2d::Node* videoBtn)
     
     CDownloadManager::IsNetworkConnected([=](bool connected){
         if(connected){
-            CGameScene::getGameScene()->CreateAlertPopup()
-            ->setPositiveButton([=](Node* sender){
-                GVALUE->WATCH_AD_COUNT += 1;
-                this->Resume();
-            }, TRANSLATE("BUTTON_YES"))
-            ->setNegativeButton([=](Node* sender){
+            CUnityAdsManager::Instance()->ShowUnityAds([=](){this->Resume(); });
+            CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){
                 showAdsFailed();
-            }, TRANSLATE("BUTTON_NO"))
-            ->setMessage(TRANSLATE("REVIVE_FIRST_AD_NEXT"))
-            ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
+            });
         }
         else{
             CGameScene::getGameScene()->CreateAlertPopup()
