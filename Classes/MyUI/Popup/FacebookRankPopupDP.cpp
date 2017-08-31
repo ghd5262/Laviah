@@ -46,8 +46,8 @@ bool CFacebookRankPopupDP::init()
             ->addEventListener([=](Node* sender){})
             ->setButtonNormalImage(StringUtils::format("rankReward_%d.png", m_Number))
             ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-            ->setButtonPosition(Vec2(this->getContentSize().width * 0.8f,
-                                     this->getContentSize().height * 0.4f))
+            ->setButtonPosition(Vec2(this->getContentSize().width * 0.83f,
+                                     this->getContentSize().height * 0.5f))
             ->show(this);
         }
     }

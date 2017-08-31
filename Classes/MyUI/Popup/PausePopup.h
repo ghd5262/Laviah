@@ -15,6 +15,7 @@ private:
     void initAchievementList();
     void createAchievementDP(const ACHIEVEMENT* data,
                              int posIndex);
+    void calculateRemainTime();
     void createRewardBox();
 	void Play(cocos2d::Node* sender);
 	void Reset(cocos2d::Node* sender);
@@ -29,4 +30,5 @@ private:
 private:
     std::vector<CPopup*> m_AchievementList;
     cocos2d::LayerColor* m_AchievementBG;
+    cocos2d::Label* m_RemainTime;
 };

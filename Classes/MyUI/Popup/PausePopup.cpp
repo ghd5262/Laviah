@@ -11,7 +11,8 @@
 #include <array>
 
 CPausePopup::CPausePopup()
-: m_AchievementBG(nullptr){}
+: m_AchievementBG(nullptr)
+, m_RemainTime(nullptr){}
 
 CPausePopup::~CPausePopup(){}
 
@@ -42,13 +43,23 @@ bool CPausePopup::init()
     
 //    this->createRewardBox();
     
-    m_AchievementBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 570.f);
+    m_AchievementBG = LayerColor::create(COLOR::WHITEGRAY_ALPHA, 1080.f, 720.f);
 	if (m_AchievementBG != nullptr){
 		m_AchievementBG->setIgnoreAnchorPointForPosition(false);
 		m_AchievementBG->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		m_AchievementBG->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f));
+		m_AchievementBG->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.3f));
 		this->addChild(m_AchievementBG);
 	}
+    
+    auto achievementsLabel = Label::createWithSystemFont(TRANSLATE("GOAL_POPUP_TITLE"), FONT::MALGUNBD, 60);
+    if (achievementsLabel != nullptr)
+    {
+        achievementsLabel->setPosition(Vec2(m_AchievementBG->getContentSize().width * 0.5f,
+                                            m_AchievementBG->getContentSize().height * 0.87f));
+        achievementsLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        achievementsLabel->setColor(COLOR::DARKGRAY);
+        m_AchievementBG->addChild(achievementsLabel);
+    }
     
     this->initAchievementList();
 
@@ -100,6 +111,19 @@ bool CPausePopup::init()
 		this->addChild(btnUserCoin);
 	}
     
+    m_RemainTime = Label::createWithSystemFont("", FONT::MALGUN, 35);
+    m_RemainTime->setColor(COLOR::DARKGRAY);
+    m_RemainTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_RemainTime->setPosition(Vec2(m_AchievementBG->getContentSize().width * .5f,
+                                   m_AchievementBG->getContentSize().height * 0.04f));
+    m_AchievementBG->addChild(m_RemainTime);
+    this->calculateRemainTime();
+    
+    this->schedule([=](float delta){
+        this->calculateRemainTime();
+    }, 59.f, "RemainTime");
+
+    
 //    CAchievementProgressBar::create()
 //    ->setBarBGColor(COLOR::TRANSPARENT_ALPHA)
 //    ->setBarColor(COLOR::GOLD)
@@ -122,7 +146,9 @@ bool CPausePopup::init()
 //		action(btnReset, btnOriginPosArray[1]);
 		//			action(btnPlay, 0.55f);
 
-        auto move = MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.86f));
+        auto posY = 0.82f;
+        if(!CAchievementDataManager::Instance()->getPickedAchievementList().size()) posY = 1.16f;
+        auto move = MoveTo::create(0.8f, Vec2(visibleSize.width * 0.5f, visibleSize.height * posY));
         auto ease = EaseExponentialOut::create(move);
 		m_AchievementBG->runAction(ease);
         
@@ -151,7 +177,7 @@ bool CPausePopup::init()
 //		action(btnReset, btnStartPosArray[1]);
 //		action(btnPlay, 0.55f);
 
-        auto move = MoveTo::create(0.3f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.25f));
+        auto move = MoveTo::create(0.3f, Vec2(visibleSize.width * 0.5f, visibleSize.height * 1.3f));
         auto ease = EaseSineIn::create(move);
         m_AchievementBG->runAction(ease);
         
@@ -242,8 +268,8 @@ void CPausePopup::createAchievementDP(const ACHIEVEMENT* data, int posIndex)
 {
     Size visibleSize = m_AchievementBG->getContentSize();
     Vec2 posArray[] = {
-        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.75f),
-        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f),
+        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.65f),
+        Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.45f),
         Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.25f)
     };
     
@@ -259,6 +285,27 @@ void CPausePopup::createAchievementDP(const ACHIEVEMENT* data, int posIndex)
     ->show(m_AchievementBG);
     dp->setColor(COLOR::DARKGRAY);
     m_AchievementList.at(posIndex) = dp;
+}
+
+void CPausePopup::calculateRemainTime()
+{
+    if(!m_RemainTime) return;
+    
+    auto playTime   = CGameScene::getGameScene()->getGamePlayTime();
+    auto remainTime = CGameScene::getGameScene()->getDailyResetRemain();
+    auto seconds    = remainTime - playTime;
+    
+    time_t sec_t = seconds;
+    struct tm* time;
+    time = gmtime(&sec_t);
+    std::string result = "";
+    
+    auto hour = StringUtils::format("%d", time->tm_hour);
+    auto min  = StringUtils::format("%d", time->tm_min);
+    
+    result += "다음 목표까지 "+ hour + "시간" + " " + min + "분" + " 남았습니다.";
+    
+    m_RemainTime->setString(result);
 }
 
 void CPausePopup::createRewardBox()

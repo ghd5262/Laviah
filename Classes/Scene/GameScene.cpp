@@ -513,7 +513,6 @@ void CGameScene::cleanGlobalData()
 void CGameScene::createPausePopup()
 {
     CPausePopup::create()
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(m_PopupLayer, ZORDER::POPUP);

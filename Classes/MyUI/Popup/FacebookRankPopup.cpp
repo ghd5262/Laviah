@@ -194,7 +194,7 @@ void CFacebookRankPopup::calculateRemainTime()
     
     time_t sec_t = seconds;
     struct tm* time;
-    time = localtime(&sec_t);
+    time = gmtime(&sec_t);
     std::string result = "";
     
     auto day  = StringUtils::format("%d", time->tm_mday - 1);
