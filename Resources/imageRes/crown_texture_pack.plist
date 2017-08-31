@@ -9,15 +9,15 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{4,72}</string>
+                <string>{7,73}</string>
                 <key>spriteSize</key>
-                <string>{68,32}</string>
+                <string>{70,34}</string>
                 <key>spriteSourceSize</key>
                 <string>{140,210}</string>
                 <key>textureRect</key>
-                <string>{{3,3},{68,32}}</string>
+                <string>{{87,79},{70,34}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>crown_1.png</key>
             <dict>
@@ -26,11 +26,11 @@
                 <key>spriteOffset</key>
                 <string>{4,69}</string>
                 <key>spriteSize</key>
-                <string>{68,32}</string>
+                <string>{70,36}</string>
                 <key>spriteSourceSize</key>
                 <string>{140,210}</string>
                 <key>textureRect</key>
-                <string>{{3,41},{68,32}}</string>
+                <string>{{7,7},{70,36}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -39,13 +39,13 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,59}</string>
+                <string>{0,58}</string>
                 <key>spriteSize</key>
-                <string>{60,32}</string>
+                <string>{62,34}</string>
                 <key>spriteSourceSize</key>
                 <string>{140,210}</string>
                 <key>textureRect</key>
-                <string>{{3,79},{60,32}}</string>
+                <string>{{7,109},{62,34}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -56,28 +56,28 @@
                 <key>spriteOffset</key>
                 <string>{-2,52}</string>
                 <key>spriteSize</key>
-                <string>{64,36}</string>
+                <string>{66,38}</string>
                 <key>spriteSourceSize</key>
                 <string>{140,210}</string>
                 <key>textureRect</key>
-                <string>{{77,3},{64,36}}</string>
+                <string>{{7,57},{66,38}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>crown_4.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-1,71}</string>
+                <string>{0,70}</string>
                 <key>spriteSize</key>
-                <string>{56,26}</string>
+                <string>{58,28}</string>
                 <key>spriteSourceSize</key>
                 <string>{140,210}</string>
                 <key>textureRect</key>
-                <string>{{69,79},{56,26}}</string>
+                <string>{{91,7},{58,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
         </dict>
         <key>metadata</key>
@@ -91,9 +91,9 @@
             <key>realTextureFileName</key>
             <string>crown_texture_pack.png</string>
             <key>size</key>
-            <string>{128,114}</string>
+            <string>{128,156}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:c791636edb765ef36165ff737d8b8b94:6394506dc587cf0af7f5e3addc768916:eb383e5c2f75d50b3d62d37728ade43a$</string>
+            <string>$TexturePacker:SmartUpdate:1d2f9dc2fc41ec978bc19cb41ca3be5b:ae871336c4761275f3d2cdc5940cd27c:eb383e5c2f75d50b3d62d37728ade43a$</string>
             <key>textureFileName</key>
             <string>crown_texture_pack.png</string>
         </dict>
