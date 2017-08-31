@@ -46,8 +46,7 @@ bool CFacebookRankPopup::init()
     if (rankingLabel != nullptr)
     {
         rankingLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        rankingLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f,
-                                       bg->getContentSize().height * 0.8f));
+        rankingLabel->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
         rankingLabel->setOpacity(0);
         this->addChild(rankingLabel);
     }
@@ -57,6 +56,17 @@ bool CFacebookRankPopup::init()
     Size dpSize     = Size(1080, 200);
     size_t dpDistance = 15;
     int spawnCount  = 4;
+    
+    m_RemainTime = Label::createWithSystemFont("", FONT::MALGUN, 40);
+    m_RemainTime->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    m_RemainTime->setPosition(Vec2(0, layerSize.height * 0.75f));
+    m_RemainTime->setOpacity(0);
+    this->addChild(m_RemainTime);
+    this->calculateRemainTime();
+
+    this->schedule([=](float delta){
+        this->calculateRemainTime();
+    }, 59.f, "RemainTime");
     
     // Create the list view
     auto listView = ListView::create();
@@ -141,6 +151,7 @@ bool CFacebookRankPopup::init()
         action(btnInvite);
         action(btnShare);
         action(rankingLabel);
+        action(m_RemainTime);
 
         auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
         auto easeAction = EaseExponentialInOut::create(moveAction);
@@ -155,6 +166,8 @@ bool CFacebookRankPopup::init()
         btnInvite->runAction(FadeTo::create(0.3f, 0));
         btnShare->runAction(FadeTo::create(0.3f, 0));
         rankingLabel->runAction(FadeTo::create(0.3f, 0));
+        m_RemainTime->runAction(FadeTo::create(0.3f, 0));
+        
     });
     
     this->setDefaultCallback([=](Node* sender){
@@ -169,4 +182,26 @@ void CFacebookRankPopup::End(Node* sender){
     CGameScene::getGameScene()->MenuFadeIn();
     
     this->popupClose(1.3f);
+}
+
+void CFacebookRankPopup::calculateRemainTime()
+{
+    if(!m_RemainTime) return;
+    
+    auto playTime   = CGameScene::getGameScene()->getGamePlayTime();
+    auto remainTime = CGameScene::getGameScene()->getWeeklyResetRemain();
+    auto seconds    = remainTime - playTime;
+    
+    time_t sec_t = seconds;
+    struct tm* time;
+    time = localtime(&sec_t);
+    std::string result = "";
+    
+    auto day  = StringUtils::format("%d", time->tm_mday - 1);
+    auto hour = StringUtils::format("%d", time->tm_hour);
+    auto min  = StringUtils::format("%d", time->tm_min);
+    
+    result += " " + day + " Days " + hour + " : " + min + " " + "남음";
+    
+    m_RemainTime->setString(result);
 }

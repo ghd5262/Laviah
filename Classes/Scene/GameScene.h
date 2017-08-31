@@ -74,6 +74,9 @@ public:
 	CC_SYNTHESIZE(cocos2d::Vec2, m_TouchPos, TouchPos);
     CC_SYNTHESIZE(bool, m_NeedTutorial, NeedTutorial);
     CC_SYNTHESIZE(bool, m_IsMenuLayerFront, IsMenuLayerFront);
+    CC_SYNTHESIZE(long, m_DailyResetRemain, DailyResetRemain);
+    CC_SYNTHESIZE(long, m_WeeklyResetRemain, WeeklyResetRemain);
+    CC_SYNTHESIZE(long, m_GamePlayTime, GamePlayTime);
 protected:
 	virtual bool init() override;
 
@@ -106,7 +109,8 @@ private:
     void turnUpSound();
     void startTutorial();
     void freeRewardCheck();
-    void dailyGoalResetCheck();
+    void dailyGoalResetCheck(bool serverCall = false);
+    void facebookRankingResetCheck();
     void startAppreciatePlanet();
     void stopAppreciatePlanet();
     
@@ -149,5 +153,6 @@ private:
     CCountDown* m_CountDown;
 	cocos2d::Size m_VisibleSize;
     std::vector<cocos2d::Sprite*> m_IntroUIList;
-	bool m_KeyBoardSpace;
+    float m_Time;
+    bool m_KeyBoardSpace;
 };

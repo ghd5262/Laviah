@@ -39,42 +39,17 @@ bool CFacebookRankPopupDP::init()
         this->addChild(bg);
     }
     
-//    if(!m_IsMyData){
-    if(0){
-        auto layerSize    = bg->getContentSize();
-        auto createButton = [=](std::string icon, Vec2 pos){
-            return CMyButton::create()
-            ->setButtonNormalImage(icon)
+    // create reward
+    {
+        if(m_Number <= 3){
+            auto button = CMyButton::create()
+            ->addEventListener([=](Node* sender){})
+            ->setButtonNormalImage(StringUtils::format("rankReward_%d.png", m_Number))
             ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-            ->setButtonPosition(pos)
-            ->show(bg);
-        };
-        
-        auto createAlert  = [=](std::function<void(Node*)> positive, std::string msg){
-            CGameScene::getGameScene()->CreateAlertPopup()
-            ->setPositiveButton(positive, TRANSLATE("BUTTON_YES"))
-            ->setNegativeButton([=](Node* sender){}, TRANSLATE("BUTTON_NO"))
-            ->setMessage(msg)
-            ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
-        };
-        
-        createButton("facebookShareIcon.png", Vec2(layerSize.width * 0.91f, layerSize.height * 0.5f))
-        ->addEventListener([=](Node* sender){
-            CGameScene::getGameScene()->OpenPermRequestPopup([=](){
-                createAlert([=](Node* sender){
-//                    CFacebookManager::OpenPhotoShareDialog();
-                }, "페이스북 친구들과 공유하시겠습니까?");
-            });
-        });
-        
-        createButton("twitterShareIcon.png", Vec2(layerSize.width * 0.75f, layerSize.height * 0.5f))
-        ->addEventListener([=](Node* sender){
-            
-            createAlert([=](Node* sender){
-                
-                this->TWShare();
-            }, "트윗 하시겠습니까?");
-        });
+            ->setButtonPosition(Vec2(this->getContentSize().width * 0.8f,
+                                     this->getContentSize().height * 0.4f))
+            ->show(this);
+        }
     }
     
     // create number
@@ -159,21 +134,4 @@ bool CFacebookRankPopupDP::init()
     
     
     return true;
-}
-
-void CFacebookRankPopupDP::FBShare()
-{
-    
-}
-
-void CFacebookRankPopupDP::TWShare()
-{
-}
-
-void CFacebookRankPopupDP::Notice()
-{
-}
-
-void CFacebookRankPopupDP::Invite()
-{
 }

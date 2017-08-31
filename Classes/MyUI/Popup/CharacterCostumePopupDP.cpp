@@ -41,7 +41,7 @@ bool CCharacterCostumePopupDP::init()
     
     if (!CUserDataManager::Instance()->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST,
                                                                m_Costume->_index)){
-        m_CostumeImg->setColor(COLOR::DARKGRAY);
+        m_CostumeImg->setColor(Color3B::BLACK);
     }
     
     return true;

@@ -25,6 +25,7 @@ typedef std::map<int, CHARACTER_SKILL> SKILL_LIST;
 struct CHARACTER{
     int _index;
     int _level;
+    bool _isPrepared;
     std::string _name;
     std::string _texture;
     std::string _texture_600;
@@ -34,6 +35,7 @@ struct CHARACTER{
     CHARACTER()
     : _index(-1)
     , _level(0)
+    , _isPrepared(false)
     , _name("")
     , _texture("")
     , _texture_600("")
@@ -49,7 +51,7 @@ class CCharacterDataManager
 public:
     static CCharacterDataManager* Instance();
         
-    CHARACTER_LIST getCharacterList(){ return m_CharacterList; };
+    CHARACTER_LIST getPreparedCharacterList();
     const CHARACTER* getCharacterByIndex(int index) const;
 	const CHARACTER* getNewRandomCharacter();
     const CHARACTER* getCurCharacter();

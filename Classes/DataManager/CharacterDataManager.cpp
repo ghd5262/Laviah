@@ -50,6 +50,7 @@ void CCharacterDataManager::addCharacterToList(const Json::Value& json)
     
     data->_index       = json["index"].asInt();
     data->_level       = json["openLevel"].asInt();
+    data->_isPrepared  = json["isPrepared"].asBool();
     data->_name        = StringUtils::format(CHARACTER_DEFINE::NAME.c_str(),         data->_index);
     data->_texture     = StringUtils::format(CHARACTER_DEFINE::TEXTURE.c_str(),      data->_index);
     data->_texture_600 = StringUtils::format(CHARACTER_DEFINE::TEXTURE_600.c_str(),  data->_index);
@@ -90,6 +91,16 @@ void CCharacterDataManager::addTexturePackToCache(std::string fileName)
             spriteFrameCache->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
         }
     }
+}
+
+CHARACTER_LIST CCharacterDataManager::getPreparedCharacterList()
+{
+    return DATA_MANAGER_UTILS::getMapByFunc([=](const CHARACTER* data){
+        
+        if (!data->_isPrepared) return false;
+        
+        return true;
+    }, m_CharacterList);
 }
 
 const CHARACTER* CCharacterDataManager::getCharacterByIndex(int index) const
@@ -152,8 +163,9 @@ CHARACTER_LIST CCharacterDataManager::getNonCollectedCharacterList()
 
 	return DATA_MANAGER_UTILS::getMapByFunc([=](const CHARACTER* data){
 
-        if (userDataMng->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST, data->_index))
-            return false;
+        if (userDataMng->getUserData_IsItemExist(USERDATA_KEY::CHARACTER_LIST, data->_index)) return false;
+        if (!data->_isPrepared) return false;
+        
 		return true;
 	}, m_CharacterList);
 }

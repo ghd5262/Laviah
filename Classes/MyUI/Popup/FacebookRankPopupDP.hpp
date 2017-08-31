@@ -7,11 +7,6 @@ class CFacebookRankPopupDP : public cocos2d::ui::Widget
 public:
     static CFacebookRankPopupDP* create(const FBUSER_PARAM* user, int number, bool me = false);
     
-    void FBShare();
-    void TWShare();
-    void Notice();
-    void Invite();
-    
     //setter & getter
     const FBUSER_PARAM* getUserParam() const { return m_User; }
     

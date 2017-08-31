@@ -55,7 +55,7 @@ bool CCharacterPopup::init()
 
     // create dp
     int  index         = 0;
-    auto characterList = CCharacterDataManager::Instance()->getCharacterList();
+    auto characterList = CCharacterDataManager::Instance()->getPreparedCharacterList();
     for(auto data : characterList)
     {
         auto character = data.second;
