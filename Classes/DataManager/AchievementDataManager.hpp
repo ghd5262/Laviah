@@ -93,6 +93,8 @@ namespace ACHIEVEMENT_DEFINE {
 	static const std::string NORMAL_CONTENT = "ACHIEVEMENT_NORMAL_CONTENT_%d_%d";
     static const std::string HIDDEN_CONTENT = "ACHIEVEMENT_HIDDEN_CONTENT_%d_%d";
 	static const std::string HIDDEN_TITLE   = "ACHIEVEMENT_HIDDEN_TITLE_%d_%d";
+    static const std::string ACHIEVEMENT_ID =
+        "ACHIEVEMENT_%d_%d";
 }
 
 struct sREWARD_DATA{

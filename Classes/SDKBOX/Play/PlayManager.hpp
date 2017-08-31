@@ -35,6 +35,8 @@ public:
     void ScoreLoad(VOID_LISTENER listener, std::string key,
                    int score, int time_span);
     bool IsNewHighScore(std::string key, int score, int time_span);
+    void AchievementComplete(std::string key);
+    
     LEADERBOARD* getLeaderboardData(std::string key);
     
     CC_SYNTHESIZE(VOID_LISTENER, m_LoginListener,     LoginListener);

@@ -1,5 +1,6 @@
 #include "ShareManager.hpp"
 #include "../../Download/DownloadManager.h"
+#include "../../DataManager/UserDataManager.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -92,6 +93,8 @@ void CShareManager::onShareState(const sdkbox::SocialShareResponse& response)
         }
         case sdkbox::SocialShareState::SocialShareStateSuccess: {
             CCLOG("SharePlugin::onShareState success");
+            
+            CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::PHOTO_SHARE, 1);
             break;
         }
         case sdkbox::SocialShareState::SocialShareStateFail: {

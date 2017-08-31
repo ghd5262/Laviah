@@ -8,6 +8,7 @@
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 #include "../../Common/StringUtility.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 
 CAchievementPopupDP* CAchievementPopupDP::create(const ACHIEVEMENT* data)
 {
@@ -247,11 +248,12 @@ void CAchievementPopupDP::Reward()
 {
     
     auto achievementMNG = CAchievementDataManager::Instance();
-    auto state = achievementMNG->getAchievementStateByIndex(m_AchievementData->_index, true);
+    auto index = m_AchievementData->_index;
+    auto state = achievementMNG->getAchievementStateByIndex(index, true);
     if(state != ACHIEVEMENT_STATE::COMPLETED) return;
     
     // create reward popup.
-    auto levelData = achievementMNG->getCurLevelDataByIndex(m_AchievementData->_index, true);
+    auto levelData = achievementMNG->getCurLevelDataByIndex(index, true);
     CGameScene::getGameScene()->Reward([=](bool isPlay){
         this->contentUpdate();
         if(isPlay) {
@@ -264,8 +266,13 @@ void CAchievementPopupDP::Reward()
         sREWARD_DATA(levelData._rewardKey, levelData._rewardValue)
     });
     
+    // sdkbox play achievement clear
+    auto curLevel = CAchievementDataManager::getAchievementLevelByIndex(index, true);
+    auto key      = StringUtils::format(ACHIEVEMENT_DEFINE::ACHIEVEMENT_ID.c_str(), index, curLevel);
+    CPlayManager::Instance()->AchievementComplete(key);
+    
     // level up.
-    achievementMNG->HiddenAchievementLevelUP(m_AchievementData->_index);
+    achievementMNG->HiddenAchievementLevelUP(index);
 }
 
 void CAchievementPopupDP::contentUpdate()

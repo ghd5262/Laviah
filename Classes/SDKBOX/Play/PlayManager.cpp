@@ -117,6 +117,11 @@ bool CPlayManager::IsNewHighScore(std::string key, int score, int time_span)
     return (saved < score);
 }
 
+void CPlayManager::AchievementComplete(std::string key)
+{
+    sdkbox::PluginSdkboxPlay::incrementAchievement(key, 100);
+}
+
 LEADERBOARD* CPlayManager::getLeaderboardData(std::string key)
 {
     auto iter = m_Leaderboards.find(key);
@@ -189,18 +194,27 @@ void CPlayManager::onScoreSubmitted(const std::string& leaderboard_name,
 //    this->callVoidListener(m_SaveScoreListener);
 }
 
-void CPlayManager::onIncrementalAchievementUnlocked(const std::string& achievement_name){}
+void CPlayManager::onIncrementalAchievementUnlocked(const std::string& achievement_name){
+    CCLOG("sdkbox play %s", __FUNCTION__);
+}
 
 void CPlayManager::onIncrementalAchievementStep(const std::string& achievement_name,
-                                                double step ){}
+                                                double step ){
+    CCLOG("sdkbox play %s", __FUNCTION__);
+}
 
 void CPlayManager::onIncrementalAchievementStepError(const std::string& name,
                                                      double steps,
                                                      int error_code,
-                                                     const std::string& error_description ){}
+                                                     const std::string& error_description ){
+    CCLOG("sdkbox play %s", __FUNCTION__);
+    CCLOG("erro description : %s", error_description.c_str());
+}
 
 void CPlayManager::onAchievementUnlocked(const std::string& achievement_name,
-                                         bool newlyUnlocked ){}
+                                         bool newlyUnlocked ){
+    CCLOG("sdkbox play %s", __FUNCTION__);
+}
 
 void CPlayManager::onAchievementUnlockError(const std::string& achievement_name,
                                             int error_code,
