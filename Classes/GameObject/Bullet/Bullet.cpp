@@ -11,6 +11,7 @@
 #include "../../Particle/Particles.h"
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementChecker/AchievementClearChecker.h"
+#include "../../DataManager/GradientDataManager.h"
 using namespace cocos2d;
 
 CBullet::CBullet()
@@ -379,23 +380,53 @@ void CBullet::createScoreCurrentPos(int score)
 void CBullet::CollisionWithPlanet()
 {
     if (this->getIsFly()){
-        this->createCollisionParticle();
-        this->ReturnToMemoryBlock();
+        this->R_ScaleWithFadeOut(0.1f, 0.15f, 0.15f);
     }
 }
 
-void CBullet::createCollisionParticle()
+//void CBullet::createCollisionParticle()
+//{
+//    auto particle = CParticle_Explosion::create(m_BulletInfo._particleName);
+//    if (particle != nullptr){
+//        particle->retain();
+//        particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//        particle->setStartSpin(getRotation());
+//        particle->setEndSpin(getRotation());
+//        particle->setPosition(getPosition());
+//        particle->setGravity(m_RotationVec);
+//        particle->setSpeed(100);
+//        particle->setSpeedVar(50);
+//        CGameScene::getZoomLayer()->addChild(particle, ZORDER::BULLET);
+//    }
+//}
+
+void CBullet::createExplosionEffect()
 {
-    auto particle = CParticle_Explosion::create(m_BulletInfo._particleName);
-    if (particle != nullptr){
-        particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        particle->setStartSpin(getRotation());
-        particle->setEndSpin(getRotation());
-        particle->setPosition(getPosition());
-        particle->setGravity(m_RotationVec);
-        particle->setSpeed(100);
-        particle->setSpeedVar(50);
-        CGameScene::getZoomLayer()->addChild(particle, ZORDER::BULLET);
+    auto createParticle = [=](Node* node){
+        auto angle = random<float>(-getRotation() - 30, -getRotation() + 30);
+        auto distance = random<float>(30, 80);
+        auto size = random<float>(1.4f, 1.9f);
+        auto pos  = CBullet::getCirclePosition(angle, distance, getPosition());
+        auto move = MoveTo::create(0.5f, pos);
+        auto fade = FadeTo::create(0.5f, 0);
+        auto scale = ScaleTo::create(0.5f, size);
+        auto spawn = Spawn::create(move, fade, scale, nullptr);
+        auto seq  = Sequence::create(spawn, RemoveSelf::create(), nullptr);
+        node->runAction(seq);
+    };
+    
+    for(int i = 0; i < 5; i++)
+    {
+        auto sprite = Sprite::create("particle_snow.png");
+        sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        sprite->setPosition(Vec2(getPosition()));
+        sprite->setScale(0.7);
+        sprite->setRotation(-getRotation());
+        sprite->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->NOTICE_LEVEL));
+
+        CGameScene::getZoomLayer()->addChild(sprite, ZORDER::POPUP);
+        
+        createParticle(sprite);
     }
 }
 

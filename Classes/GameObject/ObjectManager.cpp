@@ -90,7 +90,7 @@ void CObjectManager::Clear()
     m_MagnetItemRange->Clear();
     m_PhotoShareAble = false;
     CComboScore::Instance()->ComboScoreReset();
-    m_CurrentStage = CStageDataManager::Instance()->getStageByUserLevel()->_stageDataLiat;
+    m_CurrentStage = CStageDataManager::Instance()->getStageByIndex(0)->_stageDataLiat;
     this->ReturnToMemoryBlockAll();
 //    this->setGameStateByLevel();
 //	this->EndBonusTime();
@@ -274,9 +274,6 @@ void CObjectManager::GiantMode()
                    data._zoomSize * 1.25f, 1.f,
                    true, true);
     }
-
-    
-
 }
 
 void CObjectManager::NormalMode()
@@ -290,7 +287,7 @@ void CObjectManager::NormalMode()
         auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
         this->zoom(CGameScene::getZoomLayer(),
                    data._pos, data._zoomAngle,
-                   data._zoomSize, 3.f,
+                   data._zoomSize, 2.f,
                    true, true);
     }
 }

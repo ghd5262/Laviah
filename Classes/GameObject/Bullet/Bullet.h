@@ -201,8 +201,9 @@ protected:
 
 	void createScoreCurrentPos(int score);
     
-    void createCollisionParticle();
+//    void createCollisionParticle();
     
+    void createExplosionEffect();
     CBullet();
     virtual ~CBullet();
 

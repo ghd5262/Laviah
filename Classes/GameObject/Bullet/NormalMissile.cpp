@@ -82,7 +82,8 @@ void CNormalMissile::CollisionWithPlanet()
 {
     //		CAudioManager::Instance()->PlayEffectSound("sounds/explosion_0.mp3", false);
 	m_Planet->Crushed();
-    CBullet::CollisionWithPlanet();
+    this->createExplosionEffect();
+    this->ReturnToMemoryBlock();
 }
 
 void CNormalMissile::CollisionWithPlayer()
@@ -114,7 +115,7 @@ void CNormalMissile::CollisionWithBarrier()
     GVALUE->BARRIER_COUNT += 1;
 	GVALUE->BARRIER_SCORE += (GVALUE->COMBO_LEVEL * 2);
 	this->createScoreCurrentPos(GVALUE->COMBO_LEVEL * 2);
-    this->createCollisionParticle();
+    this->createExplosionEffect();
 	this->ReturnToMemoryBlock();
 }
 
@@ -167,22 +168,23 @@ void CNormalMissile::createTargetLine()
 
 void CNormalMissile::createParticle_Flame()
 {
-	auto particle = CParticle_Flame::create("fire.png");
+    auto color    = CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->NOTICE_LEVEL);
+	auto particle = CParticle_Flame::create("particle_snow.png");
 	if (particle != nullptr){
 		particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		particle->setAngle(0);
 		particle->setGravity(Vec2(90, 0));
-		particle->setPosition(Vec2(this->getContentSize().width * 1.2f,
+		particle->setPosition(Vec2(this->getContentSize().width * 0.9f,
                                    this->getContentSize().height * 0.5f));
 		particle->setStartSize(50);
-		particle->setLife(0.3f);
+		particle->setLife(0.5f);
 		particle->setLifeVar(0.15f);
-		particle->setStartColor(Color4F(1.f, 1.f, 0.5f, 1.f));
-		particle->setStartColorVar(Color4F(0, 0, 0.8f, 0));
-		particle->setEndColor(Color4F(1.f, 1.f, 1.f, 0.4f));
+		particle->setStartColor(Color4F(color.r / 255.f, color.g / 255.f, color.b / 255.f, 0.5f));
+		particle->setStartColorVar(Color4F(0, 0, 0, 0));
+		particle->setEndColor(Color4F(color.r / 255.f, color.g / 255.f, color.b / 255.f, 0.0f));
 		particle->setEndColorVar(Color4F(0, 0, 0, 0));
-		particle->setPosVar(Vec2(0, 10));
-		particle->setTotalParticles(80);
-		this->addChild(particle);
+		particle->setPosVar(Vec2(10, 10));
+		particle->setTotalParticles(8);
+		this->addChild(particle, -1);
 	}
 }

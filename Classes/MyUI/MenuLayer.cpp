@@ -174,9 +174,9 @@ bool CMenuLayer::init()
 //    }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
     
     // map button
-    createButton([=](Node* sender){
-        createOneButtonPopup([=](Node* sender){}, "Coming soon");
-    }, "mapIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
+//    createButton([=](Node* sender){
+//        createOneButtonPopup([=](Node* sender){}, "Coming soon");
+//    }, "mapIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
     
     // facebook rank button
     createButton([=](Node* sender){
