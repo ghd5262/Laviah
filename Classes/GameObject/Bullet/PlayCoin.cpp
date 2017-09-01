@@ -46,7 +46,7 @@ void CPlayCoin::CollisionWithPlayer()
     this->R_UpAndBezier();
 //    auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
     CComboScore::Instance()->AddCombo();
-//    GVALUE->COIN_SCORE += value;
+    GVALUE->COIN_SCORE += 10;
 	GVALUE->COIN_COUNT += 1;
     
     if(eITEM_FLAG_coin & CItemManager::Instance()->getCurrentItem())

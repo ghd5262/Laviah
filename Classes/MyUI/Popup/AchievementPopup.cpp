@@ -49,6 +49,7 @@ bool CAchievementPopup::init()
         rankingLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         rankingLabel->setPosition(Vec2(bg->getContentSize().width * 0.5f,
                                        bg->getContentSize().height * 0.8f));
+        rankingLabel->setOpacity(0);
         this->addChild(rankingLabel);
     }
     
@@ -134,13 +135,15 @@ bool CAchievementPopup::init()
     }
     
     auto createButton = [=](std::function<void(Node*)> callback, std::string icon, Vec2 pos, bool use){
-        return CMyButton::create()
+        auto btn = CMyButton::create()
         ->addEventListener(callback)
         ->setButtonSingleUse(use)
         ->setButtonNormalImage(icon)
         ->setButtonPosition(pos)
         ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
         ->show(bg);
+        btn->setOpacity(0);
+        return btn;
     };
     
     auto btnEnd  = createButton([=](Node* sender){ this->End(sender); },
@@ -179,6 +182,7 @@ bool CAchievementPopup::init()
         btnUserCoin->setPosition(Vec2(this->getContentSize().width * 0.5f,
                                       this->getContentSize().height * 0.05f));
         btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        btnUserCoin->setOpacity(0);
         this->addChild(btnUserCoin);
     }
     

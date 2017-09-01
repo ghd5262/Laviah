@@ -11,6 +11,7 @@
 #include "../../DataManager/AchievementRewarder/AchievementRewarder.hpp"
 #include "../../DataManager/UserLevelDataManager.hpp"
 #include "../../DataManager/PlanetDataManager.hpp"
+#include "../../DataManager/CostumeDataManager.hpp"
 #include "../../Common/StringUtility.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
@@ -144,22 +145,27 @@ bool CResultPopup::init()
     
     // create reward button
     {
-        std::array<bool, 3> rewardBtnVisibleArray = {
+        std::array<bool, 4> rewardBtnVisibleArray = {
             ( random<int>(0, 1) == 1 ),
-            ( CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1500 ),
-            ( CFreeRewardManager::Instance()->getRewardAble() )
+            ( (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1500) &&
+              (CCostumeDataManager::Instance()->getNewRandomCostume()) &&
+              (random<int>(0, 1) == 1) ),
+            ( CFreeRewardManager::Instance()->getRewardAble() ),
+            ( GVALUE->HIDDEN_ACHIEVEMENT_CLEAR_COUNT > 0 )
         };
         
-        std::array<std::string, 3> rewardBtnIconArray = {
+        std::array<std::string, 4> rewardBtnIconArray = {
             "unityAdsIcon.png",
-            "buyCostumeIcon.png",
-            "freeCoinIcon.png"
+            "costumeUFOIcon.png",
+            "freeCoinIcon.png",
+            "achievementCupIcon.png"
         };
         
-        std::array<std::function<void(Node*)>, 3> rewardBtnListenerArray = {
+        std::array<std::function<void(Node*)>, 4> rewardBtnListenerArray = {
             [=](Node* sender) { this->getCoinFromVideo(sender); },
-            [=](Node* sender) { this->getNewCostume(sender);  },
-            [=](Node* sender) { this->getFreeReward();    }
+            [=](Node* sender) { this->getNewCostume(sender);    },
+            [=](Node* sender) { this->getFreeReward();          },
+            [=](Node* sender) { this->openAchievementPopup();   }
         };
         
         std::vector<Node*> rewardBtnArray;
@@ -348,6 +354,14 @@ void CResultPopup::getFreeReward()
 {
     this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 150);
     CGameScene::getGameScene()->getFreeReward();
+}
+
+void CResultPopup::openAchievementPopup()
+{
+    this->home();
+    CGameScene::getGameScene()->scheduleOnce([=](float delta){
+        CGameScene::getGameScene()->OpenAchievementPopup();
+    }, 1.f, "OpenAchievementPopup");
 }
 
 void CResultPopup::share()

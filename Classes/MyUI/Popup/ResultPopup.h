@@ -19,6 +19,7 @@ private:
     void getCoinFromVideo(Node* sender);
     void getNewCostume(Node* sender);
     void getFreeReward();
+    void openAchievementPopup();
     void share();
     void exit();
     
