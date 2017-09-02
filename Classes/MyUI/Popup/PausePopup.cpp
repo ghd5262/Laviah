@@ -300,10 +300,7 @@ void CPausePopup::calculateRemainTime()
     time = gmtime(&sec_t);
     std::string result = "";
     
-    auto hour = StringUtils::format("%d", time->tm_hour);
-    auto min  = StringUtils::format("%d", time->tm_min);
-    
-    result += "다음 목표까지 "+ hour + "시간" + " " + min + "분" + " 남았습니다.";
+    result = StringUtils::format(TRANSLATE("GOAL_NEXT_RESET_TIME").c_str(), time->tm_hour, time->tm_min);
     
     m_RemainTime->setString(result);
 }

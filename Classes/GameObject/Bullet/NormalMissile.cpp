@@ -101,6 +101,7 @@ void CNormalMissile::CollisionWithPlayer()
 		R_BezierWithRotation(Vec2(2000, 3000), Vec2(540, 1500), Vec2(900, 2000), 1.f);
 	}
 	else{
+        GVALUE->DEAD_TYPE = PLAYER_DEAD_TYPE::NORMAL_MISSILE;
         CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::DEAD_BY_MISSILE, 1);
 		m_Player->LostSomeHealth(this->getPower());
         m_Player->Crushed();

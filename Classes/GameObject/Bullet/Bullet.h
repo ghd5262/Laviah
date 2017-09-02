@@ -48,6 +48,14 @@ enum eSTAR_TYPE{
 	eSTAR_TYPE_MAX
 };
 
+enum PLAYER_DEAD_TYPE{
+    DEAD_NONE = 0,
+    NORMAL_BULLET = 1,
+    NORMAL_MISSILE = 2,
+    STAND_BULLET = 3,
+    STICK_BULLET = 4,
+};
+
 struct sBULLET_PARAM{
     std::string _spriteName;
     std::string _particleName;

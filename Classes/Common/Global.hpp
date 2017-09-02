@@ -28,6 +28,7 @@ public:
     int BEST_COMBO;
     int STAGE_LEVEL;
     int NOTICE_LEVEL;
+    int DEAD_TYPE;
     
     int COIN_COUNT;
     int STAR_COUNT;

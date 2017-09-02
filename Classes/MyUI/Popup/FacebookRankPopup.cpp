@@ -197,11 +197,10 @@ void CFacebookRankPopup::calculateRemainTime()
     time = gmtime(&sec_t);
     std::string result = "";
     
-    auto day  = StringUtils::format("%d", time->tm_mday - 1);
-    auto hour = StringUtils::format("%d", time->tm_hour);
-    auto min  = StringUtils::format("%d", time->tm_min);
-    
-    result += " " + day + " Days " + hour + " : " + min + " " + "남음";
+    result = " " + StringUtils::format(TRANSLATE("RANK_POPUP_RESET_TIME").c_str(),
+                                       time->tm_mday-1,
+                                       time->tm_hour,
+                                       time->tm_min);
     
     m_RemainTime->setString(result);
 }

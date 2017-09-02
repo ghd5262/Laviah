@@ -100,6 +100,7 @@ void CStickBullet::CollisionWithPlayer()
         
     }
     else{
+        GVALUE->DEAD_TYPE = PLAYER_DEAD_TYPE::STICK_BULLET;
         m_Player->Crushed();
         m_Player->LostSomeHealth(this->getPower());
         this->ReturnToMemoryBlock();

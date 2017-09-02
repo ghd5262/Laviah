@@ -121,6 +121,7 @@ void CStandBullet::CollisionWithPlayer()
         this->R_BezierWithRotation(Vec2(2000, 3000), Vec2(540, 1500), Vec2(900, 2000), 1.f);
     }
     else{
+        GVALUE->DEAD_TYPE = PLAYER_DEAD_TYPE::STAND_BULLET;
         m_Player->Crushed();
         m_Player->LostSomeHealth(this->getPower());
         this->ReturnToMemoryBlock();

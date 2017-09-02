@@ -43,14 +43,17 @@ bool CGameEndPopup::init()
     btnScreen->setOpacity(0);
     
 //    auto labelCrash = Label::createWithSystemFont("", FONT::MALGUNBD, 80);//ui less
-    auto labelCrash = Label::createWithSystemFont(" 충돌!!", FONT::MALGUNBD, 80);
+    auto deadType   = (random<int>(0, 5) == 0) ? PLAYER_DEAD_TYPE::DEAD_NONE : GVALUE->DEAD_TYPE;
+    auto title      = StringUtils::format(GAME_END_TITLE::END_TITLE.c_str(), deadType);
+    auto labelCrash = Label::createWithSystemFont(TRANSLATE(title), FONT::MALGUNBD, 80);
     labelCrash->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     labelCrash->setPosition(Vec2(btnScreen->getContentSize().width * 0.5f,
                                  btnScreen->getContentSize().height * 0.8f));
     btnScreen->addChild(labelCrash);
     
 //    auto labelCrashTip = Label::createWithSystemFont("", FONT::MALGUNBD, 40);//ui less
-    auto labelCrashTip = Label::createWithSystemFont(" 항상 총알을 조심하세요!", FONT::MALGUNBD, 40);
+    auto tip           = StringUtils::format(GAME_END_TITLE::END_TIP.c_str(), deadType);
+    auto labelCrashTip = Label::createWithSystemFont(TRANSLATE(tip), FONT::MALGUNBD, 40);
     labelCrashTip->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     labelCrashTip->setPosition(Vec2(btnScreen->getContentSize().width * 0.5f,
                                     btnScreen->getContentSize().height * 0.75f));
