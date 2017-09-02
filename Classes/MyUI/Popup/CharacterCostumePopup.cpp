@@ -46,8 +46,24 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
     auto costumeList = CCostumeDataManager::Instance()->getCostumeListByCharacter(m_CharacterIndex);
     auto jumpIndex   = 0;
     auto index       = 0;
+    
+    typedef std::pair<int, const COSTUME*> PAIR;
+    auto sortedList  = std::vector<PAIR>(costumeList.begin(), costumeList.end());
+    // sort
+    {
+        auto manager = CUserDataManager::Instance();
+        // sort by clear (clear achievements locate to the top.)
+        std::stable_sort(sortedList.begin(), sortedList.end(), [=](PAIR dataA, PAIR dataB){
+            
+            auto indexA = dataA.second->_index;
+            auto indexB = dataB.second->_index;
+            auto existA = manager->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST, indexA);
+            auto existB = manager->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST, indexB);
+            return (existA > existB);
+        });
+    }
 
-    for (auto iter : costumeList)
+    for (auto iter : sortedList)
     {
         auto costume = iter.second;
         if(!costume->_enable) continue;

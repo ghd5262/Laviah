@@ -1,7 +1,6 @@
 #pragma once
 #include "cocos2d.h"
 #include "../Popup.h"
-#include <Queue>
 
 struct ACHIEVEMENT;
 class CTitleCompleteNoticePopup : public CPopup
@@ -25,19 +24,9 @@ private:
     virtual ~CTitleCompleteNoticePopup(){};
     
 private:
-    struct COMPLETED_ACHIEVEMENT{
-        int _index;
-        int _level;
-        bool _isHidden;
-        COMPLETED_ACHIEVEMENT(int index, int level, bool hidden)
-        : _index(index)
-        , _level(level)
-        , _isHidden(hidden){};
-    };
     cocos2d::Sprite* m_LayerBG;
     cocos2d::Sprite* m_NewIcon;
     cocos2d::Label* m_AchievementLabelFront;
     cocos2d::Label* m_AchievementLabelBack;
-    std::queue<COMPLETED_ACHIEVEMENT> m_ShowList;
     bool m_Checkable;
 };

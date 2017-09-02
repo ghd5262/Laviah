@@ -87,30 +87,8 @@ bool CTitleCompleteNoticePopup::init()
 void CTitleCompleteNoticePopup::checkAchievementCompleteOnRealTime()
 {
     if (!CObjectManager::Instance()->getIsGamePause()) return;
-    
-    auto data = CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
-    if(data != nullptr){
-        auto level  = CAchievementDataManager::getAchievementLevelByIndex(data->_index, true);
-        auto hidden = ((data->_type == ACHIEVEMENT_TYPE::HIDDEN_TYPE) && level <= 0);
-        m_ShowList.push(COMPLETED_ACHIEVEMENT(data->_index, level, hidden));
-    }
-    
-//    if (!CGameScene::getGameScene()->getIsMenuLayerFront()) return;
-//    if (!m_Checkable) return;
-    
-//    auto data = CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
-//    m_ShowList.push(data);
-//    if (data != nullptr) {
-//        bool enable = CAchievementDataManager::Instance()->ExistCompletedHiddenAchievement();
-//        CMenuLayer::Instance()->AchievementButtonState(enable);
-    
-//        m_Checkable   = false;
-//        auto level = CAchievementDataManager::Instance()->getAchievementLevelByIndex(data->_index);
-//        level      = (level > 0) ? level-1 : level; // 이미 클리어한 업적을 보여 줘야 하기때문에 level-1
-//        auto title = CAchievementDataManager::Instance()->getAchievementTitle(data->_index, level);
-//        m_AchievementLabel->setString(title + std::string("\n업적을 획득 하셨습니다!"));
-//        this->show();
-//    }
+
+    CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
 }
 
 void CTitleCompleteNoticePopup::show()
@@ -118,18 +96,20 @@ void CTitleCompleteNoticePopup::show()
     if (!CObjectManager::Instance()->getIsGamePause()) return;
     if (!CGameScene::getGameScene()->getIsMenuLayerFront()) return;
     if (!m_Checkable) return;
-    if (m_ShowList.empty()) return;
     
+    auto& completedList = CAchievementDataManager::Instance()->getCompletedList();
+    if (completedList.empty()) return;
+
     m_Checkable = false;
     
-    auto data   = m_ShowList.front();
+    auto data   = completedList.front();
     auto title  = CAchievementDataManager::Instance()->getAchievementTitle(data._index, data._level);
     std::string ment = std::string("\n") + TRANSLATE("GET_ACHIEVEMENT");
     if(data._isHidden) ment = std::string("\n") + TRANSLATE("GET_HIDDEN_ACHIEVEMENT");
     
     m_AchievementLabelBack->setString(title + ment);
     m_AchievementLabelFront->setString(title + std::string("\n"));
-    m_ShowList.pop();
+    completedList.pop();
     
     // Update achievement button
     bool enable = CAchievementDataManager::Instance()->ExistCompletedHiddenAchievement();

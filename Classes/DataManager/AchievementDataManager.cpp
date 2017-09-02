@@ -217,8 +217,15 @@ const ACHIEVEMENT* CAchievementDataManager::CompleteCheckRealTime(bool isHidden)
         if (this->CheckAchievementComplete(index, isHidden)){
             if (normalOriginCount < GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT)
                 return this->getNormalAchievementByIndex(index);
-            if (hiddenOriginCount < GVALUE->HIDDEN_ACHIEVEMENT_CLEAR_COUNT)
-                return this->getHiddenAchievementByIndex(index);
+            if (hiddenOriginCount < GVALUE->HIDDEN_ACHIEVEMENT_CLEAR_COUNT){
+                
+                auto data   = this->getHiddenAchievementByIndex(index);
+                auto level  = CAchievementDataManager::getAchievementLevelByIndex(data->_index, true);
+                auto hidden = ((data->_type == ACHIEVEMENT_TYPE::HIDDEN_TYPE) && level <= 0);
+                m_CompletedList.push(COMPLETED_ACHIEVEMENT(data->_index, level, hidden));
+                
+                return data;
+            }
         }
     }
     
@@ -608,6 +615,11 @@ int CAchievementDataManager::getNormalAchievementRewardValue(int index)
     auto level = this->getAchievementLevelByIndex(index, false);
     auto data  = this->getCurLevelDataByIndex(index, false);
     return data._rewardValue * (level + 1);
+}
+
+COMPLETED_LIST& CAchievementDataManager::getCompletedList()
+{
+    return m_CompletedList;
 }
 
 int CAchievementDataManager::getAchievementLevelByIndex(int index, bool isHidden)

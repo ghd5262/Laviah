@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <queue>
 
 
 enum CHECKER_TYPE{
@@ -88,6 +89,16 @@ struct ACHIEVEMENT {
     }
 };
 
+struct COMPLETED_ACHIEVEMENT{
+    int _index;
+    int _level;
+    bool _isHidden;
+    COMPLETED_ACHIEVEMENT(int index, int level, bool hidden)
+    : _index(index)
+    , _level(level)
+    , _isHidden(hidden){};
+};
+
 namespace ACHIEVEMENT_DEFINE {
 	static const int LIMIT_COUNT = 3;
 	static const std::string NORMAL_CONTENT = "ACHIEVEMENT_NORMAL_CONTENT_%d_%d";
@@ -117,6 +128,8 @@ typedef std::function<sREWARD_DATA(sREWARD_DATA)> REWARDER;
 typedef std::map<std::string, REWARDER> REWARDER_LIST;
 typedef std::map<int, const ACHIEVEMENT*> ACHIEVEMENT_LIST;
 typedef std::function<bool(const ACHIEVEMENT*)> ACHIEVEMENT_PICK;
+typedef std::queue<COMPLETED_ACHIEVEMENT> COMPLETED_LIST;
+
 class CAchievementDataManager
 {
 public:
@@ -155,6 +168,8 @@ public:
     int getNormalAchievementMaterialValue(int index);
     int getNormalAchievementRewardValue(int index);
     
+    COMPLETED_LIST& getCompletedList();
+    
     static int getAchievementLevelByIndex(int index, bool isHidden);
     static int getAchievementStateByIndex(int index, bool isHidden);
     static void setAchievementLevelByIndex(int index, int level, bool isHidden);
@@ -181,6 +196,7 @@ private:
 private:
     ACHIEVEMENT_LIST m_NormalAchievementDataList;
 	ACHIEVEMENT_LIST m_HiddenAchievementDataList;
+    COMPLETED_LIST m_CompletedList;
     CHECKER_LIST m_CheckerList;
     REWARDER_LIST m_RewarderList;
     CAchievementClearChecker* m_Checker;

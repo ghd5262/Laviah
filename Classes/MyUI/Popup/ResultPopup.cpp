@@ -702,4 +702,8 @@ void CResultPopup::userDataUpdate()
     // Check all of achievement.
     bool achievementAll = CAchievementDataManager::Instance()->CheckCompleteAll();
     m_GoalPopupOpen     = (GVALUE->NORMAL_ACHIEVEMENT_CLEAR_COUNT || achievementAll);
+    
+    // Check hidden achievement has been completed.
+    CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
+    
 }
