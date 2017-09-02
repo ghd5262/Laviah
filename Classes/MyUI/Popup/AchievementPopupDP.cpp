@@ -264,7 +264,7 @@ void CAchievementPopupDP::Reward()
         }
     }, {
         sREWARD_DATA(levelData._rewardKey, levelData._rewardValue)
-    });
+    }, TRANSLATE("REWARD_TITLE_ACHIEVEMENT"));
     
     // sdkbox play achievement clear
     auto curLevel = CAchievementDataManager::getAchievementLevelByIndex(index, true);

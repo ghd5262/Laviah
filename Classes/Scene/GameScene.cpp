@@ -476,6 +476,7 @@ void CGameScene::BonusTimeEnd()
 
 void CGameScene::Reward(std::function<void(bool)> exitCallback,
                         std::vector<sREWARD_DATA> list,
+                        std::string title,
                         int cost/* = 0*/,
                         bool ufoEnable/* = false*/)
 {
@@ -489,6 +490,7 @@ void CGameScene::Reward(std::function<void(bool)> exitCallback,
         exitCallback(isPlay);
         CObjectManager::Instance()->MoveAction(m_PopupLayer, m_VisibleSize / 2);
     })
+    ->setTitle(title)
     ->setIsPaidFeature(cost)
     ->setIsUFOEnable(ufoEnable)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)

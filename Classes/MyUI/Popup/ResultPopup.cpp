@@ -326,7 +326,8 @@ void CResultPopup::end(){
 void CResultPopup::getCoinFromVideo(Node* sender)
 {
     CUnityAdsManager::Instance()->ShowUnityAds([=](){
-        this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 50);
+        this->createRewardPopup(TRANSLATE("REWARD_TITLE_BONUS_COIN"),
+                                ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 50);
     });
     CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){
         auto button = dynamic_cast<CMyButton*>(sender);
@@ -347,12 +348,13 @@ void CResultPopup::getNewCostume(Node* sender)
         auto button = dynamic_cast<CMyButton*>(sender);
         if(!button) return;
         button->setTouchEnable(true);
-    }, {}, -1500, true);
+    }, {}, "", -1500, true);
 }
 
 void CResultPopup::getFreeReward()
 {
-    this->createRewardPopup(ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 150);
+    this->createRewardPopup(TRANSLATE("REWARD_TITLE_FREE_COIN"),
+                            ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 150);
     CGameScene::getGameScene()->getFreeReward();
 }
 
@@ -375,11 +377,11 @@ void CResultPopup::exit()
     else                this->popupClose(1.3f);
 }
 
-void CResultPopup::createRewardPopup(std::string key, int value)
+void CResultPopup::createRewardPopup(std::string title, std::string key, int value)
 {
     CGameScene::getGameScene()->Reward([=](bool isPlay){}, {
         sREWARD_DATA(key, value)
-    });
+    }, title);
 }
 
 cocos2d::Node* CResultPopup::createIconLayer(std::string iconName, std::string text)

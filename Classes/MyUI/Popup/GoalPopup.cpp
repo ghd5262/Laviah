@@ -119,7 +119,7 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
             CAchievementDataManager::Instance()->ResetNormalAchievements();
                 this->GoHome(nullptr);
 //            }
-        }, rewardList);
+        }, rewardList, TRANSLATE("REWARD_TITLE_GOAL"));
 
         
         // TODO: If there are no more achievements. do not open achievement popup

@@ -64,6 +64,7 @@ public:
 	CPopup* CreateAlertPopup();
 	void Reward(std::function<void(bool)> exitCallback,
                 std::vector<sREWARD_DATA> list,
+                std::string title,
                 int cost = 0,
                 bool ufoEnable = false);
 

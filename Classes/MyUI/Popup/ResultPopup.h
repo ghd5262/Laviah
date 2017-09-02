@@ -23,7 +23,7 @@ private:
     void share();
     void exit();
     
-    void createRewardPopup(std::string key, int value);
+    void createRewardPopup(std::string title, std::string key, int value);
     cocos2d::Node* createIconLayer(std::string iconName,
                                    std::string text);
     void createScoreLayer(std::string iconName,
