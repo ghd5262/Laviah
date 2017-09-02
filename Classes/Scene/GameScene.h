@@ -59,7 +59,8 @@ public:
     void MenuFadeOut();
 
     void getFreeReward();
-
+    void getRankReward();
+    
 	CPopup* CreateAlertPopup();
 	void Reward(std::function<void(bool)> exitCallback,
                 std::vector<sREWARD_DATA> list,
@@ -74,6 +75,7 @@ public:
 	CC_SYNTHESIZE(cocos2d::Vec2, m_TouchPos, TouchPos);
     CC_SYNTHESIZE(bool, m_NeedTutorial, NeedTutorial);
     CC_SYNTHESIZE(bool, m_IsMenuLayerFront, IsMenuLayerFront);
+    CC_SYNTHESIZE(bool, m_RewardAble, RewardAble);
     CC_SYNTHESIZE(long, m_DailyResetRemain, DailyResetRemain);
     CC_SYNTHESIZE(long, m_WeeklyResetRemain, WeeklyResetRemain);
     CC_SYNTHESIZE(long, m_GamePlayTime, GamePlayTime);
@@ -153,6 +155,5 @@ private:
     CCountDown* m_CountDown;
 	cocos2d::Size m_VisibleSize;
     std::vector<cocos2d::Sprite*> m_IntroUIList;
-    float m_Time;
     bool m_KeyBoardSpace;
 };

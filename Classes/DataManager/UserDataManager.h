@@ -34,7 +34,6 @@ public:
     std::string getLastResourcesVersion();
     void setLastResourcesVersion(std::string version);
 	tm* getLastSavedTime();
-    long long getLastTimestamp();
     long long getFreeRewardTimestamp();
     
     float getItemValueByItemIndex(int itemIndex);
@@ -62,7 +61,6 @@ public:
     void setUserData_Reset();
     
     void setLastSavedTime(long long unixTime);
-    void setLastTimestamp(long long timestamp);
     void setFreeRewardTimestamp(long long timestamp);
     
     bool CoinUpdate(int value);

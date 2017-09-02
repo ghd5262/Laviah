@@ -100,12 +100,6 @@ tm* CUserDataManager::getLastSavedTime()
 	return localtime(&timer);
 }
 
-long long CUserDataManager::getLastTimestamp()
-{
-    std::string crypto_key = MakeCryptoString(USERDATA_KEY::LAST_TIMESTAMP, USERDATA::CRYPTO_KEY);
-    return UserDefault::getInstance()->getDoubleForKey(crypto_key.c_str(), true);
-}
-
 long long CUserDataManager::getFreeRewardTimestamp()
 {
     std::string crypto_key = MakeCryptoString(USERDATA_KEY::FREE_REWARD_TIMESTAMP, USERDATA::CRYPTO_KEY);
@@ -332,11 +326,6 @@ void CUserDataManager::setUserData_Reset()
 void CUserDataManager::setLastSavedTime(long long unixTime)
 {
     UserDefault::getInstance()->setDoubleForKey(USERDATA_KEY::LAST_SAVED_TIME.c_str(), unixTime);
-}
-
-void CUserDataManager::setLastTimestamp(long long timestamp)
-{
-    UserDefault::getInstance()->setDoubleForKey(USERDATA_KEY::LAST_TIMESTAMP.c_str(), timestamp);
 }
 
 void CUserDataManager::setFreeRewardTimestamp(long long timestamp)

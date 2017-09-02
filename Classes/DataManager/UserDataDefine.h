@@ -3,7 +3,8 @@
 namespace USERDATA_KEY {
     const std::string FREE_REWARD_LEVEL         = "USER_DATA_FREE_REWARD_LEVEL";
     const std::string FREE_REWARD_TIMESTAMP     = "USER_DATA_FREE_REWARD_TIMESTAMP";
-    const std::string LAST_TIMESTAMP            = "USER_DATA_LAST_TIMESTAMP";
+    const std::string DAILY_RESET_SAVED_TIME    = "USER_DATA_DAILY_RESET_SAVED_TIME";
+    const std::string WEEKLY_RESET_SAVED_TIME   = "USER_DATA_WEEKLY_RESET_SAVED_TIME";
     const std::string LAST_SAVED_TIME		    = "USER_DATA_LAST_SAVED_TIME";
     const std::string FIRST_LOAD			    = "USER_DATA_FIRSTLOAD";
     const std::string LAST_RES_VERSION			= "USER_DATA_LAST_RES_VERSION";
