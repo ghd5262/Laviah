@@ -7,6 +7,8 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../SDKBOX/SDKBoxHeaders.h"
 #include "../../Common/StringUtility.h"
+#include "../../DataManager/RankRewardDataManager.hpp"
+#include "../../DataManager/AchievementDataManager.hpp"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -174,6 +176,7 @@ bool CFacebookRankPopup::init()
         this->End(sender);
     });
     
+    this->getRankReward();
     return true;
 }
 
@@ -188,7 +191,9 @@ void CFacebookRankPopup::calculateRemainTime()
 {
     if(!m_RemainTime) return;
     
-    auto playTime   = CGameScene::getGameScene()->getGamePlayTime();
+    auto startTime  = CGameScene::getGameScene()->getGameStartTime();
+    auto curTime    = time_t(time(nullptr));
+    auto playTime   = curTime - startTime;
     auto remainTime = CGameScene::getGameScene()->getWeeklyResetRemain();
     auto seconds    = remainTime - playTime;
     
@@ -203,4 +208,27 @@ void CFacebookRankPopup::calculateRemainTime()
                                        time->tm_min);
     
     m_RemainTime->setString(result);
+}
+
+void CFacebookRankPopup::getRankReward()
+{
+    if(!CGameScene::getGameScene()->getRewardAble()) return;
+    
+    CGameScene::getGameScene()->ScreenFade([=](){
+        auto rank        = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK);
+        auto friendCount = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::FRIENDS_COUNT);
+        auto data        = CRankRewardDataManager::Instance()->getRewardByData(rank, friendCount);
+        
+        std::vector<sREWARD_DATA> rewardList;
+        rewardList.clear();
+        for (int index = 0; index < data._keyList.size(); index++)
+            rewardList.emplace_back(data._keyList.at(index), data._valueList.at(index));
+        
+        
+        auto title = StringUtils::format("FACEBOOK_RANK_REWARD_%d", rank);
+        CGameScene::getGameScene()->Reward([=](bool isPlay){
+            CGameScene::getGameScene()->getRankReward();
+        }, rewardList, TRANSLATE(title));
+
+    });
 }

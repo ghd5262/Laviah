@@ -43,7 +43,13 @@ bool CFacebookRankPopupDP::init()
     {
         if(m_Number <= 3){
             auto button = CMyButton::create()
-            ->addEventListener([=](Node* sender){})
+            ->addEventListener([=](Node* sender){
+                CGameScene::getGameScene()->CreateAlertPopup()
+                ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
+                ->setMessage(TRANSLATE("FACEBOOK_RANK_ALERT_POPUP"))
+                ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
+
+            })
             ->setButtonNormalImage(StringUtils::format("rankReward_%d.png", m_Number))
             ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
             ->setButtonPosition(Vec2(this->getContentSize().width * 0.83f,

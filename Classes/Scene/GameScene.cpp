@@ -91,7 +91,7 @@ CGameScene::CGameScene()
 , m_RewardAble(false)
 , m_DailyResetRemain(0L)
 , m_WeeklyResetRemain(0L)
-, m_GamePlayTime(0L){}
+, m_GameStartTime(0L){}
 
 CGameScene::~CGameScene()
 {
@@ -111,9 +111,11 @@ bool CGameScene::init()
 {
     if (!Layer::init()) return false;
     
-    m_GameScene = this;
-    m_VisibleSize = Director::getInstance()->getVisibleSize();
-    m_TouchPos = m_VisibleSize / 2;
+    m_GameScene     = this;
+    m_VisibleSize   = Director::getInstance()->getVisibleSize();
+    m_TouchPos      = m_VisibleSize / 2;
+    m_GameStartTime = time_t(time(nullptr));
+
     this->scheduleUpdate();
     this->initMemoryPool();
     this->createFacebookManager();
@@ -143,9 +145,6 @@ bool CGameScene::init()
         if(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO))
             CUserDataManager::Instance()->SaveUserData(true, true);
     }, 300.f, "AutoSave");
-    this->schedule([=](float delta){
-        m_GamePlayTime += 60;
-    }, 60.f, "PlayTime");
     
 //    this->ScreenFade([=](){
 //        this->Reward([=](bool isPlay){
@@ -873,7 +872,7 @@ void CGameScene::facebookRankingResetCheck()
         std::string timeString = StringUtils::format("%d-%d-%d %d:%d:%d", year, mon, resetDay, 0, 0, 0);
 
         CCLOG("Current server GMT is %d-%d-%d %d:%d:%d", year, mon, day, hour, min, sec);
-        CCLOG("Daily reset GMT is %s", timeString.c_str());
+        CCLOG("Weekly reset GMT is %s", timeString.c_str());
         
         struct tm tartm;
         strptime(timeString.c_str(),"%Y-%m-%d %H:%M:%S",&tartm);
@@ -988,6 +987,7 @@ void CGameScene::createRocket()
     rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     rocket->setPosition(CBullet::getCirclePosition(90, ROCKET_DEFINE::FLYAWAY_DISTANCE, m_VisibleSize / 2));
     rocket->ChangeState(CFlyToTarget::Instance());
+    rocket->setVisible(false);
     m_ZoomLayer->addChild(rocket, ZORDER::POPUP);
     CObjectManager::Instance()->setRocket(rocket);
     CObjectManager::Instance()->ChangeRocket();

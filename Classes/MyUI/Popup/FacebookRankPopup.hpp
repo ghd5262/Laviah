@@ -13,6 +13,7 @@ protected:
 private:
     void End(cocos2d::Node* sender);
     void calculateRemainTime();
+    void getRankReward();
     
     CFacebookRankPopup()
     : m_RemainTime(nullptr){};

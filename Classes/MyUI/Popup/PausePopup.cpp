@@ -291,7 +291,9 @@ void CPausePopup::calculateRemainTime()
 {
     if(!m_RemainTime) return;
     
-    auto playTime   = CGameScene::getGameScene()->getGamePlayTime();
+    auto startTime  = CGameScene::getGameScene()->getGameStartTime();
+    auto curTime    = time_t(time(nullptr));
+    auto playTime   = curTime - startTime;
     auto remainTime = CGameScene::getGameScene()->getDailyResetRemain();
     auto seconds    = remainTime - playTime;
     

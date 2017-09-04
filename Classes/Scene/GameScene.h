@@ -79,7 +79,7 @@ public:
     CC_SYNTHESIZE(bool, m_RewardAble, RewardAble);
     CC_SYNTHESIZE(long, m_DailyResetRemain, DailyResetRemain);
     CC_SYNTHESIZE(long, m_WeeklyResetRemain, WeeklyResetRemain);
-    CC_SYNTHESIZE(long, m_GamePlayTime, GamePlayTime);
+    CC_SYNTHESIZE(long, m_GameStartTime, GameStartTime);
 protected:
 	virtual bool init() override;
 

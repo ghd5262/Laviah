@@ -230,15 +230,15 @@ void CObjectManager::Intro(Node* obj,
 void CObjectManager::ZoomMoveDown()
 {
     this->MoveAction(CGameScene::getZoomLayer(), MOVE_DIRECTION::DOWN);
-    if(m_Rocket)
-        m_Rocket->setVisible(false);
+//    if(m_Rocket)
+//        m_Rocket->setVisible(false);
 }
 
 void CObjectManager::ZoomMoveMiddle()
 {
     this->MoveAction(CGameScene::getZoomLayer(), MOVE_DIRECTION::MIDDLE);
-    if(m_Rocket)
-        m_Rocket->setVisible(true);
+//    if(m_Rocket)
+//        m_Rocket->setVisible(true);
 }
 
 void CObjectManager::MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir)
