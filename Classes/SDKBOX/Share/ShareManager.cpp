@@ -29,14 +29,14 @@ void CShareManager::Share(bool dialog, sdkbox::SocialPlatform platform)
     auto path = CShareManager::Instance()->getCapturePath();
 //    if (!path.empty() && FileUtils::getInstance()->isFileExist(path))
 //    {
-        sdkbox::SocialShareInfo info;
-        info.text  = "#Laviah";
-        info.title = "Laviah";
-        info.image = path;
-        info.link  = CDownloadManager::Instance()->getAppUrl();
-        info.platform = platform;
-        info.showDialog = dialog;
-        sdkbox::PluginShare::share(info);
+    sdkbox::SocialShareInfo info;
+    info.text  = TRANSLATE("TWITTER_SHARE_TEXT");
+    info.title = TRANSLATE("TWITTER_SHARE_TITLE");
+    info.image = path;
+    info.link  = CDownloadManager::Instance()->getAppUrl();
+    info.platform = platform;
+    info.showDialog = dialog;
+    sdkbox::PluginShare::share(info);
 //    }
 //    else
 //        MessageBox("capture first", "Failed");
@@ -47,13 +47,13 @@ void CShareManager::ShareNative()
     auto path = CShareManager::Instance()->getCapturePath();
 //    if (!path.empty() && FileUtils::getInstance()->isFileExist(path))
 //    {
-        sdkbox::SocialShareInfo info;
-        info.text  = "#Laviah";
-        info.title = "Laviah";
-        info.image = path;
-        info.link  = CDownloadManager::Instance()->getAppUrl();;
+    sdkbox::SocialShareInfo info;
+    info.text  = TRANSLATE("TWITTER_SHARE_TEXT");
+    info.title = TRANSLATE("TWITTER_SHARE_TITLE");
+    info.image = path;
+    info.link  = CDownloadManager::Instance()->getAppUrl();;
         
-        sdkbox::PluginShare::nativeShare(info);
+    sdkbox::PluginShare::nativeShare(info);
 //    }
 //    else
 //        MessageBox("capture first", "Failed");

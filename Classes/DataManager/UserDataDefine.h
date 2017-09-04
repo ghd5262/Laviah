@@ -15,6 +15,7 @@ namespace USERDATA_KEY {
     const std::string LEVEL                     = "USER_LEVEL";
     const std::string EXP                       = "USER_EXP";
     const std::string RANK                      = "USER_RANK";
+    const std::string FRIENDS_COUNT             = "USER_FRIENDS_COUNT";
     const std::string CHARACTER                 = "USER_CUR_CHARACTER";
     const std::string COIN                      = "USER_COIN";
     

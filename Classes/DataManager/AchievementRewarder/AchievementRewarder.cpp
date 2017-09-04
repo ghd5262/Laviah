@@ -48,7 +48,7 @@ sREWARD_DATA CAchievementRewarder::petReward(sREWARD_DATA data) {
 
 sREWARD_DATA CAchievementRewarder::coinRewardRandom(sREWARD_DATA data) {
 	data._value = cocos2d::random<int>(data._value, int(data._value * 1.5f));
-    if(cocos2d::random<int>(0, 100) < 3) data._value *= 10;
+//    if(cocos2d::random<int>(0, 100) < 3) data._value *= 10;
 	CCLOG("COIN REWARD RADNOM %d", data._value);
 	return coinReward(data);
 }

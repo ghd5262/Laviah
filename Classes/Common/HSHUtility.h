@@ -11,6 +11,7 @@
 #include "AudioManager.h"
 #include "Global.hpp"
 #include "../DataManager/TranslateManager.hpp"
+#include "../DataManager/GameMetaDataManager.hpp"
 
 static const int kMaxLogLen = 5 * 1024;
 std::string MakeString(const char* str, ...); 

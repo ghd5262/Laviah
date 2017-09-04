@@ -203,14 +203,14 @@ void CFacebookManager::OpenLinkShareDialog(std::string title, std::string text)
     info.link  = CDownloadManager::Instance()->getAppUrl();
     info.title = title;
     info.text  = text;
-    info.image = "http://cocos2d-x.org/images/logo.png";
+    info.image = META_DATA("FACEBOOK_SHARE_IMAGE_URL").asString();
     sdkbox::PluginFacebook::dialog(info);
 }
 
 void CFacebookManager::OpenInviteDialog()
 {
     sdkbox::PluginFacebook::inviteFriends(CDownloadManager::Instance()->getAppUrl(),
-                                          "http://cocos2d-x.org/images/logo.png");
+                                          META_DATA("FACEBOOK_SHARE_IMAGE_URL").asString());
 }
 
 // on "init" you need to initialize your instance

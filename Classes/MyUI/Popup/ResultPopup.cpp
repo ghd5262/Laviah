@@ -145,9 +145,10 @@ bool CResultPopup::init()
     
     // create reward button
     {
+        auto costumeCost = META_DATA("COSTUME_COST").asInt();
         std::array<bool, 4> rewardBtnVisibleArray = {
             ( random<int>(0, 1) == 1 ),
-            ( (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= 1500) &&
+            ( (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= costumeCost) &&
               (CCostumeDataManager::Instance()->getNewRandomCostume()) &&
               (random<int>(0, 1) == 1) ),
             ( CFreeRewardManager::Instance()->getRewardAble() ),
@@ -326,8 +327,9 @@ void CResultPopup::end(){
 void CResultPopup::getCoinFromVideo(Node* sender)
 {
     CUnityAdsManager::Instance()->ShowUnityAds([=](){
+        auto coin = META_DATA("BONUS_COIN").asInt();
         this->createRewardPopup(TRANSLATE("REWARD_TITLE_BONUS_COIN"),
-                                ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 50);
+                                ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, coin);
     });
     CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){
         auto button = dynamic_cast<CMyButton*>(sender);
@@ -339,6 +341,7 @@ void CResultPopup::getCoinFromVideo(Node* sender)
 
 void CResultPopup::getNewCostume(Node* sender)
 {
+    auto cost = META_DATA("COSTUME_COST").asInt();
     CGameScene::getGameScene()->Reward([=](bool isPlay){
         if(isPlay) {
             this->popupClose();
@@ -348,13 +351,14 @@ void CResultPopup::getNewCostume(Node* sender)
         auto button = dynamic_cast<CMyButton*>(sender);
         if(!button) return;
         button->setTouchEnable(true);
-    }, {}, "", -1500, true);
+    }, {}, "", -cost, true);
 }
 
 void CResultPopup::getFreeReward()
 {
+    auto coin = META_DATA("FREE_REWARD_COIN").asInt();
     this->createRewardPopup(TRANSLATE("REWARD_TITLE_FREE_COIN"),
-                            ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, 150);
+                            ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, coin);
     CGameScene::getGameScene()->getFreeReward();
 }
 
@@ -675,14 +679,13 @@ void CResultPopup::userDataUpdate()
                 if(GVALUE->TOTAL_SCORE > oldScore){
                     
                     // save score to facebook data
+                    auto friendCount = (int)CFacebookManager::Instance()->getFBUserList().size();
                     CFacebookManager::Instance()->SaveScore(GVALUE->TOTAL_SCORE);
                     CFacebookManager::Instance()->setSaveScoreListener([=](){
-                        auto oldRank = userDataMng->getUserData_Number(USERDATA_KEY::RANK);
                         auto newRank = CFacebookManager::Instance()->getMyRank();
-                        if(oldRank != newRank){
-                            //                    CGameScene::getGameScene()->OpenRankUpPopup();
-                            userDataMng->setUserData_Number(USERDATA_KEY::RANK, newRank);
-                        }
+                        //                    CGameScene::getGameScene()->OpenRankUpPopup();
+                        userDataMng->setUserData_Number(USERDATA_KEY::RANK, newRank);
+                        userDataMng->setUserData_Number(USERDATA_KEY::FRIENDS_COUNT, friendCount);
                         
                         this->release();
                     });

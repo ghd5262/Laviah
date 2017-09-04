@@ -10,8 +10,6 @@
 #include "../../Download/DownloadManager.h"
 #include <array>
 
-const int g_coinToRevive = 1500;
-
 CVideoPopup* CVideoPopup::create()
 {
 	CVideoPopup *pRet = new(std::nothrow) CVideoPopup();
@@ -72,9 +70,10 @@ bool CVideoPopup::init()
         return button;
     };
     
+    auto reviveCost = META_DATA("REVIVE_COST").asInt();
     std::array<std::string, 2> titleArr = {
         TRANSLATE("REVIVE_BUTTON_WATCH_VIDEO"),
-        StringUtils::format(TRANSLATE("REVIVE_BUTTON_USE_COIN").c_str(), g_coinToRevive),
+        StringUtils::format(TRANSLATE("REVIVE_BUTTON_USE_COIN").c_str(), reviveCost),
     };
     
     std::array<std::string, 2> iconArr = {
@@ -198,7 +197,9 @@ void CVideoPopup::End(Node* sender){
 void CVideoPopup::ReviveByCoin(cocos2d::Node* sender)
 {
     if(m_IsEnded) return;
-    if (CUserDataManager::Instance()->CoinUpdate(-g_coinToRevive)){
+    
+    auto reviveCost = META_DATA("REVIVE_COST").asInt();
+    if (CUserDataManager::Instance()->CoinUpdate(-reviveCost)){
         m_ReviveButtonTouched = true;
         this->Resume();
     }
