@@ -22,7 +22,8 @@ Scene* CLoadingScene::createScene()
 }
 
 CLoadingScene::CLoadingScene()
-: m_DownloadRetryCount(3){};
+: m_DownloadRetryCount(3)
+, m_ProgressBar(nullptr){};
 
 CLoadingScene::~CLoadingScene(){}
 
@@ -34,6 +35,27 @@ bool CLoadingScene::init()
     
     this->setContentSize(Director::getInstance()->getVisibleSize());
     this->startDownload();
+    
+    // bg
+    {
+        auto sprite = Sprite::create("loadingSceneBG.png");
+        sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        sprite->setPosition(this->getContentSize() / 2);
+        this->addChild(sprite);
+    }
+    
+    // bar
+    {
+        auto bar = Sprite::create("achievementProgress.png");
+        m_ProgressBar = ProgressTimer::create(bar);
+        m_ProgressBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_ProgressBar->setPosition(Vec2(this->getContentSize().width * 0.5f, 0));
+        m_ProgressBar->setMidpoint(Vec2(0, 0));
+        m_ProgressBar->setType(ProgressTimer::Type::BAR);
+        m_ProgressBar->setBarChangeRate(Vec2(1, 0));
+        m_ProgressBar->setOpacity(255 * 0.4f);
+        this->addChild(m_ProgressBar);
+    }
     
 	return true;
 }
@@ -81,6 +103,14 @@ void CLoadingScene::startDownload()
     });
 }
 
+float getPercent(float value, float max)
+{
+    if(value != 0 && max != 0)
+        if(value >= max) return 100.f;
+    return (value / max) * 100.f;
+    return 0.f;
+}
+
 void CLoadingScene::callbackDownloadFail()
 {
 	CCLOG("Loading Scene %s", __FUNCTION__);
@@ -121,11 +151,13 @@ void CLoadingScene::callbackRequireLatestVersion(std::string appUrl)
 void CLoadingScene::callbackFileDownloadProgress(int current, int max)
 {
     CCLOG("Download : %d / %d", current, max);
+    m_ProgressBar->runAction(ProgressTo::create(0.2f, getPercent(current, max)));
 }
 
 void CLoadingScene::callbackFileDecompressProgress(int current, int max)
 {
     CCLOG("Decompress : %d / %d", current, max);
+    m_ProgressBar->runAction(ProgressTo::create(0.2f, getPercent(current, max)));
 }
 
 void CLoadingScene::createMenuScene()

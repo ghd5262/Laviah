@@ -28,4 +28,5 @@ private:
 
 private:
     int m_DownloadRetryCount;
+    cocos2d::ProgressTimer* m_ProgressBar;
 };

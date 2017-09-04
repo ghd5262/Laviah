@@ -50,12 +50,16 @@
 		521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6219F0C34300D177D7 /* Default-667h@2x.png */; };
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
+		5901B13F1F5DD3C50015BA47 /* GameMetaDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */; };
+		5901B1401F5DD3C60015BA47 /* GameMetaDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */; };
 		59315BAF1E92776E00337C1C /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59315BAB1E92776E00337C1C /* CharacterBullet.cpp */; };
 		5940E3731F403AFB00F0C8F1 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5940E3721F403AFB00F0C8F1 /* CoreText.framework */; };
 		5940E3811F41CA4600F0C8F1 /* ShareManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5940E37F1F41CA4600F0C8F1 /* ShareManager.cpp */; };
 		5940E3821F41CA4600F0C8F1 /* ShareManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5940E37F1F41CA4600F0C8F1 /* ShareManager.cpp */; };
 		5951815A1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595181581EF59CFD00CC1F18 /* SharePopup.cpp */; };
 		5951815B1EF59CFD00CC1F18 /* SharePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595181581EF59CFD00CC1F18 /* SharePopup.cpp */; };
+		595635B71F5C2F4300029C77 /* RankRewardDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595635B51F5C2F4300029C77 /* RankRewardDataManager.cpp */; };
+		595635B81F5C2F4300029C77 /* RankRewardDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 595635B51F5C2F4300029C77 /* RankRewardDataManager.cpp */; };
 		59787E761F4DB3520034FB66 /* StageDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59787E741F4DB3520034FB66 /* StageDataManager.cpp */; };
 		59787E771F4DB3520034FB66 /* StageDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59787E741F4DB3520034FB66 /* StageDataManager.cpp */; };
 		598A41341F20D2AD00D567CB /* CharacterPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41321F20D2AD00D567CB /* CharacterPopup.cpp */; };
@@ -359,6 +363,8 @@
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		56864C3B9CC7F082E5C29A7E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKit.framework; sourceTree = DEVELOPER_DIR; };
+		5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMetaDataManager.cpp; sourceTree = "<group>"; };
+		5901B13E1F5DD3C50015BA47 /* GameMetaDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GameMetaDataManager.hpp; sourceTree = "<group>"; };
 		5918FE7C1F2B6E3000063833 /* UserDataDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataDefine.h; sourceTree = "<group>"; };
 		59315BAB1E92776E00337C1C /* CharacterBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterBullet.cpp; sourceTree = "<group>"; };
 		59315BAC1E92776E00337C1C /* CharacterBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterBullet.hpp; sourceTree = "<group>"; };
@@ -367,6 +373,8 @@
 		5940E3801F41CA4600F0C8F1 /* ShareManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShareManager.hpp; sourceTree = "<group>"; };
 		595181581EF59CFD00CC1F18 /* SharePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SharePopup.cpp; sourceTree = "<group>"; };
 		595181591EF59CFD00CC1F18 /* SharePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SharePopup.hpp; sourceTree = "<group>"; };
+		595635B51F5C2F4300029C77 /* RankRewardDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RankRewardDataManager.cpp; sourceTree = "<group>"; };
+		595635B61F5C2F4300029C77 /* RankRewardDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RankRewardDataManager.hpp; sourceTree = "<group>"; };
 		59787E741F4DB3520034FB66 /* StageDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StageDataManager.cpp; sourceTree = "<group>"; };
 		59787E751F4DB3520034FB66 /* StageDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StageDataManager.hpp; sourceTree = "<group>"; };
 		598A41321F20D2AD00D567CB /* CharacterPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterPopup.cpp; sourceTree = "<group>"; };
@@ -1099,6 +1107,10 @@
 				599B77D41F27EEEC0066D32E /* CostumeDataManager.hpp */,
 				59787E741F4DB3520034FB66 /* StageDataManager.cpp */,
 				59787E751F4DB3520034FB66 /* StageDataManager.hpp */,
+				595635B51F5C2F4300029C77 /* RankRewardDataManager.cpp */,
+				595635B61F5C2F4300029C77 /* RankRewardDataManager.hpp */,
+				5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */,
+				5901B13E1F5DD3C50015BA47 /* GameMetaDataManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -1567,6 +1579,7 @@
 				93706F531E7A6891009A2CA0 /* GradientDataManager.cpp in Sources */,
 				93706F931E7A6891009A2CA0 /* OptionMoreGamesPopup.cpp in Sources */,
 				93B7F4481EB81E1A0019D36C /* AchievementClearChecker.cpp in Sources */,
+				595635B71F5C2F4300029C77 /* RankRewardDataManager.cpp in Sources */,
 				93706F651E7A6891009A2CA0 /* StandBullet.cpp in Sources */,
 				93706F911E7A6891009A2CA0 /* OptionDeveloperPopup.cpp in Sources */,
 				93706F9A1E7A6891009A2CA0 /* RewardPopup.cpp in Sources */,
@@ -1608,6 +1621,7 @@
 				93706F431E7A6891009A2CA0 /* BulletStates.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				93706FA31E7A6891009A2CA0 /* TextField.cpp in Sources */,
+				5901B13F1F5DD3C50015BA47 /* GameMetaDataManager.cpp in Sources */,
 				93706F471E7A6891009A2CA0 /* AppDelegate.cpp in Sources */,
 				93706F6F1E7A6891009A2CA0 /* ObjectManager.cpp in Sources */,
 				93706F491E7A6891009A2CA0 /* Global.cpp in Sources */,
@@ -1705,6 +1719,7 @@
 				5940E3821F41CA4600F0C8F1 /* ShareManager.cpp in Sources */,
 				598A413A1F20D7B800D567CB /* CharacterPopupDP.cpp in Sources */,
 				93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
+				5901B1401F5DD3C60015BA47 /* GameMetaDataManager.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
 				599B77D21F27E26D0066D32E /* CharacterCostumePopupDP.cpp in Sources */,
 				59A8AD4C1F4B196B00D4CA42 /* DownloadPopup.cpp in Sources */,
@@ -1717,6 +1732,7 @@
 				936D4C9C1E9E0875003786E6 /* TutorialManager.cpp in Sources */,
 				59787E771F4DB3520034FB66 /* StageDataManager.cpp in Sources */,
 				93B7F4511EB845890019D36C /* AchievementPopupDP.cpp in Sources */,
+				595635B81F5C2F4300029C77 /* RankRewardDataManager.cpp in Sources */,
 				93A1166C1E91F9F600095230 /* RivalBullet.cpp in Sources */,
 				59E1A6521F163E11003020B9 /* PlayManager.cpp in Sources */,
 				936D4CA21E9E2578003786E6 /* TutorialHelper.cpp in Sources */,

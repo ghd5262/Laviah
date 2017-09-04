@@ -33,7 +33,40 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
 {
     
     auto popupSize = this->getContentSize();
-    
+
+//
+//    addUFOData(UFO_TYPE::UFO_NONE,      UFO_DATA("costumeUFO.png", "costumeUFOLight.png",
+//                                                 Vec2(0.5f, 1.5f), Vec2(0.5f, 0.6f),
+//                                                 Vec2(0.5f, 0.68f), Vec2(100, 0),
+//                                                 Vec2(0, 90), 180.f));
+//    
+//    addUFOData(UFO_TYPE::UFO_COSTUME,   UFO_DATA("costumeUFO.png", "costumeUFOLight.png",
+//                                                 Vec2(0.5f, 1.5f), Vec2(0.5f, 0.6f),
+//                                                 Vec2(0.5f, 0.68f), Vec2(100, 0),
+//                                                 Vec2(0, 90), 180.f));
+//    
+//    addUFOData(UFO_TYPE::UFO_FREE,      UFO_DATA("freeCoinIcon.png", "freeCoinLight.png",
+//                                                 Vec2(0.5f, -0.5f), Vec2(0.5f, 0.25f),
+//                                                 Vec2(0.5f, 0.2f), Vec2(30, 0),
+//                                                 Vec2(0, 90), 0.f));
+//    
+//    addUFOData(UFO_TYPE::UFO_RANK_1,    UFO_DATA("freeCoinIcon_1.png", "freeCoinLight.png",
+//                                                 Vec2(0.5f, -0.5f), Vec2(0.5f, 0.25f),
+//                                                 Vec2(0.5f, 0.2f), Vec2(30, 0),
+//                                                 Vec2(0, 90), 0.f));
+//    
+//    addUFOData(UFO_TYPE::UFO_RANK_2,    UFO_DATA("freeCoinIcon_2.png", "freeCoinLight.png",
+//                                                 Vec2(0.5f, -0.5f), Vec2(0.5f, 0.25f),
+//                                                 Vec2(0.5f, 0.2f), Vec2(30, 0),
+//                                                 Vec2(0, 90), 0.f));
+//    
+//    addUFOData(UFO_TYPE::UFO_RANK_3,    UFO_DATA("freeCoinIcon_3.png", "freeCoinLight.png",
+//                                                 Vec2(0.5f, -0.5f), Vec2(0.5f, 0.25f),
+//                                                 Vec2(0.5f, 0.2f), Vec2(30, 0),
+//                                                 Vec2(0, 90), 0.f));
+//    
+//    
+//    
     // touch disable
     auto createTouchDisable = [=](Node* parent, Size size, int zOrder = 0){
         CMyButton::create()
@@ -61,6 +94,15 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
     ->setButtonPosition(popupSize / 2)
     ->show(this);
     
+    
+    m_TitleLabel = Label::createWithSystemFont(m_Title, FONT::MALGUNBD, 80);
+    if (m_TitleLabel != nullptr)
+    {
+        m_TitleLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_TitleLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f));
+        m_TitleLabel->setOpacity(0);
+        this->addChild(m_TitleLabel);
+    }
     
     m_GetButton = CMyButton::create()
     ->addEventListener([=](Node* sender){
@@ -118,6 +160,7 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
         
         action(btnUserCoin);
         action(btnEnd);
+        action(m_TitleLabel);
         
         this->showButtons();
         
@@ -128,6 +171,7 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
         btnEnd->runAction(FadeTo::create(0.3f, 0));
         m_GetButton->runAction(FadeTo::create(0.3f, 0));
         m_PlayButton->runAction(FadeTo::create(0.3f, 0));
+        m_TitleLabel->runAction(FadeTo::create(0.3f, 0));
     });
     
     if(m_IsPaidFeature) this->setDefaultCallback([=](Node* sender){ this->exit(); });
@@ -145,6 +189,12 @@ CRewardPopup* CRewardPopup::AddRewardToList(std::vector<sREWARD_DATA> list)
 CRewardPopup* CRewardPopup::setExitCallback(const EXIT_CALLBACK &callback)
 {
     m_ExitCallback = callback;
+    return this;
+}
+
+CRewardPopup* CRewardPopup::setTitle(std::string title)
+{
+    m_Title = title;
     return this;
 }
 
@@ -220,12 +270,12 @@ void CRewardPopup::createUFO()
 {
     auto popupSize    = this->getContentSize();
     
-    m_UFO = Sprite::create("deliveryShip.png");
+    m_UFO = Sprite::create("costumeUFO.png");
     m_UFO->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_UFO->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 1.5f));
     this->addChild(m_UFO, 10);
     
-    m_UFOLight = Sprite::create("deliveryShipLight.png");
+    m_UFOLight = Sprite::create("costumeUFOLight.png");
     m_UFOLight->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_UFOLight->setPosition(Vec2(m_UFO->getContentSize() / 2.f));
     m_UFOLight->setOpacity(0);
@@ -295,6 +345,8 @@ void CRewardPopup::open()
         this->lightOn();
     m_GetButton->setVisible(false);
     m_PlayButton->setVisible(false);
+    m_TitleLabel->runAction(FadeTo::create(0.3f, 0));
+
 	m_RewardIndex++;
 }
 
