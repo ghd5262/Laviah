@@ -136,7 +136,7 @@ bool CFacebookRankPopup::init()
         auto contents = StringUtils::format("%s\n%s", TRANSLATE("FACEBOOK_SHARE_TEXT").c_str(),
                                             StringUtility::toCommaString(fbScore).c_str());
         CFacebookManager::Instance()->OpenLinkShareDialog(contents, TRANSLATE("FACEBOOK_SHARE_TITLE"));
-    }, "shareIcon_1.png", Vec2(bg->getContentSize().width * 0.2f,
+    }, "facebookShareIcon.png", Vec2(bg->getContentSize().width * 0.2f,
                                bg->getContentSize().height * 0.05f), false);
     
     
@@ -225,7 +225,7 @@ void CFacebookRankPopup::getRankReward()
             rewardList.emplace_back(data._keyList.at(index), data._valueList.at(index));
         
         
-        auto title = StringUtils::format("FACEBOOK_RANK_REWARD_%d", rank);
+        auto title = StringUtils::format("FACEBOOK_RANK_REWARD_%d", rank+1);
         CGameScene::getGameScene()->Reward([=](bool isPlay){
             CGameScene::getGameScene()->getRankReward();
         }, rewardList, TRANSLATE(title));

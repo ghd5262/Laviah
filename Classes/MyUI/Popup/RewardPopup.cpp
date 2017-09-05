@@ -11,6 +11,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../DataManager/DataManagerUtils.h"
 #include "../../Particle/Particles.h"
+#include "../../Common/StringUtility.h"
 #include <array>
 
 CRewardPopup* CRewardPopup::create()
@@ -95,13 +96,33 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
     ->show(this);
     
     
-    m_TitleLabel = Label::createWithSystemFont(m_Title, FONT::MALGUNBD, 80);
+    std::string title    = m_Title;
+    std::string subTitle = "";
+    
+    if(m_Title != ""){
+        auto list    = StringUtility::split(m_Title, '-');
+        if(list.size() > 1){
+            title    = list.at(0);
+            subTitle = list.at(1);
+        }
+    }
+    
+    m_TitleLabel = Label::createWithSystemFont(title, FONT::MALGUNBD, 80);
     if (m_TitleLabel != nullptr)
     {
         m_TitleLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         m_TitleLabel->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.8f));
+        m_TitleLabel->setCascadeOpacityEnabled(true);
         m_TitleLabel->setOpacity(0);
         this->addChild(m_TitleLabel);
+        
+        if(subTitle != ""){
+            auto subTitleLabel = Label::createWithSystemFont(subTitle, FONT::MALGUN, 40);
+            subTitleLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+            subTitleLabel->setPosition(Vec2(m_TitleLabel->getContentSize().width * 0.5f, 0));
+            subTitleLabel->setCascadeOpacityEnabled(true);
+            m_TitleLabel->addChild(subTitleLabel);
+        }
     }
     
     m_GetButton = CMyButton::create()

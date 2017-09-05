@@ -9,6 +9,7 @@ public:
     static CFreeRewardManager* Instance();
     long long getLimitTimeByIndex(int index);
     long long getFreeRewardTimeLimit();
+    long long getNextRewardRemainTime();
     void FreeRewardLevelUP();
     
     CC_SYNTHESIZE(bool, m_RewardAble, RewardAble);

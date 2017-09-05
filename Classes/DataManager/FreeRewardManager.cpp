@@ -7,7 +7,6 @@ CFreeRewardManager::CFreeRewardManager()
 : m_RewardAble(false)
 {
     m_LimitTimeList.emplace_back(0LL);
-    m_LimitTimeList.emplace_back(60LL);
     m_LimitTimeList.emplace_back(300LL);
     m_LimitTimeList.emplace_back(900LL);
     m_LimitTimeList.emplace_back(1800LL);
@@ -35,6 +34,12 @@ long long CFreeRewardManager::getFreeRewardTimeLimit()
 {
     auto currentLevel = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::FREE_REWARD_LEVEL);
     return this->getLimitTimeByIndex(currentLevel);
+}
+
+long long CFreeRewardManager::getNextRewardRemainTime()
+{
+    auto currentLevel = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::FREE_REWARD_LEVEL);
+    return this->getLimitTimeByIndex(currentLevel + 1);
 }
 
 void CFreeRewardManager::FreeRewardLevelUP()

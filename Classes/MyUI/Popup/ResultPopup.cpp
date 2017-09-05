@@ -357,8 +357,22 @@ void CResultPopup::getNewCostume(Node* sender)
 void CResultPopup::getFreeReward()
 {
     auto coin = META_DATA("FREE_REWARD_COIN").asInt();
-    this->createRewardPopup(TRANSLATE("REWARD_TITLE_FREE_COIN"),
-                            ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, coin);
+    auto next = CFreeRewardManager::Instance()->getNextRewardRemainTime();
+    time_t sec_t = next;
+    struct tm* time;
+    time = gmtime(&sec_t);
+    std::string result = TRANSLATE("REWARD_TITLE_FREE_COIN_NEXT_1");
+    
+    if(time->tm_hour > 0)
+        result += StringUtils::format(" %d ", time->tm_hour) + TRANSLATE("TIME_HOUR");
+    if(time->tm_min > 0)
+        result += StringUtils::format(" %d ", time->tm_min) + TRANSLATE("TIME_MIN");
+    
+    result += " " + TRANSLATE("REWARD_TITLE_FREE_COIN_NEXT_2");
+    
+    auto title = TRANSLATE("REWARD_TITLE_FREE_COIN") + "-" + result;
+
+    this->createRewardPopup(title, ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, coin);
     CGameScene::getGameScene()->getFreeReward();
 }
 
@@ -675,18 +689,25 @@ void CResultPopup::userDataUpdate()
         
         CDownloadManager::IsNetworkConnected([=](bool isConnected){
             if(isConnected){
-                auto oldScore = CFacebookManager::Instance()->getMyFacebookData()->_score;
+                auto oldScore    = CFacebookManager::Instance()->getMyFacebookData()->_score;
+                auto friendCount = (int)CFacebookManager::Instance()->getFBUserList().size();
+                auto setUserData = [=](){
+                    auto newRank = CFacebookManager::Instance()->getMyRank();
+                    userDataMng->setUserData_Number(USERDATA_KEY::RANK, newRank);
+                    userDataMng->setUserData_Number(USERDATA_KEY::FRIENDS_COUNT, friendCount);
+                };
                 if(GVALUE->TOTAL_SCORE > oldScore){
                     
                     // save score to facebook data
-                    auto friendCount = (int)CFacebookManager::Instance()->getFBUserList().size();
                     CFacebookManager::Instance()->SaveScore(GVALUE->TOTAL_SCORE);
                     CFacebookManager::Instance()->setSaveScoreListener([=](){
-                        auto newRank = CFacebookManager::Instance()->getMyRank();
-                        //                    CGameScene::getGameScene()->OpenRankUpPopup();
-                        userDataMng->setUserData_Number(USERDATA_KEY::RANK, newRank);
-                        userDataMng->setUserData_Number(USERDATA_KEY::FRIENDS_COUNT, friendCount);
-                        
+                        setUserData();
+                        this->release();
+                    });
+                }else{
+                    CFacebookManager::RequestFriendList();
+                    CFacebookManager::Instance()->setFriendListListener([=](){
+                        setUserData();
                         this->release();
                     });
                 }
