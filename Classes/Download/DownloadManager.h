@@ -29,6 +29,7 @@ struct PACKAGE_DATA{
     std::string _minBuildVersionIos;
     std::string _appLinkAndroid;
     std::string _appLinkIos;
+    std::string _facebookPageLink;
     DOWNLOAD_LIST _fileInfoList;
     
     PACKAGE_DATA()
@@ -37,7 +38,8 @@ struct PACKAGE_DATA{
     , _minBuildVersionAndroid("1.0.0")
     , _minBuildVersionIos("1.0")
     , _appLinkAndroid("")
-    , _appLinkIos(""){};
+    , _appLinkIos("")
+    , _facebookPageLink(""){};
 };
 
 typedef std::function<void(void)> VOID_LISTENER;
@@ -55,6 +57,7 @@ public:
     CC_SYNTHESIZE(PROGRESS_LISTENER, m_FileDecompressProgress,  FileDecompressProgress);
     
     std::string getAppUrl();
+    std::string getFacebookPageLink();
     static void IsNetworkConnected(std::function<void(bool)> listener);
     
 private:

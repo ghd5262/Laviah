@@ -702,6 +702,7 @@ void CObjectManager::InitTutorialStep()
         CTutorialStep::create()
         ->addBeginListener([=](CTutorialStep* sender){
             GVALUE->Clear();
+            CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::TUTORIAL_COUNT, 1);
         })
         ->addUpdateListener([=](float delta, CTutorialStep* sender){
             if(sender->getTime() > 0)

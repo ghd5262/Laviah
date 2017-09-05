@@ -356,8 +356,12 @@ void CUserDataManager::ExpAdd(int exp)
     auto newExp   = oldExp + exp;
     if(CUserLevelDataManager::Instance()->LevelUpCheck(oldLevel, newExp))
     {
+        auto newLevel    = oldLevel + 1;
+        auto reviewLevel = META_DATA("REVIEW_LEVEL").asInt();
         this->setUserData_Number(USERDATA_KEY::EXP, 0);
-        this->setUserData_Number(USERDATA_KEY::LEVEL, oldLevel + 1);
+        this->setUserData_Number(USERDATA_KEY::LEVEL, newLevel);
+        if(newLevel % reviewLevel == 0)
+            CGameScene::getGameScene()->setNeedReview(true);
     }
     else{
         this->setUserData_Number(USERDATA_KEY::EXP, newExp);

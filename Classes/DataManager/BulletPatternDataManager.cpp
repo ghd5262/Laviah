@@ -18,9 +18,9 @@ CBulletPatternDataManager::CBulletPatternDataManager()
 	initWithJson(m_PatternList, "patternList_7.json");
 
 	initWithJson(m_MissilePatternList, "missilePatternList.json");
-	initWithJson(m_BonusTimePatternList, "bonusTimePatternList.json");
+//	initWithJson(m_BonusTimePatternList, "bonusTimePatternList.json");
     
-    initWithJson(m_ConstellationPatternList, "constellationPatternList.json");
+//    initWithJson(m_ConstellationPatternList, "constellationPatternList.json");
     
     initWithJson(m_TutorialPatternList, "tutorialPatternList.json");
 
@@ -31,8 +31,8 @@ CBulletPatternDataManager::~CBulletPatternDataManager()
 {   
     DATA_MANAGER_UTILS::listDeleteAndClean(m_PatternList);
     DATA_MANAGER_UTILS::listDeleteAndClean(m_MissilePatternList);
-    DATA_MANAGER_UTILS::listDeleteAndClean(m_BonusTimePatternList);
-    DATA_MANAGER_UTILS::listDeleteAndClean(m_ConstellationPatternList);
+//    DATA_MANAGER_UTILS::listDeleteAndClean(m_BonusTimePatternList);
+//    DATA_MANAGER_UTILS::listDeleteAndClean(m_ConstellationPatternList);
     DATA_MANAGER_UTILS::listDeleteAndClean(m_TutorialPatternList);
     
     CC_SAFE_DELETE(m_TestPattern);

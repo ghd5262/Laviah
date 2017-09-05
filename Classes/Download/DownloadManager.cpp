@@ -63,6 +63,11 @@ std::string CDownloadManager::getAppUrl()
 #endif
 }
 
+std::string CDownloadManager::getFacebookPageLink()
+{
+    return m_NewPackage._facebookPageLink;
+}
+
 void CDownloadManager::IsNetworkConnected(std::function<void(bool)> listener)
 {
     network::HttpRequest* request = new network::HttpRequest();
@@ -138,6 +143,7 @@ void CDownloadManager::downloadNextFile() {
 	auto url = m_DownloadList.at(m_DownloadCurrentIndex)._url;
     this->requestDownload(url, [=](HttpClient *client, HttpResponse *response){
         this->downloadCompletePackageFile(client, response);
+        this->progressDownloadPackageFile();
     });
 }
 
@@ -326,6 +332,7 @@ void CDownloadManager::initPackageInfo(PACKAGE_DATA& packageInfo, std::string js
     packageInfo._minBuildVersionIos     = root["minBuildVersionIos"].asString();
     packageInfo._appLinkAndroid         = root["appLinkAndroid"].asString();
     packageInfo._appLinkIos             = root["appLinkIos"].asString();
+    packageInfo._facebookPageLink       = root["facebookPageLink"].asString();
 
 	auto fileArray = root["files"];
 	packageInfo._downloadFileCount  = fileArray.size();

@@ -49,6 +49,7 @@
 #include "../DataManager/BulletPatternDataManager.h"
 #include "../AI/States/RocketStates.h"
 #include "../SDKBOX/SDKBoxHeaders.h"
+#include "../Download/DownloadManager.h"
 
 #include <array>
 
@@ -88,7 +89,9 @@ CGameScene::CGameScene()
 , m_CountDown(nullptr)
 , m_KeyBoardSpace(false)
 , m_NeedTutorial(false)
+, m_NeedReview(false)
 , m_RewardAble(false)
+, m_CheckBox(false)
 , m_DailyResetRemain(0L)
 , m_WeeklyResetRemain(0L)
 , m_GameStartTime(0L){}
@@ -115,7 +118,7 @@ bool CGameScene::init()
     m_VisibleSize   = Director::getInstance()->getVisibleSize();
     m_TouchPos      = m_VisibleSize / 2;
     m_GameStartTime = time_t(time(nullptr));
-
+    auto userDataMng = CUserDataManager::Instance();
     this->scheduleUpdate();
     this->initMemoryPool();
     this->createFacebookManager();
@@ -142,9 +145,11 @@ bool CGameScene::init()
     this->dailyGoalResetCheck(true);
     this->facebookRankingResetCheck();
     this->schedule([=](float delta){
-        if(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO))
-            CUserDataManager::Instance()->SaveUserData(true, true);
+        if(userDataMng->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO))
+            userDataMng->SaveUserData(true, true);
     }, 300.f, "AutoSave");
+    
+    m_NeedTutorial = (userDataMng->getUserData_Number(USERDATA_KEY::TUTORIAL_COUNT) <= 0);
     
 //    this->ScreenFade([=](){
 //        this->Reward([=](bool isPlay){
@@ -672,8 +677,8 @@ void CGameScene::removeBonusTimeLayer()
 
 void CGameScene::createRandomCoin()
 {
-    auto data = CBulletPatternDataManager::Instance()->getRandomConstellationPatternByLevel(1, true);
-    CBulletCreator::CreateConstellation(data);
+//    auto data = CBulletPatternDataManager::Instance()->getRandomConstellationPatternByLevel(1, true);
+//    CBulletCreator::CreateConstellation(data);
 }
 
 void CGameScene::menuOpen()
@@ -684,7 +689,8 @@ void CGameScene::menuOpen()
     this->dailyGoalResetCheck();
     this->MenuFadeIn();
     this->turnUpSound();
-
+    this->createReviewPopup();
+    
     m_UILayer->setVisible(false);
     m_MenuLayer->setDefaultCallbackToTopAgain();
     CObjectManager::Instance()->getRocket()->ComebackHome();
@@ -885,7 +891,7 @@ void CGameScene::facebookRankingResetCheck()
         if(lastTimestamp != resetDay){
             CCLOG("Facebook rank reset");
             
-            if(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK) <= 3)
+            if(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK) < 3)
                  m_RewardAble = true;
             else this->getRankReward();
             
@@ -904,6 +910,81 @@ void CGameScene::startAppreciatePlanet()
 void CGameScene::stopAppreciatePlanet()
 {
     this->unschedule("START_APPRECIATE_PLANET");
+}
+
+void createCheckbox(Node* parent)
+{
+    auto checkbox = cocos2d::ui::CheckBox::create("autoSaveButton_0.png", "autoSaveButton_1.png");
+    checkbox->addEventListener([=](Ref* sender, cocos2d::ui::CheckBox::EventType event){
+        auto check = false;
+        if (cocos2d::ui::CheckBox::EventType::SELECTED == event)        check = true;
+        else if (cocos2d::ui::CheckBox::EventType::UNSELECTED == event) check = false;
+        
+        CGameScene::getGameScene()->setCheckBox(check);
+    });
+    checkbox->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    checkbox->setPosition(Vec2(parent->getContentSize().width * 0.09f,
+                               parent->getContentSize().height * 0.33f));
+    parent->addChild(checkbox);
+    
+    auto label = Label::createWithSystemFont(TRANSLATE("BUTTON_DO_NOT_AGAIN"), FONT::MALGUN, 40);
+    label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    label->setPosition(Vec2(parent->getContentSize().width * 0.12f,
+                            parent->getContentSize().height * 0.33f));
+    label->enableOutline(Color4B::BLACK, 2);
+    parent->addChild(label);
+}
+
+void CGameScene::createReviewPopup()
+{
+    auto showable    = (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::REVIEW) != 1);
+    if(!showable)       return;
+    if(!m_NeedReview)   return;
+    
+    auto storeURL    = CDownloadManager::Instance()->getAppUrl();
+    auto facebookURL = CDownloadManager::Instance()->getFacebookPageLink();
+    m_NeedReview     = false;
+
+    this->CreateAlertPopup()
+    ->setPositiveButton([=](Node* sender){
+        
+        auto reviewPopup = this->CreateAlertPopup()
+        ->setPositiveButton([=](Node* sender){
+            CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::REVIEW, 1);
+            Application::getInstance()->openURL(storeURL);
+
+        }, TRANSLATE("BUTTON_THANKYOU"))
+        ->setNegativeButton([=](Node* sender){
+            if(m_CheckBox)
+                CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::REVIEW, 1);
+            
+        }, TRANSLATE("BUTTON_LATER"))
+        ->setMessage(TRANSLATE("REVIEW_POPUP_TEXT_2"))
+        ->show(m_PopupLayer, ZORDER::POPUP);
+        
+        createCheckbox(reviewPopup);
+        
+    }, TRANSLATE("BUTTON_YES"))
+    ->setNegativeButton([=](Node* sender){
+        
+        auto facebookPopup = this->CreateAlertPopup()
+        ->setPositiveButton([=](Node* sender){
+            Application::getInstance()->openURL(facebookURL);
+            
+        }, TRANSLATE("BUTTON_THANKYOU"))
+        ->setNegativeButton([=](Node* sender){
+            if(m_CheckBox)
+                CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::REVIEW, 1);
+            
+        }, TRANSLATE("BUTTON_LATER"))
+        ->setMessage(TRANSLATE("REVIEW_POPUP_TEXT_3"))
+        ->show(m_PopupLayer, ZORDER::POPUP);
+        
+        createCheckbox(facebookPopup);
+        
+    }, TRANSLATE("BUTTON_NO"))
+    ->setMessage(TRANSLATE("REVIEW_POPUP_TEXT_1"))
+    ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
 // The following items are initialized only once.
@@ -1107,7 +1188,8 @@ void CGameScene::createRivalRankLayer()
         auto bullet = CBulletCreator::CreateBullet('8', random<int>(0, 360), 2700, false);
         bullet->getBulletSprite()->setSpriteFrame(StringUtils::format("rivalBullet_%d.png", rank + 1));
         
-        CObjectManager::Instance()->getPlayer()->CrownEnable(true);
+        if(rank == 0)
+            CObjectManager::Instance()->getPlayer()->CrownEnable(true);
         
         // cliper
         auto circleStencil = DrawNode::create();

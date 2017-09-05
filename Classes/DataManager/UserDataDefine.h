@@ -1,6 +1,9 @@
 #pragma once
 
 namespace USERDATA_KEY {
+    const std::string TUTORIAL_COUNT            = "USER_DATA_TUTORIAL_COUNT";
+    const std::string REVIEW                    = "USER_DATA_REVIEW";
+
     const std::string FREE_REWARD_LEVEL         = "USER_DATA_FREE_REWARD_LEVEL";
     const std::string FREE_REWARD_TIMESTAMP     = "USER_DATA_FREE_REWARD_TIMESTAMP";
     const std::string DAILY_RESET_SAVED_TIME    = "USER_DATA_DAILY_RESET_SAVED_TIME";

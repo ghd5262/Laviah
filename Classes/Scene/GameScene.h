@@ -75,8 +75,10 @@ public:
     
 	CC_SYNTHESIZE(cocos2d::Vec2, m_TouchPos, TouchPos);
     CC_SYNTHESIZE(bool, m_NeedTutorial, NeedTutorial);
+    CC_SYNTHESIZE(bool, m_NeedReview, NeedReview);
     CC_SYNTHESIZE(bool, m_IsMenuLayerFront, IsMenuLayerFront);
     CC_SYNTHESIZE(bool, m_RewardAble, RewardAble);
+    CC_SYNTHESIZE(bool, m_CheckBox, CheckBox);
     CC_SYNTHESIZE(long, m_DailyResetRemain, DailyResetRemain);
     CC_SYNTHESIZE(long, m_WeeklyResetRemain, WeeklyResetRemain);
     CC_SYNTHESIZE(long, m_GameStartTime, GameStartTime);
@@ -116,7 +118,7 @@ private:
     void facebookRankingResetCheck();
     void startAppreciatePlanet();
     void stopAppreciatePlanet();
-    
+    void createReviewPopup();
     
     // The following items are initialized only once.
     void initMemoryPool();
