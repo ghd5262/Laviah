@@ -748,7 +748,7 @@ void CGameScene::freeRewardCheck()
         
         CCLOG("server request succeed");
         auto rewardTimestamp   = CUserDataManager::Instance()->getFreeRewardTimestamp();
-        auto currentTimestamp  = time_t(data["seconds"].asDouble());
+        auto currentTimestamp  = time_t(data["currentSeconds"].asDouble());
         auto freeRewardTime    = CFreeRewardManager::Instance()->getFreeRewardTimeLimit();
         auto passedTime        = currentTimestamp - rewardTimestamp;
         if(passedTime > freeRewardTime){
@@ -762,7 +762,7 @@ void CGameScene::getFreeReward()
 {
     SERVER_REQUEST([=](Json::Value data){
         CCLOG("server request succeed");
-        auto currentTimestamp  = time_t(data["seconds"].asDouble());
+        auto currentTimestamp  = time_t(data["currentSeconds"].asDouble());
         
         CFreeRewardManager::Instance()->setRewardAble(false);
         
@@ -777,21 +777,43 @@ void CGameScene::getFreeReward()
 
 void CGameScene::getRankReward(){
     SERVER_REQUEST([=](Json::Value data){
-        auto currentTimestamp = time_t(data["seconds"].asDouble());
-        auto servertm         = gmtime(&currentTimestamp);
-        
-        auto day  = servertm->tm_mday;
-        auto wday = servertm->tm_wday;
-        auto resetDay = (day + ((7 - wday) % 7)) + 1;
+        auto newTimestamp = data["weeklyResetSeconds"].asDouble();
         
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::RANK, 30);
         
         // set time stamp again
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::WEEKLY_RESET_SAVED_TIME, resetDay);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::WEEKLY_RESET_SAVED_TIME, newTimestamp);
         
         m_RewardAble = false;
         
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
+}
+
+void dailyGoalResetResponse(Json::Value data)
+{
+    auto lastTimestamp = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::DAILY_RESET_SAVED_TIME);
+    auto newTimestamp = data["dailyResetSeconds"].asDouble();
+    auto remainTime   = data["dailyResetRemains"].asDouble();
+
+    CCLOG("Daily reset remain seconds is %lf", remainTime);
+    CGameScene::getGameScene()->setDailyResetRemain(remainTime);
+    
+    if(lastTimestamp != newTimestamp){
+        CCLOG("Daily goal reset");
+        
+        // reset daily achievements
+        CAchievementDataManager::Instance()->ResetNormalAchievements();
+        CAchievementDataManager::Instance()->getNewAchievements();
+        
+        // set time stamp again
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::DAILY_RESET_SAVED_TIME, newTimestamp);
+        
+        // notice popup (for debug)
+        //            this->CreateAlertPopup()
+        //            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
+        //            ->setMessage("normal achievement reseted")
+        //            ->show(m_PopupLayer, ZORDER::POPUP);
+    }
 }
 
 void CGameScene::dailyGoalResetCheck(bool serverCall/* = false*/)
@@ -799,104 +821,57 @@ void CGameScene::dailyGoalResetCheck(bool serverCall/* = false*/)
 //    bool exist = (CAchievementDataManager::Instance()->getPickedAchievementList().size() > 0);
 //    if(exist) return;
     
-    auto local     = time_t(time(nullptr));
-    auto localtm   = gmtime(&local);
+    auto seconds = time_t(time(nullptr));
+    auto tm   = gmtime(&seconds);
     auto lastTimestamp = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::DAILY_RESET_SAVED_TIME);
-    auto localYear = localtm->tm_year + 1900;
-    auto localMon  = localtm->tm_mon  + 1;
-    auto localDay  = localtm->tm_mday;
-    auto localHour = localtm->tm_hour;
-    auto localMin  = localtm->tm_min;
-    auto localSec  = localtm->tm_sec;
+    auto year = tm->tm_year + 1900;
+    auto mon  = tm->tm_mon  + 1;
+    auto day  = tm->tm_mday;
+    auto hour = tm->tm_hour;
+    auto min  = tm->tm_min;
+    auto sec  = tm->tm_sec;
+    auto resetDay = day + 1;
     
-    CCLOG("Current local GMT is %d-%d-%d %d : %d : %d",
-          localYear, localMon, localDay,
-          localHour, localMin, localSec);
+    std::string timeString = StringUtils::format("%d-%d-%d %d:%d:%d", year, mon, resetDay, 0, 0, 0);
+    
+    CCLOG("Current local GMT is %d-%d-%d %d:%d:%d", year, mon, day, hour, min, sec);
+    CCLOG("local daily reset GMT is %s", timeString.c_str());
     CCLOG("Last saved day is %d", lastTimestamp);
 
-    if((localDay+1 == lastTimestamp) && !serverCall) return;
+    struct tm tartm;
+    strptime(timeString.c_str(),"%Y-%m-%d %H:%M:%S",&tartm);
+    auto target = mktime(&tartm) + tartm.tm_gmtoff;
+
+    if((target == lastTimestamp) && !serverCall) return;
     
     SERVER_REQUEST([=](Json::Value data){
-        auto currentTimestamp = time_t(data["seconds"].asDouble());
-        auto servertm         = std::gmtime(&currentTimestamp);
-        
-        auto year = servertm->tm_year + 1900;
-        auto mon  = servertm->tm_mon  + 1;
-        auto day  = servertm->tm_mday;
-        auto hour = servertm->tm_hour;
-        auto min  = servertm->tm_min;
-        auto sec  = servertm->tm_sec;
-        auto resetDay = day + 1;
-        std::string timeString = StringUtils::format("%d-%d-%d %d:%d:%d", year, mon, resetDay, 0, 0, 0);
-
-        CCLOG("Current server GMT is %d-%d-%d %d:%d:%d", year, mon, day, hour, min, sec);
-        CCLOG("Daily reset GMT is %s", timeString.c_str());
-        
-        struct tm tartm;
-        strptime(timeString.c_str(),"%Y-%m-%d %H:%M:%S",&tartm);
-        setenv("TZ", "UTC", 1);
-        auto target = mktime(&tartm);
-
-        m_DailyResetRemain = target - currentTimestamp;
-        CCLOG("Daily reset remain seconds is %ld", m_DailyResetRemain);
-
-        if(lastTimestamp != resetDay){
-            CCLOG("Daily goal reset");
-            
-            // reset daily achievements
-            CAchievementDataManager::Instance()->ResetNormalAchievements();
-            CAchievementDataManager::Instance()->getNewAchievements();
-
-            // set time stamp again
-            CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::DAILY_RESET_SAVED_TIME, resetDay);
-            
-            // notice popup (for debug)
-            //            this->CreateAlertPopup()
-            //            ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
-            //            ->setMessage("normal achievement reseted")
-            //            ->show(m_PopupLayer, ZORDER::POPUP);
-        }
-        
+        dailyGoalResetResponse(data);
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
+}
+
+void weeklyRankingResetResponse(Json::Value data){
+
+    auto lastTimestamp = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::WEEKLY_RESET_SAVED_TIME);
+    auto gameScene    = CGameScene::getGameScene();
+    auto newTimestamp = data["weeklyResetSeconds"].asDouble();
+    auto remainTime   = data["weeklyResetRemains"].asDouble();
+    
+    CCLOG("Weekly reset remain seconds is %lf", remainTime);
+    gameScene->setWeeklyResetRemain(remainTime);
+    
+    if(lastTimestamp != newTimestamp){
+        CCLOG("Facebook rank reset");
+        
+        if(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK) < 3)
+            gameScene->setRewardAble(true);
+        else gameScene->getRankReward();
+    }
 }
 
 void CGameScene::facebookRankingResetCheck()
 {
     SERVER_REQUEST([=](Json::Value data){
-        auto currentTimestamp = time_t(data["seconds"].asDouble());
-        auto servertm         = gmtime(&currentTimestamp);
-        auto lastTimestamp    = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::WEEKLY_RESET_SAVED_TIME);
-
-        auto year = servertm->tm_year + 1900;
-        auto mon  = servertm->tm_mon  + 1;
-        auto day  = servertm->tm_mday;
-        auto wday = servertm->tm_wday;
-        auto hour = servertm->tm_hour;
-        auto min  = servertm->tm_min;
-        auto sec  = servertm->tm_sec;
-        auto resetDay = (day + ((7 - wday) % 7)) + 1;
-        std::string timeString = StringUtils::format("%d-%d-%d %d:%d:%d", year, mon, resetDay, 0, 0, 0);
-
-        CCLOG("Current server GMT is %d-%d-%d %d:%d:%d", year, mon, day, hour, min, sec);
-        CCLOG("Weekly reset GMT is %s", timeString.c_str());
-        
-        struct tm tartm;
-        strptime(timeString.c_str(),"%Y-%m-%d %H:%M:%S",&tartm);
-        setenv("TZ", "UTC", 1);
-        auto target = mktime(&tartm);
-        
-        m_WeeklyResetRemain = target - currentTimestamp;
-        CCLOG("Weekly reset remain seconds is %ld", m_WeeklyResetRemain);
-        
-        if(lastTimestamp != resetDay){
-            CCLOG("Facebook rank reset");
-            
-            if(CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::RANK) < 3)
-                 m_RewardAble = true;
-            else this->getRankReward();
-            
-        }
-        
+        weeklyRankingResetResponse(data);
     }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
 }
 

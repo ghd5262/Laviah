@@ -21,6 +21,7 @@ namespace COLOR {
 }
 
 namespace FONT {
+    const std::string NUMBER("fonts/Orbitron-Regular.ttf");
 	const std::string MALGUN("fonts/NanumGothic.ttf");
 	const std::string MALGUNBD("fonts/NanumGothicBold.ttf");
 }
