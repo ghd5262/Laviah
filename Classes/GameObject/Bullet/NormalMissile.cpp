@@ -106,9 +106,7 @@ void CNormalMissile::CollisionWithPlayer()
 		m_Player->LostSomeHealth(this->getPower());
         m_Player->Crushed();
         m_Planet->Crushed();
-
-		this->ReturnToMemoryBlock();
-	}
+    }
 }
 
 void CNormalMissile::CollisionWithBarrier()

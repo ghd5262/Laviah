@@ -65,7 +65,6 @@ void CNormalBullet::CollisionWithPlayer()
 		m_Player->Crushed();
 		CCLOG("Bullet Power %f", this->getPower());
 		m_Player->LostSomeHealth(this->getPower());
-        this->ReturnToMemoryBlock();
 	}
 }
 
