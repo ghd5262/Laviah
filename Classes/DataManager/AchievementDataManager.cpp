@@ -5,6 +5,7 @@
 #include "AchievementRewarder/AchievementRewarder.hpp"
 #include "../json/json.h"
 #include "../Common/StringUtility.h"
+#include "../MyUI/Tutorial/TutorialManager.hpp"
 
 using namespace cocos2d;
 using namespace ACHIEVEMENT_DATA_KEY;
@@ -203,6 +204,8 @@ bool CAchievementDataManager::CheckAchievementComplete(int index, bool isHidden)
 
 const ACHIEVEMENT* CAchievementDataManager::CompleteCheckRealTime(bool isHidden)
 {
+    if(CTutorialManager::Instance()->getIsRunning()) return nullptr;
+    
     ACHIEVEMENT_LIST achievementList;
     if(isHidden) achievementList = m_HiddenAchievementDataList;
     else         achievementList = this->getPickedAchievementList();

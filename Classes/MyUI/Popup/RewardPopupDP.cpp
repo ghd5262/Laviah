@@ -136,7 +136,7 @@ void CRewardPopupDP::goldReward()
                                                  CallFunc::create([=](){
                 
                 // create bezier action config
-                auto targetPos   = Vec2(layerSize.width * 0.055f, layerSize.height * 0.925f);
+                auto targetPos   = Vec2(layerSize.width * 0.065f, layerSize.height * 0.925f);
                 auto length      = Vec2(targetPos - sender->getPosition()).length();
                 auto cPos1       = Vec2(sender->getPosition().x - (length * 0.3f),
                                         sender->getPosition().y - 100.f);
