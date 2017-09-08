@@ -72,7 +72,6 @@ public:
     void GiantMode();
     void NormalMode();
     void InitTutorialStep();
-    void AddUIToCapturedNode(cocos2d::Node* captured);
     void CaptureZoomLayer();
     void setGameStateByLevel();
     void SlowMotion();

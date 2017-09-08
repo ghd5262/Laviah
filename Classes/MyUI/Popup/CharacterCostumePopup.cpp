@@ -1,10 +1,13 @@
 #include "CharacterCostumePopup.hpp"
 #include "CharacterCostumePopupDP.hpp"
+#include "SharePopup.hpp"
 #include "../MyButton.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/CostumeDataManager.hpp"
+#include "../../DataManager/CharacterDataManager.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../GameObject/ObjectManager.h"
+#include "../../GameObject/BackGround.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -94,7 +97,6 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
     m_NameLabel->setColor(Color3B::WHITE);
     bg->addChild(m_NameLabel);
     
-    
     auto btnEnd = CMyButton::create()
     ->addEventListener([=](Node* sender){
         this->end();
@@ -105,10 +107,21 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->show(bg);
     
+    m_ShareButton = CMyButton::create()
+    ->addEventListener([=](Node* sender){
+        this->share();
+    })
+    ->setButtonNormalImage("shareIcon_1.png")
+    ->setButtonPosition(Vec2(layerSize.width * 0.08f, layerSize.height * 0.05f))
+    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->show(bg);
+    
     // costume button disable.
     CMyButton::create()
     ->addEventListener([=](Node* sender){
         m_SelectButton->setTouchEnable(false);
+        m_ShareButton->setTouchEnable(false);
+        m_FingerIcon->setVisible(false);
     }, eMYBUTTON_STATE::BEGIN)
     ->setEnableSound(false)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height * 0.8f))
@@ -132,7 +145,13 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
     m_FingerIcon->setPosition(Vec2(layerSize.width * 0.8f, layerSize.height * 0.3f));
     m_FingerIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_FingerIcon->setOpacity(0);
+    m_FingerIcon->setVisible(m_CurrentData->_index == 0);
+
     this->addChild(m_FingerIcon);
+    
+    m_CapturedNode = Sprite::create("empty_150x150.png");
+    m_CapturedNode->setPosition(Vec2(-500, -500));
+    this->addChild(m_CapturedNode);
     
     auto delay1  = DelayTime::create(3.5f);
     auto fadeIn  = FadeTo::create(0.5f, 255 * .8f);
@@ -160,6 +179,7 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
 //        action(m_NameLabel);
 //        action(btnEnd);
 //        action(bg);
+        action(m_ShareButton);
 
         m_ScrollView->jumpToItem(jumpIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
     }, 1.f);
@@ -170,6 +190,7 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
 //        m_NameLabel->runAction(FadeTo::create(0.3f, 0));
 //        btnEnd->runAction(FadeTo::create(0.3f, 0));
 //        bg->runAction(FadeTo::create(0.5f, 0));
+        m_ShareButton->runAction(FadeTo::create(0.3f, 0));
     });
     
     this->setDefaultCallback([=](Node* sender){
@@ -226,6 +247,43 @@ void CCharacterCostumePopup::select()
     this->end();
 }
 
+void CCharacterCostumePopup::share()
+{
+    if(m_CapturedNode == nullptr) return;
+    
+    auto characterData = CCharacterDataManager::Instance()->getCharacterByIndex(m_CharacterIndex);
+    auto character = Sprite::createWithSpriteFrameName(characterData->_texture_600);
+    character->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    character->setPosition(this->getContentSize() / 2);
+    character->setScale(1.5f);
+    this->addChild(character);
+    
+    auto costume = Sprite::createWithSpriteFrameName(m_CurrentData->_texture_600);
+    costume->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    costume->setPosition(this->getContentSize() / 2);
+    costume->setScale(1.5f);
+    this->addChild(costume);
+    
+    auto renderTexture = RenderTexture::create(1080, 1920);
+    renderTexture->begin();
+    
+    CObjectManager::Instance()->getBackground()->visit();
+    character->visit();
+    costume->visit();
+    
+    renderTexture->end();
+    
+    character->removeFromParent();
+    costume->removeFromParent();
+    
+    auto texture = renderTexture->getSprite()->getTexture();
+    m_CapturedNode->removeAllChildren();
+    m_CapturedNode->setTexture(texture);
+    
+    CGameScene::getGameScene()->OpenSharePopup(m_CapturedNode->getTexture(),
+                                               SIZE_TYPE::HALF_SIZE, true);
+}
+
 cocos2d::ui::PageView* CCharacterCostumePopup::createPageView(Size size, Vec2 pos)
 {
     auto pageView = PageView::create();
@@ -262,7 +320,7 @@ void CCharacterCostumePopup::scrollCallback(cocos2d::Ref* ref, PageView::EventTy
     // update name label
     m_NameLabel->setString(TRANSLATE(m_CurrentData->_name));
     
+    m_ShareButton->setTouchEnable(selectable);
     m_SelectButton->setTouchEnable(selectable);
     m_SelectButton->changeContents(text);
-    m_FingerIcon->setVisible(false);
 }

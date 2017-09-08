@@ -716,33 +716,6 @@ void CObjectManager::InitTutorialStep()
     }
 }
 
-void CObjectManager::AddUIToCapturedNode(Node* captured){
-    if(!captured) return;
-    
-
-    auto layerSize  = captured->getContentSize();
-    auto createLabel = [=](std::string value, float size, Vec2 pos){
-        auto label = Label::createWithTTF(value, FONT::MALGUNBD, size);
-        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-        label->setPosition(pos);
-        label->setOpacity(255 * 0.1f);
-        label->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 3);
-        captured->addChild(label);
-        return label;
-    };
-    
-    // score
-    createLabel(StringUtility::toCommaString(GVALUE->TOTAL_SCORE), 80, Vec2(layerSize.width * 0.03f,
-                                                                            layerSize.height * 0.96f));
-    
-    // logo
-    auto logo = Sprite::create("background_0.png");
-    logo->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    logo->setPosition(Vec2(layerSize.width * 0.8f, layerSize.height * 0.05f));
-    logo->setScale(0.5f);
-    captured->addChild(logo);
-}
-
 void CObjectManager::CaptureZoomLayer()
 {
     if(!m_CaptureNode) return;

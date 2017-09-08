@@ -166,7 +166,7 @@ bool CGameScene::init()
 //    this->createResultPopup();
     
     CAudioManager::Instance()->Clear();
-    CAudioManager::Instance()->PlayBGM("sounds/menuBGM.wav", false);
+    CAudioManager::Instance()->PlayBGM("sounds/menuBGM.mp3", false);
     
     return true;
 }
@@ -377,9 +377,15 @@ void CGameScene::OpenVideoPopup()
     m_ZoomLayer->pause();
 }
 
-void CGameScene::OpenSharePopup()
+void CGameScene::OpenSharePopup(cocos2d::Texture2D* texture,
+                                int sizeType, bool logo,
+                                int score/* = 0*/)
 {
     CSharePopup::create()
+    ->setCapturedTexture(texture)
+    ->setSizeType(SIZE_TYPE(sizeType))
+    ->setLogoEnable(logo)
+    ->setScore(score)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)

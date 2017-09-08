@@ -48,7 +48,9 @@ public:
     void OpenAchievementPopup();
     void OpenGoalPopup();
     void OpenVideoPopup();
-    void OpenSharePopup();
+    void OpenSharePopup(cocos2d::Texture2D* texture,
+                        int sizeType, bool logo,
+                        int score = 0);
     void OpenDownloadPopup();
     
     void RandomCoin();

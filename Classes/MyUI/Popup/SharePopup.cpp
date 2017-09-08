@@ -3,6 +3,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../Scene/GameScene.h"
 #include "../../SDKBOX/SDKBoxHeaders.h"
+#include "../../Common/StringUtility.h"
 
 CSharePopup* CSharePopup::create()
 {
@@ -20,50 +21,45 @@ CSharePopup* CSharePopup::create()
     }
 }
 
-bool CSharePopup::init()
+CPopup* CSharePopup::show(Node* parent, int zOrder)
 {
-    if (!CPopup::init()) return false;
+    auto popupSize = this->getContentSize();
+    m_ScreenNode = Node::create();
+    m_ScreenNode->setContentSize(popupSize);
+    m_ScreenNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_ScreenNode->setCascadeOpacityEnabled(true);
+    m_ScreenNode->setPosition(popupSize / 2);
+    this->addChild(m_ScreenNode);
     
-    auto popupSize   = this->getContentSize();
-
-//    auto back        = LayerColor::create(Color4B::WHITE, popupSize.width, popupSize.height);
-//    back->setIgnoreAnchorPointForPosition(false);
-//    back->setCascadeOpacityEnabled(true);
-//    back->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-//    back->setPosition(popupSize / 2);
-//    back->setScale(0.75f);
-//    this->addChild(back);
+    if(m_CapturedTexture != nullptr){
+        auto copiedNode  = Sprite::createWithTexture(m_CapturedTexture);
+        copiedNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        copiedNode->setScaleY(-1);
+        copiedNode->setPosition(popupSize / 2);
+        copiedNode->setCascadeOpacityEnabled(true);
+        m_ScreenNode->addChild(copiedNode);
+    }
     
-    auto screen      = Node::create();
-    screen->setContentSize(popupSize);
-    screen->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    screen->setCascadeOpacityEnabled(true);
-    screen->setPosition(popupSize / 2);
-    this->addChild(screen);
-    
-    auto captureNode = CObjectManager::Instance()->getCaptureNode();
-    auto copiedNode  = Sprite::createWithTexture(captureNode->getTexture());
-    copiedNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    copiedNode->setScaleY(-1);
-    copiedNode->setPosition(popupSize / 2);
-    copiedNode->setCascadeOpacityEnabled(true);
-    screen->addChild(copiedNode);
-    
-    auto ui          = Node::create();
+    auto ui = Node::create();
     ui->setContentSize(popupSize);
     ui->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     ui->setPosition(popupSize / 2);
     ui->setCascadeOpacityEnabled(true);
-    screen->addChild(ui);
+    m_ScreenNode->addChild(ui);
+    
+    if(m_Score > 0){
+        
+        auto score = StringUtility::toCommaString(m_Score);
+        auto label = Label::createWithTTF(score, FONT::MALGUNBD, 80);
+        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+        label->setPosition(Vec2(popupSize.width * 0.03f, popupSize.height * 0.96f));
+        label->setOpacity(255 * 0.1f);
+        label->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 3);
+        ui->addChild(label);
+    }
     
     // save to file
-    CObjectManager::Instance()->AddUIToCapturedNode(ui);
-    CShareManager::SaveNodeToFile(screen);
-
-//    auto sprite = Sprite::create(CShareManager::Instance()->getCapturePath());
-//    sprite->setPosition(popupSize / 2);
-//    sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-//    this->addChild(sprite, 10);
+    this->saveToFile();
     
     auto createBtn = [=](const std::function<void(Node*)> &callback, std::string icon, Vec2 pos, bool use){
         auto btn = CMyButton::create()
@@ -84,7 +80,7 @@ bool CSharePopup::init()
     
     auto btnShareFacebook = createBtn([=](Node* sender){
         CShareManager::Share(true, sdkbox::SocialPlatform::Platform_Facebook);
-//        CFacebookManager::Instance()->OpenPhotoShareDialog("");
+        //        CFacebookManager::Instance()->OpenPhotoShareDialog("");
     }, "shareFacebook.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f), false);
     
     auto btnShareTwitter  = createBtn([=](Node* sender){
@@ -105,33 +101,93 @@ bool CSharePopup::init()
             sender->runAction(sequence);
         };
         
-        action(screen, 0.f);
+        action(m_ScreenNode, 0.f);
         action(btnEnd, 0.3f);
         action(btnShareFacebook, 0.3f);
         action(btnShareTwitter, 0.3f);
         action(btnShareNative, 0.3f);
-
-//        action(back, 0.f);
+        
+        //        action(back, 0.f);
     }, 0.6f);
     
     this->setCloseAnimation([=](Node* sender){
         
-        screen->runAction(FadeTo::create(0.3f, 0));
+        m_ScreenNode->runAction(FadeTo::create(0.3f, 0));
         btnEnd->runAction(FadeTo::create(0.3f, 0));
         btnShareFacebook->runAction(FadeTo::create(0.3f, 0));
         btnShareTwitter->runAction(FadeTo::create(0.3f, 0));
         btnShareNative->runAction(FadeTo::create(0.3f, 0));
-
-//        back->runAction(FadeTo::create(0.3f, 0));
+        
+        //        back->runAction(FadeTo::create(0.3f, 0));
     });
     
     this->setDefaultCallback([=](Node* sender){
         this->end();
     });
-    
-    return true;
+
+    return CPopup::show(parent, zOrder);
+}
+
+CSharePopup* CSharePopup::setSizeType(SIZE_TYPE type)
+{
+    m_Type = type;
+    return this;
+}
+
+CSharePopup* CSharePopup::setCapturedTexture(cocos2d::Texture2D* texture)
+{
+    m_CapturedTexture = texture;
+    return this;
+}
+
+CSharePopup* CSharePopup::setScore(int score)
+{
+    m_Score = score;
+    return this;
+}
+
+CSharePopup* CSharePopup::setLogoEnable(bool enable)
+{
+    m_LogoEnable = enable;
+    return this;
 }
 
 void CSharePopup::end(){
     this->popupClose();
+}
+
+void CSharePopup::saveToFile()
+{
+    // cut by size
+    auto popupSize = this->getContentSize();
+    auto renderTexture = RenderTexture::create(popupSize.width, popupSize.height);
+    renderTexture->setPosition(popupSize / 2);
+    renderTexture->begin();
+    m_ScreenNode->visit();
+    renderTexture->end();
+    
+    auto sizeY = (m_Type == SIZE_TYPE::FULL_SIZE) ? popupSize.height : popupSize.height * 0.7;
+    auto saveNode = Node::create();
+    saveNode->setContentSize(Size(popupSize.width, sizeY));
+    saveNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    saveNode->setCascadeOpacityEnabled(true);
+    saveNode->setPosition(Vec2(-1000, -2000));
+    this->addChild(saveNode);
+    
+    auto texture = renderTexture->getSprite()->getTexture();
+    auto copiedTexture = Sprite::createWithTexture(texture);
+    copiedTexture->setPosition(saveNode->getContentSize() / 2);
+    copiedTexture->setScaleY(-1);
+    saveNode->addChild(copiedTexture);
+    
+    if(m_LogoEnable){
+        auto logo = Sprite::create("background_0.png");
+        logo->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+        logo->setPosition(Vec2(popupSize.width - 40, 50));
+        logo->setScale(0.5f);
+        saveNode->addChild(logo);
+    }
+    
+    // save to file
+    CShareManager::SaveNodeToFile(saveNode);
 }

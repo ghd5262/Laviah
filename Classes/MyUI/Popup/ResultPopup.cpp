@@ -1,5 +1,6 @@
 #include "ResultPopup.h"
 #include "RewardPopup.h"
+#include "SharePopup.hpp"
 #include "../MyButton.h"
 #include "../ScoreUI.h"
 #include "../UserCoinButton.h"
@@ -386,7 +387,11 @@ void CResultPopup::openAchievementPopup()
 
 void CResultPopup::share()
 {
-    CGameScene::getGameScene()->OpenSharePopup();
+    auto node = CObjectManager::Instance()->getCaptureNode();
+    CGameScene::getGameScene()->OpenSharePopup(node->getTexture(),
+                                               SIZE_TYPE::FULL_SIZE,
+                                               true,
+                                               GVALUE->TOTAL_SCORE);
 }
 
 void CResultPopup::exit()
