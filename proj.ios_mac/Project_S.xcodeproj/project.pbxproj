@@ -78,6 +78,7 @@
 		599B77D61F27EEEC0066D32E /* CostumeDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77D31F27EEEC0066D32E /* CostumeDataManager.cpp */; };
 		59A8AD4B1F4B196A00D4CA42 /* DownloadPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59A8AD491F4B196600D4CA42 /* DownloadPopup.cpp */; };
 		59A8AD4C1F4B196B00D4CA42 /* DownloadPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59A8AD491F4B196600D4CA42 /* DownloadPopup.cpp */; };
+		59B25DBC1F638F0800743CC2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59B25DBB1F638F0800743CC2 /* Images.xcassets */; };
 		59E1A5F51F129332003020B9 /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A5F41F129332003020B9 /* UnityAds.framework */; };
 		59E1A5F61F129332003020B9 /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E1A5F41F129332003020B9 /* UnityAds.framework */; };
 		59E1A6461F162E0A003020B9 /* FacebookManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59E1A63D1F162E0A003020B9 /* FacebookManager.cpp */; };
@@ -309,7 +310,7 @@
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D6058910D05DD3D006BFB54 /* LAVIAH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LAVIAH.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* Laviah.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Laviah.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1F604F18B4DAEC67915C785C /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/ms.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 		22BF4443918379EE17AA6573 /* gu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = gu; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/gu.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
@@ -339,7 +340,7 @@
 		503AE11117EB99EE00D1A890 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		503AE11A17EB9C5A00D1A890 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		506740119760D2FF248552E9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
-		5087E76F17EB910900C73F5D /* LAVIAH Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LAVIAH Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5087E76F17EB910900C73F5D /* Laviah Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Laviah Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5087E77217EB970100C73F5D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		5087E77317EB970100C73F5D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		5087E77417EB970100C73F5D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
@@ -393,6 +394,7 @@
 		599B77D41F27EEEC0066D32E /* CostumeDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CostumeDataManager.hpp; sourceTree = "<group>"; };
 		59A8AD491F4B196600D4CA42 /* DownloadPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DownloadPopup.cpp; sourceTree = "<group>"; };
 		59A8AD4A1F4B196700D4CA42 /* DownloadPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DownloadPopup.hpp; sourceTree = "<group>"; };
+		59B25DBB1F638F0800743CC2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = LAVIAH/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		59E1A5F41F129332003020B9 /* UnityAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UnityAds.framework; sourceTree = "<group>"; };
 		59E1A6221F14B7FF003020B9 /* Project_S iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Project_S iOS.entitlements"; sourceTree = "<group>"; };
 		59E1A63D1F162E0A003020B9 /* FacebookManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FacebookManager.cpp; sourceTree = "<group>"; };
@@ -794,8 +796,8 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* LAVIAH.app */,
-				5087E76F17EB910900C73F5D /* LAVIAH Mac.app */,
+				1D6058910D05DD3D006BFB54 /* Laviah.app */,
+				5087E76F17EB910900C73F5D /* Laviah Mac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -884,6 +886,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				59B25DBB1F638F0800743CC2 /* Images.xcassets */,
 				937311AC1D5849D500D5EB5C /* fonts */,
 				9348C5AE1D868481000E8D1B /* update */,
 				937311AD1D5849D500D5EB5C /* imageRes */,
@@ -1406,9 +1409,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* LAVIAH */ = {
+		1D6058900D05DD3D006BFB54 /* Laviah */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "LAVIAH" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Laviah" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -1419,14 +1422,14 @@
 			dependencies = (
 				1AC6FB25180E99E1004C840B /* PBXTargetDependency */,
 			);
-			name = LAVIAH;
+			name = Laviah;
 			productName = iphone;
-			productReference = 1D6058910D05DD3D006BFB54 /* LAVIAH.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* Laviah.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5087E73D17EB910900C73F5D /* LAVIAH Mac */ = {
+		5087E73D17EB910900C73F5D /* Laviah Mac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "LAVIAH Mac" */;
+			buildConfigurationList = 5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "Laviah Mac" */;
 			buildPhases = (
 				5087E74817EB910900C73F5D /* Resources */,
 				5087E75617EB910900C73F5D /* Sources */,
@@ -1437,9 +1440,9 @@
 			dependencies = (
 				1AC6FB16180E9959004C840B /* PBXTargetDependency */,
 			);
-			name = "LAVIAH Mac";
+			name = "Laviah Mac";
 			productName = iphone;
-			productReference = 5087E76F17EB910900C73F5D /* LAVIAH Mac.app */;
+			productReference = 5087E76F17EB910900C73F5D /* Laviah Mac.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1484,8 +1487,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* LAVIAH */,
-				5087E73D17EB910900C73F5D /* LAVIAH Mac */,
+				1D6058900D05DD3D006BFB54 /* Laviah */,
+				5087E73D17EB910900C73F5D /* Laviah Mac */,
 			);
 		};
 /* End PBXProject section */
@@ -1524,6 +1527,7 @@
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				9348C5AF1D868481000E8D1B /* update in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
+				59B25DBC1F638F0800743CC2 /* Images.xcassets in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
@@ -1814,6 +1818,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Project_S iOS.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1876,6 +1882,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Project_S iOS.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2068,7 +2076,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "LAVIAH" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Laviah" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -2077,7 +2085,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "LAVIAH Mac" */ = {
+		5087E76C17EB910900C73F5D /* Build configuration list for PBXNativeTarget "Laviah Mac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5087E76D17EB910900C73F5D /* Debug */,
