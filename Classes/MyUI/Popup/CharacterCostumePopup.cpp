@@ -8,6 +8,7 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../GameObject/ObjectManager.h"
 #include "../../GameObject/BackGround.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -280,6 +281,9 @@ void CCharacterCostumePopup::share()
     m_CapturedNode->removeAllChildren();
     m_CapturedNode->setTexture(texture);
     
+    CShareManager::Instance()->setShareTitle(TRANSLATE("COSTUME_SHARE_TITLE"));
+    CShareManager::Instance()->setShareText(TRANSLATE("COSTUME_SHARE_TEXT"));
+
     CGameScene::getGameScene()->OpenSharePopup(m_CapturedNode->getTexture(),
                                                SIZE_TYPE::HALF_SIZE, true);
 }

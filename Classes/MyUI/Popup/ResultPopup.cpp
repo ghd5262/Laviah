@@ -388,6 +388,9 @@ void CResultPopup::openAchievementPopup()
 void CResultPopup::share()
 {
     auto node = CObjectManager::Instance()->getCaptureNode();
+    auto text = StringUtils::format(TRANSLATE("SCORE_SHARE_TEXT").c_str(), GVALUE->TOTAL_SCORE);
+    CShareManager::Instance()->setShareText(text);
+    CShareManager::Instance()->setShareTitle(TRANSLATE("SCORE_SHARE_TITLE"));
     CGameScene::getGameScene()->OpenSharePopup(node->getTexture(),
                                                SIZE_TYPE::FULL_SIZE,
                                                true,

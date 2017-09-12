@@ -6,7 +6,9 @@ using namespace cocos2d;
 using namespace cocos2d::ui;
 
 CShareManager::CShareManager()
-: m_CapturePath(""){}
+: m_CapturePath("")
+, m_ShareTitle("")
+, m_ShareText(""){}
 
 CShareManager::~CShareManager(){}
 
@@ -30,12 +32,13 @@ void CShareManager::Share(bool dialog, sdkbox::SocialPlatform platform)
 //    if (!path.empty() && FileUtils::getInstance()->isFileExist(path))
 //    {
     sdkbox::SocialShareInfo info;
-    info.text  = TRANSLATE("TWITTER_SHARE_TEXT");
-    info.title = TRANSLATE("TWITTER_SHARE_TITLE");
+    info.title = CShareManager::Instance()->getShareTitle();
+    info.text  = CShareManager::Instance()->getShareText();
     info.image = path;
     info.link  = CDownloadManager::Instance()->getAppUrl();
     info.platform = platform;
     info.showDialog = dialog;
+    
     sdkbox::PluginShare::share(info);
 //    }
 //    else
@@ -48,8 +51,8 @@ void CShareManager::ShareNative()
 //    if (!path.empty() && FileUtils::getInstance()->isFileExist(path))
 //    {
     sdkbox::SocialShareInfo info;
-    info.text  = TRANSLATE("TWITTER_SHARE_TEXT");
-    info.title = TRANSLATE("TWITTER_SHARE_TITLE");
+    info.title = CShareManager::Instance()->getShareTitle();
+    info.text  = CShareManager::Instance()->getShareText();
     info.image = path;
     info.link  = CDownloadManager::Instance()->getAppUrl();;
         
@@ -62,10 +65,12 @@ void CShareManager::ShareNative()
 bool CShareManager::SaveNodeToFile(cocos2d::Node* node)
 {
     auto image   = utils::captureNode(node);
-    auto path    = FileUtils::getInstance()->getWritablePath() + "remoteImage/" + "ShareCapture.png";
+    auto path    = FileUtils::getInstance()->getWritablePath() + "remoteImage/" + "ShareCapture";
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    path = "/mnt/sdcard/ShareCapture.png";
+    path = "/mnt/sdcard/ShareCapture";
 #endif
+    path += StringUtils::format("%ld", time(nullptr)) + ".png";
+
     auto succeed = image->saveToFile(path);
     if(!succeed){
         CCLOG("Capture failed. Can not save to file.");
@@ -74,6 +79,12 @@ bool CShareManager::SaveNodeToFile(cocos2d::Node* node)
     
     CShareManager::Instance()->setCapturePath(path);
     return true;
+}
+
+void CShareManager::RemoveCapturedFie()
+{
+    auto path = CShareManager::Instance()->getCapturePath();
+    FileUtils::getInstance()->removeFile(path);
 }
 
 void CShareManager::onShareState(const sdkbox::SocialShareResponse& response)

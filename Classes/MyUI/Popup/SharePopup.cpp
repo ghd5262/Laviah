@@ -53,7 +53,7 @@ CPopup* CSharePopup::show(Node* parent, int zOrder)
         auto label = Label::createWithTTF(score, FONT::MALGUNBD, 80);
         label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
         label->setPosition(Vec2(popupSize.width * 0.03f, popupSize.height * 0.96f));
-        label->setOpacity(255 * 0.1f);
+        label->setOpacity(255 * 0.2f);
         label->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, 3);
         ui->addChild(label);
     }
@@ -153,6 +153,9 @@ CSharePopup* CSharePopup::setLogoEnable(bool enable)
 }
 
 void CSharePopup::end(){
+    CShareManager::RemoveCapturedFie();
+    CShareManager::Instance()->setShareText("");
+    CShareManager::Instance()->setShareTitle("");
     this->popupClose();
 }
 
