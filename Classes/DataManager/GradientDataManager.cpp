@@ -96,12 +96,16 @@ CGradientDataManager::CGradientDataManager()
 //    addScoreColor( 0  , 158, 176 );
 //    addScoreColor( 0  , 120, 176 );
     
-    addScoreColor( 174, 171, 160  );
-    addScoreColor( 194, 187, 161  );
-    addScoreColor( 211, 199, 150  );
-    addScoreColor( 222, 203, 124  );
-    addScoreColor( 237, 207, 85   );
+//    addScoreColor( 174, 171, 160  );
+//    addScoreColor( 194, 187, 161  );
+//    addScoreColor( 211, 199, 150  );
+//    addScoreColor( 222, 203, 124  );
+//    addScoreColor( 237, 207, 85   );
     
+    addScoreColor( 224, 170, 112  );
+    addScoreColor( 156, 156, 156  );
+    addScoreColor( 237, 207, 85   );
+
     auto addBulletColor = [=](int r, int g, int b){
         m_BulletColorList.emplace_back(Color3B(r, g, b));
     };

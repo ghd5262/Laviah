@@ -65,7 +65,7 @@ void CPlayCoin::CollisionWithPlayer()
         auto cPos1       = Vec2(sprite->getPosition().x - (length * 0.45f),
                                 sprite->getPosition().y - 200.f);
         auto cPos2       = Vec2(targetPos.x, targetPos.y - (length * 0.3f));
-        auto time        = 0.5f;
+        auto time        = 0.7f;
         auto scale       = 3.f;
         
         // create bezier action

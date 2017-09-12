@@ -219,6 +219,7 @@ void CGameScene::GamePause()
 
 void CGameScene::GameResult()
 {
+    CAudioManager::Instance()->StopBGM();
     CObjectManager::Instance()->ZoomMoveDown();
     this->createResultPopup();
     this->GamePause();

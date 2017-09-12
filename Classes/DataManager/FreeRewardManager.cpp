@@ -11,7 +11,7 @@ CFreeRewardManager::CFreeRewardManager()
     m_LimitTimeList.emplace_back(900LL);
     m_LimitTimeList.emplace_back(1800LL);
     m_LimitTimeList.emplace_back(3600LL);
-    m_LimitTimeList.emplace_back(7800LL);
+    m_LimitTimeList.emplace_back(10800LL);
     m_LimitTimeList.emplace_back(23400LL);
 }
 
