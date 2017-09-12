@@ -177,25 +177,21 @@ void CUILayer::LevelUPNotice()
 {
     if(!m_LevelLabel) return;
     
-    this->scheduleOnce([=](float delta){
-        if(CObjectManager::Instance()->getIsGamePause()) return;
-        
-        Vec2 startPos     = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.9f);
-        Vec2 targetPos    = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.8f);
-        auto moveDown     = EaseExponentialOut::create(MoveTo::create(0.5f, targetPos));
-        auto downAction   = Spawn::createWithTwoActions(moveDown, FadeTo::create(0.3f, 255 * 0.8f));
-        auto delayAction  = DelayTime::create(2.f);
-        auto moveUp       = EaseSineIn::create(MoveTo::create(0.3f, startPos));
-        auto upAction     = Spawn::createWithTwoActions(moveUp, FadeTo::create(0.1f, 0));
-        auto sequence     = Sequence::create(downAction, delayAction, upAction, nullptr);
-        
-        m_LevelLabel->setOpacity(0);
-        m_LevelLabel->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->NOTICE_LEVEL));
-        m_LevelLabel->setString(StringUtils::format("LEVEL %d", GVALUE->NOTICE_LEVEL + 1));
-        m_LevelLabel->runAction(sequence);
-        
-    }, 4.f, "LevelNoticeDelay");
+    if(CObjectManager::Instance()->getIsGamePause()) return;
     
+    Vec2 startPos     = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.9f);
+    Vec2 targetPos    = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 0.8f);
+    auto moveDown     = EaseExponentialOut::create(MoveTo::create(0.5f, targetPos));
+    auto downAction   = Spawn::createWithTwoActions(moveDown, FadeTo::create(0.3f, 255 * 0.8f));
+    auto delayAction  = DelayTime::create(2.f);
+    auto moveUp       = EaseSineIn::create(MoveTo::create(0.3f, startPos));
+    auto upAction     = Spawn::createWithTwoActions(moveUp, FadeTo::create(0.1f, 0));
+    auto sequence     = Sequence::create(downAction, delayAction, upAction, nullptr);
+    
+    m_LevelLabel->setOpacity(0);
+    m_LevelLabel->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->NOTICE_LEVEL));
+    m_LevelLabel->setString(StringUtils::format("LEVEL %d", GVALUE->NOTICE_LEVEL));
+    m_LevelLabel->runAction(sequence);
 }
 
 void CUILayer::setItemTimer(eITEM_TYPE type, float limitTime)

@@ -49,7 +49,7 @@ CObjectManager::CObjectManager()
 , m_Delta(0.f)
 , m_GiantSpeed(1.f)
 , m_BulletPatternPaddingLimit(0.f)
-, m_OriginPatternLevel(-1)
+, m_OriginPatternLevel(0)
 , m_PhotoShareAble(false)
 , m_SlowMotionAble(false)
 {
@@ -75,6 +75,7 @@ CObjectManager* CObjectManager::Instance()
 
 void CObjectManager::Clear()
 {
+    m_OriginPatternLevel = 0;
 	m_PatternTimer = 0.f;
     m_LevelTimer = 0.f;
     m_BulletPatternPaddingLimit = 0.f;
@@ -91,7 +92,11 @@ void CObjectManager::Clear()
     m_PhotoShareAble = false;
     CComboScore::Instance()->ComboScoreReset();
     m_CurrentStage = CStageDataManager::Instance()->getStageByIndex(0)->_stageDataLiat;
+    if(m_CurrentStage.size())
+        m_CurrentLevelData = m_CurrentStage.at(0);
     this->ReturnToMemoryBlockAll();
+    CGameScene::getZoomLayer()->unschedule("SetDelay");
+    m_SpeedController->stopActionByTag(100);
 //    this->setGameStateByLevel();
 //	this->EndBonusTime();
 }
@@ -268,10 +273,9 @@ void CObjectManager::GiantMode()
                    PLANET_DEFINE::GAME_POS,
                    0, 0.9f, 1.f, true, true);
     }else{
-        auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
         this->zoom(CGameScene::getZoomLayer(),
-                   data._pos, data._zoomAngle,
-                   data._zoomSize * 1.25f, 1.f,
+                   m_CurrentLevelData._pos, m_CurrentLevelData._zoomAngle,
+                   m_CurrentLevelData._zoomSize * 1.25f, 1.f,
                    true, true);
     }
 }
@@ -284,10 +288,9 @@ void CObjectManager::NormalMode()
                    PLANET_DEFINE::GAME_POS,
                    0, 0.8f, 2.f, true, true);
     }else{
-        auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
         this->zoom(CGameScene::getZoomLayer(),
-                   data._pos, data._zoomAngle,
-                   data._zoomSize, 2.f,
+                   m_CurrentLevelData._pos, m_CurrentLevelData._zoomAngle,
+                   m_CurrentLevelData._zoomSize, 2.f,
                    true, true);
     }
 }
@@ -296,13 +299,13 @@ void CObjectManager::setGameStateByLevel()
 {
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
-    auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
     this->zoom(CGameScene::getZoomLayer(),
-               data._pos, data._zoomAngle,
-               data._zoomSize, data._duration,
+               m_CurrentLevelData._pos, m_CurrentLevelData._zoomAngle,
+               m_CurrentLevelData._zoomSize, m_CurrentLevelData._changeDuration,
                false, true);
     
-    this->SpeedControl(1.f, data._speed / BULLETCREATOR::ROTATION_SPEED);
+    this->SpeedControl(m_CurrentLevelData._changeDuration,
+                       m_CurrentLevelData._speed / BULLETCREATOR::ROTATION_SPEED);
 }
 
 void CObjectManager::SlowMotion()
@@ -317,8 +320,7 @@ void CObjectManager::SlowMotion()
 
 void CObjectManager::SlowMotionFinish()
 {
-    auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
-    this->SpeedControl(0.5f, data._speed / BULLETCREATOR::ROTATION_SPEED, true);
+    this->SpeedControl(0.5f, m_CurrentLevelData._speed / BULLETCREATOR::ROTATION_SPEED, true);
 }
 
 bool CObjectManager::IsHitWithSlowPoint(CBullet* bullet)
@@ -398,9 +400,8 @@ void CObjectManager::createBulletByTimer(float delta)
         m_PatternTimer += delta;
 	if (m_PatternTimer < m_BulletPatternPaddingLimit) return;
 
-    auto data    = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
-    auto pattern = data._patternLevel;
-    auto below   = (data._type == STAGE_DATA_TYPE::BELOW_RANDOM);
+    auto pattern = m_CurrentLevelData._patternLevel;
+    auto below   = (m_CurrentLevelData._type == STAGE_DATA_TYPE::BELOW_RANDOM);
     auto patternData = m_PatternManager->getRandomNormalPatternByLevel(pattern, below);
     m_BulletCreator->setPattern(patternData);
     
@@ -425,7 +426,7 @@ void CObjectManager::inGameUpdate(float delta)
     m_Player->Execute(m_Delta);
     m_Planet->Execute(m_Delta);
     this->bulletListExecute();
-    this->setGameLevelByTimer();
+    this->setGameLevelByTimer(delta);
 }
 
 void CObjectManager::inMenuUpdate(float delta)
@@ -479,25 +480,29 @@ void CObjectManager::bulletListRotate()
     }
 }
 
-void CObjectManager::setGameLevelByTimer()
+void CObjectManager::setGameLevelByTimer(float delta)
 {
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
-    m_LevelTimer += m_Delta;
-    auto data = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
-    if(data._changeTime < m_LevelTimer)
+    m_LevelTimer += delta;
+    if(m_CurrentLevelData._changeTime < m_LevelTimer)
     {
         if(m_CurrentStage.size() > GVALUE->STAGE_LEVEL+1){
             GVALUE->STAGE_LEVEL++;
-            GVALUE->NOTICE_LEVEL = data._noticeLevel;
-            this->setGameStateByLevel();
-    
-            if(m_OriginPatternLevel != GVALUE->NOTICE_LEVEL){
-                CUILayer::Instance()->LevelUPNotice();
-                m_OriginPatternLevel        = GVALUE->NOTICE_LEVEL;
-                m_BulletPatternPaddingLimit = 2.f;
-                m_PatternTimer              = 0.f;
-            }
+            m_CurrentLevelData   = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
+            GVALUE->NOTICE_LEVEL = m_CurrentLevelData._noticeLevel;
+
+            CGameScene::getZoomLayer()->scheduleOnce([=](float delay){
+                
+                this->setGameStateByLevel();
+                
+                if(m_OriginPatternLevel != GVALUE->NOTICE_LEVEL){
+                    CUILayer::Instance()->LevelUPNotice();
+                    m_OriginPatternLevel        = GVALUE->NOTICE_LEVEL;
+//                    m_BulletPatternPaddingLimit = 2.f;
+                    m_PatternTimer              = 0.f;
+                }
+            }, 4.5f, "SetDelay");
         }
     }
 }

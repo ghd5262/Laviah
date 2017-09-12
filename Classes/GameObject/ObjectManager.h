@@ -124,7 +124,7 @@ private:
     void removeAllBullet();	// Delete함수 호출! 이유는 구현부에~
     void bulletListExecute();
     void bulletListRotate();
-    void setGameLevelByTimer();
+    void setGameLevelByTimer(float delta);
     void zoom(cocos2d::Node* obj,
               cocos2d::Vec2 zoomPos,
               float zoomAngle,
@@ -140,6 +140,7 @@ private:
     std::shared_ptr<CStateMachine<CObjectManager>> m_FSM;
 	std::vector<CBullet*> m_BulletList;
     STAGE_DATA_LIST m_CurrentStage;
+    STAGE_DATA m_CurrentLevelData;
     cocos2d::Node* m_SpeedController;
     CItemManager* m_ItemManager;
     CBulletPatternDataManager* m_PatternManager;
