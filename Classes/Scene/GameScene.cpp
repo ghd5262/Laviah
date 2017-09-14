@@ -440,6 +440,7 @@ void CGameScene::MenuFadeIn()
     auto callFunc       = CallFunc::create([=](){
         m_IsMenuLayerFront = true;
         this->startAppreciatePlanet();
+        this->createReviewPopup();
     });
     auto sequenceAction = Sequence::create(delayAction, fadeAction, callFunc, nullptr);
     m_MenuLayer->runAction(sequenceAction);
@@ -696,7 +697,6 @@ void CGameScene::menuOpen()
     this->dailyGoalResetCheck();
     this->MenuFadeIn();
     this->turnUpSound();
-    this->createReviewPopup();
     
     m_UILayer->setVisible(false);
     m_MenuLayer->setDefaultCallbackToTopAgain();
@@ -922,6 +922,8 @@ void CGameScene::createReviewPopup()
     auto showable    = (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::REVIEW) != 1);
     if(!showable)       return;
     if(!m_NeedReview)   return;
+    if(!m_IsMenuLayerFront) return;
+    if(!m_MenuLayer->isVisible()) return;
     
     auto storeURL    = CDownloadManager::Instance()->getAppUrl();
     auto facebookURL = CDownloadManager::Instance()->getFacebookPageLink();

@@ -5,7 +5,7 @@
 namespace BULLETCREATOR{
 	const static float PATTERN_PADDING_LIMIT	= 1.f;
 	const static float ROTATION_SPEED			= 90.f;
-	const static float BULLET_STANDARD_SPEED	= 390.f;
+	const static float BULLET_STANDARD_SPEED	= 381.f;
 	const static float BULLET_STANDARD_PADDING  = 60.f;
 	const static float COIN_CREATE_LIMIT_TIME   = 5.f;
 	static bool COIN_CREATE						= false;
