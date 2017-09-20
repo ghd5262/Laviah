@@ -56,6 +56,7 @@ public:
     CC_SYNTHESIZE(float, m_CreateDistance, CreateDistance);
     CC_SYNTHESIZE(float, m_StandardDelay, StandardDelay);
     CC_SYNTHESIZE(bool, m_IsFlip, IsFlip);
+    CC_SYNTHESIZE(int, m_CurrentPatternIndex, CurrentPatternIndex);
 
 private:
 	void setData(const sBULLET_PATTERN* data);

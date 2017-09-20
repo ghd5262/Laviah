@@ -5,6 +5,7 @@ enum SIZE_TYPE{
     FULL_SIZE = 0,
     HALF_SIZE = 1,
 };
+
 class CSharePopup : public CPopup
 {
 public:
@@ -14,7 +15,7 @@ public:
     CSharePopup* setScore(int score);
     CSharePopup* setLogoEnable(bool enable);
     CPopup* show(Node* parent = nullptr, int zOrder = 0);
-        
+    
 private:
     void end();
     void saveToFile();

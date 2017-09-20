@@ -2,6 +2,7 @@
 #include "../../MyButton.h"
 #include "../../../Scene/GameScene.h"
 #include "../../../DataManager/UserDataManager.h"
+#include "../../../SDKBOX/SDKBoxHeaders.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -75,6 +76,7 @@ CMyButton* COptionLanguagePopup::createLanguageDP(std::string content, Vec2 pos)
         
         // fade out and in
         CGameScene::getGameScene()->ScreenFade([=](){
+            auto languageKey = key.at(index);
             CTranslateManager::Instance()->ChangeLanguage(key.at(index));
             CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::CURRENT_LANGUAGE, index);
             //option popup close
@@ -82,8 +84,7 @@ CMyButton* COptionLanguagePopup::createLanguageDP(std::string content, Vec2 pos)
             
             //option popup open again
             CGameScene::getGameScene()->OpenOptionPopup(2);
-
-//            this->popupClose();
+            CGoogleAnalyticsManager::LogDimension(GA_DIMENSION::OPTION_LANGUAGE, index);
         });
     })
     ->setButtonSingleUse(true)

@@ -1,4 +1,5 @@
 #include "PlayManager.hpp"
+#include "../SDKBoxHeaders.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/DataManagerUtils.h"
 #include "../../json/json.h"
@@ -69,6 +70,7 @@ void CPlayManager::OpenLeaderboard()
     if(!this->IsLoggedIn()) return;
     
     sdkbox::PluginSdkboxPlay::showAllLeaderboards();
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::SDKPLAY_RANK);
 }
 
 void CPlayManager::OpenAchievement()
@@ -76,6 +78,7 @@ void CPlayManager::OpenAchievement()
     if(!this->IsLoggedIn()) return;
     
     sdkbox::PluginSdkboxPlay::showAchievements();
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::SDKPLAY_ACHIEVEMENT);
 }
 
 void CPlayManager::ScoreSave(VOID_LISTENER listener, std::string key, int score)

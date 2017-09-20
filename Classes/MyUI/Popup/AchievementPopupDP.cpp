@@ -273,6 +273,8 @@ void CAchievementPopupDP::Reward()
     
     // level up.
     achievementMNG->HiddenAchievementLevelUP(index);
+    
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::REWARD_ACHIEVEMENT);
 }
 
 void CAchievementPopupDP::contentUpdate()

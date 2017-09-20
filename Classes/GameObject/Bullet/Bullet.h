@@ -65,9 +65,10 @@ struct sBULLET_PARAM{
     float _angle;
     float _distance;
 	float _delayTime;
+    int   _patternIdx;
     char  _symbol;
     bool  _isFly;
-
+    
 	sBULLET_PARAM()
     : _spriteName("")
     , _particleName("")
@@ -77,6 +78,7 @@ struct sBULLET_PARAM{
     , _angle(0)
     , _distance(0)
 	, _delayTime(0)
+    , _patternIdx(0)
     , _symbol(-1)
     , _isFly(true){}
     
@@ -88,7 +90,8 @@ struct sBULLET_PARAM{
     , _speed(data._speed)
     , _angle(data._angle)
     , _distance(data._distance)
-	, _delayTime(data._delayTime)
+    , _delayTime(data._delayTime)
+    , _patternIdx(data._patternIdx)
     , _symbol(data._symbol)
     , _isFly(data._isFly){}
     
@@ -100,7 +103,8 @@ struct sBULLET_PARAM{
     , _speed(data->_speed)
     , _angle(data->_angle)
     , _distance(data->_distance)
-	, _delayTime(data->_delayTime)
+    , _delayTime(data->_delayTime)
+    , _patternIdx(data->_patternIdx)
     , _symbol(data->_symbol)
     , _isFly(data->_isFly){}
 };
@@ -144,6 +148,7 @@ public:
     float getPower()          const;
     char  getSymbol()         const;
     bool  getIsFly()          const;
+    int   getPatternIndex()   const;
     
     int getItemEffect(){ return m_ItemFlag; }
     

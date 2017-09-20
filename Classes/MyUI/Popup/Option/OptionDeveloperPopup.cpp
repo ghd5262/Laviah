@@ -74,6 +74,9 @@ bool COptionDeveloperPopup::init()
     };
     
 
+    auto gaLogSend = [=](std::string action, bool state){
+        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::OPTION, action, action, (int)state);
+    };
     
     auto createOnOff = [=](std::function<void(Ref* sender, bool)> listener, bool state){
         auto checkbox = cocos2d::ui::CheckBox::create("onOffIcon_0.png", "onOffIcon_1.png");
@@ -97,6 +100,7 @@ bool COptionDeveloperPopup::init()
             // login
             CPlayManager::Instance()->Login([=](){
                 btn->setSelected(true);
+                gaLogSend(GA_ACTION::OPTION_LOGIN, true);
             });
         }
         else {
@@ -105,6 +109,7 @@ bool COptionDeveloperPopup::init()
                 // logout
                 CPlayManager::Instance()->Logout([=](){
                     btn->setSelected(false);
+                    gaLogSend(GA_ACTION::OPTION_LOGIN, false);
                 });
             }, TRANSLATE("BUTTON_YES"))
             ->setNegativeButton([=](Node* sender){
@@ -129,6 +134,7 @@ bool COptionDeveloperPopup::init()
             ->setPositiveButton([=](Node* sender){
                 userDataMng->setUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO, true);
                 btn->setSelected(true);
+                gaLogSend(GA_ACTION::OPTION_AUTO_SAVE, true);
             }, TRANSLATE("BUTTON_YES"))
             ->setNegativeButton([=](Node* sender){
                 btn->setSelected(false);
@@ -139,6 +145,7 @@ bool COptionDeveloperPopup::init()
         else{
             userDataMng->setUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO, false);
             btn->setSelected(false);
+            gaLogSend(GA_ACTION::OPTION_AUTO_SAVE, false);
         }
     };
 

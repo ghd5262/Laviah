@@ -5,6 +5,7 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 
 CWorkshopPopupDP* CWorkshopPopupDP::create(const WORKSHOPITEM_PARAM* workshopItem)
 {
@@ -141,9 +142,14 @@ void CWorkshopPopupDP::Buy(Node* sender)
                                                                      m_WorkshopItem->_index,
                                                                      PARAM_WORKSHOP::ITEM_LEVEL,
                                                                      0);
-    
-    if (CUserDataManager::Instance()->CoinUpdate(-m_WorkshopItem->_costPerLevel.at(value))){
+    auto cost  = -m_WorkshopItem->_costPerLevel.at(value);
+    if (CUserDataManager::Instance()->CoinUpdate(cost)){
 		value += 1;
+        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::GAME_PLAY, GA_ACTION::COIN_USE_UPGRADE,
+                                          GA_ACTION::COIN_USE_UPGRADE, cost);
+        CGoogleAnalyticsManager::LogDimension(GA_DIMENSION::ITEM_UPGRADE, value);
+        CGoogleAnalyticsManager::LogScreen(GA_SCREEN::WORKSHOP_BUY);
+        
         CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::ITEM_LEVEL,
                                                             m_WorkshopItem->_index,
                                                             PARAM_WORKSHOP::ITEM_LEVEL,

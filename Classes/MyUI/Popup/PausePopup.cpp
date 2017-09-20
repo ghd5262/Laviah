@@ -229,10 +229,15 @@ void CPausePopup::Help(Node* sender)
 void CPausePopup::Skip(CGoalPopupDP *sender, int posIndex)
 {
     auto dp = sender;
-
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::PAUSE_SKIP);
+    
 	CGameScene::getGameScene()->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
         CUnityAdsManager::Instance()->ShowUnityAds([=](){
+            CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::WATCH_ADS,
+                                              GA_ACTION::ADS_SKIP,
+                                              GA_ACTION::ADS_SKIP, 0);
+            
             auto achievementMng = CAchievementDataManager::Instance();
             auto index = dp->getAchievementParam()._index;
             auto data  = achievementMng->getNormalAchievementByIndex(index);

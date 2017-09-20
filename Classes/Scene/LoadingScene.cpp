@@ -3,6 +3,7 @@
 #include "../Download/DownloadManager.h"
 #include "../DataManager/UserDataManager.h"
 #include "../MyUI/Popup.h"
+#include "../SDKBOX/SDKBoxHeaders.h"
 
 USING_NS_CC;
 
@@ -32,6 +33,8 @@ bool CLoadingScene::init()
     CCLOG("Loading Scene %s", __FUNCTION__);
 	if (!Layer::init())
         return false;
+    
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::LOAD);
     
     this->setContentSize(Director::getInstance()->getVisibleSize());
     this->startDownload();

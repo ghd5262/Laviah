@@ -12,6 +12,7 @@
 #include "../../DataManager/DataManagerUtils.h"
 #include "../../Particle/Particles.h"
 #include "../../Common/StringUtility.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 #include <array>
 
 CRewardPopup* CRewardPopup::create()
@@ -35,39 +36,6 @@ CPopup* CRewardPopup::show(cocos2d::Node* parent/*  = nullptr*/, int zOrder/* = 
     
     auto popupSize = this->getContentSize();
 
-//
-//    addUFOData(UFO_TYPE::UFO_NONE,      UFO_DATA("costumeUFO.png", "costumeUFOLight.png",
-//                                                 Vec2(0.5f, 1.5f), Vec2(0.5f, 0.6f),
-//                                                 Vec2(0.5f, 0.68f), Vec2(100, 0),
-//                                                 Vec2(0, 90), 180.f));
-//    
-//    addUFOData(UFO_TYPE::UFO_COSTUME,   UFO_DATA("costumeUFO.png", "costumeUFOLight.png",
-//                                                 Vec2(0.5f, 1.5f), Vec2(0.5f, 0.6f),
-//                                                 Vec2(0.5f, 0.68f), Vec2(100, 0),
-//                                                 Vec2(0, 90), 180.f));
-//    
-//    addUFOData(UFO_TYPE::UFO_FREE,      UFO_DATA("freeCoinIcon.png", "freeCoinLight.png",
-//                                                 Vec2(0.5f, -0.5f), Vec2(0.5f, 0.25f),
-//                                                 Vec2(0.5f, 0.2f), Vec2(30, 0),
-//                                                 Vec2(0, 90), 0.f));
-//    
-//    addUFOData(UFO_TYPE::UFO_RANK_1,    UFO_DATA("freeCoinIcon_1.png", "freeCoinLight.png",
-//                                                 Vec2(0.5f, -0.5f), Vec2(0.5f, 0.25f),
-//                                                 Vec2(0.5f, 0.2f), Vec2(30, 0),
-//                                                 Vec2(0, 90), 0.f));
-//    
-//    addUFOData(UFO_TYPE::UFO_RANK_2,    UFO_DATA("freeCoinIcon_2.png", "freeCoinLight.png",
-//                                                 Vec2(0.5f, -0.5f), Vec2(0.5f, 0.25f),
-//                                                 Vec2(0.5f, 0.2f), Vec2(30, 0),
-//                                                 Vec2(0, 90), 0.f));
-//    
-//    addUFOData(UFO_TYPE::UFO_RANK_3,    UFO_DATA("freeCoinIcon_3.png", "freeCoinLight.png",
-//                                                 Vec2(0.5f, -0.5f), Vec2(0.5f, 0.25f),
-//                                                 Vec2(0.5f, 0.2f), Vec2(30, 0),
-//                                                 Vec2(0, 90), 0.f));
-//    
-//    
-//    
     // touch disable
     auto createTouchDisable = [=](Node* parent, Size size, int zOrder = 0){
         CMyButton::create()
@@ -342,20 +310,33 @@ void CRewardPopup::open()
 		m_RewardDP = nullptr;
 	}
     
-    if (m_IsPaidFeature){
+    if (m_IsPaidFeature){ // 구매 상품인 경우
+        // 더 이상 구매할 수 있는 상품이 없는 경우
         if(!CCostumeDataManager::Instance()->getNewRandomCostume()) {
             CGameScene::getGameScene()->CreateAlertPopup()
             ->setPositiveButton([=](Node* sender){}, TRANSLATE("BUTTON_OK"))
             ->setMessage(TRANSLATE("NO_MORE_COSTUME"))
             ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
         }
+        // 구매할 수 있는 상품이 있는 경우
+        // 보상 리스트에 추가
         else this->AddRewardToList(ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME_RANDOM, 0);
     }
     
+    // 보상 리스트에 아무 것도 없는 경우
+    // 즉, 구매할 수 있는 상품이 없거나 보상을 모두 받은 경우
+    // 또, 구매할 수 있는 코인이 없는 경우
     if (!this->isItemRemain() || !CUserDataManager::Instance()->CoinUpdate(m_Cost)){
         this->exit();
 		return;
 	}
+    
+    // 구매한 경우 GA 로그 저장
+    if (m_IsPaidFeature){
+        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::GAME_PLAY,
+                                          GA_ACTION::COIN_USE_COSTUME,
+                                          GA_ACTION::COIN_USE_COSTUME, 0);
+    }
     
 	m_LastSavedData = m_RewardList.at(m_RewardIndex);
 	m_LastSavedData = CAchievementDataManager::Instance()->RewardByKey(m_LastSavedData._key,

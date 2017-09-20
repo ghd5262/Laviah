@@ -79,6 +79,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // share init
     CShareManager::Instance()->Initialize();
     
+    // analystics init
+    CGoogleAnalyticsManager::Instance()->Initialize();
+    
     return true;
 }
 

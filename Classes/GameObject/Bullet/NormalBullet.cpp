@@ -64,7 +64,7 @@ void CNormalBullet::CollisionWithPlayer()
         GVALUE->DEAD_TYPE = PLAYER_DEAD_TYPE::NORMAL_BULLET;
 		m_Player->Crushed();
 		CCLOG("Bullet Power %f", this->getPower());
-		m_Player->LostSomeHealth(this->getPower());
+		m_Player->LostSomeHealth(this);
 	}
 }
 

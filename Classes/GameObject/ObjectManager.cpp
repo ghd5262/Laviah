@@ -493,6 +493,8 @@ void CObjectManager::setGameLevelByTimer(float delta)
             GVALUE->NOTICE_LEVEL = m_CurrentLevelData._noticeLevel;
 
             CGameScene::getZoomLayer()->scheduleOnce([=](float delay){
+                auto gaScreenName = GA_SCREEN::STAGE + StringUtils::format("/%d", GVALUE->NOTICE_LEVEL);
+                CGoogleAnalyticsManager::LogScreen(gaScreenName);
                 
                 this->setGameStateByLevel();
                 
@@ -544,6 +546,8 @@ void CObjectManager::InitTutorialStep()
     };
     
     auto createPattern    = [=](int index){
+        auto gaScreenName = GA_SCREEN::TUTORIAL + StringUtils::format("/%d", index);
+        CGoogleAnalyticsManager::LogScreen(gaScreenName);
         CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, index);
     };
     

@@ -121,7 +121,7 @@ CPopup* CGoalPopup::show(Node* parent, int zOrder/* = 0*/)
 //            }
         }, rewardList, TRANSLATE("REWARD_TITLE_GOAL"));
 
-        
+        CGoogleAnalyticsManager::LogScreen(GA_SCREEN::REWARD_GOAL);
         // TODO: If there are no more achievements. do not open achievement popup
 //        CAchievementDataManager::Instance()->getNewAchievements();
         
@@ -232,10 +232,16 @@ void CGoalPopup::createAchievementDP(const ACHIEVEMENT* data, int posIndex, bool
 void CGoalPopup::Skip(CGoalPopupDP *sender, int posIndex)
 {
     auto dp = sender;
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::GOAL_SKIP);
+
     CGameScene::getGameScene()->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
         
         CUnityAdsManager::Instance()->ShowUnityAds([=](){
+            CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::WATCH_ADS,
+                                              GA_ACTION::ADS_SKIP,
+                                              GA_ACTION::ADS_SKIP, 0);
+            
             auto achievementMng = CAchievementDataManager::Instance();
             auto index = dp->getAchievementParam()._index;
             auto data  = achievementMng->getNormalAchievementByIndex(index);

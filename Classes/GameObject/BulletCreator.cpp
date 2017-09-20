@@ -26,6 +26,7 @@ CBulletCreator::CBulletCreator()
 , m_LineIntervalLimit(0.f)
 , m_CreateDistance(0.f)
 , m_StandardDelay(0.f)
+, m_CurrentPatternIndex(0)
 , m_Running(false)
 , m_IsFlip(false)
 {}
@@ -79,13 +80,14 @@ void CBulletCreator::Update(float delta)
 
 void CBulletCreator::Clear()
 {
-    m_CurrentHeight     = 0;
-    //m_RotationAngle = 0.f;
-    m_CreateDistance    = 0.f;
-    m_StandardDelay     = 0.f;
-    m_CurrentPattern    = nullptr;
-    m_Running           = false;
-    m_IsFlip            = false;
+    m_CurrentHeight       = 0;
+    m_CurrentPatternIndex = 0;
+    //m_RotationAngle     = 0.f;
+    m_CreateDistance      = 0.f;
+    m_StandardDelay       = 0.f;
+    m_CurrentPattern      = nullptr;
+    m_Running             = false;
+    m_IsFlip              = false;
 }
 
 void CBulletCreator::Rotation(float speed)
@@ -108,12 +110,13 @@ void CBulletCreator::setData(const sBULLET_PATTERN* data)
 {
     if(m_Running) return;
     
-	m_CurrentPattern    = data;
-	m_CurrentHeight     = data->_height;
-	m_LineIntervalLimit = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;
-	m_Running           = true;
-    m_IsFlip            = random<int>(0, 1);
-    m_CreateDistance    = 2700.f;
+	m_CurrentPattern      = data;
+    m_CurrentPatternIndex = data->_index;
+	m_CurrentHeight       = data->_height;
+	m_LineIntervalLimit   = BULLET_STANDARD_PADDING / BULLET_STANDARD_SPEED;
+	m_Running             = true;
+    m_IsFlip              = random<int>(0, 1);
+    m_CreateDistance      = 2700.f;
     
     if (CTutorialManager::Instance()->getIsRunning()) {
         m_IsFlip         = false;
@@ -247,14 +250,15 @@ CBullet* CBulletCreator::CreateBullet(char symbol, float angle, float distance, 
 //    else if (symbol == 'Z')                     bullet = CBonusLetter::create();
     else                                        return nullptr;
     
+    auto creator = CObjectManager::Instance()->getBulletCreator();
     auto data = *(CBulletDataManager::Instance()->getBulletInfo(symbol));
+    data._patternIdx = creator->getCurrentPatternIndex();
     data._distance = distance;
     data._angle = angle;
     data._isFly = true;
     if(PERFORMANCETEST)
         data._power = 0;
     
-    auto creator = CObjectManager::Instance()->getBulletCreator();
     if (isDelay && data._speed > BULLET_STANDARD_SPEED){
         data._delayTime = creator->getCalculatedDelayTime(data._speed);
     }

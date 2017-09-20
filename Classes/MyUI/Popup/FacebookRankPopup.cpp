@@ -229,6 +229,7 @@ void CFacebookRankPopup::getRankReward()
         CGameScene::getGameScene()->Reward([=](bool isPlay){
             CGameScene::getGameScene()->getRankReward();
         }, rewardList, TRANSLATE(title));
-
+        
+        CGoogleAnalyticsManager::LogScreen(GA_SCREEN::FACEBOOK_REWARD);
     });
 }

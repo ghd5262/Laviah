@@ -256,6 +256,9 @@ void COptionPopup::ContentScrollCallback(cocos2d::Ref* ref, cocos2d::ui::PageVie
     // Center dp touch enable
     centerContent->popupTouchEnable(true);
     
+    auto gaScreenName = GA_SCREEN::OPTION + StringUtils::format("/%ld", centerIdx);
+    CGoogleAnalyticsManager::LogScreen(gaScreenName);
+    
     // touch disable the other dp
     for (auto otherBG : pageView->getChildren())
     {

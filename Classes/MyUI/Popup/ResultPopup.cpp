@@ -328,6 +328,11 @@ void CResultPopup::end(){
 void CResultPopup::getCoinFromVideo(Node* sender)
 {
     CUnityAdsManager::Instance()->ShowUnityAds([=](){
+        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::WATCH_ADS,
+                                          GA_ACTION::ADS_BONUS,
+                                          GA_ACTION::ADS_BONUS, 0);
+        CGoogleAnalyticsManager::LogScreen(GA_SCREEN::REWARD_BONUS);
+
         auto coin = META_DATA("BONUS_COIN").asInt();
         this->createRewardPopup(TRANSLATE("REWARD_TITLE_BONUS_COIN"),
                                 ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, coin);
@@ -353,6 +358,7 @@ void CResultPopup::getNewCostume(Node* sender)
         if(!button) return;
         button->setTouchEnable(true);
     }, {}, "", -cost, true);
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::REWARD_COSTUME);
 }
 
 void CResultPopup::getFreeReward()
@@ -375,6 +381,8 @@ void CResultPopup::getFreeReward()
 
     this->createRewardPopup(title, ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, coin);
     CGameScene::getGameScene()->getFreeReward();
+    
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::REWARD_FREE);
 }
 
 void CResultPopup::openAchievementPopup()
@@ -391,10 +399,13 @@ void CResultPopup::share()
     auto text = StringUtils::format(TRANSLATE("SCORE_SHARE_TEXT").c_str(), GVALUE->TOTAL_SCORE);
     CShareManager::Instance()->setShareText(text);
     CShareManager::Instance()->setShareTitle(TRANSLATE("SCORE_SHARE_TITLE"));
-    CGameScene::getGameScene()->OpenSharePopup(node->getTexture(),
-                                               SIZE_TYPE::FULL_SIZE,
-                                               true,
-                                               GVALUE->TOTAL_SCORE);
+    
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::SHARE_SCORE);
+    CGameScene::getGameScene()->OpenSharePopup([=](){
+        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::SHARE,
+                                          GA_ACTION::SHARE_SCORE,
+                                          GA_ACTION::SHARE_SCORE, 0);
+    }, node->getTexture(), SIZE_TYPE::FULL_SIZE, true, GVALUE->TOTAL_SCORE);
 }
 
 void CResultPopup::exit()
@@ -740,4 +751,8 @@ void CResultPopup::userDataUpdate()
     // Check hidden achievement has been completed.
     CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
     
+    // Update google analytics
+    CGoogleAnalyticsManager::LogMetric(GA_METRIC::SCORE, GVALUE->TOTAL_SCORE);
+    CGoogleAnalyticsManager::LogMetric(GA_METRIC::PLAY_CHARACTER, GVALUE->CURRENT_CHARACTER);
+    CGoogleAnalyticsManager::LogMetric(GA_METRIC::PLAY_COSTUME, GVALUE->CURRENT_COSTUME);
 }

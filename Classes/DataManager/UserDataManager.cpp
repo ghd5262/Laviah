@@ -360,6 +360,9 @@ void CUserDataManager::ExpAdd(int exp)
         auto reviewLevel = META_DATA("REVIEW_LEVEL").asInt();
         this->setUserData_Number(USERDATA_KEY::EXP, 0);
         this->setUserData_Number(USERDATA_KEY::LEVEL, newLevel);
+        
+        CGoogleAnalyticsManager::LogDimension(GA_DIMENSION::LEVEL, newLevel);
+        
         if(newLevel % reviewLevel == 0)
             CGameScene::getGameScene()->setNeedReview(true);
     }

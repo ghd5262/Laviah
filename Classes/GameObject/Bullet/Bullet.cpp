@@ -454,3 +454,4 @@ float CBullet::getDelayTime()      const { return m_BulletInfo._delayTime;		}
 float CBullet::getPower()          const { return m_BulletInfo._power;          }
 char  CBullet::getSymbol()         const { return m_BulletInfo._symbol;         }
 bool  CBullet::getIsFly()          const { return m_BulletInfo._isFly;          }
+int   CBullet::getPatternIndex()   const { return m_BulletInfo._patternIdx;     }

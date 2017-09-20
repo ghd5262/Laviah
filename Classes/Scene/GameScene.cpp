@@ -167,7 +167,7 @@ bool CGameScene::init()
     
     CAudioManager::Instance()->Clear();
     CAudioManager::Instance()->PlayBGM("sounds/menuBGM.mp3", false);
-    
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::TITLE);
     return true;
 }
 
@@ -198,7 +198,7 @@ void CGameScene::GameStart()
     dynamic_cast<CFacebookRivalRankLayer*>( m_RivalRankLayer )->Reset();
     CAudioManager::Instance()->StopBGM();
     CAudioManager::Instance()->PlayBGM("sounds/inGameBGM.mp3", true, false);
-
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::INGAME);
     
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
     
@@ -337,6 +337,7 @@ void CGameScene::OpenPermRequestPopup(const VOID_CALLBACK& callback)
         message += std::string(" )\n") + std::string(TRANSLATE("FACEBOOK_ALERT_MESSAGE_LAST"));
         
         if(createAlert){
+            CGoogleAnalyticsManager::LogScreen(GA_SCREEN::FACEBOOK_LOGIN);
             this->CreateAlertPopup()
             ->setPositiveButton([=](Node* sender){
                 login();
@@ -378,7 +379,8 @@ void CGameScene::OpenVideoPopup()
     m_ZoomLayer->pause();
 }
 
-void CGameScene::OpenSharePopup(cocos2d::Texture2D* texture,
+void CGameScene::OpenSharePopup(const std::function<void(void)>& callback,
+                                cocos2d::Texture2D* texture,
                                 int sizeType, bool logo,
                                 int score/* = 0*/)
 {
@@ -391,6 +393,8 @@ void CGameScene::OpenSharePopup(cocos2d::Texture2D* texture,
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(m_PopupLayer, ZORDER::POPUP);
+    
+    CShareManager::Instance()->setExitCallback(callback);
 }
 
 void CGameScene::OpenDownloadPopup()
@@ -527,6 +531,7 @@ void CGameScene::cleanGlobalData()
 
 void CGameScene::createPausePopup()
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::PAUSE);
     CPausePopup::create()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
@@ -535,6 +540,7 @@ void CGameScene::createPausePopup()
 
 void CGameScene::createVideoPopup()
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::VIDEO);
     CVideoPopup::create()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
@@ -543,6 +549,7 @@ void CGameScene::createVideoPopup()
 
 void CGameScene::createGoalPopup()
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::GOAL);
     CGoalPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -552,6 +559,7 @@ void CGameScene::createGoalPopup()
 
 void CGameScene::createResultPopup()
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::RESULT);
     CResultPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -561,6 +569,7 @@ void CGameScene::createResultPopup()
 
 void CGameScene::createEndPopup()
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::END);
     CGameEndPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -601,6 +610,7 @@ void CGameScene::createExitPopup(bool resume)
 
 void CGameScene::createOptionPopup(int index)
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::OPTION);
     COptionPopup::create()
     ->setInitialScrollIndex(index)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
@@ -620,6 +630,7 @@ void CGameScene::createBonusTimeLayer()
 
 void CGameScene::createWorkshopPopup()
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::WORKSHOP);
     CWorkshopPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -629,6 +640,7 @@ void CGameScene::createWorkshopPopup()
 
 void CGameScene::createCharacterPopup()
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::CHARACTER);
     CCharacterPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -639,6 +651,7 @@ void CGameScene::createCharacterPopup()
 void CGameScene::createCostumePopup(const VOID_CALLBACK& callback,
                                     int index)
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::COSTUME);
     CCharacterCostumePopup::create()
     ->setExitCallback(callback)
     ->setCharacter(index)
@@ -650,6 +663,7 @@ void CGameScene::createCostumePopup(const VOID_CALLBACK& callback,
 
 void CGameScene::createRankPopup()
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::FACEBOOK_RANK);
     CFacebookRankPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -668,6 +682,7 @@ void CGameScene::createRankUpPopup()
 
 void CGameScene::createAchievementPopup()
 {
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::ACHIEVEMENT);
     CAchievementPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
@@ -703,6 +718,7 @@ void CGameScene::menuOpen()
     CObjectManager::Instance()->getRocket()->ComebackHome();
     CObjectManager::Instance()->getPlanet()->StartRotation();
     CObjectManager::Instance()->getPlayer()->setVisible(false);
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::MENU);
 }
 
 void CGameScene::turnDownSound()
@@ -927,21 +943,29 @@ void CGameScene::createReviewPopup()
     
     auto storeURL    = CDownloadManager::Instance()->getAppUrl();
     auto facebookURL = CDownloadManager::Instance()->getFacebookPageLink();
+    auto gaLogSend   = [=](std::string action){
+        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::REVIEW, action, action, 0);
+    };
     m_NeedReview     = false;
-
+    
+    
     this->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
         
         auto reviewPopup = this->CreateAlertPopup()
         ->setPositiveButton([=](Node* sender){
+            gaLogSend(GA_ACTION::REVIEW_LOVE_YES);
             CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::REVIEW, 1);
             Application::getInstance()->openURL(storeURL);
 
         }, TRANSLATE("BUTTON_THANKYOU"))
         ->setNegativeButton([=](Node* sender){
-            if(m_CheckBox)
+            if(m_CheckBox){
+                gaLogSend(GA_ACTION::REVIEW_LOVE_NEVER);
                 CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::REVIEW, 1);
-            
+            }else{
+                gaLogSend(GA_ACTION::REVIEW_LOVE_NO);
+            }
         }, TRANSLATE("BUTTON_LATER"))
         ->setMessage(TRANSLATE("REVIEW_POPUP_TEXT_2"))
         ->show(m_PopupLayer, ZORDER::POPUP);
@@ -953,13 +977,17 @@ void CGameScene::createReviewPopup()
         
         auto facebookPopup = this->CreateAlertPopup()
         ->setPositiveButton([=](Node* sender){
+            gaLogSend(GA_ACTION::REVIEW_HATE_YES);
             Application::getInstance()->openURL(facebookURL);
             
         }, TRANSLATE("BUTTON_THANKYOU"))
         ->setNegativeButton([=](Node* sender){
-            if(m_CheckBox)
+            if(m_CheckBox){
+                gaLogSend(GA_ACTION::REVIEW_HATE_NEVER);
                 CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::REVIEW, 1);
-            
+            }else{
+                gaLogSend(GA_ACTION::REVIEW_HATE_NO);
+            }
         }, TRANSLATE("BUTTON_LATER"))
         ->setMessage(TRANSLATE("REVIEW_POPUP_TEXT_3"))
         ->show(m_PopupLayer, ZORDER::POPUP);

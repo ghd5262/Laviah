@@ -48,7 +48,8 @@ public:
     void OpenAchievementPopup();
     void OpenGoalPopup();
     void OpenVideoPopup();
-    void OpenSharePopup(cocos2d::Texture2D* texture,
+    void OpenSharePopup(const std::function<void(void)>& callback,
+                        cocos2d::Texture2D* texture,
                         int sizeType, bool logo,
                         int score = 0);
     void OpenDownloadPopup();

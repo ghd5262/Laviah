@@ -34,7 +34,7 @@ public:
     void Clear();
     
 	void GotSomeHealth(float health);
-	void LostSomeHealth(float loseHealth);
+	void LostSomeHealth(CBullet* data);
 	void GiantMode();
 	void NormalMode();
 	void TakeOnRocket();

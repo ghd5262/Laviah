@@ -8,7 +8,8 @@ using namespace cocos2d::ui;
 CShareManager::CShareManager()
 : m_CapturePath("")
 , m_ShareTitle("")
-, m_ShareText(""){}
+, m_ShareText("")
+, m_ExitCallback(nullptr){}
 
 CShareManager::~CShareManager(){}
 
@@ -106,6 +107,9 @@ void CShareManager::onShareState(const sdkbox::SocialShareResponse& response)
             CCLOG("SharePlugin::onShareState success");
             
             CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::PHOTO_SHARE, 1);
+            if(m_ExitCallback){
+                m_ExitCallback();
+            }
             break;
         }
         case sdkbox::SocialShareState::SocialShareStateFail: {

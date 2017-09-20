@@ -11,6 +11,7 @@
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/WorkshopItemDataManager.h"
 #include "../DataManager/CostumeDataManager.hpp"
+#include "../SDKBOX/SDKBoxHeaders.h"
 
 using namespace cocos2d;
 using namespace PLAYER_DEFINE;
@@ -151,17 +152,22 @@ void CPlayer::GotSomeHealth(float health)
 	}
 }
 
-void CPlayer::LostSomeHealth(float loseHealth)
+void CPlayer::LostSomeHealth(CBullet* data)
 {
 	if (m_Invincibility || !m_Life) return;
     
 //    CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
-	if (0.f < (m_Life - loseHealth))
+	if (0.f < (m_Life - data->getPower()))
 	{
-		m_Life -= loseHealth;
+		m_Life -= data->getPower();
 	}
 	else{
         m_Life = 0.f;
+        auto gaLable= StringUtils::format("bullet_%c", data->getSymbol());
+        
+        CGoogleAnalyticsManager::LogMetric(GA_METRIC::END_PATTERN, data->getPatternIndex());
+        CGoogleAnalyticsManager::LogMetric(GA_METRIC::END_BULLET, data->getSymbol());
+        
 		this->PlayerDead();
         CGameScene::getGameScene()->GameEnd();
     }
