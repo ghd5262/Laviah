@@ -52,6 +52,11 @@
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		5901B13F1F5DD3C50015BA47 /* GameMetaDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */; };
 		5901B1401F5DD3C60015BA47 /* GameMetaDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */; };
+		591D13B51F6D0BB900D1C44B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 591D13B41F6D0BB900D1C44B /* Security.framework */; };
+		591D13BA1F6D0D7300D1C44B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 591D13B91F6D0D7300D1C44B /* libz.tbd */; };
+		591D13BC1F6D0D8000D1C44B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 591D13BB1F6D0D8000D1C44B /* libsqlite3.tbd */; };
+		591D13CC1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 591D13CA1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp */; };
+		591D13CD1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 591D13CA1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp */; };
 		59315BAF1E92776E00337C1C /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59315BAB1E92776E00337C1C /* CharacterBullet.cpp */; };
 		5940E3731F403AFB00F0C8F1 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5940E3721F403AFB00F0C8F1 /* CoreText.framework */; };
 		5940E3811F41CA4600F0C8F1 /* ShareManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5940E37F1F41CA4600F0C8F1 /* ShareManager.cpp */; };
@@ -97,6 +102,7 @@
 		62C747B99AA18F15055E9560 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCBF407C98940A83F1260AFE /* Fabric.framework */; };
 		6973462299528F1D5CC62264 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F05845EDAD10602FC05D93CB /* GameController.framework */; };
 		6EC2465CA7F98942C19CDA5C /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56864C3B9CC7F082E5C29A7E /* EventKit.framework */; };
+		716D408E90DA883A8741D493 /* PluginGoogleAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4578418E9028243367BEBF27 /* PluginGoogleAnalytics.framework */; };
 		80A04D9CBC50F21CAD809B7D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9FFF4836959AAFE6895FF7A7 /* Localizable.strings */; };
 		89D8468A885D51FF77F0ED94 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C944AEBA4B542B4548E39EC /* Bolts.framework */; };
 		8B694A8380930BDD4959CE68 /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CBA4C01BC6762E7A49F72D8 /* TwitterCore.framework */; };
@@ -238,6 +244,7 @@
 		94E8469A97D9E5734B8DCEF1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB0740FF8B5B9771574A0BCB /* MessageUI.framework */; };
 		97874101B9420A851D7BC6DE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 506740119760D2FF248552E9 /* CoreData.framework */; };
 		9AF64772B8DAF909E0A5B20C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123445DD9C1B7FC93AC26EBC /* StoreKit.framework */; };
+		A5C24E75A2713ABBFE1A1CE2 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9F4C56AE17294EB57CB866 /* libsqlite3.dylib */; };
 		A6054DCEA17AFACDC03C7AB1 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6854B3DBED19056FE61B935 /* MediaPlayer.framework */; };
 		BD12455B831B0397C8082B41 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE64354BDA54E796721EDAB /* FBSDKLoginKit.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
@@ -322,6 +329,7 @@
 		392D48748E4840CC0EC39E61 /* PluginFacebook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PluginFacebook.framework; sourceTree = SOURCE_ROOT; };
 		3A6F4CFC81B711E8FD9FAF70 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/ar.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 		41264D349E0859F23DFE8722 /* PluginSdkboxPlay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PluginSdkboxPlay.framework; sourceTree = SOURCE_ROOT; };
+		4578418E9028243367BEBF27 /* PluginGoogleAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PluginGoogleAnalytics.framework; sourceTree = SOURCE_ROOT; };
 		462A4E3489270CC507C9655B /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/sv.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 		471E4E55BA1F86F239A021D1 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/da.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 		4AA84F2B8082AAE1A692DCB4 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/sk.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
@@ -367,6 +375,11 @@
 		5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMetaDataManager.cpp; sourceTree = "<group>"; };
 		5901B13E1F5DD3C50015BA47 /* GameMetaDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GameMetaDataManager.hpp; sourceTree = "<group>"; };
 		5918FE7C1F2B6E3000063833 /* UserDataDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataDefine.h; sourceTree = "<group>"; };
+		591D13B41F6D0BB900D1C44B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		591D13B91F6D0D7300D1C44B /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		591D13BB1F6D0D8000D1C44B /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
+		591D13CA1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleAnalyticsManager.cpp; sourceTree = "<group>"; };
+		591D13CB1F6D3C0400D1C44B /* GoogleAnalyticsManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GoogleAnalyticsManager.hpp; sourceTree = "<group>"; };
 		59315BAB1E92776E00337C1C /* CharacterBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterBullet.cpp; sourceTree = "<group>"; };
 		59315BAC1E92776E00337C1C /* CharacterBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterBullet.hpp; sourceTree = "<group>"; };
 		5940E3721F403AFB00F0C8F1 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
@@ -412,6 +425,7 @@
 		5E5D4CF7B33F4E097C21BF20 /* TwitterKit.framework/Resources/TwitterKitResources.bundle/ */ = {isa = PBXFileReference; lastKnownFileType = "?"; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/; sourceTree = SOURCE_ROOT; };
 		614046BC8AE966AC3E258281 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/pl.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 		69764114A67BFDCFF6BC6445 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/fr.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		6A9F4C56AE17294EB57CB866 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
 		6CBA4C01BC6762E7A49F72D8 /* TwitterCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterCore.framework; sourceTree = SOURCE_ROOT; };
 		77C2434B80D4922BD064050F /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/hr.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 		78724CEEB2F241F53FADBD10 /* mr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = mr; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/mr.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
@@ -712,6 +726,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				591D13BC1F6D0D8000D1C44B /* libsqlite3.tbd in Frameworks */,
+				591D13BA1F6D0D7300D1C44B /* libz.tbd in Frameworks */,
+				591D13B51F6D0BB900D1C44B /* Security.framework in Frameworks */,
 				5940E3731F403AFB00F0C8F1 /* CoreText.framework in Frameworks */,
 				59E1A6551F17EA6F003020B9 /* UIKit.framework in Frameworks */,
 				9312B47C1D58A12600FE954C /* libiconv.tbd in Frameworks */,
@@ -754,6 +771,8 @@
 				2BA34FAA82FCC3B0293E0AE5 /* Accounts.framework in Frameworks */,
 				97874101B9420A851D7BC6DE /* CoreData.framework in Frameworks */,
 				60034643B87EFC7D1AE60598 /* Social.framework in Frameworks */,
+				716D408E90DA883A8741D493 /* PluginGoogleAnalytics.framework in Frameworks */,
+				A5C24E75A2713ABBFE1A1CE2 /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -832,6 +851,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				591D13BB1F6D0D8000D1C44B /* libsqlite3.tbd */,
+				591D13B91F6D0D7300D1C44B /* libz.tbd */,
+				591D13B41F6D0BB900D1C44B /* Security.framework */,
 				5940E3721F403AFB00F0C8F1 /* CoreText.framework */,
 				59E1A6541F17EA6F003020B9 /* UIKit.framework */,
 				59E1A5F41F129332003020B9 /* UnityAds.framework */,
@@ -879,6 +901,8 @@
 				4BD8402391CF92B04A368D07 /* Accounts.framework */,
 				506740119760D2FF248552E9 /* CoreData.framework */,
 				B01B4FCC91FFD48B12B71C6C /* Social.framework */,
+				4578418E9028243367BEBF27 /* PluginGoogleAnalytics.framework */,
+				6A9F4C56AE17294EB57CB866 /* libsqlite3.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -945,6 +969,15 @@
 			path = ios;
 			sourceTree = SOURCE_ROOT;
 		};
+		591D13C91F6D3BC500D1C44B /* GoogleAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				591D13CA1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp */,
+				591D13CB1F6D3C0400D1C44B /* GoogleAnalyticsManager.hpp */,
+			);
+			path = GoogleAnalytics;
+			sourceTree = "<group>";
+		};
 		5940E37E1F41CA4600F0C8F1 /* Share */ = {
 			isa = PBXGroup;
 			children = (
@@ -957,6 +990,7 @@
 		59E1A63B1F162E0A003020B9 /* SDKBOX */ = {
 			isa = PBXGroup;
 			children = (
+				591D13C91F6D3BC500D1C44B /* GoogleAnalytics */,
 				5940E37E1F41CA4600F0C8F1 /* Share */,
 				59E1A63C1F162E0A003020B9 /* Facebook */,
 				59E1A63F1F162E0A003020B9 /* Play */,
@@ -1652,6 +1686,7 @@
 				93A116701E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
 				93706F8E1E7A6891009A2CA0 /* HelpPopup.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
+				591D13CC1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp in Sources */,
 				93706F5B1E7A6891009A2CA0 /* BackGround.cpp in Sources */,
 				59E1A6511F163E11003020B9 /* PlayManager.cpp in Sources */,
 				93706F6D1E7A6891009A2CA0 /* MenuSceneObjectManager.cpp in Sources */,
@@ -1722,6 +1757,7 @@
 				599B77D61F27EEEC0066D32E /* CostumeDataManager.cpp in Sources */,
 				5940E3821F41CA4600F0C8F1 /* ShareManager.cpp in Sources */,
 				598A413A1F20D7B800D567CB /* CharacterPopupDP.cpp in Sources */,
+				591D13CD1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp in Sources */,
 				93A116711E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
 				5901B1401F5DD3C60015BA47 /* GameMetaDataManager.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
@@ -1850,17 +1886,19 @@
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
-					"\"sdkbox.framework\"",
-					"\"PluginFacebook.framework\"",
-					"\"FBSDKCoreKit.framework\"",
-					"\"FBSDKLoginKit.framework\"",
-					"\"FBSDKShareKit.framework\"",
-					"\"Bolts.framework\"",
-					"\"PluginSdkboxPlay.framework\"",
-					"\"PluginShare.framework\"",
-					"\"Fabric.framework\"",
-					"\"TwitterCore.framework\"",
-					"\"TwitterKit.framework\"",
+					sdkbox.framework,
+					PluginFacebook.framework,
+					FBSDKCoreKit.framework,
+					FBSDKLoginKit.framework,
+					FBSDKShareKit.framework,
+					Bolts.framework,
+					PluginSdkboxPlay.framework,
+					PluginShare.framework,
+					Fabric.framework,
+					TwitterCore.framework,
+					TwitterKit.framework,
+					PluginGoogleAnalytics.framework,
+					"$(PROJECT_DIR)/PluginGoogleAnalytics.framework/Headers",
 				);
 				OTHER_CFLAGS = "-DSDKBOX_ENABLED";
 				OTHER_LDFLAGS = (
@@ -1912,17 +1950,19 @@
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
-					"\"sdkbox.framework\"",
-					"\"PluginFacebook.framework\"",
-					"\"FBSDKCoreKit.framework\"",
-					"\"FBSDKLoginKit.framework\"",
-					"\"FBSDKShareKit.framework\"",
-					"\"Bolts.framework\"",
-					"\"PluginSdkboxPlay.framework\"",
-					"\"PluginShare.framework\"",
-					"\"Fabric.framework\"",
-					"\"TwitterCore.framework\"",
-					"\"TwitterKit.framework\"",
+					sdkbox.framework,
+					PluginFacebook.framework,
+					FBSDKCoreKit.framework,
+					FBSDKLoginKit.framework,
+					FBSDKShareKit.framework,
+					Bolts.framework,
+					PluginSdkboxPlay.framework,
+					PluginShare.framework,
+					Fabric.framework,
+					TwitterCore.framework,
+					TwitterKit.framework,
+					PluginGoogleAnalytics.framework,
+					"$(PROJECT_DIR)/PluginGoogleAnalytics.framework/Headers",
 				);
 				OTHER_CFLAGS = "-DSDKBOX_ENABLED";
 				OTHER_LDFLAGS = (
@@ -1968,7 +2008,7 @@
 					"$(SRCROOT)/../cocos2d/external/glfw3/include/mac",
 				);
 				INFOPLIST_FILE = mac/Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/PluginGoogleAnalytics.framework/Headers";
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
 					"$(_COCOS_LIB_MAC_END)",
@@ -2003,7 +2043,7 @@
 					"$(SRCROOT)/../cocos2d/external/glfw3/include/mac",
 				);
 				INFOPLIST_FILE = mac/Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/PluginGoogleAnalytics.framework/Headers";
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
 					"$(_COCOS_LIB_MAC_END)",
