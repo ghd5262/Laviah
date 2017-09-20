@@ -35,6 +35,7 @@ PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/SDKBOX/Play/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/SDKBOX/UnityAds/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/SDKBOX/Facebook/*.cpp)
 PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/SDKBOX/Share/*.cpp)
+PROJECT_FILES += $(wildcard $(LOCAL_PATH)/../../Classes/SDKBOX/GoogleAnalytics/*.cpp)
 
 PROJECT_FILES := $(PROJECT_FILES:$(LOCAL_PATH)/%=%)
 
@@ -48,7 +49,8 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 LOCAL_WHOLE_STATIC_LIBRARIES := PluginFacebook \
 sdkbox \
 PluginSdkboxPlay \
-PluginShare
+PluginShare \
+PluginGoogleAnalytics
 
 # _COCOS_HEADER_ANDROID_BEGIN
 # _COCOS_HEADER_ANDROID_END
@@ -66,6 +68,7 @@ $(call import-module, ./sdkbox)
 $(call import-module, ./pluginfacebook)
 $(call import-module, ./pluginsdkboxplay)
 $(call import-module, ./pluginshare)
+$(call import-module, ./plugingoogleanalytics)
 
 # _COCOS_LIB_IMPORT_ANDROID_BEGIN
 # _COCOS_LIB_IMPORT_ANDROID_END
