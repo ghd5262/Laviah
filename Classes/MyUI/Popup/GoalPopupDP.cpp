@@ -3,6 +3,7 @@
 #include "../Popup.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -55,6 +56,7 @@ bool CGoalPopupDP::init()
         
         auto skipBtn = CMyButton::create()
         ->addEventListener([=](Node* sender){
+            CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::GOAL_SKIP, index);
             if(m_SkipCallback){
                 this->retain();
                 m_SkipCallback(this, m_PosIndex);

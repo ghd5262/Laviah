@@ -287,8 +287,8 @@ void CCharacterCostumePopup::share()
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::SHARE_COSTUME);
     
     CGameScene::getGameScene()->OpenSharePopup([=](){
-        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::SHARE, GA_ACTION::SHARE_COSTUME,
-                                          GA_ACTION::SHARE_COSTUME, m_CurrentData->_index);
+        CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::SHARE, GA_ACTION::SHARE_COSTUME,
+                                               m_CurrentData->_index);
     }, m_CapturedNode->getTexture(), SIZE_TYPE::HALF_SIZE, true);
 }
 

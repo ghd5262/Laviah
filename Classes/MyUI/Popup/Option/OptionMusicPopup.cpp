@@ -94,9 +94,8 @@ bool COptionMusicPopup::init()
     this->setOnExitCallback([=](){
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::BGM_VOLUME,    m_BGMVolume);
         CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::EFFECT_VOLUME, m_EffectVolume);
-        CGoogleAnalyticsManager::LogDimension(GA_DIMENSION::OPTION_BGM, m_BGMVolume);
-        CGoogleAnalyticsManager::LogDimension(GA_DIMENSION::OPTION_EFFECT_SOUND, m_EffectVolume);
-
+        CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::OPTION, GA_ACTION::OPTION_BGM, m_BGMVolume);
+        CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::OPTION, GA_ACTION::OPTION_EFFECT_SOUND, m_EffectVolume);
     });
     
     auto alertCreate = [=](std::function<void(Node*)> positive, std::string content){

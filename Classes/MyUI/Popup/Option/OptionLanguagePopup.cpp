@@ -84,7 +84,7 @@ CMyButton* COptionLanguagePopup::createLanguageDP(std::string content, Vec2 pos)
             
             //option popup open again
             CGameScene::getGameScene()->OpenOptionPopup(2);
-            CGoogleAnalyticsManager::LogDimension(GA_DIMENSION::OPTION_LANGUAGE, index);
+            CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::OPTION, GA_ACTION::OPTION_LANGUAGE, languageKey);
         });
     })
     ->setButtonSingleUse(true)

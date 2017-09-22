@@ -162,12 +162,13 @@ void CPlayer::LostSomeHealth(CBullet* data)
 		m_Life -= data->getPower();
 	}
 	else{
-        m_Life = 0.f;
-        auto gaLable= StringUtils::format("bullet_%c", data->getSymbol());
-        
-        CGoogleAnalyticsManager::LogMetric(GA_METRIC::END_PATTERN, data->getPatternIndex());
-        CGoogleAnalyticsManager::LogMetric(GA_METRIC::END_BULLET, data->getSymbol());
-        
+        m_Life = 0.f;        
+        CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::END_PATTERN,
+                                               data->getPatternIndex());
+        CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::END_BULLET,
+                                               data->getSymbol());
+        CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::END_LEVEL,
+                                               GVALUE->STAGE_LEVEL);
 		this->PlayerDead();
         CGameScene::getGameScene()->GameEnd();
     }

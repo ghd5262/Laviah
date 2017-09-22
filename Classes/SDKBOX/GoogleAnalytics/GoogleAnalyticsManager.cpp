@@ -52,14 +52,33 @@ void CGoogleAnalyticsManager::EndTimer(std::string timerKey)
                                              timerKey);
 }
 
-void CGoogleAnalyticsManager::LogEvent(std::string category,
-                                       std::string action,
-                                       std::string label,
-                                       int value)
+void CGoogleAnalyticsManager::LogEventAction(std::string category, std::string action, int value/* = 0*/)
+{
+    if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
+    
+    sdkbox::PluginGoogleAnalytics::logEvent(category, action, "", value);
+}
+
+void CGoogleAnalyticsManager::LogEventValue(std::string category, std::string action, int value)
 {
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
 
-    sdkbox::PluginGoogleAnalytics::logEvent(category, action, label, value);
+    auto valueString = StringUtils::format("%04d", value);
+    sdkbox::PluginGoogleAnalytics::logEvent(category, action, valueString, 0);
+}
+
+void CGoogleAnalyticsManager::LogEventValue(std::string category, std::string action, std::string value)
+{
+    if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
+    
+    sdkbox::PluginGoogleAnalytics::logEvent(category, action, value, 0);
+}
+
+void CGoogleAnalyticsManager::LogEventCoin(std::string action, int value)
+{
+    if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
+
+    sdkbox::PluginGoogleAnalytics::logEvent(GA_CATEGORY::COIN, action, "", value);
 }
 
 void CGoogleAnalyticsManager::LogSocial(std::string category,
@@ -78,18 +97,10 @@ void CGoogleAnalyticsManager::LogScreen(std::string title)
     sdkbox::PluginGoogleAnalytics::logScreen(title);
 }
 
-void CGoogleAnalyticsManager::LogDimension(int key, int value)
+void CGoogleAnalyticsManager::LogScreen(std::string title, int index)
 {
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
     
-    auto str = StringUtils::format("%d", value);
-    sdkbox::PluginGoogleAnalytics::setDimension(key, str);
-}
-
-void CGoogleAnalyticsManager::LogMetric(int key, int value)
-{
-    if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
-
-    auto str = StringUtils::format("%d", value);
-    sdkbox::PluginGoogleAnalytics::setMetric(key, str);
+    title += StringUtils::format("/%04d", index);
+    sdkbox::PluginGoogleAnalytics::logScreen(title);
 }

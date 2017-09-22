@@ -6,6 +6,7 @@
 #include "../json/json.h"
 #include "../Common/StringUtility.h"
 #include "../MyUI/Tutorial/TutorialManager.hpp"
+#include "../SDKBOX/SDKBoxHeaders.h"
 
 using namespace cocos2d;
 using namespace ACHIEVEMENT_DATA_KEY;
@@ -225,6 +226,9 @@ const ACHIEVEMENT* CAchievementDataManager::CompleteCheckRealTime(bool isHidden)
                 auto data   = this->getHiddenAchievementByIndex(index);
                 auto level  = CAchievementDataManager::getAchievementLevelByIndex(data->_index, true);
                 auto hidden = ((data->_type == ACHIEVEMENT_TYPE::HIDDEN_TYPE) && level <= 0);
+                auto gaLabel = StringUtils::format("%04d_%04d", index, level);
+                CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::ACHIEVEMENT_COMPLETE,
+                                                       gaLabel);
                 m_CompletedList.push(COMPLETED_ACHIEVEMENT(data->_index, level, hidden));
                 
                 return data;

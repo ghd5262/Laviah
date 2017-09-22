@@ -75,7 +75,7 @@ bool COptionDeveloperPopup::init()
     
 
     auto gaLogSend = [=](std::string action, bool state){
-        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::OPTION, action, action, (int)state);
+        CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::OPTION, action, (int)state);
     };
     
     auto createOnOff = [=](std::function<void(Ref* sender, bool)> listener, bool state){

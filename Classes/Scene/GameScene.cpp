@@ -944,7 +944,7 @@ void CGameScene::createReviewPopup()
     auto storeURL    = CDownloadManager::Instance()->getAppUrl();
     auto facebookURL = CDownloadManager::Instance()->getFacebookPageLink();
     auto gaLogSend   = [=](std::string action){
-        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::REVIEW, action, action, 0);
+        CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::REVIEW, action);
     };
     m_NeedReview     = false;
     

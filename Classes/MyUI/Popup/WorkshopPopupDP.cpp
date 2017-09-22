@@ -145,9 +145,10 @@ void CWorkshopPopupDP::Buy(Node* sender)
     auto cost  = -m_WorkshopItem->_costPerLevel.at(value);
     if (CUserDataManager::Instance()->CoinUpdate(cost)){
 		value += 1;
-        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::GAME_PLAY, GA_ACTION::COIN_USE_UPGRADE,
-                                          GA_ACTION::COIN_USE_UPGRADE, cost);
-        CGoogleAnalyticsManager::LogDimension(GA_DIMENSION::ITEM_UPGRADE, value);
+        CGoogleAnalyticsManager::LogEventCoin(GA_ACTION::COIN_USE_UPGRADE, cost);
+        
+        auto gaLabel = StringUtils::format("%04d_%04d", m_WorkshopItem->_index, value);
+        CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::ITEM_UPGRADE, gaLabel);
         CGoogleAnalyticsManager::LogScreen(GA_SCREEN::WORKSHOP_BUY);
         
         CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::ITEM_LEVEL,

@@ -15,6 +15,7 @@ struct STAGE_DATA{
     int _patternLevel;
     int _type;
     int _patternIndex;
+    int _targetStar;
     float _changeDuration;
     float _duration;
     float _changeTime;
@@ -28,6 +29,7 @@ struct STAGE_DATA{
     , _patternLevel(1)
     , _type(0)
     , _patternIndex(0)
+    , _targetStar(0)
     , _changeDuration(0.f)
     , _duration(0.f)
     , _changeTime(0.f)

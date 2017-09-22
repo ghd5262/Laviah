@@ -52,6 +52,7 @@ CObjectManager::CObjectManager()
 , m_OriginPatternLevel(0)
 , m_PhotoShareAble(false)
 , m_SlowMotionAble(false)
+, m_ScoreLogSend(false)
 {
 //    m_FSM = std::shared_ptr<CStateMachine<CObjectManager>>(new CStateMachine<CObjectManager>(this),
 //                                                           [=](CStateMachine<CObjectManager>* fsm){
@@ -485,16 +486,53 @@ void CObjectManager::setGameLevelByTimer(float delta)
     if(CTutorialManager::Instance()->getIsRunning()) return;
     
     m_LevelTimer += delta;
-    if(m_CurrentLevelData._changeTime < m_LevelTimer)
+    if(!m_ScoreLogSend){
+        if(m_CurrentLevelData._targetStar <= GVALUE->STAR_COUNT){
+            m_ScoreLogSend = true;
+            CGoogleAnalyticsManager::LogScreen(GA_SCREEN::SCORE, m_CurrentLevelData._targetStar);
+        }
+    }
+    
+    if(m_CurrentLevelData._duration < m_LevelTimer &&
+       m_CurrentLevelData._targetStar <= GVALUE->STAR_COUNT)
     {
+        m_LevelTimer   = 0.f;
+        m_ScoreLogSend = false;
         if(m_CurrentStage.size() > GVALUE->STAGE_LEVEL+1){
+            
+            auto level = StringUtils::format("_%04d", GVALUE->STAGE_LEVEL);
+//            CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::GAME_PLAY,
+//                                                    GA_ACTION::STAR_COUNT_BY_LEVEL + level,
+//                                                    GVALUE->STAR_COUNT);
+            
+            CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::GAME_PLAY,
+                                                    GA_ACTION::STAR_ITEM_BY_LEVEL + level,
+                                                    GVALUE->STAR_ITEM_USE);
+            
+            CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::GAME_PLAY,
+                                                    GA_ACTION::COIN_ITEM_BY_LEVEL + level,
+                                                    GVALUE->COIN_ITEM_USE);
+            
+            CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::GAME_PLAY,
+                                                    GA_ACTION::BARRIER_ITEM_BY_LEVEL + level,
+                                                    GVALUE->BARRIER_ITEM_USE);
+            
+            CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::GAME_PLAY,
+                                                    GA_ACTION::MAGNET_ITEM_BY_LEVEL + level,
+                                                    GVALUE->MAGNET_ITEM_USE);
+            
+            CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::GAME_PLAY,
+                                                    GA_ACTION::GIANT_ITEM_BY_LEVEL + level,
+                                                    GVALUE->GIANT_ITEM_USE);
+            
+            
+            
             GVALUE->STAGE_LEVEL++;
             m_CurrentLevelData   = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
             GVALUE->NOTICE_LEVEL = m_CurrentLevelData._noticeLevel;
 
             CGameScene::getZoomLayer()->scheduleOnce([=](float delay){
-                auto gaScreenName = GA_SCREEN::STAGE + StringUtils::format("/%d", GVALUE->NOTICE_LEVEL);
-                CGoogleAnalyticsManager::LogScreen(gaScreenName);
+                CGoogleAnalyticsManager::LogScreen(GA_SCREEN::STAGE, GVALUE->STAGE_LEVEL);
                 
                 this->setGameStateByLevel();
                 
@@ -546,8 +584,7 @@ void CObjectManager::InitTutorialStep()
     };
     
     auto createPattern    = [=](int index){
-        auto gaScreenName = GA_SCREEN::TUTORIAL + StringUtils::format("/%d", index);
-        CGoogleAnalyticsManager::LogScreen(gaScreenName);
+        CGoogleAnalyticsManager::LogScreen(GA_SCREEN::TUTORIAL, index);
         CTutorialHelper::Instance()->CreateBulletPattern(TUTORIAL_KEY::BEGINER, index);
     };
     

@@ -101,8 +101,8 @@ bool COptionDataSavePopup::init()
                 if(isConnected){
                     loginFirstPopup([=](){
                         CUserDataManager::Instance()->SaveUserData(true);
-                        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::OPTION, GA_ACTION::OPTION_DATA_SAVE,
-                                                          GA_ACTION::OPTION_DATA_SAVE, 0);
+                        CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::OPTION,
+                                                                GA_ACTION::OPTION_DATA_SAVE);
                     });
                 }
                 else networkPopup();
@@ -117,8 +117,8 @@ bool COptionDataSavePopup::init()
                 if(isConnected){
                     loginFirstPopup([=](){
                         CUserDataManager::Instance()->LoadUserDataFromCloud();
-                        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::OPTION, GA_ACTION::OPTION_DATA_LOAD,
-                                                          GA_ACTION::OPTION_DATA_LOAD, 0);
+                        CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::OPTION,
+                                                                GA_ACTION::OPTION_DATA_LOAD);
                     });
                 }
                 else networkPopup();

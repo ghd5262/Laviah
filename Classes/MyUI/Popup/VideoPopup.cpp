@@ -200,10 +200,7 @@ void CVideoPopup::ReviveByCoin(cocos2d::Node* sender)
     
     auto reviveCost = META_DATA("REVIVE_COST").asInt();
     if (CUserDataManager::Instance()->CoinUpdate(-reviveCost)){
-        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::GAME_PLAY,
-                                          GA_ACTION::COIN_USE_REVIVE,
-                                          GA_ACTION::COIN_USE_REVIVE,
-                                          -reviveCost);
+        CGoogleAnalyticsManager::LogEventCoin(GA_ACTION::COIN_USE_REVIVE, -reviveCost);
         m_ReviveButtonTouched = true;
         this->Resume();
     }
@@ -226,9 +223,7 @@ void CVideoPopup::ReviveByVideo(cocos2d::Node* sender)
     CDownloadManager::IsNetworkConnected([=](bool connected){
         if(connected){
             CUnityAdsManager::Instance()->ShowUnityAds([=](){
-                CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::WATCH_ADS,
-                                                  GA_ACTION::ADS_REVIVE,
-                                                  GA_ACTION::ADS_REVIVE, 0);
+                CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::WATCH_ADS, GA_ACTION::ADS_REVIVE);
                 this->Resume();
             });
             CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){

@@ -328,14 +328,13 @@ void CResultPopup::end(){
 void CResultPopup::getCoinFromVideo(Node* sender)
 {
     CUnityAdsManager::Instance()->ShowUnityAds([=](){
-        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::WATCH_ADS,
-                                          GA_ACTION::ADS_BONUS,
-                                          GA_ACTION::ADS_BONUS, 0);
-        CGoogleAnalyticsManager::LogScreen(GA_SCREEN::REWARD_BONUS);
-
         auto coin = META_DATA("BONUS_COIN").asInt();
         this->createRewardPopup(TRANSLATE("REWARD_TITLE_BONUS_COIN"),
                                 ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, coin);
+        
+        CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::WATCH_ADS, GA_ACTION::ADS_BONUS);
+        CGoogleAnalyticsManager::LogScreen(GA_SCREEN::REWARD_BONUS);
+        CGoogleAnalyticsManager::LogEventCoin(GA_ACTION::COIN_GET_BONUS, coin);
     });
     CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){
         auto button = dynamic_cast<CMyButton*>(sender);
@@ -402,9 +401,7 @@ void CResultPopup::share()
     
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::SHARE_SCORE);
     CGameScene::getGameScene()->OpenSharePopup([=](){
-        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::SHARE,
-                                          GA_ACTION::SHARE_SCORE,
-                                          GA_ACTION::SHARE_SCORE, 0);
+        CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::SHARE, GA_ACTION::SHARE_SCORE);
     }, node->getTexture(), SIZE_TYPE::FULL_SIZE, true, GVALUE->TOTAL_SCORE);
 }
 
@@ -752,7 +749,12 @@ void CResultPopup::userDataUpdate()
     CAchievementDataManager::Instance()->CompleteCheckRealTime(true);
     
     // Update google analytics
-    CGoogleAnalyticsManager::LogMetric(GA_METRIC::SCORE, GVALUE->TOTAL_SCORE);
-    CGoogleAnalyticsManager::LogMetric(GA_METRIC::PLAY_CHARACTER, GVALUE->CURRENT_CHARACTER);
-    CGoogleAnalyticsManager::LogMetric(GA_METRIC::PLAY_COSTUME, GVALUE->CURRENT_COSTUME);
+    CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::RESULT, GA_ACTION::TOTAL_SCORE, GVALUE->TOTAL_SCORE);
+    CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::RESULT, GA_ACTION::STAR_SCORE,  GVALUE->STAR_SCORE);
+    CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::RESULT, GA_ACTION::COIN_SCORE,  GVALUE->COIN_SCORE);
+    CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::RESULT, GA_ACTION::COMBO_SCORE, GVALUE->BEST_COMBO);
+
+    CGoogleAnalyticsManager::LogEventCoin(GA_ACTION::COIN_GET_INGAME, GVALUE->COIN_COUNT);
+    CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::PLAY_CHARACTER, GVALUE->CURRENT_CHARACTER);
+    CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::PLAY_COSTUME, GVALUE->CURRENT_COSTUME);
 }

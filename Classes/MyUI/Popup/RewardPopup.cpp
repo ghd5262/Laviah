@@ -333,9 +333,7 @@ void CRewardPopup::open()
     
     // 구매한 경우 GA 로그 저장
     if (m_IsPaidFeature){
-        CGoogleAnalyticsManager::LogEvent(GA_CATEGORY::GAME_PLAY,
-                                          GA_ACTION::COIN_USE_COSTUME,
-                                          GA_ACTION::COIN_USE_COSTUME, 0);
+        CGoogleAnalyticsManager::LogEventCoin(GA_ACTION::COIN_USE_COSTUME, m_Cost);
     }
     
 	m_LastSavedData = m_RewardList.at(m_RewardIndex);

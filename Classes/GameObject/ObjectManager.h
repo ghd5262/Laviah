@@ -115,7 +115,8 @@ public:
     CC_SYNTHESIZE(const COSTUME*, m_CostumeParam, CostumeParam);
     CC_SYNTHESIZE(bool, m_PhotoShareAble, PhotoShareAble);
     CC_SYNTHESIZE(bool, m_SlowMotionAble, SlowMotionAble);
-    
+    CC_SYNTHESIZE(bool, m_ScoreLogSend, ScoreLogSend);
+
 private:
 	void createBulletByTimer(float delta);
     void inGameUpdate(float delta);

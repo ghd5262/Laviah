@@ -336,6 +336,7 @@ void CUserDataManager::setFreeRewardTimestamp(long long timestamp)
 bool CUserDataManager::CoinUpdate(int value)
 {
     if((getUserData_Number(USERDATA_KEY::COIN) + value) >= 0) {
+        CGoogleAnalyticsManager::LogEventCoin(GA_ACTION::COIN, value);
         this->setUserData_NumberAdd(USERDATA_KEY::COIN, value);
         return true;
     }
@@ -361,7 +362,8 @@ void CUserDataManager::ExpAdd(int exp)
         this->setUserData_Number(USERDATA_KEY::EXP, 0);
         this->setUserData_Number(USERDATA_KEY::LEVEL, newLevel);
         
-        CGoogleAnalyticsManager::LogDimension(GA_DIMENSION::LEVEL, newLevel);
+        CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::GAME_PLAY, GA_ACTION::LEVEL, newLevel);
+        CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::LEVEL, newLevel);
         
         if(newLevel % reviewLevel == 0)
             CGameScene::getGameScene()->setNeedReview(true);

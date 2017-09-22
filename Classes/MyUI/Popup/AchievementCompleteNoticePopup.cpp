@@ -4,6 +4,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/AchievementDataManager.hpp"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 USING_NS_CC;
 
 namespace ACHIEVEMENT_COMPLETE_NOTICE{
@@ -68,6 +69,7 @@ void CAchievementCompleteNoticePopup::checkAchievementCompleteOnRealTime()
 
 	auto data = CAchievementDataManager::Instance()->CompleteCheckRealTime(false);
 	if (data != nullptr) {
+        CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::GOAL_COMPLETE, data->_index);
         auto contents = CAchievementDataManager::Instance()->getAchievementContentsByIndex(data->_index, false);
         m_Checkable   = false;
         m_AchievementLabel->setString(contents);

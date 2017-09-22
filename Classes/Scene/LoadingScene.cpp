@@ -34,8 +34,8 @@ bool CLoadingScene::init()
 	if (!Layer::init())
         return false;
     
-    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::LOAD);
-    
+    sdkbox::PluginGoogleAnalytics::logScreen(GA_SCREEN::LOAD);
+
     this->setContentSize(Director::getInstance()->getVisibleSize());
     this->startDownload();
     

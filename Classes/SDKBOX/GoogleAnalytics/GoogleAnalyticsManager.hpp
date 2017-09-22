@@ -7,6 +7,8 @@
 
 namespace GA_CATEGORY {
     const std::string GAME_PLAY = "GamePlay";
+    const std::string RESULT    = "Result";
+    const std::string COIN      = "Coin";
     const std::string WATCH_ADS = "WatchAds";
     const std::string SHARE     = "Share";
     const std::string REVIEW    = "Review";
@@ -14,28 +16,17 @@ namespace GA_CATEGORY {
     const std::string OPTION    = "Option";
 };
 
-namespace GA_DIMENSION {
-    const int LEVEL                 = 1;
-    const int COIN                  = 2;
-    const int ITEM_UPGRADE          = 3;
-    const int OPTION_LANGUAGE       = 4;
-    const int OPTION_BGM            = 5;
-    const int OPTION_EFFECT_SOUND   = 6;
-};
-
-namespace GA_METRIC {
-    const int END_PATTERN           = 1;
-    const int END_BULLET            = 2;
-    const int SCORE                 = 3;
-    const int PLAY_CHARACTER        = 4;
-    const int PLAY_COSTUME          = 5;
-};
-
 namespace GA_ACTION {
     
+    const std::string COIN                  = "coin";
     const std::string COIN_USE_COSTUME      = "coin_use_costume";
     const std::string COIN_USE_REVIVE       = "coin_use_revive";
     const std::string COIN_USE_UPGRADE      = "coin_use_upgrade";
+    const std::string COIN_GET_ACHIEVEMENT  = "coin_get_achievement";
+    const std::string COIN_GET_INGAME       = "coin_get_ingame";
+    const std::string COIN_GET_GOAL         = "coin_get_goal";
+    const std::string COIN_GET_BONUS        = "coin_get_bonus";
+    const std::string COIN_GET_FB_REWARD    = "coin_get_fb_reward";
     
     const std::string ADS_REVIVE            = "ads_revive";
     const std::string ADS_SKIP              = "ads_skip";
@@ -60,6 +51,33 @@ namespace GA_ACTION {
     const std::string OPTION_AUTO_SAVE      = "option_auto_save";
     const std::string OPTION_DATA_SAVE      = "option_data_save";
     const std::string OPTION_DATA_LOAD      = "option_data_load";
+    const std::string OPTION_LANGUAGE       = "option_language";
+    const std::string OPTION_BGM            = "option_bgm";
+    const std::string OPTION_EFFECT_SOUND   = "option_effect_sound";
+    
+    const std::string TOTAL_SCORE           = "result_total_score";
+    const std::string STAR_SCORE            = "result_star_score";
+    const std::string COIN_SCORE            = "result_coin_score";
+    const std::string COMBO_SCORE           = "result_combo_score";
+    
+    const std::string LEVEL                 = "level_up";
+    const std::string ITEM_UPGRADE          = "item_upgrade";
+    const std::string END_PATTERN           = "end_pattern";
+    const std::string END_BULLET            = "end_bullet";
+    const std::string END_LEVEL             = "end_level";
+    const std::string PLAY_CHARACTER        = "play_character";
+    const std::string PLAY_COSTUME          = "play_costume";
+    
+    const std::string GOAL_SKIP             = "goal_skip";
+    const std::string GOAL_COMPLETE         = "goal_complete";
+    const std::string ACHIEVEMENT_COMPLETE  = "achievement_complete";
+    const std::string SCORE_BY_LEVEL        = "score_by_level";
+    const std::string STAR_COUNT_BY_LEVEL   = "star_count_by_level";
+    const std::string STAR_ITEM_BY_LEVEL    = "star_item_by_level";
+    const std::string COIN_ITEM_BY_LEVEL    = "coin_item_by_level";
+    const std::string BARRIER_ITEM_BY_LEVEL = "barrier_item_by_level";
+    const std::string MAGNET_ITEM_BY_LEVEL  = "magnet_item_by_level";
+    const std::string GIANT_ITEM_BY_LEVEL   = "giant_item_by_level";
 };
 
 namespace GA_SCREEN {
@@ -107,6 +125,8 @@ namespace GA_SCREEN {
     const std::string TUTORIAL              = "/ingame/tutorial";
     
     const std::string STAGE                 = "/ingame/stage";
+    
+    const std::string SCORE                 = "/ingame/score";
 };
 
 typedef std::map<std::string, std::chrono::system_clock::time_point> TIMER_LIST;
@@ -119,22 +139,18 @@ public:
     void StartTimer(std::string timerKey);
     void EndTimer(std::string timerKey);
     
-    static void LogEvent(std::string category,
-                         std::string action,
-                         std::string label,
-                         int value);
-    
+    static void LogEventAction(std::string category, std::string action, int value = 0);
+    static void LogEventValue(std::string category, std::string action, int value);
+    static void LogEventValue(std::string category, std::string action, std::string value);
+    static void LogEventCoin(std::string action, int value);
+
     static void LogSocial(std::string category,
                           std::string action,
                           std::string target);
 
     static void LogScreen(std::string title);
-    
-    static void LogDimension(int key,
-                             int value);
-    
-    static void LogMetric(int key,
-                          int value);
+    static void LogScreen(std::string title, int index);
+
 private:
     
     CGoogleAnalyticsManager();

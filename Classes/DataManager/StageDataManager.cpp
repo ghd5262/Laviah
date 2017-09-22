@@ -70,6 +70,7 @@ void CStageDataManager::addStageDataToStage(STAGE_DATA_LIST &list, const Json::V
     data._patternLevel      = json["patternLevel"].asInt();
     data._type              = json["type"].asInt();
     data._patternIndex      = json["patternIndex"].asInt();
+    data._targetStar        = json["targetStar"].asInt();
     data._changeDuration    = json["changeDuration"].asDouble();
     data._duration          = json["duration"].asDouble();
     data._changeTime        = json["changeTime"].asDouble();
