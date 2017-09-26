@@ -100,6 +100,8 @@ void CTitleCompleteNoticePopup::show()
     auto& completedList = CAchievementDataManager::Instance()->getCompletedList();
     if (completedList.empty()) return;
 
+    CAudioManager::Instance()->PlayEffectSound("sounds/Notice.mp3", false);
+    
     m_Checkable = false;
     
     auto data   = completedList.front();

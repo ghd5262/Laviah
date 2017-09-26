@@ -234,6 +234,7 @@ void CPausePopup::Skip(CGoalPopupDP *sender, int posIndex)
 	CGameScene::getGameScene()->CreateAlertPopup()
     ->setPositiveButton([=](Node* sender){
         CUnityAdsManager::Instance()->ShowUnityAds([=](){
+            CAudioManager::Instance()->PlayEffectSound("sounds/Notice.mp3", false);
             CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::WATCH_ADS, GA_ACTION::ADS_SKIP);
             
             auto achievementMng = CAchievementDataManager::Instance();

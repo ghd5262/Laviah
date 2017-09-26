@@ -129,9 +129,14 @@ void CRewardPopupDP::goldReward()
             // create action
             auto upActin      = MoveTo::create(0.6f, Vec2(sender->getPositionX(), sender->getPositionY() + 150.f));
             auto sineAction   = EaseExponentialOut::create(upActin);
+            auto soundPlay    = CallFunc::create([=](){
+                if(random<int>(0, 5) < 1)
+                    CAudioManager::Instance()->PlayEffectSound("sounds/Coin_1.mp3", false);
+            });
             auto delayAction  = DelayTime::create(0.5f);
             
-            auto seqAction    = Sequence::create(sineAction,
+            auto seqAction    = Sequence::create(soundPlay,
+                                                 sineAction,
                                                  delayAction,
                                                  CallFunc::create([=](){
                 
@@ -159,6 +164,8 @@ void CRewardPopupDP::goldReward()
                 sender->runAction(Sequence::create(exponential,
                                                    spawn,
                                                    CallFunc::create([=](){
+                    if(random<int>(0, 5) < 1)
+                        CAudioManager::Instance()->PlayEffectSound("sounds/Coin_2.wav", false);
                     sender->removeFromParent();
                 }), nullptr));
                 
@@ -169,7 +176,8 @@ void CRewardPopupDP::goldReward()
         auto sequence    = Sequence::create(easeAction, delayAction, callFunc, nullptr);
         sender->runAction(sequence);
     };
-    
+    CAudioManager::Instance()->PlayEffectSound("sounds/CoinDrop.mp3", false);
+
     auto limit = std::min(60, m_Reward._value);
     for(int count = 0; count < limit; count++)
     {

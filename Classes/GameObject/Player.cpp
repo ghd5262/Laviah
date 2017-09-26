@@ -156,13 +156,13 @@ void CPlayer::LostSomeHealth(CBullet* data)
 {
 	if (m_Invincibility || !m_Life) return;
     
-//    CAudioManager::Instance()->PlayEffectSound("sounds/hit.mp3", false);
 	if (0.f < (m_Life - data->getPower()))
 	{
 		m_Life -= data->getPower();
 	}
 	else{
-        m_Life = 0.f;        
+        CAudioManager::Instance()->PlayEffectSound("sounds/Explosion.mp3", false);
+        m_Life = 0.f;
         CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::END_PATTERN,
                                                data->getPatternIndex());
         CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::GAME_PLAY, GA_ACTION::END_BULLET,
@@ -365,6 +365,9 @@ void CPlayer::createDeadParticle()
     if (particle != nullptr){
         particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         particle->setPosition(this->getPosition());
+        particle->setDuration(0.15f);
+        particle->setEndRadius(200);
+        particle->setLife(0.7f);
         CGameScene::getZoomLayer()->addChild(particle, ZORDER::PLAYER);
     }
 }

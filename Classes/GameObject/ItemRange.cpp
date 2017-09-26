@@ -56,7 +56,6 @@ void CItemRange::update(float delta)
 
 void CItemRange::ItemGet(float time)
 {
-    //		CAudioManager::Instance()->PlayEffectSound("sounds/barrier.mp3", false);
 	this->Clear();
     this->setVisible(true);
 

@@ -79,15 +79,18 @@ void CPlayCoin::CollisionWithPlayer()
         auto scaleAction  = ScaleTo::create(0.4f, scale);
         auto fadeAction   = FadeTo::create(0.4f, 1);
         auto spawn        = Spawn::create(scaleAction, fadeAction, nullptr);
+        auto callFunc     = CallFunc::create([=](){
+            CAudioManager::Instance()->PlayEffectSound("sounds/Coin_2.wav", false);
+        });
         auto removeSelf   = RemoveSelf::create();
-        sprite->runAction(Sequence::create(exponential, spawn, removeSelf, nullptr));
+        sprite->runAction(Sequence::create(exponential, callFunc, spawn, removeSelf, nullptr));
         
     }), nullptr);
     
     sprite->runAction(seqAction);
     
     
-//	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
+	CAudioManager::Instance()->PlayEffectSound("sounds/Coin_1.mp3", false);
 //    this->R_UpAndBezier();
 //    auto value = CItemManager::Instance()->getValueOfCoin((eCOIN_TYPE)(this->getSymbol() - 'U' + 1));
     this->ReturnToMemoryBlock();

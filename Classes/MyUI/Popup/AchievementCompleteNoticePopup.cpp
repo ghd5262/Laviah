@@ -81,6 +81,8 @@ void CAchievementCompleteNoticePopup::show()
 {
 	this->scheduleOnce([=](float delta){
 
+        CAudioManager::Instance()->PlayEffectSound("sounds/Notice.mp3", false);
+
 		Vec2 startPos = Vec2(this->getContentSize().width * 0.5f, this->getContentSize().height * 2.f);
 		Vec2 targetPos = this->getContentSize() / 2;
 

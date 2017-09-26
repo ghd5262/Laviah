@@ -24,7 +24,6 @@ private:
     CCharacterCostumePopup()
     : m_SelectButton(nullptr)
     , m_ShareButton(nullptr)
-    , m_NameLabel(nullptr)
     , m_ScrollView(nullptr)
     , m_CurrentData(nullptr)
     , m_ExitCallback(nullptr)
@@ -36,7 +35,6 @@ private:
 private:
     CMyButton* m_SelectButton;
     CMyButton* m_ShareButton;
-    cocos2d::Label* m_NameLabel;
     cocos2d::ui::PageView* m_ScrollView;
     const COSTUME* m_CurrentData;
     VOID_CALLBACK m_ExitCallback;

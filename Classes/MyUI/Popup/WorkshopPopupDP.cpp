@@ -145,6 +145,7 @@ void CWorkshopPopupDP::Buy(Node* sender)
     auto cost  = -m_WorkshopItem->_costPerLevel.at(value);
     if (CUserDataManager::Instance()->CoinUpdate(cost)){
 		value += 1;
+        CAudioManager::Instance()->PlayEffectSound("sounds/CoinUse.mp3", false);
         CGoogleAnalyticsManager::LogEventCoin(GA_ACTION::COIN_USE_UPGRADE, cost);
         
         auto gaLabel = StringUtils::format("%04d_%04d", m_WorkshopItem->_index, value);

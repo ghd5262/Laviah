@@ -90,13 +90,14 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
         index++;
     }
     
-    m_NameLabel = Label::createWithSystemFont("", FONT::MALGUNBD, 80,
-                                              Size(layerSize.width * 0.8f, layerSize.height),
-                                              TextHAlignment::CENTER,
-                                              TextVAlignment::CENTER);
-    m_NameLabel->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
-    m_NameLabel->setColor(Color3B::WHITE);
-    bg->addChild(m_NameLabel);
+    auto costumeLabel = Label::createWithSystemFont(TRANSLATE("COSTUME_POPUP_TITLE"), FONT::MALGUNBD, 80);
+    if (costumeLabel != nullptr)
+    {
+        costumeLabel->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
+        costumeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        costumeLabel->setOpacity(0);
+        this->addChild(costumeLabel);
+    }
     
     auto btnEnd = CMyButton::create()
     ->addEventListener([=](Node* sender){
@@ -146,7 +147,6 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
     m_FingerIcon->setPosition(Vec2(layerSize.width * 0.8f, layerSize.height * 0.3f));
     m_FingerIcon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     m_FingerIcon->setOpacity(0);
-    m_FingerIcon->setVisible(m_CurrentData->_index == 0);
 
     this->addChild(m_FingerIcon);
     
@@ -180,6 +180,7 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
 //        action(m_NameLabel);
 //        action(btnEnd);
 //        action(bg);
+        action(costumeLabel);
         action(m_ShareButton);
 
         m_ScrollView->jumpToItem(jumpIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
@@ -191,6 +192,7 @@ CPopup* CCharacterCostumePopup::show(Node* parent/* = nullptr*/, int zOrder/* = 
 //        m_NameLabel->runAction(FadeTo::create(0.3f, 0));
 //        btnEnd->runAction(FadeTo::create(0.3f, 0));
 //        bg->runAction(FadeTo::create(0.5f, 0));
+        costumeLabel->runAction(FadeTo::create(0.3f, 0));
         m_ShareButton->runAction(FadeTo::create(0.3f, 0));
     });
     
@@ -322,11 +324,10 @@ void CCharacterCostumePopup::scrollCallback(cocos2d::Ref* ref, PageView::EventTy
     // update button
     m_CurrentData      = centerContent->getCostumeParam();
     bool selectable    = CUserDataManager::Instance()->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST, m_CurrentData->_index);
-    std::string text   = "Select";
-    if(!selectable)text = "Locked";
+    std::string text   = TRANSLATE("COSTUME_SELECT_BUTTON");
+    if(!selectable)text = TRANSLATE("COSTUME_LOCKED_BUTTON");
     
     // update name label
-    m_NameLabel->setString(TRANSLATE(m_CurrentData->_name));
     
     m_ShareButton->setTouchEnable(selectable);
     m_SelectButton->setTouchEnable(selectable);

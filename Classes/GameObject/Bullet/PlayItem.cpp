@@ -44,18 +44,29 @@ bool CPlayItem::init()
 
 void CPlayItem::CollisionWithPlayer()
 {
-//	CAudioManager::Instance()->PlayEffectSound("sounds/Star_2.mp3", false);
-    
 	this->R_ScaleWithFadeOut(2.f, 0.5f, 0.5f);
     auto type = (eITEM_TYPE)(this->getSymbol() - 'A' + 1);
 	CItemManager::Instance()->StartItemTimer(type);
     switch (type) {
-        case eITEM_TYPE_coin:       GVALUE->COIN_ITEM_USE += 1;     break;
-        case eITEM_TYPE_star:       GVALUE->STAR_ITEM_USE += 1;     break;
-        case eITEM_TYPE_bonustime:  GVALUE->BONUS_ITEM_USE += 1;    break;
-        case eITEM_TYPE_giant:      GVALUE->GIANT_ITEM_USE += 1;    break;
-        case eITEM_TYPE_magnet:     GVALUE->MAGNET_ITEM_USE += 1;   break;
-        case eITEM_TYPE_shield:     GVALUE->BARRIER_ITEM_USE += 1;  break;
+        case eITEM_TYPE_coin:
+            GVALUE->COIN_ITEM_USE += 1;
+            break;
+        case eITEM_TYPE_star:
+            GVALUE->STAR_ITEM_USE += 1;
+            break;
+        case eITEM_TYPE_bonustime:
+            GVALUE->BONUS_ITEM_USE += 1;
+            break;
+        case eITEM_TYPE_giant:
+            GVALUE->GIANT_ITEM_USE += 1;
+            break;
+        case eITEM_TYPE_magnet:
+            GVALUE->MAGNET_ITEM_USE += 1;
+            break;
+        case eITEM_TYPE_shield:
+            CAudioManager::Instance()->PlayEffectSound("sounds/Barrier.mp3", false);
+            GVALUE->BARRIER_ITEM_USE += 1;
+            break;
         default: break;
     }
 }

@@ -287,7 +287,8 @@ void CRewardPopup::lightOn()
         m_UFOLight->setOpacity(0);
         m_UFOLight->runAction(lightSeq);
     }
-    
+    CAudioManager::Instance()->PlayEffectSound("sounds/UFO.mp3", false);
+
     auto particle = CParticle_BackGround::createWithTotalParticles(100, "whiteSquare.png");
     particle->setPosition(Vec2(m_UFO->getContentSize().width * 0.5f, m_UFO->getContentSize().height * 0.7f));
     particle->setPosVar(Vec2(100, 0));

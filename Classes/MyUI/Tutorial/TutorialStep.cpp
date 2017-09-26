@@ -133,7 +133,7 @@ void CTutorialStep::createMessageBox()
     line        =  std::max<int>(3, line);
     auto height = line * 65;
     
-    m_MessageLayer = LayerColor::create(COLOR::DARKGRAY_ALPHA, width, height);
+    m_MessageLayer = LayerColor::create(COLOR::DARKGRAY_ALPHA, width * 1.1f, height * 1.1f);
     m_MessageLayer->setOpacity(255);
     m_MessageLayer->setIgnoreAnchorPointForPosition(false);
     m_MessageLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
