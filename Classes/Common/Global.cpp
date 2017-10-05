@@ -21,6 +21,7 @@ void Global::Clear()
     STAGE_LEVEL = 0;
     NOTICE_LEVEL = 0;
     DEAD_TYPE = 0;
+    REVIVED = 0;
     
     COIN_COUNT = 0;
 	STAR_COUNT = 0;

@@ -41,7 +41,7 @@ void CItemManager::Clear()
 	m_CurrentItems = 0;
 }
 
-void CItemManager::StartItemTimer(eITEM_TYPE itemType)
+void CItemManager::StartItemTimer(eITEM_TYPE itemType, float forceTime/* = 0.f*/)
 {
     auto objMng   = CObjectManager::Instance();
     auto setTimer = [=](eITEM_TYPE  type, float limitTime){
@@ -51,6 +51,9 @@ void CItemManager::StartItemTimer(eITEM_TYPE itemType)
     };
     
     auto totalValue     = CUserDataManager::Instance()->getItemValueByItemIndex(itemType);
+    if(forceTime > 0.f)
+        totalValue = forceTime;
+    
     switch (itemType) {
 		case eITEM_TYPE_shield: objMng->getBarrierItemRange()->ItemGet(totalValue); break;
         case eITEM_TYPE_magnet: objMng->getMagnetItemRange()->GotMagnetItem();      break;

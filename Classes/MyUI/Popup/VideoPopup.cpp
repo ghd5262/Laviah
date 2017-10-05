@@ -244,11 +244,13 @@ void CVideoPopup::ReviveByVideo(cocos2d::Node* sender)
 void CVideoPopup::Resume()
 {
     GVALUE->REVIVE_COUNT += 1;
+//    GVALUE->REVIVED = 1;
     CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::SAVED_REVIVE, 1);
     
     m_CountDown->Pause();
     m_CountDown->setVisible(false);
     CObjectManager::Instance()->getPlayer()->PlayerAlive();
     CGameScene::getGameScene()->GameResume();
+    
     this->popupClose();
 }

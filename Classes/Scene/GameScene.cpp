@@ -1109,6 +1109,19 @@ void CGameScene::createCountDown()
         CObjectManager::Instance()->setIsGamePause(false);
         CObjectManager::Instance()->setGameStateByLevel();
         m_ZoomLayer->resume();
+        
+        if(GVALUE->REVIVED == 1)
+        {
+            auto list = std::vector<int>{ eITEM_TYPE_shield, eITEM_TYPE_coin,
+                eITEM_TYPE_star, eITEM_TYPE_giant
+            };
+            auto randomIndex  = random<int>(0, (int)list.size()-1);
+            auto randomItem   = (eITEM_TYPE)list.at(randomIndex);
+            auto metaDataName = StringUtils::format("REVIVE_ITEM_TIME_%d", (int)randomItem);
+            auto itemTime     = META_DATA(metaDataName).asDouble();
+            CItemManager::Instance()->StartItemTimer(randomItem, itemTime);
+            GVALUE->REVIVED = 0;
+        }
     })
     ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(3)

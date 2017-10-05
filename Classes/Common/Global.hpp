@@ -29,6 +29,7 @@ public:
     int STAGE_LEVEL;
     int NOTICE_LEVEL;
     int DEAD_TYPE;
+    int REVIVED;
     
     int COIN_COUNT;
     int STAR_COUNT;

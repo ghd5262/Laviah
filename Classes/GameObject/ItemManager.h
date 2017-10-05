@@ -14,7 +14,7 @@ public:
 	int getCurrentItem(){ return m_CurrentItems; }
 
 	//유저가 아이템을 획득했을때 호출됨
-	void StartItemTimer(eITEM_TYPE itemType);
+	void StartItemTimer(eITEM_TYPE itemType, float forceTime = 0.f);
 
 	//아이템 타이머 종료
 	void FinishItemTimer(eITEM_FLAG itemType){ m_CurrentItems ^= itemType; }
