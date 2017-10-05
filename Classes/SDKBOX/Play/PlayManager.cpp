@@ -178,7 +178,7 @@ void CPlayManager::onConnectionStatusChanged(int connection_status)
             case sdkbox::GPS_CONNECTED:     this->callVoidListener(m_LoginListener);  break;
             case sdkbox::GPS_DISCONNECTED:  this->callVoidListener(m_LogoutListener); break;
             default:{
-                MessageBox("Login canceled.", "Notice");
+//                MessageBox("Login canceled.", "Notice");
                 m_LoginListener  = nullptr;
                 m_LogoutListener = nullptr;
             } break;

@@ -45,17 +45,13 @@ bool CScoreBullet::init()
         addChild(m_labelScore);
     }
     
-    this->scheduleOnce([=](float delta){
-        
-        auto action = Sequence::create(FadeTo::create(0.5f, 0.1f), CallFunc::create([=](){
-            
-            this->ReturnToMemoryBlock();
-            
-        }), nullptr);
-        
-        m_labelScore->runAction(action);
-        
-    }, 0.5f, MakeString("ScoreBullet_%d", random<int>(0, 100)));
+    auto delay    = DelayTime::create(0.3f);
+    auto fade     = FadeTo::create(0.5f, 0.1f);
+    auto callFunc = CallFunc::create([=](){
+        this->ReturnToMemoryBlock();
+    });
+    auto sequence = Sequence::create(delay, fade, callFunc, NULL);
+    m_labelScore->runAction(sequence);
     
     return true;
 }
