@@ -117,6 +117,7 @@ bool CResultPopup::init()
         ->setButtonPosition(pos)
         ->show(this);
         button->setVisible(visible);
+        button->setOpacity(0);
         return button;
     };
     
@@ -210,6 +211,7 @@ bool CResultPopup::init()
     resultLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     resultLabel->setPosition(Vec2(layerSize.width * 0.5f,
                                   layerSize.height * 0.8f));
+    resultLabel->setOpacity(0);
     this->addChild(resultLabel);
     
     
@@ -218,32 +220,16 @@ bool CResultPopup::init()
     btnUserCoin->setPosition(Vec2(layerSize.width * 0.5f,
                                   layerSize.height * 0.05f));
     btnUserCoin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    btnUserCoin->setOpacity(0);
     this->addChild(btnUserCoin);
     
     
     // create captured picture
-    auto pictureBtn = createButton([=](Node* sender){
+    m_PictureBtn = createButton([=](Node* sender){
         this->share();
     }, "shareIcon_1.png", Vec2(layerSize.width * 0.2f, layerSize.height * 0.05f), true, false);
     
-    auto captureBack = LayerColor::create(Color4B::WHITE, layerSize.width, layerSize.height);
-    captureBack->setIgnoreAnchorPointForPosition(false);
-    captureBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    captureBack->setPosition(Vec2(pictureBtn->getContentSize().width * 0.8f,
-                                  pictureBtn->getContentSize().height * 0.8f));
-    captureBack->setRotation(-45);
-    captureBack->setScale(0.11f, 0.1f);
-    captureBack->setCascadeOpacityEnabled(true);
-    pictureBtn->addChild(captureBack, -1);
-    
-    auto captureNode = CObjectManager::Instance()->getCaptureNode();
-    auto copiedNode  = Sprite::createWithTexture(captureNode->getTexture());
-    copiedNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    copiedNode->setScale(0.85f, -0.9f);
-    copiedNode->setPosition(captureBack->getContentSize() / 2);
-    copiedNode->setCascadeOpacityEnabled(true);
-    captureBack->addChild(copiedNode);
-    
+    this->createCaptureBtn();
     
     this->setOpenAnimation([=](Node* sender){
         // clear all bullets
@@ -258,7 +244,6 @@ bool CResultPopup::init()
             auto delay = DelayTime::create(1.f);
             auto fade  = FadeIn::create(0.5f);
             auto sequence = Sequence::createWithTwoActions(delay, fade);
-            owner->setOpacity(0);
             owner->runAction(sequence);
         };
         
@@ -267,7 +252,7 @@ bool CResultPopup::init()
         
         action(resultLabel);
         action(btnUserCoin);
-        action(pictureBtn);
+        action(m_PictureBtn);
     }, 1.2f);
     
     this->setCloseAnimation([=](Node* sender){
@@ -277,7 +262,7 @@ bool CResultPopup::init()
         
         resultLabel->runAction(FadeTo::create(0.3f, 0));
         btnUserCoin->runAction(FadeTo::create(0.3f, 0));
-        pictureBtn->runAction(FadeTo::create(0.3f, 0));
+        m_PictureBtn->runAction(FadeTo::create(0.3f, 0));
         
         if( m_GoalPopupOpen ){
             auto action = [=](Node* sprite, Vec2 pos){
@@ -657,6 +642,58 @@ void CResultPopup::createButtonLayer(std::function<void(Node*)> &callback,
     button->addChild(textLabel);
     
     m_ScoreLayerList.emplace_back(button);
+}
+
+void CResultPopup::createCaptureBtn()
+{
+    auto layerSize   = this->getContentSize();
+    auto captureBack = LayerColor::create(Color4B::WHITE, layerSize.width, layerSize.height);
+    captureBack->setIgnoreAnchorPointForPosition(false);
+    captureBack->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    captureBack->setPosition(Vec2(m_PictureBtn->getContentSize().width * 0.8f,
+                                  m_PictureBtn->getContentSize().height * 0.8f));
+    captureBack->setRotation(-45);
+    captureBack->setScale(0.11f, 0.1f);
+    captureBack->setCascadeOpacityEnabled(true);
+    m_PictureBtn->addChild(captureBack, -1);
+    
+    auto captureNode = CObjectManager::Instance()->getCaptureNode();
+    auto copiedNode  = Sprite::createWithTexture(captureNode->getTexture());
+    copiedNode->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    copiedNode->setScale(0.85f, -0.9f);
+    copiedNode->setPosition(captureBack->getContentSize() / 2);
+    copiedNode->setCascadeOpacityEnabled(true);
+    captureBack->addChild(copiedNode);
+    
+    auto bestScore   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
+    auto isBestScore = (GVALUE->TOTAL_SCORE > bestScore);
+    
+    if(isBestScore){
+        captureBack->setRotation(0);
+        captureBack->setScale(1.2f);
+        captureBack->setCascadeOpacityEnabled(false);
+        captureBack->setPosition(Vec2(1080 * 0.37f, 1920 * 0.475f));
+        captureBack->setOpacity(255);
+        copiedNode->setOpacity(0.f);
+        
+        auto delay1 = DelayTime::create(1.8f);
+        auto fadeIn = FadeIn::create(0.8f);
+        auto sound  = CallFunc::create([=](){
+            CAudioManager::Instance()->PlayEffectSound("sounds/Capture.mp3", false);
+        });
+        auto seq1   = Sequence::create(delay1, fadeIn, sound, nullptr);
+        copiedNode->runAction(seq1);
+        
+        auto delay2 = DelayTime::create(2.8f);
+        auto move   = MoveTo::create(0.5f, Vec2(m_PictureBtn->getContentSize().width * 0.8f,
+                                                m_PictureBtn->getContentSize().height * 0.8f));
+        auto scale  = ScaleTo::create(0.5f, 0.11f, 0.1f);
+        auto rotate = RotateTo::create(0.5f, -45);
+        auto spawn  = Spawn::create(scale, rotate, move, nullptr);
+        auto call   = CallFunc::create([=](){ captureBack->setCascadeOpacityEnabled(true); });
+        auto seq2   = Sequence::create(delay2, spawn, call, nullptr);
+        captureBack->runAction(seq2);
+    }
 }
 
 void CResultPopup::userDataUpdate()

@@ -43,15 +43,18 @@ private:
                            std::string iconName,
                            std::string text,
                            Color3B color);
+    void createCaptureBtn();
     void userDataUpdate();
     
     CResultPopup()
     : m_BG(nullptr)
-    , m_GoalPopupOpen(false){};
+    , m_GoalPopupOpen(false)
+    , m_PictureBtn(nullptr){};
     virtual ~CResultPopup();
     
 private:
     std::vector<Node*> m_ScoreLayerList;
     cocos2d::LayerColor* m_BG;
     bool m_GoalPopupOpen;
+    CMyButton* m_PictureBtn;
 };
