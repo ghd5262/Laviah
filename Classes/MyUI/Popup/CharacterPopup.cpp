@@ -5,7 +5,8 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
-
+#include "../../DataManager/AchievementDataManager.hpp"
+#include "../../SDKBOX/SDKBoxHeaders.h"
 #include <array>
 
 using namespace cocos2d;
@@ -122,11 +123,22 @@ bool CCharacterPopup::init()
     
     m_CostumeButton = createButton([=](Node* sender){
         this->costume();
-    }, "costumeIcon.png", Vec2(layerSize.width * 0.08f, layerSize.height * 0.05f));
+    }, "costumeSelectIcon.png", Vec2(layerSize.width * 0.2f, layerSize.height * 0.05f));
+    
+    // buy costume
+    m_BuyCostumeButton = createButton([=](Node* sender){
+        auto cost = META_DATA("COSTUME_COST").asInt();
+        CGameScene::getGameScene()->Reward([=](bool isPlay){
+            if(isPlay)
+                this->popupClose();
+        }, {}, "", -cost, true);
+        CGoogleAnalyticsManager::LogScreen(GA_SCREEN::REWARD_COSTUME);
+    }, "costumeBuyIcon.png", Vec2(layerSize.width * 0.08f, layerSize.height * 0.05f));
     
     m_ExitButton = createButton([=](Node* sender){
         this->end();
     }, "endIcon.png", Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f), true);
+    
     
     m_SelectButton = CMyButton::create()
     ->addEventListener([=](Node* sender){
@@ -137,6 +149,7 @@ bool CCharacterPopup::init()
     ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f))
     ->show(this);
+
     
     // create explain bg
 //    auto explainBG = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA, layerSize.width * 0.9f, layerSize.height * 0.2f);
@@ -169,7 +182,8 @@ bool CCharacterPopup::init()
         action(m_ExitButton);
         action(m_SelectButton);
         action(m_CostumeButton);
-
+        action(m_BuyCostumeButton);
+        
         auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
         auto easeAction = EaseExponentialInOut::create(moveAction);
         
@@ -187,7 +201,8 @@ bool CCharacterPopup::init()
         m_ExitButton->runAction(FadeTo::create(0.3f, 0));
         m_SelectButton->runAction(FadeTo::create(0.3f, 0));
         m_CostumeButton->runAction(FadeTo::create(0.3f, 0));
-
+        m_BuyCostumeButton->runAction(FadeTo::create(0.3f, 0));
+        
         bg->runAction(EaseExponentialInOut::create(MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f,
                                                                              layerSize.height * 1.5f))));
     });
@@ -242,6 +257,8 @@ void CCharacterPopup::costume()
     m_CostumeButton->runAction(FadeTo::create(0.3f, 0));
     m_SelectButton->runAction(FadeTo::create(0.3f, 0));
     m_ExitButton->runAction(FadeTo::create(0.3f, 0));
+    m_BuyCostumeButton->runAction(FadeTo::create(0.3f, 0));
+
     centerContent->CostumeOff();
     
     CGameScene::getGameScene()->OpenCostumePopup([=](){
@@ -249,6 +266,8 @@ void CCharacterPopup::costume()
         m_CostumeButton->runAction(FadeIn::create(0.3f));
         m_SelectButton->runAction(FadeIn::create(0.3f));
         m_ExitButton->runAction(FadeIn::create(0.3f));
+        m_BuyCostumeButton->runAction(FadeIn::create(0.3f));
+
         centerContent->ChangeCostume();
         
     }, m_CurrentData->_index);

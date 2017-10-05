@@ -30,6 +30,7 @@ private:
     , m_SelectButton(nullptr)
     , m_CostumeButton(nullptr)
     , m_ExitButton(nullptr)
+    , m_BuyCostumeButton(nullptr)
     , m_CurrentData(nullptr){};
     virtual ~CCharacterPopup(){};
     
@@ -40,5 +41,6 @@ private:
     CMyButton* m_SelectButton;
     CMyButton* m_CostumeButton;
     CMyButton* m_ExitButton;
+    CMyButton* m_BuyCostumeButton;
     const CHARACTER* m_CurrentData;
 };
