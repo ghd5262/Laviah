@@ -24,7 +24,8 @@ Scene* CLoadingScene::createScene()
 
 CLoadingScene::CLoadingScene()
 : m_DownloadRetryCount(3)
-, m_ProgressBar(nullptr){};
+, m_ProgressBar(nullptr)
+, m_PercentageLabel(nullptr){};
 
 CLoadingScene::~CLoadingScene(){}
 
@@ -52,14 +53,25 @@ bool CLoadingScene::init()
         auto bar = Sprite::create("achievementProgress.png");
         m_ProgressBar = ProgressTimer::create(bar);
         m_ProgressBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_ProgressBar->setPosition(Vec2(this->getContentSize().width * 0.5f, 0));
+        m_ProgressBar->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                                        this->getContentSize().height * 0.1f));
         m_ProgressBar->setMidpoint(Vec2(0, 0));
         m_ProgressBar->setType(ProgressTimer::Type::BAR);
         m_ProgressBar->setBarChangeRate(Vec2(1, 0));
         m_ProgressBar->setOpacity(255 * 0.4f);
+        m_ProgressBar->setScale(0.3f);
         this->addChild(m_ProgressBar);
     }
     
+    // label
+    {
+        m_PercentageLabel = Label::createWithTTF("", FONT::MALGUNBD, 40);
+        m_PercentageLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_PercentageLabel->setPosition(Vec2(this->getContentSize().width * 0.5f,
+                                            this->getContentSize().height * 0.13f));
+        m_PercentageLabel->setColor(Color3B::WHITE);
+        this->addChild(m_PercentageLabel);
+    }
 	return true;
 }
 
@@ -154,6 +166,8 @@ void CLoadingScene::callbackRequireLatestVersion(std::string appUrl)
 void CLoadingScene::callbackFileDownloadProgress(int current, int max)
 {
     CCLOG("Download : %d / %d", current, max);
+    auto percent = StringUtils::format("Download %d / %d", current, max);
+    m_PercentageLabel->setString(percent);
     m_ProgressBar->runAction(ProgressTo::create(0.2f, getPercent(current, max)));
 }
 

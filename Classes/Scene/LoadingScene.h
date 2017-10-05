@@ -29,4 +29,5 @@ private:
 private:
     int m_DownloadRetryCount;
     cocos2d::ProgressTimer* m_ProgressBar;
+    cocos2d::Label* m_PercentageLabel;
 };
