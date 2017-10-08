@@ -50,6 +50,12 @@
 		521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6219F0C34300D177D7 /* Default-667h@2x.png */; };
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
+		5900827A1F869BC10074638C /* debug in Resources */ = {isa = PBXBuildFile; fileRef = 590082791F869BC10074638C /* debug */; };
+		5900827B1F869BC10074638C /* debug in Resources */ = {isa = PBXBuildFile; fileRef = 590082791F869BC10074638C /* debug */; };
+		5900827E1F879DF30074638C /* PlanetSelectPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5900827C1F879DF30074638C /* PlanetSelectPopup.cpp */; };
+		5900827F1F879DF30074638C /* PlanetSelectPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5900827C1F879DF30074638C /* PlanetSelectPopup.cpp */; };
+		590082821F87ED0A0074638C /* PlanetSelectPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 590082801F87ED0A0074638C /* PlanetSelectPopupDP.cpp */; };
+		590082831F87ED0A0074638C /* PlanetSelectPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 590082801F87ED0A0074638C /* PlanetSelectPopupDP.cpp */; };
 		5901B13F1F5DD3C50015BA47 /* GameMetaDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */; };
 		5901B1401F5DD3C60015BA47 /* GameMetaDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */; };
 		591D13B51F6D0BB900D1C44B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 591D13B41F6D0BB900D1C44B /* Security.framework */; };
@@ -372,6 +378,11 @@
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		56864C3B9CC7F082E5C29A7E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKit.framework; sourceTree = DEVELOPER_DIR; };
+		590082791F869BC10074638C /* debug */ = {isa = PBXFileReference; lastKnownFileType = folder; path = debug; sourceTree = "<group>"; };
+		5900827C1F879DF30074638C /* PlanetSelectPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlanetSelectPopup.cpp; sourceTree = "<group>"; };
+		5900827D1F879DF30074638C /* PlanetSelectPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlanetSelectPopup.hpp; sourceTree = "<group>"; };
+		590082801F87ED0A0074638C /* PlanetSelectPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlanetSelectPopupDP.cpp; sourceTree = "<group>"; };
+		590082811F87ED0A0074638C /* PlanetSelectPopupDP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlanetSelectPopupDP.hpp; sourceTree = "<group>"; };
 		5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameMetaDataManager.cpp; sourceTree = "<group>"; };
 		5901B13E1F5DD3C50015BA47 /* GameMetaDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GameMetaDataManager.hpp; sourceTree = "<group>"; };
 		5918FE7C1F2B6E3000063833 /* UserDataDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataDefine.h; sourceTree = "<group>"; };
@@ -910,6 +921,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				590082791F869BC10074638C /* debug */,
 				59B25DBB1F638F0800743CC2 /* Images.xcassets */,
 				937311AC1D5849D500D5EB5C /* fonts */,
 				9348C5AE1D868481000E8D1B /* update */,
@@ -1361,6 +1373,10 @@
 				93B7F44F1EB845890019D36C /* AchievementPopupDP.hpp */,
 				595181581EF59CFD00CC1F18 /* SharePopup.cpp */,
 				595181591EF59CFD00CC1F18 /* SharePopup.hpp */,
+				5900827C1F879DF30074638C /* PlanetSelectPopup.cpp */,
+				5900827D1F879DF30074638C /* PlanetSelectPopup.hpp */,
+				590082801F87ED0A0074638C /* PlanetSelectPopupDP.cpp */,
+				590082811F87ED0A0074638C /* PlanetSelectPopupDP.hpp */,
 			);
 			path = Popup;
 			sourceTree = "<group>";
@@ -1568,6 +1584,7 @@
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
 				93706F761E7A6891009A2CA0 /* json_internalmap.inl in Resources */,
 				93706F7B1E7A6891009A2CA0 /* sconscript in Resources */,
+				5900827A1F869BC10074638C /* debug in Resources */,
 				937311B21D5849D500D5EB5C /* fonts in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
 				93706F751E7A6891009A2CA0 /* json_internalarray.inl in Resources */,
@@ -1594,6 +1611,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5900827B1F869BC10074638C /* debug in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1684,10 +1702,12 @@
 				93706F6A1E7A6891009A2CA0 /* ItemManager.cpp in Sources */,
 				93706F8F1E7A6891009A2CA0 /* MessageBox.cpp in Sources */,
 				93A116701E91FA4B00095230 /* CharacterBullet.cpp in Sources */,
+				5900827E1F879DF30074638C /* PlanetSelectPopup.cpp in Sources */,
 				93706F8E1E7A6891009A2CA0 /* HelpPopup.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				591D13CC1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp in Sources */,
 				93706F5B1E7A6891009A2CA0 /* BackGround.cpp in Sources */,
+				590082821F87ED0A0074638C /* PlanetSelectPopupDP.cpp in Sources */,
 				59E1A6511F163E11003020B9 /* PlayManager.cpp in Sources */,
 				93706F6D1E7A6891009A2CA0 /* MenuSceneObjectManager.cpp in Sources */,
 				93706F711E7A6891009A2CA0 /* Player.cpp in Sources */,
@@ -1762,9 +1782,11 @@
 				5901B1401F5DD3C60015BA47 /* GameMetaDataManager.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
 				599B77D21F27E26D0066D32E /* CharacterCostumePopupDP.cpp in Sources */,
+				590082831F87ED0A0074638C /* PlanetSelectPopupDP.cpp in Sources */,
 				59A8AD4C1F4B196B00D4CA42 /* DownloadPopup.cpp in Sources */,
 				93B7F44D1EB843DD0019D36C /* AchievementPopup.cpp in Sources */,
 				59E1A64B1F162E0A003020B9 /* UnityAds_Android.cpp in Sources */,
+				5900827F1F879DF30074638C /* PlanetSelectPopup.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				59E1A6471F162E0A003020B9 /* FacebookManager.cpp in Sources */,
 				93706FCC1E7F70E4009A2CA0 /* FacebookAPITestPopup.cpp in Sources */,
