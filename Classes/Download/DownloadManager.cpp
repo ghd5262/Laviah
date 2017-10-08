@@ -14,7 +14,11 @@ using namespace std;
 #define	MAX_FILENAME	512
 
 namespace DOWNLOAD_DEFINE {
+#if(!DEBUGING)
 	const static std::string PACKAGE_FILE_PATH		= "update/package.json";
+#else
+    const static std::string PACKAGE_FILE_PATH      = "debug/package_debug.json";
+#endif
 	const static std::string PACKAGE_INFO_FILE_PATH = std::string("http://www.hshgames.com/game/project_s/") + PACKAGE_FILE_PATH;
 }
 using namespace DOWNLOAD_DEFINE;
@@ -85,7 +89,11 @@ void CDownloadManager::IsNetworkConnected(std::function<void(bool)> listener)
 void CDownloadManager::downloadPackageInfoFile() {
 	CCLOG("%s", __FUNCTION__);
 
-	auto versionFilePath = m_WritablePath + "update/";
+#if(!DEBUGING)
+    auto versionFilePath = m_WritablePath + "update/";
+#else
+    auto versionFilePath = m_WritablePath + "debug/";
+#endif
     if (FileUtils::getInstance()->createDirectory(versionFilePath))
     {
         this->requestDownload(PACKAGE_INFO_FILE_PATH, [=](HttpClient *client, HttpResponse *response){

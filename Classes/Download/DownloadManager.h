@@ -2,6 +2,8 @@
 #include "cocos2d.h"
 #include "network/HttpClient.h"
 
+#define DEBUGING 1
+
 using namespace cocos2d;
 using namespace cocos2d::network;
 

@@ -5,16 +5,12 @@
 #include "Common/AudioManager.h"
 #include "DataManager/UserDataManager.h"
 #include "SDKBOX/SDKBoxHeaders.h"
-
+#include "Download/DownloadManager.h"
 USING_NS_CC;
 
-AppDelegate::AppDelegate() {
-    
-}
+AppDelegate::AppDelegate() {}
 
-AppDelegate::~AppDelegate()
-{
-}
+AppDelegate::~AppDelegate(){}
 
 //if you want a different context,just modify the value of glContextAttrs
 //it will takes effect on all platforms
@@ -41,7 +37,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     FileUtils *fileUtils = FileUtils::getInstance();
     auto searchPaths = fileUtils->getSearchPaths();
     searchPaths.insert(searchPaths.begin() + i++, "imageRes");
+#if(!DEBUGING)
     searchPaths.insert(searchPaths.begin() + i++, createWritablePath("update"));
+#else
+    searchPaths.insert(searchPaths.begin() + i++, createWritablePath("debug"));
+#endif
     searchPaths.insert(searchPaths.begin() + i++, createWritablePath("remoteImage"));
     fileUtils->setSearchPaths(searchPaths);
     
