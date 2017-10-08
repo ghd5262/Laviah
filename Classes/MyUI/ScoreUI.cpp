@@ -23,6 +23,7 @@ CScoreUI* CScoreUI::create(int& value)
 		return NULL;
 	}
 }
+
 CScoreUI* CScoreUI::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
 {
     m_BG = LayerColor::create(m_BGColor, m_FontSize, m_FontSize * 2);
@@ -30,8 +31,9 @@ CScoreUI* CScoreUI::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
     m_BG->setAnchorPoint(m_ScoreAnchorPoint);
     this->addChild(m_BG);
     
+    if(m_ScoreDistance == -1) m_ScoreDistance = m_FontSize;
 	m_ScoreLabel = Label::createWithTTF("0", m_FontName, m_FontSize);
-    m_ScoreLabel->setPosition(Vec2(m_FontSize * 2, m_FontSize));
+    m_ScoreLabel->setPosition(Vec2(m_FontSize + m_ScoreDistance, m_FontSize));
     m_ScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     m_ScoreLabel->setColor(m_FontColor);
 	m_ScoreLabel->enableOutline(COLOR::BRIGHT_WHITEGRAY_ALPHA, m_OutlineSize);
@@ -40,7 +42,7 @@ CScoreUI* CScoreUI::show(cocos2d::Node* parent, unsigned zOrder/* = 0*/)
 	if (m_IconName != "")
 	{
 		m_Icon = Sprite::create(m_IconName);
-		m_Icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		m_Icon->setAnchorPoint(m_IconAnchorPoint);
         m_Icon->setColor(m_FontColor);
 		this->addChild(m_Icon);
 	}
@@ -66,10 +68,20 @@ CScoreUI* CScoreUI::setFont(std::string fontName,
 	return this;
 }
 
-CScoreUI* CScoreUI::setIcon(std::string iconName)
+CScoreUI* CScoreUI::setIcon(std::string iconName,
+                            float posY/* = 0.5f*/,
+                            cocos2d::Vec2 anchor/* = Vec2::ANCHOR_MIDDLE*/)
 {
 	m_IconName = iconName;
+    m_IconPosY = posY;
+    m_IconAnchorPoint = anchor;
 	return this;
+}
+
+CScoreUI* CScoreUI::setScoreDistance(int distance)
+{
+    m_ScoreDistance = distance;
+    return this;
 }
 
 CScoreUI* CScoreUI::setBGColor(cocos2d::Color4B color)
@@ -118,7 +130,7 @@ void CScoreUI::setIconPosition()
 {
     if (m_Icon == nullptr) return;
     
-    m_Icon->setPosition(Vec2(m_FontSize, this->getContentSize().height * 0.5f));
+    m_Icon->setPosition(Vec2(m_FontSize, this->getContentSize().height * m_IconPosY));
 }
 
 void CScoreUI::setScoreString()
