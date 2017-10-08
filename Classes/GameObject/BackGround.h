@@ -8,6 +8,7 @@ public:
     static CBackGround* create();
     void BonusTimeStart();
     void BonusTimeEnd();
+    void ChangeBackground();
 
     virtual void update(float delta) override;
     Color3B getCurrentStartColor();
@@ -19,7 +20,6 @@ protected:
     virtual bool init() override;
 
 private:
-    void changeBackground();
     void createBackParticleNormal();
     void createBottomParticleNormal();
     void createBackParticleBonusTime();

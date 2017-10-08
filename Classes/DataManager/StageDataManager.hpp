@@ -23,7 +23,10 @@ struct STAGE_DATA{
     float _zoomSize;
     float _speed;
     cocos2d::Vec2 _pos;
-    
+    cocos2d::Color3B _bulletColor;
+    cocos2d::Color3B _bgColorTop;
+    cocos2d::Color3B _bgColorBottom;
+
     STAGE_DATA()
     : _noticeLevel(0)
     , _patternLevel(1)
@@ -36,7 +39,10 @@ struct STAGE_DATA{
     , _zoomAngle(0.f)
     , _zoomSize(0.f)
     , _speed(0.f)
-    , _pos(cocos2d::Vec2::ZERO){}
+    , _pos(cocos2d::Vec2::ZERO)
+    , _bulletColor(cocos2d::Color3B::WHITE)
+    , _bgColorTop(0, 4, 40)
+    , _bgColorBottom(0, 63, 110){}
 };
 
 typedef std::vector<STAGE_DATA> STAGE_DATA_LIST;
@@ -58,9 +64,15 @@ class CStageDataManager
 public:
     static CStageDataManager* Instance();
     
+    int getStageMaxLevel(int index);
     const STAGE* getStageByIndex(int index) const;
     const STAGE* getStageByUserLevel();
-
+    
+    CC_SYNTHESIZE(int, m_StageLevel, StageLevel);
+    
+    static cocos2d::Color3B getCurrentBulletColor();
+    static cocos2d::Color3B getCurrentBGTopColor();
+    static cocos2d::Color3B getCurrentBGBottomColor();
 private:
     void initWithJson(STAGE_LIST &list, std::string fileName);
     void addStageToList(const Json::Value& json);

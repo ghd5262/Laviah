@@ -98,6 +98,7 @@ void CObjectManager::Clear()
     this->ReturnToMemoryBlockAll();
     CGameScene::getZoomLayer()->unschedule("SetDelay");
     m_SpeedController->stopActionByTag(100);
+    CStageDataManager::Instance()->setStageLevel(0);
 //    this->setGameStateByLevel();
 //	this->EndBonusTime();
 }
@@ -530,10 +531,11 @@ void CObjectManager::setGameLevelByTimer(float delta)
             GVALUE->STAGE_LEVEL++;
             m_CurrentLevelData   = m_CurrentStage.at(GVALUE->STAGE_LEVEL);
             GVALUE->NOTICE_LEVEL = m_CurrentLevelData._noticeLevel;
+            CStageDataManager::Instance()->setStageLevel(GVALUE->STAGE_LEVEL);
 
             CGameScene::getZoomLayer()->scheduleOnce([=](float delay){
                 CGoogleAnalyticsManager::LogScreen(GA_SCREEN::STAGE, GVALUE->STAGE_LEVEL);
-                
+                m_Background->ChangeBackground();
                 this->setGameStateByLevel();
                 
                 if(m_OriginPatternLevel != GVALUE->NOTICE_LEVEL){

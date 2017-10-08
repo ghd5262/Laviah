@@ -50,7 +50,7 @@ bool CStickBullet::init()
 
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
     
-    this->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->NOTICE_LEVEL));
+    this->setColor(CStageDataManager::getCurrentBulletColor());
     
     return true;
 }

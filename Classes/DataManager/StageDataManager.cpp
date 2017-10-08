@@ -6,6 +6,7 @@
 using namespace cocos2d;
 
 CStageDataManager::CStageDataManager()
+: m_StageLevel(0)
 {
     initWithJson(m_StageList, "stageList.json");
 }
@@ -81,8 +82,35 @@ void CStageDataManager::addStageDataToStage(STAGE_DATA_LIST &list, const Json::V
     auto posY               = json["y"].asDouble();
     data._pos               = cocos2d::Vec2(posX, posY);
     
+    auto bgTopR             = json["backgroundTop"]["r"].asInt();
+    auto bgTopG             = json["backgroundTop"]["g"].asInt();
+    auto bgTopB             = json["backgroundTop"]["b"].asInt();
+    data._bgColorTop        = cocos2d::Color3B(bgTopR, bgTopG, bgTopB);
+    
+    auto bgBottomR          = json["backgroundBottom"]["r"].asInt();
+    auto bgBottomG          = json["backgroundBottom"]["g"].asInt();
+    auto bgBottomB          = json["backgroundBottom"]["b"].asInt();
+    data._bgColorBottom     = cocos2d::Color3B(bgBottomR, bgBottomG, bgBottomB);
+    
+    auto bulletR            = json["bulletColor"]["r"].asInt();
+    auto bulletG            = json["bulletColor"]["g"].asInt();
+    auto bulletB            = json["bulletColor"]["b"].asInt();
+    data._bulletColor       = cocos2d::Color3B(bulletR, bulletG, bulletB);
     
     list.emplace_back(data);
+}
+
+int CStageDataManager::getStageMaxLevel(int index)
+{
+    auto data = m_StageList.find(index);
+    if(data == m_StageList.end()) return 0;
+    
+    auto stageData = data->second->_stageDataLiat;
+    auto size      = stageData.size();
+    if(size <= 0) return 0;
+    
+    auto lastData  = stageData.at(size -1);
+    return lastData._noticeLevel;
 }
 
 const STAGE* CStageDataManager::getStageByIndex(int index) const
@@ -116,3 +144,38 @@ const STAGE* CStageDataManager::getStageByUserLevel()
     return (picked->second);
 
 }
+
+cocos2d::Color3B CStageDataManager::getCurrentBulletColor()
+{
+    auto stage = CStageDataManager::Instance()->getStageByIndex(0);
+    auto list  = stage->_stageDataLiat;
+    auto level = CStageDataManager::Instance()->getStageLevel();
+    if(list.size() <= level)
+        return Color3B::WHITE;
+    
+    return list.at(level)._bulletColor;
+}
+
+cocos2d::Color3B CStageDataManager::getCurrentBGTopColor()
+{
+    auto stage = CStageDataManager::Instance()->getStageByIndex(0);
+    auto list  = stage->_stageDataLiat;
+    auto level = CStageDataManager::Instance()->getStageLevel();
+    if(list.size() <= level)
+        return Color3B(0, 4, 40);
+    
+    return list.at(level)._bgColorTop;
+}
+
+cocos2d::Color3B CStageDataManager::getCurrentBGBottomColor()
+{
+    auto stage = CStageDataManager::Instance()->getStageByIndex(0);
+    auto list  = stage->_stageDataLiat;
+    auto level = CStageDataManager::Instance()->getStageLevel();
+    if(list.size() <= level)
+        return Color3B(0, 63, 110);
+    
+    return list.at(level)._bgColorBottom;
+}
+
+

@@ -69,10 +69,10 @@ void CBackGround::update(float delta)
     if(CObjectManager::Instance()->getIsGamePause()) return;
     if(!m_Gradient) return;
     
-    m_Time += delta;
+//    m_Time += delta;
     
-    if (m_Time > m_fLimitTime)
-        this->changeBackground();
+//    if (m_Time > m_fLimitTime)
+//        this->changeBackground();
     
     
     if (m_IsChanging){
@@ -109,26 +109,29 @@ void CBackGround::BonusTimeEnd()
     particleResume(m_BackParticle);
 }
 
-void CBackGround::changeBackground()
+void CBackGround::ChangeBackground()
 {
     if (m_tempStartGradient == nullptr || m_tempEndGradient == nullptr) return;
     if (m_IsChanging) return;
     
     m_IsChanging = true;
-    auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
+//    auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
 //    auto gradientTo = CGradientDataManager::Instance()->getNextGradient();
     
-    auto data = sGRADIENT_PARAM(gradientTo._idx, gradientTo._leftColor, gradientTo._rightColor);
-    if (random<int>(0, 1)) //flip
-    {
-        data._leftColor = gradientTo._rightColor;
-        data._rightColor = gradientTo._leftColor;
-    }
+//    auto data = sGRADIENT_PARAM(gradientTo._idx, gradientTo._leftColor, gradientTo._rightColor);
+//    if (random<int>(0, 1)) //flip
+//    {
+//        data._leftColor = gradientTo._rightColor;
+//        data._rightColor = gradientTo._leftColor;
+//    }
     
-    m_tempStartGradient->runAction(TintTo::create(1.5f, data._rightColor));
-    m_tempEndGradient->runAction(Sequence::create(TintTo::create(1.5f, data._leftColor),
+    auto top = CStageDataManager::getCurrentBGTopColor();
+    auto bottom = CStageDataManager::getCurrentBGBottomColor();
+    
+    m_tempStartGradient->runAction(TintTo::create(1.5f, top));
+    m_tempEndGradient->runAction(Sequence::create(TintTo::create(1.5f, bottom),
                                                   CallFunc::create([=](){
-        m_Time = 0.f;
+//        m_Time = 0.f;
         m_IsChanging = false;
     }), nullptr));
     

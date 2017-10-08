@@ -58,7 +58,7 @@ bool CNormalMissile::init()
     
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
 
-    this->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->NOTICE_LEVEL));
+    this->setColor(CStageDataManager::getCurrentBulletColor());
 
     return true;
 }
@@ -167,7 +167,7 @@ void CNormalMissile::createTargetLine()
 
 void CNormalMissile::createParticle_Flame()
 {
-    auto color    = CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->NOTICE_LEVEL);
+    auto color    = CStageDataManager::getCurrentBulletColor();
 	auto particle = CParticle_Flame::create("particle_snow.png");
 	if (particle != nullptr){
 		particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);

@@ -422,7 +422,7 @@ void CBullet::createExplosionEffect()
         sprite->setPosition(Vec2(getPosition()));
         sprite->setScale(0.7);
         sprite->setRotation(-getRotation());
-        sprite->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->NOTICE_LEVEL));
+        sprite->setColor(CStageDataManager::getCurrentBulletColor());
 
         CGameScene::getZoomLayer()->addChild(sprite, ZORDER::POPUP);
         

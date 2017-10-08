@@ -189,7 +189,7 @@ void CUILayer::LevelUPNotice()
     auto sequence     = Sequence::create(downAction, delayAction, upAction, nullptr);
     
     m_LevelLabel->setOpacity(0);
-    m_LevelLabel->setColor(CGradientDataManager::Instance()->getBulletColorByLevel(GVALUE->NOTICE_LEVEL));
+    m_LevelLabel->setColor(CStageDataManager::getCurrentBulletColor());
     m_LevelLabel->setString(StringUtils::format("LEVEL %d", GVALUE->NOTICE_LEVEL));
     m_LevelLabel->runAction(sequence);
 }
