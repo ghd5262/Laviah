@@ -217,12 +217,11 @@ void CPlayer::CrownEnable(bool enable)
 void CPlayer::GiantMode()
 {
     CObjectManager::Instance()->GiantMode();
-    
+    this->setParticleGiantMode();
+
     auto action = Sequence::create(ScaleTo::create(0.5f, m_GiantScale),
                                    CallFunc::create([=](){
         this->setBoundingRadius(GIANT_BOUNDING_RADIUS * m_GiantScale);
-        m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * m_GiantScale);
-        m_Particle->setEndSize(40.f);
     }), nullptr);
     m_Texture->runAction(action);
 }
@@ -236,8 +235,7 @@ void CPlayer::NormalMode()
     auto action = Sequence::create(ScaleTo::create(0.5f, NORMAL_SCALE),
                                    CallFunc::create([=](){
         this->setBoundingRadius(NORMAL_BOUNDING_RADIUS);
-        m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
-        m_Particle->setEndSize(4.f);
+        this->setParticleNormalMode();
     }), nullptr);
     m_Texture->runAction(action);
 }
@@ -335,15 +333,56 @@ void CPlayer::setPlayerTexture(std::string textureName)
 		m_Texture->setSpriteFrame(textureName);
 	}
 
-	if (m_Particle != nullptr){
-		SpriteFrame* spriteFrame = nullptr;
-		spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(textureName);
+    this->setParticleTexture(textureName);
+}
 
-		if (spriteFrame != nullptr)
-		{
-			m_Particle->setTextureWithRect(spriteFrame->getTexture(), spriteFrame->getRect());
-		}
-	}
+void CPlayer::setParticleTexture(std::string name)
+{
+    if (m_Particle != nullptr){
+        SpriteFrame* spriteFrame = nullptr;
+        spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        
+        if (spriteFrame != nullptr)
+        {
+            m_Particle->setTextureWithRect(spriteFrame->getTexture(), spriteFrame->getRect());
+        }
+    }
+}
+
+void CPlayer::setParticleGiantMode()
+{
+    this->setParticleTexture("fireParticle.png");
+//    m_Particle->setLocalZOrder(ZORDER::PLAYER);
+    m_Particle->setPosition(Vec2(this->getPosition().x, this->getPosition().y - 50));
+    m_Particle->setPosVar(Vec2(50, 0));
+    m_Particle->setStartSize(80.f);
+    m_Particle->setStartSizeVar(30.f);
+    m_Particle->setEndSize(40.f);
+    m_Particle->setStartColor(Color4F(0.95f, 0.95f, 0.95f, 0.7f));
+    m_Particle->setStartColorVar(Color4F(0.0f, 0.0f, 0.0f, 0.3f));
+    m_Particle->setEndColor(Color4F(0.3f, 0.3f, 0.3f, 0.0f));
+    m_Particle->setEndColorVar(Color4F(0.f, 0.f, 0.f, 0));
+//    m_Particle->setStartColor(Color4F(1.f, 1.f, 0.5f, 1.f));
+//    m_Particle->setStartColorVar(Color4F(0, 0, 0.8f, 0));
+//    m_Particle->setEndColor(Color4F(1.f, 1.f, 1.f, 0.4f));
+//    m_Particle->setEndColorVar(Color4F(0, 0, 0, 0));
+    //    m_Texture->setColor(Color3B(255, 255 * 0.2f, 255 * 0.5f));
+}
+
+void CPlayer::setParticleNormalMode()
+{
+    this->setParticleTexture(m_CharacterParam->_texture);
+//    m_Particle->setLocalZOrder(ZORDER::PLAYER-1);
+    m_Particle->setPosition(this->getPosition());
+    m_Particle->setPosVar(Vec2(0, 0));
+    m_Particle->setStartSize(NORMAL_BOUNDING_RADIUS * 2.f);
+    m_Particle->setStartSizeVar(4.f);
+    m_Particle->setEndSize(4.f);
+    m_Particle->setStartColor(Color4F(1.f, 1.f, 1.f, 0.4f));
+    m_Particle->setStartColorVar(Color4F(0.8f, 0.8f, 0.8f, 0.f));
+    m_Particle->setEndColor(Color4F(0.8f, 0.8f, 0.8f, 0.f));
+    m_Particle->setEndColorVar(Color4F(0.8f, 0.8f, 0.8f, 0.f));
+//    m_Texture->setColor(Color3B::WHITE);
 }
 
 void CPlayer::createAliveParticle()

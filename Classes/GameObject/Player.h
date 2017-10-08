@@ -95,6 +95,9 @@ private:
     void createDeadParticle();
     void createRunParticle();
 	void setPlayerTexture(std::string textureName);
+    void setParticleTexture(std::string name);
+    void setParticleGiantMode();
+    void setParticleNormalMode();
     
 	CPlayer();
 	virtual ~CPlayer(){}

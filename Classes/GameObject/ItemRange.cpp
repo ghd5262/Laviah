@@ -24,7 +24,8 @@ CItemRange::CItemRange()
 , m_TextureName("")
 , m_StayTime(0.f)
 , m_StayLimitTime(0.f)
-, m_TargetDuration(0.f){}
+, m_TargetDuration(0.f)
+, m_TargetDistance(0.f){}
 
 CItemRange* CItemRange::show(cocos2d::Node* parent, int zOrder/* = 0*/)
 {
@@ -48,6 +49,18 @@ CItemRange* CItemRange::setTextureName(std::string name)
 	return this;
 }
 
+CItemRange* CItemRange::setTargetDuration(float duration)
+{
+    m_TargetDuration = duration;
+    return this;
+}
+
+CItemRange* CItemRange::setTargetDistance(float distance)
+{
+    m_TargetDistance = distance;
+    return this;
+}
+
 void CItemRange::update(float delta)
 {
     if(CObjectManager::Instance()->getIsGamePause()) return;
@@ -59,7 +72,7 @@ void CItemRange::ItemGet(float time)
 	this->Clear();
     this->setVisible(true);
 
-    auto scaleUp  = ScaleTo::create(0.2f, 1600.f / getContentSize().width);
+    auto scaleUp  = ScaleTo::create(m_TargetDuration, m_TargetDistance / getContentSize().width);
     auto delay    = DelayTime::create(time - 0.4f);
     auto fadeOut  = FadeTo::create(0.2f, 0);
     auto callFunc = CallFunc::create([=](){

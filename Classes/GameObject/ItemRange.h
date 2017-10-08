@@ -6,6 +6,8 @@ class CItemRange : public CGameObject {
 public:
     static CItemRange* create();
 	CItemRange* setTextureName(std::string name);
+    CItemRange* setTargetDuration(float duration);
+    CItemRange* setTargetDistance(float distance);
 	CItemRange* show(cocos2d::Node* parent, int zOrder = 0);
 
 	void ItemGet(float time);
@@ -23,4 +25,5 @@ private:
 	float m_StayLimitTime;
 	float m_StayTime;
 	float m_TargetDuration;
+    float m_TargetDistance;
 };

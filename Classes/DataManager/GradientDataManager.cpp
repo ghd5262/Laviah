@@ -128,14 +128,25 @@ CGradientDataManager::CGradientDataManager()
     
     
     
+//    addBulletColor( 255, 255, 255 );
+//    addBulletColor( 241, 245, 255 );
+//    addBulletColor( 228, 236, 255 );
+//    addBulletColor( 197, 211, 248 );
+//    addBulletColor( 150, 173, 235 );
+//    addBulletColor( 114, 146, 228 );
+//    addBulletColor( 66 , 114, 215 );
+    
     addBulletColor( 255, 255, 255 );
-    addBulletColor( 240, 222, 218 );
-    addBulletColor( 230, 196, 193 );
-    addBulletColor( 230, 171, 163 );
-    addBulletColor( 255, 120, 120 );
-    addBulletColor( 255, 79,  79  );
-    addBulletColor( 255, 43,  43  );
-    addBulletColor( 255, 30,  0   );
+    addBulletColor( 232, 241, 247 );
+    addBulletColor( 210, 227, 239 );
+    addBulletColor( 186, 213, 230 );
+    addBulletColor( 164, 200, 222 );
+    addBulletColor( 141, 186, 214 );
+    addBulletColor( 119, 172, 206 );
+    addBulletColor( 96 , 158, 197 );
+    addBulletColor( 73 , 145, 189 );
+    addBulletColor( 50 , 131, 181 );
+    addBulletColor( 28 , 117, 173 );
 }
 
 CGradientDataManager::~CGradientDataManager(){}
