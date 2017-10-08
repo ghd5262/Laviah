@@ -50,6 +50,14 @@ public:
     PLANET_LIST getPlanetList(){ return m_PlanetList; };
     const PLANET* getPlanetByIndex(int index) const;
     const PLANET* getCurPlanet() const;
+    int getCurPlanetBestLevel();
+    int getCurPlanetBestScore();
+    int getCurPlanetBestRank();
+    int getCurPlanetWorldScore();
+    void setCurPlanetBestLevel(int level);
+    void setCurPlanetBestScore(int score);
+    void setCurPlanetBestRank(int rank);
+    void setCurPlanetWorldScore(int score);
 
 private:
     void initWithJson(PLANET_LIST &list, std::string fileName);

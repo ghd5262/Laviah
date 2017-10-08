@@ -40,6 +40,7 @@
 #include "../MyUI/Popup/AchievementPopup.hpp"
 #include "../MyUI/Popup/SharePopup.hpp"
 #include "../MyUI/Popup/DownloadPopup.hpp"
+#include "../MyUI/Popup/PlanetSelectPopup.hpp"
 #include "../DataManager/UserDataManager.h"
 #include "../DataManager/CharacterDataManager.h"
 #include "../DataManager/AchievementDataManager.hpp"
@@ -137,6 +138,7 @@ bool CGameScene::init()
     this->createMenuLayer();
     this->createUILayer();
     this->createRivalRankLayer();
+//    this->createPlanetSelectLayer();
     this->createTutorialLayer();
     this->createCaptureNode();
     this->createBackKeyButton();
@@ -195,6 +197,7 @@ void CGameScene::GameStart()
     CObjectManager::Instance()->getPlayer()->GameStart();
     CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
     CObjectManager::Instance()->getPlanet()->StopRotation();
+//    CObjectManager::Instance()->getPlanet()->setVisible(true);
     dynamic_cast<CFacebookRivalRankLayer*>( m_RivalRankLayer )->Reset();
     CAudioManager::Instance()->StopBGM();
     CAudioManager::Instance()->PlayBGM("sounds/inGameBGM.mp3", true, false);
@@ -717,6 +720,7 @@ void CGameScene::menuOpen()
     m_MenuLayer->setDefaultCallbackToTopAgain();
     CObjectManager::Instance()->getRocket()->ComebackHome();
     CObjectManager::Instance()->getPlanet()->StartRotation();
+//    CObjectManager::Instance()->getPlanet()->setVisible(false);
     CObjectManager::Instance()->getPlayer()->setVisible(false);
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::MENU);
 }
@@ -1149,8 +1153,10 @@ void CGameScene::createScreenFade()
 
 void CGameScene::createItemRanges()
 {
-    auto createRange = [=](std::string textureName){
+    auto createRange = [=](std::string textureName, float distance, float duration){
         auto range = CItemRange::create()
+        ->setTargetDistance(distance)
+        ->setTargetDuration(duration)
         ->setTextureName(textureName)
         ->show(m_ZoomLayer, ZORDER::PLAYER);
         range->setPosition(PLAYER_DEFINE::POSITION);
@@ -1158,9 +1164,9 @@ void CGameScene::createItemRanges()
         return range;
     };
     
-    CObjectManager::Instance()->setBarrierItemRange(createRange("barrier2.png"));
-    CObjectManager::Instance()->setStarItemRange(createRange("barrier3.png"));
-    CObjectManager::Instance()->setCoinItemRange(createRange("barrier3.png"));
+    CObjectManager::Instance()->setBarrierItemRange(createRange("barrier2.png", 1600.f, 0.2f));
+    CObjectManager::Instance()->setStarItemRange(createRange("barrier3.png", 1600.f, 0.2f));
+    CObjectManager::Instance()->setCoinItemRange(createRange("barrier3.png", 1600.f, 0.2f));
     
     
     auto magnetRange = CMagnetEffect::create();
@@ -1242,6 +1248,16 @@ void CGameScene::createRivalRankLayer()
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(Vec2(m_VisibleSize.width * 0.5f, m_VisibleSize.height * 0.96f))
     ->show(m_UILayer);
+}
+
+void CGameScene::createPlanetSelectLayer()
+{
+    CPlanetSelectPopup::create()
+    ->setDefaultCallbackEnable(false)
+    ->setBackgroundVisible(false)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(m_MenuLayer, ZORDER::POPUP);
 }
 
 void CGameScene::createTutorialLayer()

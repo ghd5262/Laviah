@@ -141,6 +141,7 @@ private:
     void createMenuLayer();
     void createUILayer();
     void createRivalRankLayer();
+    void createPlanetSelectLayer();
     void createTutorialLayer();
     void createIntroUI();
     void createCaptureNode();

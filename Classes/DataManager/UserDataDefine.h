@@ -55,6 +55,7 @@ namespace USERDATA_KEY {
     
     const std::string CHARACTER_LIST            = "USER_CHARACTER_LIST";
     const std::string COSTUME_LIST              = "USER_COSTUME_LIST";
+    const std::string PLANET_LIST               = "USER_PLANET_LIST";
     const std::string ROCKET_LIST               = "USER_ROCKET_LIST";
     const std::string PET_LIST                  = "USER_PET_LIST";
     const std::string ITEM_LEVEL                = "USER_ITEM_LEVEL";
@@ -103,4 +104,11 @@ enum PARAM_ACHIEVEMENT_NORMAL{
 enum PARAM_ACHIEVEMENT_HIDDEN{
     HIDDEN_LEVEL    = 0,
     HIDDEN_STATE    = 1,
+};
+
+enum PARAM_PLANET{
+    STAGE_BEST_LEVEL     = 0,
+    STAGE_BEST_SCORE     = 1,
+    STAGE_BEST_RANK      = 2,
+    STAGE_WORLD_SCORE    = 3,
 };

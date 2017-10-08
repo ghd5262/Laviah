@@ -78,3 +78,65 @@ const PLANET* CPlanetDataManager::getCurPlanet() const
     auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
     return this->getPlanetByIndex(currentPlanet);
 }
+
+int CPlanetDataManager::getCurPlanetBestLevel()
+{
+    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+    
+    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, currentPlanet,
+                                                               PARAM_PLANET::STAGE_BEST_LEVEL, 0);
+}
+
+int CPlanetDataManager::getCurPlanetBestScore()
+{
+    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+
+    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, currentPlanet,
+                                                               PARAM_PLANET::STAGE_BEST_SCORE, 0);
+}
+
+int CPlanetDataManager::getCurPlanetBestRank()
+{
+    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+
+    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, currentPlanet,
+                                                               PARAM_PLANET::STAGE_BEST_RANK, 0);
+
+}
+
+int CPlanetDataManager::getCurPlanetWorldScore()
+{
+    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+    
+    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, currentPlanet,
+                                                               PARAM_PLANET::STAGE_WORLD_SCORE, 0);
+    
+}
+
+void CPlanetDataManager::setCurPlanetBestLevel(int level)
+{
+    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::PLANET_LIST, currentPlanet,
+                                                        PARAM_PLANET::STAGE_BEST_LEVEL, level);
+}
+
+void CPlanetDataManager::setCurPlanetBestScore(int score)
+{
+    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::PLANET_LIST, currentPlanet,
+                                                        PARAM_PLANET::STAGE_BEST_SCORE, score);
+}
+
+void CPlanetDataManager::setCurPlanetBestRank(int rank)
+{
+    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::PLANET_LIST, currentPlanet,
+                                                        PARAM_PLANET::STAGE_BEST_RANK, rank);
+}
+
+void CPlanetDataManager::setCurPlanetWorldScore(int score)
+{
+    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::PLANET_LIST, currentPlanet,
+                                                        PARAM_PLANET::STAGE_WORLD_SCORE, score);
+}

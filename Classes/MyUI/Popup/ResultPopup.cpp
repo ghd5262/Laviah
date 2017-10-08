@@ -13,6 +13,7 @@
 #include "../../DataManager/UserLevelDataManager.hpp"
 #include "../../DataManager/PlanetDataManager.hpp"
 #include "../../DataManager/CostumeDataManager.hpp"
+#include "../../DataManager/StageDataManager.hpp"
 #include "../../Common/StringUtility.h"
 #include "../../Scene/GameScene.h"
 #include "../../GameObject/ObjectManager.h"
@@ -66,7 +67,7 @@ bool CResultPopup::init()
         Vec2(layerSize.width * 0.5f, layerSize.height * -.5f),
     };
     
-    std::array<Vec2, 7> posArray = {
+    std::array<Vec2, 8> posArray = {
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.7f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.65f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.6f),
@@ -74,6 +75,7 @@ bool CResultPopup::init()
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.45f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * 0.25f)
     };
     
     std::array<std::string, 4> resultIcon = {
@@ -462,8 +464,8 @@ void CResultPopup::createBonusScoreLayer(std::string iconName, std::string text,
 
 void CResultPopup::createTotalScoreLayer(int value)
 {
-    auto bestScore   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
-    auto isBestScore = (GVALUE->TOTAL_SCORE > bestScore);
+    auto bestScore   = CPlanetDataManager::Instance()->getCurPlanetBestScore();
+    auto isBestScore = (GVALUE->TOTAL_SCORE >= bestScore);
     
     auto layer = Sprite::create("resultPopup_1.png");
     layer->setCascadeOpacityEnabled(true);
@@ -532,12 +534,16 @@ void CResultPopup::createRankingLayer()
             this->createChangeLabelAction(valueLabel, StringUtility::toCommaString(ranking),
                                           StringUtility::toCommaString(bestScore));
             
+            // save data
+            CPlanetDataManager::Instance()->setCurPlanetBestRank(ranking);
+            CPlanetDataManager::Instance()->setCurPlanetWorldScore(bestScore);
+            
             this->release();
         }, key, GVALUE->TOTAL_SCORE, sdkbox::TIME_SCOPE::ALL_TIME);
         
     }
     else{
-        auto bestScore = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
+        auto bestScore = CPlanetDataManager::Instance()->getCurPlanetBestScore();
         textLabel->setString(TRANSLATE("RESULT_BEST_SCORE"));
         valueLabel->setString(StringUtility::toCommaString(bestScore));
     }
@@ -665,8 +671,8 @@ void CResultPopup::createCaptureBtn()
     copiedNode->setCascadeOpacityEnabled(true);
     captureBack->addChild(copiedNode);
     
-    auto bestScore   = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::BEST_SCORE);
-    auto isBestScore = (GVALUE->TOTAL_SCORE > bestScore);
+    auto bestScore   = CPlanetDataManager::Instance()->getCurPlanetBestScore();
+    auto isBestScore = (GVALUE->TOTAL_SCORE >= bestScore);
     
     if(isBestScore){
         captureBack->setRotation(0);
@@ -731,10 +737,14 @@ void CResultPopup::userDataUpdate()
     
     
     // total score가 best score면 저장한다.
-    auto bestScore = userDataMng->getUserData_Number(USERDATA_KEY::BEST_SCORE);
+    auto bestScore = CPlanetDataManager::Instance()->getCurPlanetBestScore();
     if (GVALUE->TOTAL_SCORE > bestScore)
-        userDataMng->setUserData_Number(USERDATA_KEY::BEST_SCORE, GVALUE->TOTAL_SCORE);
+        CPlanetDataManager::Instance()->setCurPlanetBestScore(GVALUE->TOTAL_SCORE);
     
+    // level이 best level면 저장한다.
+    auto bestLevel = CPlanetDataManager::Instance()->getCurPlanetBestLevel();
+    if (GVALUE->NOTICE_LEVEL > bestLevel)
+        CPlanetDataManager::Instance()->setCurPlanetBestLevel(GVALUE->NOTICE_LEVEL);
 
     // save score to facebook
     if (CFacebookManager::IsScoresEnabled()){
