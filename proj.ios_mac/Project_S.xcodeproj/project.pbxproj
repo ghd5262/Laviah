@@ -63,6 +63,10 @@
 		591D13BC1F6D0D8000D1C44B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 591D13BB1F6D0D8000D1C44B /* libsqlite3.tbd */; };
 		591D13CC1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 591D13CA1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp */; };
 		591D13CD1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 591D13CA1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp */; };
+		592D16C21F8E569A004B899A /* CouponDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 592D16C01F8E5696004B899A /* CouponDataManager.cpp */; };
+		592D16C31F8E569B004B899A /* CouponDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 592D16C01F8E5696004B899A /* CouponDataManager.cpp */; };
+		592D16C81F996872004B899A /* CouponPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 592D16C61F996872004B899A /* CouponPopup.cpp */; };
+		592D16C91F996872004B899A /* CouponPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 592D16C61F996872004B899A /* CouponPopup.cpp */; };
 		59315BAF1E92776E00337C1C /* CharacterBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59315BAB1E92776E00337C1C /* CharacterBullet.cpp */; };
 		5940E3731F403AFB00F0C8F1 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5940E3721F403AFB00F0C8F1 /* CoreText.framework */; };
 		5940E3811F41CA4600F0C8F1 /* ShareManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5940E37F1F41CA4600F0C8F1 /* ShareManager.cpp */; };
@@ -391,6 +395,10 @@
 		591D13BB1F6D0D8000D1C44B /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
 		591D13CA1F6D3C0400D1C44B /* GoogleAnalyticsManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleAnalyticsManager.cpp; sourceTree = "<group>"; };
 		591D13CB1F6D3C0400D1C44B /* GoogleAnalyticsManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GoogleAnalyticsManager.hpp; sourceTree = "<group>"; };
+		592D16C01F8E5696004B899A /* CouponDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CouponDataManager.cpp; sourceTree = "<group>"; };
+		592D16C11F8E5696004B899A /* CouponDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CouponDataManager.hpp; sourceTree = "<group>"; };
+		592D16C61F996872004B899A /* CouponPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CouponPopup.cpp; sourceTree = "<group>"; };
+		592D16C71F996872004B899A /* CouponPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CouponPopup.hpp; sourceTree = "<group>"; };
 		59315BAB1E92776E00337C1C /* CharacterBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterBullet.cpp; sourceTree = "<group>"; };
 		59315BAC1E92776E00337C1C /* CharacterBullet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterBullet.hpp; sourceTree = "<group>"; };
 		5940E3721F403AFB00F0C8F1 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
@@ -1160,6 +1168,8 @@
 				595635B61F5C2F4300029C77 /* RankRewardDataManager.hpp */,
 				5901B13D1F5DD3C50015BA47 /* GameMetaDataManager.cpp */,
 				5901B13E1F5DD3C50015BA47 /* GameMetaDataManager.hpp */,
+				592D16C01F8E5696004B899A /* CouponDataManager.cpp */,
+				592D16C11F8E5696004B899A /* CouponDataManager.hpp */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -1377,6 +1387,8 @@
 				5900827D1F879DF30074638C /* PlanetSelectPopup.hpp */,
 				590082801F87ED0A0074638C /* PlanetSelectPopupDP.cpp */,
 				590082811F87ED0A0074638C /* PlanetSelectPopupDP.hpp */,
+				592D16C61F996872004B899A /* CouponPopup.cpp */,
+				592D16C71F996872004B899A /* CouponPopup.hpp */,
 			);
 			path = Popup;
 			sourceTree = "<group>";
@@ -1677,6 +1689,7 @@
 				93706F431E7A6891009A2CA0 /* BulletStates.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				93706FA31E7A6891009A2CA0 /* TextField.cpp in Sources */,
+				592D16C81F996872004B899A /* CouponPopup.cpp in Sources */,
 				5901B13F1F5DD3C50015BA47 /* GameMetaDataManager.cpp in Sources */,
 				93706F471E7A6891009A2CA0 /* AppDelegate.cpp in Sources */,
 				93706F6F1E7A6891009A2CA0 /* ObjectManager.cpp in Sources */,
@@ -1746,6 +1759,7 @@
 				93706FAB1E7A6891009A2CA0 /* LoadingScene.cpp in Sources */,
 				93706F951E7A6891009A2CA0 /* OptionPopup.cpp in Sources */,
 				93A1166B1E91F9F600095230 /* RivalBullet.cpp in Sources */,
+				592D16C21F8E569A004B899A /* CouponDataManager.cpp in Sources */,
 				93706F441E7A6891009A2CA0 /* GameStates.cpp in Sources */,
 				93706F871E7A6891009A2CA0 /* GoalPopup.cpp in Sources */,
 				93706FAC1E7A6891009A2CA0 /* MenuScene.cpp in Sources */,
@@ -1790,8 +1804,10 @@
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				59E1A6471F162E0A003020B9 /* FacebookManager.cpp in Sources */,
 				93706FCC1E7F70E4009A2CA0 /* FacebookAPITestPopup.cpp in Sources */,
+				592D16C91F996872004B899A /* CouponPopup.cpp in Sources */,
 				936D4C9E1E9E0875003786E6 /* TutorialStep.cpp in Sources */,
 				936D4C9C1E9E0875003786E6 /* TutorialManager.cpp in Sources */,
+				592D16C31F8E569B004B899A /* CouponDataManager.cpp in Sources */,
 				59787E771F4DB3520034FB66 /* StageDataManager.cpp in Sources */,
 				93B7F4511EB845890019D36C /* AchievementPopupDP.cpp in Sources */,
 				595635B81F5C2F4300029C77 /* RankRewardDataManager.cpp in Sources */,
