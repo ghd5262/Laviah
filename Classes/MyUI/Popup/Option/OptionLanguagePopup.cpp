@@ -38,7 +38,7 @@ bool COptionLanguagePopup::init()
     auto layerSize = this->getContentSize();
     auto dpSize = Size(getContentSize().width * 0.275f,
                        getContentSize().height * 0.08f);
-    auto paddingSize = Size(layerSize.width * 0.04f, 20.f);
+    auto paddingSize = Size(layerSize.width * 0.036f, 20.f);
     
     auto translateMNG = CTranslateManager::Instance();
     auto languageKeyList = translateMNG->getLanguageKeyList();

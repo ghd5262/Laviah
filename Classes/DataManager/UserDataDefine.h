@@ -61,6 +61,7 @@ namespace USERDATA_KEY {
     const std::string ITEM_LEVEL                = "USER_ITEM_LEVEL";
     const std::string NORMAL_ACHIEVEMENT_LIST   = "USER_NORMAL_ACHIEVEMENT_LIST";
     const std::string HIDDEN_ACHIEVEMENT_LIST   = "USER_HIDDEN_ACHIEVEMENT_LIST";
+    const std::string COUPON_LIST               = "USER_COUPON_LIST";
 };
 
 

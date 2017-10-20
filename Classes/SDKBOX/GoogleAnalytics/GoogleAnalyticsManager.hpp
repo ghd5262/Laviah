@@ -14,6 +14,7 @@ namespace GA_CATEGORY {
     const std::string REVIEW    = "Review";
     const std::string TIMER     = "Timer";
     const std::string OPTION    = "Option";
+    const std::string COUPON    = "Coupon";
 };
 
 namespace GA_ACTION {
@@ -54,6 +55,7 @@ namespace GA_ACTION {
     const std::string OPTION_LANGUAGE       = "option_language";
     const std::string OPTION_BGM            = "option_bgm";
     const std::string OPTION_EFFECT_SOUND   = "option_effect_sound";
+    const std::string OPTION_COUPON         = "option_coupon";
     
     const std::string TOTAL_SCORE           = "result_total_score";
     const std::string STAR_SCORE            = "result_star_score";

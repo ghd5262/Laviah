@@ -72,6 +72,16 @@ std::string CDownloadManager::getFacebookPageLink()
     return m_NewPackage._facebookPageLink;
 }
 
+std::string CDownloadManager::getTwitterPageLink()
+{
+    return m_NewPackage._twitterPageLink;
+}
+
+std::string CDownloadManager::getInstagramPageLink()
+{
+    return m_NewPackage._instagramPageLink;
+}
+
 void CDownloadManager::IsNetworkConnected(std::function<void(bool)> listener)
 {
     network::HttpRequest* request = new network::HttpRequest();
@@ -341,6 +351,8 @@ void CDownloadManager::initPackageInfo(PACKAGE_DATA& packageInfo, std::string js
     packageInfo._appLinkAndroid         = root["appLinkAndroid"].asString();
     packageInfo._appLinkIos             = root["appLinkIos"].asString();
     packageInfo._facebookPageLink       = root["facebookPageLink"].asString();
+    packageInfo._twitterPageLink        = root["twitterPageLink"].asString();
+    packageInfo._instagramPageLink      = root["instagramPageLink"].asString();
 
 	auto fileArray = root["files"];
 	packageInfo._downloadFileCount  = fileArray.size();

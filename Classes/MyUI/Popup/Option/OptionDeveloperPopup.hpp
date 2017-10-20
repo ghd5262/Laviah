@@ -14,6 +14,10 @@ private:
     void createDeveloperDP(std::string name,
                            std::string job,
                            cocos2d::Vec2 pos);
+    void coupon();
+    void instagram();
+    void facebook();
+    void twitter();
     
     COptionDeveloperPopup(){};
     virtual ~COptionDeveloperPopup(){};

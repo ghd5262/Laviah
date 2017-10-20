@@ -32,6 +32,8 @@ struct PACKAGE_DATA{
     std::string _appLinkAndroid;
     std::string _appLinkIos;
     std::string _facebookPageLink;
+    std::string _twitterPageLink;
+    std::string _instagramPageLink;
     DOWNLOAD_LIST _fileInfoList;
     
     PACKAGE_DATA()
@@ -41,7 +43,9 @@ struct PACKAGE_DATA{
     , _minBuildVersionIos("1.0")
     , _appLinkAndroid("")
     , _appLinkIos("")
-    , _facebookPageLink(""){};
+    , _facebookPageLink("")
+    , _twitterPageLink("")
+    , _instagramPageLink(""){};
 };
 
 typedef std::function<void(void)> VOID_LISTENER;
@@ -60,6 +64,8 @@ public:
     
     std::string getAppUrl();
     std::string getFacebookPageLink();
+    std::string getTwitterPageLink();
+    std::string getInstagramPageLink();
     static void IsNetworkConnected(std::function<void(bool)> listener);
     
 private:

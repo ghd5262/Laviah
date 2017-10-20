@@ -226,10 +226,8 @@ void CFacebookRankPopup::getRankReward()
         
         
         auto title = StringUtils::format("FACEBOOK_RANK_REWARD_%d", rank+1);
-        CGameScene::getGameScene()->Reward([=](bool isPlay){
-            CGameScene::getGameScene()->getRankReward();
-        }, rewardList, TRANSLATE(title));
-        
+        CGameScene::getGameScene()->Reward([=](bool isPlay){}, rewardList, TRANSLATE(title));
+        CGameScene::getGameScene()->getRankReward();
         CGoogleAnalyticsManager::LogScreen(GA_SCREEN::FACEBOOK_REWARD);
     });
 }

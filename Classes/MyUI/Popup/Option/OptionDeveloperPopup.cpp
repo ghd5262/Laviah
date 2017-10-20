@@ -1,9 +1,11 @@
 #include "OptionDeveloperPopup.hpp"
+#include "../CouponPopup.hpp"
 #include "../../MyButton.h"
 #include "../../../Scene/GameScene.h"
 #include "../../../DataManager/UserDataManager.h"
 #include "../../../SDKBOX/SDKBoxHeaders.h"
-#include "ui/UICheckbox.h"
+#include "../../../Download/DownloadManager.h"
+#include "ui/UICheckBox.h"
 #include <array>
 
 using namespace cocos2d;
@@ -34,10 +36,10 @@ bool COptionDeveloperPopup::init()
 
     auto layer = LayerColor::create(COLOR::BRIGHTGRAY_ALPHA,
                                     getContentSize().width * 0.9f,
-                                    getContentSize().height * 0.3f);
+                                    getContentSize().height * 0.2f);
     layer->setIgnoreAnchorPointForPosition(false);
     layer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    layer->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.4f));
+    layer->setPosition(Vec2(popupSize.width * 0.5f, popupSize.height * 0.45f));
     this->addChild(layer);
     
     struct MEMBER {
@@ -148,130 +150,82 @@ bool COptionDeveloperPopup::init()
             gaLogSend(GA_ACTION::OPTION_AUTO_SAVE, false);
         }
     };
-
-    
-    
-    
-    
-    
-    
-    
-    
-//    auto userDataMng  = CUserDataManager::Instance();
-//    auto buttonUpdate = [=](CMyButton* btn, std::function<bool(void)> getOriginValue){
-//        auto imageName = StringUtils::format("onOffIcon_%d.png", int(getOriginValue()));
-//        btn->changeButtonImage(imageName);
-//    };
-//    
-//    auto createOnOff = [=](std::function<bool(Node*, bool)> listener,
-//                           std::function<bool(void)> getOriginValue){
-//        
-//        auto bg = Sprite::create("onOffIconBG.png");
-//        bg->setOpacity(255 * 0.8f);
-//        layer->addChild(bg);
-//        
-//        CMyButton* button = CMyButton::create()
-//        ->addEventListener([=](Node* sender){
-//            auto origin = getOriginValue();
-//            if(listener(sender, origin))
-//                bg->setColor(COLOR::BRIGHTRED);
-//            else
-//                bg->setColor(COLOR::DARKGRAY);
-//        })
-//        ->setButtonNormalImage("autoSaveButton_0.png")
-//        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-//        ->setButtonPosition(bg->getContentSize() / 2)
-//        ->show(bg);
-//        
-//        button->setSwallowTouches(false);
-//        buttonUpdate(button, getOriginValue);
-//        
-//        return bg;
-//    };
-    
-//    auto layerSize = layer->getContentSize();
-//    auto getLoginOriginValue = [=](){
-//        return CPlayManager::Instance()->IsLoggedIn();
-//    };
-//    auto loginListener = [=](Node* sender, bool isEnabled){
-//        auto btn = dynamic_cast<CMyButton*>(sender);
-//        if(!btn) return;
-//        
-//        if(isEnabled){
-//            // login
-//            CPlayManager::Instance()->Login([=](){
-//                buttonUpdate(btn, getLoginOriginValue);
-//            });
-//        }
-//        else {
-//            CGameScene::getGameScene()->CreateAlertPopup()
-//            ->setPositiveButton([=](Node* sender){
-//                // logout
-//                CPlayManager::Instance()->Logout([=](){
-//                    buttonUpdate(btn, getLoginOriginValue);
-//                });
-//            }, TRANSLATE("BUTTON_YES"))
-//            ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
-//            ->setMessage("정말로 로그아웃 하시겠습니까? 클라우드 저장 및 다른기능이 제대로 동작하지 않을 수 있습니다.")
-//            ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
-//        }
-//    };
-//    
-//    auto getAutoSaveOriginValue = [=](){
-//        return userDataMng->getUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO);
-//    };
-//    auto autoSaveListener = [=](Node* sender, bool isEnabled){
-//        auto btn = dynamic_cast<CMyButton*>(sender);
-//        if(!btn) return;
-//        
-//        if(isEnabled){
-//            userDataMng->setUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO, false);
-//            buttonUpdate(btn, getAutoSaveOriginValue);
-//        }
-//        else{
-//            CGameScene::getGameScene()->CreateAlertPopup()
-//            ->setPositiveButton([=](Node* sender){
-//                userDataMng->setUserData_Number(USERDATA_KEY::DATA_SAVE_AUTO, true);
-//                buttonUpdate(btn, getAutoSaveOriginValue);
-//            }, TRANSLATE("BUTTON_YES"))
-//            ->setNegativeButton([](Node* sender){}, TRANSLATE("BUTTON_NO"))
-//            ->setMessage("자동 저장 옵션을 켜면 네트워크가 연결되어 있는 동안 클라우드에 항상 저장됩니다.")
-//            ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
-//        }
-//    };
-    
     
     auto layerSize = layer->getContentSize();
 
     
-    std::array<Node*, 4> info = {
+    std::array<Node*, 3> info = {
         createLabel(TRANSLATE("OPTION_LOGIN")),
         createLabel(TRANSLATE("OPTION_AUTO_SAVE")),
-        createLabel(TRANSLATE("OPTION_VERSION")),
+//        createLabel(TRANSLATE("OPTION_VERSION")),
         createLabel(TRANSLATE("OPTION_SUPPORT")),
     };
     
-    std::array<Node*, 4> data = {
+    std::array<Node*, 3> data = {
         createOnOff(loginListener,    getLoginOriginValue()),
         createOnOff(autoSaveListener, getAutoSaveOriginValue()),
-        createLabel(Application::getInstance()->getVersion()),
+//        createLabel(Application::getInstance()->getVersion()),
         createLabel(TRANSLATE("OPTION_EMAIL"))
     };
     
-    std::array<float, 4> posY = {
-        layerSize.height * 0.8f,
-        layerSize.height * 0.6f,
-        layerSize.height * 0.4f,
-        layerSize.height * 0.2f,
+    std::array<float, 3> posY = {
+//        layerSize.height * 0.8f,
+        layerSize.height * 0.75f,
+        layerSize.height * 0.5f,
+        layerSize.height * 0.25f,
     };
     
-    for(int index = 0; index < 4; index++)
+    for(int index = 0; index < 3; index++)
     {
         info[index]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
         info[index]->setPosition(Vec2(layerSize.width * 0.05, posY[index]));
         
         data[index]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
         data[index]->setPosition(Vec2(layerSize.width * 0.95, posY[index]));
+    }
+    
+    auto createButton = [=](std::function<void(Node*)> callback, std::string name, Vec2 pos){
+        return CMyButton::create()
+        ->addEventListener([=](Node* sender){
+            callback(sender);
+        })
+        ->setLayer(LayerColor::create(COLOR::DARKGRAY_ALPHA,
+                                      popupSize.width * 0.275f, popupSize.height * 0.08f))
+        ->setContents(name)
+        ->setButtonPosition(pos)
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->show(this);
+    };
+    
+    std::array<std::string, 3> btnName = {
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || DEBUGING)
+        TRANSLATE("OPTION_COUPON"),
+#else
+        TRANSLATE("OPTION_INSTAGRAM"),
+#endif
+        TRANSLATE("OPTION_FACEBOOK"),
+        TRANSLATE("OPTION_TWITTER"),
+    };
+    
+    std::array<std::function<void(Node*)>, 3> btnFunc = {
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID|| DEBUGING)
+        [=](Node* sender){ this->coupon(); },
+#else
+        [=](Node* sender){ this->instagram(); },
+#endif
+        [=](Node* sender){ this->facebook(); },
+        [=](Node* sender){ this->twitter(); },
+    };
+    
+    
+    auto btnSize     = Size(popupSize.width * 0.275f, popupSize.height * 0.08f);
+    auto paddingSize = Size(popupSize.width * 0.036f, 20.f);
+    
+    for(int posX = 0; posX < 3; posX++)
+    {
+        auto positionX = (popupSize.width * 0.05f) + (btnSize.width * 0.5f) +
+        (posX * (btnSize.width + paddingSize.width));
+        createButton(btnFunc[posX], btnName[posX], Vec2(positionX, popupSize.height * 0.29f));
     }
     
     return true;
@@ -305,5 +259,31 @@ void COptionDeveloperPopup::createDeveloperDP(std::string name, std::string job,
     btn->addChild(jobLabel);
 }
 
+void COptionDeveloperPopup::coupon(){
+    CCLOG("Input the coupon");
+    CCouponPopup::create()
+    ->setDefaultAnimation(ePOPUP_ANIMATION::OPEN_CENTER, ePOPUP_ANIMATION::CLOSE_CENTER)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(CGameScene::getGameScene()->getContentSize() / 2)
+    ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
+}
 
+void COptionDeveloperPopup::instagram(){
+    CCLOG("instagram");
+    auto url = CDownloadManager::Instance()->getInstagramPageLink();
+    Application::getInstance()->openURL(url);
+}
+
+void COptionDeveloperPopup::facebook(){
+    CCLOG("facebook");
+    auto url = CDownloadManager::Instance()->getFacebookPageLink();
+    Application::getInstance()->openURL(url);
+}
+
+void COptionDeveloperPopup::twitter(){
+    CCLOG("twitter");
+    auto url = CDownloadManager::Instance()->getTwitterPageLink();
+    Application::getInstance()->openURL(url);
+}
 
