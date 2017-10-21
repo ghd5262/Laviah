@@ -37,9 +37,9 @@ void CTutorialHelper::CreateMessageBox(std::string key,
         CTutorialManager::Instance()->NextStep();
     }, action)
     ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)
-    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height))
-    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setButtonPosition(layerSize / 2)
+//    ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height))
+//    ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+//    ->setButtonPosition(layerSize / 2)
     ->setEnableSound(false);
     
     CTutorialStep::create()

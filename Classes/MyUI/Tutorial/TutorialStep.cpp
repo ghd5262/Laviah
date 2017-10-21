@@ -23,15 +23,11 @@ CTutorialStep* CTutorialStep::build(std::string key)
 {
     m_TutorialKey = key;
     this->setContentSize(_director->getWinSize());
-
-    if(m_Button)
-        m_Button->show(this);
     
     // if there is message, create message box
     if(m_Message != ""){
         this->createMessageBox();
         m_MessageLayer->setScale(0.f);
-        
         
         this->setOpenAnimation([=](Node* sender){
             auto scale   = ScaleTo::create(0.5f, 1.0f);
@@ -46,6 +42,14 @@ CTutorialStep* CTutorialStep::build(std::string key)
         });
     }
     
+    if(m_Button){
+        auto messageSize = m_MessageLayer->getContentSize();
+        m_Button->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA,
+                                              messageSize.width, messageSize.height));
+        m_Button->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        m_Button->setPosition(messageSize / 2);
+        m_Button->show(m_MessageLayer);
+    }
     CTutorialManager::Instance()->addStep(m_TutorialKey, this);
     return this;
 }
@@ -157,6 +161,12 @@ void CTutorialStep::createMessageBox()
         tail->setOpacity(m_MessageLayer->getOpacity());
         m_MessageLayer->addChild(tail);
     }
+    
+    auto nextStepIcon = Sprite::create("tutorialNextStepIcon.png");
+    nextStepIcon->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+    nextStepIcon->setPosition(Vec2(m_MessageLayer->getContentSize().width, 0));
+//    nextStepIcon->setOpacity(255 * 0.4f);
+    m_MessageLayer->addChild(nextStepIcon);
 }
 
 void CTutorialStep::callListener(SINGLE_LISTENER listener)
