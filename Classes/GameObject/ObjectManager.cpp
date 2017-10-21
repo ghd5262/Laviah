@@ -618,6 +618,8 @@ void CObjectManager::InitTutorialStep()
     
     // BEGINER
     {
+        CGameScene::getGameScene()->turnDownSound();
+
         CTutorialStep::create()
         ->addBeginListener([=](CTutorialStep* sender){
             this->zoom(CGameScene::getZoomLayer(),
@@ -751,6 +753,7 @@ void CObjectManager::InitTutorialStep()
         ->addBeginListener([=](CTutorialStep* sender){
             GVALUE->Clear();
             CUserDataManager::Instance()->setUserData_NumberAdd(USERDATA_KEY::TUTORIAL_COUNT, 1);
+            CGameScene::getGameScene()->turnUpSound();
         })
         ->addUpdateListener([=](float delta, CTutorialStep* sender){
             if(sender->getTime() > 0)

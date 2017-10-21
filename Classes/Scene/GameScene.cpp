@@ -93,6 +93,7 @@ CGameScene::CGameScene()
 , m_NeedReview(false)
 , m_RewardAble(false)
 , m_CheckBox(false)
+, m_FirstCountDown(false)
 , m_DailyResetRemain(0L)
 , m_WeeklyResetRemain(0L)
 , m_GameStartTime(0L){}
@@ -200,8 +201,9 @@ void CGameScene::GameStart()
 //    CObjectManager::Instance()->getPlanet()->setVisible(true);
     dynamic_cast<CFacebookRivalRankLayer*>( m_RivalRankLayer )->Reset();
     CAudioManager::Instance()->StopBGM();
-    CAudioManager::Instance()->PlayBGM("sounds/inGameBGM.mp3", true, false);
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::INGAME);
+    
+    m_FirstCountDown = true;
     
     //        CAudioManager::Instance()->PlayBGM("sounds/bgm_1.mp3", true);
     
@@ -211,13 +213,15 @@ void CGameScene::GameStart()
 void CGameScene::GameResume()
 {
     m_CountDown->Reset();
-    this->turnUpSound();
+//    this->turnUpSound();
+//    this->resumeSound();
 }
 
 void CGameScene::GamePause()
 {
     CObjectManager::Instance()->setIsGamePause(true);
-    this->turnDownSound();
+//    this->turnDownSound();
+    this->pauseSound();
 }
 
 void CGameScene::GameResult()
@@ -714,7 +718,8 @@ void CGameScene::menuOpen()
     this->freeRewardCheck();
     this->dailyGoalResetCheck();
     this->MenuFadeIn();
-    this->turnUpSound();
+//    this->turnUpSound();
+    this->resumeSound();
     
     m_UILayer->setVisible(false);
     m_MenuLayer->setDefaultCallbackToTopAgain();
@@ -741,6 +746,16 @@ void CGameScene::turnUpSound()
     
     CAudioManager::Instance()->setBGMVolume(userBGMVolume);
 //    CAudioManager::Instance()->setEffectSoundVolume(userEffectVolume);
+}
+
+void CGameScene::pauseSound()
+{
+    CAudioManager::Instance()->AllPause();
+}
+
+void CGameScene::resumeSound()
+{
+    CAudioManager::Instance()->AllResume();
 }
 
 void CGameScene::initKeyboardListener()
@@ -1109,6 +1124,11 @@ void CGameScene::createCountDown()
 {
     m_CountDown = CCountDown::create()
     ->addLastEventListner([=](Node* sender){
+        if(m_FirstCountDown){
+            CAudioManager::Instance()->PlayBGM("sounds/inGameBGM.mp3", true, false);
+            m_FirstCountDown = false;
+        }
+        this->resumeSound();
         this->startTutorial();
         CObjectManager::Instance()->setIsGamePause(false);
         CObjectManager::Instance()->setGameStateByLevel();

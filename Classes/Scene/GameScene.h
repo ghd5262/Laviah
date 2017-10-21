@@ -60,7 +60,12 @@ public:
     void ScreenFade(const VOID_CALLBACK& callback = nullptr);
     void MenuFadeIn();
     void MenuFadeOut();
-
+    
+    void turnDownSound();
+    void turnUpSound();
+    void pauseSound();
+    void resumeSound();
+    
     void getFreeReward();
     void getRankReward();
     
@@ -113,8 +118,6 @@ private:
 	void createRandomCoin();
     void menuOpen();
     void removeBonusTimeLayer();
-    void turnDownSound();
-    void turnUpSound();
     void startTutorial();
     void freeRewardCheck();
     void dailyGoalResetCheck(bool serverCall = false);
@@ -163,4 +166,5 @@ private:
 	cocos2d::Size m_VisibleSize;
     std::vector<cocos2d::Sprite*> m_IntroUIList;
     bool m_KeyBoardSpace;
+    bool m_FirstCountDown;
 };
