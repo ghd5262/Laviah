@@ -1,5 +1,7 @@
 #include "GoogleAnalyticsManager.hpp"
 #include "../../DataManager/GameMetaDataManager.hpp"
+#include "../../Download/DownloadManager.h"
+
 using namespace cocos2d;
 using namespace cocos2d::ui;
 using namespace std;
@@ -22,6 +24,9 @@ void CGoogleAnalyticsManager::Initialize()
 
 void CGoogleAnalyticsManager::StartTimer(std::string timerKey)
 {
+#if(DEBUGING)
+    return;
+#endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
 
     auto currentTime = system_clock::now();
@@ -35,6 +40,9 @@ void CGoogleAnalyticsManager::StartTimer(std::string timerKey)
 
 void CGoogleAnalyticsManager::EndTimer(std::string timerKey)
 {
+#if(DEBUGING)
+    return;
+#endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
 
     auto found = m_TimerList.find(timerKey);
@@ -54,6 +62,9 @@ void CGoogleAnalyticsManager::EndTimer(std::string timerKey)
 
 void CGoogleAnalyticsManager::LogEventAction(std::string category, std::string action, int value/* = 0*/)
 {
+#if(DEBUGING)
+    return;
+#endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
     
     sdkbox::PluginGoogleAnalytics::logEvent(category, action, "", value);
@@ -61,6 +72,9 @@ void CGoogleAnalyticsManager::LogEventAction(std::string category, std::string a
 
 void CGoogleAnalyticsManager::LogEventValue(std::string category, std::string action, int value)
 {
+#if(DEBUGING)
+    return;
+#endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
 
     auto valueString = StringUtils::format("%04d", value);
@@ -69,6 +83,9 @@ void CGoogleAnalyticsManager::LogEventValue(std::string category, std::string ac
 
 void CGoogleAnalyticsManager::LogEventValue(std::string category, std::string action, std::string value)
 {
+#if(DEBUGING)
+    return;
+#endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
     
     sdkbox::PluginGoogleAnalytics::logEvent(category, action, value, 0);
@@ -76,6 +93,9 @@ void CGoogleAnalyticsManager::LogEventValue(std::string category, std::string ac
 
 void CGoogleAnalyticsManager::LogEventCoin(std::string action, int value)
 {
+#if(DEBUGING)
+    return;
+#endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
 
     sdkbox::PluginGoogleAnalytics::logEvent(GA_CATEGORY::COIN, action, "", value);
@@ -85,6 +105,9 @@ void CGoogleAnalyticsManager::LogSocial(std::string category,
                                         std::string action,
                                         std::string target)
 {
+#if(DEBUGING)
+    return;
+#endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
 
     sdkbox::PluginGoogleAnalytics::logSocial(category, action, target);
@@ -92,6 +115,9 @@ void CGoogleAnalyticsManager::LogSocial(std::string category,
 
 void CGoogleAnalyticsManager::LogScreen(std::string title)
 {
+#if(DEBUGING)
+    return;
+#endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
     
     sdkbox::PluginGoogleAnalytics::logScreen(title);
@@ -99,6 +125,9 @@ void CGoogleAnalyticsManager::LogScreen(std::string title)
 
 void CGoogleAnalyticsManager::LogScreen(std::string title, int index)
 {
+#if(DEBUGING)
+    return;
+#endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
     
     title += StringUtils::format("/%04d", index);

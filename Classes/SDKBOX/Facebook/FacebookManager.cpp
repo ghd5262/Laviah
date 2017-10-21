@@ -158,6 +158,9 @@ void CFacebookManager::RequestFriendList()
 
 void CFacebookManager::SaveScore(int score)
 {
+#if(DEBUGING)
+    return;
+#endif
     sdkbox::FBAPIParam params;
     params["score"] = StringUtils::format("%d", score);
     sdkbox::PluginFacebook::api("/me/scores", "POST", params, FACEBOOK_DEFINE::TAG_API_SAVE_SCORE);

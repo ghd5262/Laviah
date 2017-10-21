@@ -12,6 +12,7 @@
 #include "../DataManager/WorkshopItemDataManager.h"
 #include "../DataManager/CostumeDataManager.hpp"
 #include "../SDKBOX/SDKBoxHeaders.h"
+#include "../Download/DownloadManager.h"
 
 using namespace cocos2d;
 using namespace PLAYER_DEFINE;
@@ -154,6 +155,9 @@ void CPlayer::GotSomeHealth(float health)
 
 void CPlayer::LostSomeHealth(CBullet* data)
 {
+#if(DEBUGING)
+    return;
+#endif
 	if (m_Invincibility || !m_Life) return;
     
 	if (0.f < (m_Life - data->getPower()))

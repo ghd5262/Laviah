@@ -3,6 +3,7 @@
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/DataManagerUtils.h"
 #include "../../json/json.h"
+#include "../../Download/DownloadManager.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -83,6 +84,9 @@ void CPlayManager::OpenAchievement()
 
 void CPlayManager::ScoreSave(VOID_LISTENER listener, std::string key, int score)
 {
+#if(DEBUGING)
+    return;
+#endif
     if(!this->IsLoggedIn()) return;
  
 //    this->setSaveScoreListener(listener);
