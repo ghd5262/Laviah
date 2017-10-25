@@ -122,13 +122,15 @@ void CPlayer::PlayerAlive()
 {
     m_Life = m_MaxLife;
 
-    this->setVisible(false);
-    this->createAliveParticle();
+    m_Texture->setRotation(0);
+    this->setVisible(true);
+//    this->createAliveParticle();
 	this->setPlayerTexture(m_CharacterParam->_texture);
-    this->InvincibilityMode(INVINCIVILITY_TIME); // 1초간 무적 카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
-    this->scheduleOnce([=](float delta){
-        this->setVisible(true);
-	}, 1.f, "PlayerAlive");
+    
+//    this->InvincibilityMode(INVINCIVILITY_TIME); // 1초간 무적 카운트 끝나기 전부터 적용되기 때문에 실제로는 1.5초정도
+//    this->scheduleOnce([=](float delta){
+//        this->setVisible(true);
+//	}, 1.f, "PlayerAlive");
 
 }
 
@@ -156,7 +158,7 @@ void CPlayer::GotSomeHealth(float health)
 void CPlayer::LostSomeHealth(CBullet* data)
 {
 #if(DEBUGING)
-    return;
+//    return;
 #endif
 	if (m_Invincibility || !m_Life) return;
     

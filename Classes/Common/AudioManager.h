@@ -28,6 +28,7 @@ public:
     void AllPause();
     void AllResume();
     void StopBGM();
+    void setBGMSecond(float seconds);
     
 	// 초기화
 	void Clear();

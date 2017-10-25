@@ -234,7 +234,7 @@ bool CAchievementPopupDP::init()
                     value  = max;
             
                 goalLabel->setString(StringUtils::format("%d / %d", value, max));
-                progressBar->runAction(ProgressTo::create(1.5f, this->getPercent(value, max)));
+                progressBar->runAction(ProgressTo::create(1.5f, GVALUE->getPercent(value, max)));
             });
         }
     }
@@ -281,11 +281,4 @@ void CAchievementPopupDP::contentUpdate()
 {
     for(auto listener : m_ListenerList)
         listener();
-}
-
-float CAchievementPopupDP::getPercent(float value, float max)
-{
-    if(value != 0 && max != 0)
-        return std::min(100.f, (value / max) * 100.f);
-    return 0.f;
 }

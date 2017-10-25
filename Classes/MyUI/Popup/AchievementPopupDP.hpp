@@ -16,12 +16,12 @@ public:
     const ACHIEVEMENT* getAchievementData() const { return m_AchievementData; }
     
     CC_SYNTHESIZE(std::function<void()>, m_RewardExit, RewardExit);
+
 protected:
     virtual bool init() override;
     
 private:
     void contentUpdate();
-    float getPercent(float value, float max);
     
     CAchievementPopupDP(const ACHIEVEMENT* data)
     : m_AchievementData(data)

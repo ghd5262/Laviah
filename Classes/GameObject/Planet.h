@@ -26,6 +26,7 @@ public:
 	void Rotation(float speed);
     void StartRotation();
     void StopRotation();
+    void GameStart();
     
 	//getter & setter
     void setPlanetTexture(std::string textureName);

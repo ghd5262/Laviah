@@ -13,6 +13,7 @@ CComboScore::CComboScore()
 : m_ComboLabel(nullptr)
 , m_Time(0.f)
 , m_OldLevel(0)
+, m_IsPause(false)
 {}
 
 CComboScore::~CComboScore()
@@ -66,6 +67,8 @@ void CComboScore::AddCombo()
 {
 	// 타이머 초기화
 	m_Time = 0.f;
+    
+    m_IsPause = false;
 
     GVALUE->STAR_SCORE  += GVALUE->COMBO_LEVEL;
     GVALUE->COMBO_SCORE += 1;
@@ -93,12 +96,13 @@ void CComboScore::ComboScoreReset()
         GVALUE->BEST_COMBO = GVALUE->COMBO_SCORE;
     GVALUE->COMBO_SCORE = 0;
 	m_ComboLabel->setVisible(false);// UI visible Off
+    m_IsPause = false;
 }
 
 void CComboScore::update(float delta)
 {
     if(CObjectManager::Instance()->getIsGamePause()) return;
-    
+    if(m_IsPause) return;
     m_Time += delta;
     
     float time = (MULTIPLE_TIME_LIMIT - m_Time);

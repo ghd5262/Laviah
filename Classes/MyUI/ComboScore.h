@@ -12,7 +12,7 @@ public:
     void ComboScoreReset();
     virtual void update(float delta) override;
 
-
+    CC_SYNTHESIZE(bool, m_IsPause, IsPause);
 protected:
 	virtual bool init() override;
 

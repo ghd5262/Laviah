@@ -83,6 +83,12 @@ void CPlanet::setPlanetParam(const PLANET* param)
     this->setPlanetTexture(m_PlanetParam->_planetTexture);
 }
 
+void CPlanet::GameStart()
+{
+    GVALUE->CURRENT_PLANET = m_PlanetParam->_index;
+    this->StopRotation();
+}
+
 void CPlanet::StartRotation()
 {
     if(this->getActionByTag(100)) return;

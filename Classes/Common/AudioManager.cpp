@@ -129,12 +129,16 @@ CAudioManager::sAUDIO_INFO* CAudioManager::FindAudioIndex(std::string name)
 
 void CAudioManager::AllPause()
 {
-    AudioEngine::pauseAll();
+    if(m_BGMID == -1) return;
+
+    AudioEngine::pause(m_BGMID);
 }
 
 void CAudioManager::AllResume()
 {
-    AudioEngine::resumeAll();
+    if(m_BGMID == -1) return;
+
+    AudioEngine::resume(m_BGMID);
 }
 
 void CAudioManager::StopBGM()
@@ -158,4 +162,14 @@ void CAudioManager::StopBGM()
         AudioEngine::setVolume(bgmID, (m_BGMSoundVolume / 100.f) - (0.035f * m_FadeCount));
         m_FadeCount++;
     }, cocos2d::Director::getInstance(), 0.1f, CC_REPEAT_FOREVER, 0.f, false, "SoundFadeout");
+}
+
+
+void CAudioManager::setBGMSecond(float seconds)
+{
+    if(m_BGMID == -1) return;
+    
+    seconds = std::max(seconds , 0.f);
+    
+    AudioEngine::setCurrentTime(m_BGMID, seconds);
 }
