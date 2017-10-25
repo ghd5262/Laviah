@@ -26,6 +26,7 @@
 #include "../MyUI/Popup/PausePopup.h"
 #include "../MyUI/Popup/ResultPopup.h"
 #include "../MyUI/Popup/VideoPopup.h"
+#include "../MyUI/Popup/RevivePopup.hpp"
 #include "../MyUI/Popup/GoalPopup.h"
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../MyUI/Popup/RewardPopup.h"
@@ -196,8 +197,8 @@ void CGameScene::GameStart()
     
     CObjectManager::Instance()->ZoomMoveMiddle();
     CObjectManager::Instance()->getPlayer()->GameStart();
+    CObjectManager::Instance()->getPlanet()->GameStart();
     CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
-    CObjectManager::Instance()->getPlanet()->StopRotation();
 //    CObjectManager::Instance()->getPlanet()->setVisible(true);
     dynamic_cast<CFacebookRivalRankLayer*>( m_RivalRankLayer )->Reset();
     CAudioManager::Instance()->StopBGM();
@@ -540,6 +541,7 @@ void CGameScene::createPausePopup()
 {
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::PAUSE);
     CPausePopup::create()
+    ->setBackgroundColor(COLOR::DARKGRAY_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(m_PopupLayer, ZORDER::POPUP);
@@ -548,7 +550,8 @@ void CGameScene::createPausePopup()
 void CGameScene::createVideoPopup()
 {
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::VIDEO);
-    CVideoPopup::create()
+    CRevivePopup::create()
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(m_PopupLayer, ZORDER::POPUP);
@@ -1125,27 +1128,27 @@ void CGameScene::createCountDown()
     m_CountDown = CCountDown::create()
     ->addLastEventListner([=](Node* sender){
         if(m_FirstCountDown){
-            CAudioManager::Instance()->PlayBGM("sounds/inGameBGM.mp3", true, false);
+            CAudioManager::Instance()->PlayBGM("sounds/testBGM.mp3", true, false);
+            CObjectManager::Instance()->setGameStateByLevel();
             m_FirstCountDown = false;
         }
         this->resumeSound();
         this->startTutorial();
         CObjectManager::Instance()->setIsGamePause(false);
-        CObjectManager::Instance()->setGameStateByLevel();
         m_ZoomLayer->resume();
         
-        if(GVALUE->REVIVED == 1)
-        {
-            auto list = std::vector<int>{ eITEM_TYPE_shield, eITEM_TYPE_coin,
-                eITEM_TYPE_star, eITEM_TYPE_giant
-            };
-            auto randomIndex  = random<int>(0, (int)list.size()-1);
-            auto randomItem   = (eITEM_TYPE)list.at(randomIndex);
-            auto metaDataName = StringUtils::format("REVIVE_ITEM_TIME_%d", (int)randomItem);
-            auto itemTime     = META_DATA(metaDataName).asDouble();
-            CItemManager::Instance()->StartItemTimer(randomItem, itemTime);
-            GVALUE->REVIVED = 0;
-        }
+//        if(GVALUE->REVIVED == 1)
+//        {
+//            auto list = std::vector<int>{ eITEM_TYPE_shield, eITEM_TYPE_coin,
+//                eITEM_TYPE_star, eITEM_TYPE_giant
+//            };
+//            auto randomIndex  = random<int>(0, (int)list.size()-1);
+//            auto randomItem   = (eITEM_TYPE)list.at(randomIndex);
+//            auto metaDataName = StringUtils::format("REVIVE_ITEM_TIME_%d", (int)randomItem);
+//            auto itemTime     = META_DATA(metaDataName).asDouble();
+//            CItemManager::Instance()->StartItemTimer(randomItem, itemTime);
+//            GVALUE->REVIVED = 0;
+//        }
     })
     ->setFont(Color4B::WHITE, 65)
     ->setMaxNumber(3)

@@ -56,8 +56,6 @@ public:
     void ChangeRocket();
     void ChangePlanet();
     void ChangeCostume();
-    void ChangeState(CState<CObjectManager>* newState)
-    { m_FSM->ChangeState(newState); };
     void StartBonusTime();
     void EndBonusTime();
     void Intro(cocos2d::Node* obj,
@@ -76,7 +74,7 @@ public:
     void setGameStateByLevel();
     void SlowMotion();
     void SlowMotionFinish();
-    
+    void ReviveFromSavedPoint();
     
 	// 초기화
 	void Clear();
@@ -138,7 +136,6 @@ private:
 	~CObjectManager(){};
     
 private:
-    std::shared_ptr<CStateMachine<CObjectManager>> m_FSM;
 	std::vector<CBullet*> m_BulletList;
     STAGE_DATA_LIST m_CurrentStage;
     STAGE_DATA m_CurrentLevelData;

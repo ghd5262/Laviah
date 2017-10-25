@@ -7,6 +7,7 @@ public:
     static Global* Instance();
     void Clear();
     int getVariable(std::string key);
+    int getPercent(float value, float max);
 
 private:
     void addVariableToList();
@@ -29,7 +30,7 @@ public:
     int STAGE_LEVEL;
     int NOTICE_LEVEL;
     int DEAD_TYPE;
-    int REVIVED;
+    int LAST_SAVED_POINT;
     
     int COIN_COUNT;
     int STAR_COUNT;
@@ -64,6 +65,7 @@ public:
     
     int CURRENT_CHARACTER;
     int CURRENT_COSTUME;
+    int CURRENT_PLANET;
 };
 
 #define GVALUE Global::Instance()

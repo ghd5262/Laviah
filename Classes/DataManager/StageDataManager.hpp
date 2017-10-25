@@ -11,6 +11,7 @@ enum STAGE_DATA_TYPE{
 };
 
 struct STAGE_DATA{
+    int _index;
     int _noticeLevel;
     int _patternLevel;
     int _type;
@@ -22,13 +23,15 @@ struct STAGE_DATA{
     float _zoomAngle;
     float _zoomSize;
     float _speed;
+    bool _isSavePoint;
     cocos2d::Vec2 _pos;
     cocos2d::Color3B _bulletColor;
     cocos2d::Color3B _bgColorTop;
     cocos2d::Color3B _bgColorBottom;
 
     STAGE_DATA()
-    : _noticeLevel(0)
+    : _index(0)
+    , _noticeLevel(0)
     , _patternLevel(1)
     , _type(0)
     , _patternIndex(0)
@@ -39,21 +42,24 @@ struct STAGE_DATA{
     , _zoomAngle(0.f)
     , _zoomSize(0.f)
     , _speed(0.f)
+    , _isSavePoint(false)
     , _pos(cocos2d::Vec2::ZERO)
     , _bulletColor(cocos2d::Color3B::WHITE)
     , _bgColorTop(0, 4, 40)
     , _bgColorBottom(0, 63, 110){}
 };
 
-typedef std::vector<STAGE_DATA> STAGE_DATA_LIST;
+typedef std::map<int, STAGE_DATA> STAGE_DATA_LIST;
 struct STAGE{
-    int _index;
+    int _stageIndex;
     int _openLevel;
+//    std::vector<int> _savePointList;
     STAGE_DATA_LIST _stageDataLiat;
     
     STAGE()
-    : _index(-1)
+    : _stageIndex(-1)
     , _openLevel(0){
+//        _savePointList.clear();
         _stageDataLiat.clear();
     }
 };
@@ -67,16 +73,18 @@ public:
     int getStageMaxLevel(int index);
     const STAGE* getStageByIndex(int index) const;
     const STAGE* getStageByUserLevel();
-    
-    CC_SYNTHESIZE(int, m_StageLevel, StageLevel);
-    
+    STAGE_DATA getStageDataByIndex(int stageIndex, int index);
+//    STAGE_DATA getLastSavedPoint();
+    STAGE_DATA getSavedPoint();
+    void setSavePoint();
+
     static cocos2d::Color3B getCurrentBulletColor();
     static cocos2d::Color3B getCurrentBGTopColor();
     static cocos2d::Color3B getCurrentBGBottomColor();
 private:
     void initWithJson(STAGE_LIST &list, std::string fileName);
     void addStageToList(const Json::Value& json);
-    void addStageDataToStage(STAGE_DATA_LIST& list,
+    void addStageDataToStage(STAGE* list,
                              const Json::Value& json);
     
     CStageDataManager();

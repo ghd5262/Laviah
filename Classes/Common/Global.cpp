@@ -21,7 +21,7 @@ void Global::Clear()
     STAGE_LEVEL = 0;
     NOTICE_LEVEL = 0;
     DEAD_TYPE = 0;
-    REVIVED = 0;
+    LAST_SAVED_POINT = 0;
     
     COIN_COUNT = 0;
 	STAR_COUNT = 0;
@@ -56,6 +56,7 @@ void Global::Clear()
     
     CURRENT_CHARACTER = 0;
     CURRENT_COSTUME = 0;
+    CURRENT_PLANET = 0;
 }
 
 Global* Global::Instance()
@@ -116,4 +117,11 @@ void Global::addVariableToList()
     addVariable( ACHIEVEMENT_DATA_KEY::COIN_BARRIER_COUNT    , COIN_BARRIER_COUNT     );
     addVariable( ACHIEVEMENT_DATA_KEY::CURRENT_CHARACTER     , CURRENT_CHARACTER      );
     addVariable( ACHIEVEMENT_DATA_KEY::CURRENT_COSTUME       , CURRENT_COSTUME        );
+}
+
+int Global::getPercent(float value, float max)
+{
+    if(value != 0 && max != 0)
+        return (int)std::min(100.f, (value / max) * 100.f);
+    return 0;
 }

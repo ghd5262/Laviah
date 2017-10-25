@@ -2,11 +2,12 @@
 #include "UserDataManager.h"
 #include "DataManagerUtils.h"
 #include "CharacterDataManager.h"
+#include "PlanetDataManager.hpp"
+#include "../GameObject/ObjectManager.h"
 
 using namespace cocos2d;
 
 CStageDataManager::CStageDataManager()
-: m_StageLevel(0)
 {
     initWithJson(m_StageList, "stageList.json");
 }
@@ -45,7 +46,7 @@ void CStageDataManager::initWithJson(STAGE_LIST &list, std::string fileName)
 
 void CStageDataManager::addStageToList(const Json::Value& json)
 {
-    auto index       = json["index"].asInt();
+    auto index       = json["stageIndex"].asInt();
     auto openLevel   = json["openLevel"].asInt();
     auto stageData   = json["stageData"];
 
@@ -55,18 +56,19 @@ void CStageDataManager::addStageToList(const Json::Value& json)
     if(iter == m_StageList.end()) data = new STAGE();
     else                          data = iter->second;
     
-    data->_index     = index;
-    data->_openLevel = openLevel;
+    data->_stageIndex = index;
+    data->_openLevel  = openLevel;
     
-    this->addStageDataToStage(data->_stageDataLiat, stageData);
+    this->addStageDataToStage(data, stageData);
     
-    m_StageList.emplace(std::pair<int, STAGE*>(data->_index, data));
+    m_StageList.emplace(std::pair<int, STAGE*>(data->_stageIndex, data));
 }
 
-void CStageDataManager::addStageDataToStage(STAGE_DATA_LIST &list, const Json::Value &json)
+void CStageDataManager::addStageDataToStage(STAGE* stageData, const Json::Value &json)
 {
     STAGE_DATA data;
     
+    data._index             = json["index"].asInt();
     data._noticeLevel       = json["noticeLevel"].asInt();
     data._patternLevel      = json["patternLevel"].asInt();
     data._type              = json["type"].asInt();
@@ -78,6 +80,8 @@ void CStageDataManager::addStageDataToStage(STAGE_DATA_LIST &list, const Json::V
     data._zoomAngle         = json["zoomAngle"].asDouble();
     data._zoomSize          = json["zoomSize"].asDouble();
     data._speed             = json["speed"].asDouble();
+    data._isSavePoint       = json["savePoint"].asBool();
+
     auto posX               = json["x"].asDouble();
     auto posY               = json["y"].asDouble();
     data._pos               = cocos2d::Vec2(posX, posY);
@@ -97,7 +101,9 @@ void CStageDataManager::addStageDataToStage(STAGE_DATA_LIST &list, const Json::V
     auto bulletB            = json["bulletColor"]["b"].asInt();
     data._bulletColor       = cocos2d::Color3B(bulletR, bulletG, bulletB);
     
-    list.emplace_back(data);
+//    if(data._isSavePoint)
+//        stageData->_savePointList.emplace_back(data._index);
+    stageData->_stageDataLiat.emplace(std::pair<int, STAGE_DATA>(data._index, data));
 }
 
 int CStageDataManager::getStageMaxLevel(int index)
@@ -139,7 +145,7 @@ const STAGE* CStageDataManager::getStageByUserLevel()
     auto picked     = pickedList.begin();
     std::advance(picked, random<int>(0, int(pickedList.size()-1)));
     
-    CCLOG("Pick a stage :: idx %d", (picked->second)->_index);
+    CCLOG("Pick a stage :: stage idx %d", (picked->second)->_stageIndex);
     
     return (picked->second);
 
@@ -147,9 +153,9 @@ const STAGE* CStageDataManager::getStageByUserLevel()
 
 cocos2d::Color3B CStageDataManager::getCurrentBulletColor()
 {
-    auto stage = CStageDataManager::Instance()->getStageByIndex(0);
+    auto stage = CStageDataManager::Instance()->getStageByIndex(GVALUE->CURRENT_PLANET);
     auto list  = stage->_stageDataLiat;
-    auto level = CStageDataManager::Instance()->getStageLevel();
+    auto level = GVALUE->STAGE_LEVEL;
     if(list.size() <= level)
         return Color3B::WHITE;
     
@@ -158,9 +164,9 @@ cocos2d::Color3B CStageDataManager::getCurrentBulletColor()
 
 cocos2d::Color3B CStageDataManager::getCurrentBGTopColor()
 {
-    auto stage = CStageDataManager::Instance()->getStageByIndex(0);
+    auto stage = CStageDataManager::Instance()->getStageByIndex(GVALUE->CURRENT_PLANET);
     auto list  = stage->_stageDataLiat;
-    auto level = CStageDataManager::Instance()->getStageLevel();
+    auto level = GVALUE->STAGE_LEVEL;
     if(list.size() <= level)
         return Color3B(0, 4, 40);
     
@@ -169,13 +175,59 @@ cocos2d::Color3B CStageDataManager::getCurrentBGTopColor()
 
 cocos2d::Color3B CStageDataManager::getCurrentBGBottomColor()
 {
-    auto stage = CStageDataManager::Instance()->getStageByIndex(0);
+    auto stage = CStageDataManager::Instance()->getStageByIndex(GVALUE->CURRENT_PLANET);
     auto list  = stage->_stageDataLiat;
-    auto level = CStageDataManager::Instance()->getStageLevel();
+    auto level = GVALUE->STAGE_LEVEL;
     if(list.size() <= level)
         return Color3B(0, 63, 110);
     
     return list.at(level)._bgColorBottom;
 }
 
+STAGE_DATA CStageDataManager::getStageDataByIndex(int stageIndex, int index)
+{
+    auto stageData = this->getStageByIndex(stageIndex);
+    
+    auto data = stageData->_stageDataLiat.find(index);
+    if(data == stageData->_stageDataLiat.end()) {
+        CCLOG("Wrong stage idx : %d index : %d", stageIndex, index);
+        CCASSERT(false, "Wrong stage idx, index");
+        return STAGE_DATA();
+    }
+    return data->second;
+}
 
+//STAGE_DATA CStageDataManager::getLastSavedPoint()
+//{
+//    auto currentStageData = this->getStageByIndex(GVALUE->CURRENT_PLANET);
+//    auto savePointList = currentStageData->_savePointList;
+//    if(currentStageData->_stageDataLiat.size() <= 0){
+//        CCLOG("Error - The size of _stageDataList is 0 plant : %d", GVALUE->CURRENT_PLANET);
+//        CCASSERT(false, "The size of _stageDataList is 0");
+//        return STAGE_DATA();
+//    }
+//    
+//    auto passedSavePoints = DATA_MANAGER_UTILS::getNonPtrListByFunc([=](int index){
+//        return index <= GVALUE->STAGE_LEVEL;
+//    }, savePointList);
+//    
+//    if(passedSavePoints.size() <= 0)
+//        return currentStageData->_stageDataLiat.at(0);
+//    
+//    auto lastSavedPointIndex = passedSavePoints.at(passedSavePoints.size() -1);
+//    return this->getStageDataByIndex(GVALUE->CURRENT_PLANET, lastSavedPointIndex);
+//}
+
+STAGE_DATA CStageDataManager::getSavedPoint()
+{
+    return this->getStageDataByIndex(GVALUE->CURRENT_PLANET, GVALUE->LAST_SAVED_POINT);
+}
+
+void CStageDataManager::setSavePoint()
+{
+    auto stageData = this->getStageDataByIndex(GVALUE->CURRENT_PLANET, GVALUE->STAGE_LEVEL);
+    if(stageData._isSavePoint && GVALUE->LAST_SAVED_POINT != GVALUE->STAGE_LEVEL){
+        GVALUE->LAST_SAVED_POINT = GVALUE->STAGE_LEVEL;
+        GVALUE->REVIVE_COUNT = 0;
+    }
+}
