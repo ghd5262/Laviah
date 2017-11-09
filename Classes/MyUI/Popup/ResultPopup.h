@@ -8,6 +8,8 @@ class CResultPopup : public CPopup
 {
 public:
     static CResultPopup* create();
+    CResultPopup* setIsStageEnd(bool isStageEnd);
+    CPopup* show(Node* parent = nullptr, int zOrder = 0);
     
 protected:
     virtual bool init() override;
@@ -43,13 +45,17 @@ private:
                            std::string iconName,
                            std::string text,
                            Color3B color);
+    
+    void createPercentageLayer(std::string iconName, std::string text,
+                               int value, int max);
     void createCaptureBtn();
     void userDataUpdate();
     
     CResultPopup()
     : m_BG(nullptr)
     , m_GoalPopupOpen(false)
-    , m_PictureBtn(nullptr){};
+    , m_PictureBtn(nullptr)
+    , m_IsStageEnd(false){};
     virtual ~CResultPopup();
     
 private:
@@ -57,4 +63,5 @@ private:
     cocos2d::LayerColor* m_BG;
     bool m_GoalPopupOpen;
     CMyButton* m_PictureBtn;
+    bool m_IsStageEnd;
 };

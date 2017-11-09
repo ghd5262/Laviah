@@ -7,6 +7,7 @@ class CMyButton;
 class CScoreUI;
 class CItemProgress;
 class CAchievementProgressBar;
+class CStageProgressBar;
 class CUILayer : public CPopup
 {
     typedef std::array<CItemProgress*, eITEM_TYPE_MAX> PROGRESS_LIST;
@@ -43,7 +44,7 @@ private:
 private:
     static CUILayer* m_Instance;
     CMyButton* m_PauseBtn;
-    CAchievementProgressBar* m_AchievementProgressBar;
+    CStageProgressBar* m_AchievementProgressBar;
     cocos2d::Node* m_StarScoreUI;
     cocos2d::Label* m_StarScoreLabel;
     cocos2d::Label* m_LevelLabel;

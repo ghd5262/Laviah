@@ -7,6 +7,7 @@
 #include "CountDown.hpp"
 #include "ItemProgress.hpp"
 #include "AchievementProgressBar.hpp"
+#include "StageProgressBar.hpp"
 #include "FacebookRivalRankLayer.hpp"
 #include "Popup/AchievementCompleteNoticePopup.h"
 #include "../GameObject/ItemManager.h"
@@ -128,7 +129,8 @@ bool CUILayer::init()
 //    for(int count = 1; count < eITEM_TYPE_MAX; count++)
 //		this->createItemTimerUI((eITEM_TYPE)count, Color3B::WHITE);
     
-    m_AchievementProgressBar = CAchievementProgressBar::create()
+    m_AchievementProgressBar = CStageProgressBar::create()
+    ->setProgressBar("achievementProgress.png")
     ->setBarBGColor(COLOR::WHITEGRAY_ALPHA)
     ->setBarColor(COLOR::GOLD)
     ->setBarAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP)
