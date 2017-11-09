@@ -6,13 +6,19 @@
 #include <map>
 
 struct LEADERBOARD{
-    int _rank;
+    int _dailyRank;
+    int _weeklyRank;
+    int _allRank;
     int _dailyScore;
+    int _weeklyScore;
     int _allTimeScore;
     
     LEADERBOARD()
-    : _rank(0)
+    : _dailyRank(0)
+    , _weeklyRank(0)
+    , _allRank(0)
     , _dailyScore(0)
+    , _weeklyScore(0)
     , _allTimeScore(0){}
 };
 
@@ -42,7 +48,9 @@ public:
     CC_SYNTHESIZE(VOID_LISTENER, m_LoginListener,     LoginListener);
     CC_SYNTHESIZE(VOID_LISTENER, m_LogoutListener,    LogoutListener);
     CC_SYNTHESIZE(VOID_LISTENER, m_SaveScoreListener, SaveScoreListener);
-    CC_SYNTHESIZE(VOID_LISTENER, m_LoadScoreListener, LoadScoreListener);
+    CC_SYNTHESIZE(VOID_LISTENER, m_LoadAllScoreListener, LoadAllScoreListener);
+    CC_SYNTHESIZE(VOID_LISTENER, m_LoadWeekScoreListener, LoadWeekScoreListener);
+    CC_SYNTHESIZE(VOID_LISTENER, m_LoadDayScoreListener, LoadDayScoreListener);
     CC_SYNTHESIZE(DATA_LISTENER, m_DataLoadListener,  DataLoadListener);
     CC_SYNTHESIZE(DATA_LISTENER, m_DataSaveListener,  DataSaveListener);
 

@@ -59,6 +59,7 @@ USING_NS_CC;
 
 
 CGameScene* CGameScene::m_GameScene = nullptr;
+cocos2d::Layer* CGameScene::m_EffectLayer = nullptr;
 cocos2d::Layer* CGameScene::m_ZoomLayer = nullptr;
 cocos2d::Layer* CGameScene::m_PopupLayer = nullptr;
 
@@ -126,6 +127,7 @@ bool CGameScene::init()
     this->initMemoryPool();
     this->createFacebookManager();
     this->createPopupLayer();
+    this->createEffectLayer();
     this->createZoomLayer();
     this->createBulletCreator();
     this->createBackground();
@@ -231,6 +233,12 @@ void CGameScene::GameResult()
     CObjectManager::Instance()->ZoomMoveDown();
     this->createResultPopup();
     this->GamePause();
+    this->dailyGoalResetCheck();
+}
+
+void CGameScene::StageEnd()
+{
+    this->createResultPopup(true);
     this->dailyGoalResetCheck();
 }
 
@@ -417,6 +425,16 @@ void CGameScene::OpenDownloadPopup()
     this->MenuFadeOut();
 }
 
+void CGameScene::OpenPlanetSelectPopup()
+{
+    CObjectManager::Instance()->MoveAction(m_ZoomLayer,
+                                           Vec2(m_VisibleSize.width * 0.5f,
+                                                m_VisibleSize.height * 0.57f),
+                                           0.7f, 1.2f);
+    this->createPlanetSelectPopup();
+    this->MenuFadeOut();
+}
+
 void CGameScene::RandomCoin()
 {
     this->createRandomCoin();
@@ -535,6 +553,7 @@ void CGameScene::clearData()
 void CGameScene::cleanGlobalData()
 {
     GVALUE->Clear();
+    GSAVED->Clear();
 }
 
 void CGameScene::createPausePopup()
@@ -551,7 +570,7 @@ void CGameScene::createVideoPopup()
 {
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::VIDEO);
     CRevivePopup::create()
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setBackgroundColor(COLOR::DARKGRAY_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(m_PopupLayer, ZORDER::POPUP);
@@ -567,10 +586,11 @@ void CGameScene::createGoalPopup()
     ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
-void CGameScene::createResultPopup()
+void CGameScene::createResultPopup(bool isStageEnd/* = false*/)
 {
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::RESULT);
     CResultPopup::create()
+    ->setIsStageEnd(isStageEnd)
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
@@ -581,7 +601,7 @@ void CGameScene::createEndPopup()
 {
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::END);
     CGameEndPopup::create()
-    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setBackgroundColor(COLOR::DARKGRAY_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
     ->show(m_PopupLayer, ZORDER::POPUP);
@@ -671,6 +691,16 @@ void CGameScene::createCostumePopup(const VOID_CALLBACK& callback,
     ->show(m_PopupLayer, ZORDER::POPUP);
 }
 
+void CGameScene::createPlanetSelectPopup()
+{
+    CPlanetSelectPopup::create()
+    ->setDefaultCallbackEnable(false)
+    ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
+    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
+    ->setPopupPosition(m_VisibleSize / 2)
+    ->show(m_PopupLayer, ZORDER::POPUP);
+}
+
 void CGameScene::createRankPopup()
 {
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::FACEBOOK_RANK);
@@ -721,7 +751,6 @@ void CGameScene::menuOpen()
     this->freeRewardCheck();
     this->dailyGoalResetCheck();
     this->MenuFadeIn();
-//    this->turnUpSound();
     this->resumeSound();
     
     m_UILayer->setVisible(false);
@@ -1047,6 +1076,18 @@ void CGameScene::createPopupLayer()
     this->addChild(m_PopupLayer, POPUP);
 }
 
+void CGameScene::createEffectLayer()
+{
+    if(m_EffectLayer) return;
+    
+    m_EffectLayer = Layer::create();
+    m_EffectLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    m_EffectLayer->setContentSize(m_VisibleSize);
+    m_EffectLayer->setIgnoreAnchorPointForPosition(false);
+    m_EffectLayer->setPosition(m_VisibleSize / 2);
+    m_PopupLayer->addChild(m_EffectLayer, POPUP);
+}
+
 void CGameScene::createZoomLayer()
 {
     if(m_ZoomLayer) return;
@@ -1056,7 +1097,7 @@ void CGameScene::createZoomLayer()
     m_ZoomLayer->setContentSize(m_VisibleSize);
     m_ZoomLayer->setIgnoreAnchorPointForPosition(false);
     m_ZoomLayer->setPosition(m_VisibleSize / 2);
-    m_PopupLayer->addChild(m_ZoomLayer, POPUP);
+    m_EffectLayer->addChild(m_ZoomLayer, POPUP);
 }
 
 void CGameScene::createBulletCreator()
@@ -1128,7 +1169,8 @@ void CGameScene::createCountDown()
     m_CountDown = CCountDown::create()
     ->addLastEventListner([=](Node* sender){
         if(m_FirstCountDown){
-            CAudioManager::Instance()->PlayBGM("sounds/testBGM.mp3", true, false);
+            auto sound = StringUtils::format("sounds/testBGM_%d.mp3", GVALUE->CURRENT_PLANET);
+            CAudioManager::Instance()->PlayBGM(sound, false, false);
             CObjectManager::Instance()->setGameStateByLevel();
             m_FirstCountDown = false;
         }
@@ -1136,7 +1178,6 @@ void CGameScene::createCountDown()
         this->startTutorial();
         CObjectManager::Instance()->setIsGamePause(false);
         m_ZoomLayer->resume();
-        
 //        if(GVALUE->REVIVED == 1)
 //        {
 //            auto list = std::vector<int>{ eITEM_TYPE_shield, eITEM_TYPE_coin,
@@ -1273,16 +1314,6 @@ void CGameScene::createRivalRankLayer()
     ->show(m_UILayer);
 }
 
-void CGameScene::createPlanetSelectLayer()
-{
-    CPlanetSelectPopup::create()
-    ->setDefaultCallbackEnable(false)
-    ->setBackgroundVisible(false)
-    ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
-    ->setPopupPosition(m_VisibleSize / 2)
-    ->show(m_MenuLayer, ZORDER::POPUP);
-}
-
 void CGameScene::createTutorialLayer()
 {
     auto tutorialMananger = CTutorialManager::Instance();
@@ -1391,6 +1422,8 @@ void CGameScene::intro()
             CObjectManager::Instance()->Intro(m_ZoomLayer, 14.5f, PLANET_DEFINE::MENU_POS, skip, [=](){
                 this->menuOpen();
                 uiListRemove();
+                
+                skipBtn->setTouchEnable(false, Color3B::WHITE);
                 skipBtn->removeFromParent();
             });
             

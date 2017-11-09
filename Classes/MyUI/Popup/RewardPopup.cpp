@@ -205,9 +205,9 @@ void CRewardPopup::AddRewardToList(std::string key, int value)
 	m_RewardList.emplace_back(sREWARD_DATA(key, value));
 }
 
-void CRewardPopup::createFlyAction(Node* sender, Vec2 targetPos1, Vec2 targetPos2)
+void CRewardPopup::createFlyAction(Node* sender, Vec2 targetPos1, Vec2 targetPos2, float delayTime)
 {
-    auto delay     = DelayTime::create(1.f);
+    auto delay     = DelayTime::create(delayTime);
     auto callFunc1 = CallFunc::create([=](){sender->setVisible(true);});
     auto moveDown1 = MoveTo::create(2.5f, targetPos1);
     auto sineOut1  = EaseExponentialOut::create(moveDown1);

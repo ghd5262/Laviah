@@ -85,7 +85,7 @@ void CPlayManager::OpenAchievement()
 void CPlayManager::ScoreSave(VOID_LISTENER listener, std::string key, int score)
 {
 #if(DEBUGING)
-    return;
+//    return;
 #endif
     if(!this->IsLoggedIn()) return;
  
@@ -103,7 +103,11 @@ void CPlayManager::ScoreLoad(VOID_LISTENER listener, std::string key, int score,
 {
     if(!this->IsLoggedIn()) return;
 
-    this->setLoadScoreListener(listener);
+    switch (time_span) {
+        case sdkbox::TIME_SCOPE::DAY:     m_LoadDayScoreListener = listener; break;
+        case sdkbox::TIME_SCOPE::WEEK:    m_LoadWeekScoreListener = listener; break;
+        case sdkbox::TIME_SCOPE::ALL_TIME:m_LoadAllScoreListener = listener; break;
+    }
 //    if(!this->IsNewHighScore(key, score, time_span)) {
 //        this->callVoidListener(m_LoadScoreListener);
 //        return;
@@ -118,6 +122,7 @@ bool CPlayManager::IsNewHighScore(std::string key, int score, int time_span)
     if(iter == m_Leaderboards.end())      return true;
     switch (time_span) {
         case sdkbox::TIME_SCOPE::DAY:       saved = iter->second->_dailyScore;   break;
+        case sdkbox::TIME_SCOPE::WEEK:      saved = iter->second->_weeklyScore;  break;
         case sdkbox::TIME_SCOPE::ALL_TIME:  saved = iter->second->_allTimeScore; break;
     }
     
@@ -168,10 +173,22 @@ void CPlayManager::saveScoreToMap(std::string key, int score, int time_span, int
     switch (time_span) {
         case sdkbox::TIME_SCOPE::DAY:
             leaderboard->_dailyScore = score; break;
+        case sdkbox::TIME_SCOPE::WEEK:
+            leaderboard->_weeklyScore = score; break;
         case sdkbox::TIME_SCOPE::ALL_TIME:
             leaderboard->_allTimeScore = score; break;
     }
-    if(rank) leaderboard->_rank = rank;
+    
+    if(rank){
+        switch (time_span) {
+            case sdkbox::TIME_SCOPE::DAY:
+                leaderboard->_dailyRank = rank; break;
+            case sdkbox::TIME_SCOPE::WEEK:
+                leaderboard->_weeklyRank = rank; break;
+            case sdkbox::TIME_SCOPE::ALL_TIME:
+                leaderboard->_allRank = rank; break;
+        }
+    }
 }
 
 void CPlayManager::onConnectionStatusChanged(int connection_status)
@@ -294,7 +311,12 @@ void CPlayManager::onPlayerCenteredScores(const std::string& leaderboard_name,
         
         this->saveScoreToMap(leaderboard_name, score, time_span, rank);
     }
-    this->callVoidListener(m_LoadScoreListener);
+    
+    switch (time_span) {
+        case sdkbox::TIME_SCOPE::DAY:     this->callVoidListener(m_LoadDayScoreListener); break;
+        case sdkbox::TIME_SCOPE::WEEK:    this->callVoidListener(m_LoadWeekScoreListener); break;
+        case sdkbox::TIME_SCOPE::ALL_TIME:this->callVoidListener(m_LoadAllScoreListener); break;
+    }
 }
 
 void CPlayManager::onPlayerCenteredScoresError(const std::string& leaderboard_name,

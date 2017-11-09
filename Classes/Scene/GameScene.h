@@ -30,6 +30,7 @@ public:
     void GamePause();
     void GameResume();
     void GameResult();
+    void StageEnd();
     void GameEnd();
     void GameHelp();
     void GameExit(bool resume = false);
@@ -53,6 +54,8 @@ public:
                         int sizeType, bool logo,
                         int score = 0);
     void OpenDownloadPopup();
+    
+    void OpenPlanetSelectPopup();
     
     void RandomCoin();
     void BonusTimeStart();
@@ -78,6 +81,7 @@ public:
 
 	//getter & setter
 	static CGameScene* getGameScene(){ return m_GameScene; }
+    static cocos2d::Layer* getEffectLayer(){ return m_EffectLayer; }
 	static cocos2d::Layer* getZoomLayer(){ return m_ZoomLayer; }
     static cocos2d::Layer* getPopupLayer(){ return m_PopupLayer; }
     
@@ -102,7 +106,7 @@ private:
 	void createPausePopup();
 	void createVideoPopup();
 	void createGoalPopup();
-	void createResultPopup();
+	void createResultPopup(bool isStageEnd = false);
     void createEndPopup();
 	void createHelpPopup();
     void createExitPopup(bool resume);
@@ -111,6 +115,8 @@ private:
     void createCharacterPopup();
     void createCostumePopup(const VOID_CALLBACK& callback,
                             int index);
+    void createPlanetSelectPopup();
+
     void createRankPopup();
     void createRankUpPopup();
     void createAchievementPopup();
@@ -125,11 +131,12 @@ private:
     void startAppreciatePlanet();
     void stopAppreciatePlanet();
     void createReviewPopup();
-    
+
     // The following items are initialized only once.
     void initMemoryPool();
     void createFacebookManager();
     void createPopupLayer();
+    void createEffectLayer();
     void createZoomLayer();
     void createBulletCreator();
     void createBackground();
@@ -144,7 +151,6 @@ private:
     void createMenuLayer();
     void createUILayer();
     void createRivalRankLayer();
-    void createPlanetSelectLayer();
     void createTutorialLayer();
     void createIntroUI();
     void createCaptureNode();
@@ -154,6 +160,7 @@ private:
     
 private:
 	static CGameScene* m_GameScene;
+    static cocos2d::Layer* m_EffectLayer;
 	static cocos2d::Layer* m_ZoomLayer;
     static cocos2d::Layer* m_PopupLayer;
     cocos2d::LayerColor* m_ScreenFade;

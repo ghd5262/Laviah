@@ -5,6 +5,7 @@
 #include "../ScoreUI.h"
 #include "../UserCoinButton.h"
 #include "../ComboScore.h"
+#include "../StageProgressBar.hpp"
 #include "../../Scene/GameScene.h"
 #include "../../DataManager/UserDataManager.h"
 #include "../../DataManager/FreeRewardManager.hpp"
@@ -42,10 +43,14 @@ CResultPopup* CResultPopup::create()
     }
 }
 
-bool CResultPopup::init()
+CResultPopup* CResultPopup::setIsStageEnd(bool isStageEnd)
 {
-    if (!CPopup::init()) return false;
-    
+    m_IsStageEnd = isStageEnd;
+    return this;
+}
+
+CPopup* CResultPopup::show(Node* parent, int zOrder)
+{
     m_BG = LayerColor::create(COLOR::TRANSPARENT_ALPHA, 1080.f, 1920.f);
     if (m_BG != nullptr){
         m_BG->setIgnoreAnchorPointForPosition(false);
@@ -56,7 +61,7 @@ bool CResultPopup::init()
     }
     auto layerSize = m_BG->getContentSize();
     
-    std::array<Vec2, 8> posDown  = {
+    std::array<Vec2, 9> posDown  = {
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.3f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f),
@@ -64,10 +69,11 @@ bool CResultPopup::init()
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.0f),
         Vec2(layerSize.width * 0.5f, layerSize.height * -.1f),
         Vec2(layerSize.width * 0.5f, layerSize.height * -.2f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * -.3f),
         Vec2(layerSize.width * 0.5f, layerSize.height * -.5f),
     };
     
-    std::array<Vec2, 8> posArray = {
+    std::array<Vec2, 9> posArray = {
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.7f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.65f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.6f),
@@ -75,6 +81,7 @@ bool CResultPopup::init()
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.45f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.4f),
+        Vec2(layerSize.width * 0.5f, layerSize.height * 0.35f),
         Vec2(layerSize.width * 0.5f, layerSize.height * 0.25f)
     };
     
@@ -92,7 +99,11 @@ bool CResultPopup::init()
         TRANSLATE("RESULT_GOAL")
     };
     
+    auto value = CObjectManager::Instance()->getLevelTimer();
+    auto max   = CStageDataManager::Instance()->getStageFinishTime(GVALUE->CURRENT_PLANET);
+    
     this->userDataUpdate();
+    this->createPercentageLayer("comboIcon.png", "진행률", value, max);
     this->createScoreLayer(resultIcon[0], resultContent[0], GVALUE->STAR_SCORE);
     this->createScoreLayer(resultIcon[1], resultContent[1], GVALUE->BEST_COMBO);
     this->createBonusScoreLayer(resultIcon[2], resultContent[2], GVALUE->COIN_COUNT, 10);
@@ -148,57 +159,56 @@ bool CResultPopup::init()
     };
     
     // create reward button
+    
+    auto costumeCost = META_DATA("COSTUME_COST").asInt();
+    std::array<bool, 4> rewardBtnVisibleArray = {
+        ( random<int>(0, 1) == 1 ),
+        ( (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= costumeCost) &&
+         (CCostumeDataManager::Instance()->getNewRandomCostume()) &&
+         (random<int>(0, 1) == 1) ),
+        ( CFreeRewardManager::Instance()->getRewardAble() ),
+        ( GVALUE->HIDDEN_ACHIEVEMENT_CLEAR_COUNT > 0 )
+    };
+    
+    std::array<std::string, 4> rewardBtnIconArray = {
+        "unityAdsIcon.png",
+        "costumeUFOIcon.png",
+        "freeCoinIcon.png",
+        "achievementCupIcon.png"
+    };
+    
+    std::array<std::function<void(Node*)>, 4> rewardBtnListenerArray = {
+        [=](Node* sender) { this->getCoinFromVideo(sender); },
+        [=](Node* sender) { this->getNewCostume(sender);    },
+        [=](Node* sender) { this->getFreeReward();          },
+        [=](Node* sender) { this->openAchievementPopup();   }
+    };
+    
+    std::vector<Node*> rewardBtnArray;
+    for(int index = 0; index < rewardBtnVisibleArray.size(); index++)
     {
-        auto costumeCost = META_DATA("COSTUME_COST").asInt();
-        std::array<bool, 4> rewardBtnVisibleArray = {
-            ( random<int>(0, 1) == 1 ),
-            ( (CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::COIN) >= costumeCost) &&
-              (CCostumeDataManager::Instance()->getNewRandomCostume()) &&
-              (random<int>(0, 1) == 1) ),
-            ( CFreeRewardManager::Instance()->getRewardAble() ),
-            ( GVALUE->HIDDEN_ACHIEVEMENT_CLEAR_COUNT > 0 )
-        };
+        if(!rewardBtnVisibleArray[index]) continue;
         
-        std::array<std::string, 4> rewardBtnIconArray = {
-            "unityAdsIcon.png",
-            "costumeUFOIcon.png",
-            "freeCoinIcon.png",
-            "achievementCupIcon.png"
-        };
+        auto rewardBtn = CMyButton::create()
+        ->addEventListener(rewardBtnListenerArray[index])
+        ->setButtonSingleUse(true)
+        ->setButtonNormalImage(rewardBtnIconArray[index])
+        ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
+        ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * -0.5f))
+        ->show(m_BG);
+        rewardBtn->setVisible(false);
         
-        std::array<std::function<void(Node*)>, 4> rewardBtnListenerArray = {
-            [=](Node* sender) { this->getCoinFromVideo(sender); },
-            [=](Node* sender) { this->getNewCostume(sender);    },
-            [=](Node* sender) { this->getFreeReward();          },
-            [=](Node* sender) { this->openAchievementPopup();   }
-        };
-        
-        std::vector<Node*> rewardBtnArray;
-        for(int index = 0; index < rewardBtnVisibleArray.size(); index++)
-        {
-            if(!rewardBtnVisibleArray[index]) continue;
-            
-            auto rewardBtn = CMyButton::create()
-            ->addEventListener(rewardBtnListenerArray[index])
-            ->setButtonSingleUse(true)
-            ->setButtonNormalImage(rewardBtnIconArray[index])
-            ->setButtonAnchorPoint(Vec2::ANCHOR_MIDDLE)
-            ->setButtonPosition(Vec2(layerSize.width * 0.5f, layerSize.height * -0.5f))
-            ->show(m_BG);
-            rewardBtn->setVisible(false);
-
-            rewardBtnArray.emplace_back(rewardBtn);
-        }
-        
-        if(rewardBtnArray.size() > 0){
-            auto rewardBtn = rewardBtnArray[rewardBtnArray.size()-1];
-            m_ScoreLayerList.emplace_back(rewardBtn);
-            CRewardPopup::createFlyAction(rewardBtn,
-                                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.25f),
-                                          Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f));
-        }
+        rewardBtnArray.emplace_back(rewardBtn);
     }
     
+    if(rewardBtnArray.size() > 0){
+        auto rewardBtn = rewardBtnArray[rewardBtnArray.size()-1];
+        m_ScoreLayerList.emplace_back(rewardBtn);
+        CRewardPopup::createFlyAction(rewardBtn,
+                                      Vec2(layerSize.width * 0.5f, layerSize.height * 0.25f),
+                                      Vec2(layerSize.width * 0.5f, layerSize.height * 0.2f),
+                                      m_IsStageEnd ? 6.f: 1.f);
+    }
     
     // create button array
     std::array<CMyButton*, 3> btnArray;
@@ -233,17 +243,21 @@ bool CResultPopup::init()
     
     this->createCaptureBtn();
     
+    auto delayTime = 1.2f;
+    if(m_IsStageEnd) delayTime = 5.f;
+    
     this->setOpenAnimation([=](Node* sender){
         // clear all bullets
-        CObjectManager::Instance()->ReturnToMemoryBlockAll();
-        
-        auto moveAction = MoveTo::create(1.2f, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
-        auto easeAction = EaseExponentialInOut::create(moveAction);
+        if(!m_IsStageEnd)
+            CObjectManager::Instance()->ReturnToMemoryBlockAll();
+
+        auto moveAction = MoveTo::create(delayTime, Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
+        FiniteTimeAction* easeAction = EaseExponentialInOut::create(moveAction);
+        if(m_IsStageEnd) easeAction = EaseSineInOut::create(moveAction);
         m_BG->runAction(easeAction);
         
-        
         auto action = [=](Node* owner){
-            auto delay = DelayTime::create(1.f);
+            auto delay = DelayTime::create(delayTime);
             auto fade  = FadeIn::create(0.5f);
             auto sequence = Sequence::createWithTwoActions(delay, fade);
             owner->runAction(sequence);
@@ -255,7 +269,7 @@ bool CResultPopup::init()
         action(resultLabel);
         action(btnUserCoin);
         action(m_PictureBtn);
-    }, 1.2f);
+    }, delayTime);
     
     this->setCloseAnimation([=](Node* sender){
         
@@ -294,6 +308,12 @@ bool CResultPopup::init()
     if ( m_GoalPopupOpen ) this->setDefaultCallback([=](Node* sender){ this->end();  });
     else                   this->setDefaultCallback([=](Node* sender){ this->home(); });
     
+    return CPopup::show(parent, zOrder);
+}
+
+bool CResultPopup::init()
+{
+    if (!CPopup::init()) return false;
     return true;
 }
 
@@ -464,7 +484,7 @@ void CResultPopup::createBonusScoreLayer(std::string iconName, std::string text,
 
 void CResultPopup::createTotalScoreLayer(int value)
 {
-    auto bestScore   = CPlanetDataManager::Instance()->getCurPlanetBestScore();
+    auto bestScore   = CPlanetDataManager::Instance()->getPlanetSavedData(PARAM_PLANET::STAGE_BEST_SCORE);
     auto isBestScore = (GVALUE->TOTAL_SCORE >= bestScore);
     
     auto layer = Sprite::create("resultPopup_1.png");
@@ -529,21 +549,45 @@ void CResultPopup::createRankingLayer()
             
             auto data      = CPlayManager::Instance()->getLeaderboardData(key);
             auto bestScore = data->_allTimeScore;
-            auto ranking   = data->_rank;
+            auto ranking   = data->_allRank;
             this->createChangeLabelAction(textLabel, TRANSLATE("RESULT_RANK"), TRANSLATE("RESULT_BEST_SCORE"));
             this->createChangeLabelAction(valueLabel, StringUtility::toCommaString(ranking),
                                           StringUtility::toCommaString(bestScore));
             
             // save data
-            CPlanetDataManager::Instance()->setCurPlanetBestRank(ranking);
-            CPlanetDataManager::Instance()->setCurPlanetWorldScore(bestScore);
+            CPlanetDataManager::Instance()->setPlanetSavedData(PARAM_PLANET::STAGE_ALL_RANK, ranking);
+            CPlanetDataManager::Instance()->setPlanetSavedData(PARAM_PLANET::STAGE_ALL_SCORE, bestScore);
             
             this->release();
         }, key, GVALUE->TOTAL_SCORE, sdkbox::TIME_SCOPE::ALL_TIME);
         
+        CPlayManager::Instance()->ScoreLoad([=](){
+            
+            auto data      = CPlayManager::Instance()->getLeaderboardData(key);
+            auto bestScore = data->_weeklyScore;
+            auto ranking   = data->_weeklyRank;
+
+            // save data
+            CPlanetDataManager::Instance()->setPlanetSavedData(PARAM_PLANET::STAGE_WEEK_RANK, ranking);
+            CPlanetDataManager::Instance()->setPlanetSavedData(PARAM_PLANET::STAGE_WEEK_SCORE, bestScore);
+            
+        }, key, GVALUE->TOTAL_SCORE, sdkbox::TIME_SCOPE::WEEK);
+        
+        CPlayManager::Instance()->ScoreLoad([=](){
+            
+            auto data      = CPlayManager::Instance()->getLeaderboardData(key);
+            auto bestScore = data->_dailyScore;
+            auto ranking   = data->_dailyRank;
+            
+            // save data
+            CPlanetDataManager::Instance()->setPlanetSavedData(PARAM_PLANET::STAGE_DAY_RANK, ranking);
+            CPlanetDataManager::Instance()->setPlanetSavedData(PARAM_PLANET::STAGE_DAY_SCORE, bestScore);
+            
+        }, key, GVALUE->TOTAL_SCORE, sdkbox::TIME_SCOPE::DAY);
+
     }
     else{
-        auto bestScore = CPlanetDataManager::Instance()->getCurPlanetBestScore();
+        auto bestScore = CPlanetDataManager::Instance()->getPlanetSavedData(PARAM_PLANET::STAGE_BEST_SCORE);
         textLabel->setString(TRANSLATE("RESULT_BEST_SCORE"));
         valueLabel->setString(StringUtility::toCommaString(bestScore));
     }
@@ -556,8 +600,8 @@ void CResultPopup::createLevelLayer()
         auto bar      = Sprite::create("expProgress.png");
         bar->setColor(Color3B(color.r, color.g, color.b));
         auto progress = ProgressTimer::create(bar);
-        progress->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        progress->setPosition(parent->getContentSize() / 2);
+        progress->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+        progress->setPosition(Vec2(parent->getContentSize().width * 0.5f, 0));
         progress->setMidpoint(Vec2(0, 0));
         progress->setType(ProgressTimer::Type::BAR);
         progress->setBarChangeRate(Vec2(1, 0));
@@ -566,14 +610,9 @@ void CResultPopup::createLevelLayer()
         parent->addChild(progress, -1);
         return progress;
     };
-    auto getPercent   = [=](float value, float max){
-        if(value != 0 && max != 0)
-            if(value >= max) return 100.f;
-        return (value / max) * 100.f;
-        return 0.f;
-    };
+
     auto progressRun  = [=](ProgressTimer* bar, int max, int value, float duration){
-        bar->runAction(ProgressTo::create(duration, getPercent(value, max)));
+        bar->runAction(ProgressTo::create(duration, GVALUE->getPercent(value, max)));
     };
     
     auto currentLevel = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::LEVEL);
@@ -650,6 +689,30 @@ void CResultPopup::createButtonLayer(std::function<void(Node*)> &callback,
     m_ScoreLayerList.emplace_back(button);
 }
 
+void CResultPopup::createPercentageLayer(std::string iconName, std::string text,
+                                         int value, int max)
+{
+    auto layer      = this->createIconLayer(iconName, text);
+    
+    auto valueString = StringUtils::format("%d%%", GVALUE->getPercent(value, max));
+    auto valueLabel = Label::createWithTTF(valueString, FONT::MALGUNBD, 50);
+    valueLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
+    valueLabel->setPosition(Vec2(layer->getContentSize().width * 0.9f,
+                                 layer->getContentSize().height * 0.5f));
+    layer->addChild(valueLabel);
+    
+    CStageProgressBar::create()
+    ->setProgressBar("expProgress.png")
+    ->setLabelVisible(false)
+    ->setBarBGColor(COLOR::TRANSPARENT_ALPHA)
+    ->setBarColor(COLOR::GOLD)
+    ->setBarAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM)
+    ->setBarPosition(Vec2(layer->getContentSize().width * 0.5f, 0))
+    ->show(layer, -1);
+    
+    m_ScoreLayerList.emplace_back(layer);
+}
+
 void CResultPopup::createCaptureBtn()
 {
     auto layerSize   = this->getContentSize();
@@ -671,8 +734,15 @@ void CResultPopup::createCaptureBtn()
     copiedNode->setCascadeOpacityEnabled(true);
     captureBack->addChild(copiedNode);
     
-    auto bestScore   = CPlanetDataManager::Instance()->getCurPlanetBestScore();
+    auto bestScore   = CPlanetDataManager::Instance()->getPlanetSavedData(PARAM_PLANET::STAGE_BEST_SCORE);
     auto isBestScore = (GVALUE->TOTAL_SCORE >= bestScore);
+    
+    auto delayTime1 = 1.8f;
+    auto delayTime2 = 2.8f;
+    if(m_IsStageEnd){
+        delayTime1 = 5.6f;
+        delayTime2 = 6.6f;
+    }
     
     if(isBestScore){
         captureBack->setRotation(0);
@@ -682,7 +752,7 @@ void CResultPopup::createCaptureBtn()
         captureBack->setOpacity(255);
         copiedNode->setOpacity(0.f);
         
-        auto delay1 = DelayTime::create(1.8f);
+        auto delay1 = DelayTime::create(delayTime1);
         auto fadeIn = FadeIn::create(0.8f);
         auto sound  = CallFunc::create([=](){
             CAudioManager::Instance()->PlayEffectSound("sounds/Capture.mp3", false);
@@ -690,7 +760,7 @@ void CResultPopup::createCaptureBtn()
         auto seq1   = Sequence::create(delay1, fadeIn, sound, nullptr);
         copiedNode->runAction(seq1);
         
-        auto delay2 = DelayTime::create(2.8f);
+        auto delay2 = DelayTime::create(delayTime2);
         auto move   = MoveTo::create(0.5f, Vec2(m_PictureBtn->getContentSize().width * 0.8f,
                                                 m_PictureBtn->getContentSize().height * 0.8f));
         auto scale  = ScaleTo::create(0.5f, 0.11f, 0.1f);
@@ -737,14 +807,24 @@ void CResultPopup::userDataUpdate()
     
     
     // total score가 best score면 저장한다.
-    auto bestScore = CPlanetDataManager::Instance()->getCurPlanetBestScore();
+    auto bestScore = CPlanetDataManager::Instance()->getPlanetSavedData(PARAM_PLANET::STAGE_BEST_SCORE);
     if (GVALUE->TOTAL_SCORE > bestScore)
-        CPlanetDataManager::Instance()->setCurPlanetBestScore(GVALUE->TOTAL_SCORE);
+        CPlanetDataManager::Instance()->setPlanetSavedData(PARAM_PLANET::STAGE_BEST_SCORE,
+                                                           GVALUE->TOTAL_SCORE);
     
     // level이 best level면 저장한다.
-    auto bestLevel = CPlanetDataManager::Instance()->getCurPlanetBestLevel();
+    auto bestLevel = CPlanetDataManager::Instance()->getPlanetSavedData(PARAM_PLANET::STAGE_BEST_LEVEL);
     if (GVALUE->NOTICE_LEVEL > bestLevel)
-        CPlanetDataManager::Instance()->setCurPlanetBestLevel(GVALUE->NOTICE_LEVEL);
+        CPlanetDataManager::Instance()->setPlanetSavedData(PARAM_PLANET::STAGE_BEST_LEVEL,
+                                                           GVALUE->NOTICE_LEVEL);
+    
+    // percent이 best percent면 저장한다.
+    auto bestPercent = CPlanetDataManager::Instance()->getPlanetSavedData(PARAM_PLANET::STAGE_PERCENT);
+    auto value = CObjectManager::Instance()->getLevelTimer();
+    auto max   = CStageDataManager::Instance()->getStageFinishTime(GVALUE->CURRENT_PLANET);
+    auto percent = GVALUE->getPercent(value, max);
+    if (percent > bestPercent)
+        CPlanetDataManager::Instance()->setPlanetSavedData(PARAM_PLANET::STAGE_PERCENT, percent);
 
     // save score to facebook
     if (CFacebookManager::IsScoresEnabled()){

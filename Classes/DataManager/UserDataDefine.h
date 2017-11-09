@@ -108,8 +108,13 @@ enum PARAM_ACHIEVEMENT_HIDDEN{
 };
 
 enum PARAM_PLANET{
-    STAGE_BEST_LEVEL     = 0,
-    STAGE_BEST_SCORE     = 1,
-    STAGE_BEST_RANK      = 2,
-    STAGE_WORLD_SCORE    = 3,
+    STAGE_BEST_LEVEL   = 0,
+    STAGE_BEST_SCORE   = 1,
+    STAGE_ALL_RANK     = 2,
+    STAGE_ALL_SCORE    = 3,
+    STAGE_WEEK_RANK    = 4,
+    STAGE_WEEK_SCORE   = 5,
+    STAGE_DAY_RANK     = 6,
+    STAGE_DAY_SCORE    = 7,
+    STAGE_PERCENT      = 8
 };

@@ -22,7 +22,8 @@ public:
 
     static void createFlyAction(Node* sender,
                                 Vec2 targetPos1,
-                                Vec2 targetPos2);
+                                Vec2 targetPos2,
+                                float delayTime = 1.f);
 private:
 	CPopup* createRewardDP(sREWARD_DATA data);
     void createUFO();
