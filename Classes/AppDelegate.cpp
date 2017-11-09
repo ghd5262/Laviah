@@ -97,7 +97,7 @@ void AppDelegate::applicationDidEnterBackground() {
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
-    CAudioManager::Instance()->AllResume();
+//    CAudioManager::Instance()->AllResume();
     
     //GamePause
     if(CGameScene::getGameScene() != nullptr){

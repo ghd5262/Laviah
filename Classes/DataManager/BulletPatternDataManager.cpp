@@ -79,6 +79,7 @@ void CBulletPatternDataManager::initWithJson(PATTERN_LIST &list, std::string fil
         
         patternInfo._index = index;
 		patternInfo._level = valuePattern["level"].asInt();
+        patternInfo._type  = valuePattern["type"].asInt();
 		patternInfo._widthPadding = valuePattern["widthAngleDistance"].asDouble();
 		const Json::Value pattern = valuePattern["pattern"];
 
@@ -145,19 +146,25 @@ const sBULLET_PATTERN* CBulletPatternDataManager::getTutorialPatternByIndex(int 
     return m_TutorialPatternList.at(index);
 }
 
-const sBULLET_PATTERN* CBulletPatternDataManager::getRandomNormalPatternByLevel(int level, bool below)
+const sBULLET_PATTERN* CBulletPatternDataManager::getRandomNormalPatternByLevel(int level,
+                                                                                int type,
+                                                                                bool levelBelow)
 {
-    if(below){
-        return getRandomPatternFromList([=](const sBULLET_PATTERN* data){
-            return data->_level > level;
-        }, m_PatternList);
+    auto levelList = DATA_MANAGER_UTILS::getListByFunc([=](const sBULLET_PATTERN* data){
+        if(levelBelow)
+            return data->_level <= level && data->_type <= type;
+        else
+            return data->_level == level && data->_type <= type;
+    }, m_PatternList);
+    
+    auto size = levelList.size();
+    if(!size) {
+        CCASSERT(false, "There is no pattern with type and level");
+        return nullptr;
     }
-    else
-    {
-        return getRandomPatternFromList([=](const sBULLET_PATTERN* data){
-            return data->_level != level;
-        }, m_PatternList);
-    }
+    
+    auto randomIndex = random<int>(0, size-1);
+    return levelList.at(randomIndex);
 }
 
 const sBULLET_PATTERN* CBulletPatternDataManager::getRandomConstellationPatternByLevel(int level, bool below)

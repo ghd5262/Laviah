@@ -121,7 +121,6 @@ bool CVideoPopup::init()
     
     m_CountDown = CCountDown::create()
     ->addLastEventListner([=](Node* sender){
-        if(m_ReviveButtonTouched) return;
         this->End(sender);
     })
     ->setFont(Color4B::WHITE, 65)
@@ -187,6 +186,8 @@ bool CVideoPopup::init()
 }
 
 void CVideoPopup::End(Node* sender){
+    if(m_ReviveButtonTouched) return;
+    
     m_IsEnded = true;
     m_CountDown->Pause();
     m_CountDown->setVisible(false);

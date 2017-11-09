@@ -9,25 +9,28 @@ struct sBULLET_PATTERN
 	int _height;
 	int _width;
 	int _level;
+    int _type;
 	float _widthPadding;
 	char _pattern[60 * 60]; // 패턴의 최대 크기 60 * 60 = 3600byte
 
 	sBULLET_PATTERN()
-		: _index(-1)
-		, _height(-1)
-		, _width(-1)
-		, _level(-1)
-		, _widthPadding(-1)
+    : _index(-1)
+    , _height(-1)
+    , _width(-1)
+    , _level(-1)
+    , _type(0)
+    , _widthPadding(-1)
 	{
 		memset(_pattern, 0, sizeof(_pattern));
 	}
 
 	sBULLET_PATTERN(const sBULLET_PATTERN& data)
-		: _index(data._index)
-		, _height(data._height)
-		, _width(data._width)
-		, _level(data._level)
-		, _widthPadding(data._widthPadding)
+    : _index(data._index)
+    , _height(data._height)
+    , _width(data._width)
+    , _level(data._level)
+    , _type(data._type)
+    , _widthPadding(data._widthPadding)
 	{
 		int idx = 0;
 		for (auto it : data._pattern)
@@ -37,11 +40,12 @@ struct sBULLET_PATTERN
 	}
 
 	sBULLET_PATTERN(const sBULLET_PATTERN* data)
-		: _index(data->_index)
-		, _height(data->_height)
-		, _width(data->_width)
-		, _level(data->_level)
-		, _widthPadding(data->_widthPadding)
+    : _index(data->_index)
+    , _height(data->_height)
+    , _width(data->_width)
+    , _level(data->_level)
+    , _type(data->_type)
+    , _widthPadding(data->_widthPadding)
 	{
 		int idx = 0;
 		for (auto it : data->_pattern)
@@ -63,7 +67,7 @@ public:
 	const sBULLET_PATTERN* getMissilePatternByIndex(int index) const;
 	const sBULLET_PATTERN* getBonusPatternByIndex(int index) const;
     const sBULLET_PATTERN* getTutorialPatternByIndex(int index) const;
-	const sBULLET_PATTERN* getRandomNormalPatternByLevel(int level, bool below);
+	const sBULLET_PATTERN* getRandomNormalPatternByLevel(int level, int type, bool levelBelow);
     const sBULLET_PATTERN* getRandomConstellationPatternByLevel(int level, bool below);
     const sBULLET_PATTERN* getRandomBonusTimePattern();
     const sBULLET_PATTERN* getRandomPatternFromList(const PATTERN_PICK& callFunc,
