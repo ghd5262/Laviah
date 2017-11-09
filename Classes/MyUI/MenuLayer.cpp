@@ -168,6 +168,11 @@ bool CMenuLayer::init()
         CGameScene::getGameScene()->OpenOptionPopup(0);
     }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.95f));
     
+    createButton([=](Node* sender){
+        CGameScene::getGameScene()->OpenPlanetSelectPopup();
+    }, "optionIcon.png", Vec2(popupSize.width * 0.56f, popupSize.height * 0.95f));
+    
+    
 //    // option button
 //    createButton([=](Node* sender){
 //        CGameScene::getGameScene()->OpenFBTestPopup();

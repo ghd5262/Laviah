@@ -204,7 +204,8 @@ void CPlayer::CrownEnable(bool enable)
     m_Crown->setVisible(enable);
 
     if(enable){
-        
+        if(m_Crown->getActionByTag(1000))
+            m_Crown->stopActionByTag(1000);
         auto scaleDown = ScaleTo::create(0.0f, 0.5f);
         auto scaleUp = ScaleTo::create(0.5f, 1.f);
         auto elastic = EaseElasticOut::create(scaleUp, 0.5f);

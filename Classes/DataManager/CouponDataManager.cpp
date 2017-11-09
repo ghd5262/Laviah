@@ -2,6 +2,7 @@
 #include "UserDataManager.h"
 #include "DataManagerUtils.h"
 #include "NetworkManager.hpp"
+#include "../Common/StringUtility.h"
 
 using namespace cocos2d;
 
@@ -47,7 +48,7 @@ void CCouponDataManager::addRewardToList(const Json::Value& json)
     data._index          = json["index"].asInt();
     data._eventStartTime = json["eventStartTime"].asDouble();
     data._eventEndTime   = json["eventEndTime"].asDouble();
-    data._couponKey      = json["couponKey"].asString();
+    data._couponKey      = StringUtility::toUpper(json["couponKey"].asString());
     auto keyList         = json["rewardKey"];
     auto valueList       = json["rewardValue"];
     
@@ -61,7 +62,7 @@ void CCouponDataManager::addRewardToList(const Json::Value& json)
     }
     
     auto couponKey = data._couponKey;
-    if(m_RewardList.find(couponKey) != m_RewardList.end())
+    if(m_RewardList.find(StringUtility::toUpper(couponKey)) != m_RewardList.end())
     {
         CCLOG("The coupon key duplicated %s", couponKey.c_str());
         CCASSERT(false, "The coupon key duplicated");
@@ -72,7 +73,9 @@ void CCouponDataManager::addRewardToList(const Json::Value& json)
 
 COUPON_REWARD_DATA CCouponDataManager::getRewardByData(std::string couponKey) const
 {
-    auto data = m_RewardList.find(couponKey);
+    
+    
+    auto data = m_RewardList.find(StringUtility::toUpper(couponKey));
     if(data == m_RewardList.end()) return COUPON_REWARD_DATA();
     
     return data->second;

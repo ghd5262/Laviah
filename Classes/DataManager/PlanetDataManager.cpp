@@ -79,64 +79,25 @@ const PLANET* CPlanetDataManager::getCurPlanet() const
     return this->getPlanetByIndex(currentPlanet);
 }
 
-int CPlanetDataManager::getCurPlanetBestLevel()
+int CPlanetDataManager::getPlanetSavedData(int param)
 {
     auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, currentPlanet,
+                                                               param, 0);
+}
+
+void CPlanetDataManager::setPlanetSavedData(int param, int value)
+{
+    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
+    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::PLANET_LIST, currentPlanet,
+                                                        param, value);
+}
+
+bool CPlanetDataManager::IsPlanetOpened(int index)
+{
+    if(index > 0)
+        return (100 <= CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, index - 1,
+                                                                           PARAM_PLANET::STAGE_PERCENT, 0));
     
-    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, currentPlanet,
-                                                               PARAM_PLANET::STAGE_BEST_LEVEL, 0);
-}
-
-int CPlanetDataManager::getCurPlanetBestScore()
-{
-    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
-
-    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, currentPlanet,
-                                                               PARAM_PLANET::STAGE_BEST_SCORE, 0);
-}
-
-int CPlanetDataManager::getCurPlanetBestRank()
-{
-    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
-
-    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, currentPlanet,
-                                                               PARAM_PLANET::STAGE_BEST_RANK, 0);
-
-}
-
-int CPlanetDataManager::getCurPlanetWorldScore()
-{
-    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
-    
-    return CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, currentPlanet,
-                                                               PARAM_PLANET::STAGE_WORLD_SCORE, 0);
-    
-}
-
-void CPlanetDataManager::setCurPlanetBestLevel(int level)
-{
-    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
-    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::PLANET_LIST, currentPlanet,
-                                                        PARAM_PLANET::STAGE_BEST_LEVEL, level);
-}
-
-void CPlanetDataManager::setCurPlanetBestScore(int score)
-{
-    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
-    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::PLANET_LIST, currentPlanet,
-                                                        PARAM_PLANET::STAGE_BEST_SCORE, score);
-}
-
-void CPlanetDataManager::setCurPlanetBestRank(int rank)
-{
-    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
-    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::PLANET_LIST, currentPlanet,
-                                                        PARAM_PLANET::STAGE_BEST_RANK, rank);
-}
-
-void CPlanetDataManager::setCurPlanetWorldScore(int score)
-{
-    auto currentPlanet = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLANET);
-    CUserDataManager::Instance()->setUserData_ItemParam(USERDATA_KEY::PLANET_LIST, currentPlanet,
-                                                        PARAM_PLANET::STAGE_WORLD_SCORE, score);
+    return true;
 }

@@ -12,6 +12,8 @@ public:
     //setter & getter
     const PLANET* getPlanetParam() const { return m_Planet; }
     
+    CC_SYNTHESIZE(Sprite*, m_PlanetImg, PlanetImg);
+    
 protected:
     virtual bool init() override;
     
@@ -24,5 +26,4 @@ private:
     
 private:
     const PLANET* m_Planet;
-    Sprite* m_PlanetImg;
 };

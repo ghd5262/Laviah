@@ -35,13 +35,13 @@ bool CPlanetSelectPopupDP::init()
     
     m_PlanetImg = Sprite::createWithSpriteFrameName(m_Planet->_planetTexture);
     m_PlanetImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    m_PlanetImg->setPosition(layerSize / 2);
+    m_PlanetImg->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.57f));
+    m_PlanetImg->setScale(0.7f);
     this->addChild(m_PlanetImg);
     
-//    if (!CUserDataManager::Instance()->getUserData_IsItemExist(USERDATA_KEY::COSTUME_LIST,
-//                                                               m_Planet->_index)){
-//        m_PlanetImg->setColor(Color3B::BLACK);
-//    }
+    if (!CPlanetDataManager::Instance()->IsPlanetOpened(m_Planet->_index)){
+        m_PlanetImg->setColor(Color3B::BLACK);
+    }
     
     return true;
 }
