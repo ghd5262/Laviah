@@ -109,11 +109,13 @@ void CBackGround::BonusTimeEnd()
     particleResume(m_BackParticle);
 }
 
-void CBackGround::ChangeBackground()
+void CBackGround::ChangeBackground(bool force/* = false*/)
 {
     if (m_tempStartGradient == nullptr || m_tempEndGradient == nullptr) return;
-    if (m_IsChanging) return;
-    
+    if (!force){
+        if (m_IsChanging)
+            return;
+    }
     m_IsChanging = true;
 //    auto gradientTo = CGradientDataManager::Instance()->getRandomGradient();
 //    auto gradientTo = CGradientDataManager::Instance()->getNextGradient();
@@ -128,8 +130,16 @@ void CBackGround::ChangeBackground()
     auto top = CStageDataManager::getCurrentBGTopColor();
     auto bottom = CStageDataManager::getCurrentBGBottomColor();
     
-    m_tempStartGradient->runAction(TintTo::create(1.5f, top));
-    m_tempEndGradient->runAction(Sequence::create(TintTo::create(1.5f, bottom),
+    auto time = 1.5f;
+    
+    if(force){
+        time = 0.f;
+        m_Gradient->setStartColor(top);
+        m_Gradient->setEndColor(bottom);
+    }
+    
+    m_tempStartGradient->runAction(TintTo::create(time, top));
+    m_tempEndGradient->runAction(Sequence::create(TintTo::create(time, bottom),
                                                   CallFunc::create([=](){
 //        m_Time = 0.f;
         m_IsChanging = false;

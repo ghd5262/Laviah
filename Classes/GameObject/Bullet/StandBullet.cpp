@@ -17,7 +17,7 @@
 namespace STANDBULLET{
     const static float STAY_LIMIT_TIME = 1.f;
     const static float STANDING_TARGET_RADIUS = 10.f;
-    const static float TARGET_POS_DISTANCE = PLANET_DEFINE::BOUNDING_RADIUS + 50;
+    const static float TARGET_POS_DISTANCE = PLANET_DEFINE::BOUNDING_RADIUS + 45;
 };
 
 using namespace cocos2d;
@@ -55,7 +55,7 @@ bool CStandBullet::init()
     
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
     
-    this->setColor(CStageDataManager::getCurrentBulletColor());
+//    this->setColor(CStageDataManager::getCurrentBulletColor());
 
     return true;
 }
@@ -77,6 +77,7 @@ void CStandBullet::Execute(float delta)
     
     // 1.3 => 움직이기 1.3초 전에 먼저 보인다.
     // standbullet의 delaytime 은 build에서 새로 지정한다.
+    this->bulletColor();
     if (m_Time >= (getDelayTime() - 1.3f)) this->setVisible(true);
     if (!IsTimeUP()) return;
     this->StandUp(delta);

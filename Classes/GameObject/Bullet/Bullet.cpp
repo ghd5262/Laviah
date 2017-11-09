@@ -12,6 +12,8 @@
 #include "../../DataManager/AchievementDataManager.hpp"
 #include "../../DataManager/AchievementChecker/AchievementClearChecker.h"
 #include "../../DataManager/GradientDataManager.h"
+#include "../../DataManager/PlanetDataManager.hpp"
+
 using namespace cocos2d;
 
 CBullet::CBullet()
@@ -22,6 +24,7 @@ CBullet::CBullet()
 , m_Player(CObjectManager::Instance()->getPlayer())
 , m_Planet(CObjectManager::Instance()->getPlanet())
 , m_BulletSprite(nullptr)
+, m_OldStageLevel(0)
 {
 #if(!USE_MEMORY_POOLING)
     m_FSM = nullptr;
@@ -414,19 +417,34 @@ void CBullet::createExplosionEffect()
         auto seq  = Sequence::create(spawn, RemoveSelf::create(), nullptr);
         node->runAction(seq);
     };
-    
+    auto planet   = CObjectManager::Instance()->getPlanetParam();
     for(int i = 0; i < 5; i++)
     {
-        auto sprite = Sprite::create("particle_snow.png");
+        auto sprite = Sprite::createWithSpriteFrameName(planet->_normalBulletTexture);
         sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         sprite->setPosition(Vec2(getPosition()));
         sprite->setScale(0.7);
         sprite->setRotation(-getRotation());
-        sprite->setColor(CStageDataManager::getCurrentBulletColor());
+//        sprite->setColor(CStageDataManager::getCurrentBulletColor());
 
         CGameScene::getZoomLayer()->addChild(sprite, ZORDER::POPUP);
         
         createParticle(sprite);
+    }
+}
+
+void CBullet::bulletColor()
+{
+    return;
+    if(m_OldStageLevel != GVALUE->STAGE_LEVEL)
+    {
+        m_OldStageLevel = GVALUE->STAGE_LEVEL;
+        auto newColor = CStageDataManager::getCurrentBulletColor();
+        if(newColor != this->getColor()){
+            this->runAction(TintTo::create(0.5f, newColor));
+
+//            this->setColor(newColor); 
+        }
     }
 }
 

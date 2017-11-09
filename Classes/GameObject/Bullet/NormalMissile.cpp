@@ -17,6 +17,7 @@
 #include "../../DataManager/AchievementChecker/AchievementClearChecker.h"
 #include "../../DataManager/GradientDataManager.h"
 #include "../../DataManager/BulletPatternDataManager.h"
+#include "../../DataManager/PlanetDataManager.hpp"
 
 using namespace cocos2d;
 
@@ -58,7 +59,7 @@ bool CNormalMissile::init()
     
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
 
-    this->setColor(CStageDataManager::getCurrentBulletColor());
+//    this->setColor(CStageDataManager::getCurrentBulletColor());
 
     return true;
 }
@@ -76,6 +77,8 @@ void CNormalMissile::Execute(float delta)
     if (!IsTimeUP()) return;
     this->setVisible(true);
     m_FSM->Execute(delta);
+    
+    this->bulletColor();
 }
 
 void CNormalMissile::CollisionWithPlanet()
@@ -167,8 +170,9 @@ void CNormalMissile::createTargetLine()
 
 void CNormalMissile::createParticle_Flame()
 {
-    auto color    = CStageDataManager::getCurrentBulletColor();
-	auto particle = CParticle_Flame::create("particle_snow.png");
+//    auto color    = CStageDataManager::getCurrentBulletColor();
+    auto planet   = CObjectManager::Instance()->getPlanetParam();
+	auto particle = CParticle_Flame::create(planet->_normalBulletTexture);
 	if (particle != nullptr){
 		particle->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		particle->setAngle(0);
@@ -178,10 +182,10 @@ void CNormalMissile::createParticle_Flame()
 		particle->setStartSize(50);
 		particle->setLife(0.5f);
 		particle->setLifeVar(0.15f);
-		particle->setStartColor(Color4F(color.r / 255.f, color.g / 255.f, color.b / 255.f, 0.5f));
-		particle->setStartColorVar(Color4F(0, 0, 0, 0));
-		particle->setEndColor(Color4F(color.r / 255.f, color.g / 255.f, color.b / 255.f, 0.0f));
-		particle->setEndColorVar(Color4F(0, 0, 0, 0));
+//		particle->setStartColor(Color4F(color.r / 255.f, color.g / 255.f, color.b / 255.f, 0.5f));
+//		particle->setStartColorVar(Color4F(0, 0, 0, 0));
+//		particle->setEndColor(Color4F(color.r / 255.f, color.g / 255.f, color.b / 255.f, 0.0f));
+//		particle->setEndColorVar(Color4F(0, 0, 0, 0));
 		particle->setPosVar(Vec2(10, 10));
 		particle->setTotalParticles(8);
 		this->addChild(particle, -1);

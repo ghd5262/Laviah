@@ -8,7 +8,7 @@ public:
     static CBackGround* create();
     void BonusTimeStart();
     void BonusTimeEnd();
-    void ChangeBackground();
+    void ChangeBackground(bool force = false);
 
     virtual void update(float delta) override;
     Color3B getCurrentStartColor();

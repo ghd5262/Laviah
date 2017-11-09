@@ -45,9 +45,15 @@ bool CNormalBullet::init()
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin |
                         eITEM_FLAG_star | eITEM_FLAG_shield);
     
-    this->setColor(CStageDataManager::getCurrentBulletColor());
+//    this->setColor(CStageDataManager::getCurrentBulletColor());
     
     return true;
+}
+
+void CNormalBullet::Execute(float delta)
+{
+    CBullet::Execute(delta);
+    this->bulletColor();
 }
 
 void CNormalBullet::CollisionWithPlayer()

@@ -11,6 +11,7 @@ public:
 	virtual void CollisionWithBarrier() override;
 	virtual void ChangeToCoin() override;
 	virtual void ChangeToStar() override;
+    virtual void Execute(float delta) override;
 
 protected:
 	virtual bool init() override;

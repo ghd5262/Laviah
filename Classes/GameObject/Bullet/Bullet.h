@@ -217,6 +217,9 @@ protected:
 //    void createCollisionParticle();
     
     void createExplosionEffect();
+    
+    void bulletColor();
+
     CBullet();
     virtual ~CBullet();
 
@@ -229,4 +232,5 @@ protected:
 private:
     sBULLET_PARAM m_BulletInfo;
     float m_Speed;
+    int m_OldStageLevel;
 };

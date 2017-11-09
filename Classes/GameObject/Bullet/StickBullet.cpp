@@ -50,7 +50,7 @@ bool CStickBullet::init()
 
     this->setItemEffect(eITEM_FLAG_giant | eITEM_FLAG_coin | eITEM_FLAG_star | eITEM_FLAG_shield);
     
-    this->setColor(CStageDataManager::getCurrentBulletColor());
+//    this->setColor(CStageDataManager::getCurrentBulletColor());
     
     return true;
 }
@@ -73,6 +73,8 @@ void CStickBullet::Execute(float delta)
 	}
     this->setVisible(true);
     m_FSM->Execute(delta);
+    
+    this->bulletColor();
 }
 
 void CStickBullet::CollisionWithPlanet()
