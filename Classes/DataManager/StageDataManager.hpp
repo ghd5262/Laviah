@@ -4,12 +4,6 @@
 #include <vector>
 #include <map>
 
-enum STAGE_DATA_TYPE{
-    FIT_RANDOM   = 0,
-    BELOW_RANDOM = 1,
-    NON_RANDOM   = 2,
-};
-
 struct STAGE_DATA{
     int _index;
     int _noticeLevel;
@@ -24,6 +18,7 @@ struct STAGE_DATA{
     float _zoomSize;
     float _speed;
     bool _isSavePoint;
+    bool _isLevelBelow;
     cocos2d::Vec2 _pos;
     cocos2d::Color3B _bulletColor;
     cocos2d::Color3B _bgColorTop;
@@ -43,6 +38,7 @@ struct STAGE_DATA{
     , _zoomSize(0.f)
     , _speed(0.f)
     , _isSavePoint(false)
+    , _isLevelBelow(false)
     , _pos(cocos2d::Vec2::ZERO)
     , _bulletColor(cocos2d::Color3B::WHITE)
     , _bgColorTop(0, 4, 40)
@@ -53,14 +49,14 @@ typedef std::map<int, STAGE_DATA> STAGE_DATA_LIST;
 struct STAGE{
     int _stageIndex;
     int _openLevel;
-//    std::vector<int> _savePointList;
-    STAGE_DATA_LIST _stageDataLiat;
+    std::vector<int> _savePointList;
+    STAGE_DATA_LIST _stageDataList;
     
     STAGE()
     : _stageIndex(-1)
     , _openLevel(0){
-//        _savePointList.clear();
-        _stageDataLiat.clear();
+        _savePointList.clear();
+        _stageDataList.clear();
     }
 };
 
@@ -71,6 +67,7 @@ public:
     static CStageDataManager* Instance();
     
     int getStageMaxLevel(int index);
+    float getStageFinishTime(int index);
     const STAGE* getStageByIndex(int index) const;
     const STAGE* getStageByUserLevel();
     STAGE_DATA getStageDataByIndex(int stageIndex, int index);

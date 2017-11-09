@@ -42,6 +42,8 @@ void CStageDataManager::initWithJson(STAGE_LIST &list, std::string fileName)
     const Json::Value array = root["stageList"];
     for(auto stage : array)
         this->addStageToList(stage);
+    
+    CCLOG("sdf");
 }
 
 void CStageDataManager::addStageToList(const Json::Value& json)
@@ -81,6 +83,7 @@ void CStageDataManager::addStageDataToStage(STAGE* stageData, const Json::Value 
     data._zoomSize          = json["zoomSize"].asDouble();
     data._speed             = json["speed"].asDouble();
     data._isSavePoint       = json["savePoint"].asBool();
+    data._isLevelBelow      = json["isLevelBelow"].asBool();
 
     auto posX               = json["x"].asDouble();
     auto posY               = json["y"].asDouble();
@@ -101,9 +104,9 @@ void CStageDataManager::addStageDataToStage(STAGE* stageData, const Json::Value 
     auto bulletB            = json["bulletColor"]["b"].asInt();
     data._bulletColor       = cocos2d::Color3B(bulletR, bulletG, bulletB);
     
-//    if(data._isSavePoint)
-//        stageData->_savePointList.emplace_back(data._index);
-    stageData->_stageDataLiat.emplace(std::pair<int, STAGE_DATA>(data._index, data));
+    if(data._isSavePoint)
+        stageData->_savePointList.emplace_back(data._index);
+    stageData->_stageDataList.emplace(std::pair<int, STAGE_DATA>(data._index, data));
 }
 
 int CStageDataManager::getStageMaxLevel(int index)
@@ -111,12 +114,25 @@ int CStageDataManager::getStageMaxLevel(int index)
     auto data = m_StageList.find(index);
     if(data == m_StageList.end()) return 0;
     
-    auto stageData = data->second->_stageDataLiat;
+    auto stageData = data->second->_stageDataList;
     auto size      = stageData.size();
     if(size <= 0) return 0;
     
     auto lastData  = stageData.at(size -1);
     return lastData._noticeLevel;
+}
+
+float CStageDataManager::getStageFinishTime(int index)
+{
+    auto data = m_StageList.find(index);
+    if(data == m_StageList.end()) return 0.f;
+    
+    auto stageData = data->second->_stageDataList;
+    auto size      = stageData.size();
+    if(size <= 0) return 0.f;
+    
+    auto lastData  = stageData.at(size -1);
+    return lastData._changeTime;
 }
 
 const STAGE* CStageDataManager::getStageByIndex(int index) const
@@ -154,7 +170,7 @@ const STAGE* CStageDataManager::getStageByUserLevel()
 cocos2d::Color3B CStageDataManager::getCurrentBulletColor()
 {
     auto stage = CStageDataManager::Instance()->getStageByIndex(GVALUE->CURRENT_PLANET);
-    auto list  = stage->_stageDataLiat;
+    auto list  = stage->_stageDataList;
     auto level = GVALUE->STAGE_LEVEL;
     if(list.size() <= level)
         return Color3B::WHITE;
@@ -165,7 +181,7 @@ cocos2d::Color3B CStageDataManager::getCurrentBulletColor()
 cocos2d::Color3B CStageDataManager::getCurrentBGTopColor()
 {
     auto stage = CStageDataManager::Instance()->getStageByIndex(GVALUE->CURRENT_PLANET);
-    auto list  = stage->_stageDataLiat;
+    auto list  = stage->_stageDataList;
     auto level = GVALUE->STAGE_LEVEL;
     if(list.size() <= level)
         return Color3B(0, 4, 40);
@@ -176,7 +192,7 @@ cocos2d::Color3B CStageDataManager::getCurrentBGTopColor()
 cocos2d::Color3B CStageDataManager::getCurrentBGBottomColor()
 {
     auto stage = CStageDataManager::Instance()->getStageByIndex(GVALUE->CURRENT_PLANET);
-    auto list  = stage->_stageDataLiat;
+    auto list  = stage->_stageDataList;
     auto level = GVALUE->STAGE_LEVEL;
     if(list.size() <= level)
         return Color3B(0, 63, 110);
@@ -188,8 +204,8 @@ STAGE_DATA CStageDataManager::getStageDataByIndex(int stageIndex, int index)
 {
     auto stageData = this->getStageByIndex(stageIndex);
     
-    auto data = stageData->_stageDataLiat.find(index);
-    if(data == stageData->_stageDataLiat.end()) {
+    auto data = stageData->_stageDataList.find(index);
+    if(data == stageData->_stageDataList.end()) {
         CCLOG("Wrong stage idx : %d index : %d", stageIndex, index);
         CCASSERT(false, "Wrong stage idx, index");
         return STAGE_DATA();
@@ -201,7 +217,7 @@ STAGE_DATA CStageDataManager::getStageDataByIndex(int stageIndex, int index)
 //{
 //    auto currentStageData = this->getStageByIndex(GVALUE->CURRENT_PLANET);
 //    auto savePointList = currentStageData->_savePointList;
-//    if(currentStageData->_stageDataLiat.size() <= 0){
+//    if(currentStageData->_stageDataList.size() <= 0){
 //        CCLOG("Error - The size of _stageDataList is 0 plant : %d", GVALUE->CURRENT_PLANET);
 //        CCASSERT(false, "The size of _stageDataList is 0");
 //        return STAGE_DATA();
@@ -212,7 +228,7 @@ STAGE_DATA CStageDataManager::getStageDataByIndex(int stageIndex, int index)
 //    }, savePointList);
 //    
 //    if(passedSavePoints.size() <= 0)
-//        return currentStageData->_stageDataLiat.at(0);
+//        return currentStageData->_stageDataList.at(0);
 //    
 //    auto lastSavedPointIndex = passedSavePoints.at(passedSavePoints.size() -1);
 //    return this->getStageDataByIndex(GVALUE->CURRENT_PLANET, lastSavedPointIndex);
@@ -229,5 +245,6 @@ void CStageDataManager::setSavePoint()
     if(stageData._isSavePoint && GVALUE->LAST_SAVED_POINT != GVALUE->STAGE_LEVEL){
         GVALUE->LAST_SAVED_POINT = GVALUE->STAGE_LEVEL;
         GVALUE->REVIVE_COUNT = 0;
+        GSAVED->CopyData(GVALUE);
     }
 }

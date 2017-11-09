@@ -73,9 +73,7 @@ void CComboScore::AddCombo()
     GVALUE->STAR_SCORE  += GVALUE->COMBO_LEVEL;
     GVALUE->COMBO_SCORE += 1;
     
-	// UI visible On
-	m_ComboLabel->setVisible(true);
-    m_ComboLabel->setString(StringUtils::format("%d", GVALUE->COMBO_SCORE).c_str());
+    this->LabelUpdate();
 
     // Star score ui action
     CUILayer::Instance()->ScoreAction(GVALUE->COMBO_LEVEL);
@@ -97,6 +95,15 @@ void CComboScore::ComboScoreReset()
     GVALUE->COMBO_SCORE = 0;
 	m_ComboLabel->setVisible(false);// UI visible Off
     m_IsPause = false;
+}
+
+void CComboScore::LabelUpdate()
+{
+    if(!m_ComboLabel) return;
+    
+    // UI visible On
+    m_ComboLabel->setVisible(true);
+    m_ComboLabel->setString(StringUtils::format("%d", GVALUE->COMBO_SCORE).c_str());
 }
 
 void CComboScore::update(float delta)

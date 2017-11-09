@@ -10,6 +10,7 @@ public:
 	static CComboScore* Instance();
 	void AddCombo();
     void ComboScoreReset();
+    void LabelUpdate();
     virtual void update(float delta) override;
 
     CC_SYNTHESIZE(bool, m_IsPause, IsPause);

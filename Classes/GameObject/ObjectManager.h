@@ -66,7 +66,8 @@ public:
     void ZoomMoveDown();
     void ZoomMoveMiddle();
     void MoveAction(cocos2d::Node* owner, MOVE_DIRECTION dir);
-    void MoveAction(cocos2d::Node* owner, cocos2d::Vec2 pos);
+    void MoveAction(cocos2d::Node* owner, cocos2d::Vec2 pos,
+                    float size = 1.f, float duration = 1.2f);
     void GiantMode();
     void NormalMode();
     void InitTutorialStep();
@@ -82,6 +83,7 @@ public:
     // 게임 종료 시점에 호출된다. RemoveAllBullet(), RemoveAllShooter() 호출함
     void RemoveAllObject();
     void ReturnToMemoryBlockAll();
+    void StageEnd();
     
     static void Shake(float interval,
                       float duration,
@@ -146,4 +148,7 @@ private:
     float m_GiantSpeed;
     float m_BulletPatternPaddingLimit;
     int m_OriginPatternLevel;
+    bool m_IsStageEnd;
+    bool m_BulletCreatorEnable;
+    float m_ReviveTimer;
 };

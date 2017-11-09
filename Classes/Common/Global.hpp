@@ -5,9 +5,12 @@
 class Global{
 public:
     static Global* Instance();
+    static Global* SavedData();
     void Clear();
     int getVariable(std::string key);
-    int getPercent(float value, float max);
+    void CopyData(Global* data);
+    
+    static int getPercent(float value, float max);
 
 private:
     void addVariableToList();
@@ -66,6 +69,11 @@ public:
     int CURRENT_CHARACTER;
     int CURRENT_COSTUME;
     int CURRENT_PLANET;
+    
+private:
+    static Global* CurrentValue;
+    static Global* SavedValue;
 };
 
 #define GVALUE Global::Instance()
+#define GSAVED Global::SavedData()
