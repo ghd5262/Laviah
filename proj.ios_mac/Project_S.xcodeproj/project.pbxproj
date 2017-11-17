@@ -83,6 +83,12 @@
 		598A41351F20D2AD00D567CB /* CharacterPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41321F20D2AD00D567CB /* CharacterPopup.cpp */; };
 		598A41391F20D7B800D567CB /* CharacterPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */; };
 		598A413A1F20D7B800D567CB /* CharacterPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */; };
+		59986F101FB4945A003A771D /* ItemShopPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59986F0E1FB49459003A771D /* ItemShopPopup.cpp */; };
+		59986F111FB4945A003A771D /* ItemShopPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59986F0E1FB49459003A771D /* ItemShopPopup.cpp */; };
+		59986F151FB497D0003A771D /* ItemShopPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59986F131FB497D0003A771D /* ItemShopPopupDP.cpp */; };
+		59986F161FB497D0003A771D /* ItemShopPopupDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59986F131FB497D0003A771D /* ItemShopPopupDP.cpp */; };
+		59986F191FB497E8003A771D /* ShopPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59986F171FB497E8003A771D /* ShopPopup.cpp */; };
+		59986F1A1FB497E8003A771D /* ShopPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59986F171FB497E8003A771D /* ShopPopup.cpp */; };
 		599B77C41F2262D40066D32E /* PlanetDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77C21F2262D40066D32E /* PlanetDataManager.cpp */; };
 		599B77C51F2262D40066D32E /* PlanetDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77C21F2262D40066D32E /* PlanetDataManager.cpp */; };
 		599B77C91F2661800066D32E /* UserLevelDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599B77C71F26617F0066D32E /* UserLevelDataManager.cpp */; };
@@ -420,6 +426,12 @@
 		598A41331F20D2AD00D567CB /* CharacterPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterPopup.hpp; sourceTree = "<group>"; };
 		598A41371F20D7B800D567CB /* CharacterPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterPopupDP.cpp; sourceTree = "<group>"; };
 		598A41381F20D7B800D567CB /* CharacterPopupDP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterPopupDP.hpp; sourceTree = "<group>"; };
+		59986F0E1FB49459003A771D /* ItemShopPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemShopPopup.cpp; sourceTree = "<group>"; };
+		59986F0F1FB49459003A771D /* ItemShopPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ItemShopPopup.hpp; sourceTree = "<group>"; };
+		59986F131FB497D0003A771D /* ItemShopPopupDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemShopPopupDP.cpp; sourceTree = "<group>"; };
+		59986F141FB497D0003A771D /* ItemShopPopupDP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ItemShopPopupDP.hpp; sourceTree = "<group>"; };
+		59986F171FB497E8003A771D /* ShopPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShopPopup.cpp; sourceTree = "<group>"; };
+		59986F181FB497E8003A771D /* ShopPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShopPopup.hpp; sourceTree = "<group>"; };
 		599B77C21F2262D40066D32E /* PlanetDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlanetDataManager.cpp; sourceTree = "<group>"; };
 		599B77C31F2262D40066D32E /* PlanetDataManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlanetDataManager.hpp; sourceTree = "<group>"; };
 		599B77C71F26617F0066D32E /* UserLevelDataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UserLevelDataManager.cpp; sourceTree = "<group>"; };
@@ -1375,10 +1387,6 @@
 				93706F121E7A6891009A2CA0 /* TitleCompleteNoticePopup.hpp */,
 				93706F131E7A6891009A2CA0 /* VideoPopup.cpp */,
 				93706F141E7A6891009A2CA0 /* VideoPopup.h */,
-				93706F151E7A6891009A2CA0 /* WorkshopPopup.cpp */,
-				93706F161E7A6891009A2CA0 /* WorkshopPopup.h */,
-				93706F171E7A6891009A2CA0 /* WorkshopPopupDP.cpp */,
-				93706F181E7A6891009A2CA0 /* WorkshopPopupDP.h */,
 				93706FC91E7F70E4009A2CA0 /* FacebookAPITestPopup.cpp */,
 				93706FCA1E7F70E4009A2CA0 /* FacebookAPITestPopup.hpp */,
 				933494461E839C7900377DC2 /* FacebookRankPopup.cpp */,
@@ -1401,6 +1409,16 @@
 				592D16C71F996872004B899A /* CouponPopup.hpp */,
 				59519B2D1F9CFFEE00D4F9F2 /* RevivePopup.cpp */,
 				59519B2E1F9CFFEE00D4F9F2 /* RevivePopup.hpp */,
+				59986F171FB497E8003A771D /* ShopPopup.cpp */,
+				59986F181FB497E8003A771D /* ShopPopup.hpp */,
+				59986F0E1FB49459003A771D /* ItemShopPopup.cpp */,
+				59986F0F1FB49459003A771D /* ItemShopPopup.hpp */,
+				59986F131FB497D0003A771D /* ItemShopPopupDP.cpp */,
+				59986F141FB497D0003A771D /* ItemShopPopupDP.hpp */,
+				93706F151E7A6891009A2CA0 /* WorkshopPopup.cpp */,
+				93706F161E7A6891009A2CA0 /* WorkshopPopup.h */,
+				93706F171E7A6891009A2CA0 /* WorkshopPopupDP.cpp */,
+				93706F181E7A6891009A2CA0 /* WorkshopPopupDP.h */,
 			);
 			path = Popup;
 			sourceTree = "<group>";
@@ -1660,6 +1678,7 @@
 				93706F931E7A6891009A2CA0 /* OptionMoreGamesPopup.cpp in Sources */,
 				93B7F4481EB81E1A0019D36C /* AchievementClearChecker.cpp in Sources */,
 				595635B71F5C2F4300029C77 /* RankRewardDataManager.cpp in Sources */,
+				59986F151FB497D0003A771D /* ItemShopPopupDP.cpp in Sources */,
 				93706F651E7A6891009A2CA0 /* StandBullet.cpp in Sources */,
 				93706F911E7A6891009A2CA0 /* OptionDeveloperPopup.cpp in Sources */,
 				93706F9A1E7A6891009A2CA0 /* RewardPopup.cpp in Sources */,
@@ -1739,6 +1758,7 @@
 				93706F6D1E7A6891009A2CA0 /* MenuSceneObjectManager.cpp in Sources */,
 				93706F711E7A6891009A2CA0 /* Player.cpp in Sources */,
 				93706F5C1E7A6891009A2CA0 /* BonusLetter.cpp in Sources */,
+				59986F101FB4945A003A771D /* ItemShopPopup.cpp in Sources */,
 				93706F541E7A6891009A2CA0 /* MoreGamesDataManager.cpp in Sources */,
 				599B77C91F2661800066D32E /* UserLevelDataManager.cpp in Sources */,
 				93783B901E8CB1DC009DE1CC /* FacebookRankUpPopup.cpp in Sources */,
@@ -1778,6 +1798,7 @@
 				93706F871E7A6891009A2CA0 /* GoalPopup.cpp in Sources */,
 				93706FAC1E7A6891009A2CA0 /* MenuScene.cpp in Sources */,
 				93B7F4501EB845890019D36C /* AchievementPopupDP.cpp in Sources */,
+				59986F191FB497E8003A771D /* ShopPopup.cpp in Sources */,
 				93706F701E7A6891009A2CA0 /* Planet.cpp in Sources */,
 				59E1A6461F162E0A003020B9 /* FacebookManager.cpp in Sources */,
 				93706F601E7A6891009A2CA0 /* NormalMissile.cpp in Sources */,
@@ -1811,7 +1832,9 @@
 				5901B1401F5DD3C60015BA47 /* GameMetaDataManager.cpp in Sources */,
 				933494491E839C7900377DC2 /* FacebookRankPopup.cpp in Sources */,
 				599B77D21F27E26D0066D32E /* CharacterCostumePopupDP.cpp in Sources */,
+				59986F111FB4945A003A771D /* ItemShopPopup.cpp in Sources */,
 				590082831F87ED0A0074638C /* PlanetSelectPopupDP.cpp in Sources */,
+				59986F1A1FB497E8003A771D /* ShopPopup.cpp in Sources */,
 				59A8AD4C1F4B196B00D4CA42 /* DownloadPopup.cpp in Sources */,
 				93B7F44D1EB843DD0019D36C /* AchievementPopup.cpp in Sources */,
 				59E1A64B1F162E0A003020B9 /* UnityAds_Android.cpp in Sources */,
@@ -1822,6 +1845,7 @@
 				592D16C91F996872004B899A /* CouponPopup.cpp in Sources */,
 				936D4C9E1E9E0875003786E6 /* TutorialStep.cpp in Sources */,
 				936D4C9C1E9E0875003786E6 /* TutorialManager.cpp in Sources */,
+				59986F161FB497D0003A771D /* ItemShopPopupDP.cpp in Sources */,
 				592D16C31F8E569B004B899A /* CouponDataManager.cpp in Sources */,
 				59787E771F4DB3520034FB66 /* StageDataManager.cpp in Sources */,
 				93B7F4511EB845890019D36C /* AchievementPopupDP.cpp in Sources */,
