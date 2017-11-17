@@ -29,7 +29,7 @@ public class UnityAdsListener implements IUnityAdsListener {
     public void onUnityAdsFinish(String placementId, UnityAds.FinishState result) {
         DeviceLog.debug("[UnityAds] onUnityAdsFinish with FinishState: " + result.name() + " for placement: " + placementId);
         Log.d(TAG, "[UnityAds] onUnityAdsFinish with FinishState: " + result.name() + " for placement: " + placementId);
-        UnityAdsJNI.reward(placementId);
+        UnityAdsJNI.reward(placementId, result.ordinal());
     }
 
     @Override

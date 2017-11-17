@@ -14,7 +14,7 @@ public class UnityAdsJNI {
     public static UnityAdsListener unityAdsListener;
     public static final String TAG = "UnityAds";
 
-    public static native void reward(String placementId);
+    public static native void reward(String placementId, int result);
 
     // Need update: pass in test mode and game id
     public static void UnityAdsInitialize(String gameId, boolean testMode){
