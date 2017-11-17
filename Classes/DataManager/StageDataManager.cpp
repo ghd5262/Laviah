@@ -244,7 +244,7 @@ void CStageDataManager::setSavePoint()
     auto stageData = this->getStageDataByIndex(GVALUE->CURRENT_PLANET, GVALUE->STAGE_LEVEL);
     if(stageData._isSavePoint && GVALUE->LAST_SAVED_POINT != GVALUE->STAGE_LEVEL){
         GVALUE->LAST_SAVED_POINT = GVALUE->STAGE_LEVEL;
-        GVALUE->REVIVE_COUNT = 0;
+//        GVALUE->REVIVE_COUNT = 0;
         GSAVED->CopyData(GVALUE);
     }
 }

@@ -107,10 +107,12 @@ bool CRevivePopup::init()
     
     auto bgSize = back->getContentSize();
     
-    auto freeRevive  = GVALUE->REVIVE_COUNT <= 4;
-    auto reviveText  = StringUtils::format("체크포인트에서 계속하기 (%d / %d)", 5 - GVALUE->REVIVE_COUNT, 5);
+    auto reviveChance = META_DATA("FREE_REVIVE_CHANCE").asInt();
+    auto freeRevive  = GVALUE->REVIVE_COUNT < reviveChance;
+    auto reviveText  = StringUtils::format(TRANSLATE("REVIVE_POPUP_TEXT_FREE").c_str(),
+                                           reviveChance - GVALUE->REVIVE_COUNT, reviveChance);
     if(!freeRevive)
-        reviveText = "동영상 보고 계속하기";
+        reviveText = StringUtils::format(TRANSLATE("REVIVE_POPUP_TEXT_VIDEO").c_str(), reviveChance);
     
     labelCreate(back, reviveText, 40,
                 Vec2(bgSize.width * 0.5f, bgSize.height * 0.6f),
@@ -216,7 +218,10 @@ void CRevivePopup::reviveByVideo(cocos2d::Node* sender)
     CDownloadManager::IsNetworkConnected([=](bool connected){
         if(connected){
             CUnityAdsManager::Instance()->ShowUnityAds([=](){
-                CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::WATCH_ADS, GA_ACTION::ADS_REVIVE);
+                auto value = StringUtils::format("%02d_%d", GVALUE->CURRENT_PLANET, GVALUE->STAGE_LEVEL);
+                CGoogleAnalyticsManager::LogEventValue(GA_CATEGORY::WATCH_ADS, GA_ACTION::ADS_REVIVE,
+                                                       value);
+                GSAVED->REVIVE_COUNT = 0;
                 this->gameResume();
             });
             CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){
