@@ -1,332 +1,356 @@
 {
     "android": {
         "GoogleAnalytics": {
-            "trackingCode": "UA-106592601-1", 
+            "trackingCode": "UA-106592601-1",
             "anonymizeIp": true
-        }, 
+        },
         "Facebook": {
             "debug": false
-        }, 
+        },
         "sdkboxplay": {
-            "leaderboards": [
-                {
-                    "id": "CgkIv8-JndQUEAIQBw", 
-                    "name": "Laviah"
-                }
-            ], 
-            "achievements": [
-                {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQCQ", 
+            "leaderboards": [{
+                "id": "CgkIv8-JndQUEAIQBw",
+                "name": "Laviah"
+            }, {
+                "id": "CgkIv8-JndQUEAIQIw",
+                "name": "Ella"
+            }, {
+                "id": "CgkIv8-JndQUEAIQJQ",
+                "name": "Riva"
+            }, {
+                "id": "CgkIv8-JndQUEAIQJA",
+                "name": "Arid"
+            }, {
+                "id": "CgkIv8-JndQUEAIQJg",
+                "name": "Oculus"
+            }, {
+                "id": "CgkIv8-JndQUEAIQJw",
+                "name": "Reverse"
+            }],
+            "achievements": [{
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQCQ",
                     "name": "ACHIEVEMENT_0_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQCg", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQCg",
                     "name": "ACHIEVEMENT_1_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQCw", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQCw",
                     "name": "ACHIEVEMENT_5_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQDA", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQDA",
                     "name": "ACHIEVEMENT_6_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQDQ", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQDQ",
                     "name": "ACHIEVEMENT_10_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQDg", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQDg",
                     "name": "ACHIEVEMENT_11_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQDw", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQDw",
                     "name": "ACHIEVEMENT_12_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQEA", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQEA",
                     "name": "ACHIEVEMENT_13_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQEQ", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQEQ",
                     "name": "ACHIEVEMENT_14_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQEg", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQEg",
                     "name": "ACHIEVEMENT_15_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQEw", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQEw",
                     "name": "ACHIEVEMENT_16_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQFA", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQFA",
                     "name": "ACHIEVEMENT_17_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQFQ", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQFQ",
                     "name": "ACHIEVEMENT_18_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQFg", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQFg",
                     "name": "ACHIEVEMENT_19_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQFw", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQFw",
                     "name": "ACHIEVEMENT_20_0"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQGA", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQGA",
                     "name": "ACHIEVEMENT_21_0"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQGQ", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQGQ",
                     "name": "ACHIEVEMENT_24_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQGg", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQGg",
                     "name": "ACHIEVEMENT_25_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQGw", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQGw",
                     "name": "ACHIEVEMENT_26_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQHA", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQHA",
                     "name": "ACHIEVEMENT_27_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQHQ", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQHQ",
                     "name": "ACHIEVEMENT_28_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQHg", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQHg",
                     "name": "ACHIEVEMENT_29_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQHw", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQHw",
                     "name": "ACHIEVEMENT_30_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQIA", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQIA",
                     "name": "ACHIEVEMENT_31_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQIQ", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQIQ",
                     "name": "ACHIEVEMENT_32_4"
-                }, 
+                },
                 {
-                    "incremental": true, 
-                    "id": "CgkIv8-JndQUEAIQIg", 
+                    "incremental": true,
+                    "id": "CgkIv8-JndQUEAIQIg",
                     "name": "ACHIEVEMENT_33_4"
                 }
-            ], 
-            "clound_save": true, 
-            "connect_on_start": true, 
-            "show_achievement_notification": true, 
+            ],
+            "clound_save": true,
+            "connect_on_start": true,
+            "show_achievement_notification": true,
             "debug": true
-        }, 
+        },
         "Share": {
             "platforms": {
-                "Facebook": {}, 
+                "Facebook": {},
                 "Twitter": {
                     "params": {
-                        "secret": "njPdELbVq50U8UvqopyZCcORjo9l2NuEC4Ixc11NFJkEcwjUVR", 
+                        "secret": "njPdELbVq50U8UvqopyZCcORjo9l2NuEC4Ixc11NFJkEcwjUVR",
                         "key": "5d9jX1zKjWRAiRvD6DNT92GGS"
                     }
-                }, 
-                "SMS": {}, 
+                },
+                "SMS": {},
                 "Mail": {}
             }
         }
-    }, 
+    },
     "ios": {
         "GoogleAnalytics": {
-            "track_init_screen": false, 
-            "trackingCode": "UA-106592601-1", 
+            "track_init_screen": false,
+            "trackingCode": "UA-106592601-1",
             "anonymizeIp": true
-        }, 
+        },
         "Facebook": {
             "debug": true
-        }, 
+        },
         "sdkboxplay": {
-            "leaderboards": [
-                {
-                    "id": "Laviah", 
-                    "name": "Laviah"
-                }
-            ], 
-            "achievements": [
-                {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_0_4", 
+            "leaderboards": [{
+                "id": "Laviah",
+                "name": "Laviah"
+            }, {
+                "id": "Ella",
+                "name": "Ella"
+            }, {
+                "id": "Riva",
+                "name": "Riva"
+            }, {
+                "id": "Arid",
+                "name": "Arid"
+            }, {
+                "id": "Oculus",
+                "name": "Oculus"
+            }, {
+                "id": "Reverse",
+                "name": "Reverse"
+            }],
+            "achievements": [{
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_0_4",
                     "name": "ACHIEVEMENT_0_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_1_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_1_4",
                     "name": "ACHIEVEMENT_1_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_5_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_5_4",
                     "name": "ACHIEVEMENT_5_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_6_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_6_4",
                     "name": "ACHIEVEMENT_6_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_10_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_10_4",
                     "name": "ACHIEVEMENT_10_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_11_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_11_4",
                     "name": "ACHIEVEMENT_11_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_12_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_12_4",
                     "name": "ACHIEVEMENT_12_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_13_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_13_4",
                     "name": "ACHIEVEMENT_13_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_14_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_14_4",
                     "name": "ACHIEVEMENT_14_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_15_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_15_4",
                     "name": "ACHIEVEMENT_15_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_16_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_16_4",
                     "name": "ACHIEVEMENT_16_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_17_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_17_4",
                     "name": "ACHIEVEMENT_17_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_18_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_18_4",
                     "name": "ACHIEVEMENT_18_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_19_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_19_4",
                     "name": "ACHIEVEMENT_19_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_20_0", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_20_0",
                     "name": "ACHIEVEMENT_20_0"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_21_0", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_21_0",
                     "name": "ACHIEVEMENT_21_0"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_24_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_24_4",
                     "name": "ACHIEVEMENT_24_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_25_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_25_4",
                     "name": "ACHIEVEMENT_25_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_26_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_26_4",
                     "name": "ACHIEVEMENT_26_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_27_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_27_4",
                     "name": "ACHIEVEMENT_27_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_28_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_28_4",
                     "name": "ACHIEVEMENT_28_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_29_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_29_4",
                     "name": "ACHIEVEMENT_29_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_30_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_30_4",
                     "name": "ACHIEVEMENT_30_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_31_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_31_4",
                     "name": "ACHIEVEMENT_31_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_32_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_32_4",
                     "name": "ACHIEVEMENT_32_4"
-                }, 
+                },
                 {
-                    "incremental": false, 
-                    "id": "ACHIEVEMENT_33_4", 
+                    "incremental": false,
+                    "id": "ACHIEVEMENT_33_4",
                     "name": "ACHIEVEMENT_33_4"
                 }
-            ], 
-            "connect_on_start": true, 
-            "show_achievement_notification": true, 
+            ],
+            "connect_on_start": true,
+            "show_achievement_notification": true,
             "debug": true
-        }, 
+        },
         "Share": {
             "platforms": {
-                "Facebook": {}, 
+                "Facebook": {},
                 "Twitter": {
                     "params": {
-                        "secret": "njPdELbVq50U8UvqopyZCcORjo9l2NuEC4Ixc11NFJkEcwjUVR", 
+                        "secret": "njPdELbVq50U8UvqopyZCcORjo9l2NuEC4Ixc11NFJkEcwjUVR",
                         "key": "5d9jX1zKjWRAiRvD6DNT92GGS"
                     }
-                }, 
-                "SMS": {}, 
+                },
+                "SMS": {},
                 "Mail": {}
             }
         }
