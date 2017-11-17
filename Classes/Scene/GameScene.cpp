@@ -31,7 +31,7 @@
 #include "../MyUI/Popup/HelpPopup.h"
 #include "../MyUI/Popup/RewardPopup.h"
 #include "../MyUI/Popup/Option/OptionPopup.hpp"
-#include "../MyUI/Popup/WorkshopPopup.h"
+#include "../MyUI/Popup/ShopPopup.hpp"
 #include "../MyUI/Popup/CharacterPopup.hpp"
 #include "../MyUI/Popup/CharacterCostumePopup.hpp"
 #include "../MyUI/Popup/GameEndPopup.hpp"
@@ -96,6 +96,7 @@ CGameScene::CGameScene()
 , m_RewardAble(false)
 , m_CheckBox(false)
 , m_FirstCountDown(false)
+, m_IntroTouchEnable(true)
 , m_DailyResetRemain(0L)
 , m_WeeklyResetRemain(0L)
 , m_GameStartTime(0L){}
@@ -661,7 +662,7 @@ void CGameScene::createBonusTimeLayer()
 void CGameScene::createWorkshopPopup()
 {
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::WORKSHOP);
-    CWorkshopPopup::create()
+    CShopPopup::create()
     ->setBackgroundColor(COLOR::TRANSPARENT_ALPHA)
     ->setPopupAnchorPoint(Vec2::ANCHOR_MIDDLE)
     ->setPopupPosition(m_VisibleSize / 2)
@@ -1169,7 +1170,7 @@ void CGameScene::createCountDown()
     m_CountDown = CCountDown::create()
     ->addLastEventListner([=](Node* sender){
         if(m_FirstCountDown){
-            auto sound = StringUtils::format("sounds/testBGM_%d.mp3", GVALUE->CURRENT_PLANET);
+            auto sound = StringUtils::format("sounds/stageBGM_%d.mp3", GVALUE->CURRENT_PLANET);
             CAudioManager::Instance()->PlayBGM(sound, false, false);
             CObjectManager::Instance()->setGameStateByLevel();
             m_FirstCountDown = false;
@@ -1243,7 +1244,7 @@ void CGameScene::createItemRanges()
 void CGameScene::createComboUI()
 {
     auto multiscore = CComboScore::Instance();
-    m_PopupLayer->addChild(multiscore, ZORDER::POPUP);
+    m_PopupLayer->addChild(multiscore, ZORDER::BACKGROUND);
 //    multiscore->setVisible(false);//ui less
 }
 
@@ -1423,15 +1424,20 @@ void CGameScene::intro()
                 this->menuOpen();
                 uiListRemove();
                 
-                skipBtn->setTouchEnable(false, Color3B::WHITE);
-                skipBtn->removeFromParent();
+                if(m_IntroTouchEnable){
+                    m_IntroTouchEnable = false;
+                    skipBtn->setTouchEnable(false, Color3B::WHITE);
+                    skipBtn->removeFromParent();
+                }
             });
             
         });
     };
     
     skipBtn->addEventListener([=](Node* sender){
+        
         introAction(true);
+        
     })
     ->setEnableSound(false)
     ->setDefaultClickedAnimation(eCLICKED_ANIMATION::NONE)

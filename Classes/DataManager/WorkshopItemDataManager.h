@@ -11,6 +11,7 @@ namespace WORKSHOP_DEFINE {
 struct WORKSHOPITEM_PARAM{
 	int _index;
     int _itemIndex;
+    int _sortIndex;
 	int _maxLevel;
 	float _valuePerLevel;
 	std::string _name;
@@ -21,6 +22,7 @@ struct WORKSHOPITEM_PARAM{
     WORKSHOPITEM_PARAM()
     : _index(-1)
     , _itemIndex(0)
+    , _sortIndex(0)
     , _maxLevel(0)
     , _valuePerLevel(0.f)
     , _name("")

@@ -33,6 +33,7 @@ CWorkshopItemDataManager::CWorkshopItemDataManager()
 		
 		param->_index         = valueItem["index"].asInt();
         param->_itemIndex     = valueItem["itemIndex"].asInt();
+        param->_sortIndex     = valueItem["sortIndex"].asInt();
 		param->_maxLevel      = valueItem["maxLevel"].asInt();
 		param->_valuePerLevel = valueItem["valuePerLevel"].asDouble();
 		param->_name          = StringUtils::format(WORKSHOP_DEFINE::NAME.c_str(),    param->_index);
@@ -69,7 +70,7 @@ const WORKSHOPITEM_PARAM* CWorkshopItemDataManager::getItemDataByIndex(int index
     auto data = m_WorkshopItemList.find(index);
     if(data == m_WorkshopItemList.end()) {
         CCLOG("Wrong item index : %d", index);
-        CCASSERT(false, "Wrong character index");
+//        CCASSERT(false, "Wrong character index");
         return nullptr;
     }
     return data->second;
