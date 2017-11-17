@@ -95,9 +95,12 @@ void CPlanetDataManager::setPlanetSavedData(int param, int value)
 
 bool CPlanetDataManager::IsPlanetOpened(int index)
 {
-    if(index > 0)
-        return (100 <= CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, index - 1,
-                                                                           PARAM_PLANET::STAGE_PERCENT, 0));
-    
+    if(index > 0){
+        auto data = this->getPlanetByIndex(index);
+        auto enabled = data->_enable;
+        auto userDataManager = CUserDataManager::Instance();
+        return (enabled && 100 <= userDataManager->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, index - 1,
+                                                                         PARAM_PLANET::STAGE_PERCENT, 0));
+    }
     return true;
 }

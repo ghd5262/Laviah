@@ -161,7 +161,7 @@ bool CMenuLayer::init()
     // workshop button
     createButton([=](Node* sender){
         CGameScene::getGameScene()->OpenWorkshopPopup();
-    }, "workshopIcon_6.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f));
+    }, "workshopIcon_6.png", Vec2(popupSize.width * 0.56f, popupSize.height * 0.95f));
     
     // option button
     createButton([=](Node* sender){
@@ -170,12 +170,18 @@ bool CMenuLayer::init()
     
     createButton([=](Node* sender){
         CGameScene::getGameScene()->OpenPlanetSelectPopup();
-    }, "optionIcon.png", Vec2(popupSize.width * 0.56f, popupSize.height * 0.95f));
+    }, "workshopIcon_5.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f));
     
     
 //    // option button
 //    createButton([=](Node* sender){
-//        CGameScene::getGameScene()->OpenFBTestPopup();
+//        CPlayManager::Instance()->ScoreSave([=](){}, "Ella", 2);
+//        CPlayManager::Instance()->ScoreSave([=](){}, "Riva", 3);
+//        CPlayManager::Instance()->ScoreSave([=](){}, "Arid", 4);
+//        CPlayManager::Instance()->ScoreSave([=](){}, "Oculus", 5);
+//        CPlayManager::Instance()->ScoreSave([=](){}, "Reverse", 6);
+//
+////        CGameScene::getGameScene()->OpenFBTestPopup();
 //    }, "optionIcon.png", Vec2(popupSize.width * 0.08f, popupSize.height * 0.05f));
     
     // map button

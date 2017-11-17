@@ -103,7 +103,7 @@ CPopup* CResultPopup::show(Node* parent, int zOrder)
     auto max   = CStageDataManager::Instance()->getStageFinishTime(GVALUE->CURRENT_PLANET);
     
     this->userDataUpdate();
-    this->createPercentageLayer("comboIcon.png", "진행률", value, max);
+    this->createPercentageLayer("progressIcon.png", TRANSLATE("RESULT_PROGRESS"), value, max);
     this->createScoreLayer(resultIcon[0], resultContent[0], GVALUE->STAR_SCORE);
     this->createScoreLayer(resultIcon[1], resultContent[1], GVALUE->BEST_COMBO);
     this->createBonusScoreLayer(resultIcon[2], resultContent[2], GVALUE->COIN_COUNT, 10);
@@ -134,28 +134,32 @@ CPopup* CResultPopup::show(Node* parent, int zOrder)
         return button;
     };
     
-    std::array<Vec2, 3> btnPosArray = {
+    std::array<Vec2, 4> btnPosArray = {
         Vec2(layerSize.width * 0.08f, layerSize.height * 0.05f),
         Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f),
         Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f),
+        Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f),
     };
     
-    std::array<std::string, 3> btnIconArray = {
+    std::array<std::string, 4> btnIconArray = {
         "homeIcon.png",
         "resetIcon.png",
         "endIcon.png",
+        "skipIcon.png"
     };
     
-    std::array<std::function<void(Node*)>, 3> btnListenerArray = {
+    std::array<std::function<void(Node*)>, 4> btnListenerArray = {
         [=](Node* sender) { this->home();             },
-        [=](Node* sender) { this->reset();            },
-        [=](Node* sender) { this->end();              }
+        [=](Node* sender) { this->reset(sender);      },
+        [=](Node* sender) { this->end();              },
+        [=](Node* sender) { this->next();             }
     };
     
-    std::array<bool, 3> btnVisibleArray = {
-        (!m_GoalPopupOpen),
-        (!m_GoalPopupOpen),
-        ( m_GoalPopupOpen)
+    std::array<bool, 4> btnVisibleArray = {
+        (!m_GoalPopupOpen || m_IsStageEnd),
+        (!m_GoalPopupOpen && !m_IsStageEnd),
+        ( m_GoalPopupOpen && !m_IsStageEnd),
+        ( m_IsStageEnd)
     };
     
     // create reward button
@@ -211,10 +215,10 @@ CPopup* CResultPopup::show(Node* parent, int zOrder)
     }
     
     // create button array
-    std::array<CMyButton*, 3> btnArray;
+    std::array<CMyButton*, 4> btnArray;
     
     // create buttons
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < 4; i++)
         btnArray[i] = createButton(btnListenerArray[i], btnIconArray[i], btnPosArray[i], btnVisibleArray[i]);
     
     
@@ -317,9 +321,41 @@ bool CResultPopup::init()
     return true;
 }
 
-void CResultPopup::reset(){
-    CGameScene::getGameScene()->GameStart();
-    this->exit();
+void CResultPopup::reset(Node* sender){
+    auto playCount = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::PLAY_COUNT);
+    auto limit = META_DATA("SKIP_ADS_COUNT").asInt();
+//    auto limit = 8;
+    if((playCount % limit == 0) && !m_IsVideoFinished && sender != nullptr){
+        
+        auto touchEnable = [=](){
+            auto button = dynamic_cast<CMyButton*>(sender);
+            if(!button) return;
+            
+            button->setTouchEnable(true);
+        };
+        
+        m_IsVideoFinished = true;
+        CUnityAdsManager::Instance()->ShowUnityAds([=](){
+            
+            touchEnable();
+            
+            auto coin = META_DATA("BONUS_COIN").asInt();
+            this->createRewardPopup(TRANSLATE("REWARD_TITLE_BONUS_COIN"),
+                                    ACHIEVEMENT_REWARD_KEY::REWARD_COIN_RANDOM, coin);
+            
+            CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::WATCH_ADS, GA_ACTION::ADS_BONUS);
+            CGoogleAnalyticsManager::LogScreen(GA_SCREEN::REWARD_BONUS);
+            CGoogleAnalyticsManager::LogEventCoin(GA_ACTION::COIN_GET_BONUS, coin);
+        }, false);
+        
+        CUnityAdsManager::Instance()->setUnityAdsSkippedCallback([=](){ touchEnable(); });
+        CUnityAdsManager::Instance()->setUnityAdsFailedCallback([=](){ touchEnable(); });
+    }
+    else{
+        
+        CGameScene::getGameScene()->GameStart();
+        this->exit();
+    }
 }
 
 void CResultPopup::home(){
@@ -416,6 +452,21 @@ void CResultPopup::exit()
 {
     if(m_GoalPopupOpen) this->popupClose();
     else                this->popupClose(1.3f);
+}
+
+void CResultPopup::next()
+{
+    auto currentPlanet = CPlanetDataManager::Instance()->getCurPlanet();
+    auto nextPlanetIndex = currentPlanet->_index + 1;
+    if(CPlanetDataManager::Instance()->getPlanetList().size() > nextPlanetIndex){
+        auto data = CPlanetDataManager::Instance()->getPlanetByIndex(nextPlanetIndex);
+        if(data->_enable){
+            CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::PLANET, nextPlanetIndex);
+            CObjectManager::Instance()->ChangePlanet();
+        }
+    }
+    
+    this->reset(nullptr);
 }
 
 void CResultPopup::createRewardPopup(std::string title, std::string key, int value)

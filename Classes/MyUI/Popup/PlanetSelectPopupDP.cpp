@@ -39,9 +39,9 @@ bool CPlanetSelectPopupDP::init()
     m_PlanetImg->setScale(0.7f);
     this->addChild(m_PlanetImg);
     
-    if (!CPlanetDataManager::Instance()->IsPlanetOpened(m_Planet->_index)){
-        m_PlanetImg->setColor(Color3B::BLACK);
-    }
+//    if (!CPlanetDataManager::Instance()->IsPlanetOpened(m_Planet->_index)){
+//        m_PlanetImg->setColor(Color3B::BLACK);
+//    }
     
     return true;
 }

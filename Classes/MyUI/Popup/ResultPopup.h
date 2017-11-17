@@ -15,7 +15,7 @@ protected:
     virtual bool init() override;
     
 private:
-    void reset();
+    void reset(Node* sender);
     void home();
     void end();
     void getCoinFromVideo(Node* sender);
@@ -24,6 +24,7 @@ private:
     void openAchievementPopup();
     void share();
     void exit();
+    void next();
     
     void createRewardPopup(std::string title, std::string key, int value);
     cocos2d::Node* createIconLayer(std::string iconName,
@@ -55,7 +56,8 @@ private:
     : m_BG(nullptr)
     , m_GoalPopupOpen(false)
     , m_PictureBtn(nullptr)
-    , m_IsStageEnd(false){};
+    , m_IsStageEnd(false)
+    , m_IsVideoFinished(false){};
     virtual ~CResultPopup();
     
 private:
@@ -64,4 +66,5 @@ private:
     bool m_GoalPopupOpen;
     CMyButton* m_PictureBtn;
     bool m_IsStageEnd;
+    bool m_IsVideoFinished;
 };

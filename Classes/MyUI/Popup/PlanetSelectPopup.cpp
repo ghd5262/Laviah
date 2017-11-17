@@ -55,7 +55,7 @@ CPopup* CPlanetSelectPopup::show(Node* parent/* = nullptr*/, int zOrder/* = 0*/)
     for (auto iter : planetList)
     {
         auto planet = iter.second;
-//        if(!planet->_enable) continue;
+        if(!planet->_enable) continue;
         
         auto contentBG = Widget::create();
         contentBG->setContentSize(Size(layerSize.width, layerSize.height * 0.5f));
@@ -110,17 +110,10 @@ CPopup* CPlanetSelectPopup::show(Node* parent/* = nullptr*/, int zOrder/* = 0*/)
     };
     
     std::array<std::string, 4> resultIcon = {
-        "starIcon.png",
-        "comboIcon.png",
-        "coinIcon.png",
-        "achievementIcon.png"
-    };
-    
-    std::array<std::string, 4> resultContent = {
-        TRANSLATE("RESULT_SCORE"),
-        TRANSLATE("RESULT_COMBO"),
-        TRANSLATE("RESULT_COIN"),
-        TRANSLATE("RESULT_GOAL")
+        "progressIcon.png",
+        "allRankIcon.png",
+        "weeklyRankIcon.png",
+        "dailyRankIcon.png"
     };
     
     this->createScoreLayer(resultIcon[0], &m_PercentTitleLabel, &m_PercentLabel);
@@ -160,7 +153,7 @@ CPopup* CPlanetSelectPopup::show(Node* parent/* = nullptr*/, int zOrder/* = 0*/)
     // planet button disable.
     CMyButton::create()
     ->addEventListener([=](Node* sender){
-        //m_SelectButton->setTouchEnable(false);
+        m_SelectButton->setTouchEnable(false);
     }, eMYBUTTON_STATE::BEGIN)
     ->setEnableSound(false)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height * 0.8f))
@@ -186,7 +179,8 @@ CPopup* CPlanetSelectPopup::show(Node* parent/* = nullptr*/, int zOrder/* = 0*/)
         auto delay  = DelayTime::create(1.2f);
         auto func   = CallFunc::create([=](){
             planet->setVisible(false);
-            m_CenterPlanet->setVisible(true);
+            if(m_CenterPlanet)
+                m_CenterPlanet->setVisible(true);
         });
         planet->runAction(Sequence::createWithTwoActions(delay, func));
         
@@ -201,6 +195,10 @@ CPopup* CPlanetSelectPopup::show(Node* parent/* = nullptr*/, int zOrder/* = 0*/)
 
         for(auto node : m_ScoreLayerList)
             node->runAction(FadeTo::create(0.3f, 0));
+    });
+    
+    this->setDefaultCallback([=](Node* sender){
+        this->end();
     });
     
     return CPopup::show(parent, zOrder);
@@ -228,6 +226,8 @@ void CPlanetSelectPopup::select()
 }
 
 void CPlanetSelectPopup::end(){
+//    CAudioManager::Instance()->StopBGM();
+    AudioEngine::stopAll();
     CObjectManager::Instance()->ZoomMoveMiddle();
     CGameScene::getGameScene()->MenuFadeIn();
     this->popupClose(1.3f);
@@ -266,8 +266,14 @@ void CPlanetSelectPopup::scrollCallback(cocos2d::Ref* ref, PageView::EventType t
     m_CenterPlanet     = centerContent;
     this->labelUpdate();
 
-    //bool selectable    = CPlanetDataManager::Instance()->IsPlanetOpened(m_CurrentData->_index);
-    //m_SelectButton->setTouchEnable(selectable);
+    bool selectable    = CPlanetDataManager::Instance()->IsPlanetOpened(m_CurrentData->_index);
+    m_SelectButton->setTouchEnable(selectable);
+    if(selectable) m_SelectButton->changeButtonImage("playIcon.png");
+    else           m_SelectButton->changeButtonImage("lockIcon.png");
+    
+    AudioEngine::stopAll();
+    auto sound = StringUtils::format("sounds/stageBGM_%d.mp3", m_PlanetIndex);
+    CAudioManager::Instance()->PlayBGM(sound, false, false);
 
     // update label
 //    int bestScoreKey = PARAM_PLANET::STAGE_WORLD_SCORE;
@@ -367,22 +373,25 @@ void CPlanetSelectPopup::labelUpdate()
     auto dayRank        = getPlanetInfo(PARAM_PLANET::STAGE_DAY_RANK);
     auto percent        = getPlanetInfo(PARAM_PLANET::STAGE_PERCENT);
     
-    m_PlanetName->setString(m_CurrentData->_name);
+    m_PlanetName->setString(TRANSLATE(m_CurrentData->_name));
     m_PercentLabel->setString(StringUtils::format("%d%%", percent));
-    m_PercentTitleLabel->setString("진행도");
+    m_PercentTitleLabel->setString(TRANSLATE("PLANET_TEXT_PROGRESS"));
 //    m_BestScoreLabel->setString(StringUtility::toCommaString(allScore));
 
     this->createChangeLabelAction(m_AllRankLabel, StringUtility::toCommaString(allScore),
                                   StringUtility::toCommaString(allRank));
-    this->createChangeLabelAction(m_AllTitleLabel, "최고 점수", "전체 순위");
+    this->createChangeLabelAction(m_AllTitleLabel, TRANSLATE("PLANET_TEXT_ALL_SCORE"),
+                                  TRANSLATE("PLANET_TEXT_ALL_RANK"));
     
     this->createChangeLabelAction(m_WeekRankLabel, StringUtility::toCommaString(weeklyScore),
                                   StringUtility::toCommaString(weeklyRank));
-    this->createChangeLabelAction(m_WeekTitleLabel, "이번주 최고 점수", "이번주 순위");
+    this->createChangeLabelAction(m_WeekTitleLabel, TRANSLATE("PLANET_TEXT_WEEKLY_SCORE"),
+                                  TRANSLATE("PLANET_TEXT_WEEKLY_RANK"));
     
     this->createChangeLabelAction(m_TodayRankLabel, StringUtility::toCommaString(dayScore),
                                   StringUtility::toCommaString(dayRank));
-    this->createChangeLabelAction(m_TodayTitleLabel, "오늘의 최고 점수", "오늘의 순위");
+    this->createChangeLabelAction(m_TodayTitleLabel, TRANSLATE("PLANET_TEXT_DAILY_SCORE"),
+                                  TRANSLATE("PLANET_TEXT_DAILY_RANK"));
 }
 
 void CPlanetSelectPopup::createChangeLabelAction(cocos2d::Label* label, std::string text1, std::string text2)
