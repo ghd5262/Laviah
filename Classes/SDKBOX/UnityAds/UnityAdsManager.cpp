@@ -13,7 +13,8 @@ CUnityAdsManager* CUnityAdsManager::Instance()
 
 CUnityAdsManager::CUnityAdsManager()
 : m_UnityAdsSucceedCallback(nullptr)
-, m_UnityAdsFailedCallback(nullptr){}
+, m_UnityAdsFailedCallback(nullptr)
+, m_UnityAdsSkippedCallback(nullptr){}
 
 CUnityAdsManager::~CUnityAdsManager(){}
 
@@ -45,9 +46,22 @@ void CUnityAdsManager::ShowUnityAds(const std::function<void(void)> &func, bool 
     }
 }
 
-void CUnityAdsManager::CallUnityAdsSavedFunction()
+void CUnityAdsManager::CallUnityAdsSavedFunction(int state)
 {
-    this->callListener(m_UnityAdsSucceedCallback);
+    switch (state) {
+        case 0: // error
+            this->callListener(m_UnityAdsFailedCallback);
+
+            break;
+        case 1: // skip
+            this->callListener(m_UnityAdsSkippedCallback);
+
+            break;
+        case 2: // complete
+            this->callListener(m_UnityAdsSucceedCallback);
+
+            break;
+    }
 }
 
 void CUnityAdsManager::callListener(std::function<void(void)>& listener)

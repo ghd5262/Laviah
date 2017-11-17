@@ -29,11 +29,11 @@
 
 - (void)unityAdsDidFinish:(NSString *)placementId
           withFinishState:(UnityAdsFinishState)state{
-    if(state == kUnityAdsFinishStateCompleted) {
+//    if(state == kUnityAdsFinishStateCompleted) {
         cocos2d::Director::getInstance()->getScheduler()->schedule([=](float delta){
-            CUnityAdsManager::Instance()->CallUnityAdsSavedFunction();
+            CUnityAdsManager::Instance()->CallUnityAdsSavedFunction(state);
         }, cocos2d::Director::getInstance(), 0.f, 0, 0.f, false, "CallUnityAdsSavedFunction");
-    }
+//    }
 }
 
 @end

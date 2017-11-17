@@ -16,12 +16,12 @@ using namespace cocos2d;
 extern "C" {
 #endif
     
-    JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_UnityAdsJNI_reward (JNIEnv * env, jobject jobj, jstring zoneid)
+    JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_UnityAdsJNI_reward (JNIEnv * env, jobject jobj, jstring zoneid, int result)
     {
         char* ret = NULL;
         ret = jstringTostring(env, zoneid);
         cocos2d::Director::getInstance()->getScheduler()->schedule([=](float delta){
-            CUnityAdsManager::Instance()->CallUnityAdsSavedFunction();
+            CUnityAdsManager::Instance()->CallUnityAdsSavedFunction(result);
         }, cocos2d::Director::getInstance(), 0.f, 0, 0.f, false, "CallUnityAdsSavedFunction");
     }
     

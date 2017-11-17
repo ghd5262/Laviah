@@ -12,7 +12,7 @@ public:
     
     void ShowUnityAds(const std::function<void(void)> &func, bool isRewarded = true);
         
-    void CallUnityAdsSavedFunction();
+    void CallUnityAdsSavedFunction(int state);
 private:
     void callListener(std::function<void(void)>& listener);
     
@@ -21,6 +21,7 @@ private:
     
     CC_SYNTHESIZE(std::function<void(void)>, m_UnityAdsSucceedCallback, UnityAdsSucceedCallback);
     CC_SYNTHESIZE(std::function<void(void)>, m_UnityAdsFailedCallback, UnityAdsFailedCallback);
+    CC_SYNTHESIZE(std::function<void(void)>, m_UnityAdsSkippedCallback, UnityAdsSkippedCallback);
 };
 
 
@@ -31,7 +32,7 @@ extern "C" {
     
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     
-    JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_UnityAdsJNI_reward (JNIEnv *, jobject, jstring s);
+    JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_UnityAdsJNI_reward (JNIEnv *, jobject, jstring s, int result);
     static char* jstringTostring(JNIEnv* env, jstring jstr);
     static std::string jstringToStdstring(JNIEnv* env, jstring jstr);
     
