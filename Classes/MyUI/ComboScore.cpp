@@ -4,6 +4,8 @@
 #include "../Scene/GameScene.h"
 #include "../GameObject/ObjectManager.h"
 #include "../DataManager/GradientDataManager.h"
+#include "../DataManager/UserDataManager.h"
+#include "../DataManager/WorkshopItemDataManager.h"
 
 using namespace cocos2d;
 
@@ -13,6 +15,7 @@ CComboScore::CComboScore()
 : m_ComboLabel(nullptr)
 , m_Time(0.f)
 , m_OldLevel(0)
+, m_BonusScore(0)
 , m_IsPause(false)
 {}
 
@@ -78,10 +81,11 @@ void CComboScore::AddCombo()
     // Star score ui action
     CUILayer::Instance()->ScoreAction(GVALUE->COMBO_LEVEL);
     
-	GVALUE->COMBO_LEVEL = (int(GVALUE->COMBO_SCORE / 50)) + 1;
+	GVALUE->COMBO_LEVEL = m_BonusScore + (int(GVALUE->COMBO_SCORE / 50)) + 1;
     if(m_OldLevel != GVALUE->COMBO_LEVEL){
         m_OldLevel = GVALUE->COMBO_LEVEL;
-        m_ComboLabel->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(m_OldLevel));
+        auto scoreLevel = (int(GVALUE->COMBO_SCORE / 50)) + 1;
+        m_ComboLabel->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(scoreLevel));
         //        this->runAction(JumpBy::create(0.3f, Vec2(0, 0), 50, 1));
         //        GVALUE->STAR_SCORE += (m_MultipleNumber / 100) * 100000;
     }
@@ -95,6 +99,12 @@ void CComboScore::ComboScoreReset()
     GVALUE->COMBO_SCORE = 0;
 	m_ComboLabel->setVisible(false);// UI visible Off
     m_IsPause = false;
+    
+    auto workShopLevel = CUserDataManager::Instance()->getUserData_ParamData(USERDATA_KEY::ITEM_LEVEL, 7,
+                                                      PARAM_WORKSHOP::ITEM_LEVEL, 0);
+    auto workShopData  = CWorkshopItemDataManager::Instance()->getItemDataByIndex(7);
+    if(workShopData != nullptr)
+        m_BonusScore       = workShopData->_valuePerLevel * workShopLevel;
 }
 
 void CComboScore::LabelUpdate()
@@ -106,7 +116,7 @@ void CComboScore::LabelUpdate()
     m_ComboLabel->setString(StringUtils::format("%d", GVALUE->COMBO_SCORE).c_str());
 }
 
-void CComboScore::update(float delta)
+void CComboScore::Update(float delta)
 {
     if(CObjectManager::Instance()->getIsGamePause()) return;
     if(m_IsPause) return;

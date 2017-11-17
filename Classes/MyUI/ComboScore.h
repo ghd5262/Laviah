@@ -11,7 +11,7 @@ public:
 	void AddCombo();
     void ComboScoreReset();
     void LabelUpdate();
-    virtual void update(float delta) override;
+    void Update(float delta);
 
     CC_SYNTHESIZE(bool, m_IsPause, IsPause);
 protected:
@@ -28,4 +28,5 @@ private:
 	cocos2d::Label* m_ComboLabel;
 	float m_Time;
     int m_OldLevel;
+    int m_BonusScore;
 };

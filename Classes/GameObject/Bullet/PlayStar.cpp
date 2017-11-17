@@ -67,11 +67,11 @@ void CPlayStar::Execute(float delta)
 
 void CPlayStar::updateStateByCombo()
 {
-    if(m_OldLevel == GVALUE->COMBO_LEVEL) return;
+    if(m_OldLevel == (int(GVALUE->COMBO_SCORE / 50)) + 1) return;
     
-    m_OldLevel = GVALUE->COMBO_LEVEL;
+    m_OldLevel = (int(GVALUE->COMBO_SCORE / 50)) + 1;
     
-    auto name  = StringUtils::format("star_%d.png", ((GVALUE->COMBO_LEVEL - 1) % 5) + 1);
+    auto name  = StringUtils::format("star_%d.png", ((m_OldLevel - 1) % 5) + 1);
     this->getBulletSprite()->setSpriteFrame(name);
     this->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(m_OldLevel));
 

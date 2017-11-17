@@ -163,10 +163,10 @@ void CUILayer::ScoreAction(int score)
     
     auto uiPos  = m_StarScoreUI->getPosition();
     auto uiSize = m_StarScoreUI->getContentSize();
-    
+    auto plusScore = (int(GVALUE->COMBO_SCORE / 50)) + 1;
     m_StarScoreLabel->setString(StringUtils::format("+ %d", score));
     m_StarScoreLabel->setPosition(Vec2(uiPos.x + uiSize.width, uiPos.y));
-    m_StarScoreLabel->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(GVALUE->COMBO_LEVEL));
+    m_StarScoreLabel->setColor(CGradientDataManager::Instance()->getScoreColorByLevel(plusScore));
     auto fadeIn   = FadeTo::create(0.3f, 255 * 0.8);
     auto delay    = DelayTime::create(0.3f);
     auto fadeTo   = FadeTo::create(0.3f, 0);
