@@ -6,6 +6,7 @@
 #include "../CostumeDataManager.hpp"
 #include "../RocketDataManager.hpp"
 
+
 sREWARD_DATA CAchievementRewarder::coinReward(sREWARD_DATA data) {
 	CCLOG("COIN REWARD %d", data._value);
 	CUserDataManager::Instance()->CoinUpdate(data._value);
@@ -28,6 +29,10 @@ sREWARD_DATA CAchievementRewarder::costumeReward(sREWARD_DATA data) {
     data._key = ACHIEVEMENT_REWARD_KEY::REWARD_COSTUME;
     
     return data;
+}
+
+sREWARD_DATA CAchievementRewarder::itemReward(sREWARD_DATA data) {
+    
 }
 
 sREWARD_DATA CAchievementRewarder::rocketReward(sREWARD_DATA data) {
@@ -75,6 +80,10 @@ sREWARD_DATA CAchievementRewarder::costumeRewardRandom(sREWARD_DATA data) {
     
     CCLOG("COSTUME REWARD RADNOM %d", data._value);
     return costumeReward(data);
+}
+
+sREWARD_DATA CAchievementRewarder::itemRewardRandom(sREWARD_DATA data) {
+    
 }
 
 sREWARD_DATA CAchievementRewarder::rocketRewardRandom(sREWARD_DATA data) {
