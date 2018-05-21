@@ -24,6 +24,9 @@
                 "id": "CgkIv8-JndQUEAIQJg",
                 "name": "Oculus"
             }, {
+                "id": "CgkIv8-JndQUEAIQKA",
+                "name": "Glory"
+            }, {
                 "id": "CgkIv8-JndQUEAIQJw",
                 "name": "Reverse"
             }],
@@ -202,6 +205,9 @@
             }, {
                 "id": "Oculus",
                 "name": "Oculus"
+            }, {
+                "id": "Glory",
+                "name": "Glory"
             }, {
                 "id": "Reverse",
                 "name": "Reverse"
