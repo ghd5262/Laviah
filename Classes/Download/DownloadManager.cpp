@@ -16,6 +16,8 @@ using namespace std;
 namespace DOWNLOAD_DEFINE {
 #if(!DEBUGING)
 	const static std::string PACKAGE_FILE_PATH		= "update/package.json";
+#elif(TEST_BUILD)
+    const static std::string PACKAGE_FILE_PATH		= "update/package.json";
 #else
     const static std::string PACKAGE_FILE_PATH      = "debug/package_debug.json";
 #endif
@@ -100,6 +102,8 @@ void CDownloadManager::downloadPackageInfoFile() {
 	CCLOG("%s", __FUNCTION__);
 
 #if(!DEBUGING)
+    auto versionFilePath = m_WritablePath + "update/";
+#elif(TEST_BUILD)
     auto versionFilePath = m_WritablePath + "update/";
 #else
     auto versionFilePath = m_WritablePath + "debug/";

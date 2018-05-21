@@ -170,7 +170,7 @@ bool CMenuLayer::init()
     
     createButton([=](Node* sender){
         CGameScene::getGameScene()->OpenPlanetSelectPopup();
-    }, "workshopIcon_5.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f));
+    }, "planetSelectIcon.png", Vec2(popupSize.width * 0.92f, popupSize.height * 0.95f));
     
     
 //    // option button

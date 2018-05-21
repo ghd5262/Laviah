@@ -174,4 +174,5 @@ private:
     std::vector<cocos2d::Sprite*> m_IntroUIList;
     bool m_KeyBoardSpace;
     bool m_FirstCountDown;
+    bool m_IntroTouchEnable;
 };

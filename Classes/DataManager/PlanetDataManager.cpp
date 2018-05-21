@@ -93,14 +93,25 @@ void CPlanetDataManager::setPlanetSavedData(int param, int value)
                                                         param, value);
 }
 
+void CPlanetDataManager::setPlanetForceOpen(int index)
+{
+    auto data = this->getPlanetByIndex(index);
+    auto casted = const_cast<PLANET*>(data);
+    casted->_forceOpen = true;
+}
+
 bool CPlanetDataManager::IsPlanetOpened(int index)
 {
     if(index > 0){
         auto data = this->getPlanetByIndex(index);
         auto enabled = data->_enable;
         auto userDataManager = CUserDataManager::Instance();
-        return (enabled && 100 <= userDataManager->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, index - 1,
-                                                                         PARAM_PLANET::STAGE_PERCENT, 0));
+        auto cleared = (100 <= userDataManager->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, index - 1,
+                                                                     PARAM_PLANET::STAGE_PERCENT, 0));
+        auto open = (100 <= userDataManager->getUserData_ParamData(USERDATA_KEY::PLANET_LIST, index,
+                                                                   PARAM_PLANET::STAGE_PERCENT, 0));
+        auto forceOpened = data->_forceOpen;
+        return (enabled && (cleared || forceOpened || open));
     }
     return true;
 }

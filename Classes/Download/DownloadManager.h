@@ -1,8 +1,9 @@
-﻿#pragma once
+#pragma once
 #include "cocos2d.h"
 #include "network/HttpClient.h"
 
-#define DEBUGING 1
+#define DEBUGING 0
+#define TEST_BUILD 0
 
 using namespace cocos2d;
 using namespace cocos2d::network;

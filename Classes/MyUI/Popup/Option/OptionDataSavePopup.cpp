@@ -154,7 +154,7 @@ bool COptionDataSavePopup::init()
 //        buttonUpdate(signButton);
 //        
 
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     CMyButton::create()
         ->addEventListener([=](Node* sender){
             alertCreate([](Node* sender){

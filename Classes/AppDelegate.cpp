@@ -39,6 +39,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     searchPaths.insert(searchPaths.begin() + i++, "imageRes");
 #if(!DEBUGING)
     searchPaths.insert(searchPaths.begin() + i++, createWritablePath("update"));
+#elif(TEST_BUILD)
+    searchPaths.insert(searchPaths.begin() + i++, createWritablePath("update"));
 #else
     searchPaths.insert(searchPaths.begin() + i++, createWritablePath("debug"));
 #endif

@@ -158,7 +158,7 @@ void CFacebookManager::RequestFriendList()
 
 void CFacebookManager::SaveScore(int score)
 {
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     return;
 #endif
     sdkbox::FBAPIParam params;

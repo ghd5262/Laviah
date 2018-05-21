@@ -1,5 +1,6 @@
 #pragma once
 #include "../Popup.h"
+#include "ui/UIListView.h"
 #include "ui/UIPageView.h"
 
 struct PLANET;
@@ -17,6 +18,9 @@ public:
     CC_SYNTHESIZE(int, m_CurrentPlanetLevel, CurrentPlanetLevel);
 
 private:
+    void TitleScrollCallback(cocos2d::Ref* ref, cocos2d::ui::ScrollView::EventType type);
+    cocos2d::ui::ListView* createListView(Size size, size_t distance, Vec2 pos);
+    
     void scrollCallback(cocos2d::Ref* ref, cocos2d::ui::PageView::EventType type);
     cocos2d::ui::PageView* createPageView(Size size, Vec2 pos);
     
@@ -36,13 +40,15 @@ private:
                                  std::string text2);
     void select();
     void end();
+    void video();
     
     CPlanetSelectPopup()
     : m_SelectButton(nullptr)
+    , m_TitleScrollView(nullptr)
     , m_ScrollView(nullptr)
     , m_CurrentData(nullptr)
     , m_CenterPlanet(nullptr)
-    , m_PlanetName(nullptr)
+//    , m_PlanetName(nullptr)
     , m_PercentLabel(nullptr)
     , m_AllRankLabel(nullptr)
     , m_WeekRankLabel(nullptr)
@@ -66,10 +72,11 @@ private:
     
 private:
     CMyButton* m_SelectButton;
+    cocos2d::ui::ListView* m_TitleScrollView;
     cocos2d::ui::PageView* m_ScrollView;
     const PLANET* m_CurrentData;
     cocos2d::Node* m_CenterPlanet;
-    cocos2d::Label* m_PlanetName;
+//    cocos2d::Label* m_PlanetName;
     
     cocos2d::Label* m_PercentLabel;
     cocos2d::Label* m_AllRankLabel;

@@ -461,6 +461,7 @@ void CObjectManager::inGameUpdate(float delta)
     m_BulletCreator->Update(m_Delta);
     m_Player->Execute(m_Delta);
     m_Planet->Execute(m_Delta);
+    CComboScore::Instance()->Update(m_Delta);
     this->bulletListExecute();
     this->setGameLevelByTimer(delta);
 }
@@ -774,7 +775,7 @@ void CObjectManager::InitTutorialStep()
         nextStep(9.0f);
 //        createMessageBox("test10");
         createPattern(11);
-        nextStep(3.0f);
+        nextStep(2.0f);
         createMessageBox(TRANSLATE("TUTORIAL_MENT_22"));
         nextStep(1.0f);
         createMessageBox(TRANSLATE("TUTORIAL_MENT_23"));
@@ -803,6 +804,11 @@ void CObjectManager::InitTutorialStep()
         ->addUpdateListener([=](float delta, CTutorialStep* sender){
             if(sender->getTime() > 0)
                 CTutorialManager::Instance()->NextStep();
+        })
+        ->addEndListener([=](CTutorialStep* sender){
+            auto sound = StringUtils::format("sounds/stageBGM_%d.mp3", GVALUE->CURRENT_PLANET);
+            AudioEngine::stopAll();
+            CAudioManager::Instance()->PlayBGM(sound, false, false);
         })
         ->build(TUTORIAL_KEY::BEGINER)
         ->setBackgroundVisible(true)

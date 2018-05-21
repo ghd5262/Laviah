@@ -157,9 +157,6 @@ void CPlayer::GotSomeHealth(float health)
 
 void CPlayer::LostSomeHealth(CBullet* data)
 {
-#if(DEBUGING)
-//    return;
-#endif
 	if (m_Invincibility || !m_Life) return;
     
 	if (0.f < (m_Life - data->getPower()))
@@ -200,25 +197,25 @@ void CPlayer::CrownEnable(bool enable)
     
     auto crownName = StringUtils::format("crown_%d.png", m_CharacterParam->_index);
     m_Crown->setSpriteFrame(crownName);
-    m_Crown->setScale(0.f);
+//    m_Crown->setScale(0.f);
     m_Crown->setVisible(enable);
 
-    if(enable){
-        if(m_Crown->getActionByTag(1000))
-            m_Crown->stopActionByTag(1000);
-        auto scaleDown = ScaleTo::create(0.0f, 0.5f);
-        auto scaleUp = ScaleTo::create(0.5f, 1.f);
-        auto elastic = EaseElasticOut::create(scaleUp, 0.5f);
-//        auto scaleDown2 = ScaleTo::create(0.05f, 1.f);
-        auto delay   = DelayTime::create(5.f);
-        auto seq     = Sequence::create(scaleDown, elastic, delay, nullptr);
-        auto repeat  = RepeatForever::create(seq);
-        repeat->setTag(1000);
-        m_Crown->runAction(RepeatForever::create(seq));
-    }
-    else {
-        m_Crown->stopActionByTag(1000);
-    }
+//    if(enable){
+//        if(m_Crown->getActionByTag(1000))
+//            m_Crown->stopActionByTag(1000);
+//        auto scaleDown = ScaleTo::create(0.0f, 0.5f);
+//        auto scaleUp = ScaleTo::create(0.5f, 1.f);
+//        auto elastic = EaseElasticOut::create(scaleUp, 0.5f);
+////        auto scaleDown2 = ScaleTo::create(0.05f, 1.f);
+//        auto delay   = DelayTime::create(5.f);
+//        auto seq     = Sequence::create(scaleDown, elastic, delay, nullptr);
+//        auto repeat  = RepeatForever::create(seq);
+//        repeat->setTag(1000);
+//        m_Crown->runAction(RepeatForever::create(seq));
+//    }
+//    else {
+//        m_Crown->stopActionByTag(1000);
+//    }
 }
 
 void CPlayer::GiantMode()

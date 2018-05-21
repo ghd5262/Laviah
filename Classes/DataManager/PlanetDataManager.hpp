@@ -26,6 +26,7 @@ struct PLANET{
     std::string _standBulletTexture;
     std::string _texturePack;
     bool _enable;
+    bool _forceOpen;
 
     PLANET()
     : _index(-1)
@@ -38,7 +39,8 @@ struct PLANET{
     , _stickBulletTexture("")
     , _standBulletTexture("")
     , _texturePack("")
-    , _enable(false){};
+    , _enable(false)
+    , _forceOpen(false){};
 };
 
 typedef std::map<int, const PLANET*> PLANET_LIST;
@@ -53,7 +55,8 @@ public:
     int getPlanetSavedData(int param);
     void setPlanetSavedData(int param, int value);
     bool IsPlanetOpened(int index);
-
+    void setPlanetForceOpen(int index);
+    
 private:
     void initWithJson(PLANET_LIST &list, std::string fileName);
     void addPlanetToList(const Json::Value& json);

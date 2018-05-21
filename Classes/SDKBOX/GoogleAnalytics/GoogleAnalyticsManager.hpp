@@ -32,7 +32,8 @@ namespace GA_ACTION {
     const std::string ADS_REVIVE            = "ads_revive";
     const std::string ADS_SKIP              = "ads_skip";
     const std::string ADS_BONUS             = "ads_bonus";
-    
+    const std::string ADS_FORCE_OPEN        = "ads_force_open";
+
     const std::string SHARE_SCORE           = "share_score";
     const std::string SHARE_COSTUME         = "share_costume";
     

@@ -24,7 +24,7 @@ void CGoogleAnalyticsManager::Initialize()
 
 void CGoogleAnalyticsManager::StartTimer(std::string timerKey)
 {
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     return;
 #endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
@@ -40,7 +40,7 @@ void CGoogleAnalyticsManager::StartTimer(std::string timerKey)
 
 void CGoogleAnalyticsManager::EndTimer(std::string timerKey)
 {
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     return;
 #endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
@@ -62,7 +62,7 @@ void CGoogleAnalyticsManager::EndTimer(std::string timerKey)
 
 void CGoogleAnalyticsManager::LogEventAction(std::string category, std::string action, int value/* = 0*/)
 {
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     return;
 #endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
@@ -72,7 +72,7 @@ void CGoogleAnalyticsManager::LogEventAction(std::string category, std::string a
 
 void CGoogleAnalyticsManager::LogEventValue(std::string category, std::string action, int value)
 {
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     return;
 #endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
@@ -83,7 +83,7 @@ void CGoogleAnalyticsManager::LogEventValue(std::string category, std::string ac
 
 void CGoogleAnalyticsManager::LogEventValue(std::string category, std::string action, std::string value)
 {
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     return;
 #endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
@@ -93,7 +93,7 @@ void CGoogleAnalyticsManager::LogEventValue(std::string category, std::string ac
 
 void CGoogleAnalyticsManager::LogEventCoin(std::string action, int value)
 {
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     return;
 #endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
@@ -105,7 +105,7 @@ void CGoogleAnalyticsManager::LogSocial(std::string category,
                                         std::string action,
                                         std::string target)
 {
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     return;
 #endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
@@ -115,7 +115,7 @@ void CGoogleAnalyticsManager::LogSocial(std::string category,
 
 void CGoogleAnalyticsManager::LogScreen(std::string title)
 {
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     return;
 #endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;
@@ -125,7 +125,7 @@ void CGoogleAnalyticsManager::LogScreen(std::string title)
 
 void CGoogleAnalyticsManager::LogScreen(std::string title, int index)
 {
-#if(DEBUGING)
+#if(DEBUGING || TEST_BUILD)
     return;
 #endif
     if(!META_DATA("GA_EVENT_ENABLE").asBool()) return;

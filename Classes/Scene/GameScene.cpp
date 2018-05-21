@@ -175,6 +175,11 @@ bool CGameScene::init()
     CAudioManager::Instance()->Clear();
     CAudioManager::Instance()->PlayBGM("sounds/menuBGM.mp3", false);
     CGoogleAnalyticsManager::LogScreen(GA_SCREEN::TITLE);
+    
+#if(TEST_BUILD)
+    CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::COIN, 100000);
+#endif
+    
     return true;
 }
 

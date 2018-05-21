@@ -217,10 +217,6 @@ void CUserDataManager::LoadUserDataFromCloud()
 
 void CUserDataManager::SaveUserData(bool saveToCloud/* = false*/, bool autoSave/* = false*/)
 {
-#if(DEBUGING)
-    return;
-#endif
-    
     this->setSaveRevision(getUserData_Number(USERDATA_KEY::DATA_REVISION) + 1);
     std::string jsonString   = "";
     this->convertUserDataToJson(m_UserData, jsonString);

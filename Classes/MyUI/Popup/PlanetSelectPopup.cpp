@@ -8,6 +8,7 @@
 #include "../../GameObject/ObjectManager.h"
 #include "../../SDKBOX/SDKBoxHeaders.h"
 #include "../../Common/StringUtility.h"
+#include "../../Download/DownloadManager.h"
 #include <array>
 
 using namespace cocos2d;
@@ -46,6 +47,12 @@ CPopup* CPlanetSelectPopup::show(Node* parent/* = nullptr*/, int zOrder/* = 0*/)
                                   Vec2(layerSize.width * 0.5f, layerSize.height * 0.5f));
     bg->addChild(m_ScrollView);
     
+    // create the top scroll view
+    m_TitleScrollView = createListView(Size(layerSize.width, layerSize.height * 0.2f),
+                                       layerSize.width / 5,
+                                       Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
+    bg->addChild(m_TitleScrollView);
+    
     m_CurrentData    = CPlanetDataManager::Instance()->getCurPlanet();
     m_PlanetIndex    = m_CurrentData->_index;
     auto planetList  = CPlanetDataManager::Instance()->getPlanetList();
@@ -80,17 +87,36 @@ CPopup* CPlanetSelectPopup::show(Node* parent/* = nullptr*/, int zOrder/* = 0*/)
             m_CenterPlanet = planetDP;
             m_CenterPlanet->setVisible(false);
         }
+        
+        auto topBtn = Button::create("empty_150x150.png");
+        topBtn->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        topBtn->setCascadeOpacityEnabled(true);
+        topBtn->addClickEventListener([=](Ref* sender){
+            
+            auto btn = dynamic_cast<Button*>(sender);
+            m_TitleScrollView->scrollToItem(btn->getTag(), Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, .5f);
+            m_ScrollView->scrollToItem(btn->getTag());
+        });
+        m_TitleScrollView->addChild(topBtn, 0, index);
+        
+        auto label = Label::createWithSystemFont(TRANSLATE(planet->_name), FONT::MALGUNBD, 80);
+        label->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        label->setPosition(topBtn->getContentSize() / 2);
+        label->setCascadeOpacityEnabled(true);
+        label->setCascadeColorEnabled(true);
+        topBtn->addChild(label);
+        
         index++;
     }
     
-    m_PlanetName = Label::createWithSystemFont(m_CurrentData->_name, FONT::MALGUNBD, 80);
-    if (m_PlanetName != nullptr)
-    {
-        m_PlanetName->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
-        m_PlanetName->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        m_PlanetName->setOpacity(0);
-        this->addChild(m_PlanetName);
-    }
+//    m_PlanetName = Label::createWithSystemFont(m_CurrentData->_name, FONT::MALGUNBD, 80);
+//    if (m_PlanetName != nullptr)
+//    {
+//        m_PlanetName->setPosition(Vec2(layerSize.width * 0.5f, layerSize.height * 0.8f));
+//        m_PlanetName->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//        m_PlanetName->setOpacity(0);
+//        this->addChild(m_PlanetName);
+//    }
     
     
     std::array<Vec2, 4> posDown  = {
@@ -127,7 +153,7 @@ CPopup* CPlanetSelectPopup::show(Node* parent/* = nullptr*/, int zOrder/* = 0*/)
         auto layer = m_ScoreLayerList.at(index);
         layer->setPosition(posArray[index]);
     }
-    m_ScoreLayerList.emplace_back(m_PlanetName);
+    m_ScoreLayerList.emplace_back(m_TitleScrollView);
 
     this->labelUpdate();
     
@@ -149,11 +175,14 @@ CPopup* CPlanetSelectPopup::show(Node* parent/* = nullptr*/, int zOrder/* = 0*/)
         this->select();
     }, this, "playIcon.png", Vec2(layerSize.width * 0.92f, layerSize.height * 0.05f), true);
     m_SelectButton->setOpacity(0);
+
     
     // planet button disable.
     CMyButton::create()
     ->addEventListener([=](Node* sender){
+#if (!TEST_BUILD)
         m_SelectButton->setTouchEnable(false);
+#endif
     }, eMYBUTTON_STATE::BEGIN)
     ->setEnableSound(false)
     ->setLayer(LayerColor::create(COLOR::TRANSPARENT_ALPHA, layerSize.width, layerSize.height * 0.8f))
@@ -184,7 +213,7 @@ CPopup* CPlanetSelectPopup::show(Node* parent/* = nullptr*/, int zOrder/* = 0*/)
         });
         planet->runAction(Sequence::createWithTwoActions(delay, func));
         
-        
+        m_TitleScrollView->jumpToItem(jumpIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
         m_ScrollView->jumpToItem(jumpIndex, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
     }, 1.f);
     
@@ -213,6 +242,11 @@ CPlanetSelectPopup* CPlanetSelectPopup::setPlanet(int index)
 // When touch the select or buy button
 void CPlanetSelectPopup::select()
 {
+    if(!CPlanetDataManager::Instance()->IsPlanetOpened(m_CurrentData->_index)){
+        this->video();
+        return;
+    }
+    
     auto manager = CUserDataManager::Instance();
     auto index   = m_CurrentData->_index;
     auto origin  = CPlanetDataManager::Instance()->getCurPlanet()->_index;
@@ -233,6 +267,43 @@ void CPlanetSelectPopup::end(){
     this->popupClose(1.3f);
 }
 
+void CPlanetSelectPopup::video(){
+    
+    auto planetName = TRANSLATE(m_CurrentData->_name);
+    CGameScene::getGameScene()->CreateAlertPopup()
+    ->setPositiveButton([=](Node* sender){
+        
+        AudioEngine::stopAll();
+        
+        CUnityAdsManager::Instance()->ShowUnityAds([=](){
+            CPlanetDataManager::Instance()->setPlanetForceOpen(m_CurrentData->_index);
+            m_ScrollView->scrollToItem(m_CurrentData->_index);
+            CGoogleAnalyticsManager::LogEventAction(GA_CATEGORY::WATCH_ADS, GA_ACTION::ADS_FORCE_OPEN);
+        });
+        
+    }, TRANSLATE("BUTTON_YES"))
+    ->setNegativeButton([=](Node* sender){
+    }, TRANSLATE("BUTTON_NO"))
+    ->setMessage(StringUtils::format(TRANSLATE("PLANET_FORCE_OPEN").c_str(), planetName.c_str()))
+    ->show(CGameScene::getPopupLayer(), ZORDER::POPUP);
+}
+
+cocos2d::ui::ListView* CPlanetSelectPopup::createListView(Size size, size_t distance, Vec2 pos)
+{
+    auto listView = ListView::create();
+    listView->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
+    listView->setContentSize(size);
+    listView->setTouchEnabled(false);
+    listView->setScrollBarEnabled(false);
+    listView->setItemsMargin(distance);
+    listView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    listView->setPosition(pos);
+    listView->setCascadeOpacityEnabled(true);
+    listView->setMagneticType(ListView::MagneticType::CENTER);
+    listView->ScrollView::addEventListener((ListView::ccScrollViewCallback)CC_CALLBACK_2(CPlanetSelectPopup::TitleScrollCallback, this));
+    return listView;
+}
+
 cocos2d::ui::PageView* CPlanetSelectPopup::createPageView(Size size, Vec2 pos)
 {
     auto pageView = PageView::create();
@@ -245,6 +316,35 @@ cocos2d::ui::PageView* CPlanetSelectPopup::createPageView(Size size, Vec2 pos)
     pageView->addEventListener((PageView::ccPageViewCallback)CC_CALLBACK_2(CPlanetSelectPopup::scrollCallback, this));
     
     return pageView;
+}
+
+void CPlanetSelectPopup::TitleScrollCallback(cocos2d::Ref* ref, ScrollView::EventType type)
+{
+    ListView* listView = dynamic_cast<ListView*>(ref);
+    
+    if (listView == nullptr) return;
+    if (type != ScrollView::EventType::CONTAINER_MOVED) return;
+    
+    // Get center dp
+    auto center         = listView->getCenterItemInCurrentView();
+    auto centerIdx      = listView->getIndex(center);
+    auto centerChild    = listView->getChildren().at(centerIdx);
+    auto centerIcon     = dynamic_cast<Button*>(centerChild);
+    if (centerIcon == nullptr) return;
+    
+    // Center dp color change
+    centerIcon->setOpacity(255);
+    centerIcon->setScale(1.5f);
+    
+    // touch disable the other dp
+    for (auto otherIcon : listView->getChildren())
+    {
+        if (otherIcon != nullptr && otherIcon != center)
+        {
+            dynamic_cast<Button*>(otherIcon)->setOpacity(255 * 0.4f);
+            dynamic_cast<Button*>(otherIcon)->setScale(1.f);
+        }
+    }
 }
 
 void CPlanetSelectPopup::scrollCallback(cocos2d::Ref* ref, PageView::EventType type)
@@ -266,14 +366,18 @@ void CPlanetSelectPopup::scrollCallback(cocos2d::Ref* ref, PageView::EventType t
     m_CenterPlanet     = centerContent;
     this->labelUpdate();
 
-    bool selectable    = CPlanetDataManager::Instance()->IsPlanetOpened(m_CurrentData->_index);
-    m_SelectButton->setTouchEnable(selectable);
+#if(!TEST_BUILD)
+    m_SelectButton->setTouchEnable(true);
+    bool selectable = CPlanetDataManager::Instance()->IsPlanetOpened(m_CurrentData->_index);
     if(selectable) m_SelectButton->changeButtonImage("playIcon.png");
-    else           m_SelectButton->changeButtonImage("lockIcon.png");
+    else           m_SelectButton->changeButtonImage("videoIcon.png");
+#endif
     
     AudioEngine::stopAll();
     auto sound = StringUtils::format("sounds/stageBGM_%d.mp3", m_PlanetIndex);
     CAudioManager::Instance()->PlayBGM(sound, false, false);
+
+    m_TitleScrollView->scrollToItem(centerIdx, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE, .5f);
 
     // update label
 //    int bestScoreKey = PARAM_PLANET::STAGE_WORLD_SCORE;
@@ -373,7 +477,7 @@ void CPlanetSelectPopup::labelUpdate()
     auto dayRank        = getPlanetInfo(PARAM_PLANET::STAGE_DAY_RANK);
     auto percent        = getPlanetInfo(PARAM_PLANET::STAGE_PERCENT);
     
-    m_PlanetName->setString(TRANSLATE(m_CurrentData->_name));
+//    m_PlanetName->setString(TRANSLATE(m_CurrentData->_name));
     m_PercentLabel->setString(StringUtils::format("%d%%", percent));
     m_PercentTitleLabel->setString(TRANSLATE("PLANET_TEXT_PROGRESS"));
 //    m_BestScoreLabel->setString(StringUtility::toCommaString(allScore));

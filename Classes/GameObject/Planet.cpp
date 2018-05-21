@@ -4,6 +4,7 @@
 #include "BulletCreator.h"
 #include "../Scene/GameScene.h"
 #include "../DataManager/PlanetDataManager.hpp"
+#include "../DataManager/UserDataManager.h"
 
 using namespace cocos2d;
 using namespace PLANET_DEFINE;
@@ -34,6 +35,10 @@ bool CPlanet::init()
     if (!Node::init()) return false;
     
     auto data = CPlanetDataManager::Instance()->getCurPlanet();
+    auto opened = CPlanetDataManager::Instance()->IsPlanetOpened(data->_index);
+    if(!opened){
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::PLANET, 0);
+    }
 	m_Texture = Sprite::createWithSpriteFrameName(data->_planetTexture);
     if (m_Texture != nullptr){
 		this->setContentSize(m_Texture->getContentSize());

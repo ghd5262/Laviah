@@ -84,8 +84,8 @@ void CPlayManager::OpenAchievement()
 
 void CPlayManager::ScoreSave(VOID_LISTENER listener, std::string key, int score)
 {
-#if(DEBUGING)
-//    return;
+#if(DEBUGING || TEST_BUILD)
+    return;
 #endif
     if(!this->IsLoggedIn()) return;
  
