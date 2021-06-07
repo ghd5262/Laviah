@@ -37,6 +37,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     FileUtils *fileUtils = FileUtils::getInstance();
     auto searchPaths = fileUtils->getSearchPaths();
     searchPaths.insert(searchPaths.begin() + i++, "imageRes");
+    searchPaths.insert(searchPaths.begin() + i++, "imageRes/packages");
+    searchPaths.insert(searchPaths.begin() + i++, "json");
+
 #if(!DEBUGING)
     searchPaths.insert(searchPaths.begin() + i++, createWritablePath("update"));
 #elif(TEST_BUILD)

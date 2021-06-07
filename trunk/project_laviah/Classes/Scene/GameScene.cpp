@@ -49,6 +49,8 @@
 #include "../DataManager/NetworkManager.hpp"
 #include "../DataManager/FreeRewardManager.hpp"
 #include "../DataManager/BulletPatternDataManager.h"
+#include "../DataManager/RankRewardDataManager.hpp"
+#include "../DataManager/MoreGamesDataManager.hpp"
 #include "../AI/States/RocketStates.h"
 #include "../SDKBOX/SDKBoxHeaders.h"
 #include "../Download/DownloadManager.h"
@@ -134,7 +136,7 @@ bool CGameScene::init()
     this->createBackground();
     this->createPlanet();
     this->createPlayer();
-    this->createRocket();
+//    this->createRocket();
 //    this->createSlowPoint();
     this->createCountDown();
     this->createScreenFade();
@@ -174,8 +176,7 @@ bool CGameScene::init()
     
     CAudioManager::Instance()->Clear();
     CAudioManager::Instance()->PlayBGM("sounds/menuBGM.mp3", false);
-    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::TITLE);
-    
+    CGoogleAnalyticsManager::LogScreen(GA_SCREEN::TITLE);    
 #if(TEST_BUILD)
     CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::COIN, 100000);
 #endif
@@ -199,6 +200,7 @@ void CGameScene::GameStart()
     this->clearData();
     this->GameResume();
     this->MenuFadeOut();
+    this->freeRewardCheck();
     
     m_UILayer->setVisible(true);
     m_UILayer->setDefaultCallbackToTopAgain();
@@ -206,7 +208,7 @@ void CGameScene::GameStart()
     CObjectManager::Instance()->ZoomMoveMiddle();
     CObjectManager::Instance()->getPlayer()->GameStart();
     CObjectManager::Instance()->getPlanet()->GameStart();
-    CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
+//    CObjectManager::Instance()->getRocket()->ChangeState(CFlyAway::Instance());
 //    CObjectManager::Instance()->getPlanet()->setVisible(true);
     dynamic_cast<CFacebookRivalRankLayer*>( m_RivalRankLayer )->Reset();
     CAudioManager::Instance()->StopBGM();
@@ -754,14 +756,14 @@ void CGameScene::menuOpen()
 {
     this->clearData();
     //        this->createRandomCoin();
-    this->freeRewardCheck();
+//    this->freeRewardCheck();
     this->dailyGoalResetCheck();
     this->MenuFadeIn();
     this->resumeSound();
     
     m_UILayer->setVisible(false);
     m_MenuLayer->setDefaultCallbackToTopAgain();
-    CObjectManager::Instance()->getRocket()->ComebackHome();
+//    CObjectManager::Instance()->getRocket()->ComebackHome();
     CObjectManager::Instance()->getPlanet()->StartRotation();
 //    CObjectManager::Instance()->getPlanet()->setVisible(false);
     CObjectManager::Instance()->getPlayer()->setVisible(false);
@@ -822,40 +824,49 @@ void CGameScene::startTutorial()
     }
 }
 
+void freeRewardCheckResponse(Json::Value data)
+{
+    CCLOG("server request succeed");
+    auto rewardTimestamp   = CUserDataManager::Instance()->getFreeRewardTimestamp();
+    auto currentTimestamp  = time_t(data["unixtime"].asDouble());
+    auto freeRewardTime    = CFreeRewardManager::Instance()->getFreeRewardTimeLimit();
+    auto passedTime        = currentTimestamp - rewardTimestamp;
+    if(passedTime > freeRewardTime){
+        
+        CFreeRewardManager::Instance()->setRewardAble(true);
+    }
+}
+
 void CGameScene::freeRewardCheck()
 {
-    SERVER_REQUEST([=](Json::Value data){
-        
-        CCLOG("server request succeed");
-        auto rewardTimestamp   = CUserDataManager::Instance()->getFreeRewardTimestamp();
-        auto currentTimestamp  = time_t(data["currentSeconds"].asDouble());
-        auto freeRewardTime    = CFreeRewardManager::Instance()->getFreeRewardTimeLimit();
-        auto passedTime        = currentTimestamp - rewardTimestamp;
-        if(passedTime > freeRewardTime){
-            
-            CFreeRewardManager::Instance()->setRewardAble(true);
-        }
-    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
+    SERVER_REQUEST_URL([=](Json::Value data){
+        freeRewardCheckResponse(data);
+    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP, NETWORK_DEFINE::URL_TIMESTAMP);
+}
+
+void getFreeRewardResponse(Json::Value data)
+{
+    CCLOG("server request succeed");
+    auto currentTimestamp  = time_t(data["unixtime"].asDouble());
+    
+    CFreeRewardManager::Instance()->setRewardAble(false);
+    
+    // reward level up
+    CFreeRewardManager::Instance()->FreeRewardLevelUP();
+    
+    // set time stamp again
+    CUserDataManager::Instance()->setFreeRewardTimestamp(currentTimestamp);
 }
 
 void CGameScene::getFreeReward()
 {
-    SERVER_REQUEST([=](Json::Value data){
-        CCLOG("server request succeed");
-        auto currentTimestamp  = time_t(data["currentSeconds"].asDouble());
-        
-        CFreeRewardManager::Instance()->setRewardAble(false);
-        
-        // reward level up
-        CFreeRewardManager::Instance()->FreeRewardLevelUP();
-        
-        // set time stamp again
-        CUserDataManager::Instance()->setFreeRewardTimestamp(currentTimestamp);
-        
-    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
+    SERVER_REQUEST_URL([=](Json::Value data){
+        getFreeRewardResponse(data);
+    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP, NETWORK_DEFINE::URL_TIMESTAMP);
 }
 
-void CGameScene::getRankReward(){
+void CGameScene::getRankReward()
+{
     SERVER_REQUEST([=](Json::Value data){
         auto newTimestamp = data["weeklyResetSeconds"].asDouble();
         
@@ -872,13 +883,25 @@ void CGameScene::getRankReward(){
 void dailyGoalResetResponse(Json::Value data)
 {
     auto lastTimestamp = CUserDataManager::Instance()->getUserData_Number(USERDATA_KEY::DAILY_RESET_SAVED_TIME);
-    auto newTimestamp = data["dailyResetSeconds"].asDouble();
-    auto remainTime   = data["dailyResetRemains"].asDouble();
+    auto newTimestamp = data["unixtime"].asDouble();
+    
+    auto seconds = time_t(newTimestamp);
+    auto tm   = gmtime(&seconds);
+    auto year = tm->tm_year + 1900;
+    auto mon  = tm->tm_mon  + 1;
+    auto day  = tm->tm_mday;
+    auto resetDay = day + 1;
+    
+    std::string timeString = StringUtils::format("%d-%d-%d %d:%d:%d", year, mon, resetDay, 0, 0, 0);
+    struct tm tartm;
+    strptime(timeString.c_str(),"%Y-%m-%d %H:%M:%S",&tartm);
+    auto target = timegm(&tartm);
+    auto remainTime = target - newTimestamp;
 
     CCLOG("Daily reset remain seconds is %lf", remainTime);
     CGameScene::getGameScene()->setDailyResetRemain(remainTime);
     
-    if(lastTimestamp != newTimestamp){
+    if(lastTimestamp != target){
         CCLOG("Daily goal reset");
         
         // reset daily achievements
@@ -886,7 +909,7 @@ void dailyGoalResetResponse(Json::Value data)
         CAchievementDataManager::Instance()->getNewAchievements();
         
         // set time stamp again
-        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::DAILY_RESET_SAVED_TIME, newTimestamp);
+        CUserDataManager::Instance()->setUserData_Number(USERDATA_KEY::DAILY_RESET_SAVED_TIME, target);
         
         // notice popup (for debug)
         //            this->CreateAlertPopup()
@@ -924,9 +947,9 @@ void CGameScene::dailyGoalResetCheck(bool serverCall/* = false*/)
 
     if((target == lastTimestamp) && !serverCall) return;
     
-    SERVER_REQUEST([=](Json::Value data){
+    SERVER_REQUEST_URL([=](Json::Value data){
         dailyGoalResetResponse(data);
-    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP);
+    }, SERVER_REQUEST_KEY::TIMESTAMP_PHP, NETWORK_DEFINE::URL_TIMESTAMP);
 }
 
 void weeklyRankingResetResponse(Json::Value data){
@@ -1149,7 +1172,7 @@ void CGameScene::createRocket()
     rocket->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     rocket->setPosition(CBullet::getCirclePosition(90, ROCKET_DEFINE::FLYAWAY_DISTANCE, m_VisibleSize / 2));
     rocket->ChangeState(CFlyToTarget::Instance());
-    rocket->setVisible(false);
+//    rocket->setVisible(false);
     m_ZoomLayer->addChild(rocket, ZORDER::POPUP);
     CObjectManager::Instance()->setRocket(rocket);
     CObjectManager::Instance()->ChangeRocket();

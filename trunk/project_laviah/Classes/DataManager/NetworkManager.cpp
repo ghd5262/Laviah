@@ -13,14 +13,16 @@ CNetworkManager* CNetworkManager::Instance()
     return &instance;
 }
 
-void CNetworkManager::Request(const NETWORK_CALLBACK& callback, std::string key)
+void CNetworkManager::Request(const NETWORK_CALLBACK& callback, std::string key, std::string url/* = ""*/)
 {
     auto assertion = [=](std::string content){
         CCLOG("%s", content.c_str());
         CCASSERT(false, content.c_str());
     };
 
-    auto url = NETWORK_DEFINE::URL_PHP + key;
+    if(url.empty()) {
+        url = NETWORK_DEFINE::URL_PHP + key;
+    }
     auto tag = key;
     tag.replace(tag.find(std::string(".php")), std::string(".php").size(), std::string(""));
     
@@ -83,5 +85,4 @@ void CNetworkManager::Request(const NETWORK_CALLBACK& callback, std::string key)
     request->setTag(tag);
     HttpClient::getInstance()->send(request);
     request->release();
-
 }

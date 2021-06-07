@@ -285,7 +285,7 @@ void CMenuLayer::TouchScreen(cocos2d::Touch* pTouch, cocos2d::Event* pEvent)
 	Point touchLocation = pTouch->getLocationInView();
 	touchLocation = Director::getInstance()->convertToGL(touchLocation);
 	CGameScene::getGameScene()->setTouchPos(convertToNodeSpace(touchLocation));
-	CObjectManager::Instance()->getRocket()->ChangeState(CFlyToTouchArea::Instance());
+//	CObjectManager::Instance()->getRocket()->ChangeState(CFlyToTouchArea::Instance());
 
 	//return true;
 }

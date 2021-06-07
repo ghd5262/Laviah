@@ -9,7 +9,12 @@ using namespace cocos2d;
 
 CStageDataManager::CStageDataManager()
 {
-    initWithJson(m_StageList, "stageList.json");
+    initWithJson(m_StageList, "stageList_0.json");
+    initWithJson(m_StageList, "stageList_1.json");
+    initWithJson(m_StageList, "stageList_2.json");
+    initWithJson(m_StageList, "stageList_3.json");
+    initWithJson(m_StageList, "stageList_4.json");
+    initWithJson(m_StageList, "stageList_5.json");
 }
 
 CStageDataManager::~CStageDataManager()

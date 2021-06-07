@@ -1,5 +1,6 @@
 #include "LoadingScene.h"
 #include "GameScene.h"
+#include "MenuScene.h"
 #include "../Download/DownloadManager.h"
 #include "../DataManager/UserDataManager.h"
 #include "../MyUI/Popup.h"
@@ -78,44 +79,48 @@ bool CLoadingScene::init()
 void CLoadingScene::startDownload()
 {
     CCLOG("Loading Scene %s", __FUNCTION__);
-    CDownloadManager::IsNetworkConnected([=](bool isConnected){
-        if(isConnected){
-            m_DownloadRetryCount--;
-            
-            // 인터넷 연결되어 있다면 패키지 버전 비교 후 정상 실행
-            auto downloadManager = CDownloadManager::Instance();
-            downloadManager->setDownloadFailedListener([=](){
-                CCLOG("Download retry count %d", m_DownloadRetryCount);
-                if(m_DownloadRetryCount)    this->startDownload();
-                else                        this->callbackDownloadFail();
-            });
-            downloadManager->setDownloadSucceedListener([=](){
-                this->callbackDownloadComplete();
-            });
-            downloadManager->setRequireNextVersion([=](){
-                auto appUrl = downloadManager->getAppUrl();
-                this->callbackRequireLatestVersion(appUrl);
-            });
-            downloadManager->setFileDownloadProgress([=](int current, int max){
-                this->callbackFileDownloadProgress(current, max);
-            });
-            downloadManager->setFileDecompressProgress([=](int current, int max){
-                this->callbackFileDecompressProgress(current, max);
-            });
-            downloadManager->DownloadStart();
-        }
-        else{
-            auto firstPlay   = CUserDataManager::Instance()->getIsFirstPlay();
-            auto lastVersion = CUserDataManager::Instance()->getLastResourcesVersion();
-            auto curVersion  = Application::getInstance()->getVersion();
-            
-            auto downloadEnable = (firstPlay || (lastVersion != curVersion));
-            
-            if(downloadEnable) this->createNetworkConnectPopup();
-            else               this->callbackDownloadComplete();
-            
-        }
-    });
+//    CDownloadManager::IsNetworkConnected([=](bool isConnected){
+//        if(isConnected){
+//            m_DownloadRetryCount--;
+//
+//            // 인터넷 연결되어 있다면 패키지 버전 비교 후 정상 실행
+//            auto downloadManager = CDownloadManager::Instance();
+//            downloadManager->setDownloadFailedListener([=](){
+//                CCLOG("Download retry count %d", m_DownloadRetryCount);
+//                if(m_DownloadRetryCount)    this->startDownload();
+//                else                        this->callbackDownloadFail();
+//            });
+//            downloadManager->setDownloadSucceedListener([=](){
+//                this->callbackDownloadComplete();
+//            });
+//            downloadManager->setRequireNextVersion([=](){
+//                auto appUrl = downloadManager->getAppUrl();
+//                this->callbackRequireLatestVersion(appUrl);
+//            });
+//            downloadManager->setFileDownloadProgress([=](int current, int max){
+//                this->callbackFileDownloadProgress(current, max);
+//            });
+//            downloadManager->setFileDecompressProgress([=](int current, int max){
+//                this->callbackFileDecompressProgress(current, max);
+//            });
+//            downloadManager->DownloadStart();
+//        }
+//        else{
+//            auto firstPlay   = CUserDataManager::Instance()->getIsFirstPlay();
+//            auto lastVersion = CUserDataManager::Instance()->getLastResourcesVersion();
+//            auto curVersion  = Application::getInstance()->getVersion();
+//
+//            auto downloadEnable = (firstPlay || (lastVersion != curVersion));
+//
+////            if(downloadEnable) this->createNetworkConnectPopup();
+//            this->callbackDownloadComplete();
+//
+//        }
+//    });
+    
+    Director::getInstance()->getScheduler()->schedule([=](float deltaTime){
+        this->callbackDownloadComplete();
+    }, this, 0.0f, 0.0f, 3.0f, false, "downloadComplete");
 }
 
 float getPercent(float value, float max)

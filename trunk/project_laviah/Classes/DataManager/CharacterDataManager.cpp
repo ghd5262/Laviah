@@ -1,6 +1,7 @@
 #include "CharacterDataManager.h"
 #include "UserDataManager.h"
 #include "DataManagerUtils.h"
+#include "ShareManager.hpp"
 
 using namespace cocos2d;
 
@@ -89,6 +90,18 @@ void CCharacterDataManager::addTexturePackToCache(std::string fileName)
     {
         if (!spriteFrameCache->isSpriteFramesWithFileLoaded(texturepackPLIST)){
             spriteFrameCache->addSpriteFramesWithFile(texturepackPLIST, texturepackPNG);
+            
+            
+//            auto writablePath = FileUtils::getInstance()->getWritablePath() + "test";
+            
+//            const std::string fullPath = FileUtils::getInstance()->fullPathForFilename("patternTestBullet.png");
+//            std::string fileData = FileUtils::getInstance()->getStringFromFile(fullPath);
+//            CCLOG("%s", fileData.c_str());
+//            CShareManager::Instance()->setCapturePath(fullPath);
+//            CShareManager::Instance()->ShareNative();
+//            ValueMap dict = FileUtils::getInstance()->getValueMapFromFile(fullPath);
+//            util->writeToFile(dict, writablePath.c_str());
+            
         }
     }
 }
