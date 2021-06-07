@@ -4,80 +4,80 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>crown_0.png</key>
+            <key>normal_bullet_3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{7,73}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{67,32}</string>
+                <string>{64,62}</string>
                 <key>spriteSourceSize</key>
-                <string>{175,210}</string>
+                <string>{80,80}</string>
                 <key>textureRect</key>
-                <string>{{87,79},{67,32}}</string>
-                <key>textureRotated</key>
-                <true/>
-            </dict>
-            <key>crown_1.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{4,69}</string>
-                <key>spriteSize</key>
-                <string>{67,34}</string>
-                <key>spriteSourceSize</key>
-                <string>{175,210}</string>
-                <key>textureRect</key>
-                <string>{{8,8},{67,34}}</string>
+                <string>{{10,10},{64,62}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>crown_2.png</key>
+            <key>normal_missile_3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,58}</string>
+                <string>{-1,0}</string>
                 <key>spriteSize</key>
-                <string>{61,32}</string>
+                <string>{231,104}</string>
                 <key>spriteSourceSize</key>
-                <string>{175,210}</string>
+                <string>{245,140}</string>
                 <key>textureRect</key>
-                <string>{{8,110},{61,32}}</string>
+                <string>{{94,10},{231,104}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>crown_3.png</key>
+            <key>planet_texture_3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-2,52}</string>
+                <string>{1,0}</string>
                 <key>spriteSize</key>
-                <string>{63,36}</string>
+                <string>{762,756}</string>
                 <key>spriteSourceSize</key>
-                <string>{175,210}</string>
+                <string>{950,950}</string>
                 <key>textureRect</key>
-                <string>{{8,58},{63,36}}</string>
+                <string>{{10,135},{762,756}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>crown_4.png</key>
+            <key>stand_bullet_3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{1,70}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{55,26}</string>
+                <string>{160,105}</string>
                 <key>spriteSourceSize</key>
-                <string>{175,210}</string>
+                <string>{160,105}</string>
                 <key>textureRect</key>
-                <string>{{91,8},{55,26}}</string>
+                <string>{{345,10},{160,105}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
+            </dict>
+            <key>stick_bullet_3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{160,105}</string>
+                <key>spriteSourceSize</key>
+                <string>{160,105}</string>
+                <key>textureRect</key>
+                <string>{{345,10},{160,105}}</string>
+                <key>textureRotated</key>
+                <false/>
             </dict>
         </dict>
         <key>metadata</key>
@@ -89,13 +89,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>crown_texture_pack.png</string>
+            <string>planet_texture_pack_3.png</string>
             <key>size</key>
-            <string>{127,154}</string>
+            <string>{782,901}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:56e4515da7159e089c16df949b845d71:b8d5030a70c913c57c5e1689bc510321:eb383e5c2f75d50b3d62d37728ade43a$</string>
+            <string>$TexturePacker:SmartUpdate:7efa30b591a58069e7d01991f423d6eb:a15bdd3a3c7786c99f9d7d8f4fad4aee:662e01692aa69e0ca7d7543e15ff2587$</string>
             <key>textureFileName</key>
-            <string>crown_texture_pack.png</string>
+            <string>planet_texture_pack_3.png</string>
         </dict>
     </dict>
 </plist>
