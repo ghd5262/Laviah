@@ -271,6 +271,7 @@
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
 		C8224EDE8FB0908D4F96EAF0 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1762432BBCAE55A6C9316374 /* EventKitUI.framework */; };
+		CEF39A11266E670100D6060F /* json in Resources */ = {isa = PBXBuildFile; fileRef = CEF39A10266E670100D6060F /* json */; };
 		D44C620C132DFF330009C878 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620B132DFF330009C878 /* OpenAL.framework */; };
 		D44C620E132DFF430009C878 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620D132DFF430009C878 /* AVFoundation.framework */; };
 		D44C6210132DFF4E0009C878 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620F132DFF4E0009C878 /* AudioToolbox.framework */; };
@@ -741,6 +742,7 @@
 		C0354837AB302DB9FA136B49 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/ru.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 		CCBF407C98940A83F1260AFE /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
 		CDC84A478EB81EB3D04BF994 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = TwitterKit.framework/Resources/TwitterKitResources.bundle/hu.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		CEF39A10266E670100D6060F /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; name = json; path = ../Resources/json; sourceTree = "<group>"; };
 		D44C620B132DFF330009C878 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		D44C620D132DFF430009C878 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D44C620F132DFF4E0009C878 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -873,6 +875,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				CEF39A10266E670100D6060F /* json */,
 				59E1A6221F14B7FF003020B9 /* Project_S iOS.entitlements */,
 				93706E461E7A6890009A2CA0 /* Classes */,
 				46880B7519C43A67006E1F66 /* Resources */,
@@ -1568,6 +1571,49 @@
 				Japanese,
 				French,
 				German,
+				ar,
+				bg,
+				bn,
+				cs,
+				da,
+				de,
+				el,
+				"en-GB",
+				en,
+				es,
+				fa,
+				fi,
+				fr,
+				gu,
+				he,
+				hi,
+				hr,
+				hu,
+				id,
+				it,
+				ja,
+				kn,
+				ko,
+				mr,
+				ms,
+				nb,
+				nl,
+				pl,
+				pt,
+				ro,
+				ru,
+				sk,
+				sr,
+				sv,
+				ta,
+				th,
+				fil,
+				tr,
+				uk,
+				ur,
+				vi,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -1634,6 +1680,7 @@
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
+				CEF39A11266E670100D6060F /* json in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				937311B61D5849D500D5EB5C /* res in Resources */,
@@ -1990,7 +2037,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
-				VALID_ARCHS = "arm64 armv7";
+				VALID_ARCHS = "arm64 armv7 armv7s x86_64 arm64e";
 			};
 			name = Debug;
 		};
@@ -2054,7 +2101,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
-				VALID_ARCHS = "arm64 armv7";
+				VALID_ARCHS = "arm64 armv7 armv7s x86_64 arm64e";
 			};
 			name = Release;
 		};
