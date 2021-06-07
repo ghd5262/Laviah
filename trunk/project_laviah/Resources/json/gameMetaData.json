@@ -1,0 +1,13 @@
+{
+	"gameMetaData": [{
+		"COSTUME_COST": 1500,
+		"FACEBOOK_SHARE_IMAGE_URL": "http://www.hshgames.com/game/project_s/download/gameIcon_1024_500_2.png",
+		"BONUS_COIN": 300,
+		"REVIVE_COST": 500,
+		"FREE_REWARD_COIN": 300,
+		"REVIEW_LEVEL": 5,
+		"GA_EVENT_ENABLE": 1,
+		"FREE_REVIVE_CHANCE": 3,
+		"SKIP_ADS_COUNT": 8
+	}]
+}

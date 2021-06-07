@@ -1,0 +1,15 @@
+{
+	"rocketPackList": [
+		"rocketTexturePack_0"
+	],
+	"rocketDefaultSet": {},
+	"rockets": [{
+		"index": 0
+	}, {
+		"index": 1
+	}, {
+		"index": 2
+	}, {
+		"index": 3
+	}]
+}

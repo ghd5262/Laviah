@@ -1,0 +1,158 @@
+{
+   "levels": [{
+         "index": 0,
+         "levelExp": 0,
+         "sumExp": 0
+      },
+      {
+         "index": 1,
+         "levelExp": 2000,
+         "sumExp": 2000
+      },
+      {
+         "index": 2,
+         "levelExp": 4000,
+         "sumExp": 6000
+      },
+      {
+         "index": 3,
+         "levelExp": 6000,
+         "sumExp": 12000
+      },
+      {
+         "index": 4,
+         "levelExp": 8000,
+         "sumExp": 20000
+      },
+      {
+         "index": 5,
+         "levelExp": 10000,
+         "sumExp": 30000
+      },
+      {
+         "index": 6,
+         "levelExp": 12000,
+         "sumExp": 42000
+      },
+      {
+         "index": 7,
+         "levelExp": 15000,
+         "sumExp": 57000
+      },
+      {
+         "index": 8,
+         "levelExp": 20000,
+         "sumExp": 77000
+      },
+      {
+         "index": 9,
+         "levelExp": 25000,
+         "sumExp": 102000
+      },
+      {
+         "index": 10,
+         "levelExp": 50000,
+         "sumExp": 152000
+      },
+      {
+         "index": 11,
+         "levelExp": 60000,
+         "sumExp": 212000
+      },
+      {
+         "index": 12,
+         "levelExp": 70000,
+         "sumExp": 282000
+      },
+      {
+         "index": 13,
+         "levelExp": 80000,
+         "sumExp": 362000
+      },
+      {
+         "index": 14,
+         "levelExp": 90000,
+         "sumExp": 452000
+      },
+      {
+         "index": 15,
+         "levelExp": 100000,
+         "sumExp": 552000
+      },
+      {
+         "index": 16,
+         "levelExp": 120000,
+         "sumExp": 672000
+      },
+      {
+         "index": 17,
+         "levelExp": 140000,
+         "sumExp": 812000
+      },
+      {
+         "index": 18,
+         "levelExp": 160000,
+         "sumExp": 972000
+      },
+      {
+         "index": 19,
+         "levelExp": 180000,
+         "sumExp": 1152000
+      },
+      {
+         "index": 20,
+         "levelExp": 200000,
+         "sumExp": 1352000
+      },
+      {
+         "index": 21,
+         "levelExp": 240000,
+         "sumExp": 1592000
+      },
+      {
+         "index": 22,
+         "levelExp": 280000,
+         "sumExp": 1872000
+      },
+      {
+         "index": 23,
+         "levelExp": 320000,
+         "sumExp": 2192000
+      },
+      {
+         "index": 24,
+         "levelExp": 360000,
+         "sumExp": 2552000
+      },
+      {
+         "index": 25,
+         "levelExp": 400000,
+         "sumExp": 2952000
+      },
+      {
+         "index": 26,
+         "levelExp": 450000,
+         "sumExp": 3402000
+      },
+      {
+         "index": 27,
+         "levelExp": 500000,
+         "sumExp": 3902000
+      },
+      {
+         "index": 28,
+         "levelExp": 550000,
+         "sumExp": 4452000
+      },
+      {
+         "index": 29,
+         "levelExp": 600000,
+         "sumExp": 5052000
+      },
+      {
+         "index": 30,
+         "levelExp": 650000,
+         "sumExp": 5702000
+      }
+   ]
+}

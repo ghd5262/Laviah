@@ -1,0 +1,192 @@
+{
+	"patterns": [{
+		"level": 1,
+		"widthAngleDistance": 15.0,
+		"type": 0,
+		"pattern": [
+			"      P ",
+			"     P  ",
+			"    P   ",
+			"   P    ",
+			"  P     ",
+			" P      ",
+			"        ",
+			"        ",
+			"        ",
+			"        ",
+			"        ",
+			"        ",
+			"      P ",
+			"     P  ",
+			"    P   ",
+			"   P    ",
+			"  P     ",
+			" P      ",
+			"P       ",
+			" P      ",
+			"  P     ",
+			"   P    ",
+			"    P   ",
+			"     P  ",
+			"      P "
+		]
+	}, {
+		"level": 1,
+		"widthAngleDistance": 15.0,
+		"type": 0,
+		"pattern": [
+			"      P      ",
+			"     P P     ",
+			"    P   P    ",
+			"   P     P   ",
+			"    P   P    ",
+			"     P P     ",
+			"      P      ",
+			"     P P     ",
+			"    P   P    ",
+			"   P     P   ",
+			"  P       P  ",
+			"   P     P   ",
+			"    P   P    ",
+			"     P P     ",
+			"      P      "
+		]
+	}, {
+		"level": 1,
+		"widthAngleDistance": 15.0,
+		"type": 0,
+		"pattern": [
+			"     P           P      ",
+			"    P P         P P     ",
+			"   P   P       P   P    ",
+			"  P     P     P     P   ",
+			" P       P   P       P  ",
+			"P         P P         P ",
+			" P       P   P       P  ",
+			"  P     P     P     P   ",
+			"   P   P       P   P    ",
+			"    P P         P P     ",
+			"     P           P      "
+		]
+	}, {
+		"level": 1,
+		"widthAngleDistance": 15.0,
+		"type": 0,
+		"pattern": [
+			"P  P    P  P    P  P    ",
+			"  P    P  P    P  P    P",
+			" P    P  P    P  P    P ",
+			"P    P  P    P  P    P  ",
+			" P    P  P    P  P    P ",
+			"  P    P  P    P  P    P",
+			"P  P    P  P    P  P    ",
+			" P  P    P  P    P  P   ",
+			"P  P    P  P    P  P    ",
+			"  P    P  P    P  P    P",
+			" P    P  P    P  P    P ",
+			"P    P  P    P  P    P  "
+		]
+	}, {
+		"level": 1,
+		"widthAngleDistance": 15.0,
+		"type": 0,
+		"pattern": [
+			"      P ",
+			"     P  ",
+			"    P   ",
+			"   P    ",
+			"  P     ",
+			" P      ",
+			"  P     ",
+			"   P    ",
+			"    P   ",
+			"     P  ",
+			"      P "
+		]
+	}, {
+		"level": 1,
+		"widthAngleDistance": 15.0,
+		"type": 0,
+		"pattern": [
+			"P       ",
+			" P      ",
+			"  P     ",
+			"   P    ",
+			"  P     ",
+			" P      ",
+			"  P     ",
+			"   P    ",
+			"    P   ",
+			"     P  ",
+			"      P "
+		]
+	}, {
+		"level": 1,
+		"widthAngleDistance": 15.0,
+		"type": 0,
+		"pattern": [
+			"P           ",
+			" P          ",
+			"  P         ",
+			"   P        ",
+			"    P       ",
+			"     P      ",
+			"      P     ",
+			"       P    ",
+			"        P   ",
+			"         P  ",
+			"          P "
+		]
+	}, {
+		"level": 1,
+		"widthAngleDistance": 15.0,
+		"type": 0,
+		"pattern": [
+			"  P     ",
+			" P      ",
+			"  P     ",
+			"   P    ",
+			"    P   ",
+			"     P  ",
+			"      P ",
+			"       P",
+			"      P ",
+			"     P  ",
+			"      P "
+		]
+	}, {
+		"level": 1,
+		"widthAngleDistance": 15.0,
+		"type": 0,
+		"pattern": [
+			"   PP    ",
+			"    PP   ",
+			"     PP  ",
+			"      PP ",
+			"       PP",
+			"      PP ",
+			"     PP  ",
+			"    PP   ",
+			"   PP    ",
+			"  PP     ",
+			"   PP    "
+		]
+	}, {
+		"level": 1,
+		"widthAngleDistance": 15.0,
+		"type": 0,
+		"pattern": [
+			" PP      ",
+			"  PP     ",
+			"   PP    ",
+			"    PP   ",
+			"     PP  ",
+			"      PP ",
+			"     PP  ",
+			"    PP   ",
+			"   PP    ",
+			"  PP     ",
+			" PP      "
+		]
+	}]
+	}

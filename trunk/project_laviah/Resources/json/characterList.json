@@ -1,0 +1,173 @@
+{
+	"characters": [{
+			"index": 0,
+			"openLevel": 0,
+			"isPrepared": 1,
+			"defaultSkill": [{
+					"skillindex": 0,
+					"value": 0
+				},
+				{
+					"skillindex": 1,
+					"value": 0
+				},
+				{
+					"skillindex": 2,
+					"value": 0
+				},
+				{
+					"skillindex": 3,
+					"value": 3
+				},
+				{
+					"skillindex": 4,
+					"value": 200
+				},
+				{
+					"skillindex": 5,
+					"value": 2
+				},
+				{
+					"skillindex": 6,
+					"value": 1.2
+				}
+			]
+		},
+		{
+			"index": 1,
+			"openLevel": 5,
+			"isPrepared": 1,
+			"defaultSkill": [{
+					"skillindex": 0,
+					"value": 0
+				},
+				{
+					"skillindex": 1,
+					"value": 0
+				},
+				{
+					"skillindex": 2,
+					"value": 0
+				},
+				{
+					"skillindex": 3,
+					"value": 5
+				},
+				{
+					"skillindex": 4,
+					"value": 350
+				},
+				{
+					"skillindex": 5,
+					"value": 2
+				},
+				{
+					"skillindex": 6,
+					"value": 1.2
+				}
+			]
+		},
+		{
+			"index": 2,
+			"openLevel": 10,
+			"isPrepared": 0,
+			"defaultSkill": [{
+					"skillindex": 0,
+					"value": 1
+				},
+				{
+					"skillindex": 1,
+					"value": 1
+				},
+				{
+					"skillindex": 2,
+					"value": 1
+				},
+				{
+					"skillindex": 3,
+					"value": 3
+				},
+				{
+					"skillindex": 4,
+					"value": 200
+				},
+				{
+					"skillindex": 5,
+					"value": 2
+				},
+				{
+					"skillindex": 6,
+					"value": 1.2
+				}
+			]
+		},
+		{
+			"index": 3,
+			"openLevel": 15,
+			"isPrepared": 0,
+			"defaultSkill": [{
+					"skillindex": 0,
+					"value": 0
+				},
+				{
+					"skillindex": 1,
+					"value": 0
+				},
+				{
+					"skillindex": 2,
+					"value": 0
+				},
+				{
+					"skillindex": 3,
+					"value": 3
+				},
+				{
+					"skillindex": 4,
+					"value": 200
+				},
+				{
+					"skillindex": 5,
+					"value": 3
+				},
+				{
+					"skillindex": 6,
+					"value": 1.5
+				}
+			]
+		},
+		{
+			"index": 4,
+			"openLevel": 20,
+			"isPrepared": 0,
+			"defaultSkill": [{
+					"skillindex": 0,
+					"value": 1
+				},
+				{
+					"skillindex": 1,
+					"value": 1
+				},
+				{
+					"skillindex": 2,
+					"value": 1
+				},
+				{
+					"skillindex": 3,
+					"value": 5
+				},
+				{
+					"skillindex": 4,
+					"value": 350
+				},
+				{
+					"skillindex": 5,
+					"value": 3
+				},
+				{
+					"skillindex": 6,
+					"value": 1.5
+				}
+			]
+		}
+	]
+}

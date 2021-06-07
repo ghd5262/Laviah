@@ -1,0 +1,50 @@
+{
+	"patterns": [{
+		"idx": 0,
+		"level": 0,
+		"widthAngleDistance": 3.0,
+		"pattern": [
+			" 1 ",
+			"111",
+			" 1 "
+		]
+	}, {
+		"idx": 1,
+		"level": 0,
+		"widthAngleDistance": 3.0,
+		"pattern": [
+			" 11 ",
+			"1111",
+			" 11 "
+		]
+	}, {
+		"idx": 2,
+		"level": 0,
+		"widthAngleDistance": 3.0,
+		"pattern": [
+			" 111 ",
+			"11111",
+			" 111 "
+		]
+	}, {
+		"idx": 3,
+		"level": 0,
+		"widthAngleDistance": 3.0,
+		"pattern": [
+			" 1111 ",
+			"111111",
+			" 1111 "
+		]
+	}, {
+		"idx": 4,
+		"level": 0,
+		"widthAngleDistance": 3.0,
+		"pattern": [
+			"  11  ",
+			" 1111 ",
+			"111111",
+			" 1111 ",
+			"  11  "
+		]
+	}]
+}

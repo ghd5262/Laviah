@@ -1,0 +1,458 @@
+{
+   "stageList": [{
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 0,
+            "noticeLevel": 1,
+            "patternLevel": 1,
+            "type": 1,
+            "isLevelBelow": 0,
+            "changeDuration": 1,
+            "duration": 6.5,
+            "changeTime": 6.5,
+            "zoomAngle": 0,
+            "zoomSize": 1,
+            "speed": 75,
+            "savePoint": 0,
+            "x": 540,
+            "y": 900,
+            "backgroundTop": {
+               "r": 0,
+               "g": 0,
+               "b": 16
+            },
+            "backgroundBottom": {
+               "r": 30,
+               "g": 18,
+               "b": 90
+            },
+            "bulletColor": {
+               "r": 255,
+               "g": 255,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 1,
+            "noticeLevel": 1,
+            "patternLevel": 1,
+            "type": 1,
+            "isLevelBelow": 0,
+            "changeDuration": 2,
+            "duration": 7,
+            "changeTime": 13.5,
+            "zoomAngle": 0,
+            "zoomSize": 0.75,
+            "speed": 75,
+            "savePoint": 0,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 0,
+               "g": 0,
+               "b": 16
+            },
+            "backgroundBottom": {
+               "r": 30,
+               "g": 18,
+               "b": 90
+            },
+            "bulletColor": {
+               "r": 255,
+               "g": 255,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 2,
+            "noticeLevel": 1,
+            "patternLevel": 2,
+            "type": 1,
+            "isLevelBelow": 0,
+            "changeDuration": 2,
+            "duration": 13.5,
+            "changeTime": 27,
+            "zoomAngle": 0,
+            "zoomSize": 0.75,
+            "speed": 75,
+            "savePoint": 0,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 23,
+               "g": 15,
+               "b": 87
+            },
+            "backgroundBottom": {
+               "r": 59,
+               "g": 31,
+               "b": 105
+            },
+            "bulletColor": {
+               "r": 255,
+               "g": 255,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 3,
+            "noticeLevel": 1,
+            "patternLevel": 3,
+            "type": 1,
+            "isLevelBelow": 1,
+            "changeDuration": 2,
+            "duration": 7,
+            "changeTime": 34,
+            "zoomAngle": 0,
+            "zoomSize": 0.65,
+            "speed": 85,
+            "savePoint": 0,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 54,
+               "g": 36,
+               "b": 117
+            },
+            "backgroundBottom": {
+               "r": 120,
+               "g": 56,
+               "b": 148
+            },
+            "bulletColor": {
+               "r": 255,
+               "g": 255,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 4,
+            "noticeLevel": 1,
+            "patternLevel": 3,
+            "type": 1,
+            "isLevelBelow": 1,
+            "changeDuration": 2,
+            "duration": 7,
+            "changeTime": 41,
+            "zoomAngle": 0,
+            "zoomSize": 0.65,
+            "speed": 85,
+            "savePoint": 1,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 54,
+               "g": 36,
+               "b": 117
+            },
+            "backgroundBottom": {
+               "r": 120,
+               "g": 56,
+               "b": 148
+            },
+            "bulletColor": {
+               "r": 255,
+               "g": 255,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 5,
+            "noticeLevel": 1,
+            "patternLevel": 4,
+            "type": 1,
+            "isLevelBelow": 1,
+            "changeDuration": 2,
+            "duration": 7,
+            "changeTime": 48,
+            "zoomAngle": 0,
+            "zoomSize": 0.65,
+            "speed": 85,
+            "savePoint": 0,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 54,
+               "g": 36,
+               "b": 117
+            },
+            "backgroundBottom": {
+               "r": 120,
+               "g": 56,
+               "b": 148
+            },
+            "bulletColor": {
+               "r": 255,
+               "g": 255,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 6,
+            "noticeLevel": 1,
+            "patternLevel": 4,
+            "type": 1,
+            "isLevelBelow": 1,
+            "changeDuration": 2,
+            "duration": 6,
+            "changeTime": 54,
+            "zoomAngle": 0,
+            "zoomSize": 0.55,
+            "speed": 95,
+            "savePoint": 0,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 54,
+               "g": 36,
+               "b": 117
+            },
+            "backgroundBottom": {
+               "r": 120,
+               "g": 56,
+               "b": 148
+            },
+            "bulletColor": {
+               "r": 255,
+               "g": 255,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 7,
+            "noticeLevel": 1,
+            "patternLevel": 4,
+            "type": 1,
+            "isLevelBelow": 1,
+            "changeDuration": 2,
+            "duration": 13.5,
+            "changeTime": 67.5,
+            "zoomAngle": 0,
+            "zoomSize": 0.45,
+            "speed": 105,
+            "savePoint": 0,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 75,
+               "g": 47,
+               "b": 84
+            },
+            "backgroundBottom": {
+               "r": 184,
+               "g": 62,
+               "b": 101
+            },
+            "bulletColor": {
+               "r": 255,
+               "g": 255,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 8,
+            "noticeLevel": 2,
+            "patternLevel": 5,
+            "type": 1,
+            "isLevelBelow": 1,
+            "changeDuration": 2,
+            "duration": 7,
+            "changeTime": 74.5,
+            "zoomAngle": 0,
+            "zoomSize": 0.75,
+            "speed": 85,
+            "savePoint": 0,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 83,
+               "g": 72,
+               "b": 122
+            },
+            "backgroundBottom": {
+               "r": 105,
+               "g": 50,
+               "b": 92
+            },
+            "bulletColor": {
+               "r": 152,
+               "g": 207,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 9,
+            "noticeLevel": 2,
+            "patternLevel": 5,
+            "type": 1,
+            "isLevelBelow": 1,
+            "changeDuration": 2,
+            "duration": 6.5,
+            "changeTime": 81,
+            "zoomAngle": 0,
+            "zoomSize": 0.75,
+            "speed": 85,
+            "savePoint": 1,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 83,
+               "g": 72,
+               "b": 122
+            },
+            "backgroundBottom": {
+               "r": 105,
+               "g": 50,
+               "b": 92
+            },
+            "bulletColor": {
+               "r": 152,
+               "g": 207,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 10,
+            "noticeLevel": 2,
+            "patternLevel": 5,
+            "type": 1,
+            "isLevelBelow": 1,
+            "changeDuration": 2,
+            "duration": 6.5,
+            "changeTime": 87.5,
+            "zoomAngle": 0,
+            "zoomSize": 0.85,
+            "speed": 75,
+            "savePoint": 0,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 63,
+               "g": 72,
+               "b": 124
+            },
+            "backgroundBottom": {
+               "r": 98,
+               "g": 64,
+               "b": 109
+            },
+            "bulletColor": {
+               "r": 152,
+               "g": 207,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 11,
+            "noticeLevel": 2,
+            "patternLevel": 5,
+            "type": 1,
+            "isLevelBelow": 1,
+            "changeDuration": 2,
+            "duration": 6.5,
+            "changeTime": 94,
+            "zoomAngle": 0,
+            "zoomSize": 0.85,
+            "speed": 75,
+            "savePoint": 0,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 63,
+               "g": 72,
+               "b": 124
+            },
+            "backgroundBottom": {
+               "r": 98,
+               "g": 64,
+               "b": 109
+            },
+            "bulletColor": {
+               "r": 152,
+               "g": 207,
+               "b": 255
+            }
+         }
+      },
+      {
+         "stageIndex": 0,
+         "openLevel": 0,
+         "stageData": {
+            "index": 12,
+            "noticeLevel": 3,
+            "patternLevel": 1,
+            "type": 1,
+            "isLevelBelow": 0,
+            "changeDuration": 2,
+            "duration": 13.5,
+            "changeTime": 107.5,
+            "zoomAngle": 0,
+            "zoomSize": 1,
+            "speed": 65,
+            "savePoint": 0,
+            "x": 540,
+            "y": 672,
+            "backgroundTop": {
+               "r": 23,
+               "g": 15,
+               "b": 87
+            },
+            "backgroundBottom": {
+               "r": 59,
+               "g": 31,
+               "b": 105
+            },
+            "bulletColor": {
+               "r": 107,
+               "g": 185,
+               "b": 237
+            }
+         }
+      }
+   ]
+}

@@ -1,0 +1,183 @@
+{
+	"costumes": [{
+			"index": 0,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 1,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 2,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 3,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 4,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 5,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 6,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 7,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 8,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 9,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 10,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 11,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 12,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 13,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 14,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 15,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 16,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 17,
+			"characterIndex": 1,
+			"enable": 1
+		},
+		{
+			"index": 18,
+			"characterIndex": 1,
+			"enable": 1
+		},
+		{
+			"index": 19,
+			"characterIndex": 2,
+			"enable": 1
+		},
+		{
+			"index": 20,
+			"characterIndex": 2,
+			"enable": 1
+		},
+		{
+			"index": 21,
+			"characterIndex": 3,
+			"enable": 1
+		},
+		{
+			"index": 22,
+			"characterIndex": 3,
+			"enable": 1
+		},
+		{
+			"index": 23,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 24,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 25,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 26,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 27,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 28,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 29,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 30,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 31,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 32,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 33,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 34,
+			"characterIndex": 0,
+			"enable": 1
+		},
+		{
+			"index": 35,
+			"characterIndex": 0,
+			"enable": 1
+		}
+	]
+}

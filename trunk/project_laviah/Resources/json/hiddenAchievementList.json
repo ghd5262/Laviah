@@ -1,0 +1,3374 @@
+{
+	"achievements": [{
+			"index": 0,
+			"type": 2,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COSTUME_RANDOM",
+					"rewardValue": 0
+				},
+				{
+					"contentsValue": 100,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "STAR_COUNT",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 300,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 300,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 150
+				},
+				{
+					"contentsValue": 5,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COIN_COUNT",
+							"itemIndex": 0,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 200
+				},
+				{
+					"contentsValue": 1,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "REVIVE_COUNT",
+							"itemIndex": 0,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 250
+				}
+			]
+		},
+		{
+			"index": 1,
+			"type": 2,
+			"visible": 1,
+			"openLevel": 5,
+			"level": [{
+					"contentsValue": 300,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "STAR_COUNT",
+							"itemIndex": 0,
+							"materialValue": 300,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 200,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COMBO_SCORE",
+							"itemIndex": 0,
+							"materialValue": 200,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 150
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COIN_COUNT",
+							"itemIndex": 0,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 200
+				},
+				{
+					"contentsValue": 1,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "MAGNET_ITEM_USE",
+							"itemIndex": 0,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 250
+				},
+				{
+					"contentsValue": 800,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 800,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_CHARACTER",
+					"rewardValue": 1
+				}
+			]
+		},
+		{
+			"index": 2,
+			"type": 2,
+			"visible": 0,
+			"openLevel": 10,
+			"level": [{
+					"contentsValue": 1,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "BARRIER_ITEM_USE",
+							"itemIndex": 0,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 200
+				},
+				{
+					"contentsValue": 2,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COIN_ITEM_USE",
+							"itemIndex": 0,
+							"materialValue": 2,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 400
+				},
+				{
+					"contentsValue": 5,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "STAR_ITEM_USE",
+							"itemIndex": 0,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 600
+				},
+				{
+					"contentsValue": 2,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "NORMAL_ACHIEVEMENT_CLEAR_COUNT",
+							"itemIndex": 0,
+							"materialValue": 2,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 800
+				},
+				{
+					"contentsValue": 2000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 2000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_CHARACTER",
+					"rewardValue": 2
+				}
+			]
+		},
+		{
+			"index": 3,
+			"type": 2,
+			"visible": 0,
+			"openLevel": 15,
+			"level": [{
+					"contentsValue": 3,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "GIANT_ITEM_USE",
+							"itemIndex": 0,
+							"materialValue": 3,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 300
+				},
+				{
+					"contentsValue": 300,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COMBO_SCORE",
+							"itemIndex": 0,
+							"materialValue": 300,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 600
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "GIANT_COUNT_TOTAL",
+							"itemIndex": 0,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 900
+				},
+				{
+					"contentsValue": 2000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "STAR_SCORE",
+							"itemIndex": 0,
+							"materialValue": 2000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1200
+				},
+				{
+					"contentsValue": 3500,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 3500,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_CHARACTER",
+					"rewardValue": 3
+				}
+			]
+		},
+		{
+			"index": 4,
+			"type": 2,
+			"visible": 0,
+			"openLevel": 20,
+			"level": [{
+					"contentsValue": 3,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "GIANT_ITEM_USE",
+							"itemIndex": 0,
+							"materialValue": 3,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 300
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				}
+			]
+		},
+		{
+			"index": 5,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 5,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 50
+				},
+				{
+					"contentsValue": 1,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "STAR_ITEM_USE",
+							"itemIndex": 0,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 5,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "BARRIER_COUNT",
+							"itemIndex": 0,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 150
+				},
+				{
+					"contentsValue": 4,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_LEVEL",
+							"itemIndex": 0,
+							"materialValue": 4,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 200
+				},
+				{
+					"contentsValue": 150,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COMBO_SCORE",
+							"itemIndex": 0,
+							"materialValue": 150,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 250
+				}
+			]
+		},
+		{
+			"index": 6,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 5,
+			"level": [{
+					"contentsValue": 1500,
+					"checkerType": 1,
+					"characterIndex": 1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 1500,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 1,
+					"checkerType": 1,
+					"characterIndex": 1,
+					"material": [{
+							"materialKey": "MAGNET_ITEM_USE",
+							"itemIndex": 0,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 150
+				},
+				{
+					"contentsValue": 1,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 3,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 200
+				},
+				{
+					"contentsValue": 1,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 4,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 250
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 1,
+					"characterIndex": 1,
+					"material": [{
+							"materialKey": "MAGNET_COUNT",
+							"itemIndex": 0,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 300
+				}
+			]
+		},
+		{
+			"index": 7,
+			"type": 1,
+			"visible": 0,
+			"openLevel": 10,
+			"level": [{
+					"contentsValue": 10,
+					"checkerType": 1,
+					"characterIndex": 2,
+					"material": [{
+							"materialKey": "BARRIER_COUNT",
+							"itemIndex": 0,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 200
+				},
+				{
+					"contentsValue": 30,
+					"checkerType": 1,
+					"characterIndex": 2,
+					"material": [{
+							"materialKey": "STAR_BARRIER_COUNT",
+							"itemIndex": 0,
+							"materialValue": 30,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 400
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 1,
+					"characterIndex": 2,
+					"material": [{
+							"materialKey": "COIN_BARRIER_COUNT",
+							"itemIndex": 0,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 600
+				},
+				{
+					"contentsValue": 300,
+					"checkerType": 1,
+					"characterIndex": 2,
+					"material": [{
+							"materialKey": "COMBO_SCORE",
+							"itemIndex": 0,
+							"materialValue": 300,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 800
+				},
+				{
+					"contentsValue": 2500,
+					"checkerType": 1,
+					"characterIndex": 2,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 2500,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				}
+			]
+		},
+		{
+			"index": 8,
+			"type": 1,
+			"visible": 0,
+			"openLevel": 15,
+			"level": [{
+					"contentsValue": 10,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "CURRENT_CHARACTER",
+							"itemIndex": 0,
+							"materialValue": 2,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 200
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				}
+			]
+		},
+		{
+			"index": 9,
+			"type": 1,
+			"visible": 0,
+			"openLevel": 20,
+			"level": [{
+					"contentsValue": 10,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "CURRENT_CHARACTER",
+							"itemIndex": 0,
+							"materialValue": 2,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 200
+
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				}
+			]
+		},
+		{
+			"index": 10,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 5000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 5000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 500
+				},
+				{
+					"contentsValue": 8000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 8000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 800
+				},
+				{
+					"contentsValue": 10000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 10000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 15000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 15000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1500
+				},
+				{
+					"contentsValue": 30000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 30000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				}
+			]
+		},
+		{
+			"index": 11,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1111,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 1111,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1111
+				},
+				{
+					"contentsValue": 2222,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 2222,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2222
+				},
+				{
+					"contentsValue": 3333,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 3333,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+
+					"rewardValue": 3333
+				},
+				{
+					"contentsValue": 5555,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 5555,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5555
+				},
+				{
+					"contentsValue": 7777,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 7777,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 7777
+				}
+			]
+		},
+		{
+			"index": 12,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 100000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 100000,
+							"isFit": 0
+						},
+
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				},
+				{
+					"contentsValue": 150000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 150000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 15000
+				},
+				{
+					"contentsValue": 200000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 200000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 20000
+				},
+				{
+					"contentsValue": 250000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 250000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 25000
+				},
+				{
+					"contentsValue": 300000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "TOTAL_SCORE",
+							"itemIndex": 0,
+							"materialValue": 300000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 30000
+				}
+			]
+		},
+		{
+			"index": 13,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 100,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COIN_COUNT",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 500
+				},
+				{
+					"contentsValue": 300,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COIN_COUNT",
+							"itemIndex": 0,
+							"materialValue": 300,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 500,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COIN_COUNT",
+							"itemIndex": 0,
+							"materialValue": 500,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 1000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COIN_COUNT",
+							"itemIndex": 0,
+							"materialValue": 1000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				},
+				{
+					"contentsValue": 1500,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COIN_COUNT",
+							"itemIndex": 0,
+							"materialValue": 1500,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 15000
+				}
+			]
+		},
+		{
+			"index": 14,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COMBO_SCORE",
+							"itemIndex": 0,
+							"materialValue": 1000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 1500,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COMBO_SCORE",
+							"itemIndex": 0,
+							"materialValue": 1500,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 2000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COMBO_SCORE",
+							"itemIndex": 0,
+							"materialValue": 2000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				},
+				{
+					"contentsValue": 2500,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COMBO_SCORE",
+							"itemIndex": 0,
+							"materialValue": 2500,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 4000
+				},
+				{
+					"contentsValue": 3000,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "COMBO_SCORE",
+							"itemIndex": 0,
+							"materialValue": 3000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				}
+			]
+		},
+		{
+			"index": 15,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 50,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "BARRIER_COUNT",
+							"itemIndex": 0,
+							"materialValue": 50,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 150
+				},
+				{
+					"contentsValue": 100,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "BARRIER_COUNT",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 300
+				},
+				{
+					"contentsValue": 150,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "BARRIER_COUNT",
+							"itemIndex": 0,
+							"materialValue": 150,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 450
+				},
+				{
+					"contentsValue": 200,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "BARRIER_COUNT",
+							"itemIndex": 0,
+							"materialValue": 200,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 600
+				},
+				{
+					"contentsValue": 250,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "BARRIER_COUNT",
+							"itemIndex": 0,
+							"materialValue": 250,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 750
+				}
+			]
+		},
+		{
+			"index": 16,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 50,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "GIANT_COUNT_MISSILE",
+							"itemIndex": 0,
+							"materialValue": 50,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 80,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "GIANT_COUNT_MISSILE",
+							"itemIndex": 0,
+							"materialValue": 80,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 100,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "GIANT_COUNT_MISSILE",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				},
+				{
+					"contentsValue": 120,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "GIANT_COUNT_MISSILE",
+							"itemIndex": 0,
+							"materialValue": 120,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				},
+				{
+					"contentsValue": 150,
+					"checkerType": 1,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "GIANT_COUNT_MISSILE",
+							"itemIndex": 0,
+							"materialValue": 150,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 15000
+				}
+			]
+		},
+		{
+			"index": 17,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 5,
+					"checkerType": 4,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COSTUME_LIST",
+							"itemIndex": 0,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 800
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 4,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COSTUME_LIST",
+							"itemIndex": 0,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1600
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 4,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COSTUME_LIST",
+							"itemIndex": 0,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2400
+				},
+				{
+					"contentsValue": 20,
+					"checkerType": 4,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COSTUME_LIST",
+							"itemIndex": 0,
+							"materialValue": 20,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3200
+				},
+				{
+					"contentsValue": 25,
+					"checkerType": 4,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COSTUME_LIST",
+							"itemIndex": 0,
+							"materialValue": 25,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 4000
+				}
+			]
+		},
+		{
+			"index": 18,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 50,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_CHANGE_TO_COIN",
+							"itemIndex": 0,
+							"materialValue": 50,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 100,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_CHANGE_TO_COIN",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 150,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_CHANGE_TO_COIN",
+							"itemIndex": 0,
+							"materialValue": 150,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				},
+				{
+					"contentsValue": 200,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_CHANGE_TO_COIN",
+							"itemIndex": 0,
+							"materialValue": 200,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 4000
+				},
+				{
+					"contentsValue": 250,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_CHANGE_TO_COIN",
+							"itemIndex": 0,
+							"materialValue": 250,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				}
+			]
+		},
+		{
+			"index": 19,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 50,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_CHANGE_TO_STAR",
+							"itemIndex": 0,
+							"materialValue": 50,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 100,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_CHANGE_TO_STAR",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 150,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_CHANGE_TO_STAR",
+							"itemIndex": 0,
+							"materialValue": 150,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				},
+				{
+					"contentsValue": 200,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_CHANGE_TO_STAR",
+							"itemIndex": 0,
+							"materialValue": 200,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 4000
+				},
+				{
+					"contentsValue": 250,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_CHANGE_TO_STAR",
+							"itemIndex": 0,
+							"materialValue": 250,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				}
+			]
+		},
+		{
+			"index": 20,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 600,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_APPRECIATE_PLANET",
+							"itemIndex": 0,
+							"materialValue": 600,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 500
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				}
+			]
+		},
+		{
+			"index": 21,
+			"type": 1,
+			"visible": 0,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 100,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ROCKET_CONTROLL",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				},
+				{
+					"material": [{},
+						{},
+						{}
+					]
+				}
+			]
+		},
+		{
+			"index": 22,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 5,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PHOTO_SHARE",
+							"itemIndex": 0,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 500
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PHOTO_SHARE",
+							"itemIndex": 0,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 20,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PHOTO_SHARE",
+							"itemIndex": 0,
+							"materialValue": 20,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1500
+				},
+				{
+					"contentsValue": 50,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PHOTO_SHARE",
+							"itemIndex": 0,
+							"materialValue": 50,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2500
+				},
+				{
+					"contentsValue": 100,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PHOTO_SHARE",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				}
+			]
+		},
+		{
+			"index": 23,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 5,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_FACEBOOK_COUNT",
+							"itemIndex": 0,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_FACEBOOK_COUNT",
+							"itemIndex": 0,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1500
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_FACEBOOK_COUNT",
+							"itemIndex": 0,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 20,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_FACEBOOK_COUNT",
+							"itemIndex": 0,
+							"materialValue": 20,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2500
+				},
+				{
+					"contentsValue": 30,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_FACEBOOK_COUNT",
+							"itemIndex": 0,
+							"materialValue": 30,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				}
+			]
+		},
+		{
+			"index": 24,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 9,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_NORMAL_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 9,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 900
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_NORMAL_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1500
+				},
+				{
+					"contentsValue": 30,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_NORMAL_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 30,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				},
+				{
+					"contentsValue": 60,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_NORMAL_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 60,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 6000
+				},
+				{
+					"contentsValue": 90,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_NORMAL_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 90,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 9000
+				}
+			]
+		},
+		{
+			"index": 25,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 300,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_NORMAL_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 300,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				},
+				{
+					"contentsValue": 400,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_NORMAL_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 400,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 20000
+				},
+				{
+					"contentsValue": 500,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_NORMAL_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 500,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 30000
+				},
+				{
+					"contentsValue": 600,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_NORMAL_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 600,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 40000
+				},
+				{
+					"contentsValue": 700,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_NORMAL_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 700,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 50000
+				}
+			]
+		},
+		{
+			"index": 26,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 10,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_HIDDEN_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 300
+				},
+				{
+					"contentsValue": 30,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_HIDDEN_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 30,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1500
+				},
+				{
+					"contentsValue": 50,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_HIDDEN_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 50,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				},
+				{
+					"contentsValue": 80,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_HIDDEN_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 80,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				},
+				{
+					"contentsValue": 150,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_HIDDEN_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 150,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				}
+			]
+		},
+		{
+			"index": 27,
+			"type": 1,
+			"visible": 0,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 50,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_HIDDEN_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 50,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				},
+				{
+					"contentsValue": 75,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_HIDDEN_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 75,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				},
+				{
+					"contentsValue": 100,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_HIDDEN_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 15000
+				},
+				{
+					"contentsValue": 125,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_HIDDEN_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 125,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 20000
+				},
+				{
+					"contentsValue": 150,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_HIDDEN_ACHIEVEMENT_COUNT",
+							"itemIndex": 0,
+							"materialValue": 150,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 25000
+				}
+			]
+		},
+		{
+			"index": 28,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 50,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 50,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 100,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 150,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 150,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				},
+				{
+					"contentsValue": 200,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 200,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 4000
+				},
+				{
+					"contentsValue": 250,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 250,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				}
+			]
+		},
+		{
+			"index": 29,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 500,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 500,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				},
+				{
+					"contentsValue": 750,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 750,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 15000
+				},
+				{
+					"contentsValue": 1000,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 1000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 20000
+				},
+				{
+					"contentsValue": 1250,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 1250,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 25000
+				},
+				{
+					"contentsValue": 1500,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_PLAY_COUNT",
+							"itemIndex": 0,
+							"materialValue": 1500,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 30000
+				}
+			]
+		},
+		{
+			"index": 30,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 10000,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COIN",
+							"itemIndex": 0,
+							"materialValue": 10000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 20000,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COIN",
+							"itemIndex": 0,
+							"materialValue": 20000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 30000,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COIN",
+							"itemIndex": 0,
+							"materialValue": 30000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				},
+				{
+					"contentsValue": 40000,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COIN",
+							"itemIndex": 0,
+							"materialValue": 40000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 4000
+				},
+				{
+					"contentsValue": 50000,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COIN",
+							"itemIndex": 0,
+							"materialValue": 50000,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				}
+			]
+		},
+		{
+			"index": 31,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1111,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COIN",
+							"itemIndex": 0,
+							"materialValue": 1111,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 111
+				},
+				{
+					"contentsValue": 2222,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COIN",
+							"itemIndex": 0,
+							"materialValue": 2222,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 222
+				},
+				{
+					"contentsValue": 3333,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COIN",
+							"itemIndex": 0,
+							"materialValue": 3333,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 333
+				},
+				{
+					"contentsValue": 5555,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COIN",
+							"itemIndex": 0,
+							"materialValue": 5555,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 555
+				},
+				{
+					"contentsValue": 7777,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_COIN",
+							"itemIndex": 0,
+							"materialValue": 7777,
+							"isFit": 1
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 777
+				}
+			]
+		},
+		{
+			"index": 32,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 50,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_DEAD_BY_MISSILE",
+							"itemIndex": 0,
+							"materialValue": 50,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 100,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_DEAD_BY_MISSILE",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1500
+				},
+				{
+					"contentsValue": 150,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_DEAD_BY_MISSILE",
+							"itemIndex": 0,
+							"materialValue": 150,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 200,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_DEAD_BY_MISSILE",
+							"itemIndex": 0,
+							"materialValue": 200,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2500
+				},
+				{
+					"contentsValue": 250,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_DEAD_BY_MISSILE",
+							"itemIndex": 0,
+							"materialValue": 250,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				}
+			]
+		},
+		{
+			"index": 33,
+			"type": 1,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 50,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_SAVED_REVIVE",
+							"itemIndex": 0,
+							"materialValue": 50,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 100,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_SAVED_REVIVE",
+							"itemIndex": 0,
+							"materialValue": 100,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1500
+				},
+				{
+					"contentsValue": 150,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_SAVED_REVIVE",
+							"itemIndex": 0,
+							"materialValue": 150,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 200,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_SAVED_REVIVE",
+							"itemIndex": 0,
+							"materialValue": 200,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2500
+				},
+				{
+					"contentsValue": 250,
+					"checkerType": 2,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_SAVED_REVIVE",
+							"itemIndex": 0,
+							"materialValue": 250,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 3000
+				}
+			]
+		},
+		{
+			"index": 34,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 0,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 5,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 0,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 0,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 0,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				},
+				{
+					"contentsValue": 20,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 0,
+							"materialValue": 20,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				}
+			]
+		},
+		{
+			"index": 35,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 1,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 5,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 1,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 1,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 1,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				},
+				{
+					"contentsValue": 20,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 1,
+							"materialValue": 20,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				}
+			]
+		},
+		{
+			"index": 36,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 2,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 5,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 2,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 2,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 2,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				},
+				{
+					"contentsValue": 20,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 2,
+							"materialValue": 20,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				}
+			]
+		},
+		{
+			"index": 37,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 3,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 5,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 3,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 3,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 3,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+
+				},
+				{
+					"contentsValue": 20,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 3,
+							"materialValue": 20,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				}
+			]
+		},
+		{
+			"index": 38,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 4,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 5,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 4,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 4,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 4,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				},
+				{
+					"contentsValue": 20,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 4,
+							"materialValue": 20,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				}
+			]
+		},
+		{
+			"index": 39,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 5,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 5,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 5,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 5,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 5,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				},
+				{
+					"contentsValue": 20,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 5,
+							"materialValue": 20,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				}
+			]
+		},
+		{
+			"index": 40,
+			"type": 0,
+			"visible": 1,
+			"openLevel": 0,
+			"level": [{
+					"contentsValue": 1,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 6,
+							"materialValue": 1,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 100
+				},
+				{
+					"contentsValue": 5,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 6,
+							"materialValue": 5,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 1000
+				},
+				{
+					"contentsValue": 10,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 6,
+							"materialValue": 10,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 2000
+				},
+				{
+					"contentsValue": 15,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 6,
+							"materialValue": 15,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 5000
+				},
+				{
+					"contentsValue": 20,
+					"checkerType": 5,
+					"characterIndex": -1,
+					"material": [{
+							"materialKey": "USER_ITEM_LEVEL",
+							"itemIndex": 6,
+							"materialValue": 20,
+							"isFit": 0
+						},
+						{},
+						{}
+					],
+					"rewardKey": "REWARD_COIN",
+					"rewardValue": 10000
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,19 @@
+{
+	"moreGames": [{
+		"index": 0,
+		"androidUrl": "http://www.cocos2d-x.org/",
+		"iosUrl": "http://www.cocos2d-x.org/"
+	}, {
+		"index": 1,
+		"androidUrl": "http://www.hshgames.com/",
+		"iosUrl": "http://www.cocos2d-x.org/"
+	}, {
+		"index": 2,
+		"androidUrl": "",
+		"iosUrl": "http://www.cocos2d-x.org/"
+	}, {
+		"index": 3,
+		"androidUrl": "http://www.naver.com/",
+		"iosUrl": "http://www.cocos2d-x.org/"
+	}]
+}

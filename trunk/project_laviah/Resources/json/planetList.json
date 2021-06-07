@@ -1,0 +1,45 @@
+{
+   "planets": [{
+         "index": 0,
+         "openLevel": 0,
+         "enable": 1,
+         "leaderboard": "Laviah"
+      },
+      {
+         "index": 1,
+         "openLevel": 0,
+         "enable": 1,
+         "leaderboard": "Ella"
+      },
+      {
+         "index": 2,
+         "openLevel": 0,
+         "enable": 1,
+         "leaderboard": "Riva"
+      },
+      {
+         "index": 3,
+         "openLevel": 0,
+         "enable": 1,
+         "leaderboard": "Arid"
+      },
+      {
+         "index": 4,
+         "openLevel": 0,
+         "enable": 1,
+         "leaderboard": "Oculus"
+      },
+      {
+         "index": 5,
+         "openLevel": 0,
+         "enable": 1,
+         "leaderboard": "Glory"
+      },
+      {
+         "index": 6,
+         "openLevel": 0,
+         "enable": 0,
+         "leaderboard": "Reverse"
+      }
+   ]
+}

@@ -1,0 +1,3220 @@
+{
+   "supports": ["en", "ko", "ja", "zh"],
+   "contents": [{
+         "key": "LANGUAGE",
+         "en": "English",
+         "ko": "한국어",
+         "ja": "日本語",
+         "zh": "中國"
+      },
+      {
+         "key": "CURRENCY_UNIT",
+         "en": "0.99 USD",
+         "ko": "1,000 KRW ",
+         "ja": "100 JPY",
+         "zh": "6 CNY"
+      },
+      {
+         "key": "TIME_HOUR",
+         "en": "h",
+         "ko": "시간",
+         "ja": "h",
+         "zh": "h"
+      },
+      {
+         "key": "TIME_MIN",
+         "en": "m",
+         "ko": "분",
+         "ja": "m",
+         "zh": "m"
+      },
+      {
+         "key": "TIME_SEC",
+         "en": "s",
+         "ko": "초",
+         "ja": "s",
+         "zh": "s"
+      },
+      {
+         "key": "BUTTON_YES",
+         "en": "Yes",
+         "ko": "예",
+         "ja": "Yes",
+         "zh": "Yes"
+      },
+      {
+         "key": "BUTTON_NO",
+         "en": "No",
+         "ko": "아니요",
+         "ja": "No",
+         "zh": "No"
+      },
+      {
+         "key": "BUTTON_SELECT",
+         "en": "Select",
+         "ko": "선택",
+         "ja": "Select",
+         "zh": "Select"
+      },
+      {
+         "key": "BUTTON_OK",
+         "en": "Ok",
+         "ko": "확인",
+         "ja": "Ok",
+         "zh": "Ok"
+      },
+      {
+         "key": "BUTTON_CANCEL",
+         "en": "Cancel",
+         "ko": "취소",
+         "ja": "Cancel",
+         "zh": "Cancel"
+      },
+      {
+         "key": "BUTTON_CONFIRM",
+         "en": "Confirm",
+         "ko": "확인",
+         "ja": "Confirm",
+         "zh": "Confirm"
+      },
+      {
+         "key": "BUTTON_PLAY",
+         "en": "Play",
+         "ko": "게임하기",
+         "ja": "Play",
+         "zh": "Play"
+      },
+      {
+         "key": "BUTTON_GET",
+         "en": "Get",
+         "ko": "받기",
+         "ja": "Get",
+         "zh": "Get"
+      },
+      {
+         "key": "BUTTON_LOAD",
+         "en": "Load",
+         "ko": "불러오기",
+         "ja": "Load",
+         "zh": "Load"
+      },
+      {
+         "key": "BUTTON_WATCH",
+         "en": "Watch",
+         "ko": "감상하기",
+         "ja": "Watch",
+         "zh": "Watch"
+      },
+      {
+         "key": "BUTTON_MENU_SHARE",
+         "en": "Share",
+         "ko": "공유하기",
+         "ja": "Share",
+         "zh": "Share"
+      },
+      {
+         "key": "BUTTON_MENU_START",
+         "en": "Tap to start",
+         "ko": "시작하려면 누르세요.",
+         "ja": "Tap to start",
+         "zh": "Tap to start"
+      },
+      {
+         "key": "BUTTON_MENU_WORKSHOP",
+         "en": "Work",
+         "ko": "Work",
+         "ja": "Work",
+         "zh": "Work"
+      },
+      {
+         "key": "BUTTON_MENU_SELECT",
+         "en": "Select",
+         "ko": "Select",
+         "ja": "Select",
+         "zh": "Select"
+      },
+      {
+         "key": "BUTTON_THANKYOU",
+         "en": "Thank you",
+         "ko": "고맙습니다.",
+         "ja": "Thank you",
+         "zh": "Thank you"
+      },
+      {
+         "key": "BUTTON_LATER",
+         "en": "Later",
+         "ko": "나중에",
+         "ja": "Later",
+         "zh": "Later"
+      },
+      {
+         "key": "BUTTON_DO_NOT_AGAIN",
+         "en": "Do not show it again.",
+         "ko": "다시 보지 않기",
+         "ja": "Do not show it again.",
+         "zh": "Do not show it again."
+      },
+      {
+         "key": "REVIEW_POPUP_TEXT_1",
+         "en": "Do you love Laviah?",
+         "ko": "Laviah가 마음에 드시나요?",
+         "ja": "Do you love Laviah?",
+         "zh": "Do you love Laviah?"
+      },
+      {
+         "key": "REVIEW_POPUP_TEXT_2",
+         "en": "Thank you.\nIf you leave a review and stars in the store, it will be a great strength for us.",
+         "ko": "고맙습니다.\n스토어에 리뷰와 별점을 남겨주신다면 저희에게 큰 힘이 될거에요.",
+         "ja": "Thank you.\nIf you leave a review and stars in the store, it will be a great strength for us.",
+         "zh": "Thank you.\nIf you leave a review and stars in the store, it will be a great strength for us."
+      },
+      {
+         "key": "REVIEW_POPUP_TEXT_3",
+         "en": "We apologize for the inconvenience. Please leave reviews on Facebook to become a better Laviah.",
+         "ko": "불편을 끼쳐 드려 죄송합니다. 더 나은 Laviah가 될 수 있도록 페이스북에 리뷰를 남겨주세요.",
+         "ja": "We apologize for the inconvenience. Please leave reviews on Facebook to become a better Laviah.",
+         "zh": "We apologize for the inconvenience. Please leave reviews on Facebook to become a better Laviah."
+      },
+      {
+         "key": "GOAL_POPUP_TITLE",
+         "en": "Daily goals",
+         "ko": "오늘의 목표",
+         "ja": "Daily goals",
+         "zh": "Daily goals"
+      },
+      {
+         "key": "GOAL_SKIP_CHECK",
+         "en": "Do you want to complete this goal after watching an ad?",
+         "ko": "광고를 보고 이 목표를 완료하시겠습니까?",
+         "ja": "Do you want to complete this goal after watching an ad?",
+         "zh": "Do you want to complete this goal after watching an ad?"
+      },
+      {
+         "key": "GOAL_NEXT_RESET_TIME",
+         "en": "You have %d hours and %d minutes to the next goal.",
+         "ko": "다음 목표까지 %d 시간 %d 분 남았습니다.",
+         "ja": "You have %d hours and %d minutes to the next goal.",
+         "zh": "You have %d hours and %d minutes to the next goal."
+      },
+      {
+         "key": "CHARACTER_BUY_CHECK",
+         "en": "Are you sure you want to buy %s?",
+         "ko": "정말로 %s를(을) 구매 하시겠습니까?",
+         "ja": "Are you sure you want to buy %s?",
+         "zh": "Are you sure you want to buy %s?"
+      },
+      {
+         "key": "CHARACTER_CANNOT_RANDOM",
+         "en": "Not available to get from random box.",
+         "ko": "뽑기로 획득할 수 없습니다.",
+         "ja": "Not available to get from random box.",
+         "zh": "Not available to get from random box."
+      },
+      {
+         "key": "GAME_EXIT_CHECK",
+         "en": "Are you sure you want to exit Laviah?",
+         "ko": "정말로 게임을 종료하시겠습니까?",
+         "ja": "Are you sure you want to exit Laviah?",
+         "zh": "Are you sure you want to exit Laviah?"
+      },
+      {
+         "key": "NETWORK_DOWNLOAD_CHECK",
+         "en": "Please connect to the internet \n to download resources.",
+         "ko": "최초 실행시 필요 데이터를 다운 받기 위해서\n네트워크를 연결해주세요.",
+         "ja": "Please connect to the internet \n to download resources.",
+         "zh": "Please connect to the internet \n to download resources."
+      },
+      {
+         "key": "NETWORK_DOWNLOAD_FAIL",
+         "en": "Download Failed",
+         "ko": "다운로드를 실패했습니다.",
+         "ja": "Download Failed",
+         "zh": "Download Failed"
+      },
+      {
+         "key": "WATCH_VIDEO_TO_EARN_COIN",
+         "en": "Would you like to watch a video to earn %d more?",
+         "ko": "동영상을 보고 %d 코인을 획득 하시겠습니까?",
+         "ja": "Would you like to watch a video to earn %d more?",
+         "zh": "Would you like to watch a video to earn %d more?"
+      },
+      {
+         "key": "RESULT_POPUP_TITLE",
+         "en": "Result",
+         "ko": "결과",
+         "ja": "Result",
+         "zh": "Result"
+      },
+      {
+         "key": "RESULT_TOTAL_SCORE",
+         "en": "Total Score",
+         "ko": "최종 점수",
+         "ja": "Total Score",
+         "zh": "Total Score"
+      },
+      {
+         "key": "RESULT_BEST_SCORE",
+         "en": "Best Score",
+         "ko": "최고 점수",
+         "ja": "Best Score",
+         "zh": "Best Score"
+      },
+      {
+         "key": "RESULT_PROGRESS",
+         "en": "Progress",
+         "ko": "진행률",
+         "ja": "Progress",
+         "zh": "Progress"
+      },
+      {
+         "key": "RESULT_SCORE",
+         "en": "Score",
+         "ko": "별 점수",
+         "ja": "Score",
+         "zh": "Score"
+      },
+      {
+         "key": "RESULT_RUN",
+         "en": "Run",
+         "ko": "구른 거리",
+         "ja": "Run",
+         "zh": "Run"
+      },
+      {
+         "key": "RESULT_COMBO",
+         "en": "Combo",
+         "ko": "최고 콤보",
+         "ja": "Combo",
+         "zh": "Combo"
+      },
+      {
+         "key": "RESULT_COIN",
+         "en": "Coin",
+         "ko": "코인 점수",
+         "ja": "Coin",
+         "zh": "Coin"
+      },
+      {
+         "key": "RESULT_BONUSTIME",
+         "en": "BonusTime",
+         "ko": "보너스 타임",
+         "ja": "BonusTime",
+         "zh": "BonusTime"
+      },
+      {
+         "key": "RESULT_GOAL",
+         "en": "Goal",
+         "ko": "오늘의 목표",
+         "ja": "Goal",
+         "zh": "Goal"
+      },
+      {
+         "key": "RESULT_RANK",
+         "en": "Rank",
+         "ko": "순위",
+         "ja": "Rank",
+         "zh": "Rank"
+      },
+      {
+         "key": "RESULT_PLAYER_LEVEL",
+         "en": "User Level",
+         "ko": "내 레벨",
+         "ja": "User Level",
+         "zh": "User Level"
+      },
+      {
+         "key": "REVIVE_POPUP_TITLE",
+         "en": "Revive",
+         "ko": "부활",
+         "ja": "Revive",
+         "zh": "Revive"
+      },
+      {
+         "key": "REVIVE_BUTTON_WATCH_VIDEO",
+         "en": "Watch a Video",
+         "ko": "동영상 보고 부활",
+         "ja": "Watch a Video",
+         "zh": "Watch a Video"
+      },
+      {
+         "key": "REVIVE_BUTTON_USE_COIN",
+         "en": "Use %d Coin",
+         "ko": "%d 코인 사용하여 부활",
+         "ja": "Use %d Coin",
+         "zh": "Use %d Coin"
+      },
+      {
+         "key": "COUNTDOWN_LAST",
+         "en": "GO!",
+         "ko": "출발!",
+         "ja": "GO!",
+         "zh": "GO!"
+      },
+      {
+         "key": "REWARD_TITLE_ACHIEVEMENT",
+         "en": "Reward",
+         "ko": "업적완료 보상",
+         "ja": "Reward",
+         "zh": "Reward"
+      },
+      {
+         "key": "REWARD_TITLE_FREE_COIN",
+         "en": "Free coin",
+         "ko": "무료 코인",
+         "ja": "Free coin",
+         "zh": "Free coin"
+      },
+      {
+         "key": "REWARD_TITLE_FREE_COIN_NEXT_1",
+         "en": "Until next free coin",
+         "ko": "다음 무료 코인까지 ",
+         "ja": "Until next free coin",
+         "zh": "Until next free coin"
+      },
+      {
+         "key": "REWARD_TITLE_FREE_COIN_NEXT_2",
+         "en": "left.",
+         "ko": "남음.",
+         "ja": "left.",
+         "zh": "left."
+      },
+      {
+         "key": "REWARD_TITLE_BONUS_COIN",
+         "en": "Bonus coin",
+         "ko": "보너스 코인",
+         "ja": "Bonus coin",
+         "zh": "Bonus coin"
+      },
+      {
+         "key": "REWARD_TITLE_GOAL",
+         "en": "Reward",
+         "ko": "목표완료 보상",
+         "ja": "Reward",
+         "zh": "Reward"
+      },
+      {
+         "key": "REWARD_TITLE_COUPON",
+         "en": "Coupon reward",
+         "ko": "쿠폰 보상",
+         "ja": "Coupon reward",
+         "zh": "Coupon reward"
+      },
+      {
+         "key": "NETWORK_CONNECT_CHECK",
+         "en": "Please check your network connection.",
+         "ko": "네트워크 연결을 확인해 주세요.",
+         "ja": "Please check your network connection.",
+         "zh": "Please check your network connection."
+      },
+      {
+         "key": "REVIVE_FIRST_AD_NEXT",
+         "en": "Continue first, and show an ad after finish.",
+         "ko": "먼저 부활 하고 난 후 게임이 종료되면 광고가 보여집니다.",
+         "ja": "Continue first, and show an ad after finish.",
+         "zh": "Continue first, and show an ad after finish."
+      },
+      {
+         "key": "ALERT_COIN_LESS",
+         "en": "There are not enough coins.",
+         "ko": "코인이 부족합니다.",
+         "ja": "There are not enough coins.",
+         "zh": "There are not enough coins."
+      },
+      {
+         "key": "DATA_SAVE_SUCCEED",
+         "en": "Saving is complete.",
+         "ko": "저장이 완료되었습니다.",
+         "ja": "Saving is complete.",
+         "zh": "Saving is complete."
+      },
+      {
+         "key": "DATA_SAVE_FAILED",
+         "en": "Cannot save to cloud service. If you are using iPhone, Please turn on the iCloud setting on the iPhone option.",
+         "ko": "클라우드에 데이터를 저장할 수 없습니다. 아이폰 사용유저일 경우 설정에서 iCloud를 켜주세요.",
+         "ja": "Cannot save to cloud service. If you are using iPhone, Please turn on the iCloud setting on the iPhone option.",
+         "zh": "Cannot save to cloud service. If you are using iPhone, Please turn on the iCloud setting on the iPhone option."
+      },
+      {
+         "key": "DATA_LOAD_SUCCEED",
+         "en": "Loading is complete.",
+         "ko": "불러오기가 완료되었습니다.",
+         "ja": "Loading is complete.",
+         "zh": "Loading is complete."
+      },
+      {
+         "key": "DATA_LOAD_ALERT",
+         "en": "Are you sure you want to load data from cloud? \nThe data on device will be overwritten by data of cloud.",
+         "ko": "서버에 저장된 데이터를 불러오시겠습니까? \n기존의 기기에 저장되었던 데이터는 삭제됩니다.",
+         "ja": "Are you sure you want to load data from cloud? \nThe data on device will be overwritten by data of cloud.",
+         "zh": "Are you sure you want to load data from cloud? \nThe data on device will be overwritten by data of cloud."
+      },
+      {
+         "key": "GET_ACHIEVEMENT",
+         "en": "You just have an achievement!!",
+         "ko": "업적을 획득하셨습니다!",
+         "ja": "You just have an achievement!!",
+         "zh": "You just have an achievement!!"
+      },
+      {
+         "key": "GET_HIDDEN_ACHIEVEMENT",
+         "en": "You just found a hidden achievement!",
+         "ko": "숨겨진 업적을 발견했습니다!",
+         "ja": "You just found a hidden achievement!",
+         "zh": "You just found a hidden achievement!"
+      },
+      {
+         "key": "BUY_COSTUME",
+         "en": "Buy %d",
+         "ko": "구매 %d",
+         "ja": "Buy %d",
+         "zh": "Buy %d"
+      },
+      {
+         "key": "NO_MORE_COSTUME",
+         "en": "There is no more costume to able to get.",
+         "ko": "더 이상 구매할 수 있는 의상이 없습니다. ",
+         "ja": "There is no more costume to able to get.",
+         "zh": "There is no more costume to able to get."
+      },
+      {
+         "key": "OPTION_LOGIN",
+         "en": "Login",
+         "ko": "로그인",
+         "ja": "Login",
+         "zh": "Login"
+      },
+      {
+         "key": "OPTION_AUTO_SAVE",
+         "en": "Autosave",
+         "ko": "자동저장",
+         "ja": "Autosave",
+         "zh": "Autosave"
+      },
+      {
+         "key": "OPTION_VERSION",
+         "en": "Version",
+         "ko": "버전",
+         "ja": "Version",
+         "zh": "Version"
+      },
+      {
+         "key": "OPTION_SUPPORT",
+         "en": "Support",
+         "ko": "지원",
+         "ja": "Support",
+         "zh": "Support"
+      },
+      {
+         "key": "OPTION_EMAIL",
+         "en": "ghd5262@gmail.com",
+         "ko": "ghd5262@gmail.com",
+         "ja": "ghd5262@gmail.com",
+         "zh": "ghd5262@gmail.com"
+      },
+      {
+         "key": "OPTION_ALERT_AUTO_SAVE",
+         "en": "If you turn on the autosave option, it will always be autosaved in the cloud while the network is connected.",
+         "ko": "자동 저장 옵션을 켜면 네트워크가 연결되어 있는 동안 클라우드에 항상 저장됩니다.",
+         "ja": "If you turn on the autosave option, it will always be saved in the cloud while the network is connected.",
+         "zh": "If you turn on the autosave option, it will always be saved in the cloud while the network is connected."
+      },
+      {
+         "key": "OPTION_ALERT_LOGOUT",
+         "en": "Are you sure you want to log out? Cloud storage and other features may not work properly.",
+         "ko": "정말로 로그아웃 하시겠습니까? 클라우드 저장 및 다른기능이 제대로 동작하지 않을 수 있습니다.",
+         "ja": "Are you sure you want to log out? Cloud storage and other features may not work properly.",
+         "zh": "Are you sure you want to log out? Cloud storage and other features may not work properly."
+      },
+      {
+         "key": "OPTION_DEVELOPER_0",
+         "en": "Hong Seonghee",
+         "ko": "홍성희",
+         "ja": "Hong Seonghee",
+         "zh": "Hong Seonghee"
+      },
+      {
+         "key": "OPTION_DEVELOPER_1",
+         "en": "Kim Heaseong",
+         "ko": "김해성",
+         "ja": "Kim Heaseong",
+         "zh": "Kim Heaseong"
+      },
+
+      {
+         "key": "OPTION_JOB_0",
+         "en": "Developer & Artist",
+         "ko": "개발 & 그래픽",
+         "ja": "Developer & Artist",
+         "zh": "Developer & Artist"
+      },
+      {
+         "key": "OPTION_JOB_1",
+         "en": "Sound Design",
+         "ko": "음악",
+         "ja": "Sound Design",
+         "zh": "Sound Design"
+      },
+      {
+         "key": "OPTION_COUPON",
+         "en": "Coupon",
+         "ko": "쿠폰",
+         "ja": "Coupon",
+         "zh": "Coupon"
+      },
+      {
+         "key": "OPTION_FACEBOOK",
+         "en": "Facebook",
+         "ko": "페이스북",
+         "ja": "Facebook",
+         "zh": "Facebook"
+      },
+      {
+         "key": "OPTION_TWITTER",
+         "en": "Twitter",
+         "ko": "트위터",
+         "ja": "Twitter",
+         "zh": "Twitter"
+      },
+      {
+         "key": "OPTION_INSTAGRAM",
+         "en": "Instagram",
+         "ko": "인스타그램",
+         "ja": "Instagram",
+         "zh": "Instagram"
+      },
+      {
+         "key": "ALERT_LOGIN",
+         "en": "This feature requires login.",
+         "ko": "로그인이 필요합니다.",
+         "ja": "This feature requires login.",
+         "zh": "This feature requires login."
+      },
+      {
+         "key": "FACEBOOK_PERMISSION_LOGIN",
+         "en": " Facebook login,",
+         "ko": " 페이스북 로그인,",
+         "ja": " Facebook login,",
+         "zh": " Facebook login,"
+      },
+      {
+         "key": "FACEBOOK_PERMISSION_FRIEND",
+         "en": " Friends list,",
+         "ko": " 친구 리스트,",
+         "ja": " Friends list,",
+         "zh": " Friends list,"
+      },
+      {
+         "key": "FACEBOOK_PERMISSION_PUBLISH",
+         "en": " Publishing Authority,",
+         "ko": " 게시 권한,",
+         "ja": " Publish permission,",
+         "zh": " Publish permission,"
+      },
+      {
+         "key": "FACEBOOK_ALERT_MESSAGE_FIRST",
+         "en": "Authorization is required to use the scoring and ranking system.",
+         "ko": "점수 기록 및 랭킹 시스템을 이용하려면 권한",
+         "ja": "Authorization is required to use the scoring and ranking system.",
+         "zh": "Authorization is required to use the scoring and ranking system."
+      },
+      {
+         "key": "FACEBOOK_ALERT_MESSAGE_LAST",
+         "en": "We do not post actual posts. Do not worry!",
+         "ko": "이 필요합니다.\n실제 게시물을 올리지 않습니다. 걱정하지 마세요!",
+         "ja": "We do not post actual posts. Do not worry!",
+         "zh": "We do not post actual posts. Do not worry!"
+      },
+      {
+         "key": "FACEBOOK_SHARE_TITLE",
+         "en": "Laviah",
+         "ko": "Laviah",
+         "ja": "Laviah",
+         "zh": "Laviah"
+      },
+      {
+         "key": "FACEBOOK_SHARE_TEXT",
+         "en": "My score is",
+         "ko": "제 점수는요!",
+         "ja": "My score is",
+         "zh": "My score is"
+      },
+      {
+         "key": "SCORE_SHARE_TITLE",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "SCORE_SHARE_TEXT",
+         "en": "%d Points! #Laviah",
+         "ko": "%d 점! #Laviah",
+         "ja": "%d Points! #Laviah",
+         "zh": "%d Points! #Laviah"
+      },
+      {
+         "key": "COSTUME_SHARE_TITLE",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "COSTUME_SHARE_TEXT",
+         "en": "New costume! #Laviah",
+         "ko": "새로운 코스튬! #Laviah",
+         "ja": "New costume! #Laviah",
+         "zh": "New costume! #Laviah"
+      },
+      {
+         "key": "RANK_POPUP_TITLE",
+         "en": "Ranking",
+         "ko": "랭킹",
+         "ja": "Ranking",
+         "zh": "Ranking"
+      },
+      {
+         "key": "RANK_POPUP_RESET_TIME",
+         "en": "%d Days %d : %d left",
+         "ko": "%d 일 %d 시간 %d 분 남음",
+         "ja": "%d Days %d : %d left",
+         "zh": "%d Days %d : %d left"
+      },
+      {
+         "key": "CHARACTER_SELECT_BUTTON",
+         "en": "Select",
+         "ko": "선택",
+         "ja": "Select",
+         "zh": "Select"
+      },
+      {
+         "key": "CHARACTER_LOCKED_BUTTON",
+         "en": "Locked",
+         "ko": "잠김",
+         "ja": "Locked",
+         "zh": "Locked"
+      },
+      {
+         "key": "CHARACTER_ALERT_LOCKED",
+         "en": "The character is locked. \nEarn achievements and unlock the character.",
+         "ko": "캐릭터가 잠겨 있습니다. \n업적을 획득하여 잠금을 해제해주세요.",
+         "ja": "The character is locked. \nEarn achievements and unlock the character.",
+         "zh": "The character is locked. \nEarn achievements and unlock the character."
+      },
+      {
+         "key": "COSTUME_POPUP_TITLE",
+         "en": "Costume",
+         "ko": "코스튬",
+         "ja": "Costume",
+         "zh": "Costume"
+      },
+      {
+         "key": "COSTUME_SELECT_BUTTON",
+         "en": "Select",
+         "ko": "선택",
+         "ja": "Select",
+         "zh": "Select"
+      },
+      {
+         "key": "COSTUME_LOCKED_BUTTON",
+         "en": "Locked",
+         "ko": "잠김",
+         "ja": "Locked",
+         "zh": "Locked"
+      },
+      {
+         "key": "ACHIEVEMENT_POPUP_TITLE",
+         "en": "Achievement",
+         "ko": "업적",
+         "ja": "Achievement",
+         "zh": "Achievement"
+      },
+      {
+         "key": "ACHIEVEMENT_GET_BUTTON",
+         "en": "GET",
+         "ko": "완료",
+         "ja": "GET",
+         "zh": "GET"
+      },
+      {
+         "key": "ACHIEVEMENT_COMPLETE_BUTTON",
+         "en": "COMPLETE",
+         "ko": "모두완료",
+         "ja": "COMPLETE",
+         "zh": "COMPLETE"
+      },
+      {
+         "key": "END_TITLE_0",
+         "en": "Wait!",
+         "ko": "잠깐!",
+         "ja": "Wait!",
+         "zh": "Wait!"
+      },
+      {
+         "key": "END_TITLE_1",
+         "en": "Ouch!",
+         "ko": "충돌!",
+         "ja": "Ouch!",
+         "zh": "Ouch!"
+      },
+      {
+         "key": "END_TITLE_2",
+         "en": "Watch out!",
+         "ko": "이런,",
+         "ja": "Watch out!",
+         "zh": "Watch out!"
+      },
+      {
+         "key": "END_TITLE_3",
+         "en": "Be careful!",
+         "ko": "조심하세요.",
+         "ja": "Be careful!",
+         "zh": "Be careful!"
+      },
+      {
+         "key": "END_TITLE_4",
+         "en": "Oh dear!",
+         "ko": "에고..",
+         "ja": "Oh dear!",
+         "zh": "Oh dear!"
+      },
+      {
+         "key": "END_TIP_0",
+         "en": "How about trying to upgrade your items?",
+         "ko": "아이템을 업그레이드 해보는건 어때요?",
+         "ja": "How about trying to upgrade your items?",
+         "zh": "How about trying to upgrade your items?"
+      },
+      {
+         "key": "END_TIP_1",
+         "en": "Watch out for ice crystals.",
+         "ko": "항상 얼음 결정을 주의하세요.",
+         "ja": "Watch out for ice crystals.",
+         "zh": "Watch out for ice crystals."
+      },
+      {
+         "key": "END_TIP_2",
+         "en": "Avoid places where light is shining!",
+         "ko": "라이트가 비춰진 곳은 피해야 해요!",
+         "ja": "Avoid places where light is shining!",
+         "zh": "Avoid places where light is shining!"
+      },
+      {
+         "key": "END_TIP_3",
+         "en": "Ice can rise from the ground!",
+         "ko": "얼음이 땅에서 솟아 날 수 있으니까요!",
+         "ja": "Ice can rise from the ground!",
+         "zh": "Ice can rise from the ground!"
+      },
+      {
+         "key": "END_TIP_4",
+         "en": "The ice has not melted yet ...",
+         "ko": "아직 얼음이 녹지 않았는데...",
+         "ja": "The ice has not melted yet ...",
+         "zh": "The ice has not melted yet ..."
+      },
+      {
+         "key": "FACEBOOK_RANK_REWARD_1",
+         "en": "Weekly 1st place reward",
+         "ko": "주간 1위 보상",
+         "ja": "Weekly 1st place reward",
+         "zh": "Weekly 1st place reward"
+      },
+      {
+         "key": "FACEBOOK_RANK_REWARD_2",
+         "en": "Weekly 2nd place reward",
+         "ko": "주간 2위 보상",
+         "ja": "Weekly 2nd place reward",
+         "zh": "Weekly 2nd place reward"
+      },
+      {
+         "key": "FACEBOOK_RANK_REWARD_3",
+         "en": "Weekly 3rd place reward",
+         "ko": "주간 3위 보상",
+         "ja": "Weekly 3rd place reward",
+         "zh": "Weekly 3rd place reward"
+      },
+      {
+         "key": "FACEBOOK_RANK_ALERT_POPUP",
+         "en": "The competition for ranking this week has not ended yet.",
+         "ko": "아직 이번주 순위 경쟁이 끝나지 않았습니다.",
+         "ja": "The competition for ranking this week has not ended yet.",
+         "zh": "The competition for ranking this week has not ended yet."
+      },
+      {
+         "key": "WORKSHOP_POPUP_TITLE",
+         "en": "Workshop",
+         "ko": "작업실",
+         "ja": "Workshop",
+         "zh": "Workshop"
+      },
+      {
+         "key": "WORKSHOP_BUTTON_BUY",
+         "en": "Buy",
+         "ko": "구매",
+         "ja": "Buy",
+         "zh": "Buy"
+      },
+      {
+         "key": "WORKSHOP_BUTTON_MAX_LEVEL",
+         "en": "MAX",
+         "ko": "최고 레벨",
+         "ja": "MAX",
+         "zh": "MAX"
+      },
+      {
+         "key": "WORKSHOP_BUTTON_BUY_LEVEL",
+         "en": "%d\nBuy",
+         "ko": "%d\n구매",
+         "ja": "%d\nBuy",
+         "zh": "%d\nBuy"
+      },
+      {
+         "key": "WORKSHOP_ITEM_NAME_0",
+         "en": "Moby's star barrier",
+         "ko": "모비의 별 방어막",
+         "ja": "Moby's star barrier",
+         "zh": "Moby's star barrier"
+      },
+      {
+         "key": "WORKSHOP_ITEM_NAME_1",
+         "en": "Moby's coin barrier",
+         "ko": "모비의 코인 방어막",
+         "ja": "Moby's coin barrier",
+         "zh": "Moby's coin barrier"
+      },
+      {
+         "key": "WORKSHOP_ITEM_NAME_2",
+         "en": "Moby's barrier",
+         "ko": "모비의 방어막 ",
+         "ja": "Moby's barrier",
+         "zh": "Moby's barrier"
+      },
+      {
+         "key": "WORKSHOP_ITEM_NAME_3",
+         "en": "Poby's magnet",
+         "ko": "포비의 자석",
+         "ja": "Poby's magnet",
+         "zh": "Poby's magnet"
+      },
+      {
+         "key": "WORKSHOP_ITEM_NAME_4",
+         "en": "Range of magnet",
+         "ko": "자석 범위",
+         "ja": "Range of magnet",
+         "zh": "Range of magnet"
+      },
+      {
+         "key": "WORKSHOP_ITEM_NAME_5",
+         "en": "Boby's giant potion",
+         "ko": "보비의 거대화 물약",
+         "ja": "Boby's giant potion",
+         "zh": "Boby's giant potion"
+      },
+      {
+         "key": "WORKSHOP_ITEM_NAME_6",
+         "en": "Size of giant",
+         "ko": "거대화 크기",
+         "ja": "Size of giant",
+         "zh": "Size of giant"
+      },
+      {
+         "key": "WORKSHOP_ITEM_NAME_7",
+         "en": "Score of star",
+         "ko": "별 점수",
+         "ja": "Score of star",
+         "zh": "Score of star"
+      },
+      {
+         "key": "WORKSHOP_ITEM_EXPLAIN_0",
+         "en": "It keeps the star barrier to last a longer time.",
+         "ko": "별 방어막을 튼튼하게 만들어 좀 더 오랜시간 지속됩니다.",
+         "ja": "It keeps the star barrier to last a longer time.",
+         "zh": "It keeps the star barrier to last a longer time."
+      },
+      {
+         "key": "WORKSHOP_ITEM_EXPLAIN_1",
+         "en": "It keeps the coin barrier to last a longer time.",
+         "ko": "코인 방어막을 튼튼하게 만들어 좀 더 오랜시간 지속됩니다.",
+         "ja": "It keeps the coin barrier to last a longer time.",
+         "zh": "It keeps the coin barrier to last a longer time."
+      },
+      {
+         "key": "WORKSHOP_ITEM_EXPLAIN_2",
+         "en": "It keeps the barrier to last a longer time.",
+         "ko": "방어막을 튼튼하게 만들어 좀 더 오래 지속됩니다.",
+         "ja": "It keeps the barrier to last a longer time.",
+         "zh": "It keeps the barrier to last a longer time."
+      },
+      {
+         "key": "WORKSHOP_ITEM_EXPLAIN_3",
+         "en": "It keeps the magnet to last a longer time.",
+         "ko": "자력이 좀 더 오랜시간 지속되게 해줍니다.",
+         "ja": "It keeps the magnet to last a longer time.",
+         "zh": "It keeps the magnet to last a longer time."
+      },
+      {
+         "key": "WORKSHOP_ITEM_EXPLAIN_4",
+         "en": "It makes the magnetic force more stronger.",
+         "ko": "자력을 좀 더 세게 해줍니다.",
+         "ja": "It makes the magnetic force more stronger.",
+         "zh": "It makes the magnetic force more stronger."
+      },
+      {
+         "key": "WORKSHOP_ITEM_EXPLAIN_5",
+         "en": "It keeps the giant power to last a longer time.",
+         "ko": "거대화를 좀 더 오랜시간 지속되게 해줍니다. ",
+         "ja": "It keeps the giant power to last a longer time.",
+         "zh": "It keeps the giant power to last a longer time."
+      },
+      {
+         "key": "WORKSHOP_ITEM_EXPLAIN_6",
+         "en": "It makes more big.",
+         "ko": "좀 더 거대해질 수 있습니다. ",
+         "ja": "It makes more big.",
+         "zh": "It makes more big."
+      },
+      {
+         "key": "WORKSHOP_ITEM_EXPLAIN_7",
+         "en": "The star's starting score increases by 1 point.",
+         "ko": "별의 시작 점수를 1 올려줍니다.",
+         "ja": "The star's starting score increases by 1 point.",
+         "zh": "The star's starting score increases by 1 point."
+      },
+      {
+         "key": "OPTION_MUSIC_BGM",
+         "en": "Background sound",
+         "ko": "배경음",
+         "ja": "Background sound",
+         "zh": "Background sound"
+      },
+      {
+         "key": "OPTION_MUSIC_EFFECT",
+         "en": "Sound effects",
+         "ko": "효과음",
+         "ja": "Sound effects",
+         "zh": "Sound effects"
+      },
+      {
+         "key": "OPTION_TUTORIAL",
+         "en": "Replay Tutorial",
+         "ko": "튜토리얼 다시보기",
+         "ja": "Replay Tutorial",
+         "zh": "Replay Tutorial"
+      },
+      {
+         "key": "OPTION_TUTORIAL_START_CHECK",
+         "en": "Are you sure you want to replay the tutorial?",
+         "ko": "튜토리얼을 다시 보시겠습니까?",
+         "ja": "Are you sure you want to replay the tutorial?",
+         "zh": "Are you sure you want to replay the tutorial?"
+      },
+      {
+         "key": "OPTION_DATASAVE_SAVE",
+         "en": "Save",
+         "ko": "저장하기",
+         "ja": "Save",
+         "zh": "Save"
+      },
+      {
+         "key": "OPTION_DATASAVE_RESET",
+         "en": "Reset",
+         "ko": "초기화",
+         "ja": "Reset",
+         "zh": "Reset"
+      },
+      {
+         "key": "OPTION_DATASAVE_CONTENT",
+         "en": "Save your game data on the server and keep it safe!",
+         "ko": "데이터를 서버에 저장하여 안전하게 보관하세요!",
+         "ja": "Save your game data on the server and keep it safe!",
+         "zh": "Save your game data on the server and keep it safe!"
+      },
+      {
+         "key": "OPTION_DATASAVE_SAVE_CHECK",
+         "en": "Are you sure you want to save user data?",
+         "ko": "정말로 유저 데이터를 서버에 저장 하시겠습니까?",
+         "ja": "Are you sure you want to save user data?",
+         "zh": "Are you sure you want to save user data?"
+      },
+      {
+         "key": "OPTION_DATASAVE_LAST_SAVED_TIME",
+         "en": "( Last saved time : %d-%d-%d %d:%d:%d )",
+         "ko": "( 마지막 저장시간 : %d-%d-%d %d:%d:%d )",
+         "ja": "( Last saved time : %d-%d-%d %d:%d:%d )",
+         "zh": "( Last saved time : %d-%d-%d %d:%d:%d )"
+      },
+      {
+         "key": "OPTION_DATASAVE_NETWORK_CHECK",
+         "en": "Please connect to the network \n to save data to cloud.",
+         "ko": "서버에 유저 데이터를 저장하기 위해서 네트워크를 연결해주세요.",
+         "ja": "Please connect to the network \n to save data to cloud.",
+         "zh": "Please connect to the network \n to save data to cloud."
+      },
+      {
+         "key": "OPTION_DATASAVE_RESET_CHECK",
+         "en": "Are you sure you want to reset data? \n All existing data will be deleted.",
+         "ko": "정말로 유저 데이터를 초기화 하시겠습니까? \n 기존의 데이터가 모두 사라집니다.",
+         "ja": "Are you sure you want to reset data? \n All existing data will be deleted.",
+         "zh": "Are you sure you want to reset data? \n All existing data will be deleted."
+      },
+      {
+         "key": "OPTION_COUPON_MENT",
+         "en": "Please enter a valid coupon key.",
+         "ko": "사용 가능한 쿠폰키를 입력하세요. ",
+         "ja": "Please enter a valid coupon key.",
+         "zh": "Please enter a valid coupon key."
+      },
+      {
+         "key": "OPTION_COUPON_EXPIRED",
+         "en": "Sorry. This is not a valid period.",
+         "ko": "사용 가능한 기간이 아닙니다.",
+         "ja": "Sorry. This is not a valid period.",
+         "zh": "Sorry. This is not a valid period."
+      },
+      {
+         "key": "OPTION_COUPON_USED",
+         "en": "This coupon has already been redeemed.",
+         "ko": "이미 사용된 쿠폰입니다.",
+         "ja": "This coupon has already been redeemed.",
+         "zh": "This coupon has already been redeemed."
+      },
+      {
+         "key": "OPTION_COUPON_WRONG",
+         "en": "Wrong coupon key.\nPlease check again.",
+         "ko": "잘못된 쿠폰입니다.\n쿠폰을 다시 확인해 주세요.",
+         "ja": "Wrong coupon key.\nPlease check again.",
+         "zh": "Wrong coupon key.\nPlease check again."
+      },
+      {
+         "key": "PLANET_NAME_0",
+         "en": "Laviah",
+         "ko": "라비아",
+         "ja": "Laviah",
+         "zh": "Laviah"
+      },
+      {
+         "key": "PLANET_NAME_1",
+         "en": "Ella",
+         "ko": "엘라",
+         "ja": "Ella",
+         "zh": "Ella"
+      },
+      {
+         "key": "PLANET_NAME_2",
+         "en": "Riva",
+         "ko": "리바",
+         "ja": "Riva",
+         "zh": "Riva"
+      },
+      {
+         "key": "PLANET_NAME_3",
+         "en": "Arid",
+         "ko": "에리드",
+         "ja": "Arid",
+         "zh": "Arid"
+      },
+      {
+         "key": "PLANET_NAME_4",
+         "en": "Oculas",
+         "ko": "오큘러스",
+         "ja": "Oculas",
+         "zh": "Oculas"
+      },
+      {
+         "key": "PLANET_NAME_5",
+         "en": "Glory",
+         "ko": "글로리",
+         "ja": "Glory",
+         "zh": "Glory"
+      },
+      {
+         "key": "PLANET_TEXT_PROGRESS",
+         "en": "Progress",
+         "ko": "진행률",
+         "ja": "Progress",
+         "zh": "Progress"
+      },
+      {
+         "key": "PLANET_TEXT_ALL_RANK",
+         "en": "Best Rank",
+         "ko": "최고 순위",
+         "ja": "Best Rank",
+         "zh": "Best Rank"
+      },
+      {
+         "key": "PLANET_TEXT_WEEKLY_RANK",
+         "en": "Weekly Rank",
+         "ko": "이번주 순위",
+         "ja": "Weekly Rank",
+         "zh": "Weekly Rank"
+      },
+      {
+         "key": "PLANET_TEXT_DAILY_RANK",
+         "en": "Daily Rank",
+         "ko": "오늘의 순위",
+         "ja": "Daily Rank",
+         "zh": "Daily Rank"
+      },
+      {
+         "key": "PLANET_TEXT_ALL_SCORE",
+         "en": "Best Score",
+         "ko": "최고 점수",
+         "ja": "Best Score",
+         "zh": "Best Score"
+      },
+      {
+         "key": "PLANET_TEXT_WEEKLY_SCORE",
+         "en": "Weekly Score",
+         "ko": "이번주 최고 점수",
+         "ja": "Weekly Score",
+         "zh": "Weekly Score"
+      },
+      {
+         "key": "PLANET_TEXT_DAILY_SCORE",
+         "en": "Daily Score",
+         "ko": "오늘의 최고 점수",
+         "ja": "Daily Score",
+         "zh": "Daily Score"
+      },
+      {
+         "key": "PLANET_FORCE_OPEN",
+         "en": "Would you like to watch the video and play %s temporarily? \nIf you complete, it will be permanently open.",
+         "ko": "동영상을 보고 임시로 %s행성을 플레이 하시겠습니까? \n클리어 시 영구적으로 오픈 됩니다.",
+         "ja": "Would you like to watch the video and play %s temporarily? \nIf you complete, it will be permanently open.",
+         "zh": "Would you like to watch the video and play %s temporarily? \nIf you complete, it will be permanently open."
+      },
+      {
+         "key": "REVIVE_POPUP_TEXT_FREE",
+         "en": "Continue at the last checkpoint.",
+         "ko": "체크포인트에서 계속하기 (%d / %d)",
+         "ja": "Continue at the last checkpoint.",
+         "zh": "Continue at the last checkpoint."
+      },
+      {
+         "key": "REVIVE_POPUP_TEXT_VIDEO",
+         "en": "Watch the video and get %d more chances.",
+         "ko": "동영상 보고 기회 %d번 얻기",
+         "ja": "Watch the video and get %d more chances.",
+         "zh": "Watch the video and get %d more chances."
+      },
+      {
+         "key": "CHARACTER_NAME_0",
+         "en": "Hoby",
+         "ko": "호비",
+         "ja": "Hoby",
+         "zh": "Hoby"
+      },
+      {
+         "key": "CHARACTER_NAME_1",
+         "en": "Poby",
+         "ko": "포비",
+         "ja": "Poby",
+         "zh": "Poby"
+      },
+      {
+         "key": "CHARACTER_NAME_2",
+         "en": "Moby",
+         "ko": "모비",
+         "ja": "Moby",
+         "zh": "Moby"
+      },
+      {
+         "key": "CHARACTER_NAME_3",
+         "en": "Boby",
+         "ko": "보비",
+         "ja": "Boby",
+         "zh": "Boby"
+      },
+      {
+         "key": "CHARACTER_NAME_4",
+         "en": "Coby",
+         "ko": "코비",
+         "ja": "Coby",
+         "zh": "Coby"
+      },
+      {
+         "key": "ROCKET_NAME_0",
+         "en": "ROCKET_1",
+         "ko": "로켓1",
+         "ja": "ROCKET_1",
+         "zh": "ROCKET_1"
+      },
+      {
+         "key": "ROCKET_NAME_1",
+         "en": "ROCKET_2",
+         "ko": "로켓2",
+         "ja": "ROCKET_2",
+         "zh": "ROCKET_2"
+      },
+      {
+         "key": "ROCKET_NAME_2",
+         "en": "ROCKET_3",
+         "ko": "로켓3",
+         "ja": "ROCKET_3",
+         "zh": "ROCKET_3"
+      },
+      {
+         "key": "ROCKET_NAME_3",
+         "en": "ROCKET_4",
+         "ko": "로켓4",
+         "ja": "ROCKET_4",
+         "zh": "ROCKET_4"
+      },
+      {
+         "key": "ROCKET_NAME_4",
+         "en": "ROCKET_5",
+         "ko": "로켓5",
+         "ja": "ROCKET_5",
+         "zh": "ROCKET_5"
+      },
+      {
+         "key": "ROCKET_NAME_5",
+         "en": "ROCKET_6",
+         "ko": "로켓6",
+         "ja": "ROCKET_6",
+         "zh": "ROCKET_6"
+      },
+      {
+         "key": "ROCKET_NAME_6",
+         "en": "ROCKET_7",
+         "ko": "로켓7",
+         "ja": "ROCKET_7",
+         "zh": "ROCKET_7"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_0_0",
+         "en": "Earn %d total points",
+         "ko": "총 점수 %d점 달성하기",
+         "ja": "Earn %d total points",
+         "zh": "Earn %d total points"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_1_0",
+         "en": "Earn %d total points (Hoby)",
+         "ko": "호비로 플레이 중 총 점수 %d점 달성하기",
+         "ja": "Earn %d total points (Hoby)",
+         "zh": "Earn %d total points (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_2_0",
+         "en": "Earn %d total points (Poby)",
+         "ko": "포비로 플레이 중 총 점수 %d점 달성하기",
+         "ja": "Earn %d total points (Poby)",
+         "zh": "Earn %d total points (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_3_0",
+         "en": "Earn %d total points (Moby)",
+         "ko": "모비로 플레이 중 총 점수 %d점 달성하기",
+         "ja": "Earn %d total points (Moby)",
+         "zh": "Earn %d total points (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_4_0",
+         "en": "Earn %d total points (Boby)",
+         "ko": "보비로 플레이 중 총 점수 %d점 달성하기",
+         "ja": "Earn %d total points (Boby)",
+         "zh": "Earn %d total points (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_5_0",
+         "en": "Earn %d total points (Coby)",
+         "ko": "코비로 플레이 중 총 점수 %d점 달성하기",
+         "ja": "Earn %d total points (Coby)",
+         "zh": "Earn %d total points (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_6_0",
+         "en": "Earn %d points combo score",
+         "ko": "%d 콤보 기록하기",
+         "ja": "Earn %d points combo score",
+         "zh": "Earn %d points combo score"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_7_0",
+         "en": "Earn %d points combo score (Hoby)",
+         "ko": "호비로 플레이 중 %d 콤보 기록하기",
+         "ja": "Earn %d points combo score (Hoby)",
+         "zh": "Earn %d points combo score (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_8_0",
+         "en": "Earn %d points combo score (Poby)",
+         "ko": "포비로 플레이 중 %d 콤보 기록하기",
+         "ja": "Earn %d points combo score (Poby)",
+         "zh": "Earn %d points combo score (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_9_0",
+         "en": "Earn %d points combo score (Moby)",
+         "ko": "모비로 플레이 중 %d 콤보 기록하기",
+         "ja": "Earn %d points combo score (Moby)",
+         "zh": "Earn %d points combo score (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_10_0",
+         "en": "Earn %d points combo score (Boby)",
+         "ko": "보비로 플레이 중 %d 콤보 기록하기",
+         "ja": "Earn %d points combo score (Boby)",
+         "zh": "Earn %d points combo score (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_11_0",
+         "en": "Earn %d points combo score (Coby)",
+         "ko": "코비로 플레이 중 %d 콤보 기록하기",
+         "ja": "Earn %d points combo score (Coby)",
+         "zh": "Earn %d points combo score (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_12_0",
+         "en": "Revive %d times",
+         "ko": "%d회 부활하기",
+         "ja": "Revive %d times",
+         "zh": "Revive %d times"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_13_0",
+         "en": "Earn %d stars",
+         "ko": "별 %d개 획득하기",
+         "ja": "Earn %d stars",
+         "zh": "Earn %d stars"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_14_0",
+         "en": "Earn %d stars (Hoby)",
+         "ko": "호비로 플레이 중 별 %d개 획득하기",
+         "ja": "Earn %d stars (Hoby)",
+         "zh": "Earn %d stars (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_15_0",
+         "en": "Earn %d stars (Poby)",
+         "ko": "포비로 플레이 중 별 %d개 획득하기",
+         "ja": "Earn %d stars (Poby)",
+         "zh": "Earn %d stars (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_16_0",
+         "en": "Earn %d stars (Moby)",
+         "ko": "모비로 플레이 중 별 %d개 획득하기",
+         "ja": "Earn %d stars (Moby)",
+         "zh": "Earn %d stars (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_17_0",
+         "en": "Earn %d stars (Boby)",
+         "ko": "보비로 플레이 중 별 %d개 획득하기",
+         "ja": "Earn %d stars (Boby)",
+         "zh": "Earn %d stars (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_18_0",
+         "en": "Earn %d stars (Coby)",
+         "ko": "코비로 플레이 중 별 %d개 획득하기",
+         "ja": "Earn %d stars (Coby)",
+         "zh": "Earn %d stars (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_19_0",
+         "en": "Earn %d coins",
+         "ko": "코인 %d개 모으기",
+         "ja": "Earn %d coins",
+         "zh": "Earn %d coins"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_20_0",
+         "en": "Earn %d coins (Hoby)",
+         "ko": "호비로 플레이 중 코인 %d개 모으기",
+         "ja": "Earn %d coins (Hoby)",
+         "zh": "Earn %d coins (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_21_0",
+         "en": "Earn %d coins (Poby)",
+         "ko": "포비로 플레이 중 코인 %d개 모으기",
+         "ja": "Earn %d coins (Poby)",
+         "zh": "Earn %d coins (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_22_0",
+         "en": "Earn %d coins (Moby)",
+         "ko": "모비로 플레이 중 코인 %d개 모으기",
+         "ja": "Earn %d coins (Moby)",
+         "zh": "Earn %d coins (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_23_0",
+         "en": "Earn %d coins (Boby)",
+         "ko": "보비로 플레이 중 코인 %d개 모으기",
+         "ja": "Earn %d coins (Boby)",
+         "zh": "Earn %d coins (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_24_0",
+         "en": "Earn %d coins (Coby)",
+         "ko": "코비로 플레이 중 코인 %d개 모으기",
+         "ja": "Earn %d coins (Coby)",
+         "zh": "Earn %d coins (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_25_0",
+         "en": "Earn %d points star score",
+         "ko": "별 점수 %d점 달성하기",
+         "ja": "Earn %d points star score",
+         "zh": "Earn %d points star score"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_26_0",
+         "en": "Earn %d points star score (Hoby)",
+         "ko": "호비로 플레이 중 별 점수 %d점 달성하기",
+         "ja": "Earn %d points star score (Hoby)",
+         "zh": "Earn %d points star score (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_27_0",
+         "en": "Earn %d points star score (Poby)",
+         "ko": "포비로 플레이 중 별 점수 %d점 달성하기",
+         "ja": "Earn %d points star score (Poby)",
+         "zh": "Earn %d points star score (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_28_0",
+         "en": "Earn %d points star score (Moby)",
+         "ko": "모비로 플레이 중 별 점수 %d점 달성하기",
+         "ja": "Earn %d points star score (Moby)",
+         "zh": "Earn %d points star score (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_29_0",
+         "en": "Earn %d points star score (Boby)",
+         "ko": "보비로 플레이 중 별 점수 %d점 달성하기",
+         "ja": "Earn %d points star score (Boby)",
+         "zh": "Earn %d points star score (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_30_0",
+         "en": "Earn %d points star score (Coby)",
+         "ko": "코비로 플레이 중 별 점수 %d점 달성하기",
+         "ja": "Earn %d points star score (Coby)",
+         "zh": "Earn %d points star score (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_31_0",
+         "en": "Earn %d points coin score",
+         "ko": "코인 점수 %d점 달성하기",
+         "ja": "Earn %d points coin score",
+         "zh": "Earn %d points coin score"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_32_0",
+         "en": "Earn %d points coin score (Hoby)",
+         "ko": "호비로 플레이 중 코인 점수 %d점 달성하기",
+         "ja": "Earn %d points coin score (Hoby)",
+         "zh": "Earn %d points coin score (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_33_0",
+         "en": "Earn %d points coin score (Poby)",
+         "ko": "포비로 플레이 중 코인 점수 %d점 달성하기",
+         "ja": "Earn %d points coin score (Poby)",
+         "zh": "Earn %d points coin score (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_34_0",
+         "en": "Earn %d points coin score (Moby)",
+         "ko": "모비로 플레이 중 코인 점수 %d점 달성하기",
+         "ja": "Earn %d points coin score (Moby)",
+         "zh": "Earn %d points coin score (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_35_0",
+         "en": "Earn %d points coin score (Boby)",
+         "ko": "보비로 플레이 중 코인 점수 %d점 달성하기",
+         "ja": "Earn %d points coin score (Boby)",
+         "zh": "Earn %d points coin score (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_36_0",
+         "en": "Earn %d points coin score (Coby)",
+         "ko": "코비로 플레이 중 코인 점수 %d점 달성하기",
+         "ja": "Earn %d points coin score (Coby)",
+         "zh": "Earn %d points coin score (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_37_0",
+         "en": "Earn %d stars as a star barrier",
+         "ko": "별 방어막으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a star barrier",
+         "zh": "Earn %d stars as a star barrier"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_38_0",
+         "en": "Earn %d stars as a star barrier (Hoby)",
+         "ko": "호비로 플레이 중 별 방어막으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a star barrier (Hoby)",
+         "zh": "Earn %d stars as a star barrier (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_39_0",
+         "en": "Earn %d stars as a star barrier (Poby)",
+         "ko": "포비로 플레이 중 별 방어막으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a star barrier (Poby)",
+         "zh": "Earn %d stars as a star barrier (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_40_0",
+         "en": "Earn %d stars as a star barrier (Moby)",
+         "ko": "모비로 플레이 중 별 방어막으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a star barrier (Moby)",
+         "zh": "Earn %d stars as a star barrier (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_41_0",
+         "en": "Earn %d stars as a star barrier (Boby)",
+         "ko": "보비로 플레이 중 별 방어막으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a star barrier (Boby)",
+         "zh": "Earn %d stars as a star barrier (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_42_0",
+         "en": "Earn %d stars as a star barrier (Coby)",
+         "ko": "코비로 플레이 중 별 방어막으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a star barrier (Coby)",
+         "zh": "Earn %d stars as a star barrier (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_43_0",
+         "en": "Earn %d coins as a coin barrier",
+         "ko": "코인 방어막으로 코인 %d개 획득하기",
+         "ja": "Earn %d coins as a coin barrier",
+         "zh": "Earn %d coins as a coin barrier"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_44_0",
+         "en": "Earn %d coins as a coin barrier (Hoby)",
+         "ko": "호비로 플레이 중 코인 방어막으로 코인 %d개 획득하기",
+         "ja": "Earn %d coins as a coin barrier (Hoby)",
+         "zh": "Earn %d coins as a coin barrier (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_45_0",
+         "en": "Earn %d coins as a coin barrier (Poby)",
+         "ko": "포비로 플레이 중 코인 방어막으로 코인 %d개 획득하기",
+         "ja": "Earn %d coins as a coin barrier (Poby)",
+         "zh": "Earn %d coins as a coin barrier (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_46_0",
+         "en": "Earn %d coins as a coin barrier (Moby)",
+         "ko": "모비로 플레이 중 코인 방어막으로 코인 %d개 획득하기",
+         "ja": "Earn %d coins as a coin barrier (Moby)",
+         "zh": "Earn %d coins as a coin barrier (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_47_0",
+         "en": "Earn %d coins as a coin barrier (Boby)",
+         "ko": "보비로 플레이 중 코인 방어막으로 코인 %d개 획득하기",
+         "ja": "Earn %d coins as a coin barrier (Boby)",
+         "zh": "Earn %d coins as a coin barrier (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_48_0",
+         "en": "Earn %d coins as a coin barrier (Coby)",
+         "ko": "코비로 플레이 중 코인 방어막으로 코인 %d개 획득하기",
+         "ja": "Earn %d coins as a coin barrier (Coby)",
+         "zh": "Earn %d coins as a coin barrier (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_49_0",
+         "en": "Defending %d number of obstacles as a barrier",
+         "ko": "방어막으로 장애물 %d개 방어하기",
+         "ja": "Defending %d number of obstacles as a barrier",
+         "zh": "Defending %d number of obstacles as a barrier"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_50_0",
+         "en": "Defending %d number of obstacles as a barrier (Hoby)",
+         "ko": "호비로 플레이 중 방어막으로 장애물 %d개 방어하기",
+         "ja": "Defending %d number of obstacles as a barrier (Hoby)",
+         "zh": "Defending %d number of obstacles as a barrier (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_51_0",
+         "en": "Defending %d number of obstacles as a barrier (Poby)",
+         "ko": "포비로 플레이 중 방어막으로 장애물 %d개 방어하기",
+         "ja": "Defending %d number of obstacles as a barrier (Poby)",
+         "zh": "Defending %d number of obstacles as a barrier (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_52_0",
+         "en": "Defending %d number of obstacles as a barrier (Moby)",
+         "ko": "모비로 플레이 중 방어막으로 장애물 %d개 방어하기",
+         "ja": "Defending %d number of obstacles as a barrier (Moby)",
+         "zh": "Defending %d number of obstacles as a barrier (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_53_0",
+         "en": "Defending %d number of obstacles as a barrier (Boby)",
+         "ko": "보비로 플레이 중 방어막으로 장애물 %d개 방어하기",
+         "ja": "Defending %d number of obstacles as a barrier (Boby)",
+         "zh": "Defending %d number of obstacles as a barrier (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_54_0",
+         "en": "Defending %d number of obstacles as a barrier (Coby)",
+         "ko": "코비로 플레이 중 방어막으로 장애물 %d개 방어하기",
+         "ja": "Defending %d number of obstacles as a barrier (Coby)",
+         "zh": "Defending %d number of obstacles as a barrier (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_55_0",
+         "en": "Earn %d stars as a magnet",
+         "ko": "자석으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a magnet",
+         "zh": "Earn %d stars as a magnet"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_56_0",
+         "en": "Earn %d stars as a magnet (Hoby)",
+         "ko": "호비로 플레이 중 자석으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a magnet (Hoby)",
+         "zh": "Earn %d stars as a magnet (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_57_0",
+         "en": "Earn %d stars as a magnet (Poby)",
+         "ko": "포비로 플레이 중 자석으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a magnet (Poby)",
+         "zh": "Earn %d stars as a magnet (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_58_0",
+         "en": "Earn %d stars as a magnet (Moby)",
+         "ko": "모비로 플레이 중 자석으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a magnet (Moby)",
+         "zh": "Earn %d stars as a magnet (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_59_0",
+         "en": "Earn %d stars as a magnet (Boby)",
+         "ko": "보비로 플레이 중 자석으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a magnet (Boby)",
+         "zh": "Earn %d stars as a magnet (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_60_0",
+         "en": "Earn %d stars as a magnet (Coby)",
+         "ko": "코비로 플레이 중 자석으로 별 %d개 획득하기",
+         "ja": "Earn %d stars as a magnet (Coby)",
+         "zh": "Earn %d stars as a magnet (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_61_0",
+         "en": "Blow up %d large ice crystals as a power of a giant",
+         "ko": "거대화 하여 큰 얼음 결정 %d개 날려버리기",
+         "ja": "Blow up %d large ice crystals as a power of a giant",
+         "zh": "Blow up %d large ice crystals as a power of a giant"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_62_0",
+         "en": "Blow up %d large ice crystals as a power of a giant (Hoby)",
+         "ko": "호비로 플레이 중 거대화 하여 큰 얼음 결정 %d개 날려버리기",
+         "ja": "Blow up %d large ice crystals as a power of a giant (Hoby)",
+         "zh": "Blow up %d large ice crystals as a power of a giant (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_63_0",
+         "en": "Blow up %d large ice crystals as a power of a giant (Poby)",
+         "ko": "포비로 플레이 중 거대화 하여 큰 얼음 결정 %d개 날려버리기",
+         "ja": "Blow up %d large ice crystals as a power of a giant (Poby)",
+         "zh": "Blow up %d large ice crystals as a power of a giant (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_64_0",
+         "en": "Blow up %d large ice crystals as a power of a giant (Moby)",
+         "ko": "모비로 플레이 중 거대화 하여 큰 얼음 결정 %d개 날려버리기",
+         "ja": "Blow up %d large ice crystals as a power of a giant (Moby)",
+         "zh": "Blow up %d large ice crystals as a power of a giant (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_65_0",
+         "en": "Blow up %d large ice crystals as a power of a giant (Boby)",
+         "ko": "보비로 플레이 중 거대화 하여 큰 얼음 결정 %d개 날려버리기",
+         "ja": "Blow up %d large ice crystals as a power of a giant (Boby)",
+         "zh": "Blow up %d large ice crystals as a power of a giant (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_66_0",
+         "en": "Blow up %d large ice crystals as a power of a giant (Coby)",
+         "ko": "코비로 플레이 중 거대화 하여 큰 얼음 결정 %d개 날려버리기",
+         "ja": "Blow up %d large ice crystals as a power of a giant (Coby)",
+         "zh": "Blow up %d large ice crystals as a power of a giant (Coby)"
+      },
+      {
+
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_67_0",
+         "en": "Blow up %d number of obstacles as a power of a giant",
+         "ko": "거대화 하여 장애물 %d개 날려버리기",
+         "ja": "Blow up %d number of obstacles as a power of a giant",
+         "zh": "Blow up %d number of obstacles as a power of a giant"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_68_0",
+         "en": "Blow up %d number of obstacles as a power of a giant (Hoby)",
+         "ko": "호비로 플레이 중 거대화 하여 장애물 %d개 날려버리기",
+         "ja": "Blow up %d number of obstacles as a power of a giant (Hoby)",
+         "zh": "Blow up %d number of obstacles as a power of a giant (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_69_0",
+         "en": "Blow up %d number of obstacles as a power of a giant (Poby)",
+         "ko": "포비로 플레이 중 거대화 하여 장애물 %d개 날려버리기",
+         "ja": "Blow up %d number of obstacles as a power of a giant (Poby)",
+         "zh": "Blow up %d number of obstacles as a power of a giant (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_70_0",
+         "en": "Blow up %d number of obstacles as a power of a giant (Moby)",
+         "ko": "모비로 플레이 중 거대화 하여 장애물 %d개 날려버리기",
+         "ja": "Blow up %d number of obstacles as a power of a giant (Moby)",
+         "zh": "Blow up %d number of obstacles as a power of a giant (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_71_0",
+         "en": "Blow up %d number of obstacles as a power of a giant (Boby)",
+         "ko": "보비로 플레이 중 거대화 하여 장애물 %d개 날려버리기",
+         "ja": "Blow up %d number of obstacles as a power of a giant (Boby)",
+         "zh": "Blow up %d number of obstacles as a power of a giant (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_72_0",
+         "en": "Blow up %d number of obstacles as a power of a giant (Coby)",
+         "ko": "코비로 플레이 중 거대화 하여 장애물 %d개 날려버리기",
+         "ja": "Blow up %d number of obstacles as a power of a giant (Coby)",
+         "zh": "Blow up %d number of obstacles as a power of a giant (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_73_0",
+         "en": "Earn %d points as a barrier",
+         "ko": "방어막으로 방어하여 %d점 획득하기",
+         "ja": "Earn %d points as a barrier",
+         "zh": "Earn %d points as a barrier"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_74_0",
+         "en": "Earn %d points as a barrier (Hoby)",
+         "ko": "호비로 플레이 중 방어막으로 방어하여 %d점 획득하기",
+         "ja": "Earn %d points as a barrier (Hoby)",
+         "zh": "Earn %d points as a barrier (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_75_0",
+         "en": "Earn %d points as a barrier (Poby)",
+         "ko": "포비로 플레이 중 방어막으로 방어하여 %d점 획득하기",
+         "ja": "Earn %d points as a barrier (Poby)",
+         "zh": "Earn %d points as a barrier (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_76_0",
+         "en": "Earn %d points as a barrier (Moby)",
+         "ko": "모비로 플레이 중 방어막으로 방어하여 %d점 획득하기",
+         "ja": "Earn %d points as a barrier (Moby)",
+         "zh": "Earn %d points as a barrier (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_77_0",
+         "en": "Earn %d points as a barrier (Boby)",
+         "ko": "보비로 플레이 중 방어막으로 방어하여 %d점 획득하기",
+         "ja": "Earn %d points as a barrier (Boby)",
+         "zh": "Earn %d points as a barrier (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_78_0",
+         "en": "Earn %d points as a barrier (Coby)",
+         "ko": "코비로 플레이 중 방어막으로 방어하여 %d점 획득하기",
+         "ja": "Earn %d points as a barrier (Coby)",
+         "zh": "Earn %d points as a barrier (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_79_0",
+         "en": "Earn %d points of stars as a magnet",
+         "ko": "자석으로 %d점 획득하기",
+         "ja": "Earn %d points of stars as a magnet",
+         "zh": "Earn %d points of stars as a magnet"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_80_0",
+         "en": "Earn %d points of stars as a magnet (Hoby)",
+         "ko": "호비로 플레이 중 자석으로 %d점 획득하기",
+         "ja": "Earn %d points of stars as a magnet (Hoby)",
+         "zh": "Earn %d points of stars as a magnet (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_81_0",
+         "en": "Earn %d points of stars as a magnet (Poby)",
+         "ko": "포비로 플레이 중 자석으로 %d점 획득하기",
+         "ja": "Earn %d points of stars as a magnet (Poby)",
+         "zh": "Earn %d points of stars as a magnet (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_82_0",
+         "en": "Earn %d points of stars as a magnet (Moby)",
+         "ko": "모비로 플레이 중 자석으로 %d점 획득하기",
+         "ja": "Earn %d points of stars as a magnet (Moby)",
+         "zh": "Earn %d points of stars as a magnet (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_83_0",
+         "en": "Earn %d points of stars as a magnet (Boby)",
+         "ko": "보비로 플레이 중 자석으로 %d점 획득하기",
+         "ja": "Earn %d points of stars as a magnet (Boby)",
+         "zh": "Earn %d points of stars as a magnet (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_84_0",
+         "en": "Earn %d points of stars as a magnet (Coby)",
+         "ko": "코비로 플레이 중 자석으로 %d점 획득하기",
+         "ja": "Earn %d points of stars as a magnet (Coby)",
+         "zh": "Earn %d points of stars as a magnet (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_85_0",
+         "en": "Earn %d points as a power of a giant",
+         "ko": "거대화 하여 %d점 획득하기",
+         "ja": "Earn %d points as a power of a giant",
+         "zh": "Earn %d points as a power of a giant"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_86_0",
+         "en": "Earn %d points as a power of a giant (Hoby)",
+         "ko": "호비로 플레이 중 거대화 하여 %d점 획득하기",
+         "ja": "Earn %d points as a power of a giant (Hoby)",
+         "zh": "Earn %d points as a power of a giant (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_87_0",
+         "en": "Earn %d points as a power of a giant (Poby)",
+         "ko": "포비로 플레이 중 거대화 하여 %d점 획득하기",
+         "ja": "Earn %d points as a power of a giant (Poby)",
+         "zh": "Earn %d points as a power of a giant (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_88_0",
+         "en": "Earn %d points as a power of a giant (Moby)",
+         "ko": "모비로 플레이 중 거대화 하여 %d점 획득하기",
+         "ja": "Earn %d points as a power of a giant (Moby)",
+         "zh": "Earn %d points as a power of a giant (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_89_0",
+         "en": "Earn %d points as a power of a giant (Boby)",
+         "ko": "보비로 플레이 중 거대화 하여 %d점 획득하기",
+         "ja": "Earn %d points as a power of a giant (Boby)",
+         "zh": "Earn %d points as a power of a giant (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_90_0",
+         "en": "Earn %d points as a power of a giant (Coby)",
+         "ko": "코비로 플레이 중 거대화 하여 %d점 획득하기",
+         "ja": "Earn %d points as a power of a giant (Coby)",
+         "zh": "Earn %d points as a power of a giant (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_91_0",
+         "en": "Earn %d number of star barrier item",
+         "ko": "플레이 중 별 방어막 %d개 획득하기",
+         "ja": "Earn %d number of star barrier item",
+         "zh": "Earn %d number of star barrier item"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_92_0",
+         "en": "Earn %d number of star barrier item (Hoby)",
+         "ko": "호비로 플레이 중 별 방어막 %d개 획득하기",
+         "ja": "Earn %d number of star barrier item (Hoby)",
+         "zh": "Earn %d number of star barrier item (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_93_0",
+         "en": "Earn %d number of star barrier item (Poby)",
+         "ko": "포비로 플레이 중 별 방어막 %d개 획득하기",
+         "ja": "Earn %d number of star barrier item (Poby)",
+         "zh": "Earn %d number of star barrier item (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_94_0",
+         "en": "Earn %d number of star barrier item (Moby)",
+         "ko": "모비로 플레이 중 별 방어막 %d개 획득하기",
+         "ja": "Earn %d number of star barrier item (Moby)",
+         "zh": "Earn %d number of star barrier item (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_95_0",
+         "en": "Earn %d number of star barrier item (Boby)",
+         "ko": "보비로 플레이 중 별 방어막 %d개 획득하기",
+         "ja": "Earn %d number of star barrier item (Boby)",
+         "zh": "Earn %d number of star barrier item (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_96_0",
+         "en": "Earn %d number of star barrier item (Coby)",
+         "ko": "코비로 플레이 중 별 방어막 %d개 획득하기",
+         "ja": "Earn %d number of star barrier item (Coby)",
+         "zh": "Earn %d number of star barrier item (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_97_0",
+         "en": "Earn %d number of coin barrier item",
+         "ko": "플레이 중 코인 방어막 %d개 획득하기",
+         "ja": "Earn %d number of coin barrier item",
+         "zh": "Earn %d number of coin barrier item"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_98_0",
+         "en": "Earn %d number of coin barrier item (Hoby)",
+         "ko": "호비로 플레이 중 코인 방어막 %d개 획득하기",
+         "ja": "Earn %d number of coin barrier item (Hoby)",
+         "zh": "Earn %d number of coin barrier item (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_99_0",
+         "en": "Earn %d number of coin barrier item (Poby)",
+         "ko": "포비로 플레이 중 코인 방어막 %d개 획득하기",
+         "ja": "Earn %d number of coin barrier item (Poby)",
+         "zh": "Earn %d number of coin barrier item (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_100_0",
+         "en": "Earn %d number of coin barrier item (Moby)",
+         "ko": "모비로 플레이 중 코인 방어막 %d개 획득하기",
+         "ja": "Earn %d number of coin barrier item (Moby)",
+         "zh": "Earn %d number of coin barrier item (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_101_0",
+         "en": "Earn %d number of coin barrier item (Boby)",
+         "ko": "보비로 플레이 중 코인 방어막 %d개 획득하기",
+         "ja": "Earn %d number of coin barrier item (Boby)",
+         "zh": "Earn %d number of coin barrier item (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_102_0",
+         "en": "Earn %d number of coin barrier item (Coby)",
+         "ko": "코비로 플레이 중 코인 방어막 %d개 획득하기",
+         "ja": "Earn %d number of coin barrier item (Coby)",
+         "zh": "Earn %d number of coin barrier item (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_103_0",
+         "en": "Earn %d number of barrier item",
+         "ko": "플레이 중 방어막 %d개 획득하기",
+         "ja": "Earn %d number of barrier item",
+         "zh": "Earn %d number of barrier item"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_104_0",
+         "en": "Earn %d number of barrier item (Hoby)",
+         "ko": "호비로 플레이 중 방어막 %d개 획득하기",
+         "ja": "Earn %d number of barrier item (Hoby)",
+         "zh": "Earn %d number of barrier item (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_105_0",
+         "en": "Earn %d number of barrier item (Poby)",
+         "ko": "포비로 플레이 중 방어막 %d개 획득하기",
+         "ja": "Earn %d number of barrier item (Poby)",
+         "zh": "Earn %d number of barrier item (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_106_0",
+         "en": "Earn %d number of barrier item (Moby)",
+         "ko": "모비로 플레이 중 방어막 %d개 획득하기",
+         "ja": "Earn %d number of barrier item (Moby)",
+         "zh": "Earn %d number of barrier item (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_107_0",
+         "en": "Earn %d number of barrier item (Boby)",
+         "ko": "보비로 플레이 중 방어막 %d개 획득하기",
+         "ja": "Earn %d number of barrier item (Boby)",
+         "zh": "Earn %d number of barrier item (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_108_0",
+         "en": "Earn %d number of barrier item (Coby)",
+         "ko": "코비로 플레이 중 방어막 %d개 획득하기",
+         "ja": "Earn %d number of barrier item (Coby)",
+         "zh": "Earn %d number of barrier item (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_109_0",
+         "en": "Earn %d number of magnet item",
+         "ko": "플레이 중 자석 %d개 획득하기",
+         "ja": "Earn %d number of magnet item",
+         "zh": "Earn %d number of magnet item"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_110_0",
+         "en": "Earn %d number of magnet item (Hoby)",
+         "ko": "호비로 플레이 중 자석 %d개 획득하기",
+         "ja": "Earn %d number of magnet item (Hoby)",
+         "zh": "Earn %d number of magnet item (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_111_0",
+         "en": "Earn %d number of magnet item (Poby)",
+         "ko": "포비로 플레이 중 자석 %d개 획득하기",
+         "ja": "Earn %d number of magnet item (Poby)",
+         "zh": "Earn %d number of magnet item (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_112_0",
+         "en": "Earn %d number of magnet item (Moby)",
+         "ko": "모비로 플레이 중 자석 %d개 획득하기",
+         "ja": "Earn %d number of magnet item (Moby)",
+         "zh": "Earn %d number of magnet item (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_113_0",
+         "en": "Earn %d number of magnet item (Boby)",
+         "ko": "보비로 플레이 중 자석 %d개 획득하기",
+         "ja": "Earn %d number of magnet item (Boby)",
+         "zh": "Earn %d number of magnet item (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_114_0",
+         "en": "Earn %d number of magnet item (Coby)",
+         "ko": "코비로 플레이 중 자석 %d개 획득하기",
+         "ja": "Earn %d number of magnet item (Coby)",
+         "zh": "Earn %d number of magnet item (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_115_0",
+         "en": "Earn %d number of giant item",
+         "ko": "플레이 중 거대화 물약 %d개 획득하기",
+         "ja": "Earn %d number of giant item",
+         "zh": "Earn %d number of giant item"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_116_0",
+         "en": "Earn %d number of giant item (Hoby)",
+         "ko": "호비로 플레이 중 거대화 물약 %d개 획득하기",
+         "ja": "Earn %d number of giant item (Hoby)",
+         "zh": "Earn %d number of giant item (Hoby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_117_0",
+         "en": "Earn %d number of giant item (Poby)",
+         "ko": "포비로 플레이 중 거대화 물약 %d개 획득하기",
+         "ja": "Earn %d number of giant item (Poby)",
+         "zh": "Earn %d number of giant item (Poby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_118_0",
+         "en": "Earn %d number of giant item (Moby)",
+         "ko": "모비로 플레이 중 거대화 물약 %d개 획득하기",
+         "ja": "Earn %d number of giant item (Moby)",
+         "zh": "Earn %d number of giant item (Moby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_119_0",
+         "en": "Earn %d number of giant item (Boby)",
+         "ko": "보비로 플레이 중 거대화 물약 %d개 획득하기",
+         "ja": "Earn %d number of giant item (Boby)",
+         "zh": "Earn %d number of giant item (Boby)"
+      },
+      {
+         "key": "ACHIEVEMENT_NORMAL_CONTENT_120_0",
+         "en": "Earn %d number of giant item (Coby)",
+         "ko": "코비로 플레이 중 거대화 물약 %d개 획득하기",
+         "ja": "Earn %d number of giant item (Coby)",
+         "zh": "Earn %d number of giant item (Coby)"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_0_0",
+         "en": "I finally got to the first planet.",
+         "ko": "드디어 첫 번째 행성에 도착했네요.",
+         "ja": "I finally got to the first planet.",
+         "zh": "I finally got to the first planet."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_1_0",
+         "en": "Be prepared to welcome new friends!",
+         "ko": "새로운 친구를 맞이할 준비를 해야죠!",
+         "ja": "Be prepared to welcome new friends!",
+         "zh": "Be prepared to welcome new friends!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_2_0",
+         "en": "no title2",
+         "ko": "no title2",
+         "ja": "no title2",
+         "zh": "no title2"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_3_0",
+         "en": "no title3",
+         "ko": "no title3",
+         "ja": "no title3",
+         "zh": "no title3"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_4_0",
+         "en": "no title4",
+         "ko": "no title4",
+         "ja": "no title4",
+         "zh": "no title4"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_5_0",
+         "en": "Your first goal will not be difficult.",
+         "ko": "첫 임무는 어렵지 않을 거에요.",
+         "ja": "Your first goal will not be difficult.",
+         "zh": "Your first goal will not be difficult."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_6_0",
+         "en": "I made new friends.",
+         "ko": "새로운 친구를 사귀었어요.",
+         "ja": "I made new friends.",
+         "zh": "I made new friends."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_7_0",
+         "en": "no title7",
+         "ko": "no title7",
+         "ja": "no title7",
+         "zh": "no title7"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_8_0",
+         "en": "no title8",
+         "ko": "no title8",
+         "ja": "no title8",
+         "zh": "no title8"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_9_0",
+         "en": "no title9",
+         "ko": "no title9",
+         "ja": "no title9",
+         "zh": "no title9"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_10_0",
+         "en": "Toward the highest record!",
+         "ko": "최고기록을 향하여!",
+         "ja": "Toward the highest record!",
+         "zh": "Toward the highest record!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_11_0",
+         "en": "Oh, it's crazy!",
+         "ko": "오 신기한 일이에요!",
+         "ja": "Oh, it's crazy!",
+         "zh": "Oh, it's crazy!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_12_0",
+         "en": "Is this score possible?",
+         "ko": "이 점수가 가능할까?",
+         "ja": "Is this score possible?",
+         "zh": "Is this score possible?"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_13_0",
+         "en": "My wallet is getting heavy.",
+         "ko": "지갑이 무거워 지고 있어요.",
+         "ja": "My wallet is getting heavy.",
+         "zh": "My wallet is getting heavy."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_14_0",
+         "en": "I will not miss any stars!",
+         "ko": "별 하나도 놓치지 않을거에요!",
+         "ja": "I will not miss any stars!",
+         "zh": "I will not miss any stars!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_15_0",
+         "en": "I want a stronger barrier.",
+         "ko": "더 튼튼한 방어막을 원해요.",
+         "ja": "I want a stronger barrier.",
+         "zh": "I want a stronger barrier."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_16_0",
+         "en": "I'll blow it all away!!",
+         "ko": "모두 날려버리겠어요!!",
+         "ja": "I'll blow it all away!!",
+         "zh": "I'll blow it all away!!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_17_0",
+         "en": "I can do a fashion show!",
+         "ko": "패션쇼를 해도 되겠어요!",
+         "ja": "I can do a fashion show!",
+         "zh": "I can do a fashion show!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_18_0",
+         "en": "The ice is not scary anymore.",
+         "ko": "얼음이 더 이상 무섭지 않아요.",
+         "ja": "The ice is not scary anymore.",
+         "zh": "The ice is not scary anymore."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_19_0",
+         "en": "The ice is no longer afraid.",
+         "ko": "얼음이 더 이상 두렵지 않아요.",
+         "ja": "The ice is no longer afraid.",
+         "zh": "The ice is no longer afraid."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_20_0",
+         "en": "I looked at the planet...",
+         "ko": "가만히 행성을 바라보니...",
+         "ja": "I looked at the planet...",
+         "zh": "I looked at the planet..."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_21_0",
+         "en": "Please drive safely.",
+         "ko": "안전 운전 해주세요.",
+         "ja": "Please drive safely.",
+         "zh": "Please drive safely."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_22_0",
+         "en": "We are proud of our trip to a friends!",
+         "ko": "친구에게 우리의 여행을 자랑해요!",
+         "ja": "We are proud of our trip to a friends!",
+         "zh": "We are proud of our trip to a friends!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_23_0",
+         "en": "I travel with my friends.",
+         "ko": "친구와 함께 여행해요.",
+         "ja": "I travel with my friends.",
+         "zh": "I travel with my friends."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_24_0",
+         "en": "What is your goal today?",
+         "ko": "오늘의 목표는 무엇이죠?",
+         "ja": "What is your goal today?",
+         "zh": "What is your goal today?"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_25_0",
+         "en": "I am looking forward to tomorrow's goal.",
+         "ko": "내일의 목표가 기다려지네요.",
+         "ja": "I am looking forward to tomorrow's goal.",
+         "zh": "I am looking forward to tomorrow's goal."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_26_0",
+         "en": "It's amazing!",
+         "ko": "정말 대단해요!!",
+         "ja": "It's amazing!",
+         "zh": "It's amazing!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_27_0",
+         "en": "I can not believe it!",
+         "ko": "믿을 수가 없네요!",
+         "ja": "I can not believe it!",
+         "zh": "I can not believe it!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_28_0",
+         "en": "The world is spinning round and round!",
+         "ko": "세상이 빙글빙글 돌아요!",
+         "ja": "The world is spinning round and round!",
+         "zh": "The world is spinning round and round!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_29_0",
+         "en": "Challenge world rankings!",
+         "ko": "세계 랭킹에 도전하세요!",
+         "ja": "Challenge world rankings!",
+         "zh": "Challenge world rankings!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_30_0",
+         "en": "I can buy anything.",
+         "ko": "무엇이든 살 수 있겠어요.",
+         "ja": "I can buy anything.",
+         "zh": "I can buy anything."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_31_0",
+         "en": "I am a billionaire dreamer.",
+         "ko": "억만장자가 꿈이에요.",
+         "ja": "I am a billionaire dreamer.",
+         "zh": "I am a billionaire dreamer."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_32_0",
+         "en": "Do you like cold things?",
+         "ko": "차가운 것을 좋아하시나요?",
+         "ja": "Do you like cold things?",
+         "zh": "Do you like cold things?"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_33_0",
+         "en": "Are not you a zombie?",
+         "ko": "혹시 좀비는 아니죠?",
+         "ja": "Are not you a zombie?",
+         "zh": "Are not you a zombie?"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_34_0",
+         "en": "Please drop more stars.",
+         "ko": "더 많은 별을 내려주세요.",
+         "ja": "Please drop more stars.",
+         "zh": "Please drop more stars."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_35_0",
+         "en": "I want more coins.",
+         "ko": "더 많은 코인을 원해요.",
+         "ja": "I want more coins.",
+         "zh": "I want more coins."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_36_0",
+         "en": "When will it be safe?",
+         "ko": "언제쯤 안전해 질 수 있을까요?",
+         "ja": "When will it be safe?",
+         "zh": "When will it be safe?"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_37_0",
+         "en": "I'm short of magnetism.",
+         "ko": "자력이 부족해요.",
+         "ja": "I'm short of magnetism.",
+         "zh": "I'm short of magnetism."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_38_0",
+         "en": "I can not miss a coin that looks far away.",
+         "ko": "저 멀리 보이는 코인도 놓치지 않아요.",
+         "ja": "I can not miss a coin that looks far away.",
+         "zh": "I can not miss a coin that looks far away."
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_39_0",
+         "en": "I am not afraid of anything when it becomes huge!",
+         "ko": "거대해지면 아무것도 두렵지 않아요!",
+         "ja": "I am not afraid of anything when it becomes huge!",
+         "zh": "I am not afraid of anything when it becomes huge!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_40_0",
+         "en": "No more scary!",
+         "ko": "더 이상 두려울게 없어요!",
+         "ja": "No more scary!",
+         "zh": "No more scary!"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_TITLE_41_0",
+         "en": "no title41",
+         "ko": "no title41",
+         "ja": "no title41",
+         "zh": "no title41"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_0_0",
+         "en": "Play %d times",
+         "ko": "%d번 플레이하기",
+         "ja": "Play %d times",
+         "zh": "Play %d times"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_0_1",
+         "en": "Earn %d stars in a single play",
+         "ko": "한번의 플레이에 별 %d개 획득하기",
+         "ja": "Earn %d stars in a single play",
+         "zh": "Earn %d stars in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_0_2",
+         "en": "Achieve %d points",
+         "ko": "%d점 달성하기",
+         "ja": "Achieve %d points",
+         "zh": "Achieve %d points"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_0_3",
+         "en": "Obtain %d coins in a single play",
+         "ko": "한번의 플레이에 코인 %d개 획득하기",
+         "ja": "Obtain %d coins in a single play",
+         "zh": "Obtain %d coins in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_0_4",
+         "en": "Revive %d times",
+         "ko": "부활 %d번 하기",
+         "ja": "Revive %d times",
+         "zh": "Revive %d times"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_1_0",
+         "en": "Earn %d stars in a single play",
+         "ko": "한번의 플레이에 별 %d개 획득하기",
+         "ja": "Earn %d stars in a single play",
+         "zh": "Earn %d stars in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_1_1",
+         "en": "Earn %d points combo score",
+         "ko": "%d 콤보 기록하기",
+         "ja": "Earn %d points combo score",
+         "zh": "Earn %d points combo score"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_1_2",
+         "en": "Obtain %d coins in a single play",
+         "ko": "한번의 플레이에 코인 %d개 획득하기",
+         "ja": "Obtain %d coins in a single play",
+         "zh": "Obtain %d coins in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_1_3",
+         "en": "Obtain %d magnets in a single play",
+         "ko": "한번의 플레이에 자석 %d개 획득하기",
+         "ja": "Obtain %d magnets in a single play",
+         "zh": "Obtain %d magnets in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_1_4",
+         "en": "Achieve %d points",
+         "ko": "%d점 달성하기",
+         "ja": "Achieve %d points",
+         "zh": "Achieve %d points"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_2_0",
+         "en": "Obtain %d number of barriers in a single play",
+         "ko": "한번의 플레이에 방어막 %d개 획득하기",
+         "ja": "Obtain %d number of barriers in a single play",
+         "zh": "Obtain %d number of barriers in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_2_1",
+         "en": "Obtain %d number of coin barriers in a single play",
+         "ko": "한번의 플레이에 코인 방어막 %d개 획득하기",
+         "ja": "Obtain %d number of coin barriers in a single play",
+         "zh": "Obtain %d number of coin barriers in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_2_2",
+         "en": "Obtain %d number of star barriers in a single play",
+         "ko": "한번의 플레이에 별 방어막 %d개 획득하기",
+         "ja": "Obtain %d number of star barriers in a single play",
+         "zh": "Obtain %d number of star barriers in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_2_3",
+         "en": "Complete %d number of goals in a single play",
+         "ko": "한번의 플레이에 목표 %d개 완료하기",
+         "ja": "Complete %d number of goals in a single play",
+         "zh": "Complete %d number of goals in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_2_4",
+         "en": "Achieve %d points",
+         "ko": "%d점 달성하기",
+         "ja": "Achieve %d points",
+         "zh": "Achieve %d points"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_3_0",
+         "en": "Obtain %d giant item in a single play",
+         "ko": "한번의 플레이에 거대화 물약 %d개 획득하기",
+         "ja": "Obtain %d giant item in a single play",
+         "zh": "Obtain %d giant item in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_3_1",
+         "en": "Achieve %d Combo",
+         "ko": "%d 콤보 달성하기",
+         "ja": "Achieve %d Combo",
+         "zh": "Achieve %d Combo"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_3_2",
+         "en": "Blow up %d number of obstacles as a power of a giant",
+         "ko": "거대화하여 장애물 %d개 날려버리기",
+         "ja": "Blow up %d number of obstacles as a power of a giant",
+         "zh": "Blow up %d number of obstacles as a power of a giant"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_3_3",
+         "en": "Earn %d stars in a single play",
+         "ko": "한번의 플레이에 별 %d개 획득하기",
+         "ja": "Earn %d stars in a single play",
+         "zh": "Earn %d stars in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_3_4",
+         "en": "Achieve %d points",
+         "ko": "%d점 달성하기",
+         "ja": "Achieve %d points",
+         "zh": "Achieve %d points"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_4_0",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_4_1",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_4_2",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_4_3",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_4_4",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_5_0",
+         "en": "Play %d times",
+         "ko": "%d번 플레이하기",
+         "ja": "Play %d times",
+         "zh": "Play %d times"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_5_1",
+         "en": "Obtain %d number of barriers in a single play",
+         "ko": "한번의 플레이에 별 방어막 %d개 획득하기",
+         "ja": "Obtain %d number of barriers in a single play",
+         "zh": "Obtain %d number of barriers in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_5_2",
+         "en": "Defending %d number of obstacles as a barrier",
+         "ko": "방어막으로 장애물 %d개 방어하기",
+         "ja": "Defending %d number of obstacles as a barrier",
+         "zh": "Defending %d number of obstacles as a barrier"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_5_3",
+         "en": "Achieve user level %d",
+         "ko": "유저 레벨 %d 달성하기",
+         "ja": "Achieve user level %d",
+         "zh": "Achieve user level %d"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_5_4",
+         "en": "Achieve %d Combo",
+         "ko": "%d콤보 달성하기",
+         "ja": "Achieve %d Combo",
+         "zh": "Achieve %d Combo"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_6_0",
+         "en": "Achieve %d points during play with Poby",
+         "ko": "포비로 %d점 달성하기 ",
+         "ja": "Achieve %d points during play with Poby",
+         "zh": "Achieve %d points during play with Poby"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_6_1",
+         "en": "Obtain %d magnets during play with Poby",
+         "ko": "포비로 플레이 중 자석 %d개 획득하기",
+         "ja": "Obtain %d magnets during play with Poby",
+         "zh": "Obtain %d magnets during play with Poby"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_6_2",
+         "en": "Achieve magnet item level %d",
+         "ko": "자석 %d레벨 달성하기",
+         "ja": "Achieve magnet item level %d",
+         "zh": "Achieve magnet item level %d"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_6_3",
+         "en": "Achieve magnet range level %d",
+         "ko": "자석 범위 %d레벨 달성하기",
+         "ja": "Achieve magnet range level %d",
+         "zh": "Achieve magnet range level %d"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_6_4",
+         "en": "Obtain %d stars as a magnet during play with Poby",
+         "ko": "포비로 플레이 중 자석으로 별 %d개 획득하기",
+         "ja": "Obtain %d stars as a magnet during play with Poby",
+         "zh": "Obtain %d stars as a magnet during play with Poby"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_7_0",
+         "en": "Defend %d obstacles with barrier while playing with Moby",
+         "ko": "모비로 플레이 중 방어막으로 장애물 %d개 방어하기",
+         "ja": "Defend %d obstacles with barrier while playing with Moby",
+         "zh": "Defend %d obstacles with barrier while playing with Moby"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_7_1",
+         "en": "Obtain %d stars as star barrier during play with Moby",
+         "ko": "모비로 플레이 중 별 방어막으로 별 %d개 획득하기",
+         "ja": "Obtain %d stars as star barrier during play with Moby",
+         "zh": "Obtain %d stars as star barrier during play with Moby"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_7_2",
+         "en": "Obtain %d coins with coin barrier during Moby Play",
+         "ko": "모비로 플레이 중 코인 방어막으로 코인 %d개 획득하기",
+         "ja": "Obtain %d coins with coin barrier during Moby Play",
+         "zh": "Obtain %d coins with coin barrier during Moby Play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_7_3",
+         "en": "Play Moby to record %d combo",
+         "ko": "모비로 플레이하여 %d 콤보 기록하기",
+         "ja": "Play Moby to record %d combo",
+         "zh": "Play Moby to record %d combo"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_7_4",
+         "en": "Play %d games with Moby",
+         "ko": "모비로 플레이하여 %d점 기록하기",
+         "ja": "Play %d games with Moby",
+         "zh": "Play %d games with Moby"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_8_0",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_8_1",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_8_2",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_8_3",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_8_4",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_9_0",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_9_1",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_9_2",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_9_3",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_9_4",
+         "en": "",
+         "ko": "",
+         "ja": "",
+         "zh": ""
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_10_0",
+         "en": "Achieve %d points",
+         "ko": "%d점 달성하기",
+         "ja": "Achieve %d points",
+         "zh": "Achieve %d points"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_11_0",
+         "en": "Achieve %d points",
+         "ko": "%d점 달성하기",
+         "ja": "Achieve %d points",
+         "zh": "Achieve %d points"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_12_0",
+         "en": "Achieve %d points",
+         "ko": "%d점 달성하기",
+         "ja": "Achieve %d points",
+         "zh": "Achieve %d points"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_13_0",
+         "en": "Earn %d coins in a single play",
+         "ko": "한번의 게임에 %d코인 획득하기",
+         "ja": "Earn %d coins in a single play",
+         "zh": "Earn %d coins in a single play"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_14_0",
+         "en": "Achieve %d Combo",
+         "ko": "%d콤보 달성하기",
+         "ja": "Achieve %d Combo",
+         "zh": "Achieve %d Combo"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_15_0",
+         "en": "Defending %d number of obstacles as a barrier",
+         "ko": "한번의 게임에 %d개의 장애물 방어하기",
+         "ja": "Defending %d number of obstacles as a barrier",
+         "zh": "Defending %d number of obstacles as a barrier"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_16_0",
+         "en": "Blow up %d large ice crystals as a power of a giant",
+         "ko": "한번의 게임에 %d개의 큰 얼음결정 날려버리기",
+         "ja": "Blow up %d large ice crystals as a power of a giant",
+         "zh": "Blow up %d large ice crystals as a power of a giant"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_17_0",
+         "en": "Obtaining %d costumes",
+         "ko": "%d개의 코스튬 획득하기",
+         "ja": "Obtaining %d costumes",
+         "zh": "Obtaining %d costumes"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_18_0",
+         "en": "Change large ice crystals %d times with coins",
+         "ko": "큰 얼음 결정을 코인으로 %d번 바꾸기",
+         "ja": "Change large ice crystals %d times with coins",
+         "zh": "Change large ice crystals %d times with coins"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_19_0",
+         "en": "Replace large ice crystals %d times",
+         "ko": "큰 얼음 결정을 별로 %d번 바꾸기",
+         "ja": "Replace large ice crystals %d times",
+         "zh": "Replace large ice crystals %d times"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_20_0",
+         "en": "Watch the planet for %d seconds",
+         "ko": "%d초 동안 행성 감상하기",
+         "ja": "Watch the planet for %d seconds",
+         "zh": "Watch the planet for %d seconds"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_21_0",
+         "en": "Pilot rocket %d times",
+         "ko": "로켓 %d번 조종하기",
+         "ja": "Pilot rocket %d times",
+         "zh": "Pilot rocket %d times"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_22_0",
+         "en": "Share %d times",
+         "ko": "%d번 공유하기",
+         "ja": "Share %d times",
+         "zh": "Share %d times"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_23_0",
+         "en": "Add %d Facebook friends",
+         "ko": "%d명의 페이스북 친구 추가하기",
+         "ja": "Add %d Facebook friends",
+         "zh": "Add %d Facebook friends"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_24_0",
+         "en": "Achieve %d goals today",
+         "ko": "%d개의 오늘의 목표 달성하기",
+         "ja": "Achieve %d goals today",
+         "zh": "Achieve %d goals today"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_25_0",
+         "en": "Achieve %d goals today",
+         "ko": "%d개의 오늘의 목표 달성하기",
+         "ja": "Achieve %d goals today",
+         "zh": "Achieve %d goals today"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_26_0",
+         "en": "Earning %d achievements",
+         "ko": "%d개의 업적 획득하기",
+         "ja": "Earning %d achievements",
+         "zh": "Earning %d achievements"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_27_0",
+         "en": "Earning %d achievements",
+         "ko": "%d개의 업적 획득하기",
+         "ja": "Earning %d achievements",
+         "zh": "Earning %d achievements"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_28_0",
+         "en": "Play %d times",
+         "ko": "%d번 플레이하기",
+         "ja": "Play %d times",
+         "zh": "Play %d times"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_29_0",
+         "en": "Play %d times",
+         "ko": "%d번 플레이하기",
+         "ja": "Play %d times",
+         "zh": "Play %d times"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_30_0",
+         "en": "Collect %d coins",
+         "ko": "%d코인 모으기",
+         "ja": "Collect %d coins",
+         "zh": "Collect %d coins"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_31_0",
+         "en": "Collect %d coins",
+         "ko": "%d코인 모으기",
+         "ja": "Collect %d coins",
+         "zh": "Collect %d coins"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_32_0",
+         "en": "%d large ice crystals die",
+         "ko": "%d번 큰 얼음 결정에 맞아 죽기",
+         "ja": "%d large ice crystals die",
+         "zh": "%d large ice crystals die"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_33_0",
+         "en": "Revive %d times",
+         "ko": "%d번 부활하기",
+         "ja": "Revive %d times",
+         "zh": "Revive %d times"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_34_0",
+         "en": "Achieve star barrier item to level %d",
+         "ko": "별 방어막 %d레벨 달성하기",
+         "ja": "Achieve star barrier item to level %d",
+         "zh": "Achieve star barrier item to level %d"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_35_0",
+         "en": "Achieve coin barrier item to level %d",
+         "ko": "코인 방어막 %d레벨 달성하기",
+         "ja": "Achieve coin barrier item to level %d",
+         "zh": "Achieve coin barrier item to level %d"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_36_0",
+         "en": "Achieve barrier item to level %d",
+         "ko": "방어막 %d레벨 달성하기",
+         "ja": "Achieve barrier item to level %d",
+         "zh": "Achieve barrier item to level %d"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_37_0",
+         "en": "Achieve magnet item to level %d",
+         "ko": "자석 %d레벨 달성하기",
+         "ja": "Achieve magnet item to level %d",
+         "zh": "Achieve magnet item to level %d"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_38_0",
+         "en": "Achieve magnet range to level %d",
+         "ko": "자석범위 %d레벨 달성하기",
+         "ja": "Achieve magnet range to level %d",
+         "zh": "Achieve magnet range to level %d"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_39_0",
+         "en": "Achieve giant item to level %d",
+         "ko": "거대화 %d레벨 달성하기",
+         "ja": "Achieve giant item to level %d",
+         "zh": "Achieve giant item to level %d"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_40_0",
+         "en": "Achieve giant size item to level %d",
+         "ko": "거대화 크기 %d레벨 달성하기",
+         "ja": "Achieve giant size item to level %d",
+         "zh": "Achieve giant size item to level %d"
+      },
+      {
+         "key": "ACHIEVEMENT_HIDDEN_CONTENT_41_0",
+         "en": "Collecting medal costume",
+         "ko": "훈장 코스튬 모으기",
+         "ja": "Collecting medal costume",
+         "zh": "Collecting medal costume"
+      },
+      {
+         "key": "TUTORIAL_MENT_0",
+         "en": "You finally arrived on the first planet!",
+         "ko": "드디어 첫번째 행성에 도착했군요!",
+         "ja": "You finally arrived on the first planet!",
+         "zh": "You finally arrived on the first planet!"
+      },
+      {
+         "key": "TUTORIAL_MENT_1",
+         "en": "It's an honor to be with you on the 'Laviah Project' to investigate all the stars on planet Laviah!",
+         "ko": "행성 라비아의 모든 별을 조사하는 \n'라비아 프로젝트'에 함께 하게 되어 영광이에요!",
+         "ja": "It's an honor to be with you on the 'Laviah Project' to investigate all the stars on planet Laviah!",
+         "zh": "It's an honor to be with you on the 'Laviah Project' to investigate all the stars on planet Laviah!"
+      },
+      {
+         "key": "TUTORIAL_MENT_2",
+         "en": "Let us work together to fulfill our mission !!",
+         "ko": "우리 함께 힘내서 임무를 수행 하도록 해요!!",
+         "ja": "Let us work together to fulfill our mission !!",
+         "zh": "Let us work together to fulfill our mission !!"
+      },
+      {
+         "key": "TUTORIAL_MENT_3",
+         "en": "Be careful!!",
+         "ko": "조심하세요!!",
+         "ja": "Be careful!!",
+         "zh": "Be careful!!"
+      },
+      {
+         "key": "TUTORIAL_MENT_4",
+         "en": "It's an ice crystal floating around the planet.",
+
+         "ko": "행성 주변을 떠도는 얼음결정 이에요.",
+         "ja": "It's an ice crystal floating around the planet.",
+         "zh": "It's an ice crystal floating around the planet."
+      },
+      {
+         "key": "TUTORIAL_MENT_5",
+         "en": "You have to investigate the stars while avoiding them.",
+         "ko": "잘 피하면서 별을 조사해야해요.",
+         "ja": "You have to investigate the stars while avoiding them.",
+         "zh": "You have to investigate the stars while avoiding them."
+      },
+      {
+         "key": "TUTORIAL_MENT_6",
+         "en": "Pressing and holding the screen can be avoided in the opposite direction.",
+         "ko": "화면을 길게 누르면 반대 방향으로 피할 수 있어요.",
+         "ja": "Pressing and holding the screen can be avoided in the opposite direction.",
+         "zh": "Pressing and holding the screen can be avoided in the opposite direction."
+      },
+      {
+         "key": "TUTORIAL_MENT_7",
+         "en": "Large ice crystals are so fast that I'll mark them as light before they fall.",
+         "ko": "큰 얼음 결정은 아주 빠르니까 떨어지기 전에 라이트로 표시해 둘게요.",
+         "ja": "Large ice crystals are so fast that I'll mark them as light before they fall.",
+         "zh": "Large ice crystals are so fast that I'll mark them as light before they fall."
+      },
+      {
+         "key": "TUTORIAL_MENT_8",
+         "en": "Be aware that when a light is displayed, a large crystal will be fall.",
+         "ko": "라이트가 표시되면 큰 결정이 떨어진다는 점을 꼭 기억해두세요.",
+         "ja": "Be aware that when a light is displayed, a large crystal will be fall.",
+         "zh": "Be aware that when a light is displayed, a large crystal will be fall."
+      },
+      {
+         "key": "TUTORIAL_MENT_9",
+         "en": "Oh! \nThere are hard crystals that do not melt easily even after falling to the ground.",
+         "ko": "아참! \n땅에 떨어지고 난 후에도 쉽게 녹지 않는 단단한 결정들도 있어요.",
+         "ja": "Oh! \nThere are hard crystals that do not melt easily even after falling to the ground.",
+         "zh": "Oh! \nThere are hard crystals that do not melt easily even after falling to the ground."
+      },
+      {
+         "key": "TUTORIAL_MENT_10",
+         "en": "Please be careful not to touch the body.",
+         "ko": "꼭 몸에 닿지 않게 주의 하세요.",
+         "ja": "Please be careful not to touch the body.",
+         "zh": "Please be careful not to touch the body."
+      },
+      {
+         "key": "TUTORIAL_MENT_11",
+         "en": "By the way, \nBecause of the unstable earth, the ice will rise from the ground, so be careful.",
+         "ko": "아참참! \n불안정한 대지 때문에 땅에서 얼음이 솟아나기도 하니까 조심 해야해요.",
+         "ja": "By the way, \nBecause of the unstable earth, the ice will rise from the ground, so be careful.",
+         "zh": "By the way, \nBecause of the unstable earth, the ice will rise from the ground, so be careful."
+      },
+      {
+         "key": "TUTORIAL_MENT_12",
+         "en": "Oh! \nIt's a star we have to investigate!!",
+         "ko": "오! \n우리가 조사해야하는 별이에요!!",
+         "ja": "Oh! \nIt's a star we have to investigate!!",
+         "zh": "Oh! \nIt's a star we have to investigate!!"
+      },
+      {
+         "key": "TUTORIAL_MENT_13",
+         "en": "The more stars you get, the higher your exploration score.",
+         "ko": "별을 얻을 수록 탐험점수가 올라요.",
+         "ja": "The more stars you get, the higher your exploration score.",
+         "zh": "The more stars you get, the higher your exploration score."
+      },
+      {
+         "key": "TUTORIAL_MENT_14",
+         "en": "If you get stars continuously, your combo will increase.",
+         "ko": "연속으로 별을 얻으면 콤보가 올라가요.",
+         "ja": "If you get stars continuously, your combo will increase.",
+         "zh": "If you get stars continuously, your combo will increase."
+      },
+      {
+         "key": "TUTORIAL_MENT_15",
+         "en": "The higher the combo, the higher the score of a single exploration.",
+         "ko": "콤보가 높으면 별 한개의 탐험점수가 높아져요.",
+         "ja": "The higher the combo, the higher the score of a single exploration.",
+         "zh": "The higher the combo, the higher the score of a single exploration."
+      },
+      {
+         "key": "TUTORIAL_MENT_16",
+         "en": "If you do not get the stars for a certain time, the combo will be cut off.",
+         "ko": "일정시간 별을 얻지 않으면 콤보가 끊기니까 주의하세요!!",
+         "ja": "If you do not get the stars for a certain time, the combo will be cut off.",
+         "zh": "If you do not get the stars for a certain time, the combo will be cut off."
+      },
+      {
+         "key": "TUTORIAL_MENT_17",
+         "en": "Now it's time to explain the items.",
+         "ko": "이제 아이템을 설명할 차례네요.",
+         "ja": "Now it's time to explain the items.",
+         "zh": "Now it's time to explain the items."
+      },
+      {
+         "key": "TUTORIAL_MENT_18",
+         "en": "If you get items, you'll be able to research more stars safely.",
+         "ko": "아이템을 획득하면 더 많은 별을 안전하게 조사할 수 있을 거에요.",
+         "ja": "If you get items, you'll be able to research more stars safely.",
+         "zh": "If you get items, you'll be able to research more stars safely."
+      },
+      {
+         "key": "TUTORIAL_MENT_19",
+         "en": "First of all, it's a star barrier that changes ice crystals into stars.",
+         "ko": "먼저 눈결정을 별로 바꿔주는 별 방어막이에요.",
+         "ja": "First of all, it's a star barrier that changes ice crystals into stars.",
+         "zh": "First of all, it's a star barrier that changes ice crystals into stars."
+      },
+      {
+         "key": "TUTORIAL_MENT_20",
+         "en": "The next is a coin barrier that changes ice crystals into coins.",
+         "ko": "다음은 눈결정을 코인 바꿔주는 코인 방어막이에요.",
+         "ja": "The next is a coin barrier that changes ice crystals into coins.",
+         "zh": "The next is a coin barrier that changes ice crystals into coins."
+      },
+      {
+         "key": "TUTORIAL_MENT_21",
+         "en": "Remember that you can upgrade your item ability with coins.",
+         "ko": "코인으로 아이템 능력을 업그레이드 시킬수도 있다는 사실도 꼭 기억하세요.",
+         "ja": "Remember that you can upgrade your item ability with coins.",
+         "zh": "Remember that you can upgrade your item ability with coins."
+      },
+      {
+         "key": "TUTORIAL_MENT_22",
+         "en": "Oh, ice crystals are coming from everywhere!!",
+         "ko": "이런, 사방에서 얼음 결정이 날아 오고 있어요!!",
+         "ja": "Oh, ice crystals are coming from everywhere!!",
+         "zh": "Oh, ice crystals are coming from everywhere!!"
+      },
+      {
+         "key": "TUTORIAL_MENT_23",
+         "en": "I think It can show the ability of the barrier!!",
+         "ko": "보호막의 능력을 보여줄 수 있을 것 같네요!",
+         "ja": "I think It can show the ability of the barrier!!",
+         "zh": "I think It can show the ability of the barrier!!"
+      },
+      {
+         "key": "TUTORIAL_MENT_24",
+         "en": "Obtain a barrier to overcome the danger.",
+         "ko": "보호막을 획득하여 위기를 넘기세요.",
+         "ja": "Obtain a barrier to overcome the danger.",
+         "zh": "Obtain a barrier to overcome the danger."
+      },
+      {
+         "key": "TUTORIAL_MENT_25",
+         "en": "It's a giant potion! \nWhen it gets bigger, the ice crystals will not be scary anymore!",
+         "ko": "거대화 물약이에요! \n거대해지면 얼음결정이 더 이상 무섭지 않을거에요!",
+         "ja": "It's a giant potion! \nWhen it gets bigger, the ice crystals will not be scary anymore!",
+         "zh": "It's a giant potion! \nWhen it gets bigger, the ice crystals will not be scary anymore!"
+      },
+      {
+         "key": "TUTORIAL_MENT_26",
+         "en": "But be careful as soon as you get back to the origin size!",
+         "ko": "하지만 곧 다시 원상태로 돌아오니까 주의하세요!",
+         "ja": "But be careful as soon as you get back to the origin size!",
+         "zh": "But be careful as soon as you get back to the origin size!"
+      },
+      {
+         "key": "TUTORIAL_MENT_27",
+         "en": "Now the tutorial is overed.",
+         "ko": "이제 튜토리얼은 끝났습니다.",
+         "ja": "Now the tutorial is overed.",
+         "zh": "Now the tutorial is overed."
+      },
+      {
+         "key": "TUTORIAL_MENT_28",
+         "en": "If you want to see the tutorial again, please click the 'Replay Tutorial' button in the setting view.",
+         "ko": "튜토리얼을 다시 보고 싶다면 설정에서 다시보기 버튼을 눌러주세요.",
+         "ja": "If you want to see the tutorial again, please click the 'Replay Tutorial' button in the setting view.",
+         "zh": "If you want to see the tutorial again, please click the 'Replay Tutorial' button in the setting view."
+      },
+      {
+         "key": "TUTORIAL_MENT_29",
+         "en": "Now, let's go check it out!",
+         "ko": "자, 이제 그럼 힘내서 별을 조사하도록 해요!!",
+         "ja": "Now, let's go check it out!",
+         "zh": "Now, let's go check it out!"
+      },
+      {
+         "key": "TUTORIAL_MENT_30",
+         "en": "Now, try again and cheer up!.",
+         "ko": "자, 다시 한 번 도전해 보세요.",
+         "ja": "Now, try again and cheer up!.",
+         "zh": "Now, try again and cheer up!."
+      }
+   ]
+}
